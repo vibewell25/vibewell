@@ -11,17 +11,17 @@ export function useAnalytics() {
   useEffect(() => {
     // Initialize analytics if needed
     // This is where you would initialize your analytics service
-    console?.log('Analytics initialized');
+    console.log('Analytics initialized');
   }, []);
 
   const trackEvent = (name: string, properties?: Record<string, any>) => {
     // Here you would send the event to your analytics service
     // For now, we'll just log it
-    console?.log('Analytics Event:', { name, properties });
+    console.log('Analytics Event:', { name, properties });
 
     // Example of sending to an analytics service:
-    // if (window?.analytics) {
-    //   window?.analytics.track(name, properties);
+    // if (window.analytics) {
+    //   window.analytics.track(name, properties);
     // }
 
     // You can also send to your backend:
@@ -33,7 +33,7 @@ export function useAnalytics() {
 
     //     'Content-Type': 'application/json',
     //   },
-    //   body: JSON?.stringify({ name, properties }),
+    //   body: JSON.stringify({ name, properties }),
     // });
   };
 
@@ -43,15 +43,15 @@ export function useAnalytics() {
 
   useEffect(() => {
     // Track initial page view
-    trackPageView(window?.location.pathname);
+    trackPageView(window.location.pathname);
 
     // Track subsequent page views
     const handleRouteChange = () => {
-      trackPageView(window?.location.pathname);
+      trackPageView(window.location.pathname);
     };
 
-    window?.addEventListener('popstate', handleRouteChange);
-    return () => window?.removeEventListener('popstate', handleRouteChange);
+    window.addEventListener('popstate', handleRouteChange);
+    return () => window.removeEventListener('popstate', handleRouteChange);
   }, []);
 
   return {

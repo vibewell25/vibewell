@@ -5,7 +5,7 @@ import usePerformanceMonitoring from '../../hooks/usePerformanceMonitoring';
  * Example component demonstrating the usePerformanceMonitoring hook
  * with automatic and manual performance measurement
  */
-export const PerformanceExample: React?.FC = () => {
+export const PerformanceExample: React.FC = () => {
   // Automatic performance monitoring for the whole component lifecycle
   usePerformanceMonitoring({ id: 'PerformanceExample' });
 
@@ -24,7 +24,7 @@ export const PerformanceExample: React?.FC = () => {
     startMeasure();
 
     // Record start time for display
-    const startTime = performance?.now();
+    const startTime = performance.now();
 
     // Simulate expensive operation (fibonacci calculation)
     const fibonacci = (n: number): number => {
@@ -36,7 +36,7 @@ export const PerformanceExample: React?.FC = () => {
     const result = fibonacci(35);
 
     // Record end time for display
-    const endTime = performance?.now();
+    const endTime = performance.now();
     const duration = endTime - startTime;
 
     // End the performance measure
@@ -44,8 +44,8 @@ export const PerformanceExample: React?.FC = () => {
 
     // Update state with results
     setResults((prev) => [
-      `Operation completed in ${duration?.toFixed(2)}ms, result: ${result}`,
-      ...prev?.slice(0, 4), // Keep only the last 5 results
+      `Operation completed in ${duration.toFixed(2)}ms, result: ${result}`,
+      ...prev.slice(0, 4), // Keep only the last 5 results
     ]);
 
     // Update counter
@@ -66,9 +66,9 @@ export const PerformanceExample: React?.FC = () => {
 
       <div className="results">
         <h3>Results:</h3>
-        {results?.length > 0 ? (
+        {results.length > 0 ? (
           <ul>
-            {results?.map((result, index) => (
+            {results.map((result, index) => (
               <li key={index}>{result}</li>
             ))}
           </ul>

@@ -28,10 +28,10 @@ interface AdaptiveARViewerProps {
 
 // Map model IDs to their file paths
 const MODEL_PATHS: Record<string, string> = {
-  'lipstick-red': '/models/lipstick-red?.glb',
-  'foundation-medium': '/models/foundation-medium?.glb',
-  'eyeshadow-palette': '/models/eyeshadow-palette?.glb',
-  'blush-pink': '/models/blush-pink?.glb',
+  'lipstick-red': '/models/lipstick-red.glb',
+  'foundation-medium': '/models/foundation-medium.glb',
+  'eyeshadow-palette': '/models/eyeshadow-palette.glb',
+  'blush-pink': '/models/blush-pink.glb',
 };
 
 /**
@@ -90,7 +90,7 @@ export function AdaptiveARViewer({
     capabilities,
   } = useAdaptiveQuality({
     preferBattery: prioritizeBattery,
-    batteryThreshold: 0?.2,
+    batteryThreshold: 0.2,
   });
 
   // Determine the model path
@@ -100,7 +100,7 @@ export function AdaptiveARViewer({
   const handleInitialLoad = () => {
     setIsModelLoaded(true);
     setIsInitialLoad(false);
-    onModelLoaded?.();
+    onModelLoaded.();
 
     // If progressive loading is enabled and device can handle it,
     // upgrade to higher quality after initial render
@@ -151,7 +151,7 @@ export function AdaptiveARViewer({
     }
 
     // Call the provided callback if available
-    onPerformanceWarning?.(metrics);
+    onPerformanceWarning.(metrics);
   };
 
   // Determine the final quality level to use
@@ -179,11 +179,11 @@ export function AdaptiveARViewer({
       {/* AR Canvas */}
       <Canvas
         camera={{ position: [0, 0, 4], fov: isMobile ? 60 : 50 }}
-        dpr={[1, capabilities?.pixelRatio > 2 ? 2 : capabilities?.pixelRatio]}
+        dpr={[1, capabilities.pixelRatio > 2 ? 2 : capabilities.pixelRatio]}
       >
         {/* Basic Scene Setup */}
-        <ambientLight intensity={0?.5} />
-        <spotLight position={[10, 10, 10]} angle={0?.15} penumbra={1} />
+        <ambientLight intensity={0.5} />
+        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
         <pointLight position={[-10, -10, -10]} />
 
         {/* Resource Monitor for performance optimization */}
@@ -217,8 +217,8 @@ export function AdaptiveARViewer({
                     : undefined
               }
               autoRotate={true}
-              rotationSpeed={0?.01}
-              scale={1?.5}
+              rotationSpeed={0.01}
+              scale={1.5}
             />
           )}
 
@@ -227,7 +227,7 @@ export function AdaptiveARViewer({
           <OrbitControls
             enablePan={false}
             enableZoom={!isMobile}
-            rotateSpeed={isMobile ? 0?.5 : 1}
+            rotateSpeed={isMobile ? 0.5 : 1}
             minDistance={2}
             maxDistance={10}
           />
@@ -240,7 +240,7 @@ export function AdaptiveARViewer({
           <div>Quality: {finalQuality}</div>
           <div>Device: {isMobile ? 'Mobile' : 'Desktop'}</div>
           <div>Battery: {isLowBattery ? 'Low' : 'Normal'}</div>
-          <div>GPU Tier: {capabilities?.gpuTier}</div>
+          <div>GPU Tier: {capabilities.gpuTier}</div>
         </div>
       )}
     </div>

@@ -13,7 +13,7 @@ import { format, formatDistance, isToday, isYesterday } from 'date-fns';
 export {};
 
 /**
- * Returns a relative time string (e?.g., "5 minutes ago")
+ * Returns a relative time string (e.g., "5 minutes ago")
  * @param date Date to format
  * @param baseDate Base date to calculate relative time from (default: now)
  * @returns Relative time string

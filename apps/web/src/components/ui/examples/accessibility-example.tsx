@@ -20,10 +20,10 @@ export function AccessibilityExample() {
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState('');
 
-  const handleSubmit = (e: React?.FormEvent) => {
-    e?.preventDefault();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
 
-    if (!name?.trim()) {
+    if (!name.trim()) {
       setNameError('Name is required');
       return;
     }
@@ -32,8 +32,8 @@ export function AccessibilityExample() {
     setNameError('');
 
     // Use the global announcer to inform screen readers
-    if (window?.announcer) {
-      window?.announcer.announce(`Form submitted successfully for ${name}`);
+    if (window.announcer) {
+      window.announcer.announce(`Form submitted successfully for ${name}`);
     }
   };
 
@@ -127,7 +127,7 @@ export function AccessibilityExample() {
               <Input
                 id="name"
                 value={name}
-                onChange={(e) => setName(e?.target.value)}
+                onChange={(e) => setName(e.target.value)}
                 aria-describedby={nameError ? 'name-error' : undefined}
                 aria-invalid={Boolean(nameError)}
               />

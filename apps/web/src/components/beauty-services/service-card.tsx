@@ -55,7 +55,7 @@ export function ServiceCard({
       overflow="hidden"
       bg="white"
       shadow="sm"
-      transition="all 0?.2s"
+      transition="all 0.2s"
       _hover={{ shadow: 'md' }}
     >
       {imageUrl && (
@@ -75,7 +75,7 @@ export function ServiceCard({
             )}
           </HStack>
           {description && (
-            <Text color="gray?.600" noOfLines={2}>
+            <Text color="gray.600" noOfLines={2}>
               {description}
             </Text>
           )}
@@ -83,31 +83,31 @@ export function ServiceCard({
 
         <HStack spacing={4}>
           <HStack>
-            <Icon as={FaClock} color="gray?.500" />
-            <Text color="gray?.600">{duration} min</Text>
+            <Icon as={FaClock} color="gray.500" />
+            <Text color="gray.600">{duration} min</Text>
           </HStack>
           <HStack>
-            <Icon as={FaDollarSign} color="gray?.500" />
-            <Text color="gray?.600">${price}</Text>
+            <Icon as={FaDollarSign} color="gray.500" />
+            <Text color="gray.600">${price}</Text>
           </HStack>
         </HStack>
 
-        {practitioners?.length > 0 && (
+        {practitioners.length > 0 && (
           <Box>
             <Text fontSize="sm" fontWeight="medium" mb={2}>
               Available Practitioners
             </Text>
             <HStack spacing={2} overflow="hidden">
-              {practitioners?.slice(0, 3).map((practitioner) => (
+              {practitioners.slice(0, 3).map((practitioner) => (
                 <Box
-                  key={practitioner?.id}
+                  key={practitioner.id}
                   position="relative"
                   cursor="pointer"
-                  _hover={{ opacity: 0?.8 }}
+                  _hover={{ opacity: 0.8 }}
                 >
                   <Image
-                    src={practitioner?.user.image}
-                    alt={practitioner?.user.name}
+                    src={practitioner.user.image}
+                    alt={practitioner.user.name}
                     boxSize="40px"
                     borderRadius="full"
                     objectFit="cover"
@@ -116,7 +116,7 @@ export function ServiceCard({
                     position="absolute"
                     bottom="-2px"
                     right="-2px"
-                    bg="green?.500"
+                    bg="green.500"
                     borderRadius="full"
                     w="12px"
                     h="12px"
@@ -124,9 +124,9 @@ export function ServiceCard({
                   />
                 </Box>
               ))}
-              {practitioners?.length > 3 && (
+              {practitioners.length > 3 && (
                 <Box
-                  bg="gray?.100"
+                  bg="gray.100"
                   borderRadius="full"
                   w="40px"
                   h="40px"
@@ -134,8 +134,8 @@ export function ServiceCard({
                   alignItems="center"
                   justifyContent="center"
                 >
-                  <Text fontSize="xs" color="gray?.600">
-                    +{practitioners?.length - 3}
+                  <Text fontSize="xs" color="gray.600">
+                    +{practitioners.length - 3}
                   </Text>
                 </Box>
               )}
@@ -156,7 +156,7 @@ export function ServiceCard({
               Try Now
             </Button>
           )}
-          <Button colorScheme="blue" size="sm" onClick={() => onBookNow?.(id)} flex={1}>
+          <Button colorScheme="blue" size="sm" onClick={() => onBookNow.(id)} flex={1}>
             Book Now
           </Button>
         </HStack>

@@ -55,8 +55,8 @@ export {};
  * Helper function to make HTTP requests
  */
 async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); makeRequest<TData, TResponse>({
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); makeRequest<TData, TResponse>({
   method,
   path,
   data,
@@ -67,7 +67,7 @@ async function {
 
   try {
     const controller = new AbortController();
-    const timeoutId = config?.timeout ? setTimeout(() => controller?.abort(), config?.timeout) : null;
+    const timeoutId = config.timeout ? setTimeout(() => controller.abort(), config.timeout) : null;
 
     const response = await fetch(url, {
       method,
@@ -77,8 +77,8 @@ async function {
         'Content-Type': 'application/json',
         ...headers,
       },
-      body: data ? JSON?.stringify(data) : undefined,
-      signal: config?.timeout ? controller?.signal : undefined,
+      body: data ? JSON.stringify(data) : undefined,
+      signal: config.timeout ? controller.signal : undefined,
     });
 
     if (timeoutId) {
@@ -90,29 +90,29 @@ async function {
     let errorMessage: string | undefined;
 
     try {
-      if (response?.status !== 204) {
+      if (response.status !== 204) {
         // No content
-        responseData = (await response?.json()) as TResponse;
+        responseData = (await response.json()) as TResponse;
       }
     } catch (error) {
       // If response is not JSON, handle accordingly
       errorMessage = 'Invalid response format';
-      console?.error(
+      console.error(
         'Response parsing error:',
-        error instanceof Error ? error?.message : 'Unknown error',
+        error instanceof Error ? error.message : 'Unknown error',
       );
     }
 
     // Return a standardized response
     return {
       data: responseData,
-      status: response?.status,
-      success: response?.ok,
-      error: !response?.ok ? errorMessage || response?.statusText : undefined,
+      status: response.status,
+      success: response.ok,
+      error: !response.ok ? errorMessage || response.statusText : undefined,
     };
   } catch (error) {
     // Handle network errors, timeouts, and other exceptions
-    const isAbortError = error instanceof Error && error?.name === 'AbortError';
+    const isAbortError = error instanceof Error && error.name === 'AbortError';
 
     return {
       status: 0,
@@ -120,7 +120,7 @@ async function {
       error: isAbortError
         ? 'Request timeout'
         : error instanceof Error
-          ? error?.message
+          ? error.message
           : DEFAULT_ERROR_MESSAGE,
     };
   }

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { Button } from '../ui/Button';
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
-import { Menu, Home, Activity, Calendar, Users, FileText, User, X } from 'lucide-react';
+import { Menu, Home, Activity, Calendar, Users, FileText, User, X, Rss } from 'lucide-react';
 
 interface NavigationItem {
   label: string;
@@ -14,7 +13,8 @@ interface NavigationItem {
 
 const navigationItems: NavigationItem[] = [
   { label: 'Home', href: '/', icon: <Home className="h-4 w-4" /> },
-  { label: 'Wellness', href: '/wellness', icon: <Activity className="h-4 w-4" /> },
+  { label: 'Balanced Experience', href: '/services', icon: <Activity className="h-4 w-4" /> },
+  { label: 'Social', href: '/social', icon: <Rss className="h-4 w-4" /> },
   { label: 'Bookings', href: '/bookings', icon: <Calendar className="h-4 w-4" /> },
   { label: 'Community', href: '/community', icon: <Users className="h-4 w-4" /> },
   { label: 'Events', href: '/events', icon: <Calendar className="h-4 w-4" /> },
@@ -47,7 +47,7 @@ export const MainNavigation: React.FC = () => {
       
       // Android detection for cutouts
       const androidWithCutout = /Android/.test(navigator.userAgent) && 
-        (window as any).screen?.orientation && 
+        (window as any).screen.orientation && 
         window.innerHeight > window.innerWidth;
       
       setHasNotch(iphoneWithNotch || androidWithCutout);
@@ -100,14 +100,13 @@ export const MainNavigation: React.FC = () => {
           <div className="flex items-center md:hidden">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="mobile"
+                <button
+                  type="button"
                   aria-label="Open navigation menu"
                   className="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
                 >
                   <Menu className="h-6 w-6" />
-                </Button>
+                </button>
               </SheetTrigger>
               <SheetContent side="right" className={`p-0 w-[75vw] ${hasNotch ? 'pt-safe-top pb-safe-bottom' : ''}`}>
                 <div className="flex flex-col h-full">
@@ -116,14 +115,14 @@ export const MainNavigation: React.FC = () => {
                       <div className="flex items-center">
                         <span className="text-xl font-semibold text-blue-600">VibeWell</span>
                       </div>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
+                      <button
+                        type="button"
                         onClick={() => setIsOpen(false)}
                         aria-label="Close menu"
+                        className="p-1 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
                       >
                         <X className="h-5 w-5" />
-                      </Button>
+                      </button>
                     </div>
                   </div>
                   <div className="flex-1 px-4 py-6 overflow-y-auto">

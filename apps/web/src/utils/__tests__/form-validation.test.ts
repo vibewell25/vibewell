@@ -28,7 +28,7 @@ describe('Form Validation Utilities', () => {
     // Email validation tests
     describe('Email validation', () => {
       it('validates a valid email', () => {
-        expect(() => validateField('email', 'test@example?.com')).not?.toThrow();
+        expect(() => validateField('email', 'test@example.com')).not.toThrow();
       });
 
       it('throws a ValidationError for an invalid email', () => {
@@ -40,7 +40,7 @@ describe('Form Validation Utilities', () => {
     // Password validation tests
     describe('Password validation', () => {
       it('validates a valid password', () => {
-        expect(() => validateField('password', 'ValidP@ss123')).not?.toThrow();
+        expect(() => validateField('password', 'ValidP@ss123')).not.toThrow();
       });
 
       it('throws a ValidationError for too short password', () => {
@@ -67,7 +67,7 @@ describe('Form Validation Utilities', () => {
     // Age validation tests
     describe('Age validation', () => {
       it('validates a valid age', () => {
-        expect(() => validateField('age', '25')).not?.toThrow();
+        expect(() => validateField('age', '25')).not.toThrow();
       });
 
       it('throws a ValidationError for age below minimum', () => {
@@ -87,11 +87,11 @@ describe('Form Validation Utilities', () => {
     // Phone validation tests
     describe('Phone validation', () => {
       it('validates a valid US phone number', () => {
-        expect(() => validateField('phone', '(123) 456-7890')).not?.toThrow();
+        expect(() => validateField('phone', '(123) 456-7890')).not.toThrow();
       });
 
       it('validates a valid US phone with country code', () => {
-        expect(() => validateField('phone', '+1 (123) 456-7890')).not?.toThrow();
+        expect(() => validateField('phone', '+1 (123) 456-7890')).not.toThrow();
       });
 
       it('throws a ValidationError for invalid phone format', () => {
@@ -100,27 +100,27 @@ describe('Form Validation Utilities', () => {
       });
 
       it('does not throw for empty phone (optional)', () => {
-        expect(() => validateField('phone', '')).not?.toThrow();
+        expect(() => validateField('phone', '')).not.toThrow();
       });
     });
 
     // Preferences validation tests
     describe('Preferences validation', () => {
       it('validates a valid notifications preference', () => {
-        expect(() => validateField('preferences?.notifications', true)).not?.toThrow();
+        expect(() => validateField('preferences.notifications', true)).not.toThrow();
       });
 
 
       it('throws a ValidationError for non-boolean notifications preference', () => {
-        expect(() => validateField('preferences?.notifications', 'yes')).toThrow(ValidationError);
+        expect(() => validateField('preferences.notifications', 'yes')).toThrow(ValidationError);
       });
 
       it('validates a valid theme preference', () => {
-        expect(() => validateField('preferences?.theme', 'dark')).not?.toThrow();
+        expect(() => validateField('preferences.theme', 'dark')).not.toThrow();
       });
 
       it('throws a ValidationError for invalid theme', () => {
-        expect(() => validateField('preferences?.theme', 'blue')).toThrow(ValidationError);
+        expect(() => validateField('preferences.theme', 'blue')).toThrow(ValidationError);
       });
     });
 
@@ -134,7 +134,7 @@ describe('Form Validation Utilities', () => {
     // Valid form test
     it('validates a valid form', () => {
       const validForm = {
-        email: 'test@example?.com',
+        email: 'test@example.com',
         password: 'ValidP@ss123',
         age: '30',
         phone: '(123) 456-7890',
@@ -145,21 +145,21 @@ describe('Form Validation Utilities', () => {
       };
 
       const result = validateForm(validForm);
-      expect(result?.isValid).toBe(true);
-      expect(result?.errors).toEqual({});
+      expect(result.isValid).toBe(true);
+      expect(result.errors).toEqual({});
     });
 
     // Form with optional fields test
     it('validates a form with missing optional fields', () => {
       const formWithoutOptional = {
-        email: 'test@example?.com',
+        email: 'test@example.com',
         password: 'ValidP@ss123',
         age: '30',
       };
 
       const result = validateForm(formWithoutOptional);
-      expect(result?.isValid).toBe(true);
-      expect(result?.errors).toEqual({});
+      expect(result.isValid).toBe(true);
+      expect(result.errors).toEqual({});
     });
 
     // Invalid form test
@@ -173,32 +173,32 @@ describe('Form Validation Utilities', () => {
       };
 
       const result = validateForm(invalidForm);
-      expect(result?.isValid).toBe(false);
-      expect(Object?.keys(result?.errors).length).toBe(4);
-      expect(result?.errors.email).toBeDefined();
-      expect(result?.errors.password).toBeDefined();
-      expect(result?.errors.age).toBeDefined();
-      expect(result?.errors.phone).toBeDefined();
+      expect(result.isValid).toBe(false);
+      expect(Object.keys(result.errors).length).toBe(4);
+      expect(result.errors.email).toBeDefined();
+      expect(result.errors.password).toBeDefined();
+      expect(result.errors.age).toBeDefined();
+      expect(result.errors.phone).toBeDefined();
     });
 
     // Password confirmation test
     it('validates password confirmation matches', () => {
       const formWithMismatchedPasswords = {
-        email: 'test@example?.com',
+        email: 'test@example.com',
         password: 'ValidP@ss123',
         confirmPassword: 'DifferentP@ss123',
         age: '30',
       };
 
       const result = validateForm(formWithMismatchedPasswords);
-      expect(result?.isValid).toBe(false);
-      expect(result?.errors.confirmPassword).toBe('Passwords do not match');
+      expect(result.isValid).toBe(false);
+      expect(result.errors.confirmPassword).toBe('Passwords do not match');
     });
 
     // Preferences validation test
     it('validates nested preferences', () => {
       const formWithInvalidPreferences = {
-        email: 'test@example?.com',
+        email: 'test@example.com',
         password: 'ValidP@ss123',
         age: '30',
         preferences: {
@@ -208,9 +208,9 @@ describe('Form Validation Utilities', () => {
       };
 
       const result = validateForm(formWithInvalidPreferences);
-      expect(result?.isValid).toBe(false);
-      expect(result?.errors['preferences?.notifications']).toBeDefined();
-      expect(result?.errors['preferences?.theme']).toBeDefined();
+      expect(result.isValid).toBe(false);
+      expect(result.errors['preferences.notifications']).toBeDefined();
+      expect(result.errors['preferences.theme']).toBeDefined();
     });
 
     // Required fields test
@@ -218,10 +218,10 @@ describe('Form Validation Utilities', () => {
       const emptyForm = {};
 
       const result = validateForm(emptyForm);
-      expect(result?.isValid).toBe(false);
-      expect(result?.errors.email).toBe('This field is required');
-      expect(result?.errors.password).toBe('This field is required');
-      expect(result?.errors.age).toBe('This field is required');
+      expect(result.isValid).toBe(false);
+      expect(result.errors.email).toBe('This field is required');
+      expect(result.errors.password).toBe('This field is required');
+      expect(result.errors.age).toBe('This field is required');
     });
   });
 
@@ -232,8 +232,8 @@ describe('Form Validation Utilities', () => {
       const error = new ValidationError(errorMessage);
 
       expect(error).toBeInstanceOf(Error);
-      expect(error?.name).toBe('ValidationError');
-      expect(error?.message).toBe(errorMessage);
+      expect(error.name).toBe('ValidationError');
+      expect(error.message).toBe(errorMessage);
     });
 
     it('can be caught as an instance of ValidationError', () => {
@@ -263,8 +263,8 @@ describe('Form Validation Utilities', () => {
         email: 'Invalid email format',
       };
 
-      expect(errors?.name).toBe('Name is required');
-      expect(errors?.email).toBe('Invalid email format');
+      expect(errors.name).toBe('Name is required');
+      expect(errors.email).toBe('Invalid email format');
     });
   });
 });

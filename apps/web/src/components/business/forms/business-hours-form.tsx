@@ -36,7 +36,7 @@ export function BusinessHoursForm({ form }: BusinessHoursFormProps) {
       sunday: { isOpen: false },
     };
 
-    form?.setValue('businessHours', standardHours, { shouldValidate: true });
+    form.setValue('businessHours', standardHours, { shouldValidate: true });
   };
 
   // Extended hours (10am-8pm, Mon-Sat)
@@ -51,7 +51,7 @@ export function BusinessHoursForm({ form }: BusinessHoursFormProps) {
       sunday: { isOpen: false },
     };
 
-    form?.setValue('businessHours', extendedHours, { shouldValidate: true });
+    form.setValue('businessHours', extendedHours, { shouldValidate: true });
   };
 
   // Weekend hours (11am-7pm, Sat-Sun only)
@@ -66,12 +66,12 @@ export function BusinessHoursForm({ form }: BusinessHoursFormProps) {
       sunday: { isOpen: true, openTime: '11:00', closeTime: '19:00' },
     };
 
-    form?.setValue('businessHours', weekendHours, { shouldValidate: true });
+    form.setValue('businessHours', weekendHours, { shouldValidate: true });
   };
 
   // Toggle isOpen status for a day
   const toggleDay = (day: string, isOpen: boolean) => {
-    const currentHours = form?.watch('businessHours');
+    const currentHours = form.watch('businessHours');
 
     // Set default open and close times if toggling to open and they're not set
     let updatedDay = { isOpen };
@@ -83,7 +83,7 @@ export function BusinessHoursForm({ form }: BusinessHoursFormProps) {
       };
     }
 
-    form?.setValue(`businessHours.${day}`, updatedDay, { shouldValidate: true });
+    form.setValue(`businessHours.${day}`, updatedDay, { shouldValidate: true });
   };
 
   return (
@@ -112,42 +112,42 @@ export function BusinessHoursForm({ form }: BusinessHoursFormProps) {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {days?.map((day) => {
-              const dayData = form?.watch(`businessHours.${day?.id}`);
+            {days.map((day) => {
+              const dayData = form.watch(`businessHours.${day.id}`);
               return (
                 <div
-                  key={day?.id}
+                  key={day.id}
                   className="grid grid-cols-6 items-center gap-4 border-b py-2 last:border-0"
                 >
                   <div className="col-span-2">
                     <div className="flex items-center space-x-2">
                       <Switch
-                        id={`is-open-${day?.id}`}
-                        checked={dayData?.isOpen}
-                        onCheckedChange={(checked) => toggleDay(day?.id, checked)}
+                        id={`is-open-${day.id}`}
+                        checked={dayData.isOpen}
+                        onCheckedChange={(checked) => toggleDay(day.id, checked)}
                       />
-                      <Label htmlFor={`is-open-${day?.id}`} className="font-medium">
-                        {day?.label}
+                      <Label htmlFor={`is-open-${day.id}`} className="font-medium">
+                        {day.label}
                       </Label>
                     </div>
                   </div>
 
-                  {dayData?.isOpen ? (
+                  {dayData.isOpen ? (
                     <>
                       <div className="col-span-2">
                         <div className="space-y-1">
                           <Label
-                            htmlFor={`open-time-${day?.id}`}
+                            htmlFor={`open-time-${day.id}`}
                             className="text-xs text-muted-foreground"
                           >
                             Open
                           </Label>
                           <Input
-                            id={`open-time-${day?.id}`}
+                            id={`open-time-${day.id}`}
                             type="time"
-                            value={dayData?.openTime || ''}
+                            value={dayData.openTime || ''}
                             onChange={(e) =>
-                              form?.setValue(`businessHours.${day?.id}.openTime`, e?.target.value, {
+                              form.setValue(`businessHours.${day.id}.openTime`, e.target.value, {
                                 shouldValidate: true,
                               })
                             }
@@ -158,17 +158,17 @@ export function BusinessHoursForm({ form }: BusinessHoursFormProps) {
                       <div className="col-span-2">
                         <div className="space-y-1">
                           <Label
-                            htmlFor={`close-time-${day?.id}`}
+                            htmlFor={`close-time-${day.id}`}
                             className="text-xs text-muted-foreground"
                           >
                             Close
                           </Label>
                           <Input
-                            id={`close-time-${day?.id}`}
+                            id={`close-time-${day.id}`}
                             type="time"
-                            value={dayData?.closeTime || ''}
+                            value={dayData.closeTime || ''}
                             onChange={(e) =>
-                              form?.setValue(`businessHours.${day?.id}.closeTime`, e?.target.value, {
+                              form.setValue(`businessHours.${day.id}.closeTime`, e.target.value, {
                                 shouldValidate: true,
                               })
                             }

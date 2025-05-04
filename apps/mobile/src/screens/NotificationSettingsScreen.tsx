@@ -27,7 +27,7 @@ interface NotificationPreferences {
   soundEnabled: boolean;
 }
 
-const NotificationSettingsScreen: React?.FC = () => {
+const NotificationSettingsScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const navigation = useNavigation();
   const [preferences, setPreferences] = useState<NotificationPreferences>({
@@ -48,45 +48,45 @@ const NotificationSettingsScreen: React?.FC = () => {
   }, []);
 
   const loadPreferences = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
-      const saved = await AsyncStorage?.getItem('@vibewell/notification_preferences');
+      const saved = await AsyncStorage.getItem('@vibewell/notification_preferences');
       if (saved) {
-        setPreferences(JSON?.parse(saved));
+        setPreferences(JSON.parse(saved));
       }
     } catch (error) {
-      console?.error('Error loading notification preferences:', error);
-      Alert?.alert('Error', 'Failed to load notification preferences');
+      console.error('Error loading notification preferences:', error);
+      Alert.alert('Error', 'Failed to load notification preferences');
     } finally {
       setLoading(false);
     }
   };
 
   const savePreferences = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');newPreferences: NotificationPreferences) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');newPreferences: NotificationPreferences) => {
     try {
-      await AsyncStorage?.setItem(
+      await AsyncStorage.setItem(
         '@vibewell/notification_preferences',
-        JSON?.stringify(newPreferences)
+        JSON.stringify(newPreferences)
       );
       setPreferences(newPreferences);
     } catch (error) {
-      console?.error('Error saving notification preferences:', error);
-      Alert?.alert('Error', 'Failed to save notification preferences');
+      console.error('Error saving notification preferences:', error);
+      Alert.alert('Error', 'Failed to save notification preferences');
     }
   };
 
   const checkNotificationPermissions = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-    if (Platform?.OS === 'ios') {
-      const { status: existingStatus } = await Notifications?.getPermissionsAsync();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    if (Platform.OS === 'ios') {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
       
       if (existingStatus !== 'granted') {
-        const { status } = await Notifications?.requestPermissionsAsync();
+        const { status } = await Notifications.requestPermissionsAsync();
         finalStatus = status;
       }
       
@@ -106,13 +106,13 @@ const NotificationSettingsScreen: React?.FC = () => {
     };
 
     // If push notifications are disabled, disable all push-related preferences
-    if (key === 'pushNotifications' && !newPreferences?.pushNotifications) {
-      newPreferences?.appointments = false;
-      newPreferences?.reminders = false;
-      newPreferences?.promotions = false;
-      newPreferences?.news = false;
-      newPreferences?.messages = false;
-      newPreferences?.soundEnabled = false;
+    if (key === 'pushNotifications' && !newPreferences.pushNotifications) {
+      newPreferences.appointments = false;
+      newPreferences.reminders = false;
+      newPreferences.promotions = false;
+      newPreferences.news = false;
+      newPreferences.messages = false;
+      newPreferences.soundEnabled = false;
     }
 
     savePreferences(newPreferences);
@@ -125,22 +125,22 @@ const NotificationSettingsScreen: React?.FC = () => {
     disabled?: boolean
   ) => (
     <View style={[
-      styles?.settingItem,
+      styles.settingItem,
       { borderBottomColor: isDarkMode ? '#333333' : '#E0E0E0' }
     ]}>
-      <View style={styles?.settingContent}>
+      <View style={styles.settingContent}>
         <Text style={[
-          styles?.settingLabel,
+          styles.settingLabel,
           { color: isDarkMode ? '#FFFFFF' : '#000000' },
-          disabled && styles?.disabledText
+          disabled && styles.disabledText
         ]}>
           {label}
         </Text>
         {description && (
           <Text style={[
-            styles?.settingDescription,
+            styles.settingDescription,
             { color: isDarkMode ? '#BBBBBB' : '#666666' },
-            disabled && styles?.disabledText
+            disabled && styles.disabledText
           ]}>
             {description}
           </Text>
@@ -158,13 +158,13 @@ const NotificationSettingsScreen: React?.FC = () => {
 
   return (
     <SafeAreaView style={[
-      styles?.container,
+      styles.container,
       { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }
     ]}>
-      <View style={styles?.header}>
+      <View style={styles.header}>
         <TouchableOpacity
-          onPress={() => navigation?.goBack()}
-          style={styles?.backButton}
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
         >
           <Feather
             name="arrow-left"
@@ -173,17 +173,17 @@ const NotificationSettingsScreen: React?.FC = () => {
           />
         </TouchableOpacity>
         <Text style={[
-          styles?.title,
+          styles.title,
           { color: isDarkMode ? '#FFFFFF' : '#000000' }
         ]}>
           Notification Settings
         </Text>
       </View>
 
-      <ScrollView style={styles?.content}>
-        <View style={styles?.section}>
+      <ScrollView style={styles.content}>
+        <View style={styles.section}>
           <Text style={[
-            styles?.sectionTitle,
+            styles.sectionTitle,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             Notification Channels
@@ -200,9 +200,9 @@ const NotificationSettingsScreen: React?.FC = () => {
           )}
         </View>
 
-        <View style={styles?.section}>
+        <View style={styles.section}>
           <Text style={[
-            styles?.sectionTitle,
+            styles.sectionTitle,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             Notification Types
@@ -211,37 +211,37 @@ const NotificationSettingsScreen: React?.FC = () => {
             'appointments',
             'Appointments',
             'Updates about your upcoming appointments',
-            !preferences?.pushNotifications
+            !preferences.pushNotifications
           )}
           {renderSettingItem(
             'reminders',
             'Reminders',
             'Reminders for scheduled services',
-            !preferences?.pushNotifications
+            !preferences.pushNotifications
           )}
           {renderSettingItem(
             'messages',
             'Messages',
             'New messages from service providers',
-            !preferences?.pushNotifications
+            !preferences.pushNotifications
           )}
           {renderSettingItem(
             'promotions',
             'Promotions',
             'Special offers and discounts',
-            !preferences?.pushNotifications
+            !preferences.pushNotifications
           )}
           {renderSettingItem(
             'news',
             'News & Updates',
             'Latest news and app updates',
-            !preferences?.pushNotifications
+            !preferences.pushNotifications
           )}
         </View>
 
-        <View style={styles?.section}>
+        <View style={styles.section}>
           <Text style={[
-            styles?.sectionTitle,
+            styles.sectionTitle,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             Sound & Vibration
@@ -250,7 +250,7 @@ const NotificationSettingsScreen: React?.FC = () => {
             'soundEnabled',
             'Sound',
             'Play sound for notifications',
-            !preferences?.pushNotifications
+            !preferences.pushNotifications
           )}
         </View>
       </ScrollView>
@@ -258,7 +258,7 @@ const NotificationSettingsScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -308,7 +308,7 @@ const styles = StyleSheet?.create({
     fontSize: 14,
   },
   disabledText: {
-    opacity: 0?.5,
+    opacity: 0.5,
   },
 });
 

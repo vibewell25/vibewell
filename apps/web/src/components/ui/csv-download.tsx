@@ -25,8 +25,8 @@ export function CSVDownload({
         row
           .map((cell) => {
             // Escape cells with commas, quotes, or newlines
-            if (cell?.includes(',') || cell?.includes('"') || cell?.includes('\n')) {
-              return `"${cell?.replace(/"/g, '""')}"`;
+            if (cell.includes(',') || cell.includes('"') || cell.includes('\n')) {
+              return `"${cell.replace(/"/g, '""')}"`;
             }
             return cell;
           })
@@ -38,19 +38,19 @@ export function CSVDownload({
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
 
     // Create a URL for the blob
-    const url = URL?.createObjectURL(blob);
+    const url = URL.createObjectURL(blob);
 
     // Create a temporary link and click it to download
-    const link = document?.createElement('a');
-    link?.href = url;
-    link?.setAttribute('download', filename);
-    link?.style.display = 'none';
-    document?.body.appendChild(link);
-    link?.click();
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', filename);
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
 
     // Clean up
-    document?.body.removeChild(link);
-    URL?.revokeObjectURL(url);
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -61,7 +61,7 @@ export function CSVDownload({
       disabled={disabled}
       className="flex items-center gap-2"
     >
-      <Icons?.download className="h-4 w-4" />
+      <Icons.download className="h-4 w-4" />
       {buttonText}
     </Button>
   );

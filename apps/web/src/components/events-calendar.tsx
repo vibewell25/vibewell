@@ -33,8 +33,8 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
     const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
     // Map events to their dates for quick lookup
     const eventsByDate: { [dateString: string]: Event[] } = {};
-    events?.forEach((event) => {
-      const eventDate = parseISO(event?.startDate);
+    events.forEach((event) => {
+      const eventDate = parseISO(event.startDate);
       const dateKey = format(eventDate, 'yyyy-MM-dd');
       if (!eventsByDate[dateKey]) {
         eventsByDate[dateKey] = [];
@@ -66,7 +66,7 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
   // Check if a date has events
   const hasEvents = (date: Date): boolean => {
     const dateKey = format(date, 'yyyy-MM-dd');
-    return !!displayEvents[dateKey]?.length;
+    return !!displayEvents[dateKey].length;
   };
   // Check if date is today
   const isToday = (date: Date): boolean => {
@@ -75,7 +75,7 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
   // Check if date is in the past
   const isPastDate = (date: Date): boolean => {
     const today = new Date();
-    today?.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
     return date < today;
   };
   // Get selected date events
@@ -92,14 +92,14 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
               className="rounded-md p-1 hover:bg-gray-100"
               aria-label="Previous month"
             >
-              <Icons?.ChevronLeftIcon className="h-5 w-5" />
+              <Icons.ChevronLeftIcon className="h-5 w-5" />
             </button>
             <button
               onClick={goToNextMonth}
               className="rounded-md p-1 hover:bg-gray-100"
               aria-label="Next month"
             >
-              <Icons?.ChevronRightIcon className="h-5 w-5" />
+              <Icons.ChevronRightIcon className="h-5 w-5" />
             </button>
           </div>
         </div>
@@ -116,7 +116,7 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
         </div>
         {/* Calendar Days */}
         <div className="grid grid-cols-7 border-b">
-          {calendarDays?.map((day, i) => {
+          {calendarDays.map((day, i) => {
             const dateHasEvents = hasEvents(day);
             const isSelected = selectedDate && isSameDay(day, selectedDate);
             const isTodayDate = isToday(day);
@@ -132,7 +132,7 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
                 >
                   <span>{format(day, 'd')}</span>
                   {dateHasEvents && (
-                    <span className="rounded-full bg-green-100 px-1?.5 text-xs font-medium text-green-800">
+                    <span className="rounded-full bg-green-100 px-1.5 text-xs font-medium text-green-800">
                       {getEventsForDate(day).length}
                     </span>
                   )}
@@ -143,11 +143,11 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
                     .slice(0, 2)
                     .map((event, idx) => (
                       <div
-                        key={event?.id}
-                        className={`truncate rounded px-1?.5 py-0?.5 text-xs ${isPast ? 'bg-gray-100 text-gray-500' : 'bg-green-100 text-green-800'} `}
-                        title={event?.title}
+                        key={event.id}
+                        className={`truncate rounded px-1.5 py-0.5 text-xs ${isPast ? 'bg-gray-100 text-gray-500' : 'bg-green-100 text-green-800'} `}
+                        title={event.title}
                       >
-                        {event?.title}
+                        {event.title}
                       </div>
                     ))}
                 {getEventsForDate(day).length > 2 && (
@@ -164,33 +164,33 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
       {selectedDate && (
         <div className="border-t bg-white p-4">
           <h3 className="mb-3 font-medium">Events on {format(selectedDate, 'MMMM d, yyyy')}</h3>
-          {selectedDateEvents?.length === 0 ? (
+          {selectedDateEvents.length === 0 ? (
             <p className="text-sm text-gray-500">No events scheduled for this date.</p>
           ) : (
             <div className="space-y-3">
-              {selectedDateEvents?.map((event) => {
-                const startDate = parseISO(event?.startDate);
-                const endDate = parseISO(event?.endDate);
+              {selectedDateEvents.map((event) => {
+                const startDate = parseISO(event.startDate);
+                const endDate = parseISO(event.endDate);
                 const durationDays = differenceInCalendarDays(endDate, startDate);
                 const isFuture = isAfter(startDate, new Date());
                 return (
                   <Link
-                    href={`/events/${event?.id}`}
-                    key={event?.id}
+                    href={`/events/${event.id}`}
+                    key={event.id}
                     className="block rounded-md border p-3 transition-colors hover:bg-gray-50"
                   >
                     <div className="flex items-start justify-between">
-                      <h4 className="font-medium">{event?.title}</h4>
+                      <h4 className="font-medium">{event.title}</h4>
                       <Badge
                         className={
                           isFuture ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-700'
                         }
                       >
-                        {event?.category}
+                        {event.category}
                       </Badge>
                     </div>
                     <p className="mt-1 line-clamp-2 text-sm text-gray-600">
-                      {event?.shortDescription || event?.description.substring(0, 120)}
+                      {event.shortDescription || event.description.substring(0, 120)}
                     </p>
                     <div className="mt-2 flex justify-between text-xs text-gray-500">
                       <span>
@@ -198,8 +198,8 @@ export function EventsCalendar({ events, onDateSelect, className = '' }: EventsC
                         {durationDays > 0 && ` (${durationDays + 1} days)`}
                       </span>
                       <span>
-                        {event?.participantsCount}{' '}
-                        {event?.participantsCount === 1 ? 'participant' : 'participants'}
+                        {event.participantsCount}{' '}
+                        {event.participantsCount === 1 ? 'participant' : 'participants'}
                       </span>
                     </div>
                   </Link>

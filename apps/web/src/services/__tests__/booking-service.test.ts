@@ -30,51 +30,51 @@ import { PrismaClient } from '@prisma/client';
 
 // Mock dependencies
 
-vi?.mock('@prisma/client', () => {
+vi.mock('@prisma/client', () => {
   const mockPrisma = {
     serviceBooking: {
-      create: vi?.fn(),
-      findUnique: vi?.fn(),
-      findMany: vi?.fn(),
-      update: vi?.fn(),
-      delete: vi?.fn(),
+      create: vi.fn(),
+      findUnique: vi.fn(),
+      findMany: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
     },
-    $transaction: vi?.fn((callback) => callback(mockPrisma)),
+    $transaction: vi.fn((callback) => callback(mockPrisma)),
   };
   return {
-    PrismaClient: vi?.fn(() => mockPrisma),
+    PrismaClient: vi.fn(() => mockPrisma),
   };
 });
 
 
-vi?.mock('../notification-service', () => ({
-  NotificationService: vi?.fn().mockImplementation(() => ({
-    sendBookingConfirmation: vi?.fn(),
-    sendBookingCancellation: vi?.fn(),
-    sendBookingUpdate: vi?.fn(),
+vi.mock('../notification-service', () => ({
+  NotificationService: vi.fn().mockImplementation(() => ({
+    sendBookingConfirmation: vi.fn(),
+    sendBookingCancellation: vi.fn(),
+    sendBookingUpdate: vi.fn(),
   })),
 }));
 
 // Mock functions for BookingService
-const mockCreateBooking = vi?.fn();
-const mockGetBooking = vi?.fn();
-const mockUpdateBooking = vi?.fn();
-const mockGetUserBookings = vi?.fn();
-const mockGetPractitionerBookings = vi?.fn();
-const mockOptimizeForMobile = vi?.fn();
-const mockCompleteBooking = vi?.fn();
-const mockDeleteBooking = vi?.fn();
+const mockCreateBooking = vi.fn();
+const mockGetBooking = vi.fn();
+const mockUpdateBooking = vi.fn();
+const mockGetUserBookings = vi.fn();
+const mockGetPractitionerBookings = vi.fn();
+const mockOptimizeForMobile = vi.fn();
+const mockCompleteBooking = vi.fn();
+const mockDeleteBooking = vi.fn();
 
 
-vi?.mock('../booking-service', () => ({
-  BookingService: vi?.fn().mockImplementation(() => ({
+vi.mock('../booking-service', () => ({
+  BookingService: vi.fn().mockImplementation(() => ({
     createBooking: mockCreateBooking,
     getBooking: mockGetBooking,
     updateBooking: mockUpdateBooking,
     getUserBookings: mockGetUserBookings,
     getPractitionerBookings: mockGetPractitionerBookings,
-    addToWaitlist: vi?.fn(),
-    processWaitlist: vi?.fn(),
+    addToWaitlist: vi.fn(),
+    processWaitlist: vi.fn(),
     optimizeForMobile: mockOptimizeForMobile,
     completeBooking: mockCompleteBooking,
     deleteBooking: mockDeleteBooking,
@@ -85,8 +85,8 @@ vi?.mock('../booking-service', () => ({
     updateBooking: mockUpdateBooking,
     getUserBookings: mockGetUserBookings,
     getPractitionerBookings: mockGetPractitionerBookings,
-    addToWaitlist: vi?.fn(),
-    processWaitlist: vi?.fn(),
+    addToWaitlist: vi.fn(),
+    processWaitlist: vi.fn(),
     optimizeForMobile: mockOptimizeForMobile,
     completeBooking: mockCompleteBooking,
     deleteBooking: mockDeleteBooking,
@@ -102,11 +102,11 @@ describe('BookingService', () => {
     bookingService = new BookingService();
     notificationService = new NotificationService();
     prisma = new PrismaClient();
-    vi?.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   afterEach(() => {
-    vi?.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   describe('createBooking', () => {
@@ -142,10 +142,10 @@ describe('BookingService', () => {
         provider: { id: 'provider-456', name: 'Test Provider' },
       };
 
-      mockCreateBooking?.mockResolvedValue(mockCreatedBooking);
+      mockCreateBooking.mockResolvedValue(mockCreatedBooking);
 
       // Act
-      const result = await bookingService?.createBooking(mockBookingData);
+      const result = await bookingService.createBooking(mockBookingData);
 
       // Assert
       expect(result).toEqual(mockCreatedBooking);
@@ -166,10 +166,10 @@ describe('BookingService', () => {
       };
 
       const errorMessage = 'This time slot is not available';
-      mockCreateBooking?.mockRejectedValue(new Error(errorMessage));
+      mockCreateBooking.mockRejectedValue(new Error(errorMessage));
 
       // Act & Assert
-      await expect(bookingService?.createBooking(mockBookingData)).rejects?.toThrow(errorMessage);
+      await expect(bookingService.createBooking(mockBookingData)).rejects.toThrow(errorMessage);
       expect(mockCreateBooking).toHaveBeenCalledWith(mockBookingData);
     });
 
@@ -188,10 +188,10 @@ describe('BookingService', () => {
       };
 
       const errorMessage = 'User not found';
-      mockCreateBooking?.mockRejectedValue(new Error(errorMessage));
+      mockCreateBooking.mockRejectedValue(new Error(errorMessage));
 
       // Act & Assert
-      await expect(bookingService?.createBooking(mockBookingData)).rejects?.toThrow(errorMessage);
+      await expect(bookingService.createBooking(mockBookingData)).rejects.toThrow(errorMessage);
       expect(mockCreateBooking).toHaveBeenCalledWith(mockBookingData);
     });
 
@@ -210,10 +210,10 @@ describe('BookingService', () => {
       };
 
       const errorMessage = 'Provider not found';
-      mockCreateBooking?.mockRejectedValue(new Error(errorMessage));
+      mockCreateBooking.mockRejectedValue(new Error(errorMessage));
 
       // Act & Assert
-      await expect(bookingService?.createBooking(mockBookingData)).rejects?.toThrow(errorMessage);
+      await expect(bookingService.createBooking(mockBookingData)).rejects.toThrow(errorMessage);
       expect(mockCreateBooking).toHaveBeenCalledWith(mockBookingData);
     });
 
@@ -232,10 +232,10 @@ describe('BookingService', () => {
       };
 
       const errorMessage = 'Service not found';
-      mockCreateBooking?.mockRejectedValue(new Error(errorMessage));
+      mockCreateBooking.mockRejectedValue(new Error(errorMessage));
 
       // Act & Assert
-      await expect(bookingService?.createBooking(mockBookingData)).rejects?.toThrow(errorMessage);
+      await expect(bookingService.createBooking(mockBookingData)).rejects.toThrow(errorMessage);
       expect(mockCreateBooking).toHaveBeenCalledWith(mockBookingData);
     });
   });
@@ -244,7 +244,7 @@ describe('BookingService', () => {
     it('should update a booking successfully', async () => {
       // Arrange
 
-      const bookingId = process?.env['BOOKINGID'];
+      const bookingId = process.env['BOOKINGID'];
       const updateData = {
         id: bookingId,
         status: 'cancelled',
@@ -269,10 +269,10 @@ describe('BookingService', () => {
         provider: { id: 'provider-456', name: 'Test Provider' },
       };
 
-      mockUpdateBooking?.mockResolvedValue(mockUpdatedBooking);
+      mockUpdateBooking.mockResolvedValue(mockUpdatedBooking);
 
       // Act
-      const result = await bookingService?.updateBooking(updateData);
+      const result = await bookingService.updateBooking(updateData);
 
       // Assert
       expect(result).toEqual(mockUpdatedBooking);
@@ -283,7 +283,7 @@ describe('BookingService', () => {
     it('should handle non-existent booking', async () => {
       // Arrange
 
-      const bookingId = process?.env['BOOKINGID'];
+      const bookingId = process.env['BOOKINGID'];
       const updateData = {
         id: bookingId,
         status: 'cancelled',
@@ -291,17 +291,17 @@ describe('BookingService', () => {
       };
 
       const errorMessage = 'Booking not found';
-      mockUpdateBooking?.mockRejectedValue(new Error(errorMessage));
+      mockUpdateBooking.mockRejectedValue(new Error(errorMessage));
 
       // Act & Assert
-      await expect(bookingService?.updateBooking(updateData)).rejects?.toThrow(errorMessage);
+      await expect(bookingService.updateBooking(updateData)).rejects.toThrow(errorMessage);
       expect(mockUpdateBooking).toHaveBeenCalledWith(updateData);
     });
 
     it('should handle updating a booking that is already cancelled', async () => {
       // Arrange
 
-      const bookingId = process?.env['BOOKINGID'];
+      const bookingId = process.env['BOOKINGID'];
       const updateData = {
         id: bookingId,
         status: 'confirmed',
@@ -309,10 +309,10 @@ describe('BookingService', () => {
       };
 
       const errorMessage = 'Cannot update a cancelled booking';
-      mockUpdateBooking?.mockRejectedValue(new Error(errorMessage));
+      mockUpdateBooking.mockRejectedValue(new Error(errorMessage));
 
       // Act & Assert
-      await expect(bookingService?.updateBooking(updateData)).rejects?.toThrow(errorMessage);
+      await expect(bookingService.updateBooking(updateData)).rejects.toThrow(errorMessage);
       expect(mockUpdateBooking).toHaveBeenCalledWith(updateData);
     });
   });
@@ -321,7 +321,7 @@ describe('BookingService', () => {
     it('should retrieve all bookings for a user', async () => {
       // Arrange
 
-      const userId = process?.env['USERID'];
+      const userId = process.env['USERID'];
       const mockBookings = [
         {
 
@@ -347,10 +347,10 @@ describe('BookingService', () => {
         },
       ];
 
-      mockGetUserBookings?.mockResolvedValue(mockBookings);
+      mockGetUserBookings.mockResolvedValue(mockBookings);
 
       // Act
-      const result = await bookingService?.getUserBookings(userId);
+      const result = await bookingService.getUserBookings(userId);
 
       // Assert
       expect(result).toEqual(mockBookings);
@@ -361,11 +361,11 @@ describe('BookingService', () => {
       // Arrange
 
 
-      const userId = process?.env['USERID'];
-      mockGetUserBookings?.mockResolvedValue([]);
+      const userId = process.env['USERID'];
+      mockGetUserBookings.mockResolvedValue([]);
 
       // Act
-      const result = await bookingService?.getUserBookings(userId);
+      const result = await bookingService.getUserBookings(userId);
 
       // Assert
       expect(result).toEqual([]);
@@ -377,7 +377,7 @@ describe('BookingService', () => {
     it('should retrieve all bookings for a practitioner', async () => {
       // Arrange
 
-      const practitionerId = process?.env['PRACTITIONERID'];
+      const practitionerId = process.env['PRACTITIONERID'];
       const mockBookings = [
         {
 
@@ -403,10 +403,10 @@ describe('BookingService', () => {
         },
       ];
 
-      mockGetPractitionerBookings?.mockResolvedValue(mockBookings);
+      mockGetPractitionerBookings.mockResolvedValue(mockBookings);
 
       // Act
-      const result = await bookingService?.getPractitionerBookings(practitionerId);
+      const result = await bookingService.getPractitionerBookings(practitionerId);
 
       // Assert
       expect(result).toEqual(mockBookings);
@@ -417,11 +417,11 @@ describe('BookingService', () => {
       // Arrange
 
 
-      const practitionerId = process?.env['PRACTITIONERID'];
-      mockGetPractitionerBookings?.mockResolvedValue([]);
+      const practitionerId = process.env['PRACTITIONERID'];
+      mockGetPractitionerBookings.mockResolvedValue([]);
 
       // Act
-      const result = await bookingService?.getPractitionerBookings(practitionerId);
+      const result = await bookingService.getPractitionerBookings(practitionerId);
 
       // Assert
       expect(result).toEqual([]);
@@ -433,7 +433,7 @@ describe('BookingService', () => {
     it('should retrieve details for a specific booking', async () => {
       // Arrange
 
-      const bookingId = process?.env['BOOKINGID'];
+      const bookingId = process.env['BOOKINGID'];
       const mockBooking = {
         id: bookingId,
 
@@ -452,10 +452,10 @@ describe('BookingService', () => {
         provider: { id: 'provider-456', name: 'Test Provider' },
       };
 
-      mockGetBooking?.mockResolvedValue(mockBooking);
+      mockGetBooking.mockResolvedValue(mockBooking);
 
       // Act
-      const result = await bookingService?.getBooking(bookingId);
+      const result = await bookingService.getBooking(bookingId);
 
       // Assert
       expect(result).toEqual(mockBooking);
@@ -466,11 +466,11 @@ describe('BookingService', () => {
     it('should handle non-existent booking', async () => {
       // Arrange
 
-      const bookingId = process?.env['BOOKINGID'];
-      mockGetBooking?.mockResolvedValue(null);
+      const bookingId = process.env['BOOKINGID'];
+      mockGetBooking.mockResolvedValue(null);
 
       // Act
-      const result = await bookingService?.getBooking(bookingId);
+      const result = await bookingService.getBooking(bookingId);
 
       // Assert
       expect(result).toBeNull();
@@ -482,7 +482,7 @@ describe('BookingService', () => {
     it('should update booking details', async () => {
       // Arrange
 
-      const bookingId = process?.env['BOOKINGID'];
+      const bookingId = process.env['BOOKINGID'];
       const updateData = {
         id: bookingId,
         notes: 'Updated notes',
@@ -501,10 +501,10 @@ describe('BookingService', () => {
         notes: 'Updated notes',
       };
 
-      mockUpdateBooking?.mockResolvedValue(mockUpdatedBooking);
+      mockUpdateBooking.mockResolvedValue(mockUpdatedBooking);
 
       // Act
-      const result = await bookingService?.updateBooking(updateData);
+      const result = await bookingService.updateBooking(updateData);
 
       // Assert
       expect(result).toEqual(mockUpdatedBooking);

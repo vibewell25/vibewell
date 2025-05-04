@@ -29,18 +29,18 @@ export function UserMenu() {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         isOpen &&
-        menuRef?.current &&
-        !menuRef?.current.contains(event?.target as Node) &&
-        buttonRef?.current &&
-        !buttonRef?.current.contains(event?.target as Node)
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
       }
     };
 
-    document?.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document?.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isOpen]);
 
@@ -57,7 +57,7 @@ export function UserMenu() {
         id="user-menu-button"
       >
         <span className="sr-only">Open user menu</span>
-        <Icons?.UserCircleIcon className="h-8 w-8 text-muted-foreground hover:text-foreground" />
+        <Icons.UserCircleIcon className="h-8 w-8 text-muted-foreground hover:text-foreground" />
       </button>
 
       {isOpen && (
@@ -70,8 +70,8 @@ export function UserMenu() {
           aria-labelledby="user-menu-button"
         >
           <div className="border-b border-border px-4 py-2">
-            <p className="text-sm font-medium">{user?.user_metadata?.full_name || user?.email}</p>
-            <p className="truncate text-xs text-muted-foreground">{user?.email}</p>
+            <p className="text-sm font-medium">{user.user_metadata.full_name || user.email}</p>
+            <p className="truncate text-xs text-muted-foreground">{user.email}</p>
           </div>
           <Link
             href="/profile"
@@ -113,7 +113,7 @@ export function UserMenu() {
           >
             Notifications
             {unreadCount > 0 && (
-              <span className="bg-secondary ml-2 inline-flex items-center justify-center rounded-full px-1?.5 py-0?.5 text-xs font-bold text-white">
+              <span className="bg-secondary ml-2 inline-flex items-center justify-center rounded-full px-1.5 py-0.5 text-xs font-bold text-white">
                 {unreadCount}
               </span>
             )}

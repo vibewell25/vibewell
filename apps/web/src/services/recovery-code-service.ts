@@ -9,7 +9,7 @@ export class RecoveryCodeService {
   private encryption: EncryptionService;
 
   constructor() {
-    this?.encryption = new EncryptionService();
+    this.encryption = new EncryptionService();
   }
 
   /**
@@ -20,26 +20,26 @@ export class RecoveryCodeService {
   async generateRecoveryCodes(userId: string, count: number = 8): Promise<string[]> {
     try {
       // Generate random recovery codes
-      const codes = Array?.from({ length: count }, () => {
+      const codes = Array.from({ length: count }, () => {
 
 
-        // Generate 4 groups of 4 characters each (e?.g., XXXX-XXXX-XXXX-XXXX)
-        const groups = Array?.from({ length: 4 }, () =>
+        // Generate 4 groups of 4 characters each (e.g., XXXX-XXXX-XXXX-XXXX)
+        const groups = Array.from({ length: 4 }, () =>
           randomBytes(2).toString('hex').toUpperCase(),
         );
-        return groups?.join('-');
+        return groups.join('-');
       });
 
       // Hash the codes before storing
-      const hashedCodes = await Promise?.all(codes?.map((code) => this?.encryption.hash(code)));
+      const hashedCodes = await Promise.all(codes.map((code) => this.encryption.hash(code)));
 
       // Store the hashed codes in the database
-      await prisma?.recoveryCode.deleteMany({
+      await prisma.recoveryCode.deleteMany({
         where: { userId },
       });
 
-      await prisma?.recoveryCode.createMany({
-        data: hashedCodes?.map((hash) => ({
+      await prisma.recoveryCode.createMany({
+        data: hashedCodes.map((hash) => ({
           userId,
           code: hash,
           used: false,
@@ -48,14 +48,14 @@ export class RecoveryCodeService {
       });
 
       // Log the generation event (without the actual codes)
-      logger?.info('Generated new recovery codes', 'security', {
+      logger.info('Generated new recovery codes', 'security', {
         userId,
         count,
       });
 
       return codes;
     } catch (error) {
-      logger?.error('Failed to generate recovery codes', 'security', {
+      logger.error('Failed to generate recovery codes', 'security', {
         error,
         userId,
       });
@@ -71,7 +71,7 @@ export class RecoveryCodeService {
   async verifyRecoveryCode(userId: string, code: string): Promise<boolean> {
     try {
       // Get all unused recovery codes for the user
-      const recoveryCodes = await prisma?.recoveryCode.findMany({
+      const recoveryCodes = await prisma.recoveryCode.findMany({
         where: {
           userId,
           used: false,
@@ -80,12 +80,12 @@ export class RecoveryCodeService {
 
       // Check each code
       for (const storedCode of recoveryCodes) {
-        const isValid = await this?.encryption.verify(code, storedCode?.code);
+        const isValid = await this.encryption.verify(code, storedCode.code);
 
         if (isValid) {
           // Mark the code as used
-          await prisma?.recoveryCode.update({
-            where: { id: storedCode?.id },
+          await prisma.recoveryCode.update({
+            where: { id: storedCode.id },
             data: {
               used: true,
               usedAt: new Date(),
@@ -93,9 +93,9 @@ export class RecoveryCodeService {
           });
 
           // Log the usage
-          logger?.info('Recovery code used successfully', 'security', {
+          logger.info('Recovery code used successfully', 'security', {
             userId,
-            codeId: storedCode?.id,
+            codeId: storedCode.id,
           });
 
           return true;
@@ -103,13 +103,13 @@ export class RecoveryCodeService {
       }
 
       // Log failed attempt
-      logger?.warn('Invalid recovery code attempt', 'security', {
+      logger.warn('Invalid recovery code attempt', 'security', {
         userId,
       });
 
       return false;
     } catch (error) {
-      logger?.error('Failed to verify recovery code', 'security', {
+      logger.error('Failed to verify recovery code', 'security', {
         error,
         userId,
       });
@@ -123,14 +123,14 @@ export class RecoveryCodeService {
    */
   async getRemainingCodeCount(userId: string): Promise<number> {
     try {
-      return await prisma?.recoveryCode.count({
+      return await prisma.recoveryCode.count({
         where: {
           userId,
           used: false,
         },
       });
     } catch (error) {
-      logger?.error('Failed to get remaining recovery code count', 'security', {
+      logger.error('Failed to get remaining recovery code count', 'security', {
         error,
         userId,
       });

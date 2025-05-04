@@ -3,9 +3,9 @@ import { useResponsive } from '@/hooks/useResponsive';
 import { cn } from '@/lib/utils';
 
 interface ResponsiveContainerProps {
-  children: React?.ReactNode;
+  children: React.ReactNode;
   className?: string;
-  as?: React?.ElementType;
+  as?: React.ElementType;
   maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full' | 'screen';
   padding?: boolean | 'x' | 'y' | 'none';
   centerContent?: boolean;

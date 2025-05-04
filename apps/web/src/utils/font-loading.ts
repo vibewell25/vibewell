@@ -58,34 +58,34 @@ const FONT_DEFINITIONS: FontDefinition[] = [
 ];
 
 export function generateFontFaceCSS(): string {
-  return FONT_DEFINITIONS?.map(
+  return FONT_DEFINITIONS.map(
     (font) => `
 
     @font-face {
 
-      font-family: '${font?.family}';
+      font-family: '${font.family}';
 
-      font-style: ${font?.style || 'normal'};
+      font-style: ${font.style || 'normal'};
 
-      font-weight: ${font?.weight || '400'};
+      font-weight: ${font.weight || '400'};
 
-      font-display: ${font?.display || 'swap'};
-      src: url('/fonts/${font?.family.toLowerCase()}-${font?.weight}${font?.style === 'italic' ? '-italic' : ''}.woff2') format('woff2'),
-           url('/fonts/${font?.family.toLowerCase()}-${font?.weight}${font?.style === 'italic' ? '-italic' : ''}.woff') format('woff');
+      font-display: ${font.display || 'swap'};
+      src: url('/fonts/${font.family.toLowerCase()}-${font.weight}${font.style === 'italic' ? '-italic' : ''}.woff2') format('woff2'),
+           url('/fonts/${font.family.toLowerCase()}-${font.weight}${font.style === 'italic' ? '-italic' : ''}.woff') format('woff');
 
-      ${font?.unicode ? `unicode-range: ${font?.unicode};` : ''}
+      ${font.unicode ? `unicode-range: ${font.unicode};` : ''}
     }
   `,
   ).join('\n');
 }
 
 export function generatePreloadLinks(): string {
-  return FONT_DEFINITIONS?.filter((font) => font?.preload)
+  return FONT_DEFINITIONS.filter((font) => font.preload)
     .map(
       (font) => `
       <link
         rel="preload"
-        href="/fonts/${font?.family.toLowerCase()}-${font?.weight}${font?.style === 'italic' ? '-italic' : ''}.woff2"
+        href="/fonts/${font.family.toLowerCase()}-${font.weight}${font.style === 'italic' ? '-italic' : ''}.woff2"
         as="font"
 
         type="font/woff2"
@@ -98,13 +98,13 @@ export function generatePreloadLinks(): string {
 
 export function loadFonts(): void {
   if ('fonts' in document) {
-    FONT_DEFINITIONS?.forEach(async (font) => {
+    FONT_DEFINITIONS.forEach(async (font) => {
       try {
-        await (document as any).fonts?.load(
-          `${font?.weight} ${font?.style || 'normal'} ${font?.family}`,
+        await (document as any).fonts.load(
+          `${font.weight} ${font.style || 'normal'} ${font.family}`,
         );
       } catch (error) {
-        console?.warn(`Failed to load font: ${font?.family} ${font?.weight} ${font?.style}`, error);
+        console.warn(`Failed to load font: ${font.family} ${font.weight} ${font.style}`, error);
       }
     });
   }
@@ -118,7 +118,7 @@ export function generateFallbackCSS(): string {
 
 
 
-      font-family: ${FONT_DEFINITIONS?.map((f) => `'${f?.family}'`).join(', ')}, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      font-family: ${FONT_DEFINITIONS.map((f) => `'${f.family}'`).join(', ')}, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     }
     
     /* Font optimization classes */
@@ -139,7 +139,7 @@ export function generateFallbackCSS(): string {
 
     .text-xs, .text-sm {
 
-      letter-spacing: 0?.01em;
+      letter-spacing: 0.01em;
     }
 
     .text-base {
@@ -150,13 +150,13 @@ export function generateFallbackCSS(): string {
 
     .text-lg, .text-xl {
 
-      letter-spacing: -0?.01em;
+      letter-spacing: -0.01em;
     }
 
 
     .text-2xl, .text-3xl {
 
-      letter-spacing: -0?.02em;
+      letter-spacing: -0.02em;
     }
   `;
 }

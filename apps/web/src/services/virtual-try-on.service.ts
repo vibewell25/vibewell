@@ -13,26 +13,26 @@ export interface TryOnRequest {
 
 export class VirtualTryOnService {
   async createTryOn(data: TryOnRequest) {
-    const imageUrl = await uploadImage(data?.image);
+    const imageUrl = await uploadImage(data.image);
 
-    const tryOn = await prisma?.virtualTryOn.create({
+    const tryOn = await prisma.virtualTryOn.create({
       data: {
-        userId: data?.userId,
-        serviceId: data?.serviceId,
+        userId: data.userId,
+        serviceId: data.serviceId,
         imageUrl,
-        status: TryOnStatus?.PENDING,
+        status: TryOnStatus.PENDING,
       },
     });
 
     // Process image asynchronously
-    this?.processVirtualTryOn(tryOn?.id).catch(console?.error);
+    this.processVirtualTryOn(tryOn.id).catch(console.error);
 
     return tryOn;
   }
 
   private async processVirtualTryOn(tryOnId: string) {
     try {
-      const tryOn = await prisma?.virtualTryOn.findUnique({
+      const tryOn = await prisma.virtualTryOn.findUnique({
         where: { id: tryOnId },
         include: { service: true },
       });
@@ -41,29 +41,29 @@ export class VirtualTryOnService {
       if (!tryOn) throw new Error('Try-on not found');
 
       // Update status to processing
-      await prisma?.virtualTryOn.update({
+      await prisma.virtualTryOn.update({
         where: { id: tryOnId },
-        data: { status: TryOnStatus?.PROCESSING },
+        data: { status: TryOnStatus.PROCESSING },
       });
 
 
       // Process the image using AI/ML
-      const resultUrl = await processImage(tryOn?.imageUrl, tryOn?.service);
+      const resultUrl = await processImage(tryOn.imageUrl, tryOn.service);
 
       // Update with results
-      await prisma?.virtualTryOn.update({
+      await prisma.virtualTryOn.update({
         where: { id: tryOnId },
         data: {
           resultUrl,
-          status: TryOnStatus?.COMPLETED,
+          status: TryOnStatus.COMPLETED,
         },
       });
     } catch (error) {
-      await prisma?.virtualTryOn.update({
+      await prisma.virtualTryOn.update({
         where: { id: tryOnId },
         data: {
-          status: TryOnStatus?.FAILED,
-          metadata: { error: error?.message },
+          status: TryOnStatus.FAILED,
+          metadata: { error: error.message },
         },
       });
       throw error;
@@ -71,7 +71,7 @@ export class VirtualTryOnService {
   }
 
   async getTryOnById(id: string) {
-    return prisma?.virtualTryOn.findUnique({
+    return prisma.virtualTryOn.findUnique({
       where: { id },
       include: {
         service: true,
@@ -87,7 +87,7 @@ export class VirtualTryOnService {
   }
 
   async getUserTryOns(userId: string) {
-    return prisma?.virtualTryOn.findMany({
+    return prisma.virtualTryOn.findMany({
       where: { userId },
       include: {
         service: true,
@@ -97,14 +97,14 @@ export class VirtualTryOnService {
   }
 
   async deleteTryOn(id: string, userId: string) {
-    const tryOn = await prisma?.virtualTryOn.findFirst({
+    const tryOn = await prisma.virtualTryOn.findFirst({
       where: { id, userId },
     });
 
 
     if (!tryOn) throw new Error('Try-on not found or unauthorized');
 
-    return prisma?.virtualTryOn.delete({
+    return prisma.virtualTryOn.delete({
       where: { id },
     });
   }

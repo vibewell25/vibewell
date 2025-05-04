@@ -26,7 +26,7 @@ export function FormFieldEditor({ fields, onChange }: FormFieldEditorProps) {
 
   const addField = () => {
     const newField: FormField = {
-      id: `field-${Date?.now()}`,
+      id: `field-${Date.now()}`,
       label: '',
       type: 'text',
       required: false,
@@ -41,30 +41,30 @@ export function FormFieldEditor({ fields, onChange }: FormFieldEditorProps) {
   };
 
   const removeField = (index: number) => {
-    const newFields = fields?.filter((_, i) => i !== index);
+    const newFields = fields.filter((_, i) => i !== index);
     onChange(newFields);
   };
 
   const addOption = (fieldIndex: number) => {
-    if (!newOption?.trim()) return;
+    if (!newOption.trim()) return;
     const field = fields[fieldIndex];
-    const options = [...(field?.options || []), newOption?.trim()];
+    const options = [...(field.options || []), newOption.trim()];
     updateField(fieldIndex, { options });
     setNewOption('');
   };
 
   const removeOption = (fieldIndex: number, optionIndex: number) => {
     const field = fields[fieldIndex];
-    const options = field?.options?.filter((_, i) => i !== optionIndex);
+    const options = field.options.filter((_, i) => i !== optionIndex);
     updateField(fieldIndex, { options });
   };
 
   const onDragEnd = (result: any) => {
-    if (!result?.destination) return;
+    if (!result.destination) return;
 
-    const items = Array?.from(fields);
-    const [reorderedItem] = items?.splice(result?.source.index, 1);
-    items?.splice(result?.destination.index, 0, reorderedItem);
+    const items = Array.from(fields);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
 
     onChange(items);
   };
@@ -78,13 +78,13 @@ export function FormFieldEditor({ fields, onChange }: FormFieldEditorProps) {
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="fields">
           {(provided) => (
-            <div {...provided?.droppableProps} ref={provided?.innerRef}>
-              {fields?.map((field, index) => (
-                <Draggable key={field?.id} draggableId={field?.id} index={index}>
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {fields.map((field, index) => (
+                <Draggable key={field.id} draggableId={field.id} index={index}>
                   {(provided) => (
-                    <Card className="mb-4 p-4" ref={provided?.innerRef} {...provided?.draggableProps}>
+                    <Card className="mb-4 p-4" ref={provided.innerRef} {...provided.draggableProps}>
                       <div className="flex items-start space-x-4">
-                        <div {...provided?.dragHandleProps} className="mt-2 cursor-move">
+                        <div {...provided.dragHandleProps} className="mt-2 cursor-move">
                           <GripVertical size={20} />
                         </div>
                         <div className="flex-grow space-y-4">
@@ -92,15 +92,15 @@ export function FormFieldEditor({ fields, onChange }: FormFieldEditorProps) {
                             <div className="flex-grow">
                               <Label>Field Label</Label>
                               <Input
-                                value={field?.label}
-                                onChange={(e) => updateField(index, { label: e?.target.value })}
+                                value={field.label}
+                                onChange={(e) => updateField(index, { label: e.target.value })}
                                 placeholder="Enter field label"
                               />
                             </div>
                             <div className="w-40">
                               <Label>Field Type</Label>
                               <Select
-                                value={field?.type}
+                                value={field.type}
                                 onValueChange={(value: any) => updateField(index, { type: value })}
                               >
                                 <option value="text">Text</option>
@@ -112,7 +112,7 @@ export function FormFieldEditor({ fields, onChange }: FormFieldEditorProps) {
                             </div>
                             <div className="mt-6 flex items-center space-x-2">
                               <Switch
-                                checked={field?.required}
+                                checked={field.required}
                                 onCheckedChange={(checked) =>
                                   updateField(index, { required: checked })
                                 }
@@ -129,13 +129,13 @@ export function FormFieldEditor({ fields, onChange }: FormFieldEditorProps) {
                             </Button>
                           </div>
 
-                          {field?.type === 'select' && (
+                          {field.type === 'select' && (
                             <div className="space-y-2">
                               <Label>Options</Label>
                               <div className="flex space-x-2">
                                 <Input
                                   value={newOption}
-                                  onChange={(e) => setNewOption(e?.target.value)}
+                                  onChange={(e) => setNewOption(e.target.value)}
                                   placeholder="Add new option"
                                 />
                                 <Button type="button" onClick={() => addOption(index)}>
@@ -143,7 +143,7 @@ export function FormFieldEditor({ fields, onChange }: FormFieldEditorProps) {
                                 </Button>
                               </div>
                               <div className="space-y-2">
-                                {field?.options?.map((option, optionIndex) => (
+                                {field.options.map((option, optionIndex) => (
                                   <div key={optionIndex} className="flex items-center space-x-2">
                                     <span>{option}</span>
                                     <Button
@@ -164,7 +164,7 @@ export function FormFieldEditor({ fields, onChange }: FormFieldEditorProps) {
                   )}
                 </Draggable>
               ))}
-              {provided?.placeholder}
+              {provided.placeholder}
             </div>
           )}
         </Droppable>

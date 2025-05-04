@@ -9,14 +9,14 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Icons } from '@/components/icons';
 
-interface UserAuthFormProps extends React?.HTMLAttributes<HTMLDivElement> {}
+interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-const formSchema = z?.object({
-  email: z?.string().email('Please enter a valid email address'),
-  password: z?.string().min(8, 'Password must be at least 8 characters'),
+const formSchema = z.object({
+  email: z.string().email('Please enter a valid email address'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
 });
 
-type FormData = z?.infer<typeof formSchema>;
+type FormData = z.infer<typeof formSchema>;
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const {
@@ -26,11 +26,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     resolver: zodResolver(formSchema),
   });
 
-  const [isLoading, setIsLoading] = React?.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); onSubmit(data: FormData) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); onSubmit(data: FormData) {
     setIsLoading(true);
 
     try {
@@ -38,9 +38,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       // For now, we'll just simulate a delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      toast?.success('Authentication successful!');
+      toast.success('Authentication successful!');
     } catch (error) {
-      toast?.error('Authentication failed. Please try again.');
+      toast.error('Authentication failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -54,7 +54,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
-              placeholder="name@example?.com"
+              placeholder="name@example.com"
               type="email"
               autoCapitalize="none"
               autoComplete="email"
@@ -62,7 +62,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               disabled={isLoading}
               {...register('email')}
             />
-            {errors?.email && <p className="text-sm text-red-500">{errors?.email.message}</p>}
+            {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
@@ -74,10 +74,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               disabled={isLoading}
               {...register('password')}
             />
-            {errors?.password && <p className="text-sm text-red-500">{errors?.password.message}</p>}
+            {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
           </div>
           <Button disabled={isLoading}>
-            {isLoading && <Icons?.spinner className="mr-2 h-4 w-4 animate-spin" />}
+            {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             Sign In
           </Button>
         </div>
@@ -92,9 +92,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       </div>
       <Button variant="outline" type="button" disabled={isLoading}>
         {isLoading ? (
-          <Icons?.spinner className="mr-2 h-4 w-4 animate-spin" />
+          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
         ) : (
-          <Icons?.gitHub className="mr-2 h-4 w-4" />
+          <Icons.gitHub className="mr-2 h-4 w-4" />
         )}{' '}
         GitHub
       </Button>

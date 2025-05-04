@@ -21,34 +21,34 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
   const [isUploading, setIsUploading] = useState(false);
 
   // Get existing business photos from form or initialize an empty array
-  const businessPhotos = form?.watch('businessPhotos') || [];
+  const businessPhotos = form.watch('businessPhotos') || [];
 
   // Handle file selection
-  const handleFileSelect = (event: React?.ChangeEvent<HTMLInputElement>) => {
-    if (!event?.target.files || event?.target.files?.length === 0) return;
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files || event.target.files.length === 0) return;
 
-    const newFiles = Array?.from(event?.target.files);
+    const newFiles = Array.from(event.target.files);
     setSelectedImages((prev) => [...prev, ...newFiles]);
 
     // Create object URLs for previews
-    const newPreviews = newFiles?.map((file) => URL?.createObjectURL(file));
+    const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
     setPreviews((prev) => [...prev, ...newPreviews]);
   };
 
   // Handle file removal from preview
   const handleRemoveImage = (index: number) => {
-    setSelectedImages((prev) => prev?.filter((_, i) => i !== index));
+    setSelectedImages((prev) => prev.filter((_, i) => i !== index));
 
     // Revoke the object URL to avoid memory leaks
-    URL?.revokeObjectURL(previews[index]);
-    setPreviews((prev) => prev?.filter((_, i) => i !== index));
+    URL.revokeObjectURL(previews[index]);
+    setPreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   // Handle image upload
   const handleUpload = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-    if (selectedImages?.length === 0) return;
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    if (selectedImages.length === 0) return;
 
     setIsUploading(true);
 
@@ -63,7 +63,7 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
       const uploadedImageUrls = [...previews];
 
       // Update form with new images
-      form?.setValue('businessPhotos', [...businessPhotos, ...uploadedImageUrls], {
+      form.setValue('businessPhotos', [...businessPhotos, ...uploadedImageUrls], {
         shouldValidate: true,
         shouldDirty: true,
       });
@@ -74,7 +74,7 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
 
       alert('Images uploaded successfully!');
     } catch (error) {
-      console?.error('Upload error:', error);
+      console.error('Upload error:', error);
       alert('There was an error uploading your images. Please try again.');
     } finally {
       setIsUploading(false);
@@ -84,9 +84,9 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
   // Handle image deletion
   const handleDeleteSavedImage = (index: number) => {
     const updatedPhotos = [...businessPhotos];
-    updatedPhotos?.splice(index, 1);
+    updatedPhotos.splice(index, 1);
 
-    form?.setValue('businessPhotos', updatedPhotos, {
+    form.setValue('businessPhotos', updatedPhotos, {
       shouldValidate: true,
       shouldDirty: true,
     });
@@ -130,7 +130,7 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
           {/* Photo Guidelines */}
           <div className="rounded-lg bg-muted/50 p-4">
             <div className="flex items-start gap-2">
-              <Info className="mt-0?.5 h-5 w-5 text-muted-foreground" />
+              <Info className="mt-0.5 h-5 w-5 text-muted-foreground" />
               <div>
                 <h4 className="mb-1 text-sm font-medium">Photo Guidelines</h4>
                 <ul className="list-disc space-y-1 pl-4 text-xs text-muted-foreground">
@@ -145,11 +145,11 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
           </div>
 
           {/* Selected Image Previews */}
-          {previews?.length > 0 && (
+          {previews.length > 0 && (
             <div className="space-y-4">
-              <h4 className="text-sm font-medium">Selected Photos ({previews?.length})</h4>
+              <h4 className="text-sm font-medium">Selected Photos ({previews.length})</h4>
               <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-                {previews?.map((preview, index) => (
+                {previews.map((preview, index) => (
                   <div key={index} className="group relative">
                     <div className="relative aspect-square overflow-hidden rounded-md border">
                       <Image
@@ -172,7 +172,7 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
               </div>
               <Button
                 onClick={handleUpload}
-                disabled={isUploading || previews?.length === 0}
+                disabled={isUploading || previews.length === 0}
                 className="mt-4"
               >
                 {isUploading ? 'Uploading...' : 'Upload Selected Photos'}
@@ -181,13 +181,13 @@ export function PhotoUploadForm({ form }: PhotoFormProps) {
           )}
 
           {/* Saved Business Photos */}
-          {businessPhotos?.length > 0 && (
+          {businessPhotos.length > 0 && (
             <div className="mt-8 space-y-4">
               <h4 className="text-sm font-medium">
-                Saved Business Photos ({businessPhotos?.length})
+                Saved Business Photos ({businessPhotos.length})
               </h4>
               <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-                {businessPhotos?.map((photo, index) => (
+                {businessPhotos.map((photo, index) => (
                   <div key={index} className="group relative">
                     <div className="relative aspect-square overflow-hidden rounded-md border">
                       <Image

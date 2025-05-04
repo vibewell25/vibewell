@@ -21,7 +21,7 @@ export default function MarketingLayout({ children }: MarketingLayoutProps) {
               About
             </Link>
             <Link
-              href="https://app?.getvibewell.com"
+              href="https://app.getvibewell.com"
               className="text-pink-500 hover:text-pink-600"
             >
               Launch App
@@ -50,7 +50,7 @@ export default function MarketingLayout({ children }: MarketingLayoutProps) {
                   </Link>
                 </li>
                 <li>
-                  <Link href="https://app?.getvibewell.com" className="text-gray-600 hover:text-gray-900">
+                  <Link href="https://app.getvibewell.com" className="text-gray-600 hover:text-gray-900">
                     Launch App
                   </Link>
                 </li>
@@ -60,8 +60,8 @@ export default function MarketingLayout({ children }: MarketingLayoutProps) {
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Contact</h3>
               <p className="text-gray-600">
                 Questions? Reach out to us at{' '}
-                <a href="mailto:hello@getvibewell?.com" className="text-pink-500 hover:text-pink-600">
-                  hello@getvibewell?.com
+                <a href="mailto:hello@getvibewell.com" className="text-pink-500 hover:text-pink-600">
+                  hello@getvibewell.com
                 </a>
               </p>
             </div>

@@ -297,7 +297,7 @@ export const generateOptimizedImageUrl = (
   const { width = window.innerWidth, quality = 80, format = 'auto' } = options;
 
   const formats = detectImageSupport();
-  const connection = (navigator as any)?.connection?.effectiveType || '4g';
+  const connection = (navigator as any).connection.effectiveType || '4g';
 
   // Adjust quality based on network connection
   const networkQuality = {

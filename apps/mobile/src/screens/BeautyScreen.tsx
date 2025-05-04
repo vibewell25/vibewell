@@ -25,7 +25,7 @@ import {
   searchBeautyServices
 } from '../services/beautyService';
 
-const BeautyScreen: React?.FC = () => {
+const BeautyScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const navigation = useNavigation<BeautyScreenNavigationProp>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -39,24 +39,24 @@ const BeautyScreen: React?.FC = () => {
   
   useEffect(() => {
     const fetchCategories = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         const categoriesData = await getBeautyCategories();
         setCategories(categoriesData);
       } catch (error) {
-        console?.error('Error fetching beauty categories:', error);
+        console.error('Error fetching beauty categories:', error);
       }
     };
     
     const fetchFeaturedServices = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         const featuredData = await getFeaturedBeautyServices();
         setFeaturedServices(featuredData);
       } catch (error) {
-        console?.error('Error fetching featured services:', error);
+        console.error('Error fetching featured services:', error);
       }
     };
     
@@ -66,8 +66,8 @@ const BeautyScreen: React?.FC = () => {
   
   useEffect(() => {
     const fetchServices = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       setLoading(true);
       try {
         // Combine category selection with other filters
@@ -76,13 +76,13 @@ const BeautyScreen: React?.FC = () => {
         };
         
         if (selectedCategoryId) {
-          combinedFilters?.categoryId = selectedCategoryId;
+          combinedFilters.categoryId = selectedCategoryId;
         }
         
         const servicesData = await searchBeautyServices(searchTerm, combinedFilters);
         setServices(servicesData);
       } catch (error) {
-        console?.error('Error fetching beauty services:', error);
+        console.error('Error fetching beauty services:', error);
       } finally {
         setLoading(false);
       }
@@ -92,7 +92,7 @@ const BeautyScreen: React?.FC = () => {
   }, [selectedCategoryId, filters, searchTerm]);
   
   const handleServicePress = (serviceId: string) => {
-    navigation?.navigate('BeautyServiceDetail', { serviceId });
+    navigation.navigate('BeautyServiceDetail', { serviceId });
   };
   
   const handleApplyFilters = (newFilters: BeautyFilter) => {
@@ -112,23 +112,23 @@ const BeautyScreen: React?.FC = () => {
   
   const getAppliedFiltersCount = () => {
     let count = 0;
-    if (filters?.minPrice !== undefined || filters?.maxPrice !== undefined) if (count > Number?.MAX_SAFE_INTEGER || count < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
-    if (filters?.minDuration !== undefined || filters?.maxDuration !== undefined) if (count > Number?.MAX_SAFE_INTEGER || count < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
-    if (filters?.minRating !== undefined) if (count > Number?.MAX_SAFE_INTEGER || count < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
-    if (filters?.featured !== undefined) if (count > Number?.MAX_SAFE_INTEGER || count < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
-    if (searchTerm) if (count > Number?.MAX_SAFE_INTEGER || count < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
-    if (selectedCategoryId) if (count > Number?.MAX_SAFE_INTEGER || count < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
+    if (filters.minPrice !== undefined || filters.maxPrice !== undefined) if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
+    if (filters.minDuration !== undefined || filters.maxDuration !== undefined) if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
+    if (filters.minRating !== undefined) if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
+    if (filters.featured !== undefined) if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
+    if (searchTerm) if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
+    if (selectedCategoryId) if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
     
     return count;
   };
   
   const renderFeaturedSection = () => {
-    if (featuredServices?.length === 0) return null;
+    if (featuredServices.length === 0) return null;
     
     return (
-      <View style={styles?.featuredSection}>
+      <View style={styles.featuredSection}>
         <Text style={[
-          styles?.sectionTitle,
+          styles.sectionTitle,
           { color: isDarkMode ? '#FFFFFF' : '#000000' }
         ]}>
           Featured Services
@@ -136,13 +136,13 @@ const BeautyScreen: React?.FC = () => {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={styles?.featuredContainer}
+          style={styles.featuredContainer}
         >
-          {featuredServices?.map(service => (
-            <View key={service?.id} style={styles?.featuredItem}>
+          {featuredServices.map(service => (
+            <View key={service.id} style={styles.featuredItem}>
               <BeautyServiceCard
                 service={service}
-                onPress={() => handleServicePress(service?.id)}
+                onPress={() => handleServicePress(service.id)}
                 isDarkMode={isDarkMode}
               />
             </View>
@@ -155,12 +155,12 @@ const BeautyScreen: React?.FC = () => {
   const filtersCount = getAppliedFiltersCount();
   
   return (
-    <View style={[styles?.container, {backgroundColor: isDarkMode ? '#121212' : '#F5F5F5'}]}>
+    <View style={[styles.container, {backgroundColor: isDarkMode ? '#121212' : '#F5F5F5'}]}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       
       {/* Header */}
-      <View style={styles?.headerContainer}>
-        <Text style={[styles?.header, {color: isDarkMode ? '#FFFFFF' : '#000000'}]}>Beauty</Text>
+      <View style={styles.headerContainer}>
+        <Text style={[styles.header, {color: isDarkMode ? '#FFFFFF' : '#000000'}]}>Beauty</Text>
         
         {/* Search Bar */}
         <BeautySearch 
@@ -172,7 +172,7 @@ const BeautyScreen: React?.FC = () => {
         {/* Filter Button */}
         <TouchableOpacity 
           style={[
-            styles?.filterButton,
+            styles.filterButton,
             {backgroundColor: isDarkMode ? '#2A2A2A' : '#FFFFFF'}
           ]}
           onPress={() => setShowFilters(true)}
@@ -188,23 +188,23 @@ const BeautyScreen: React?.FC = () => {
       </View>
       
       {/* Categories */}
-      <View style={styles?.categoriesContainer}>
+      <View style={styles.categoriesContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16 }}>
           <TouchableOpacity
             key="all"
-            style={[styles?.categoryButton, { backgroundColor: selectedCategoryId === '' ? '#4F46E5' : isDarkMode ? '#2A2A2A' : '#FFFFFF' }]}
+            style={[styles.categoryButton, { backgroundColor: selectedCategoryId === '' ? '#4F46E5' : isDarkMode ? '#2A2A2A' : '#FFFFFF' }]}
             onPress={() => setSelectedCategoryId('')}
           >
-            <Text style={[styles?.categoryText, { color: selectedCategoryId === '' ? '#FFFFFF' : isDarkMode ? '#BBBBBB' : '#000000' }]}>All</Text>
+            <Text style={[styles.categoryText, { color: selectedCategoryId === '' ? '#FFFFFF' : isDarkMode ? '#BBBBBB' : '#000000' }]}>All</Text>
           </TouchableOpacity>
-          {categories?.map(category => (
+          {categories.map(category => (
             <TouchableOpacity
-              key={category?.id}
-              style={[styles?.categoryButton, { backgroundColor: selectedCategoryId === category?.id ? '#4F46E5' : isDarkMode ? '#2A2A2A' : '#FFFFFF' }]}
-              onPress={() => setSelectedCategoryId(selectedCategoryId === category?.id ? '' : category?.id)}
+              key={category.id}
+              style={[styles.categoryButton, { backgroundColor: selectedCategoryId === category.id ? '#4F46E5' : isDarkMode ? '#2A2A2A' : '#FFFFFF' }]}
+              onPress={() => setSelectedCategoryId(selectedCategoryId === category.id ? '' : category.id)}
             >
-              <Text style={[styles?.categoryText, { color: selectedCategoryId === category?.id ? '#FFFFFF' : isDarkMode ? '#BBBBBB' : '#000000' }]}>
-                {category?.name}
+              <Text style={[styles.categoryText, { color: selectedCategoryId === category.id ? '#FFFFFF' : isDarkMode ? '#BBBBBB' : '#000000' }]}>
+                {category.name}
               </Text>
             </TouchableOpacity>
           ))}
@@ -212,15 +212,15 @@ const BeautyScreen: React?.FC = () => {
       </View>
       
       {/* Active Filters */}
-      {Object?.keys(filters).length > 0 && (
-        <View style={styles?.activeFiltersContainer}>
+      {Object.keys(filters).length > 0 && (
+        <View style={styles.activeFiltersContainer}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {Object?.entries(filters).map(([key, value]) => {
+            {Object.entries(filters).map(([key, value]) => {
               if (!value && value !== 0) return null;
               let filterText;
               switch(key) {
                 case 'categoryId':
-                  const categoryName = categories?.find(c => c?.id === value)?.name || '';
+                  const categoryName = categories.find(c => c.id === value).name || '';
                   filterText = `Category: ${categoryName}`;
                   break;
                 case 'minPrice':
@@ -245,7 +245,7 @@ const BeautyScreen: React?.FC = () => {
                 <TouchableOpacity 
                   key={key}
                   style={[
-                    styles?.filterTag,
+                    styles.filterTag,
                     {backgroundColor: isDarkMode ? '#2A2A2A' : '#FFFFFF'}
                   ]}
                   onPress={() => {
@@ -261,7 +261,7 @@ const BeautyScreen: React?.FC = () => {
             })}
             <TouchableOpacity 
               style={[
-                styles?.clearFiltersButton,
+                styles.clearFiltersButton,
                 {backgroundColor: isDarkMode ? '#2A2A2A' : '#FFFFFF'}
               ]}
               onPress={handleClearFilters}
@@ -273,52 +273,52 @@ const BeautyScreen: React?.FC = () => {
       )}
       
       {/* Main Content */}
-      <ScrollView showsVerticalScrollIndicator={false} style={styles?.mainContent}>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.mainContent}>
         {/* Featured Services */}
-        {!searchTerm && !selectedCategoryId && Object?.keys(filters).length === 0 && renderFeaturedSection()}
+        {!searchTerm && !selectedCategoryId && Object.keys(filters).length === 0 && renderFeaturedSection()}
         
         {/* Service Listing */}
-        <View style={styles?.servicesSection}>
+        <View style={styles.servicesSection}>
           <Text style={[
-            styles?.sectionTitle,
+            styles.sectionTitle,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
-            {searchTerm || selectedCategoryId || Object?.keys(filters).length > 0
+            {searchTerm || selectedCategoryId || Object.keys(filters).length > 0
               ? 'Search Results'
               : 'All Services'}
           </Text>
           
           {loading ? (
-            <ActivityIndicator size="large" color="#4F46E5" style={styles?.loader} />
-          ) : services?.length === 0 ? (
-            <View style={styles?.emptyState}>
+            <ActivityIndicator size="large" color="#4F46E5" style={styles.loader} />
+          ) : services.length === 0 ? (
+            <View style={styles.emptyState}>
               <MaterialIcons name="search-off" size={48} color={isDarkMode ? '#666666' : '#999999'} />
               <Text style={[
-                styles?.emptyStateText,
+                styles.emptyStateText,
                 { color: isDarkMode ? '#FFFFFF' : '#000000' }
               ]}>
                 No services found
               </Text>
               <Text style={[
-                styles?.emptyStateSubtext,
+                styles.emptyStateSubtext,
                 { color: isDarkMode ? '#BBBBBB' : '#666666' }
               ]}>
                 Try adjusting your filters or search terms
               </Text>
               <TouchableOpacity
-                style={styles?.clearFiltersButton}
+                style={styles.clearFiltersButton}
                 onPress={handleClearFilters}
               >
-                <Text style={styles?.clearFiltersText}>Clear All Filters</Text>
+                <Text style={styles.clearFiltersText}>Clear All Filters</Text>
               </TouchableOpacity>
             </View>
           ) : (
-            <View style={styles?.servicesGrid}>
-              {services?.map(service => (
-                <View key={service?.id} style={styles?.serviceCardContainer}>
+            <View style={styles.servicesGrid}>
+              {services.map(service => (
+                <View key={service.id} style={styles.serviceCardContainer}>
                   <BeautyServiceCard
                     service={service}
-                    onPress={() => handleServicePress(service?.id)}
+                    onPress={() => handleServicePress(service.id)}
                     isDarkMode={isDarkMode}
                   />
                 </View>
@@ -340,7 +340,7 @@ const BeautyScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,

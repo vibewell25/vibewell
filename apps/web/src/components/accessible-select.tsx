@@ -7,7 +7,7 @@ interface SelectOption {
 }
 
 interface AccessibleSelectProps
-  extends Omit<React?.SelectHTMLAttributes<HTMLSelectElement>, 'children'> {
+  extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'children'> {
   label: string;
   options: SelectOption[];
   error?: string;
@@ -15,7 +15,7 @@ interface AccessibleSelectProps
   placeholder?: string;
 }
 
-export const AccessibleSelect: React?.FC<AccessibleSelectProps> = ({
+export const AccessibleSelect: React.FC<AccessibleSelectProps> = ({
   label,
   options,
   error,
@@ -26,7 +26,7 @@ export const AccessibleSelect: React?.FC<AccessibleSelectProps> = ({
   required,
   ...props
 }) => {
-  const selectId = id || `select-${Math?.random().toString(36).substr(2, 9)}`;
+  const selectId = id || `select-${Math.random().toString(36).substr(2, 9)}`;
   const errorId = error ? `${selectId}-error` : undefined;
   const helperId = helperText ? `${selectId}-helper` : undefined;
 
@@ -51,9 +51,9 @@ export const AccessibleSelect: React?.FC<AccessibleSelectProps> = ({
               {placeholder}
             </option>
           )}
-          {options?.map((option) => (
-            <option key={option?.value} value={option?.value} disabled={option?.disabled}>
-              {option?.label}
+          {options.map((option) => (
+            <option key={option.value} value={option.value} disabled={option.disabled}>
+              {option.label}
             </option>
           ))}
         </select>
@@ -61,14 +61,14 @@ export const AccessibleSelect: React?.FC<AccessibleSelectProps> = ({
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
           <svg
             className="h-5 w-5 text-gray-400"
-            xmlns="http://www?.w3.org/2000/svg"
+            xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
             aria-hidden="true"
           >
             <path
               fillRule="evenodd"
-              d="M5?.293 7?.293a1 1 0 011?.414 0L10 10?.586l3.293-3?.293a1 1 0 111?.414 1?.414l-4 4a1 1 0 01-1?.414 0l-4-4a1 1 0 010-1?.414z"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
               clipRule="evenodd"
             />
           </svg>

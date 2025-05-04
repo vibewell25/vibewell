@@ -6,7 +6,7 @@ import { Card } from '@/components/ui/Card';
 import { useToast } from '@/components/ui/use-toast';
 
 interface ARSupportCheckProps {
-  children: React?.ReactNode;
+  children: React.ReactNode;
   onARUnsupported?: () => void;
 }
 
@@ -20,15 +20,15 @@ export function ARSupportCheck({ children, onARUnsupported }: ARSupportCheckProp
   }, []);
 
   const checkARSupport = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       // Check if the browser supports WebXR
-      if (navigator?.xr) {
-        const isSupported = await navigator?.xr.isSessionSupported('immersive-ar');
+      if (navigator.xr) {
+        const isSupported = await navigator.xr.isSessionSupported('immersive-ar');
         setIsARSupported(isSupported);
         if (!isSupported) {
-          onARUnsupported?.();
+          onARUnsupported.();
           toast({
             title: 'AR Not Supported',
             description:
@@ -38,7 +38,7 @@ export function ARSupportCheck({ children, onARUnsupported }: ARSupportCheckProp
         }
       } else {
         setIsARSupported(false);
-        onARUnsupported?.();
+        onARUnsupported.();
         toast({
           title: 'AR Not Supported',
           description: 'Your browser does not support WebXR. Please try a different browser.',
@@ -46,9 +46,9 @@ export function ARSupportCheck({ children, onARUnsupported }: ARSupportCheckProp
         });
       }
     } catch (error) {
-      console?.error('Error checking AR support:', error);
+      console.error('Error checking AR support:', error);
       setIsARSupported(false);
-      onARUnsupported?.();
+      onARUnsupported.();
       toast({
         title: 'Error',
         description: 'Failed to check AR support. Please try again.',

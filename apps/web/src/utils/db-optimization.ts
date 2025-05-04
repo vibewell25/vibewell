@@ -52,17 +52,17 @@ class DatabaseOptimizer {
   private slowQueryThreshold: number = 1000; // 1 second
 
   private constructor() {
-    this?.pool = new Pool({
-      connectionString: process?.env['DATABASE_URL'],
+    this.pool = new Pool({
+      connectionString: process.env['DATABASE_URL'],
       max: 20,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 2000,
     });
 
-    this?.redis = new Redis(process?.env['REDIS_URL'] || 'redis://localhost:6379');
+    this.redis = new Redis(process.env['REDIS_URL'] || 'redis://localhost:6379');
 
-    this?.initializePrisma();
-    this?.setupQueryLogging();
+    this.initializePrisma();
+    this.setupQueryLogging();
   }
 
   /**
@@ -70,14 +70,14 @@ class DatabaseOptimizer {
    * @private
    */
   private initializePrisma() {
-    this?.prisma.$on('query' as any, (e: any) => {
-      if (e?.duration >= this?.slowQueryThreshold) {
-        this?.logSlowQuery({
-          query: e?.query,
-          duration: e?.duration,
-          timestamp: Date?.now(),
-          params: e?.params,
-        }).catch(console?.error);
+    this.prisma.$on('query' as any, (e: any) => {
+      if (e.duration >= this.slowQueryThreshold) {
+        this.logSlowQuery({
+          query: e.query,
+          duration: e.duration,
+          timestamp: Date.now(),
+          params: e.params,
+        }).catch(console.error);
       }
     });
   }
@@ -87,16 +87,16 @@ class DatabaseOptimizer {
    * @private
    */
   private setupQueryLogging() {
-    if (process?.env.NODE_ENV === 'development') {
-      this?.prisma.$use(async (params, next) => {
-        const start = performance?.now();
+    if (process.env.NODE_ENV === 'development') {
+      this.prisma.$use(async (params, next) => {
+        const start = performance.now();
         const result = await next(params);
-        const duration = performance?.now() - start;
+        const duration = performance.now() - start;
 
-        this?.queryMetrics.push({
-          query: JSON?.stringify(params),
+        this.queryMetrics.push({
+          query: JSON.stringify(params),
           duration,
-          timestamp: Date?.now(),
+          timestamp: Date.now(),
         });
 
         return result;
@@ -109,10 +109,10 @@ class DatabaseOptimizer {
    * @returns {DatabaseOptimizer} The singleton instance
    */
   public static getInstance(): DatabaseOptimizer {
-    if (!DatabaseOptimizer?.instance) {
-      DatabaseOptimizer?.instance = new DatabaseOptimizer();
+    if (!DatabaseOptimizer.instance) {
+      DatabaseOptimizer.instance = new DatabaseOptimizer();
     }
-    return DatabaseOptimizer?.instance;
+    return DatabaseOptimizer.instance;
   }
 
   /**
@@ -122,7 +122,7 @@ class DatabaseOptimizer {
    * @private
    */
   private async logSlowQuery(metrics: QueryMetrics): Promise<void> {
-    console?.warn('Slow query detected:', metrics);
+    console.warn('Slow query detected:', metrics);
   }
 
   /**
@@ -139,18 +139,18 @@ class DatabaseOptimizer {
     let lastError;
     for (let i = 0; i < maxRetries; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
       try {
-        const client = await this?.pool.connect();
+        const client = await this.pool.connect();
         try {
-          const result = await client?.query(query, params);
-          return result?.rows as T;
+          const result = await client.query(query, params);
+          return result.rows as T;
         } finally {
-          client?.release();
+          client.release();
         }
       } catch (error) {
         lastError = error;
 
         if (i < maxRetries - 1) {
-          await new Promise((resolve) => setTimeout(resolve, Math?.pow(2, i) * 1000));
+          await new Promise((resolve) => setTimeout(resolve, Math.pow(2, i) * 1000));
         }
       }
     }
@@ -164,31 +164,31 @@ class DatabaseOptimizer {
    * @returns {Promise<string[]>} Array of optimization suggestions
    */
   public async analyzeQueryPlan(query: string): Promise<string[]> {
-    const client = await this?.pool.connect();
+    const client = await this.pool.connect();
     const suggestions: string[] = [];
 
     try {
-      const plan = await client?.query(`EXPLAIN ANALYZE ${query}`);
-      const planText = plan?.rows.map((row: any) => row['QUERY PLAN']).join('\n');
+      const plan = await client.query(`EXPLAIN ANALYZE ${query}`);
+      const planText = plan.rows.map((row: any) => row['QUERY PLAN']).join('\n');
 
-      if (planText?.includes('Seq Scan')) {
-        suggestions?.push('Consider adding an index to avoid sequential scan');
+      if (planText.includes('Seq Scan')) {
+        suggestions.push('Consider adding an index to avoid sequential scan');
       }
 
-      const costMatch = planText?.match(/cost=(\d+)/);
-      const cost = costMatch?.[1];
+      const costMatch = planText.match(/cost=(\d+)/);
+      const cost = costMatch.[1];
       if (cost && parseInt(cost) > 1000) {
-        suggestions?.push('Query cost is high, consider optimization');
+        suggestions.push('Query cost is high, consider optimization');
       }
 
 
-      if ((planText?.match(/Scan/g) || []).length > 2) {
-        suggestions?.push(
+      if ((planText.match(/Scan/g) || []).length > 2) {
+        suggestions.push(
           'Multiple table scans detected, consider denormalization or adding indexes',
         );
       }
     } finally {
-      client?.release();
+      client.release();
     }
 
     return suggestions;
@@ -200,9 +200,9 @@ class DatabaseOptimizer {
    */
   public async getPoolStats() {
     return {
-      total: this?.pool.totalCount,
-      idle: this?.pool.idleCount,
-      waiting: this?.pool.waitingCount,
+      total: this.pool.totalCount,
+      idle: this.pool.idleCount,
+      waiting: this.pool.waitingCount,
     };
   }
 
@@ -214,14 +214,14 @@ class DatabaseOptimizer {
    */
   public async getQueryMetrics(minutes: number = 60) {
 
-    const cutoff = Date?.now() - minutes * 60 * 1000;
-    return this?.queryMetrics.filter((m) => m?.timestamp >= cutoff);
+    const cutoff = Date.now() - minutes * 60 * 1000;
+    return this.queryMetrics.filter((m) => m.timestamp >= cutoff);
   }
 
   /**
    * Execute a query with caching support
 
-   * @param {Prisma?.Sql | string} query - The SQL query to execute
+   * @param {Prisma.Sql | string} query - The SQL query to execute
 
    * @param {any[]} params - Query parameters
 
@@ -229,34 +229,34 @@ class DatabaseOptimizer {
    * @returns {Promise<T>} Query results
    */
   public async executeQuery<T>(
-    query: Prisma?.Sql | string,
+    query: Prisma.Sql | string,
     params?: any[],
     options: {
       ttl?: number;
       bypassCache?: boolean;
     } = {},
   ): Promise<T> {
-    const cacheKey = this?.generateCacheKey(query?.toString(), params);
+    const cacheKey = this.generateCacheKey(query.toString(), params);
 
-    if (!options?.bypassCache) {
-      const cached = await this?.redis.get(cacheKey);
+    if (!options.bypassCache) {
+      const cached = await this.redis.get(cacheKey);
       if (cached) {
-        return JSON?.parse(cached) as T;
+        return JSON.parse(cached) as T;
       }
     }
 
-    const result = await this?.prisma.$queryRaw<T>(
+    const result = await this.prisma.$queryRaw<T>(
 
     // Safe array access
-    if (query < 0 || query >= array?.length) {
+    if (query < 0 || query >= array.length) {
       throw new Error('Array index out of bounds');
     }
-      typeof query === 'string' ? Prisma?.sql([query]) : query,
+      typeof query === 'string' ? Prisma.sql([query]) : query,
       ...(params || []),
     );
 
-    if (!options?.bypassCache && options?.ttl) {
-      await this?.redis.setex(cacheKey, options?.ttl, JSON?.stringify(result));
+    if (!options.bypassCache && options.ttl) {
+      await this.redis.setex(cacheKey, options.ttl, JSON.stringify(result));
     }
 
     return result;
@@ -275,26 +275,26 @@ class DatabaseOptimizer {
     batchSize = 1000,
   ): Promise<T[]> {
     const results: T[] = [];
-    const client = await this?.pool.connect();
+    const client = await this.pool.connect();
 
     try {
-      await client?.query('BEGIN');
+      await client.query('BEGIN');
 
-      for (let i = 0; i < queries?.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i += batchSize) {
+      for (let i = 0; i < queries.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i += batchSize) {
 
-        const batch = queries?.slice(i, i + batchSize);
+        const batch = queries.slice(i, i + batchSize);
         for (const { query, params } of batch) {
-          const result = await client?.query(query, params);
-          results?.push(...(result?.rows as T[]));
+          const result = await client.query(query, params);
+          results.push(...(result.rows as T[]));
         }
       }
 
-      await client?.query('COMMIT');
+      await client.query('COMMIT');
     } catch (error) {
-      await client?.query('ROLLBACK');
+      await client.query('ROLLBACK');
       throw error;
     } finally {
-      client?.release();
+      client.release();
     }
 
     return results;
@@ -311,11 +311,11 @@ class DatabaseOptimizer {
    */
   private generateCacheKey(query: string, params?: any[]): string {
     const hash = createHash('sha256');
-    hash?.update(query);
+    hash.update(query);
     if (params) {
-      hash?.update(JSON?.stringify(params));
+      hash.update(JSON.stringify(params));
     }
-    return hash?.digest('hex');
+    return hash.digest('hex');
   }
 
   /**
@@ -325,15 +325,15 @@ class DatabaseOptimizer {
    * @returns {Promise<void>}
    */
   public async invalidateCache(pattern: string): Promise<void> {
-    const keys = await this?.redis.keys(pattern);
-    if (keys?.length > 0) {
-      await this?.redis.del(...keys);
+    const keys = await this.redis.keys(pattern);
+    if (keys.length > 0) {
+      await this.redis.del(...keys);
     }
   }
 }
 
 // Export a single instance
-const dbOptimizer = DatabaseOptimizer?.getInstance();
+const dbOptimizer = DatabaseOptimizer.getInstance();
 export { dbOptimizer };
 
 /**
@@ -349,17 +349,17 @@ export function analyzeQuery(query: string): {
   const suggestions: string[] = [];
   const potentialIssues: string[] = [];
 
-  if (query?.toLowerCase().includes('select') && query?.toLowerCase().includes('where')) {
-    potentialIssues?.push(
+  if (query.toLowerCase().includes('select') && query.toLowerCase().includes('where')) {
+    potentialIssues.push(
 
       'Potential N+1 query detected. Consider using JOIN or including related data in a single query.',
     );
   }
 
   const commonOperations = ['where', 'order by', 'group by'];
-  commonOperations?.forEach((operation) => {
-    if (query?.toLowerCase().includes(operation)) {
-      suggestions?.push(
+  commonOperations.forEach((operation) => {
+    if (query.toLowerCase().includes(operation)) {
+      suggestions.push(
         `Consider adding an index for the ${operation} clause to improve performance.`,
       );
     }

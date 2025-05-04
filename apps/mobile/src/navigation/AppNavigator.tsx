@@ -115,8 +115,8 @@ const ProfileScreen: React.FC = () => {
       ) : (
         <>
           <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 16 }}>Profile</Text>
-          <Text style={{ marginBottom: 8 }}>Name: {user?.name || 'N/A'}</Text>
-          <Text style={{ marginBottom: 16 }}>Email: {user?.email}</Text>
+          <Text style={{ marginBottom: 8 }}>Name: {user.name || 'N/A'}</Text>
+          <Text style={{ marginBottom: 16 }}>Email: {user.email}</Text>
           <Button title="Logout" onPress={signOut} color="#E63946" />
           <View style={{ marginTop: 12 }}>
             <Button title="Test Push Notification" onPress={handleTestPush} color="#2A9D8F" />

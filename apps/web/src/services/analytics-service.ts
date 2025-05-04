@@ -223,42 +223,42 @@ export class AnalyticsService {
   private prisma: PrismaClient;
 
   constructor() {
-    this?.sessionId = this?.getOrCreateSessionId();
-    this?.prisma = new PrismaClient();
+    this.sessionId = this.getOrCreateSessionId();
+    this.prisma = new PrismaClient();
   }
 
   private getOrCreateSessionId(): string {
     // Check if we have a session ID in localStorage
     if (typeof window !== 'undefined') {
-      const storedSessionId = localStorage?.getItem('analytics_session_id');
+      const storedSessionId = localStorage.getItem('analytics_session_id');
 
       if (storedSessionId) {
         return storedSessionId;
       }
 
       // Create a new session ID
-      const newSessionId = this?.generateSessionId();
-      localStorage?.setItem('analytics_session_id', newSessionId);
+      const newSessionId = this.generateSessionId();
+      localStorage.setItem('analytics_session_id', newSessionId);
       return newSessionId;
     }
 
 
     // Server-side fallback
-    return this?.generateSessionId();
+    return this.generateSessionId();
   }
 
   private generateSessionId(): string {
-    // Use cryptographically secure random bytes instead of Math?.random
-    // This works in both browser and Node?.js environments
-    if (typeof window !== 'undefined' && window?.crypto) {
+    // Use cryptographically secure random bytes instead of Math.random
+    // This works in both browser and Node.js environments
+    if (typeof window !== 'undefined' && window.crypto) {
       // Browser environment: use Web Crypto API
       const buffer = new Uint8Array(16);
-      window?.crypto.getRandomValues(buffer);
-      return Array?.from(buffer)
-        .map((b) => b?.toString(16).padStart(2, '0'))
+      window.crypto.getRandomValues(buffer);
+      return Array.from(buffer)
+        .map((b) => b.toString(16).padStart(2, '0'))
         .join('');
     } else {
-      // Node?.js environment: use crypto module
+      // Node.js environment: use crypto module
       return randomBytes(16).toString('hex');
     }
   }
@@ -277,23 +277,23 @@ export class AnalyticsService {
 
             'Content-Type': 'application/json',
           },
-          body: JSON?.stringify({
+          body: JSON.stringify({
             event,
             properties,
-            session_id: this?.sessionId,
+            session_id: this.sessionId,
           }),
         });
 
-        const result = await response?.json();
+        const result = await response.json();
 
-        if (result?.success && result?.session_id) {
-          localStorage?.setItem('analytics_session_id', result?.session_id);
-          this?.sessionId = result?.session_id;
+        if (result.success && result.session_id) {
+          localStorage.setItem('analytics_session_id', result.session_id);
+          this.sessionId = result.session_id;
         }
 
-        await this?.sendToExternalAnalytics({
+        await this.sendToExternalAnalytics({
           event,
-          session_id: this?.sessionId,
+          session_id: this.sessionId,
           timestamp: new Date().toISOString(),
           properties,
         });
@@ -303,15 +303,15 @@ export class AnalyticsService {
 
 
       // Server-side tracking
-      const session = await this?.prisma.session?.findFirst({
-        where: { sessionToken: this?.sessionId },
+      const session = await this.prisma.session.findFirst({
+        where: { sessionToken: this.sessionId },
         include: { user: true },
       });
 
-      await this?.prisma.analyticsInteraction?.create({
+      await this.prisma.analyticsInteraction.create({
         data: {
-          sessionId: this?.sessionId,
-          userId: session?.userId || null,
+          sessionId: this.sessionId,
+          userId: session.userId || null,
           timestamp: new Date(),
           eventType: event,
           metadata: properties as Record<string, string | number | boolean | null>
@@ -319,24 +319,24 @@ export class AnalyticsService {
       });
 
     } catch (error) {
-      logger?.error('Failed to track analytics event:', error instanceof Error ? error?.message : 'Unknown error');
+      logger.error('Failed to track analytics event:', error instanceof Error ? error.message : 'Unknown error');
     }
   }
 
   // Helper method to send data to external analytics services
   private async sendToExternalAnalytics(event: AnalyticsEvent): Promise<void> {
     try {
-      await this?.prisma.analyticsInteraction?.create({
+      await this.prisma.analyticsInteraction.create({
         data: {
-          sessionId: event?.session_id,
-          userId: event?.user_id || null,
-          timestamp: new Date(event?.timestamp),
-          eventType: event?.event,
-          metadata: event?.properties as Record<string, string | number | boolean | null>
+          sessionId: event.session_id,
+          userId: event.user_id || null,
+          timestamp: new Date(event.timestamp),
+          eventType: event.event,
+          metadata: event.properties as Record<string, string | number | boolean | null>
         }
       });
     } catch (error) {
-      logger?.error('Failed to send analytics event:', error instanceof Error ? error?.message : 'Unknown error');
+      logger.error('Failed to send analytics event:', error instanceof Error ? error.message : 'Unknown error');
     }
   }
 
@@ -346,11 +346,11 @@ export class AnalyticsService {
     end: string;
   }): Promise<EngagementMetrics> {
     try {
-      const sessions = await this?.prisma.analyticsInteraction?.findMany({
+      const sessions = await this.prisma.analyticsInteraction.findMany({
         where: {
           timestamp: {
-            gte: new Date(options?.start),
-            lte: new Date(options?.end),
+            gte: new Date(options.start),
+            lte: new Date(options.end),
           },
         },
         orderBy: {
@@ -360,86 +360,86 @@ export class AnalyticsService {
 
       const uniqueUserIds = new Set(
         sessions
-          .filter((session) => session?.userId !== null)
-          .map((session) => session?.userId!)
+          .filter((session) => session.userId !== null)
+          .map((session) => session.userId!)
       );
 
-      const uniqueSessionIds = new Set(sessions?.map((session) => session?.sessionId));
+      const uniqueSessionIds = new Set(sessions.map((session) => session.sessionId));
 
-      const tryOnSessions = sessions?.filter(
-        (session) => session?.eventType === 'product_try_on'
+      const tryOnSessions = sessions.filter(
+        (session) => session.eventType === 'product_try_on'
       );
 
       // Calculate metrics using typed data
-      const makeupSessions = tryOnSessions?.filter((session) => {
-        const props = session?.metadata as Record<string, string>;
+      const makeupSessions = tryOnSessions.filter((session) => {
+        const props = session.metadata as Record<string, string>;
         return props['product_type'] === 'makeup';
       }).length;
 
-      const hairstyleSessions = tryOnSessions?.filter((session) => {
-        const props = session?.metadata as Record<string, string>;
+      const hairstyleSessions = tryOnSessions.filter((session) => {
+        const props = session.metadata as Record<string, string>;
         return props['product_type'] === 'hairstyle';
       }).length;
 
-      const accessorySessions = tryOnSessions?.filter((session) => {
-        const props = session?.metadata as Record<string, string>;
+      const accessorySessions = tryOnSessions.filter((session) => {
+        const props = session.metadata as Record<string, string>;
         return props['product_type'] === 'accessory';
       }).length;
 
-      const shareSessions = sessions?.filter((session) => session?.eventType === 'product_share');
+      const shareSessions = sessions.filter((session) => session.eventType === 'product_share');
 
-      const socialShares = shareSessions?.filter((session) => {
-        const props = session?.metadata as Record<string, string>;
+      const socialShares = shareSessions.filter((session) => {
+        const props = session.metadata as Record<string, string>;
         return props['share_method'] === 'social';
       }).length;
 
-      const emailShares = shareSessions?.filter((session) => {
-        const props = session?.metadata as Record<string, string>;
+      const emailShares = shareSessions.filter((session) => {
+        const props = session.metadata as Record<string, string>;
         return props['share_method'] === 'email';
       }).length;
 
-      const downloadShares = shareSessions?.filter((session) => {
-        const props = session?.metadata as Record<string, string>;
+      const downloadShares = shareSessions.filter((session) => {
+        const props = session.metadata as Record<string, string>;
         return props['share_method'] === 'download';
       }).length;
 
       // Calculate top viewed products
-      const topViewedProducts = await this?.getTopViewedProducts(sessions);
+      const topViewedProducts = await this.getTopViewedProducts(sessions);
 
       // Calculate product category breakdown
-      const productCategoryBreakdown = await this?.getCategoryBreakdown(sessions);
+      const productCategoryBreakdown = await this.getCategoryBreakdown(sessions);
 
       // Calculate average duration and success rate
       let totalDuration = 0;
       let successCount = 0;
 
-      tryOnSessions?.forEach((session) => {
-        const props = session?.metadata as Record<string, string>;
+      tryOnSessions.forEach((session) => {
+        const props = session.metadata as Record<string, string>;
 
-        if (props?.duration) {
-          if (totalDuration > Number.MAX_SAFE_INTEGER || totalDuration < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); totalDuration += props?.duration;
+        if (props.duration) {
+          if (totalDuration > Number.MAX_SAFE_INTEGER || totalDuration < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); totalDuration += props.duration;
         }
 
-        if (props?.success) {
+        if (props.success) {
           if (successCount > Number.MAX_SAFE_INTEGER || successCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); successCount += 1;
         }
       });
 
 
-      const averageDuration = tryOnSessions?.length > 0 ? totalDuration / tryOnSessions?.length : 0;
+      const averageDuration = tryOnSessions.length > 0 ? totalDuration / tryOnSessions.length : 0;
 
       const successRate =
 
-        tryOnSessions?.length > 0 ? (successCount / tryOnSessions?.length) * 100 : 0;
+        tryOnSessions.length > 0 ? (successCount / tryOnSessions.length) * 100 : 0;
 
       return {
-        totalSessions: uniqueSessionIds?.size,
-        uniqueUsers: uniqueUserIds?.size,
+        totalSessions: uniqueSessionIds.size,
+        uniqueUsers: uniqueUserIds.size,
         averageDuration,
         successRate,
         timeRange: {
-          start: options?.start,
-          end: options?.end,
+          start: options.start,
+          end: options.end,
         },
         makeupSessions,
         hairstyleSessions,
@@ -451,17 +451,17 @@ export class AnalyticsService {
         productCategoryBreakdown,
       };
     } catch (error) {
-      logger?.error('Error getting engagement metrics:', error instanceof Error ? error?.message : 'Unknown error');
+      logger.error('Error getting engagement metrics:', error instanceof Error ? error.message : 'Unknown error');
       throw error;
     }
   }
 
   private async getTopViewedProducts(sessions: AnalyticsEvent[]): Promise<ProductView[]> {
     const productViews = sessions
-      .filter((session) => session?.eventType === 'product_view')
+      .filter((session) => session.eventType === 'product_view')
       .reduce<Record<string, ProductView>>((acc, session) => {
-        const productId = session?.metadata['product_id'];
-        const productName = session?.metadata['product_name'];
+        const productId = session.metadata['product_id'];
+        const productName = session.metadata['product_name'];
         
         if (typeof productId !== 'string' || typeof productName !== 'string') {
           return acc;
@@ -469,13 +469,13 @@ export class AnalyticsService {
 
 
     // Safe array access
-    if (productId < 0 || productId >= array?.length) {
+    if (productId < 0 || productId >= array.length) {
       throw new Error('Array index out of bounds');
     }
         if (!acc[productId]) {
 
     // Safe array access
-    if (productId < 0 || productId >= array?.length) {
+    if (productId < 0 || productId >= array.length) {
       throw new Error('Array index out of bounds');
     }
           acc[productId] = {
@@ -487,24 +487,24 @@ export class AnalyticsService {
         
 
     // Safe array access
-    if (productId < 0 || productId >= array?.length) {
+    if (productId < 0 || productId >= array.length) {
       throw new Error('Array index out of bounds');
     }
         acc[productId].if (views > Number.MAX_SAFE_INTEGER || views < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); views += 1;
         return acc;
       }, {});
 
-    return Object?.values(productViews)
+    return Object.values(productViews)
 
-      .sort((a, b) => b?.views - a?.views)
+      .sort((a, b) => b.views - a.views)
       .slice(0, 10);
   }
 
   private async getCategoryBreakdown(sessions: AnalyticsEvent[]): Promise<Record<string, number>> {
     return sessions
-      .filter((session) => session?.eventType === 'product_view')
+      .filter((session) => session.eventType === 'product_view')
       .reduce<Record<string, number>>((acc, session) => {
-        const category = session?.metadata['product_category'];
+        const category = session.metadata['product_category'];
         
         if (typeof category !== 'string') {
           return acc;
@@ -512,12 +512,12 @@ export class AnalyticsService {
 
 
     // Safe array access
-    if (category < 0 || category >= array?.length) {
+    if (category < 0 || category >= array.length) {
       throw new Error('Array index out of bounds');
     }
 
     // Safe array access
-    if (category < 0 || category >= array?.length) {
+    if (category < 0 || category >= array.length) {
       throw new Error('Array index out of bounds');
     }
         acc[category] = (acc[category] || 0) + 1;
@@ -532,7 +532,7 @@ export class AnalyticsService {
   ): Promise<ProductMetrics> {
     try {
       // Query for product events in the time range
-      const { data: productEvents, error: eventsError } = await prisma?.analyticsEvent.findMany({
+      const { data: productEvents, error: eventsError } = await prisma.analyticsEvent.findMany({
         where: {
           event: {
             in: ['product_view', 'product_try_on'],
@@ -552,8 +552,8 @@ export class AnalyticsService {
             },
           ],
           timestamp: {
-            gte: new Date(options?.start),
-            lte: new Date(options?.end),
+            gte: new Date(options.start),
+            lte: new Date(options.end),
           },
         },
         orderBy: {
@@ -566,47 +566,47 @@ export class AnalyticsService {
       }
 
       // Calculate product metrics
-      const viewEvents = productEvents?.filter((event) => event?.event === 'product_view');
+      const viewEvents = productEvents.filter((event) => event.event === 'product_view');
 
-      const tryOnEvents = productEvents?.filter((event) => event?.event === 'product_try_on');
+      const tryOnEvents = productEvents.filter((event) => event.event === 'product_try_on');
 
       const uniqueViewerIds = new Set(
         viewEvents
-          .filter((event) => event?.user_id || event?.session_id)
-          .map((event) => event?.user_id || event?.session_id),
+          .filter((event) => event.user_id || event.session_id)
+          .map((event) => event.user_id || event.session_id),
       );
 
 
 
       // Calculate click-through rate (views / recommendation clicks)
-      const recommendationClicks = productEvents?.filter(
-        (event) => event?.event === 'product_recommendation_click',
+      const recommendationClicks = productEvents.filter(
+        (event) => event.event === 'product_recommendation_click',
       ).length;
 
       const clickThroughRate =
 
-        recommendationClicks > 0 ? (viewEvents?.length / recommendationClicks) * 100 : 0;
+        recommendationClicks > 0 ? (viewEvents.length / recommendationClicks) * 100 : 0;
 
 
       // Calculate conversion rate (try-ons / views)
       const conversionRate =
 
-        viewEvents?.length > 0 ? (tryOnEvents?.length / viewEvents?.length) * 100 : 0;
+        viewEvents.length > 0 ? (tryOnEvents.length / viewEvents.length) * 100 : 0;
 
       return {
         productId,
-        totalViews: viewEvents?.length,
-        uniqueViews: uniqueViewerIds?.size,
-        tryOnCount: tryOnEvents?.length,
+        totalViews: viewEvents.length,
+        uniqueViews: uniqueViewerIds.size,
+        tryOnCount: tryOnEvents.length,
         conversionRate,
         clickThroughRate,
         timeRange: {
-          start: options?.start,
-          end: options?.end,
+          start: options.start,
+          end: options.end,
         },
       };
     } catch (error) {
-      console?.error(`Error fetching metrics for product ${productId}:`, error);
+      console.error(`Error fetching metrics for product ${productId}:`, error);
       throw error;
     }
   }
@@ -618,14 +618,14 @@ export class AnalyticsService {
   }): Promise<RecommendationMetrics> {
     try {
       // Query for recommendation events in the time range
-      const { data: events, error: eventsError } = await prisma?.analyticsEvent.findMany({
+      const { data: events, error: eventsError } = await prisma.analyticsEvent.findMany({
         where: {
           event: {
             in: ['product_recommendation_click', 'product_view', 'cart_add'],
           },
           timestamp: {
-            gte: new Date(options?.start),
-            lte: new Date(options?.end),
+            gte: new Date(options.start),
+            lte: new Date(options.end),
           },
         },
         orderBy: {
@@ -638,8 +638,8 @@ export class AnalyticsService {
       }
 
       // Calculate recommendation metrics
-      const recommendationClicks = events?.filter(
-        (event) => event?.event === 'product_recommendation_click',
+      const recommendationClicks = events.filter(
+        (event) => event.event === 'product_recommendation_click',
       );
 
       // Track which products were recommended and clicked
@@ -654,20 +654,20 @@ export class AnalyticsService {
         }
       > = {};
 
-      recommendationClicks?.forEach((event) => {
-        const productId = event?.properties.product_id;
-        const productName = event?.properties.product_name || 'Unknown Product';
+      recommendationClicks.forEach((event) => {
+        const productId = event.properties.product_id;
+        const productName = event.properties.product_name || 'Unknown Product';
 
         if (productId) {
 
     // Safe array access
-    if (productId < 0 || productId >= array?.length) {
+    if (productId < 0 || productId >= array.length) {
       throw new Error('Array index out of bounds');
     }
           if (!recommendedProducts[productId]) {
 
     // Safe array access
-    if (productId < 0 || productId >= array?.length) {
+    if (productId < 0 || productId >= array.length) {
       throw new Error('Array index out of bounds');
     }
             recommendedProducts[productId] = {
@@ -680,7 +680,7 @@ export class AnalyticsService {
           }
 
     // Safe array access
-    if (productId < 0 || productId >= array?.length) {
+    if (productId < 0 || productId >= array.length) {
       throw new Error('Array index out of bounds');
     }
           recommendedProducts[productId].if (clicks > Number.MAX_SAFE_INTEGER || clicks < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); clicks += 1;
@@ -689,19 +689,19 @@ export class AnalyticsService {
 
       // Count views for recommended products
       events
-        .filter((event) => event?.event === 'product_view')
+        .filter((event) => event.event === 'product_view')
         .forEach((event) => {
-          const productId = event?.properties.product_id;
+          const productId = event.properties.product_id;
 
 
     // Safe array access
-    if (productId < 0 || productId >= array?.length) {
+    if (productId < 0 || productId >= array.length) {
       throw new Error('Array index out of bounds');
     }
           if (productId && recommendedProducts[productId]) {
 
     // Safe array access
-    if (productId < 0 || productId >= array?.length) {
+    if (productId < 0 || productId >= array.length) {
       throw new Error('Array index out of bounds');
     }
             recommendedProducts[productId].if (views > Number.MAX_SAFE_INTEGER || views < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); views += 1;
@@ -710,19 +710,19 @@ export class AnalyticsService {
 
       // Count conversions (added to cart) for recommended products
       events
-        .filter((event) => event?.event === 'cart_add')
+        .filter((event) => event.event === 'cart_add')
         .forEach((event) => {
-          const productId = event?.properties.product_id;
+          const productId = event.properties.product_id;
 
 
     // Safe array access
-    if (productId < 0 || productId >= array?.length) {
+    if (productId < 0 || productId >= array.length) {
       throw new Error('Array index out of bounds');
     }
           if (productId && recommendedProducts[productId]) {
 
     // Safe array access
-    if (productId < 0 || productId >= array?.length) {
+    if (productId < 0 || productId >= array.length) {
       throw new Error('Array index out of bounds');
     }
             recommendedProducts[productId].if (conversions > Number.MAX_SAFE_INTEGER || conversions < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); conversions += 1;
@@ -730,21 +730,21 @@ export class AnalyticsService {
         });
 
       // Calculate overall metrics
-      const totalRecommendations = Object?.values(recommendedProducts).reduce(
+      const totalRecommendations = Object.values(recommendedProducts).reduce(
 
-        (sum, product) => sum + product?.recommendations,
+        (sum, product) => sum + product.recommendations,
         0,
       );
 
-      const totalClicks = Object?.values(recommendedProducts).reduce(
+      const totalClicks = Object.values(recommendedProducts).reduce(
 
-        (sum, product) => sum + product?.clicks,
+        (sum, product) => sum + product.clicks,
         0,
       );
 
-      const totalConversions = Object?.values(recommendedProducts).reduce(
+      const totalConversions = Object.values(recommendedProducts).reduce(
 
-        (sum, product) => sum + product?.conversions,
+        (sum, product) => sum + product.conversions,
         0,
       );
 
@@ -756,15 +756,15 @@ export class AnalyticsService {
       const conversionRate = totalClicks > 0 ? (totalConversions / totalClicks) * 100 : 0;
 
       // Get top recommended products
-      const topRecommendedProducts = Object?.entries(recommendedProducts)
+      const topRecommendedProducts = Object.entries(recommendedProducts)
         .map(([product_id, product]) => ({
           product_id,
-          name: product?.name,
-          recommendations: product?.recommendations,
-          clicks: product?.clicks,
+          name: product.name,
+          recommendations: product.recommendations,
+          clicks: product.clicks,
         }))
 
-        .sort((a, b) => b?.recommendations - a?.recommendations)
+        .sort((a, b) => b.recommendations - a.recommendations)
         .slice(0, 5);
 
       return {
@@ -773,12 +773,12 @@ export class AnalyticsService {
         conversionRate,
         topRecommendedProducts,
         timeRange: {
-          start: options?.start,
-          end: options?.end,
+          start: options.start,
+          end: options.end,
         },
       };
     } catch (error) {
-      console?.error('Error fetching recommendation metrics:', error);
+      console.error('Error fetching recommendation metrics:', error);
       throw error;
     }
   }
@@ -794,26 +794,26 @@ export class AnalyticsService {
 
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify(data),
+        body: JSON.stringify(data),
       });
     } catch (error) {
 
-      console?.error('Error tracking try-on session:', error);
+      console.error('Error tracking try-on session:', error);
     }
   }
 
   async trackShare(data: ShareData): Promise<void> {
     try {
-      await this?.trackEvent('product_share', {
-        session_id: data?.sessionId,
-        user_id: data?.userId,
-        platform: data?.platform,
-        method: data?.method,
-        success: data?.success,
-        error: data?.error,
+      await this.trackEvent('product_share', {
+        session_id: data.sessionId,
+        user_id: data.userId,
+        platform: data.platform,
+        method: data.method,
+        success: data.success,
+        error: data.error,
       });
     } catch (error) {
-      console?.error('Error tracking share:', error);
+      console.error('Error tracking share:', error);
     }
   }
 
@@ -826,35 +826,35 @@ export class AnalyticsService {
     endDate: Date,
   ): Promise<AnalyticsData> {
     try {
-      const [userMetrics, bookingMetrics, topServices, retentionData] = await Promise?.all([
-        this?.getUserMetrics(startDate, endDate),
-        this?.getBookingMetrics(startDate, endDate),
-        this?.getTopServices(startDate, endDate),
-        this?.getUserRetention(startDate, endDate),
+      const [userMetrics, bookingMetrics, topServices, retentionData] = await Promise.all([
+        this.getUserMetrics(startDate, endDate),
+        this.getBookingMetrics(startDate, endDate),
+        this.getTopServices(startDate, endDate),
+        this.getUserRetention(startDate, endDate),
       ]);
 
       const previousPeriodEnd = new Date(startDate);
-      previousPeriodEnd?.setDate(previousPeriodEnd?.getDate() - 1);
+      previousPeriodEnd.setDate(previousPeriodEnd.getDate() - 1);
       const previousPeriodStart = new Date(previousPeriodEnd);
-      previousPeriodStart?.setDate(
-        previousPeriodStart?.getDate() -
-          (endDate?.getTime() - startDate?.getTime()) / (1000 * 60 * 60 * 24),
+      previousPeriodStart.setDate(
+        previousPeriodStart.getDate() -
+          (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
       );
 
-      const [previousUserMetrics, previousBookingMetrics] = await Promise?.all([
-        this?.getUserMetrics(previousPeriodStart, previousPeriodEnd),
-        this?.getBookingMetrics(previousPeriodStart, previousPeriodEnd),
+      const [previousUserMetrics, previousBookingMetrics] = await Promise.all([
+        this.getUserMetrics(previousPeriodStart, previousPeriodEnd),
+        this.getBookingMetrics(previousPeriodStart, previousPeriodEnd),
       ]);
 
       const trends = {
-        userGrowth: this?.calculateGrowth(previousUserMetrics?.totalUsers, userMetrics?.totalUsers),
-        revenueGrowth: this?.calculateGrowth(
-          previousBookingMetrics?.totalRevenue,
-          bookingMetrics?.totalRevenue,
+        userGrowth: this.calculateGrowth(previousUserMetrics.totalUsers, userMetrics.totalUsers),
+        revenueGrowth: this.calculateGrowth(
+          previousBookingMetrics.totalRevenue,
+          bookingMetrics.totalRevenue,
         ),
-        bookingGrowth: this?.calculateGrowth(
-          previousBookingMetrics?.totalBookings,
-          bookingMetrics?.totalBookings,
+        bookingGrowth: this.calculateGrowth(
+          previousBookingMetrics.totalBookings,
+          bookingMetrics.totalBookings,
         ),
       };
 
@@ -871,7 +871,7 @@ export class AnalyticsService {
         userRetention: retentionData,
       };
     } catch (error) {
-      logger?.error('Error getting analytics data', 'analytics', { error });
+      logger.error('Error getting analytics data', 'analytics', { error });
       throw error;
     }
   }
@@ -885,7 +885,7 @@ export class AnalyticsService {
     endDate: Date,
   ): Promise<ServicePerformance> {
     try {
-      const service = await prismaClient?.service.findUnique({
+      const service = await prismaClient.service.findUnique({
         where: { id: serviceId },
         include: {
           bookings: {
@@ -912,28 +912,28 @@ export class AnalyticsService {
       }
 
       const metrics = {
-        totalBookings: service?.bookings.length,
+        totalBookings: service.bookings.length,
 
-        totalRevenue: service?.bookings.reduce((sum, booking) => sum + booking?.price, 0),
+        totalRevenue: service.bookings.reduce((sum, booking) => sum + booking.price, 0),
         averageRating:
-          service?.reviews.length > 0
+          service.reviews.length > 0
 
-            ? service?.reviews.reduce((sum, review) => sum + review?.rating, 0) /
-              service?.reviews.length
+            ? service.reviews.reduce((sum, review) => sum + review.rating, 0) /
+              service.reviews.length
             : 0,
-        utilization: await this?.calculateUtilization(service, startDate, endDate),
+        utilization: await this.calculateUtilization(service, startDate, endDate),
       };
 
-      const trends = await this?.getServiceTrends(service, startDate, endDate);
+      const trends = await this.getServiceTrends(service, startDate, endDate);
 
       return {
-        id: service?.id,
-        name: service?.name,
+        id: service.id,
+        name: service.name,
         metrics,
         trends,
       };
     } catch (error) {
-      logger?.error('Error getting service performance', 'analytics', { error, serviceId });
+      logger.error('Error getting service performance', 'analytics', { error, serviceId });
       throw error;
     }
   }
@@ -957,24 +957,24 @@ export class AnalyticsService {
         for (const metric of metrics) {
           switch (metric) {
             case 'bookings':
-              data?.bookings = await this?.getBookingMetrics(startDate, endDate, filters);
+              data.bookings = await this.getBookingMetrics(startDate, endDate, filters);
               break;
             case 'revenue':
-              data?.revenue = await this?.getRevenueMetrics(startDate, endDate, filters);
+              data.revenue = await this.getRevenueMetrics(startDate, endDate, filters);
               break;
             case 'users':
-              data?.users = await this?.getUserMetrics(startDate, endDate, filters);
+              data.users = await this.getUserMetrics(startDate, endDate, filters);
               break;
             case 'services':
-              data?.services = await this?.getServiceMetrics(startDate, endDate, filters);
+              data.services = await this.getServiceMetrics(startDate, endDate, filters);
               break;
             default:
-              logger?.warn('Unknown metric requested', 'analytics', { metric });
+              logger.warn('Unknown metric requested', 'analytics', { metric });
           }
         }
 
         if (groupBy) {
-          data?.groupedData = await this?.groupDataBy(data, groupBy, startDate, endDate);
+          data.groupedData = await this.groupDataBy(data, groupBy, startDate, endDate);
         }
 
         return data;
@@ -982,7 +982,7 @@ export class AnalyticsService {
 
       return reportData;
     } catch (error) {
-      logger?.error('Error generating report', 'analytics', { error });
+      logger.error('Error generating report', 'analytics', { error });
       throw error;
     }
   }
@@ -991,7 +991,7 @@ export class AnalyticsService {
    * Private helper methods
    */
   private async getUserMetrics(startDate: Date, endDate: Date, filters?: Record<string, any>) {
-    const users = await prismaClient?.user.findMany({
+    const users = await prismaClient.user.findMany({
       where: {
         createdAt: {
           gte: startDate,
@@ -1001,7 +1001,7 @@ export class AnalyticsService {
       },
     });
 
-    const activeUsers = await prismaClient?.user.count({
+    const activeUsers = await prismaClient.user.count({
       where: {
         lastLoginAt: {
           gte: startDate,
@@ -1012,14 +1012,14 @@ export class AnalyticsService {
     });
 
     return {
-      totalUsers: users?.length,
+      totalUsers: users.length,
       activeUsers,
-      newUsers: users?.filter((user) => user?.createdAt >= startDate).length,
+      newUsers: users.filter((user) => user.createdAt >= startDate).length,
     };
   }
 
   private async getBookingMetrics(startDate: Date, endDate: Date, filters?: Record<string, any>) {
-    const bookings = await prismaClient?.booking.findMany({
+    const bookings = await prismaClient.booking.findMany({
       where: {
         createdAt: {
           gte: startDate,
@@ -1030,18 +1030,18 @@ export class AnalyticsService {
     });
 
 
-    const totalRevenue = bookings?.reduce((sum, booking) => sum + booking?.price, 0);
+    const totalRevenue = bookings.reduce((sum, booking) => sum + booking.price, 0);
 
     return {
-      totalBookings: bookings?.length,
+      totalBookings: bookings.length,
       totalRevenue,
 
-      averageBookingValue: bookings?.length > 0 ? totalRevenue / bookings?.length : 0,
+      averageBookingValue: bookings.length > 0 ? totalRevenue / bookings.length : 0,
     };
   }
 
   private async getTopServices(startDate: Date, endDate: Date) {
-    const services = await prismaClient?.service.findMany({
+    const services = await prismaClient.service.findMany({
       include: {
         bookings: {
           where: {
@@ -1056,19 +1056,19 @@ export class AnalyticsService {
 
     return services
       .map((service) => ({
-        id: service?.id,
-        name: service?.name,
-        bookings: service?.bookings.length,
+        id: service.id,
+        name: service.name,
+        bookings: service.bookings.length,
 
-        revenue: service?.bookings.reduce((sum, booking) => sum + booking?.price, 0),
+        revenue: service.bookings.reduce((sum, booking) => sum + booking.price, 0),
       }))
 
-      .sort((a, b) => b?.revenue - a?.revenue)
+      .sort((a, b) => b.revenue - a.revenue)
       .slice(0, 5);
   }
 
   private async getUserRetention(startDate: Date, endDate: Date) {
-    const users = await prismaClient?.user.findMany({
+    const users = await prismaClient.user.findMany({
       include: {
         bookings: {
           where: {
@@ -1081,12 +1081,12 @@ export class AnalyticsService {
       },
     });
 
-    const newUsers = users?.filter((user) => user?.createdAt >= startDate).length;
-    const returningUsers = users?.filter(
-      (user) => user?.createdAt < startDate && user?.bookings.length > 0,
+    const newUsers = users.filter((user) => user.createdAt >= startDate).length;
+    const returningUsers = users.filter(
+      (user) => user.createdAt < startDate && user.bookings.length > 0,
     ).length;
 
-    const previousUsers = await prismaClient?.user.count({
+    const previousUsers = await prismaClient.user.count({
       where: {
         createdAt: {
           lt: startDate,
@@ -1115,10 +1115,10 @@ export class AnalyticsService {
     startDate: Date,
     endDate: Date,
   ): Promise<number> {
-    const totalSlots = await this?.getTotalAvailableSlots(service, startDate, endDate);
+    const totalSlots = await this.getTotalAvailableSlots(service, startDate, endDate);
     if (totalSlots === 0) return 0;
 
-    return (service?.bookings.length / totalSlots) * 100;
+    return (service.bookings.length / totalSlots) * 100;
   }
 
   private async getTotalAvailableSlots(
@@ -1128,8 +1128,8 @@ export class AnalyticsService {
   ): Promise<number> {
     // Implementation depends on your business logic
     // This is a simplified version
-    const daysDifference = Math?.ceil(
-      (endDate?.getTime() - startDate?.getTime()) / (1000 * 60 * 60 * 24),
+    const daysDifference = Math.ceil(
+      (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
     );
     const slotsPerDay = 8; // Assuming 8 slots per day
 
@@ -1166,20 +1166,20 @@ export class AnalyticsService {
   }
 
   private calculateSessionMetrics(sessions: AnalyticsSession[]): SessionMetrics {
-    const totalSessions = sessions?.length;
+    const totalSessions = sessions.length;
     const uniqueUsers = new Set(
       sessions
-        .filter((s: AnalyticsSession) => s?.userId !== null)
-        .map((s: AnalyticsSession) => s?.userId!)
+        .filter((s: AnalyticsSession) => s.userId !== null)
+        .map((s: AnalyticsSession) => s.userId!)
     ).size;
-    const totalDuration = sessions?.reduce(
-      (sum: number, s: AnalyticsSession) => sum + (s?.duration || 0),
+    const totalDuration = sessions.reduce(
+      (sum: number, s: AnalyticsSession) => sum + (s.duration || 0),
       0
     );
 
     const averageDuration = totalSessions > 0 ? totalDuration / totalSessions : 0;
-    const successfulSessions = sessions?.filter(
-      (s: AnalyticsSession) => s?.events.some(e => e?.event === 'checkout_complete')
+    const successfulSessions = sessions.filter(
+      (s: AnalyticsSession) => s.events.some(e => e.event === 'checkout_complete')
     ).length;
 
     const successRate = totalSessions > 0 ? (successfulSessions / totalSessions) * 100 : 0;
@@ -1193,7 +1193,7 @@ export class AnalyticsService {
   }
 
   private async getServiceMetrics(startDate: Date, endDate: Date, filters?: Record<string, unknown>): Promise<ServiceMetrics[]> {
-    const services = await this?.prisma.service?.findMany({
+    const services = await this.prisma.service.findMany({
       where: filters,
       include: {
         serviceBookings: {
@@ -1207,11 +1207,11 @@ export class AnalyticsService {
       }
     });
 
-    return services?.map(service => ({
-      id: service?.id,
-      name: service?.name,
-      bookings: service?.serviceBookings.length,
-      revenue: service?.serviceBookings.reduce((sum, booking) => sum + (booking?.price || 0), 0)
+    return services.map(service => ({
+      id: service.id,
+      name: service.name,
+      bookings: service.serviceBookings.length,
+      revenue: service.serviceBookings.reduce((sum, booking) => sum + (booking.price || 0), 0)
     }));
   }
 
@@ -1220,7 +1220,7 @@ export class AnalyticsService {
     average: number;
     breakdown: Record<string, number>;
   }> {
-    const bookings = await this?.prisma.serviceBooking?.findMany({
+    const bookings = await this.prisma.serviceBooking.findMany({
       where: {
         createdAt: {
           gte: startDate,
@@ -1230,9 +1230,9 @@ export class AnalyticsService {
       }
     });
 
-    const total = bookings?.reduce((sum, booking) => sum + (booking?.price || 0), 0);
+    const total = bookings.reduce((sum, booking) => sum + (booking.price || 0), 0);
 
-    const average = bookings?.length > 0 ? total / bookings?.length : 0;
+    const average = bookings.length > 0 ? total / bookings.length : 0;
 
     return {
       total,
@@ -1243,21 +1243,21 @@ export class AnalyticsService {
 
   async trackEvent(event: Omit<AnalyticsEvent, 'id'>): Promise<void> {
     try {
-      await this?.prisma.analyticsView?.create({
+      await this.prisma.analyticsView.create({
         data: {
           id: randomBytes(16).toString('hex'),
-          userId: event?.userId,
-          sessionId: event?.sessionId,
-          timestamp: event?.timestamp,
-          type: event?.eventType,
-          metadata: event?.metadata as unknown as Prisma?.JsonObject,
-          elementId: event?.elementId,
-          elementType: event?.elementType,
-          value: event?.value
+          userId: event.userId,
+          sessionId: event.sessionId,
+          timestamp: event.timestamp,
+          type: event.eventType,
+          metadata: event.metadata as unknown as Prisma.JsonObject,
+          elementId: event.elementId,
+          elementType: event.elementType,
+          value: event.value
         }
       });
     } catch (error) {
-      logger?.error('Failed to track analytics event', error instanceof Error ? error?.message : String(error));
+      logger.error('Failed to track analytics event', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -1269,28 +1269,28 @@ export class AnalyticsService {
     endDate?: Date;
   }): Promise<AnalyticsEvent[]> {
     try {
-      const where: Prisma?.AnalyticsViewWhereInput = {};
+      const where: Prisma.AnalyticsViewWhereInput = {};
       
-      if (filter?.userId) where?.userId = filter?.userId;
-      if (filter?.sessionId) where?.sessionId = filter?.sessionId;
-      if (filter?.eventType) where?.type = filter?.eventType;
-      if (filter?.startDate) where?.timestamp = { gte: filter?.startDate };
-      if (filter?.endDate) where?.timestamp = { ...where?.timestamp, lte: filter?.endDate };
+      if (filter.userId) where.userId = filter.userId;
+      if (filter.sessionId) where.sessionId = filter.sessionId;
+      if (filter.eventType) where.type = filter.eventType;
+      if (filter.startDate) where.timestamp = { gte: filter.startDate };
+      if (filter.endDate) where.timestamp = { ...where.timestamp, lte: filter.endDate };
 
-      const events = await this?.prisma.analyticsView?.findMany({ where });
-      return events?.map(event => ({
-        id: event?.id,
-        userId: event?.userId,
-        sessionId: event?.sessionId,
-        timestamp: event?.timestamp,
-        eventType: event?.type,
-        metadata: event?.metadata as AnalyticsMetadata,
-        elementId: event?.elementId,
-        elementType: event?.elementType,
-        value: event?.value
+      const events = await this.prisma.analyticsView.findMany({ where });
+      return events.map(event => ({
+        id: event.id,
+        userId: event.userId,
+        sessionId: event.sessionId,
+        timestamp: event.timestamp,
+        eventType: event.type,
+        metadata: event.metadata as AnalyticsMetadata,
+        elementId: event.elementId,
+        elementType: event.elementType,
+        value: event.value
       }));
     } catch (error) {
-      logger?.error('Failed to fetch analytics events', error instanceof Error ? error?.message : String(error));
+      logger.error('Failed to fetch analytics events', error instanceof Error ? error.message : String(error));
       return [];
     }
   }

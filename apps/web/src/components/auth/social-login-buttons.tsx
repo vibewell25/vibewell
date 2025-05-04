@@ -155,7 +155,7 @@ export function SocialLoginButtons({
         className,
       )}
     >
-      {providers?.map((provider) => (
+      {providers.map((provider) => (
         <SocialLoginButton
           key={provider}
           provider={provider}

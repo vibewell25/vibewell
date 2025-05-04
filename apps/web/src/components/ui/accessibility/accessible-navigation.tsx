@@ -24,11 +24,11 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
   useKeyboardInteraction(
     () => {
       if (activeItem) {
-        const item = document?.getElementById(activeItem);
+        const item = document.getElementById(activeItem);
         if (item) {
-          const link = item?.querySelector('a');
+          const link = item.querySelector('a');
           if (link) {
-            link?.click();
+            link.click();
           }
         }
       }
@@ -44,45 +44,45 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!activeItem) return;
 
-      const currentItem = document?.getElementById(activeItem);
+      const currentItem = document.getElementById(activeItem);
       if (!currentItem) return;
 
-      switch (e?.key) {
+      switch (e.key) {
         case 'ArrowDown':
-          e?.preventDefault();
-          const nextItem = currentItem?.nextElementSibling as HTMLElement;
+          e.preventDefault();
+          const nextItem = currentItem.nextElementSibling as HTMLElement;
           if (nextItem) {
-            setActiveItem(nextItem?.id);
-            nextItem?.focus();
+            setActiveItem(nextItem.id);
+            nextItem.focus();
           }
           break;
 
         case 'ArrowUp':
-          e?.preventDefault();
-          const prevItem = currentItem?.previousElementSibling as HTMLElement;
+          e.preventDefault();
+          const prevItem = currentItem.previousElementSibling as HTMLElement;
           if (prevItem) {
-            setActiveItem(prevItem?.id);
-            prevItem?.focus();
+            setActiveItem(prevItem.id);
+            prevItem.focus();
           }
           break;
 
         case 'ArrowRight':
-          e?.preventDefault();
-          if (currentItem?.getAttribute('aria-expanded') === 'false') {
+          e.preventDefault();
+          if (currentItem.getAttribute('aria-expanded') === 'false') {
             setExpandedItems((prev) => {
               const newSet = new Set(prev);
-              newSet?.add(activeItem);
+              newSet.add(activeItem);
               return newSet;
             });
           }
           break;
 
         case 'ArrowLeft':
-          e?.preventDefault();
-          if (currentItem?.getAttribute('aria-expanded') === 'true') {
+          e.preventDefault();
+          if (currentItem.getAttribute('aria-expanded') === 'true') {
             setExpandedItems((prev) => {
               const newSet = new Set(prev);
-              newSet?.delete(activeItem);
+              newSet.delete(activeItem);
               return newSet;
             });
           }
@@ -90,17 +90,17 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
       }
     };
 
-    window?.addEventListener('keydown', handleKeyDown);
-    return () => window?.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeItem]);
 
   const renderNavItem = (item: NavItem, level = 0) => {
-    const hasChildren = item?.children && item?.children.length > 0;
-    const isExpanded = expandedItems?.has(item?.label);
-    const itemId = `nav-item-${item?.label.toLowerCase().replace(/\s+/g, '-')}`;
+    const hasChildren = item.children && item.children.length > 0;
+    const isExpanded = expandedItems.has(item.label);
+    const itemId = `nav-item-${item.label.toLowerCase().replace(/\s+/g, '-')}`;
 
     return (
-      <li key={item?.label} id={itemId} role="none" className={level > 0 ? 'pl-4' : ''}>
+      <li key={item.label} id={itemId} role="none" className={level > 0 ? 'pl-4' : ''}>
         <div
           role="menuitem"
           tabIndex={0}
@@ -109,14 +109,14 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
           aria-current={activeItem === itemId ? 'page' : undefined}
           onFocus={() => setActiveItem(itemId)}
           onBlur={() => {
-            if (!navRef?.current?.contains(document?.activeElement)) {
+            if (!navRef.current.contains(document.activeElement)) {
               setActiveItem(null);
             }
           }}
           className="flex items-center justify-between rounded-md px-3 py-2 hover:bg-gray-100"
         >
-          <a href={item?.href} className="flex-1" aria-label={item?.description}>
-            {item?.label}
+          <a href={item.href} className="flex-1" aria-label={item.description}>
+            {item.label}
           </a>
 
           {hasChildren && (
@@ -126,9 +126,9 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
                 setExpandedItems((prev) => {
                   const newSet = new Set(prev);
                   if (isExpanded) {
-                    newSet?.delete(item?.label);
+                    newSet.delete(item.label);
                   } else {
-                    newSet?.add(item?.label);
+                    newSet.add(item.label);
                   }
                   return newSet;
                 });
@@ -136,7 +136,7 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
               className="ml-2 rounded p-1 hover:bg-gray-200"
             >
               <svg
-                xmlns="http://www?.w3.org/2000/svg"
+                xmlns="http://www.w3.org/2000/svg"
                 className={`h-4 w-4 transform transition-transform ${
                   isExpanded ? 'rotate-180' : ''
                 }`}
@@ -155,9 +155,9 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
           )}
         </div>
 
-        {hasChildren && isExpanded && item?.children && (
-          <ul role="menu" aria-label={`${item?.label} submenu`} className="mt-1">
-            {item?.children.map((child) => renderNavItem(child, level + 1))}
+        {hasChildren && isExpanded && item.children && (
+          <ul role="menu" aria-label={`${item.label} submenu`} className="mt-1">
+            {item.children.map((child) => renderNavItem(child, level + 1))}
           </ul>
         )}
       </li>
@@ -167,7 +167,7 @@ export function AccessibleNavigation({ items, className = '' }: AccessibleNaviga
   return (
     <nav ref={navRef} role="navigation" aria-label="Main navigation" className={className}>
       <ul role="menubar" className="space-y-1">
-        {items?.map((item) => renderNavItem(item))}
+        {items.map((item) => renderNavItem(item))}
       </ul>
     </nav>
   );

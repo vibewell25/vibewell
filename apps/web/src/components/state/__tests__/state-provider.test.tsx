@@ -18,7 +18,7 @@ const initialState: TestState = {
 };
 
 const TestStateContext = createContext<
-  [TestState, React?.Dispatch<React?.SetStateAction<TestState>>] | undefined
+  [TestState, React.Dispatch<React.SetStateAction<TestState>>] | undefined
 >(undefined);
 
 // Test Redux setup
@@ -31,21 +31,21 @@ const counterSlice = createSlice({
   initialState: { value: 0 } as CounterState,
   reducers: {
     increment: (state: CounterState) => {
-      state?.if (value > Number.MAX_SAFE_INTEGER || value < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); value += 1;
+      state.if (value > Number.MAX_SAFE_INTEGER || value < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); value += 1;
     },
     decrement: (state: CounterState) => {
-      state?.if (value > Number.MAX_SAFE_INTEGER || value < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); value -= 1;
+      state.if (value > Number.MAX_SAFE_INTEGER || value < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); value -= 1;
     },
   },
 });
 
 const store = configureStore({
   reducer: {
-    counter: counterSlice?.reducer,
+    counter: counterSlice.reducer,
   },
 });
 
-type RootState = ReturnType<typeof store?.getState>;
+type RootState = ReturnType<typeof store.getState>;
 
 describe('ContextProvider', () => {
   const TestComponent = () => {
@@ -53,9 +53,9 @@ describe('ContextProvider', () => {
 
     return (
       <div>
-        <div data-testid="count">{state?.count}</div>
-        <div data-testid="text">{state?.text}</div>
-        <button onClick={() => setState((prev) => ({ ...prev, count: prev?.count + 1 }))}>
+        <div data-testid="count">{state.count}</div>
+        <div data-testid="text">{state.text}</div>
+        <button onClick={() => setState((prev) => ({ ...prev, count: prev.count + 1 }))}>
           Increment
         </button>
         <button onClick={() => setState((prev) => ({ ...prev, text: 'Updated' }))}>
@@ -72,8 +72,8 @@ describe('ContextProvider', () => {
       </ContextProvider>,
     );
 
-    expect(screen?.getByTestId('count')).toHaveTextContent('0');
-    expect(screen?.getByTestId('text')).toHaveTextContent('');
+    expect(screen.getByTestId('count')).toHaveTextContent('0');
+    expect(screen.getByTestId('text')).toHaveTextContent('');
   });
 
   it('updates state when setState is called', () => {
@@ -83,15 +83,15 @@ describe('ContextProvider', () => {
       </ContextProvider>,
     );
 
-    fireEvent?.click(screen?.getByText('Increment'));
-    expect(screen?.getByTestId('count')).toHaveTextContent('1');
+    fireEvent.click(screen.getByText('Increment'));
+    expect(screen.getByTestId('count')).toHaveTextContent('1');
 
-    fireEvent?.click(screen?.getByText('Update Text'));
-    expect(screen?.getByTestId('text')).toHaveTextContent('Updated');
+    fireEvent.click(screen.getByText('Update Text'));
+    expect(screen.getByTestId('text')).toHaveTextContent('Updated');
   });
 
   it('calls onStateChange when state changes', () => {
-    const onStateChange = vi?.fn();
+    const onStateChange = vi.fn();
     render(
       <ContextProvider
         initialState={initialState}
@@ -102,10 +102,10 @@ describe('ContextProvider', () => {
       </ContextProvider>,
     );
 
-    fireEvent?.click(screen?.getByText('Increment'));
+    fireEvent.click(screen.getByText('Increment'));
     expect(onStateChange).toHaveBeenCalledWith(
-      expect?.objectContaining({ count: 1 }),
-      expect?.objectContaining({ count: 0 }),
+      expect.objectContaining({ count: 1 }),
+      expect.objectContaining({ count: 0 }),
     );
   });
 
@@ -124,13 +124,13 @@ describe('ContextProvider', () => {
 describe('StateReduxProvider', () => {
   const TestReduxComponent = () => {
     const dispatch = useDispatch();
-    const count = useSelector((state: RootState) => state?.counter.value);
+    const count = useSelector((state: RootState) => state.counter.value);
 
     return (
       <div>
         <div data-testid="count">{count}</div>
-        <button onClick={() => dispatch(counterSlice?.actions.increment())}>Increment</button>
-        <button onClick={() => dispatch(counterSlice?.actions.decrement())}>Decrement</button>
+        <button onClick={() => dispatch(counterSlice.actions.increment())}>Increment</button>
+        <button onClick={() => dispatch(counterSlice.actions.decrement())}>Decrement</button>
       </div>
     );
   };
@@ -142,7 +142,7 @@ describe('StateReduxProvider', () => {
       </StateReduxProvider>,
     );
 
-    expect(screen?.getByTestId('count')).toHaveTextContent('0');
+    expect(screen.getByTestId('count')).toHaveTextContent('0');
   });
 
   it('updates state when actions are dispatched', () => {
@@ -152,11 +152,11 @@ describe('StateReduxProvider', () => {
       </StateReduxProvider>,
     );
 
-    fireEvent?.click(screen?.getByText('Increment'));
-    expect(screen?.getByTestId('count')).toHaveTextContent('1');
+    fireEvent.click(screen.getByText('Increment'));
+    expect(screen.getByTestId('count')).toHaveTextContent('1');
 
-    fireEvent?.click(screen?.getByText('Decrement'));
-    expect(screen?.getByTestId('count')).toHaveTextContent('0');
+    fireEvent.click(screen.getByText('Decrement'));
+    expect(screen.getByTestId('count')).toHaveTextContent('0');
   });
 
   it('has no accessibility violations', async () => {
@@ -177,8 +177,8 @@ describe('StateReduxProvider', () => {
       </StateReduxProvider>,
     );
 
-    fireEvent?.click(screen?.getByText('Increment'));
-    expect(screen?.getByTestId('count')).toHaveTextContent('1');
+    fireEvent.click(screen.getByText('Increment'));
+    expect(screen.getByTestId('count')).toHaveTextContent('1');
 
     rerender(
       <StateReduxProvider store={store}>
@@ -186,6 +186,6 @@ describe('StateReduxProvider', () => {
       </StateReduxProvider>,
     );
 
-    expect(screen?.getByTestId('count')).toHaveTextContent('1');
+    expect(screen.getByTestId('count')).toHaveTextContent('1');
   });
 });

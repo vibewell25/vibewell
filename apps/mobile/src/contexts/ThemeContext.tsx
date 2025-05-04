@@ -9,12 +9,12 @@ interface ThemeContextType {
   theme: ThemeType;
   isDarkMode: boolean;
   setTheme: (theme: ThemeType) => void;
-  colors: typeof themeConfig?.navigation.colors;
+  colors: typeof themeConfig.navigation.colors;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export const ThemeProvider: React?.FC<{ children: React?.ReactNode }> = ({ children }) => {
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const colorScheme = useColorScheme();
   const [theme, setThemeState] = useState<ThemeType>('system');
   const [isDarkMode, setIsDarkMode] = useState<boolean>(colorScheme === 'dark');
@@ -22,15 +22,15 @@ export const ThemeProvider: React?.FC<{ children: React?.ReactNode }> = ({ child
   // Load saved theme on initial load
   useEffect(() => {
     const loadSavedTheme = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
-        const savedTheme = await SecureStore?.getItemAsync('theme');
+        const savedTheme = await SecureStore.getItemAsync('theme');
         if (savedTheme) {
           setThemeState(savedTheme as ThemeType);
         }
       } catch (error) {
-        console?.error('Error loading theme from storage:', error);
+        console.error('Error loading theme from storage:', error);
       }
     };
 
@@ -48,27 +48,27 @@ export const ThemeProvider: React?.FC<{ children: React?.ReactNode }> = ({ child
 
   // Save theme preference
   const setTheme = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');newTheme: ThemeType) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');newTheme: ThemeType) => {
     try {
-      await SecureStore?.setItemAsync('theme', newTheme);
+      await SecureStore.setItemAsync('theme', newTheme);
       setThemeState(newTheme);
     } catch (error) {
-      console?.error('Error saving theme to storage:', error);
+      console.error('Error saving theme to storage:', error);
     }
   };
 
   return (
-    <ThemeContext?.Provider
+    <ThemeContext.Provider
       value={{
         theme,
         isDarkMode,
         setTheme,
-        colors: themeConfig?.navigation.colors,
+        colors: themeConfig.navigation.colors,
       }}
     >
       {children}
-    </ThemeContext?.Provider>
+    </ThemeContext.Provider>
   );
 };
 

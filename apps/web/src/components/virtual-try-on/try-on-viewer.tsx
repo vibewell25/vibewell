@@ -54,14 +54,14 @@ export function TryOnViewer({
   useEffect(() => {
     // This would be fetched from an API in a real app
     const fetchedVariants = [
-      { id: 'v1', name: 'Classic', imageUrl: '/assets/try-on/variants/classic?.png' },
-      { id: 'v2', name: 'Modern', imageUrl: '/assets/try-on/variants/modern?.png' },
-      { id: 'v3', name: 'Vintage', imageUrl: '/assets/try-on/variants/vintage?.png' },
-      { id: 'v4', name: 'Sport', imageUrl: '/assets/try-on/variants/sport?.png' },
+      { id: 'v1', name: 'Classic', imageUrl: '/assets/try-on/variants/classic.png' },
+      { id: 'v2', name: 'Modern', imageUrl: '/assets/try-on/variants/modern.png' },
+      { id: 'v3', name: 'Vintage', imageUrl: '/assets/try-on/variants/vintage.png' },
+      { id: 'v4', name: 'Sport', imageUrl: '/assets/try-on/variants/sport.png' },
     ];
 
     setVariants(fetchedVariants);
-    if (!selectedVariant && fetchedVariants?.length > 0) {
+    if (!selectedVariant && fetchedVariants.length > 0) {
       setSelectedVariant(fetchedVariants[0].id);
     }
   }, [productId, selectedVariant]);
@@ -69,25 +69,25 @@ export function TryOnViewer({
   // Initialize camera and request permissions
   useEffect(() => {
     async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); setupCamera() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); setupCamera() {
       try {
         setIsLoading(true);
 
-        const stream = await navigator?.mediaDevices.getUserMedia({
+        const stream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: 'user' },
           audio: false,
         });
 
-        if (videoRef?.current) {
-          videoRef?.current.srcObject = stream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
           setHasPermission(true);
         }
 
         // Load AR models/filters based on product type and variant
         loadArFilters(productType, selectedVariant);
       } catch (err) {
-        console?.error('Error accessing camera:', err);
+        console.error('Error accessing camera:', err);
         setError('Unable to access camera. Please ensure you have given camera permission.');
         setHasPermission(false);
       } finally {
@@ -99,9 +99,9 @@ export function TryOnViewer({
 
     // Cleanup function to stop camera when component unmounts
     return () => {
-      if (videoRef?.current && videoRef?.current.srcObject) {
-        const stream = videoRef?.current.srcObject as MediaStream;
-        stream?.getTracks().forEach((track) => track?.stop());
+      if (videoRef.current && videoRef.current.srcObject) {
+        const stream = videoRef.current.srcObject as MediaStream;
+        stream.getTracks().forEach((track) => track.stop());
       }
     };
   }, [productType, selectedVariant]);
@@ -125,34 +125,34 @@ export function TryOnViewer({
 
   // Capture image from camera
   const handleCapture = () => {
-    if (!videoRef?.current || !canvasRef?.current) return;
+    if (!videoRef.current || !canvasRef.current) return;
 
     setIsCapturing(true);
 
-    const video = videoRef?.current;
-    const canvas = canvasRef?.current;
-    const context = canvas?.getContext('2d');
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
 
     if (!context) return;
 
     // Set canvas dimensions to match video
-    canvas?.width = video?.videoWidth;
-    canvas?.height = video?.videoHeight;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
 
     // Draw the video frame to the canvas
-    context?.drawImage(video, 0, 0, canvas?.width, canvas?.height);
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     // Apply AR filter overlay (simplified)
     if (currentFilter) {
       // In a real implementation, this would apply the AR filter
       // For demo purposes, just add a text overlay
-      context?.font = '20px Arial';
-      context?.fillStyle = 'white';
-      context?.fillText(`Filter: ${currentFilter}`, 10, 30);
+      context.font = '20px Arial';
+      context.fillStyle = 'white';
+      context.fillText(`Filter: ${currentFilter}`, 10, 30);
     }
 
     // Convert canvas to image data URL
-    const imageDataUrl = canvas?.toDataURL('image/png');
+    const imageDataUrl = canvas.toDataURL('image/png');
     setCapturedImage(imageDataUrl);
 
     // Call the onCapture callback if provided
@@ -167,10 +167,10 @@ export function TryOnViewer({
   const handleDownload = () => {
     if (!capturedImage) return;
 
-    const link = document?.createElement('a');
-    link?.href = capturedImage;
-    link?.download = `vibewell-try-on-${productName?.toLowerCase().replace(/\s+/g, '-')}.png`;
-    link?.click();
+    const link = document.createElement('a');
+    link.href = capturedImage;
+    link.download = `vibewell-try-on-${productName.toLowerCase().replace(/\s+/g, '-')}.png`;
+    link.click();
   };
 
   // Handle sharing of captured image
@@ -181,11 +181,11 @@ export function TryOnViewer({
 
   // Handle zoom controls
   const handleZoomIn = () => {
-    setZoomLevel((prev) => Math?.min(prev + 0?.1, 2));
+    setZoomLevel((prev) => Math.min(prev + 0.1, 2));
   };
 
   const handleZoomOut = () => {
-    setZoomLevel((prev) => Math?.max(prev - 0?.1, 0?.5));
+    setZoomLevel((prev) => Math.max(prev - 0.1, 0.5));
   };
 
   // Handle reset (clear captured image)
@@ -195,12 +195,12 @@ export function TryOnViewer({
 
   // Handle fullscreen
   const handleFullscreen = () => {
-    if (!videoRef?.current) return;
+    if (!videoRef.current) return;
 
-    if (document?.fullscreenElement) {
-      document?.exitFullscreen();
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
     } else {
-      videoRef?.current.requestFullscreen();
+      videoRef.current.requestFullscreen();
     }
   };
 
@@ -220,14 +220,14 @@ export function TryOnViewer({
           <p className="mb-2 text-gray-500">Select a variant to try on:</p>
 
           <div className="flex space-x-2 overflow-x-auto pb-2">
-            {variants?.map((variant) => (
+            {variants.map((variant) => (
               <Button
-                key={variant?.id}
-                variant={selectedVariant === variant?.id ? 'default' : 'outline'}
-                onClick={() => handleVariantChange(variant?.id)}
+                key={variant.id}
+                variant={selectedVariant === variant.id ? 'default' : 'outline'}
+                onClick={() => handleVariantChange(variant.id)}
                 className="flex-shrink-0"
               >
-                {variant?.name}
+                {variant.name}
               </Button>
             ))}
           </div>
@@ -240,7 +240,7 @@ export function TryOnViewer({
           ) : error ? (
             <div className="flex h-full flex-col items-center justify-center p-4 text-center">
               <p className="mb-2 text-red-500">{error}</p>
-              <Button onClick={() => window?.location.reload()}>Try Again</Button>
+              <Button onClick={() => window.location.reload()}>Try Again</Button>
             </div>
           ) : (
             <>
@@ -305,7 +305,7 @@ export function TryOnViewer({
                 <Button
                   variant="outline"
                   onClick={handleZoomOut}
-                  disabled={isLoading || zoomLevel <= 0?.5}
+                  disabled={isLoading || zoomLevel <= 0.5}
                 >
                   <ZoomOut className="h-4 w-4" />
                 </Button>
@@ -339,11 +339,11 @@ export function TryOnViewer({
               variant="ghost"
               size="icon"
               onClick={() => {
-                const currentIndex = variants?.findIndex((v) => v?.id === selectedVariant);
-                const prevIndex = (currentIndex - 1 + variants?.length) % variants?.length;
+                const currentIndex = variants.findIndex((v) => v.id === selectedVariant);
+                const prevIndex = (currentIndex - 1 + variants.length) % variants.length;
                 handleVariantChange(variants[prevIndex].id);
               }}
-              disabled={variants?.length <= 1}
+              disabled={variants.length <= 1}
             >
               <ArrowLeft className="h-4 w-4" />
             </Button>
@@ -351,11 +351,11 @@ export function TryOnViewer({
               variant="ghost"
               size="icon"
               onClick={() => {
-                const currentIndex = variants?.findIndex((v) => v?.id === selectedVariant);
-                const nextIndex = (currentIndex + 1) % variants?.length;
+                const currentIndex = variants.findIndex((v) => v.id === selectedVariant);
+                const nextIndex = (currentIndex + 1) % variants.length;
                 handleVariantChange(variants[nextIndex].id);
               }}
-              disabled={variants?.length <= 1}
+              disabled={variants.length <= 1}
             >
               <ArrowRight className="h-4 w-4" />
             </Button>

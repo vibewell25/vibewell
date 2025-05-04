@@ -12,7 +12,7 @@ export function isMobileDevice(): boolean {
 
 
 
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i?.test(navigator?.userAgent);
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
 /**
@@ -31,19 +31,19 @@ export function detectDevicePerformanceProfile(): DevicePerformanceProfile {
   }
 
   // Check hardware concurrency
-  const hasSlowCPU = !navigator?.hardwareConcurrency || navigator?.hardwareConcurrency <= 4;
+  const hasSlowCPU = !navigator.hardwareConcurrency || navigator.hardwareConcurrency <= 4;
 
   // Detect memory constraints
-  const hasLowMemory = process?.env['HASLOWMEMORY'] in navigator && (navigator as any).deviceMemory < 4;
+  const hasLowMemory = process.env['HASLOWMEMORY'] in navigator && (navigator as any).deviceMemory < 4;
 
   // Detect touch screen
-  const hasTouchScreen = process?.env['HASTOUCHSCREEN'] in navigator && navigator?.maxTouchPoints > 0;
+  const hasTouchScreen = process.env['HASTOUCHSCREEN'] in navigator && navigator.maxTouchPoints > 0;
 
   // Detect network speed (if available)
-  const hasSlowNetwork = process?.env['HASSLOWNETWORK'] in navigator &&
-    ((navigator as any).connection?.effectiveType === '2g' ||
-      (navigator as any).connection?.effectiveType === '3g' ||
-      (navigator as any).connection?.downlink < 1);
+  const hasSlowNetwork = process.env['HASSLOWNETWORK'] in navigator &&
+    ((navigator as any).connection.effectiveType === '2g' ||
+      (navigator as any).connection.effectiveType === '3g' ||
+      (navigator as any).connection.downlink < 1);
 
   // Check battery status if available
   let batteryStatus: DevicePerformanceProfile['batteryStatus'] = undefined;
@@ -53,8 +53,8 @@ export function detectDevicePerformanceProfile(): DevicePerformanceProfile {
       .getBattery()
       .then((battery: any) => {
         batteryStatus = {
-          level: battery?.level,
-          charging: battery?.charging,
+          level: battery.level,
+          charging: battery.charging,
         };
       })
       .catch(() => {
@@ -71,12 +71,12 @@ export function detectDevicePerformanceProfile(): DevicePerformanceProfile {
     hasSlowNetwork,
 
     // Legacy mobile detection
-    /Android (5|6|7)\./i?.test(navigator?.userAgent),
+    /Android (5|6|7)\./i.test(navigator.userAgent),
 
-    /iPhone OS ([7-9]|10)_|iPad.*OS ([7-9]|10)_/i?.test(navigator?.userAgent),
+    /iPhone OS ([7-9]|10)_|iPad.*OS ([7-9]|10)_/i.test(navigator.userAgent),
   ];
 
-  const lowEndSignals = signals?.filter(Boolean).length;
+  const lowEndSignals = signals.filter(Boolean).length;
 
   if (lowEndSignals >= 3) {
     type = 'low';
@@ -104,13 +104,13 @@ export function applyDeviceClasses(): void {
   const deviceProfile = detectDevicePerformanceProfile();
 
   // Add device profile class to body for CSS optimizations
-  document?.body.classList?.add(`device-${deviceProfile?.type}`);
-  if (deviceProfile?.hasTouchScreen) {
+  document.body.classList.add(`device-${deviceProfile.type}`);
+  if (deviceProfile.hasTouchScreen) {
 
-    document?.body.classList?.add('touch-device');
+    document.body.classList.add('touch-device');
   }
   if (isMobileDevice()) {
 
-    document?.body.classList?.add('mobile-device');
+    document.body.classList.add('mobile-device');
   }
 }

@@ -2,13 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 
 interface AccessibleTooltipProps {
   content: string;
-  children: React?.ReactNode;
+  children: React.ReactNode;
   position?: 'top' | 'right' | 'bottom' | 'left';
   delay?: number;
   className?: string;
 }
 
-export const AccessibleTooltip: React?.FC<AccessibleTooltipProps> = ({
+export const AccessibleTooltip: React.FC<AccessibleTooltipProps> = ({
   content,
   children,
   position = 'top',
@@ -19,28 +19,28 @@ export const AccessibleTooltip: React?.FC<AccessibleTooltipProps> = ({
   const [isFocused, setIsFocused] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<NodeJS?.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout>();
 
   const showTooltip = () => {
-    if (timeoutRef?.current) {
-      clearTimeout(timeoutRef?.current);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
-    timeoutRef?.current = setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       setIsVisible(true);
     }, delay);
   };
 
   const hideTooltip = () => {
-    if (timeoutRef?.current) {
-      clearTimeout(timeoutRef?.current);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
     setIsVisible(false);
   };
 
   useEffect(() => {
     return () => {
-      if (timeoutRef?.current) {
-        clearTimeout(timeoutRef?.current);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
       }
     };
   }, []);

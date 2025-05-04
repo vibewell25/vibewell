@@ -45,20 +45,20 @@ export function HubSearch({
   useEffect(() => {
     if (typeof window !== 'undefined') {
       try {
-        const storedSearches = localStorage?.getItem('vibewell_recent_searches');
+        const storedSearches = localStorage.getItem('vibewell_recent_searches');
         if (storedSearches) {
-          setRecentSearches(JSON?.parse(storedSearches));
+          setRecentSearches(JSON.parse(storedSearches));
         }
       } catch (error) {
-        console?.error('Error loading recent searches:', error);
+        console.error('Error loading recent searches:', error);
       }
     }
   }, []);
   // Focus input on mount if autoFocus is true
   useEffect(() => {
-    if (autoFocus && inputRef?.current) {
+    if (autoFocus && inputRef.current) {
       setTimeout(() => {
-        inputRef?.current?.focus();
+        inputRef.current.focus();
       }, 100);
     }
   }, [autoFocus]);
@@ -66,22 +66,22 @@ export function HubSearch({
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // "/" shortcut to focus search
-      if (e?.key === '/' && document?.activeElement !== inputRef?.current) {
-        e?.preventDefault();
-        inputRef?.current?.focus();
+      if (e.key === '/' && document.activeElement !== inputRef.current) {
+        e.preventDefault();
+        inputRef.current.focus();
       }
       // Escape to blur search
-      if (e?.key === 'Escape' && document?.activeElement === inputRef?.current) {
-        inputRef?.current?.blur();
+      if (e.key === 'Escape' && document.activeElement === inputRef.current) {
+        inputRef.current.blur();
         setShowSuggestions(false);
       }
     };
-    window?.addEventListener('keydown', handleKeyDown);
-    return () => window?.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
   // Update suggestions when query changes
   useEffect(() => {
-    if (!debouncedQuery || debouncedQuery?.length < 2) {
+    if (!debouncedQuery || debouncedQuery.length < 2) {
       setSuggestions([]);
       setShowSuggestions(false);
       return;
@@ -124,13 +124,13 @@ export function HubSearch({
   const handleSearch = () => {
     if (!query && !allowEmptySearch) return;
     // Add to recent searches
-    if (query?.trim() !== '') {
-      const updatedSearches = [query, ...recentSearches?.filter((s) => s !== query)].slice(0, 5);
+    if (query.trim() !== '') {
+      const updatedSearches = [query, ...recentSearches.filter((s) => s !== query)].slice(0, 5);
       setRecentSearches(updatedSearches);
       try {
-        localStorage?.setItem('vibewell_recent_searches', JSON?.stringify(updatedSearches));
+        localStorage.setItem('vibewell_recent_searches', JSON.stringify(updatedSearches));
       } catch (error) {
-        console?.error('Error saving recent searches:', error);
+        console.error('Error saving recent searches:', error);
       }
     }
     // Call the onSearch callback if provided
@@ -138,7 +138,7 @@ export function HubSearch({
       onSearch(query, category);
     } else {
       // Otherwise redirect to search page
-      router?.push(`/business-hub/search?q=${encodeURIComponent(query)}&category=${category}`);
+      router.push(`/business-hub/search?q=${encodeURIComponent(query)}&category=${category}`);
     }
     // Hide suggestions
     setShowSuggestions(false);
@@ -146,25 +146,25 @@ export function HubSearch({
   // Handle clearing the search
   const handleClearSearch = () => {
     setQuery('');
-    if (inputRef?.current) {
-      inputRef?.current.focus();
+    if (inputRef.current) {
+      inputRef.current.focus();
     }
   };
   // Handle suggestion click
   const handleSuggestionClick = (suggestion: SuggestedSearch) => {
     // Add to recent searches
     const updatedSearches = [
-      suggestion?.title.split(': ')[1] || suggestion?.title,
-      ...recentSearches?.filter((s) => s !== suggestion?.title),
+      suggestion.title.split(': ')[1] || suggestion.title,
+      ...recentSearches.filter((s) => s !== suggestion.title),
     ].slice(0, 5);
     setRecentSearches(updatedSearches);
     try {
-      localStorage?.setItem('vibewell_recent_searches', JSON?.stringify(updatedSearches));
+      localStorage.setItem('vibewell_recent_searches', JSON.stringify(updatedSearches));
     } catch (error) {
-      console?.error('Error saving recent searches:', error);
+      console.error('Error saving recent searches:', error);
     }
     // Navigate to suggestion URL
-    router?.push(suggestion?.url);
+    router.push(suggestion.url);
     // Hide suggestions
     setShowSuggestions(false);
   };
@@ -176,17 +176,17 @@ export function HubSearch({
           ref={inputRef}
           type="text"
           value={query}
-          onChange={(e) => setQuery(e?.target.value)}
+          onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
           className="pl-10 pr-10"
-          onFocus={() => setShowSuggestions(query?.length >= 2)}
+          onFocus={() => setShowSuggestions(query.length >= 2)}
           onBlur={() => {
             // Delay hiding suggestions to allow for clicks
             setTimeout(() => setShowSuggestions(false), 200);
           }}
           onKeyDown={(e) => {
-            if (e?.key === 'Enter') {
-              e?.preventDefault();
+            if (e.key === 'Enter') {
+              e.preventDefault();
               handleSearch();
             }
           }}
@@ -217,7 +217,7 @@ export function HubSearch({
               }`}
               onClick={() => setCategory(cat)}
             >
-              {cat?.charAt(0).toUpperCase() + cat?.slice(1)}
+              {cat.charAt(0).toUpperCase() + cat.slice(1)}
             </button>
           ),
         )}
@@ -227,17 +227,17 @@ export function HubSearch({
         <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg">
           {isLoading ? (
             <div className="p-4 text-center text-sm text-gray-500">Loading suggestions...</div>
-          ) : suggestions?.length > 0 ? (
+          ) : suggestions.length > 0 ? (
             <ul>
-              {suggestions?.map((suggestion) => (
-                <li key={suggestion?.id}>
+              {suggestions.map((suggestion) => (
+                <li key={suggestion.id}>
                   <button
                     type="button"
                     className="w-full px-4 py-2 text-left transition-colors hover:bg-gray-100"
                     onClick={() => handleSuggestionClick(suggestion)}
                   >
-                    <div className="font-medium">{suggestion?.title}</div>
-                    <div className="text-sm text-gray-500">{suggestion?.description}</div>
+                    <div className="font-medium">{suggestion.title}</div>
+                    <div className="text-sm text-gray-500">{suggestion.description}</div>
                   </button>
                 </li>
               ))}
@@ -254,17 +254,17 @@ export function HubSearch({
                 </button>
               </li>
             </ul>
-          ) : query?.length >= 2 ? (
+          ) : query.length >= 2 ? (
             <div className="p-4 text-center text-sm text-gray-500">
               No suggestions found for "{query}"
             </div>
-          ) : recentSearches?.length > 0 ? (
+          ) : recentSearches.length > 0 ? (
             <div>
               <div className="border-b border-gray-100 px-4 py-2 text-xs font-medium text-gray-500">
                 Recent Searches
               </div>
               <ul>
-                {recentSearches?.map((search, index) => (
+                {recentSearches.map((search, index) => (
                   <li key={index}>
                     <button
                       type="button"

@@ -32,34 +32,34 @@ export function TrustedDeviceManager({ userId, onDeviceChange }: TrustedDeviceMa
   }, []);
 
   const fetchDevices = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const response = await fetch('/api/auth/trusted-devices', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify({ action: 'list' }),
+        body: JSON.stringify({ action: 'list' }),
       });
 
-      if (!response?.ok) throw new Error('Failed to fetch devices');
+      if (!response.ok) throw new Error('Failed to fetch devices');
 
-      const data = await response?.json();
-      setDevices(data?.devices);
+      const data = await response.json();
+      setDevices(data.devices);
     } catch (error) {
-      toast?.error('Failed to fetch trusted devices');
+      toast.error('Failed to fetch trusted devices');
     }
   };
 
   const handleRevoke = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');device: Device) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');device: Device) => {
     setSelectedDevice(device);
     setShowConfirmRevoke(true);
   };
 
   const confirmRevoke = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!selectedDevice) return;
 
     setIsLoading(true);
@@ -67,30 +67,30 @@ export function TrustedDeviceManager({ userId, onDeviceChange }: TrustedDeviceMa
       const response = await fetch('/api/auth/trusted-devices', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify({
+        body: JSON.stringify({
           action: 'revoke',
-          deviceId: selectedDevice?.id,
+          deviceId: selectedDevice.id,
         }),
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to revoke device');
       }
 
-      toast?.success('Device removed successfully');
+      toast.success('Device removed successfully');
       setShowConfirmRevoke(false);
       await fetchDevices();
       if (onDeviceChange) onDeviceChange();
     } catch (error) {
-      toast?.error('Failed to revoke device');
+      toast.error('Failed to revoke device');
     } finally {
       setIsLoading(false);
     }
   };
 
   const getDeviceIcon = (device: Device) => {
-    const os = device?.os.toLowerCase();
-    if (os?.includes('android') || os?.includes('ios') || os?.includes('iphone')) {
+    const os = device.os.toLowerCase();
+    if (os.includes('android') || os.includes('ios') || os.includes('iphone')) {
       return <Smartphone className="h-5 w-5" />;
     }
     return <Laptop className="h-5 w-5" />;
@@ -105,7 +105,7 @@ export function TrustedDeviceManager({ userId, onDeviceChange }: TrustedDeviceMa
           for any device at any time.
         </p>
 
-        {devices?.length === 0 ? (
+        {devices.length === 0 ? (
           <Alert>
             <AlertDescription>
               No trusted devices found. Devices will appear here when you choose to trust them
@@ -114,20 +114,20 @@ export function TrustedDeviceManager({ userId, onDeviceChange }: TrustedDeviceMa
           </Alert>
         ) : (
           <div className="space-y-4">
-            {devices?.map((device) => (
+            {devices.map((device) => (
               <div
-                key={device?.id}
+                key={device.id}
                 className="flex items-center justify-between rounded-lg border p-4"
               >
                 <div className="flex items-center space-x-4">
                   {getDeviceIcon(device)}
                   <div>
-                    <h4 className="font-medium">{device?.name}</h4>
+                    <h4 className="font-medium">{device.name}</h4>
                     <p className="text-sm text-gray-500">
-                      {device?.browser} • {device?.os}
+                      {device.browser} • {device.os}
                     </p>
                     <p className="text-xs text-gray-400">
-                      Last used {formatDistanceToNow(new Date(device?.lastUsed))} ago
+                      Last used {formatDistanceToNow(new Date(device.lastUsed))} ago
                     </p>
                   </div>
                 </div>
@@ -157,9 +157,9 @@ export function TrustedDeviceManager({ userId, onDeviceChange }: TrustedDeviceMa
             </p>
             {selectedDevice && (
               <div className="rounded-lg bg-gray-50 p-4">
-                <p className="font-medium">{selectedDevice?.name}</p>
+                <p className="font-medium">{selectedDevice.name}</p>
                 <p className="text-sm text-gray-500">
-                  {selectedDevice?.browser} • {selectedDevice?.os}
+                  {selectedDevice.browser} • {selectedDevice.os}
                 </p>
               </div>
             )}

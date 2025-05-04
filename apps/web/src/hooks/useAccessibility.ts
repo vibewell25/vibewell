@@ -25,6 +25,6 @@ export const SUPPORTED_LANGUAGES: LanguageOption[] = [
 ];
 
 
-const STORAGE_KEY = process?.env['STORAGE_KEY'];
+const STORAGE_KEY = process.env['STORAGE_KEY'];
 
 export {};

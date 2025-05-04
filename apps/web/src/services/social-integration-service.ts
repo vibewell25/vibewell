@@ -28,7 +28,7 @@ export class SocialIntegrationService {
   private notificationService: NotificationService;
 
   constructor() {
-    this?.notificationService = new NotificationService();
+    this.notificationService = new NotificationService();
   }
 
   /**
@@ -36,7 +36,7 @@ export class SocialIntegrationService {
    */
   async configureSocialSharing(businessId: string, config: SocialShareConfig) {
     try {
-      const business = await prisma?.businessProfile.update({
+      const business = await prisma.businessProfile.update({
         where: { id: businessId },
         data: {
           socialConfig: config,
@@ -46,7 +46,7 @@ export class SocialIntegrationService {
 
       return business;
     } catch (error) {
-      logger?.error('Error configuring social sharing', error);
+      logger.error('Error configuring social sharing', error);
       throw error;
     }
   }
@@ -56,23 +56,23 @@ export class SocialIntegrationService {
    */
   async createSocialPost(businessId: string, template: SocialPostTemplate) {
     try {
-      const post = await prisma?.socialPost.create({
+      const post = await prisma.socialPost.create({
         data: {
           businessId,
           ...template,
-          status: template?.scheduledTime ? 'SCHEDULED' : 'PUBLISHED',
+          status: template.scheduledTime ? 'SCHEDULED' : 'PUBLISHED',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
       });
 
-      if (!template?.scheduledTime) {
-        await this?.publishPost(post?.id);
+      if (!template.scheduledTime) {
+        await this.publishPost(post.id);
       }
 
       return post;
     } catch (error) {
-      logger?.error('Error creating social post', error);
+      logger.error('Error creating social post', error);
       throw error;
     }
   }
@@ -82,32 +82,32 @@ export class SocialIntegrationService {
    */
   private async publishPost(postId: string) {
     try {
-      const post = await prisma?.socialPost.findUnique({
+      const post = await prisma.socialPost.findUnique({
         where: { id: postId },
         include: {
           business: true,
         },
       });
 
-      if (!post || !post?.business.socialConfig) {
+      if (!post || !post.business.socialConfig) {
         throw new Error('Post or social configuration not found');
       }
 
-      const platforms = post?.business.socialConfig?.platforms;
+      const platforms = post.business.socialConfig.platforms;
 
       // Publish to enabled platforms
-      if (platforms?.facebook) {
-        await this?.publishToFacebook(post);
+      if (platforms.facebook) {
+        await this.publishToFacebook(post);
       }
-      if (platforms?.instagram) {
-        await this?.publishToInstagram(post);
+      if (platforms.instagram) {
+        await this.publishToInstagram(post);
       }
-      if (platforms?.twitter) {
-        await this?.publishToTwitter(post);
+      if (platforms.twitter) {
+        await this.publishToTwitter(post);
       }
 
       // Update post status
-      await prisma?.socialPost.update({
+      await prisma.socialPost.update({
         where: { id: postId },
         data: {
           status: 'PUBLISHED',
@@ -116,7 +116,7 @@ export class SocialIntegrationService {
         },
       });
     } catch (error) {
-      logger?.error('Error publishing social post', error);
+      logger.error('Error publishing social post', error);
       throw error;
     }
   }
@@ -126,7 +126,7 @@ export class SocialIntegrationService {
    */
   async getSocialAnalytics(businessId: string, startDate: Date, endDate: Date) {
     try {
-      const posts = await prisma?.socialPost.findMany({
+      const posts = await prisma.socialPost.findMany({
         where: {
           businessId,
           createdAt: {
@@ -140,35 +140,35 @@ export class SocialIntegrationService {
       });
 
       return {
-        totalPosts: posts?.length,
-        engagement: this?.calculateEngagement(posts),
-        platformBreakdown: this?.getPlatformBreakdown(posts),
+        totalPosts: posts.length,
+        engagement: this.calculateEngagement(posts),
+        platformBreakdown: this.getPlatformBreakdown(posts),
         period: { startDate, endDate },
       };
     } catch (error) {
-      logger?.error('Error getting social analytics', error);
+      logger.error('Error getting social analytics', error);
       throw error;
     }
   }
 
   private calculateEngagement(posts: any[]) {
-    return posts?.reduce((total, post) => {
-      const analytics = post?.analytics || {};
-      return total + (analytics?.likes || 0) + (analytics?.shares || 0) + (analytics?.comments || 0);
+    return posts.reduce((total, post) => {
+      const analytics = post.analytics || {};
+      return total + (analytics.likes || 0) + (analytics.shares || 0) + (analytics.comments || 0);
     }, 0);
   }
 
   private getPlatformBreakdown(posts: any[]) {
-    return posts?.reduce((breakdown: any, post) => {
-      const platform = post?.platform;
+    return posts.reduce((breakdown: any, post) => {
+      const platform = post.platform;
 
     // Safe array access
-    if (platform < 0 || platform >= array?.length) {
+    if (platform < 0 || platform >= array.length) {
       throw new Error('Array index out of bounds');
     }
 
     // Safe array access
-    if (platform < 0 || platform >= array?.length) {
+    if (platform < 0 || platform >= array.length) {
       throw new Error('Array index out of bounds');
     }
       breakdown[platform] = (breakdown[platform] || 0) + 1;

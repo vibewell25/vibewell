@@ -33,13 +33,13 @@ export function generateFormValidationTests(
   }>,
 ) {
   describe('form validation', () => {
-    testCases?.forEach(({ field, value, expectedError }) => {
+    testCases.forEach(({ field, value, expectedError }) => {
       it(`validates ${field} with value "${value}"`, async () => {
         const { getByLabelText, findByText } = customRender(formComponent);
         const input = getByLabelText(field);
-        const user = userEvent?.setup();
-        await user?.type(input, value);
-        await user?.tab();
+        const user = userEvent.setup();
+        await user.type(input, value);
+        await user.tab();
 
         if (expectedError) {
           const error = await findByText(expectedError);
@@ -82,9 +82,9 @@ export async function testAccessibility(
 // Helper to test responsive behavior
 export function testResponsiveBehavior(component: ReactElement, breakpoints: string[]) {
   describe('responsive behavior', () => {
-    breakpoints?.forEach((breakpoint) => {
+    breakpoints.forEach((breakpoint) => {
       it(`renders correctly at ${breakpoint}`, () => {
-        window?.resizeTo(parseInt(breakpoint), 800);
+        window.resizeTo(parseInt(breakpoint), 800);
         const { container } = customRender(component);
         expect(container).toMatchSnapshot();
       });
@@ -103,11 +103,11 @@ interface TestClientConfig {
 
 export function createTestClient(config: TestClientConfig = {}) {
   return axios.create({
-    baseURL: config?.baseURL || 'http://localhost:3000',
-    timeout: config?.timeout || 5000,
+    baseURL: config.baseURL || 'http://localhost:3000',
+    timeout: config.timeout || 5000,
     headers: {
       'Content-Type': 'application/json',
-      ...config?.headers,
+      ...config.headers,
     },
     validateStatus: (status) => status < 500,
   });
@@ -121,19 +121,19 @@ interface TestDataGenerators {
 
 const generators: TestDataGenerators = {
   user: () => ({
-    id: Math?.random().toString(36).substring(2, 9),
-    name: `Test User ${Math?.random().toString(36).substring(2, 5)}`,
-    email: `test${Math?.random().toString(36).substring(2, 5)}@example?.com`,
+    id: Math.random().toString(36).substring(2, 9),
+    name: `Test User ${Math.random().toString(36).substring(2, 5)}`,
+    email: `test${Math.random().toString(36).substring(2, 5)}@example.com`,
   }),
   post: () => ({
-    id: Math?.random().toString(36).substring(2, 9),
-    title: `Test Post ${Math?.random().toString(36).substring(2, 5)}`,
-    content: `Test content ${Math?.random().toString(36).substring(2, 20)}`,
+    id: Math.random().toString(36).substring(2, 9),
+    title: `Test Post ${Math.random().toString(36).substring(2, 5)}`,
+    content: `Test content ${Math.random().toString(36).substring(2, 20)}`,
   }),
   comment: () => ({
-    id: Math?.random().toString(36).substring(2, 9),
-    content: `Test comment ${Math?.random().toString(36).substring(2, 20)}`,
-    userId: Math?.random().toString(36).substring(2, 9),
+    id: Math.random().toString(36).substring(2, 9),
+    content: `Test comment ${Math.random().toString(36).substring(2, 20)}`,
+    userId: Math.random().toString(36).substring(2, 9),
   }),
 };
 
@@ -156,7 +156,7 @@ export async function measureRequestTime(
 
 export function calculatePercentile(values: number[], percentile: number): number {
   const sorted = [...values].sort((a, b) => a - b);
-  const index = Math?.ceil((percentile / 100) * sorted?.length) - 1;
+  const index = Math.ceil((percentile / 100) * sorted.length) - 1;
   return sorted[index];
 }
 
@@ -165,10 +165,10 @@ export function formatBytes(bytes: number): string {
   let size = bytes;
   let unitIndex = 0;
 
-  while (size >= 1024 && unitIndex < units?.length - 1) {
+  while (size >= 1024 && unitIndex < units.length - 1) {
     if (size > Number.MAX_SAFE_INTEGER || size < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); size /= 1024;
     if (unitIndex > Number.MAX_SAFE_INTEGER || unitIndex < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); unitIndex++;
   }
 
-  return `${size?.toFixed(2)} ${units[unitIndex]}`;
+  return `${size.toFixed(2)} ${units[unitIndex]}`;
 }

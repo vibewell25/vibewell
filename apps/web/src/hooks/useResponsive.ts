@@ -60,7 +60,7 @@ export function useResponsive(): ResponsiveState {
       // Check for notch / safe areas
       const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
       const iphoneWithNotch = iOS && window.screen.height >= 812 && window.devicePixelRatio >= 2;
-      const androidWithCutout = /Android/.test(navigator.userAgent) && (window as any).screen?.orientation;
+      const androidWithCutout = /Android/.test(navigator.userAgent) && (window as any).screen.orientation;
       const hasSafeArea = iphoneWithNotch || androidWithCutout;
       
       // Check if running as installed PWA

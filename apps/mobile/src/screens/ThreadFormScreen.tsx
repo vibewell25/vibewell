@@ -5,32 +5,32 @@ import communityApi from '../services/communityService';
 import { Thread } from '../types/community';
 import { ThreadFormRouteProp, ThreadFormNavigationProp } from '../types/navigation';
 
-const ThreadFormScreen: React?.FC = () => {
+const ThreadFormScreen: React.FC = () => {
   const route = useRoute<ThreadFormRouteProp>();
   const navigation = useNavigation<ThreadFormNavigationProp>();
-  const { thread } = route?.params || {};
-  const [title, setTitle] = useState(thread?.title || '');
+  const { thread } = route.params || {};
+  const [title, setTitle] = useState(thread.title || '');
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       if (thread) {
-        await communityApi?.updateThread(thread?.id, { title });
+        await communityApi.updateThread(thread.id, { title });
       } else {
-        await communityApi?.createThread(title);
+        await communityApi.createThread(title);
       }
-      navigation?.goBack();
+      navigation.goBack();
     } catch (err) {
-      console?.error(err);
-      Alert?.alert('Error', 'Failed to save thread');
+      console.error(err);
+      Alert.alert('Error', 'Failed to save thread');
     }
   };
 
   return (
-    <View style={styles?.container}>
+    <View style={styles.container}>
       <TextInput
-        style={styles?.input}
+        style={styles.input}
         placeholder="Thread title"
         value={title}
         onChangeText={setTitle}
@@ -40,7 +40,7 @@ const ThreadFormScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   input: { borderWidth: 1, borderColor: '#ccc', padding: 8, borderRadius: 4, marginBottom: 12 }
 });

@@ -32,18 +32,18 @@ export function LoyaltyPoints() {
 
   useEffect(() => {
     const fetchLoyaltyData = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         const response = await fetch('/api/rewards/points');
-        if (!response?.ok) {
+        if (!response.ok) {
           throw new Error('Failed to fetch loyalty data');
         }
-        const data = await response?.json();
+        const data = await response.json();
         setData(data);
       } catch (error) {
-        console?.error('Error fetching loyalty data:', error);
-        toast?.error('Failed to load loyalty information');
+        console.error('Error fetching loyalty data:', error);
+        toast.error('Failed to load loyalty information');
       } finally {
         setLoading(false);
       }
@@ -80,22 +80,22 @@ export function LoyaltyPoints() {
         <CardContent className="pt-6">
           <div className="mb-4 flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold">{data?.points} Points</h2>
+              <h2 className="text-2xl font-bold">{data.points} Points</h2>
               <p className="text-muted-foreground">Current Balance</p>
             </div>
             <Badge variant="secondary" className="text-lg">
-              {data?.level}
+              {data.level}
             </Badge>
           </div>
-          {data?.nextLevel && (
+          {data.nextLevel && (
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span>{data?.points} points</span>
+                <span>{data.points} points</span>
                 <span>
-                  {data?.nextLevel} ({data?.pointsToNextLevel} points needed)
+                  {data.nextLevel} ({data.pointsToNextLevel} points needed)
                 </span>
               </div>
-              <Progress value={data?.progress} className="h-2" />
+              <Progress value={data.progress} className="h-2" />
             </div>
           )}
         </CardContent>
@@ -104,13 +104,13 @@ export function LoyaltyPoints() {
       <Card>
         <CardContent className="pt-6">
           <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
-            <Icons?.GiftIcon className="h-5 w-5" />
+            <Icons.GiftIcon className="h-5 w-5" />
             Current Benefits
           </h3>
           <ul className="space-y-2">
-            {data?.benefits.map((benefit, index) => (
+            {data.benefits.map((benefit, index) => (
               <li key={index} className="flex items-center gap-2">
-                <Icons?.StarIcon className="h-4 w-4 text-yellow-400" />
+                <Icons.StarIcon className="h-4 w-4 text-yellow-400" />
                 <span>{benefit}</span>
               </li>
             ))}
@@ -121,24 +121,24 @@ export function LoyaltyPoints() {
       <Card>
         <CardContent className="pt-6">
           <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
-            <Icons?.ClockIcon className="h-5 w-5" />
+            <Icons.ClockIcon className="h-5 w-5" />
             Recent Transactions
           </h3>
           <div className="space-y-4">
-            {data?.transactions.map((transaction) => (
-              <div key={transaction?.id} className="flex items-center justify-between">
+            {data.transactions.map((transaction) => (
+              <div key={transaction.id} className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium">{transaction?.description}</p>
+                  <p className="font-medium">{transaction.description}</p>
                   <p className="text-sm text-muted-foreground">
-                    {format(new Date(transaction?.date), 'MMM d, yyyy')}
+                    {format(new Date(transaction.date), 'MMM d, yyyy')}
                   </p>
                 </div>
                 <Badge
-                  variant={transaction?.points > 0 ? 'default' : 'destructive'}
+                  variant={transaction.points > 0 ? 'default' : 'destructive'}
                   className="text-sm"
                 >
-                  {transaction?.points > 0 ? '+' : ''}
-                  {transaction?.points} points
+                  {transaction.points > 0 ? '+' : ''}
+                  {transaction.points} points
                 </Badge>
               </div>
             ))}

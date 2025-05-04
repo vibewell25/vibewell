@@ -24,14 +24,14 @@ export function DeleteConfirmationDialog({
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleConfirm = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setIsDeleting(true);
       await onConfirm();
       onClose();
     } catch (error) {
-      console?.error('Error during deletion:', error);
+      console.error('Error during deletion:', error);
     } finally {
       setIsDeleting(false);
     }

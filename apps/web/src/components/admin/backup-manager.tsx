@@ -57,11 +57,11 @@ export function BackupManager() {
   }, []);
 
   const loadBackups = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
-      const { data, error } = await backupService?.backupClient
+      const { data, error } = await backupService.backupClient
         .from('backup_metadata')
         .select('*')
         .order('timestamp', { ascending: false });
@@ -69,7 +69,7 @@ export function BackupManager() {
       if (error) throw error;
       setBackups(data || []);
     } catch (err) {
-      console?.error('Error loading backups:', err);
+      console.error('Error loading backups:', err);
       setError('Failed to load backups');
     } finally {
       setLoading(false);
@@ -77,19 +77,19 @@ export function BackupManager() {
   };
 
   const handleCreateBackup = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');type: 'full' | 'incremental') => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');type: 'full' | 'incremental') => {
     try {
       setBackupInProgress(true);
       setError(null);
-      const backup = await backupService?.createBackup(type);
+      const backup = await backupService.createBackup(type);
       setBackups((prev) => [backup, ...prev]);
       toast({
         title: 'Backup Created',
         description: `Successfully created ${type} backup`,
       });
     } catch (err) {
-      console?.error('Error creating backup:', err);
+      console.error('Error creating backup:', err);
       setError('Failed to create backup');
       toast({
         title: 'Error',
@@ -102,20 +102,20 @@ export function BackupManager() {
   };
 
   const handleRestoreBackup = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!selectedBackup) return;
 
     try {
       setRestoreInProgress(true);
       setError(null);
-      await backupService?.restoreFromBackup(selectedBackup);
+      await backupService.restoreFromBackup(selectedBackup);
       toast({
         title: 'Backup Restored',
         description: 'Successfully restored from backup',
       });
     } catch (err) {
-      console?.error('Error restoring backup:', err);
+      console.error('Error restoring backup:', err);
       setError('Failed to restore backup');
       toast({
         title: 'Error',
@@ -136,10 +136,10 @@ export function BackupManager() {
     };
 
     const config = statusConfig[status];
-    const Icon = config?.icon;
+    const Icon = config.icon;
 
     return (
-      <Badge className={config?.color}>
+      <Badge className={config.color}>
         <Icon className="mr-1 h-4 w-4" />
         {status}
       </Badge>
@@ -190,23 +190,23 @@ export function BackupManager() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {backups?.map((backup) => (
-                  <TableRow key={backup?.id}>
-                    <TableCell>{backup?.id}</TableCell>
+                {backups.map((backup) => (
+                  <TableRow key={backup.id}>
+                    <TableCell>{backup.id}</TableCell>
                     <TableCell>
-                      <Badge variant={backup?.type === 'full' ? 'default' : 'secondary'}>
-                        {backup?.type}
+                      <Badge variant={backup.type === 'full' ? 'default' : 'secondary'}>
+                        {backup.type}
                       </Badge>
                     </TableCell>
-                    <TableCell>{format(new Date(backup?.timestamp), 'PPpp')}</TableCell>
-                    <TableCell>{(backup?.size / 1024 / 1024).toFixed(2)} MB</TableCell>
-                    <TableCell>{getStatusBadge(backup?.status)}</TableCell>
+                    <TableCell>{format(new Date(backup.timestamp), 'PPpp')}</TableCell>
+                    <TableCell>{(backup.size / 1024 / 1024).toFixed(2)} MB</TableCell>
+                    <TableCell>{getStatusBadge(backup.status)}</TableCell>
                     <TableCell>
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => setSelectedBackup(backup?.id)}
-                        disabled={backup?.status !== 'completed'}
+                        onClick={() => setSelectedBackup(backup.id)}
+                        disabled={backup.status !== 'completed'}
                       >
                         <Download className="h-4 w-4" />
                       </Button>
@@ -229,10 +229,10 @@ export function BackupManager() {
               </SelectTrigger>
               <SelectContent>
                 {backups
-                  .filter((b) => b?.status === 'completed')
+                  .filter((b) => b.status === 'completed')
                   .map((backup) => (
-                    <SelectItem key={backup?.id} value={backup?.id}>
-                      {backup?.type} - {format(new Date(backup?.timestamp), 'PPpp')}
+                    <SelectItem key={backup.id} value={backup.id}>
+                      {backup.type} - {format(new Date(backup.timestamp), 'PPpp')}
                     </SelectItem>
                   ))}
               </SelectContent>

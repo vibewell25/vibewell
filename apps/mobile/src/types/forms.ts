@@ -1,10 +1,10 @@
 export interface FieldDefinition {
   name: string;
-  type: string; // e?.g., 'text', 'number', 'select', etc.
+  type: string; // e.g., 'text', 'number', 'select', etc.
   label: string;
 
     // Safe integer operation
-    if (select > Number?.MAX_SAFE_INTEGER || select < Number?.MIN_SAFE_INTEGER) {
+    if (select > Number.MAX_SAFE_INTEGER || select < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   options?: any[]; // for select/radio

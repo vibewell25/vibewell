@@ -64,19 +64,19 @@ export function ContentCalendarCalendar({
     setIsItemModalOpen(true);
 
     // Announce to screen readers
-    if (window?.announcer) {
-      window?.announcer.announce(`Opening content item: ${item?.title}`);
+    if (window.announcer) {
+      window.announcer.announce(`Opening content item: ${item.title}`);
     }
   };
 
   const handleAddNewItem = (date: Date) => {
     // Create a new empty item with the selected date
     const newItem: ContentItem = {
-      id: `new-${Date?.now()}`,
+      id: `new-${Date.now()}`,
       title: 'New Content Item',
       description: '',
       status: 'idea',
-      dueDate: date?.toISOString(),
+      dueDate: date.toISOString(),
       assignedTo: '',
       platformIds: [],
       contentType: 'other',
@@ -89,25 +89,25 @@ export function ContentCalendarCalendar({
     setIsItemModalOpen(true);
 
     // Announce to screen readers
-    if (window?.announcer) {
-      window?.announcer.announce(`Creating new content item for ${format(date, 'MMMM d, yyyy')}`);
+    if (window.announcer) {
+      window.announcer.announce(`Creating new content item for ${format(date, 'MMMM d, yyyy')}`);
     }
   };
 
   const getPlatformById = (id: string) => {
-    return platforms?.find((platform) => platform?.id === id);
+    return platforms.find((platform) => platform.id === id);
   };
 
   const getTeamMemberById = (id: string) => {
-    return teamMembers?.find((member) => member?.id === id);
+    return teamMembers.find((member) => member.id === id);
   };
 
   const getStatusById = (id: string) => {
-    return statuses?.find((status) => status?.id === id);
+    return statuses.find((status) => status.id === id);
   };
 
   const getItemsForDate = (date: Date) => {
-    return contentItems?.filter((item) => item?.dueDate && isSameDay(parseISO(item?.dueDate), date));
+    return contentItems.filter((item) => item.dueDate && isSameDay(parseISO(item.dueDate), date));
   };
 
   const toggleShowAllItems = (dateKey: string) => {
@@ -117,9 +117,9 @@ export function ContentCalendarCalendar({
     }));
 
     // Announce to screen readers
-    if (window?.announcer) {
+    if (window.announcer) {
       const isShowing = !showAllItems[dateKey];
-      window?.announcer.announce(
+      window.announcer.announce(
         isShowing ? `Showing all items for ${dateKey}` : `Showing fewer items for ${dateKey}`,
       );
     }
@@ -130,18 +130,18 @@ export function ContentCalendarCalendar({
   const end = endOfMonth(selectedDate);
 
   // Adjust start day to begin on Sunday of the week that includes the first of the month
-  const calendarStart = addDays(start, -start?.getDay());
+  const calendarStart = addDays(start, -start.getDay());
 
   // Generate 6 weeks (42 days) to ensure we have enough days for the calendar
-  const calendarDays = Array?.from({ length: 42 }, (_, i) => addDays(calendarStart, i));
+  const calendarDays = Array.from({ length: 42 }, (_, i) => addDays(calendarStart, i));
 
   // Handle month change
   const handleMonthChange = (newDate: Date) => {
     setSelectedDate(newDate);
 
     // Announce to screen readers
-    if (window?.announcer) {
-      window?.announcer.announce(`Viewing calendar for ${format(newDate, 'MMMM yyyy')}`);
+    if (window.announcer) {
+      window.announcer.announce(`Viewing calendar for ${format(newDate, 'MMMM yyyy')}`);
     }
   };
 
@@ -209,13 +209,13 @@ export function ContentCalendarCalendar({
             </div>
           ))}
 
-          {calendarDays?.map((day, i) => {
+          {calendarDays.map((day, i) => {
             const dayItems = getItemsForDate(day);
-            const isCurrentMonth = day?.getMonth() === selectedDate?.getMonth();
+            const isCurrentMonth = day.getMonth() === selectedDate.getMonth();
             const dateKey = format(day, 'yyyy-MM-dd');
             const shouldShowAll = showAllItems[dateKey] || false;
-            const displayedItems = shouldShowAll ? dayItems : dayItems?.slice(0, 3);
-            const hasMoreItems = dayItems?.length > 3 && !shouldShowAll;
+            const displayedItems = shouldShowAll ? dayItems : dayItems.slice(0, 3);
+            const hasMoreItems = dayItems.length > 3 && !shouldShowAll;
             const isToday_ = isToday(day);
 
             return (
@@ -227,12 +227,12 @@ export function ContentCalendarCalendar({
                 role="gridcell"
                 aria-label={`${format(day, 'EEEE, MMMM d, yyyy')}${
                   isToday_ ? ' (Today)' : ''
-                }${dayItems?.length > 0 ? `, ${dayItems?.length} items` : ', No items'}`}
+                }${dayItems.length > 0 ? `, ${dayItems.length} items` : ', No items'}`}
                 tabIndex={isToday_ ? 0 : -1}
               >
                 <div className="mb-1 flex items-center justify-between">
                   <span
-                    className={`text-sm font-medium ${isToday_ ? 'bg-primary text-primary-foreground rounded-full px-1?.5' : ''}`}
+                    className={`text-sm font-medium ${isToday_ ? 'bg-primary text-primary-foreground rounded-full px-1.5' : ''}`}
                   >
                     {format(day, 'd')}
                     {isToday_ && <ScreenReaderOnly>Today</ScreenReaderOnly>}
@@ -249,22 +249,22 @@ export function ContentCalendarCalendar({
                 </div>
 
                 <div className="space-y-1">
-                  {displayedItems?.length > 0 ? (
-                    displayedItems?.map((item) => {
-                      const status = getStatusById(item?.status);
-                      const assignedTeamMember = getTeamMemberById(item?.assignedTo);
+                  {displayedItems.length > 0 ? (
+                    displayedItems.map((item) => {
+                      const status = getStatusById(item.status);
+                      const assignedTeamMember = getTeamMemberById(item.assignedTo);
 
                       return (
                         <Card
-                          key={item?.id}
+                          key={item.id}
                           className="cursor-pointer p-1 transition-shadow hover:shadow-sm"
                           onClick={() => openItemModal(item)}
                           tabIndex={0}
                           role="button"
-                          aria-label={`${item?.title}, status: ${status?.name || item?.status}`}
+                          aria-label={`${item.title}, status: ${status.name || item.status}`}
                           onKeyDown={(e) => {
-                            if (e?.key === 'Enter' || e?.key === ' ') {
-                              e?.preventDefault();
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
                               openItemModal(item);
                             }
                           }}
@@ -272,39 +272,39 @@ export function ContentCalendarCalendar({
                           <div className="flex items-start justify-between space-x-1">
                             <div
                               className="h-full w-1 rounded-full"
-                              style={{ backgroundColor: status?.color }}
+                              style={{ backgroundColor: status.color }}
                               aria-hidden="true"
                             ></div>
 
                             <div className="flex-1 text-xs">
-                              <div className="line-clamp-1 font-medium" title={item?.title}>
-                                {item?.title}
+                              <div className="line-clamp-1 font-medium" title={item.title}>
+                                {item.title}
                               </div>
 
-                              {item?.assignedTo && assignedTeamMember && (
+                              {item.assignedTo && assignedTeamMember && (
                                 <div className="mt-1 flex items-center">
-                                  <Tooltip content={`Assigned to: ${assignedTeamMember?.name}`}>
+                                  <Tooltip content={`Assigned to: ${assignedTeamMember.name}`}>
                                     <div className="flex items-center">
                                       <Avatar className="mr-1 h-4 w-4">
                                         <AvatarImage
-                                          src={assignedTeamMember?.avatar}
-                                          alt={assignedTeamMember?.name || ''}
+                                          src={assignedTeamMember.avatar}
+                                          alt={assignedTeamMember.name || ''}
                                         />
                                         <AvatarFallback className="text-[8px]">
-                                          {assignedTeamMember?.name?.charAt(0) || '?'}
+                                          {assignedTeamMember.name.charAt(0) || '?'}
                                         </AvatarFallback>
                                       </Avatar>
                                       <span className="max-w-[80px] truncate">
-                                        {assignedTeamMember?.name}
+                                        {assignedTeamMember.name}
                                       </span>
                                     </div>
                                   </Tooltip>
                                 </div>
                               )}
 
-                              {item?.platformIds && item?.platformIds.length > 0 && (
+                              {item.platformIds && item.platformIds.length > 0 && (
                                 <div className="mt-1 flex flex-wrap gap-1">
-                                  {item?.platformIds.slice(0, 2).map((platformId) => {
+                                  {item.platformIds.slice(0, 2).map((platformId) => {
                                     const platform = getPlatformById(platformId);
                                     return platform ? (
                                       <Badge
@@ -312,13 +312,13 @@ export function ContentCalendarCalendar({
                                         variant="outline"
                                         className="px-1 py-0 text-[8px]"
                                       >
-                                        {platform?.name}
+                                        {platform.name}
                                       </Badge>
                                     ) : null;
                                   })}
-                                  {item?.platformIds.length > 2 && (
+                                  {item.platformIds.length > 2 && (
                                     <Badge variant="outline" className="px-1 py-0 text-[8px]">
-                                      +{item?.platformIds.length - 2}
+                                      +{item.platformIds.length - 2}
                                     </Badge>
                                   )}
                                 </div>
@@ -331,15 +331,15 @@ export function ContentCalendarCalendar({
                                   variant="ghost"
                                   size="sm"
                                   className="h-5 w-5 p-0"
-                                  aria-label={`Actions for ${item?.title}`}
+                                  aria-label={`Actions for ${item.title}`}
                                 >
                                   <MoreHorizontal className="h-3 w-3" />
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
                                 <DropdownMenuItem
-                                  onClick={(e: React?.MouseEvent) => {
-                                    e?.stopPropagation();
+                                  onClick={(e: React.MouseEvent) => {
+                                    e.stopPropagation();
                                     openItemModal(item);
                                   }}
                                 >
@@ -347,13 +347,13 @@ export function ContentCalendarCalendar({
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
                                   className="text-destructive"
-                                  onClick={(e: React?.MouseEvent) => {
-                                    e?.stopPropagation();
-                                    onDeleteItem(item?.id);
+                                  onClick={(e: React.MouseEvent) => {
+                                    e.stopPropagation();
+                                    onDeleteItem(item.id);
                                     // Announce to screen readers
-                                    if (window?.announcer) {
-                                      window?.announcer.announce(
-                                        `Deleted content item: ${item?.title}`,
+                                    if (window.announcer) {
+                                      window.announcer.announce(
+                                        `Deleted content item: ${item.title}`,
                                       );
                                     }
                                   }}
@@ -376,13 +376,13 @@ export function ContentCalendarCalendar({
                       size="sm"
                       className="h-6 w-full py-1 text-xs text-muted-foreground"
                       onClick={() => toggleShowAllItems(dateKey)}
-                      aria-label={`Show ${dayItems?.length - 3} more items for ${format(day, 'MMMM d')}`}
+                      aria-label={`Show ${dayItems.length - 3} more items for ${format(day, 'MMMM d')}`}
                     >
-                      +{dayItems?.length - 3} more
+                      +{dayItems.length - 3} more
                     </Button>
                   )}
 
-                  {shouldShowAll && dayItems?.length > 3 && (
+                  {shouldShowAll && dayItems.length > 3 && (
                     <Button
                       variant="ghost"
                       size="sm"
@@ -406,17 +406,17 @@ export function ContentCalendarCalendar({
           onClose={() => {
             setIsItemModalOpen(false);
             // Announce to screen readers
-            if (window?.announcer) {
-              window?.announcer.announce('Content item modal closed');
+            if (window.announcer) {
+              window.announcer.announce('Content item modal closed');
             }
           }}
           item={currentItem}
           onSave={(updatedItem) => {
             onEditItem(updatedItem);
             // Announce to screen readers
-            if (window?.announcer) {
-              window?.announcer.announce(
-                `Content item ${currentItem?.id.startsWith('new') ? 'created' : 'updated'}: ${updatedItem?.title}`,
+            if (window.announcer) {
+              window.announcer.announce(
+                `Content item ${currentItem.id.startsWith('new') ? 'created' : 'updated'}: ${updatedItem.title}`,
               );
             }
           }}

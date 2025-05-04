@@ -4,7 +4,7 @@ import BeautyServiceCard from '../../../components/beauty/BeautyServiceCard';
 import { BeautyService } from '../../../types/beauty';
 
 // Mock the MaterialIcons
-jest?.mock('@expo/vector-icons', () => ({
+jest.mock('@expo/vector-icons', () => ({
   MaterialIcons: 'MaterialIcons',
 }));
 
@@ -13,9 +13,9 @@ describe('BeautyServiceCard Component', () => {
     id: '1',
     title: 'Haircut & Styling',
     description: 'Professional haircut and styling for all hair types',
-    price: 49?.99,
-    imageUrl: 'https://example?.com/haircut?.jpg',
-    rating: 4?.8,
+    price: 49.99,
+    imageUrl: 'https://example.com/haircut.jpg',
+    rating: 4.8,
     duration: 60,
     featured: true,
     categoryId: 'cat123',
@@ -24,29 +24,29 @@ describe('BeautyServiceCard Component', () => {
 
   const mockProps = {
     service: mockService,
-    onPress: jest?.fn(),
+    onPress: jest.fn(),
     isDarkMode: false,
   };
 
   beforeEach(() => {
-    jest?.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('renders correctly with service details', () => {
     const { getByText, getByTestId } = render(<BeautyServiceCard {...mockProps} />);
     
-    expect(getByText(mockService?.title)).toBeTruthy();
-    expect(getByText(mockService?.description)).toBeTruthy();
-    expect(getByText(`$${mockService?.price}`)).toBeTruthy();
-    expect(getByText(`${mockService?.duration} min`)).toBeTruthy();
+    expect(getByText(mockService.title)).toBeTruthy();
+    expect(getByText(mockService.description)).toBeTruthy();
+    expect(getByText(`$${mockService.price}`)).toBeTruthy();
+    expect(getByText(`${mockService.duration} min`)).toBeTruthy();
     expect(getByTestId('beautyServiceCard')).toBeTruthy();
   });
 
   it('calls onPress when card is pressed', () => {
     const { getByTestId } = render(<BeautyServiceCard {...mockProps} />);
     
-    fireEvent?.press(getByTestId('beautyServiceCard'));
-    expect(mockProps?.onPress).toHaveBeenCalledWith(mockService);
+    fireEvent.press(getByTestId('beautyServiceCard'));
+    expect(mockProps.onPress).toHaveBeenCalledWith(mockService);
   });
 
   it('displays featured badge when service is featured', () => {
@@ -86,7 +86,7 @@ describe('BeautyServiceCard Component', () => {
   it('displays the correct rating', () => {
     const { getByText } = render(<BeautyServiceCard {...mockProps} />);
     
-    expect(getByText(mockService?.rating.toString())).toBeTruthy();
+    expect(getByText(mockService.rating.toString())).toBeTruthy();
   });
 
   it('limits title to specified number of lines', () => {

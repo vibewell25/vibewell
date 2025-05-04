@@ -20,11 +20,11 @@ export function TipModal({ bookingId, open, onOpenChange }: TipModalProps) {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent) => {
-    e?.preventDefault();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
+    e.preventDefault();
     if (!amount || parseFloat(amount) <= 0) {
-      toast?.error('Please enter a valid tip amount');
+      toast.error('Please enter a valid tip amount');
       return;
     }
 
@@ -35,24 +35,24 @@ export function TipModal({ bookingId, open, onOpenChange }: TipModalProps) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify({
+        body: JSON.stringify({
           amount: parseFloat(amount),
           message,
         }),
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to add tip');
       }
 
-      toast?.success('Tip added successfully!');
+      toast.success('Tip added successfully!');
       onOpenChange(false);
       // Reset form
       setAmount('');
       setMessage('');
     } catch (error) {
-      console?.error('Error adding tip:', error);
-      toast?.error('Failed to add tip');
+      console.error('Error adding tip:', error);
+      toast.error('Failed to add tip');
     } finally {
       setLoading(false);
     }
@@ -70,9 +70,9 @@ export function TipModal({ bookingId, open, onOpenChange }: TipModalProps) {
             <Input
               type="number"
               min="0"
-              step="0?.01"
+              step="0.01"
               value={amount}
-              onChange={(e) => setAmount(e?.target.value)}
+              onChange={(e) => setAmount(e.target.value)}
               placeholder="Enter tip amount"
               required
             />
@@ -81,7 +81,7 @@ export function TipModal({ bookingId, open, onOpenChange }: TipModalProps) {
             <Label>Message (Optional)</Label>
             <Textarea
               value={message}
-              onChange={(e) => setMessage(e?.target.value)}
+              onChange={(e) => setMessage(e.target.value)}
               placeholder="Add a message to your tip"
               rows={3}
             />

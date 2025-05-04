@@ -8,8 +8,8 @@ interface GaugeChartProps {
   severity: 'low' | 'medium' | 'high';
 }
 
-const GaugeChart: React?.FC<GaugeChartProps> = ({ value, maxValue, label, severity }) => {
-  const normalizedValue = Math?.min(Math?.max(value, 0), maxValue);
+const GaugeChart: React.FC<GaugeChartProps> = ({ value, maxValue, label, severity }) => {
+  const normalizedValue = Math.min(Math.max(value, 0), maxValue);
   const percentage = (normalizedValue / maxValue) * 100;
 
   const data = [
@@ -43,7 +43,7 @@ const GaugeChart: React?.FC<GaugeChartProps> = ({ value, maxValue, label, severi
           </Pie>
         </PieChart>
         <div className="gauge-value">
-          <span className="value">{Math?.round(percentage)}%</span>
+          <span className="value">{Math.round(percentage)}%</span>
           <span className="label">{label}</span>
         </div>
       </div>
@@ -69,16 +69,16 @@ const GaugeChart: React?.FC<GaugeChartProps> = ({ value, maxValue, label, severi
 
         .value {
           display: block;
-          font-size: 1?.5rem;
+          font-size: 1.5rem;
           font-weight: bold;
           color: var(--text-primary);
         }
 
         .label {
           display: block;
-          font-size: 0?.875rem;
+          font-size: 0.875rem;
           color: var(--text-secondary);
-          margin-top: 0?.25rem;
+          margin-top: 0.25rem;
         }
       `}</style>
     </div>

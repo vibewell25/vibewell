@@ -34,11 +34,11 @@ export function ServiceBookingModal({
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent) => {
-    e?.preventDefault();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
+    e.preventDefault();
     if (!date || !time) {
-      toast?.error('Please select a date and time');
+      toast.error('Please select a date and time');
       return;
     }
 
@@ -49,24 +49,24 @@ export function ServiceBookingModal({
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify({
-          serviceId: service?.id,
-          businessId: business?.id,
-          date: date?.toISOString(),
+        body: JSON.stringify({
+          serviceId: service.id,
+          businessId: business.id,
+          date: date.toISOString(),
           time,
           notes,
         }),
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to create booking');
       }
 
-      toast?.success('Booking created successfully!');
+      toast.success('Booking created successfully!');
       onOpenChange(false);
     } catch (error) {
-      console?.error('Error creating booking:', error);
-      toast?.error('Failed to create booking');
+      console.error('Error creating booking:', error);
+      toast.error('Failed to create booking');
     } finally {
       setLoading(false);
     }
@@ -76,7 +76,7 @@ export function ServiceBookingModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Book {service?.name}</DialogTitle>
+          <DialogTitle>Book {service.name}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
@@ -90,20 +90,20 @@ export function ServiceBookingModal({
           </div>
           <div className="space-y-2">
             <Label>Time</Label>
-            <Input type="time" value={time} onChange={(e) => setTime(e?.target.value)} required />
+            <Input type="time" value={time} onChange={(e) => setTime(e.target.value)} required />
           </div>
           <div className="space-y-2">
             <Label>Notes (Optional)</Label>
             <Input
               value={notes}
-              onChange={(e) => setNotes(e?.target.value)}
+              onChange={(e) => setNotes(e.target.value)}
               placeholder="Any special requests or notes"
             />
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-lg font-semibold">${service?.price}</span>
-              <span className="ml-2 text-muted-foreground">({service?.duration} min)</span>
+              <span className="text-lg font-semibold">${service.price}</span>
+              <span className="ml-2 text-muted-foreground">({service.duration} min)</span>
             </div>
             <Button type="submit" disabled={loading}>
               {loading ? 'Booking...' : 'Confirm Booking'}

@@ -22,19 +22,19 @@ export class SentryErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    Sentry?.captureException(error, {
+    Sentry.captureException(error, {
       contexts: {
         react: {
-          componentStack: errorInfo?.componentStack,
+          componentStack: errorInfo.componentStack,
         },
       },
     });
   }
 
   public render() {
-    if (this?.state.hasError) {
+    if (this.state.hasError) {
       return (
-        this?.props.fallback || (
+        this.props.fallback || (
           <div className="flex min-h-screen items-center justify-center bg-gray-50">
             <div className="text-center">
               <h2 className="mb-4 text-2xl font-bold text-gray-900">Oops! Something went wrong</h2>
@@ -42,7 +42,7 @@ export class SentryErrorBoundary extends Component<Props, State> {
                 We've been notified and are working to fix the issue.
               </p>
               <button
-                onClick={() => this?.setState({ hasError: false })}
+                onClick={() => this.setState({ hasError: false })}
                 className="rounded-md bg-primary-600 px-4 py-2 text-white hover:bg-primary-700"
               >
                 Try again
@@ -53,6 +53,6 @@ export class SentryErrorBoundary extends Component<Props, State> {
       );
     }
 
-    return this?.props.children;
+    return this.props.children;
   }
 }

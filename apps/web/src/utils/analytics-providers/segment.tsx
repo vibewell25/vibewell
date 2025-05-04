@@ -8,34 +8,34 @@ export class SegmentProvider implements AnalyticsProvider {
   private isInitialized: boolean = false;
 
   constructor(writeKey?: string) {
-    this?.segmentWriteKey = writeKey || process?.env.NEXT_PUBLIC_SEGMENT_WRITE_KEY || '';
+    this.segmentWriteKey = writeKey || process.env.NEXT_PUBLIC_SEGMENT_WRITE_KEY || '';
   }
 
   /**
    * Initialize Segment analytics
    */
   async initialize(): Promise<void> {
-    if (this?.isInitialized || !this?.segmentWriteKey || typeof window === 'undefined') {
+    if (this.isInitialized || !this.segmentWriteKey || typeof window === 'undefined') {
       return;
     }
 
     try {
-      // Load Segment analytics?.js
-      await this?.loadSegmentScript();
+      // Load Segment analytics.js
+      await this.loadSegmentScript();
 
       // Initialize with write key
-      (window as any).analytics?.load(this?.segmentWriteKey);
+      (window as any).analytics.load(this.segmentWriteKey);
 
-      this?.isInitialized = true;
-      console?.log('Segment analytics initialized successfully');
+      this.isInitialized = true;
+      console.log('Segment analytics initialized successfully');
     } catch (error) {
-      console?.error('Failed to initialize Segment analytics:', error);
+      console.error('Failed to initialize Segment analytics:', error);
       throw error;
     }
   }
 
   /**
-   * Load Segment's analytics?.js script
+   * Load Segment's analytics.js script
    */
   private loadSegmentScript(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -77,29 +77,29 @@ export class SegmentProvider implements AnalyticsProvider {
         for (const method of methods) {
           analytics[method] = function () {
             // eslint-disable-next-line prefer-rest-params
-            const args = Array?.prototype.slice?.call(arguments);
-            args?.unshift(method);
-            analytics?.push(args);
+            const args = Array.prototype.slice.call(arguments);
+            args.unshift(method);
+            analytics.push(args);
             return analytics;
           };
         }
 
         // Create script element
-        const script = document?.createElement('script');
-        script?.type = 'text/javascript';
-        script?.async = true;
-        script?.src = `https://cdn?.segment.com/analytics?.js/v1/${this?.segmentWriteKey}/analytics?.min.js`;
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.async = true;
+        script.src = `https://cdn.segment.com/analytics.js/v1/${this.segmentWriteKey}/analytics.min.js`;
 
         // Set up callbacks
-        script?.onload = () => resolve();
-        script?.onerror = (error) => reject(new Error(`Failed to load Segment script: ${error}`));
+        script.onload = () => resolve();
+        script.onerror = (error) => reject(new Error(`Failed to load Segment script: ${error}`));
 
         // Add to document
-        const first = document?.getElementsByTagName('script')[0];
-        if (first && first?.parentNode) {
-          first?.parentNode.insertBefore(script, first);
+        const first = document.getElementsByTagName('script')[0];
+        if (first && first.parentNode) {
+          first.parentNode.insertBefore(script, first);
         } else {
-          document?.head.appendChild(script);
+          document.head.appendChild(script);
         }
       } catch (error) {
         reject(error);
@@ -111,7 +111,7 @@ export class SegmentProvider implements AnalyticsProvider {
    * Track event in Segment
    */
   trackEvent(event: AnalyticsEvent): void {
-    if (!this?.isInitialized || typeof window === 'undefined') {
+    if (!this.isInitialized || typeof window === 'undefined') {
       return;
     }
 
@@ -119,9 +119,9 @@ export class SegmentProvider implements AnalyticsProvider {
       const { eventName, properties } = event;
 
       // Track event
-      (window as any).analytics?.track(eventName, properties);
+      (window as any).analytics.track(eventName, properties);
     } catch (error) {
-      console?.error('Segment tracking error:', error);
+      console.error('Segment tracking error:', error);
     }
   }
 
@@ -129,15 +129,15 @@ export class SegmentProvider implements AnalyticsProvider {
    * Set user ID and properties in Segment
    */
   setUser(userId: string, userProperties?: Record<string, any>): void {
-    if (!this?.isInitialized || typeof window === 'undefined') {
+    if (!this.isInitialized || typeof window === 'undefined') {
       return;
     }
 
     try {
       // Identify user
-      (window as any).analytics?.identify(userId, userProperties);
+      (window as any).analytics.identify(userId, userProperties);
     } catch (error) {
-      console?.error('Segment set user error:', error);
+      console.error('Segment set user error:', error);
     }
   }
 }

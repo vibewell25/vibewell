@@ -15,12 +15,12 @@ export const SafeUserMenu = withErrorBoundary(UserMenu, {
       aria-label="User menu (currently unavailable)"
       disabled
     >
-      <Icons?.UserCircleIcon className="h-8 w-8 text-muted-foreground opacity-50" />
+      <Icons.UserCircleIcon className="h-8 w-8 text-muted-foreground opacity-50" />
     </button>
   ),
   onError: (error) => {
     // You could send this error to your monitoring service
-    console?.error('UserMenu component error:', error);
+    console.error('UserMenu component error:', error);
   },
 });
 

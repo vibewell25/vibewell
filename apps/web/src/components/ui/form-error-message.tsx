@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 interface FormErrorMessageProps {
   className?: string;
   id: string;
-  children: React?.ReactNode;
+  children: React.ReactNode;
 }
 
 /**

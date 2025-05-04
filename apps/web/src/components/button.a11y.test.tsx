@@ -16,21 +16,21 @@ describe('Button Accessibility', () => {
 
   it('should have proper ARIA attributes for different states', () => {
     render(<Button>Click me</Button>);
-    let button = screen?.getByRole('button');
+    let button = screen.getByRole('button');
     expect(button).toBeInTheDocument();
-    expect(button).not?.toHaveAttribute('aria-disabled');
+    expect(button).not.toHaveAttribute('aria-disabled');
 
     // Test disabled state
     render(<Button disabled>Disabled</Button>);
-    button = screen?.getByRole('button');
+    button = screen.getByRole('button');
     expect(button).toHaveAttribute('aria-disabled', 'true');
     expect(button).toBeDisabled();
 
     // Test loading state
     render(<Button loading>Loading</Button>);
-    button = screen?.getByRole('button');
+    button = screen.getByRole('button');
     expect(button).toHaveAttribute('aria-busy', 'true');
-    expect(screen?.getByTestId('loading-spinner')).toBeInTheDocument();
+    expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
   });
 
   it('should support custom ARIA attributes', () => {
@@ -40,7 +40,7 @@ describe('Button Accessibility', () => {
       </Button>,
     );
 
-    const button = screen?.getByRole('button');
+    const button = screen.getByRole('button');
     expect(button).toHaveAttribute('aria-label', 'Custom action');
     expect(button).toHaveAttribute('aria-describedby', 'tooltip-1');
     expect(button).toHaveAttribute('aria-controls', 'panel-1');
@@ -48,30 +48,30 @@ describe('Button Accessibility', () => {
 
   it('should handle focus management correctly', () => {
     render(<Button>Focus Test</Button>);
-    const button = screen?.getByRole('button');
+    const button = screen.getByRole('button');
 
-    button?.focus();
+    button.focus();
     expect(button).toHaveFocus();
     expect(button).toHaveClass('focus-visible:ring-2');
 
-    button?.blur();
-    expect(button).not?.toHaveFocus();
+    button.blur();
+    expect(button).not.toHaveFocus();
   });
 
   it('should be keyboard accessible', () => {
-    const handleClick = jest?.fn();
+    const handleClick = jest.fn();
     render(<Button onClick={handleClick}>Keyboard Test</Button>);
-    const button = screen?.getByRole('button');
+    const button = screen.getByRole('button');
 
-    button?.focus();
+    button.focus();
     expect(button).toHaveFocus();
 
     // Test Enter key
-    fireEvent?.keyDown(button, { key: 'Enter' });
+    fireEvent.keyDown(button, { key: 'Enter' });
     expect(handleClick).toHaveBeenCalledTimes(1);
 
     // Test Space key
-    fireEvent?.keyDown(button, { key: ' ' });
+    fireEvent.keyDown(button, { key: ' ' });
     expect(handleClick).toHaveBeenCalledTimes(2);
   });
 });

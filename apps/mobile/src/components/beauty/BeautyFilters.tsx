@@ -31,7 +31,7 @@ const DEFAULT_FILTERS: BeautyFilter = {
   featured: undefined
 };
 
-const BeautyFilters: React?.FC<BeautyFiltersProps> = ({
+const BeautyFilters: React.FC<BeautyFiltersProps> = ({
   visible,
   onClose,
   onApply,
@@ -58,9 +58,9 @@ const BeautyFilters: React?.FC<BeautyFiltersProps> = ({
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 
-  const themeText = isDarkMode ? styles?.darkText : styles?.lightText;
-  const themeBackground = isDarkMode ? styles?.darkBackground : styles?.lightBackground;
-  const themeInput = isDarkMode ? styles?.darkInput : styles?.lightInput;
+  const themeText = isDarkMode ? styles.darkText : styles.lightText;
+  const themeBackground = isDarkMode ? styles.darkBackground : styles.lightBackground;
+  const themeInput = isDarkMode ? styles.darkInput : styles.lightInput;
 
   return (
     <Modal
@@ -69,39 +69,39 @@ const BeautyFilters: React?.FC<BeautyFiltersProps> = ({
       visible={visible}
       onRequestClose={onClose}
     >
-      <View style={[styles?.centeredView, isDarkMode ? styles?.darkOverlay : styles?.lightOverlay]}>
-        <View style={[styles?.modalView, themeBackground]}>
-          <View style={styles?.modalHeader}>
-            <Text style={[styles?.modalTitle, themeText]}>Filter Services</Text>
+      <View style={[styles.centeredView, isDarkMode ? styles.darkOverlay : styles.lightOverlay]}>
+        <View style={[styles.modalView, themeBackground]}>
+          <View style={styles.modalHeader}>
+            <Text style={[styles.modalTitle, themeText]}>Filter Services</Text>
             <TouchableOpacity onPress={onClose}>
               <MaterialIcons name="close" size={24} color={isDarkMode ? '#fff' : '#000'} />
             </TouchableOpacity>
           </View>
           
-          <ScrollView style={styles?.filtersContainer}>
+          <ScrollView style={styles.filtersContainer}>
             {/* Price Range */}
-            <View style={styles?.filterSection}>
-              <Text style={[styles?.filterTitle, themeText]}>Price Range</Text>
-              <View style={styles?.rangeLabels}>
-                <Text style={[styles?.rangeLabel, themeText]}>${filters?.minPrice}</Text>
-                <Text style={[styles?.rangeLabel, themeText]}>${filters?.maxPrice}</Text>
+            <View style={styles.filterSection}>
+              <Text style={[styles.filterTitle, themeText]}>Price Range</Text>
+              <View style={styles.rangeLabels}>
+                <Text style={[styles.rangeLabel, themeText]}>${filters.minPrice}</Text>
+                <Text style={[styles.rangeLabel, themeText]}>${filters.maxPrice}</Text>
               </View>
               <Slider
-                style={styles?.slider}
+                style={styles.slider}
                 minimumValue={0}
                 maximumValue={100}
-                value={filters?.minPrice || 0}
-                onValueChange={(value) => updateFilter('minPrice', Math?.round(value))}
+                value={filters.minPrice || 0}
+                onValueChange={(value) => updateFilter('minPrice', Math.round(value))}
                 minimumTrackTintColor={isDarkMode ? '#5f9ea0' : '#007bff'}
                 maximumTrackTintColor={isDarkMode ? '#555' : '#d3d3d3'}
                 thumbTintColor={isDarkMode ? '#90ee90' : '#007bff'}
               />
               <Slider
-                style={styles?.slider}
+                style={styles.slider}
                 minimumValue={100}
                 maximumValue={1000}
-                value={filters?.maxPrice || 500}
-                onValueChange={(value) => updateFilter('maxPrice', Math?.round(value))}
+                value={filters.maxPrice || 500}
+                onValueChange={(value) => updateFilter('maxPrice', Math.round(value))}
                 minimumTrackTintColor={isDarkMode ? '#5f9ea0' : '#007bff'}
                 maximumTrackTintColor={isDarkMode ? '#555' : '#d3d3d3'}
                 thumbTintColor={isDarkMode ? '#90ee90' : '#007bff'}
@@ -109,28 +109,28 @@ const BeautyFilters: React?.FC<BeautyFiltersProps> = ({
             </View>
             
             {/* Duration */}
-            <View style={styles?.filterSection}>
-              <Text style={[styles?.filterTitle, themeText]}>Duration (minutes)</Text>
-              <View style={styles?.rangeLabels}>
-                <Text style={[styles?.rangeLabel, themeText]}>{filters?.minDuration} min</Text>
-                <Text style={[styles?.rangeLabel, themeText]}>{filters?.maxDuration} min</Text>
+            <View style={styles.filterSection}>
+              <Text style={[styles.filterTitle, themeText]}>Duration (minutes)</Text>
+              <View style={styles.rangeLabels}>
+                <Text style={[styles.rangeLabel, themeText]}>{filters.minDuration} min</Text>
+                <Text style={[styles.rangeLabel, themeText]}>{filters.maxDuration} min</Text>
               </View>
               <Slider
-                style={styles?.slider}
+                style={styles.slider}
                 minimumValue={15}
                 maximumValue={60}
-                value={filters?.minDuration || 15}
-                onValueChange={(value) => updateFilter('minDuration', Math?.round(value))}
+                value={filters.minDuration || 15}
+                onValueChange={(value) => updateFilter('minDuration', Math.round(value))}
                 minimumTrackTintColor={isDarkMode ? '#5f9ea0' : '#007bff'}
                 maximumTrackTintColor={isDarkMode ? '#555' : '#d3d3d3'}
                 thumbTintColor={isDarkMode ? '#90ee90' : '#007bff'}
               />
               <Slider
-                style={styles?.slider}
+                style={styles.slider}
                 minimumValue={60}
                 maximumValue={240}
-                value={filters?.maxDuration || 180}
-                onValueChange={(value) => updateFilter('maxDuration', Math?.round(value))}
+                value={filters.maxDuration || 180}
+                onValueChange={(value) => updateFilter('maxDuration', Math.round(value))}
                 minimumTrackTintColor={isDarkMode ? '#5f9ea0' : '#007bff'}
                 maximumTrackTintColor={isDarkMode ? '#555' : '#d3d3d3'}
                 thumbTintColor={isDarkMode ? '#90ee90' : '#007bff'}
@@ -138,19 +138,19 @@ const BeautyFilters: React?.FC<BeautyFiltersProps> = ({
             </View>
             
             {/* Rating */}
-            <View style={styles?.filterSection}>
-              <Text style={[styles?.filterTitle, themeText]}>Minimum Rating</Text>
-              <View style={styles?.ratingContainer}>
+            <View style={styles.filterSection}>
+              <Text style={[styles.filterTitle, themeText]}>Minimum Rating</Text>
+              <View style={styles.ratingContainer}>
                 {[0, 1, 2, 3, 4, 5].map((rating) => (
                   <TouchableOpacity
                     key={rating}
-                    style={styles?.ratingButton}
+                    style={styles.ratingButton}
                     onPress={() => updateFilter('minRating', rating)}
                   >
                     <Text style={[
-                      styles?.ratingText,
-                      filters?.minRating === rating && styles?.selectedRating,
-                      isDarkMode && styles?.darkRatingText
+                      styles.ratingText,
+                      filters.minRating === rating && styles.selectedRating,
+                      isDarkMode && styles.darkRatingText
                     ]}>
                       {rating === 0 ? 'Any' : `${rating}★+`}
                     </Text>
@@ -160,34 +160,34 @@ const BeautyFilters: React?.FC<BeautyFiltersProps> = ({
             </View>
             
             {/* Featured Toggle */}
-            <View style={styles?.filterSection}>
-              <Text style={[styles?.filterTitle, themeText]}>Featured Only</Text>
-              <View style={styles?.toggleContainer}>
+            <View style={styles.filterSection}>
+              <Text style={[styles.filterTitle, themeText]}>Featured Only</Text>
+              <View style={styles.toggleContainer}>
                 <Switch
-                  value={filters?.featured || false}
+                  value={filters.featured || false}
                   onValueChange={(value) => updateFilter('featured', value)}
                   trackColor={{ false: '#d3d3d3', true: isDarkMode ? '#5f9ea0' : '#007bff' }}
-                  thumbColor={filters?.featured ? isDarkMode ? '#90ee90' : '#007bff' : '#f4f3f4'}
+                  thumbColor={filters.featured ? isDarkMode ? '#90ee90' : '#007bff' : '#f4f3f4'}
                 />
-                <Text style={[styles?.toggleLabel, themeText]}>
-                  {filters?.featured ? 'Show only featured services' : 'Show all services'}
+                <Text style={[styles.toggleLabel, themeText]}>
+                  {filters.featured ? 'Show only featured services' : 'Show all services'}
                 </Text>
               </View>
             </View>
           </ScrollView>
           
-          <View style={styles?.actionButtons}>
+          <View style={styles.actionButtons}>
             <TouchableOpacity 
-              style={[styles?.resetButton, isDarkMode && styles?.darkResetButton]} 
+              style={[styles.resetButton, isDarkMode && styles.darkResetButton]} 
               onPress={handleReset}
             >
-              <Text style={[styles?.buttonText, isDarkMode && styles?.darkButtonText]}>Reset</Text>
+              <Text style={[styles.buttonText, isDarkMode && styles.darkButtonText]}>Reset</Text>
             </TouchableOpacity>
             <TouchableOpacity 
-              style={[styles?.applyButton, isDarkMode && styles?.darkApplyButton]} 
+              style={[styles.applyButton, isDarkMode && styles.darkApplyButton]} 
               onPress={handleApplyFilters}
             >
-              <Text style={styles?.applyButtonText}>Apply Filters</Text>
+              <Text style={styles.applyButtonText}>Apply Filters</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -196,17 +196,17 @@ const BeautyFilters: React?.FC<BeautyFiltersProps> = ({
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
   lightOverlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0?.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   darkOverlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0?.7)',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
   },
   modalView: {
     width: '100%',
@@ -220,7 +220,7 @@ const styles = StyleSheet?.create({
       width: 0,
       height: -2,
     },
-    shadowOpacity: 0?.25,
+    shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
   },

@@ -36,7 +36,7 @@ export class InventoryManagementService {
     type: 'ADD' | 'REMOVE',
   ): Promise<void> {
     try {
-      const product = await prisma?.product.findUnique({
+      const product = await prisma.product.findUnique({
         where: { id: productId },
       });
 
@@ -45,28 +45,28 @@ export class InventoryManagementService {
       const newQuantity =
 
 
-        type === 'ADD' ? product?.quantity + quantity : product?.quantity - quantity;
+        type === 'ADD' ? product.quantity + quantity : product.quantity - quantity;
 
-      await prisma?.product.update({
+      await prisma.product.update({
         where: { id: productId },
         data: { quantity: newQuantity },
       });
 
       // Check if we need to generate alerts
-      if (newQuantity <= product?.minQuantity) {
-        await this?.generateAlert({
+      if (newQuantity <= product.minQuantity) {
+        await this.generateAlert({
           productId,
           type: 'LOW_STOCK',
-          message: `Product ${product?.name} is running low (${newQuantity} remaining)`,
+          message: `Product ${product.name} is running low (${newQuantity} remaining)`,
 
-          priority: newQuantity <= product?.minQuantity / 2 ? 'HIGH' : 'MEDIUM',
+          priority: newQuantity <= product.minQuantity / 2 ? 'HIGH' : 'MEDIUM',
         });
       }
 
       // Update product performance metrics
-      await this?.updateProductPerformance(productId);
+      await this.updateProductPerformance(productId);
     } catch (error) {
-      logger?.error('Failed to update product quantity', 'InventoryManagement', {
+      logger.error('Failed to update product quantity', 'InventoryManagement', {
         error,
         productId,
       });
@@ -79,10 +79,10 @@ export class InventoryManagementService {
    */
   public async processAutomatedReorders(): Promise<void> {
     try {
-      const lowStockProducts = await prisma?.product.findMany({
+      const lowStockProducts = await prisma.product.findMany({
         where: {
           quantity: {
-            lte: prisma?.product.fields?.minQuantity,
+            lte: prisma.product.fields.minQuantity,
           },
         },
         include: {
@@ -92,24 +92,24 @@ export class InventoryManagementService {
       });
 
       for (const product of lowStockProducts) {
-        const reorderQuantity = this?.calculateReorderQuantity(product);
+        const reorderQuantity = this.calculateReorderQuantity(product);
 
-        await this?.generateAlert({
-          productId: product?.id,
+        await this.generateAlert({
+          productId: product.id,
           type: 'REORDER',
-          message: `Automated reorder triggered for ${product?.name} (${reorderQuantity} units)`,
+          message: `Automated reorder triggered for ${product.name} (${reorderQuantity} units)`,
           priority: 'HIGH',
         });
 
         // Here you would integrate with your supplier's ordering system
-        logger?.info('Processing automated reorder', 'InventoryManagement', {
-          productId: product?.id,
+        logger.info('Processing automated reorder', 'InventoryManagement', {
+          productId: product.id,
           quantity: reorderQuantity,
-          supplier: product?.supplier.name,
+          supplier: product.supplier.name,
         });
       }
     } catch (error) {
-      logger?.error('Failed to process automated reorders', 'InventoryManagement', { error });
+      logger.error('Failed to process automated reorders', 'InventoryManagement', { error });
       throw error;
     }
   }
@@ -119,7 +119,7 @@ export class InventoryManagementService {
    */
   public async analyzeProductPerformance(productId: string): Promise<ProductAnalytics> {
     try {
-      const product = await prisma?.product.findUnique({
+      const product = await prisma.product.findUnique({
         where: { id: productId },
         include: {
           usage: true,
@@ -130,16 +130,16 @@ export class InventoryManagementService {
       if (!product) throw new Error('Product not found');
 
       const analytics: ProductAnalytics = {
-        salesVelocity: this?.calculateSalesVelocity(product?.usage),
-        profitMargin: this?.calculateProfitMargin(product),
-        wastageRate: product?.performance?.wastageRate || 0,
-        turnoverRate: this?.calculateTurnoverRate(product),
-        daysUntilReorder: this?.calculateDaysUntilReorder(product),
+        salesVelocity: this.calculateSalesVelocity(product.usage),
+        profitMargin: this.calculateProfitMargin(product),
+        wastageRate: product.performance.wastageRate || 0,
+        turnoverRate: this.calculateTurnoverRate(product),
+        daysUntilReorder: this.calculateDaysUntilReorder(product),
       };
 
       return analytics;
     } catch (error) {
-      logger?.error('Failed to analyze product performance', 'InventoryManagement', {
+      logger.error('Failed to analyze product performance', 'InventoryManagement', {
         error,
         productId,
       });
@@ -152,7 +152,7 @@ export class InventoryManagementService {
    */
   public async generateWasteReductionSuggestions(productId: string): Promise<string[]> {
     try {
-      const product = await prisma?.product.findUnique({
+      const product = await prisma.product.findUnique({
         where: { id: productId },
         include: {
           performance: true,
@@ -165,31 +165,31 @@ export class InventoryManagementService {
       const suggestions: string[] = [];
 
       // Analyze usage patterns
-      const wastageRate = product?.performance?.wastageRate || 0;
-      const turnoverRate = this?.calculateTurnoverRate(product);
+      const wastageRate = product.performance.wastageRate || 0;
+      const turnoverRate = this.calculateTurnoverRate(product);
 
-      if (wastageRate > 0?.1) {
+      if (wastageRate > 0.1) {
         // More than 10% waste
-        suggestions?.push('Consider reducing order quantities to minimize waste');
-        suggestions?.push('Review storage conditions to extend product life');
+        suggestions.push('Consider reducing order quantities to minimize waste');
+        suggestions.push('Review storage conditions to extend product life');
       }
 
       if (turnoverRate < 1) {
         // Less than once per month
 
-        suggestions?.push('Product has slow turnover - consider adjusting stock levels');
-        suggestions?.push('Review pricing strategy to increase sales');
+        suggestions.push('Product has slow turnover - consider adjusting stock levels');
+        suggestions.push('Review pricing strategy to increase sales');
       }
 
       // Add more specific suggestions based on product type
-      if (product?.category === 'PERISHABLE') {
-        suggestions?.push('Implement FIFO (First In, First Out) inventory management');
-        suggestions?.push('Monitor expiration dates more frequently');
+      if (product.category === 'PERISHABLE') {
+        suggestions.push('Implement FIFO (First In, First Out) inventory management');
+        suggestions.push('Monitor expiration dates more frequently');
       }
 
       return suggestions;
     } catch (error) {
-      logger?.error('Failed to generate waste reduction suggestions', 'InventoryManagement', {
+      logger.error('Failed to generate waste reduction suggestions', 'InventoryManagement', {
         error,
         productId,
       });
@@ -198,7 +198,7 @@ export class InventoryManagementService {
   }
 
   private async updateProductPerformance(productId: string): Promise<void> {
-    const product = await prisma?.product.findUnique({
+    const product = await prisma.product.findUnique({
       where: { id: productId },
       include: {
         usage: true,
@@ -208,11 +208,11 @@ export class InventoryManagementService {
 
     if (!product) return;
 
-    const salesVelocity = this?.calculateSalesVelocity(product?.usage);
-    const profitMargin = this?.calculateProfitMargin(product);
-    const wastageRate = this?.calculateWastageRate(product);
+    const salesVelocity = this.calculateSalesVelocity(product.usage);
+    const profitMargin = this.calculateProfitMargin(product);
+    const wastageRate = this.calculateWastageRate(product);
 
-    await prisma?.productPerformance.upsert({
+    await prisma.productPerformance.upsert({
       where: { productId },
       create: {
         productId,
@@ -233,17 +233,17 @@ export class InventoryManagementService {
   }
 
   private calculateSalesVelocity(usage: ProductUsage[]): number {
-    if (usage?.length < 2) return 0;
+    if (usage.length < 2) return 0;
 
-    const sortedUsage = usage?.sort((a, b) => b?.createdAt.getTime() - a?.createdAt.getTime());
+    const sortedUsage = usage.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
     const daysDiff =
-      (sortedUsage[0].createdAt?.getTime() -
+      (sortedUsage[0].createdAt.getTime() -
 
-        sortedUsage[sortedUsage?.length - 1].createdAt?.getTime()) /
+        sortedUsage[sortedUsage.length - 1].createdAt.getTime()) /
       (1000 * 60 * 60 * 24);
 
-    const totalQuantity = usage?.reduce((sum, u) => sum + u?.quantity, 0);
+    const totalQuantity = usage.reduce((sum, u) => sum + u.quantity, 0);
 
 
     return totalQuantity / daysDiff; // Units per day
@@ -251,42 +251,42 @@ export class InventoryManagementService {
 
   private calculateProfitMargin(product: ProductWithRelations): number {
 
-    return (product?.price - product?.cost) / product?.price;
+    return (product.price - product.cost) / product.price;
   }
 
   private calculateWastageRate(product: ProductWithRelations): number {
-    const totalWaste = product?.usage
-      .filter((u) => u?.type === 'WASTE')
+    const totalWaste = product.usage
+      .filter((u) => u.type === 'WASTE')
 
-      .reduce((sum, u) => sum + u?.quantity, 0);
+      .reduce((sum, u) => sum + u.quantity, 0);
 
 
-    const totalUsage = product?.usage.reduce((sum, u) => sum + u?.quantity, 0);
+    const totalUsage = product.usage.reduce((sum, u) => sum + u.quantity, 0);
 
 
     return totalUsage > 0 ? totalWaste / totalUsage : 0;
   }
 
   private calculateTurnoverRate(product: ProductWithRelations): number {
-    const monthlyUsage = this?.calculateSalesVelocity(product?.usage) * 30;
+    const monthlyUsage = this.calculateSalesVelocity(product.usage) * 30;
 
-    return product?.quantity > 0 ? monthlyUsage / product?.quantity : 0;
+    return product.quantity > 0 ? monthlyUsage / product.quantity : 0;
   }
 
   private calculateDaysUntilReorder(product: ProductWithRelations): number {
-    const dailyUsage = this?.calculateSalesVelocity(product?.usage);
+    const dailyUsage = this.calculateSalesVelocity(product.usage);
     if (dailyUsage === 0) return 365; // Default to a year if no usage
 
 
-    const remainingQuantity = product?.quantity - product?.minQuantity;
+    const remainingQuantity = product.quantity - product.minQuantity;
 
-    return Math?.max(0, Math?.floor(remainingQuantity / dailyUsage));
+    return Math.max(0, Math.floor(remainingQuantity / dailyUsage));
   }
 
   private calculateReorderQuantity(product: ProductWithRelations): number {
-    const dailyUsage = this?.calculateSalesVelocity(product?.usage);
-    const leadTimeDays = product?.supplier.leadTime;
-    const safetyStock = product?.minQuantity;
+    const dailyUsage = this.calculateSalesVelocity(product.usage);
+    const leadTimeDays = product.supplier.leadTime;
+    const safetyStock = product.minQuantity;
 
     // Calculate reorder quantity using Economic Order Quantity (EOQ) formula
 
@@ -294,19 +294,19 @@ export class InventoryManagementService {
 
     const orderCost = 20; // Fixed cost per order - this should be configurable
 
-    const holdingCost = product?.cost * 0?.2; // Assume 20% holding cost
+    const holdingCost = product.cost * 0.2; // Assume 20% holding cost
 
 
-    const eoq = Math?.sqrt((2 * annualUsage * orderCost) / holdingCost);
+    const eoq = Math.sqrt((2 * annualUsage * orderCost) / holdingCost);
 
     // Add safety stock and account for lead time
 
 
-    return Math?.min(Math?.ceil(eoq + safetyStock + dailyUsage * leadTimeDays), product?.maxQuantity);
+    return Math.min(Math.ceil(eoq + safetyStock + dailyUsage * leadTimeDays), product.maxQuantity);
   }
 
   private async generateAlert(alert: InventoryAlert): Promise<void> {
-    logger?.info('Inventory alert generated', 'InventoryManagement', alert);
+    logger.info('Inventory alert generated', 'InventoryManagement', alert);
     // Here you would integrate with your notification system
   }
 }

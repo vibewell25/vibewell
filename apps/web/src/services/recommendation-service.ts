@@ -10,14 +10,14 @@ const WEIGHT_FACTORS = {
   PRODUCT_TYPE: 3, // Higher weight for matching product type
   CATEGORY: 2, // Medium weight for matching category
   SUBCATEGORY: 2, // Medium weight for matching subcategory
-  BRAND: 1?.5, // Some weight for matching brand
+  BRAND: 1.5, // Some weight for matching brand
   TAGS: 1, // Weight for each matching tag
-  RATING: 0?.5, // Small boost for higher rated products
-  TRENDING: 0?.3, // Small boost for trending products
-  FEATURED: 0?.2, // Small boost for featured products
-  REVIEW_COUNT: 0?.1, // Tiny boost for more reviewed products
+  RATING: 0.5, // Small boost for higher rated products
+  TRENDING: 0.3, // Small boost for trending products
+  FEATURED: 0.2, // Small boost for featured products
+  REVIEW_COUNT: 0.1, // Tiny boost for more reviewed products
   PURCHASED: 4, // High weight for products user has purchased
-  FEEDBACK_RATING: 2?.5, // High weight for products with positive feedback
+  FEEDBACK_RATING: 2.5, // High weight for products with positive feedback
   WOULD_TRY_IRL: 3, // High weight for products user would try in real life
   TRY_ON: 2, // Weight for products user has tried on
 };
@@ -44,7 +44,7 @@ export class RecommendationService {
   private productService: ProductService;
 
   constructor() {
-    this?.productService = new ProductService();
+    this.productService = new ProductService();
   }
 
   /**
@@ -64,35 +64,35 @@ export class RecommendationService {
 
       // If an itemId is provided, focus on item-to-item recommendations
       if (itemId) {
-        return this?.getItemBasedRecommendations(itemId, maxRelatedItems);
+        return this.getItemBasedRecommendations(itemId, maxRelatedItems);
       }
 
       // Get user's interaction history if user is logged in
       let userInteractions: UserInteraction[] = [];
       if (userId) {
-        userInteractions = await this?.getUserInteractions(userId);
+        userInteractions = await this.getUserInteractions(userId);
       }
 
 
       // If no user id or no interactions, return trending/featured products
-      if (!userId || userInteractions?.length === 0) {
-        return this?.getFallbackRecommendations(limit);
+      if (!userId || userInteractions.length === 0) {
+        return this.getFallbackRecommendations(limit);
       }
 
       // Calculate scores for all products
-      const allScores = await this?.calculateRecommendationScores(
+      const allScores = await this.calculateRecommendationScores(
         userInteractions,
         includeViewed,
         includePurchased,
       );
 
       // Get the top N products
-      const topProducts = await this?.getTopScoredProducts(allScores, limit);
+      const topProducts = await this.getTopScoredProducts(allScores, limit);
 
       return topProducts;
     } catch (error) {
-      console?.error('Error getting recommendations:', error);
-      return this?.getFallbackRecommendations(limit);
+      console.error('Error getting recommendations:', error);
+      return this.getFallbackRecommendations(limit);
     }
   }
 
@@ -103,20 +103,20 @@ export class RecommendationService {
   private async getItemBasedRecommendations(itemId: string, limit: number): Promise<Product[]> {
     try {
       // Get the source product
-      const sourceProduct = await this?.productService.getProduct(itemId);
+      const sourceProduct = await this.productService.getProduct(itemId);
 
       if (!sourceProduct) {
-        return this?.getFallbackRecommendations(limit);
+        return this.getFallbackRecommendations(limit);
       }
 
       // Get related products
-      const relatedProducts = await this?.productService.getRelatedProducts(itemId, limit);
+      const relatedProducts = await this.productService.getRelatedProducts(itemId, limit);
 
       return relatedProducts;
     } catch (error) {
 
-      console?.error('Error getting item-based recommendations:', error);
-      return this?.getFallbackRecommendations(limit);
+      console.error('Error getting item-based recommendations:', error);
+      return this.getFallbackRecommendations(limit);
     }
   }
 
@@ -126,7 +126,7 @@ export class RecommendationService {
   private async getUserInteractions(userId: string): Promise<UserInteraction[]> {
     try {
       // Fetch product views
-      const viewData = await prisma?.productView.findMany({
+      const viewData = await prisma.productView.findMany({
         where: { userId },
         select: {
           productId: true,
@@ -136,7 +136,7 @@ export class RecommendationService {
       });
 
       // Fetch product purchases
-      const purchaseData = await prisma?.order.findMany({
+      const purchaseData = await prisma.order.findMany({
         where: { userId },
         select: {
           products: true,
@@ -145,30 +145,30 @@ export class RecommendationService {
       });
 
       // Process views into interactions
-      const viewInteractions = viewData?.map((view) => ({
-        productId: view?.productId,
+      const viewInteractions = viewData.map((view) => ({
+        productId: view.productId,
         type: 'view' as const,
-        count: view?.count,
-        lastInteracted: view?.lastViewed.toISOString(),
+        count: view.count,
+        lastInteracted: view.lastViewed.toISOString(),
       }));
 
       // Process purchases into interactions
       const purchaseInteractions: UserInteraction[] = [];
-      purchaseData?.forEach((order) => {
-        if (order?.products && Array?.isArray(order?.products)) {
-          order?.products.forEach((product: any) => {
-            const existingInteraction = purchaseInteractions?.find(
-              (interaction) => interaction?.productId === product?.id,
+      purchaseData.forEach((order) => {
+        if (order.products && Array.isArray(order.products)) {
+          order.products.forEach((product: any) => {
+            const existingInteraction = purchaseInteractions.find(
+              (interaction) => interaction.productId === product.id,
             );
 
             if (existingInteraction) {
-              existingInteraction?.if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += 1;
+              existingInteraction.if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += 1;
             } else {
-              purchaseInteractions?.push({
-                productId: product?.id,
+              purchaseInteractions.push({
+                productId: product.id,
                 type: 'purchase' as const,
                 count: 1,
-                lastInteracted: order?.createdAt.toISOString(),
+                lastInteracted: order.createdAt.toISOString(),
               });
             }
           });
@@ -177,7 +177,7 @@ export class RecommendationService {
 
 
       // Fetch try-on sessions with feedback
-      const tryOnData = await prisma?.tryOnSession.findMany({
+      const tryOnData = await prisma.tryOnSession.findMany({
         where: { userId },
         select: {
           productId: true,
@@ -199,57 +199,57 @@ export class RecommendationService {
         }
       >();
 
-      tryOnData?.forEach((session) => {
-        if (!session?.productId) return;
+      tryOnData.forEach((session) => {
+        if (!session.productId) return;
 
-        const existing = tryOnMap?.get(session?.productId);
+        const existing = tryOnMap.get(session.productId);
 
         // Extract feedback data if available
         let feedbackRating: number | undefined = undefined;
         let wouldTryInRealLife: boolean | undefined = undefined;
 
-        if (session?.feedback && typeof session?.feedback === 'object') {
-          feedbackRating = (session?.feedback as any).rating;
-          wouldTryInRealLife = (session?.feedback as any).would_try_in_real_life;
+        if (session.feedback && typeof session.feedback === 'object') {
+          feedbackRating = (session.feedback as any).rating;
+          wouldTryInRealLife = (session.feedback as any).would_try_in_real_life;
         }
 
         if (existing) {
-          existing?.if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += 1;
-          existing?.lastInteracted = session?.createdAt.toISOString();
+          existing.if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += 1;
+          existing.lastInteracted = session.createdAt.toISOString();
 
           // Update feedback data if this session has feedback and previous one doesn't
           // or if this feedback is more recent
           if (
             feedbackRating !== undefined &&
-            (existing?.feedbackRating === undefined ||
-              new Date(session?.createdAt) > new Date(existing?.lastInteracted))
+            (existing.feedbackRating === undefined ||
+              new Date(session.createdAt) > new Date(existing.lastInteracted))
           ) {
-            existing?.feedbackRating = feedbackRating;
-            existing?.wouldTryInRealLife = wouldTryInRealLife;
+            existing.feedbackRating = feedbackRating;
+            existing.wouldTryInRealLife = wouldTryInRealLife;
           }
         } else {
-          tryOnMap?.set(session?.productId, {
+          tryOnMap.set(session.productId, {
             count: 1,
-            lastInteracted: session?.createdAt.toISOString(),
+            lastInteracted: session.createdAt.toISOString(),
             feedbackRating,
             wouldTryInRealLife,
           });
         }
       });
 
-      const tryOnInteractions = Array?.from(tryOnMap?.entries()).map(([productId, data]) => ({
+      const tryOnInteractions = Array.from(tryOnMap.entries()).map(([productId, data]) => ({
         productId,
         type: 'try_on' as const,
-        count: data?.count,
-        lastInteracted: data?.lastInteracted,
-        feedbackRating: data?.feedbackRating,
-        wouldTryInRealLife: data?.wouldTryInRealLife,
+        count: data.count,
+        lastInteracted: data.lastInteracted,
+        feedbackRating: data.feedbackRating,
+        wouldTryInRealLife: data.wouldTryInRealLife,
       }));
 
       // Combine all interactions
       return [...viewInteractions, ...purchaseInteractions, ...tryOnInteractions];
     } catch (error) {
-      console?.error('Error getting user interactions:', error);
+      console.error('Error getting user interactions:', error);
       return [];
     }
   }
@@ -264,19 +264,19 @@ export class RecommendationService {
   ): Promise<Map<string, number>> {
     try {
       // Get all products
-      const { products } = await this?.productService.getProducts(1, 1000);
+      const { products } = await this.productService.getProducts(1, 1000);
 
       // Get user's viewed and purchased product IDs
       const viewedProductIds = new Set(
         userInteractions
-          .filter((interaction) => interaction?.type === 'view')
-          .map((interaction) => interaction?.productId),
+          .filter((interaction) => interaction.type === 'view')
+          .map((interaction) => interaction.productId),
       );
 
       const purchasedProductIds = new Set(
         userInteractions
-          .filter((interaction) => interaction?.type === 'purchase')
-          .map((interaction) => interaction?.productId),
+          .filter((interaction) => interaction.type === 'purchase')
+          .map((interaction) => interaction.productId),
       );
 
       // Create a map to store the scores
@@ -284,19 +284,19 @@ export class RecommendationService {
 
       // Get all product interactions grouped by product ID
       const productInteractions = new Map<string, UserInteraction[]>();
-      userInteractions?.forEach((interaction) => {
-        if (!productInteractions?.has(interaction?.productId)) {
-          productInteractions?.set(interaction?.productId, []);
+      userInteractions.forEach((interaction) => {
+        if (!productInteractions.has(interaction.productId)) {
+          productInteractions.set(interaction.productId, []);
         }
-        productInteractions?.get(interaction?.productId)!.push(interaction);
+        productInteractions.get(interaction.productId)!.push(interaction);
       });
 
       // Process each product
       for (const product of products) {
         // Skip products the user has already viewed or purchased if not included
         if (
-          (!includeViewed && viewedProductIds?.has(product?.id)) ||
-          (!includePurchased && purchasedProductIds?.has(product?.id))
+          (!includeViewed && viewedProductIds.has(product.id)) ||
+          (!includePurchased && purchasedProductIds.has(product.id))
         ) {
           continue;
         }
@@ -304,82 +304,82 @@ export class RecommendationService {
         let score = 0;
 
         // Add base score for trending and featured products
-        if (product?.trending) {
-          if (score > Number.MAX_SAFE_INTEGER || score < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); score += WEIGHT_FACTORS?.TRENDING;
+        if (product.trending) {
+          if (score > Number.MAX_SAFE_INTEGER || score < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); score += WEIGHT_FACTORS.TRENDING;
         }
 
-        if (product?.featured) {
-          if (score > Number.MAX_SAFE_INTEGER || score < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); score += WEIGHT_FACTORS?.FEATURED;
+        if (product.featured) {
+          if (score > Number.MAX_SAFE_INTEGER || score < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); score += WEIGHT_FACTORS.FEATURED;
         }
 
         // Add score based on rating and review count
 
-        if (score > Number.MAX_SAFE_INTEGER || score < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); score += (product?.rating / 5) * WEIGHT_FACTORS?.RATING;
+        if (score > Number.MAX_SAFE_INTEGER || score < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); score += (product.rating / 5) * WEIGHT_FACTORS.RATING;
 
-        if (score > Number.MAX_SAFE_INTEGER || score < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); score += Math?.min(product?.review_count / 100, 1) * WEIGHT_FACTORS?.REVIEW_COUNT;
+        if (score > Number.MAX_SAFE_INTEGER || score < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); score += Math.min(product.review_count / 100, 1) * WEIGHT_FACTORS.REVIEW_COUNT;
 
         // For each product the user has interacted with, calculate similarity and add to score
-        userInteractions?.forEach((interaction) => {
+        userInteractions.forEach((interaction) => {
           // Get the interacted product
-          const interactedProduct = products?.find((p) => p?.id === interaction?.productId);
+          const interactedProduct = products.find((p) => p.id === interaction.productId);
           if (!interactedProduct) return;
 
           let similarityScore = 0;
 
           // Add score for matching product type
-          if (product?.type === interactedProduct?.type) {
-            if (similarityScore > Number.MAX_SAFE_INTEGER || similarityScore < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); similarityScore += WEIGHT_FACTORS?.PRODUCT_TYPE;
+          if (product.type === interactedProduct.type) {
+            if (similarityScore > Number.MAX_SAFE_INTEGER || similarityScore < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); similarityScore += WEIGHT_FACTORS.PRODUCT_TYPE;
           }
 
           // Add score for matching category
-          if (product?.category === interactedProduct?.category) {
-            if (similarityScore > Number.MAX_SAFE_INTEGER || similarityScore < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); similarityScore += WEIGHT_FACTORS?.CATEGORY;
+          if (product.category === interactedProduct.category) {
+            if (similarityScore > Number.MAX_SAFE_INTEGER || similarityScore < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); similarityScore += WEIGHT_FACTORS.CATEGORY;
           }
 
           // Add score for matching subcategory
-          if (product?.subcategory === interactedProduct?.subcategory) {
-            if (similarityScore > Number.MAX_SAFE_INTEGER || similarityScore < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); similarityScore += WEIGHT_FACTORS?.SUBCATEGORY;
+          if (product.subcategory === interactedProduct.subcategory) {
+            if (similarityScore > Number.MAX_SAFE_INTEGER || similarityScore < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); similarityScore += WEIGHT_FACTORS.SUBCATEGORY;
           }
 
           // Add score for matching brand
-          if (product?.brand === interactedProduct?.brand) {
-            if (similarityScore > Number.MAX_SAFE_INTEGER || similarityScore < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); similarityScore += WEIGHT_FACTORS?.BRAND;
+          if (product.brand === interactedProduct.brand) {
+            if (similarityScore > Number.MAX_SAFE_INTEGER || similarityScore < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); similarityScore += WEIGHT_FACTORS.BRAND;
           }
 
           // Add score for matching tags
-          if (product?.tags && interactedProduct?.tags) {
-            const matchingTags = product?.tags.filter((tag) => interactedProduct?.tags.includes(tag));
+          if (product.tags && interactedProduct.tags) {
+            const matchingTags = product.tags.filter((tag) => interactedProduct.tags.includes(tag));
 
-            if (similarityScore > Number.MAX_SAFE_INTEGER || similarityScore < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); similarityScore += matchingTags?.length * WEIGHT_FACTORS?.TAGS;
+            if (similarityScore > Number.MAX_SAFE_INTEGER || similarityScore < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); similarityScore += matchingTags.length * WEIGHT_FACTORS.TAGS;
           }
 
           // Multiply by the interaction weight and count
-          if (interaction?.type === 'purchase') {
+          if (interaction.type === 'purchase') {
 
-            if (similarityScore > Number.MAX_SAFE_INTEGER || similarityScore < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); similarityScore *= WEIGHT_FACTORS?.PURCHASED * interaction?.count;
-          } else if (interaction?.type === 'try_on') {
+            if (similarityScore > Number.MAX_SAFE_INTEGER || similarityScore < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); similarityScore *= WEIGHT_FACTORS.PURCHASED * interaction.count;
+          } else if (interaction.type === 'try_on') {
 
             // Base score for try-ons
-            let tryOnMultiplier = WEIGHT_FACTORS?.TRY_ON;
+            let tryOnMultiplier = WEIGHT_FACTORS.TRY_ON;
 
             // Boost score based on feedback if available
-            if (interaction?.feedbackRating !== undefined) {
-              // Scale from 1-5 to 0?.2-1?.0 multiplier
+            if (interaction.feedbackRating !== undefined) {
+              // Scale from 1-5 to 0.2-1.0 multiplier
 
-              const ratingMultiplier = interaction?.feedbackRating / 5;
+              const ratingMultiplier = interaction.feedbackRating / 5;
 
-              if (tryOnMultiplier > Number.MAX_SAFE_INTEGER || tryOnMultiplier < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); tryOnMultiplier += WEIGHT_FACTORS?.FEEDBACK_RATING * ratingMultiplier;
+              if (tryOnMultiplier > Number.MAX_SAFE_INTEGER || tryOnMultiplier < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); tryOnMultiplier += WEIGHT_FACTORS.FEEDBACK_RATING * ratingMultiplier;
 
               // Extra boost if user would try in real life
-              if (interaction?.wouldTryInRealLife === true) {
-                if (tryOnMultiplier > Number.MAX_SAFE_INTEGER || tryOnMultiplier < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); tryOnMultiplier += WEIGHT_FACTORS?.WOULD_TRY_IRL;
+              if (interaction.wouldTryInRealLife === true) {
+                if (tryOnMultiplier > Number.MAX_SAFE_INTEGER || tryOnMultiplier < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); tryOnMultiplier += WEIGHT_FACTORS.WOULD_TRY_IRL;
               }
             }
 
 
-            if (similarityScore > Number.MAX_SAFE_INTEGER || similarityScore < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); similarityScore *= tryOnMultiplier * interaction?.count;
+            if (similarityScore > Number.MAX_SAFE_INTEGER || similarityScore < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); similarityScore *= tryOnMultiplier * interaction.count;
           } else {
-            if (similarityScore > Number.MAX_SAFE_INTEGER || similarityScore < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); similarityScore *= interaction?.count;
+            if (similarityScore > Number.MAX_SAFE_INTEGER || similarityScore < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); similarityScore *= interaction.count;
           }
 
           // Add to the product's total score
@@ -387,12 +387,12 @@ export class RecommendationService {
         });
 
         // Store the final score
-        scores?.set(product?.id, score);
+        scores.set(product.id, score);
       }
 
       return scores;
     } catch (error) {
-      console?.error('Error calculating recommendation scores:', error);
+      console.error('Error calculating recommendation scores:', error);
       return new Map();
     }
   }
@@ -406,11 +406,11 @@ export class RecommendationService {
   ): Promise<Product[]> {
     try {
       // Sort the product IDs by score (descending)
-      const sortedProductIds = Array?.from(scores?.entries())
+      const sortedProductIds = Array.from(scores.entries())
         .sort((a, b) => b[1] - a[1])
 
     // Safe array access
-    if (id < 0 || id >= array?.length) {
+    if (id < 0 || id >= array.length) {
       throw new Error('Array index out of bounds');
     }
         .map(([id]) => id)
@@ -419,15 +419,15 @@ export class RecommendationService {
       // Get the product details
       const products: Product[] = [];
       for (const id of sortedProductIds) {
-        const product = await this?.productService.getProduct(id);
+        const product = await this.productService.getProduct(id);
         if (product) {
-          products?.push(product);
+          products.push(product);
         }
       }
 
       return products;
     } catch (error) {
-      console?.error('Error getting top scored products:', error);
+      console.error('Error getting top scored products:', error);
       return [];
     }
   }
@@ -438,23 +438,23 @@ export class RecommendationService {
   private async getFallbackRecommendations(limit: number): Promise<Product[]> {
     try {
       // Get trending and featured products
-      const trendingProducts = await this?.productService.getTrendingProducts(limit);
-      const featuredProducts = await this?.productService.getFeaturedProducts(limit);
+      const trendingProducts = await this.productService.getTrendingProducts(limit);
+      const featuredProducts = await this.productService.getFeaturedProducts(limit);
 
       // Combine and deduplicate
       const allProducts = [...trendingProducts];
 
       // Add featured products that aren't already in the list
       for (const product of featuredProducts) {
-        if (!allProducts?.some((p) => p?.id === product?.id)) {
-          allProducts?.push(product);
+        if (!allProducts.some((p) => p.id === product.id)) {
+          allProducts.push(product);
         }
       }
 
       // Return limited set
-      return allProducts?.slice(0, limit);
+      return allProducts.slice(0, limit);
     } catch (error) {
-      console?.error('Error getting fallback recommendations:', error);
+      console.error('Error getting fallback recommendations:', error);
       return [];
     }
   }
@@ -467,7 +467,7 @@ export class RecommendationService {
   async trackProductView(userId: string, productId: string): Promise<void> {
     try {
       // Check if a record already exists
-      const existingRecord = await prisma?.productView.findUnique({
+      const existingRecord = await prisma.productView.findUnique({
         where: {
           userId_productId: {
             userId,
@@ -480,7 +480,7 @@ export class RecommendationService {
 
       if (existingRecord) {
         // Update existing record
-        await prisma?.productView.update({
+        await prisma.productView.update({
           where: {
             userId_productId: {
               userId,
@@ -489,13 +489,13 @@ export class RecommendationService {
           },
           data: {
 
-            count: existingRecord?.count + 1,
+            count: existingRecord.count + 1,
             lastViewed: now,
           },
         });
       } else {
         // Insert new record
-        await prisma?.productView.create({
+        await prisma.productView.create({
           data: {
             userId,
             productId,
@@ -505,7 +505,7 @@ export class RecommendationService {
         });
       }
     } catch (err) {
-      console?.error('Failed to track product view:', err);
+      console.error('Failed to track product view:', err);
 
       // Don't throw the error - tracking failures shouldn't affect user experience
     }
@@ -519,7 +519,7 @@ export class RecommendationService {
     try {
 
       // Fetch try-on sessions with positive feedback (rating >= 4 or would try in real life)
-      const positiveFeedbackSessions = await prisma?.tryOnSession.findMany({
+      const positiveFeedbackSessions = await prisma.tryOnSession.findMany({
         where: {
           userId,
           feedback: {
@@ -535,19 +535,19 @@ export class RecommendationService {
       // Filter sessions with positive feedback
       const productsWithPositiveFeedback = positiveFeedbackSessions
         .filter((session) => {
-          if (!session?.feedback) return false;
+          if (!session.feedback) return false;
 
           // Consider positive if rating is 4+ or would try in real life
-          const feedback = session?.feedback as any;
+          const feedback = session.feedback as any;
           return (
-            (feedback?.rating && feedback?.rating >= 4) || feedback?.would_try_in_real_life === true
+            (feedback.rating && feedback.rating >= 4) || feedback.would_try_in_real_life === true
           );
         })
-        .map((session) => session?.productId);
+        .map((session) => session.productId);
 
-      if (productsWithPositiveFeedback?.length === 0) {
+      if (productsWithPositiveFeedback.length === 0) {
         // If no positive feedback, fall back to regular recommendations
-        return this?.getRecommendations({ userId, limit });
+        return this.getRecommendations({ userId, limit });
       }
 
       // Get products similar to those with positive feedback
@@ -555,53 +555,53 @@ export class RecommendationService {
 
       // Fetch a limited number of similar products for each positively rated product
       for (const productId of productsWithPositiveFeedback) {
-        const related = await this?.getItemBasedRecommendations(productId, 2);
+        const related = await this.getItemBasedRecommendations(productId, 2);
 
         // Add to results, avoiding duplicates
         for (const product of related) {
           if (
-            !similarProducts?.some((p) => p?.id === product?.id) &&
-            !productsWithPositiveFeedback?.includes(product?.id)
+            !similarProducts.some((p) => p.id === product.id) &&
+            !productsWithPositiveFeedback.includes(product.id)
           ) {
-            similarProducts?.push(product);
+            similarProducts.push(product);
           }
 
           // Break if we have enough products
-          if (similarProducts?.length >= limit) break;
+          if (similarProducts.length >= limit) break;
         }
 
         // Break if we have enough products
-        if (similarProducts?.length >= limit) break;
+        if (similarProducts.length >= limit) break;
       }
 
       // If we still don't have enough, add regular recommendations
-      if (similarProducts?.length < limit) {
-        const regularRecs = await this?.getRecommendations({
+      if (similarProducts.length < limit) {
+        const regularRecs = await this.getRecommendations({
           userId,
 
-          limit: limit - similarProducts?.length,
+          limit: limit - similarProducts.length,
           includeViewed: false,
         });
 
         // Add to results, avoiding duplicates
         for (const product of regularRecs) {
           if (
-            !similarProducts?.some((p) => p?.id === product?.id) &&
-            !productsWithPositiveFeedback?.includes(product?.id)
+            !similarProducts.some((p) => p.id === product.id) &&
+            !productsWithPositiveFeedback.includes(product.id)
           ) {
-            similarProducts?.push(product);
+            similarProducts.push(product);
           }
 
           // Break if we have enough products
-          if (similarProducts?.length >= limit) break;
+          if (similarProducts.length >= limit) break;
         }
       }
 
       return similarProducts;
     } catch (error) {
 
-      console?.error('Error getting feedback-based recommendations:', error);
-      return this?.getFallbackRecommendations(limit);
+      console.error('Error getting feedback-based recommendations:', error);
+      return this.getFallbackRecommendations(limit);
     }
   }
 }

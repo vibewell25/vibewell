@@ -24,8 +24,8 @@ export class SIEMIntegrationService {
   private securityMonitoring: SecurityMonitoringService;
 
   constructor(config: SIEMConfig) {
-    this?.config = config;
-    this?.securityMonitoring = new SecurityMonitoringService();
+    this.config = config;
+    this.securityMonitoring = new SecurityMonitoringService();
   }
 
   /**
@@ -33,26 +33,26 @@ export class SIEMIntegrationService {
    */
   async sendEvent(event: SIEMEvent): Promise<void> {
     try {
-      const formattedEvent = this?.formatEventForSIEM(event);
+      const formattedEvent = this.formatEventForSIEM(event);
 
-      const response = await fetch(this?.config.endpoint, {
+      const response = await fetch(this.config.endpoint, {
         method: 'POST',
         headers: {
 
 
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${this?.config.apiKey}`,
+          Authorization: `Bearer ${this.config.apiKey}`,
         },
-        body: JSON?.stringify(formattedEvent),
+        body: JSON.stringify(formattedEvent),
       });
 
-      if (!response?.ok) {
-        throw new Error(`SIEM integration failed: ${response?.statusText}`);
+      if (!response.ok) {
+        throw new Error(`SIEM integration failed: ${response.statusText}`);
       }
 
-      logger?.info('Event sent to SIEM', 'siem', { event });
+      logger.info('Event sent to SIEM', 'siem', { event });
     } catch (error) {
-      logger?.error('Failed to send event to SIEM', 'siem', { error, event });
+      logger.error('Failed to send event to SIEM', 'siem', { error, event });
       throw error;
     }
   }
@@ -61,45 +61,45 @@ export class SIEMIntegrationService {
    * Format event based on SIEM provider
    */
   private formatEventForSIEM(event: SIEMEvent): Record<string, any> {
-    switch (this?.config.provider) {
+    switch (this.config.provider) {
       case 'splunk':
         return {
-          time: event?.timestamp.getTime() / 1000,
-          host: event?.source,
-          source: this?.config.sourcetype || 'vibewell',
-          sourcetype: this?.config.sourcetype || 'vibewell_security',
-          index: this?.config.index || 'security',
+          time: event.timestamp.getTime() / 1000,
+          host: event.source,
+          source: this.config.sourcetype || 'vibewell',
+          sourcetype: this.config.sourcetype || 'vibewell_security',
+          index: this.config.index || 'security',
           event: {
-            severity: event?.severity,
-            category: event?.category,
-            message: event?.message,
-            ...event?.metadata,
+            severity: event.severity,
+            category: event.category,
+            message: event.message,
+            ...event.metadata,
           },
         };
 
       case 'elastic':
         return {
-          '@timestamp': event?.timestamp.toISOString(),
+          '@timestamp': event.timestamp.toISOString(),
           log: {
-            level: event?.severity,
-            logger: event?.source,
+            level: event.severity,
+            logger: event.source,
           },
-          message: event?.message,
+          message: event.message,
           event: {
-            category: event?.category,
+            category: event.category,
             type: 'security',
           },
-          metadata: event?.metadata,
+          metadata: event.metadata,
         };
 
       case 'sumologic':
         return {
-          timestamp: event?.timestamp.toISOString(),
-          severity: event?.severity,
-          category: event?.category,
-          message: event?.message,
-          source: event?.source,
-          metadata: event?.metadata,
+          timestamp: event.timestamp.toISOString(),
+          severity: event.severity,
+          category: event.category,
+          message: event.message,
+          source: event.source,
+          metadata: event.metadata,
         };
 
       default:
@@ -114,22 +114,22 @@ export class SIEMIntegrationService {
   async setupEventForwarding(): Promise<void> {
     try {
       // Subscribe to security events
-      this?.securityMonitoring.on('securityEvent', async (event) => {
-        await this?.sendEvent({
+      this.securityMonitoring.on('securityEvent', async (event) => {
+        await this.sendEvent({
           timestamp: new Date(),
-          severity: event?.severity,
-          category: event?.type,
-          message: event?.details?.message || 'Security event detected',
+          severity: event.severity,
+          category: event.type,
+          message: event.details.message || 'Security event detected',
           source: 'vibewell',
-          metadata: event?.details,
+          metadata: event.details,
         });
       });
 
-      logger?.info('SIEM event forwarding configured', 'siem', {
-        provider: this?.config.provider,
+      logger.info('SIEM event forwarding configured', 'siem', {
+        provider: this.config.provider,
       });
     } catch (error) {
-      logger?.error('Failed to set up SIEM event forwarding', 'siem', { error });
+      logger.error('Failed to set up SIEM event forwarding', 'siem', { error });
       throw error;
     }
   }
@@ -141,24 +141,24 @@ export class SIEMIntegrationService {
     try {
       const queryParams = new URLSearchParams({
         query,
-        start_time: timeRange?.start.toISOString(),
-        end_time: timeRange?.end.toISOString(),
+        start_time: timeRange.start.toISOString(),
+        end_time: timeRange.end.toISOString(),
       });
 
-      const response = await fetch(`${this?.config.endpoint}/search?${queryParams}`, {
+      const response = await fetch(`${this.config.endpoint}/search?${queryParams}`, {
         headers: {
-          Authorization: `Bearer ${this?.config.apiKey}`,
+          Authorization: `Bearer ${this.config.apiKey}`,
         },
       });
 
-      if (!response?.ok) {
-        throw new Error(`SIEM query failed: ${response?.statusText}`);
+      if (!response.ok) {
+        throw new Error(`SIEM query failed: ${response.statusText}`);
       }
 
-      const data = await response?.json();
-      return this?.parseQueryResults(data);
+      const data = await response.json();
+      return this.parseQueryResults(data);
     } catch (error) {
-      logger?.error('Failed to query SIEM', 'siem', { error, query });
+      logger.error('Failed to query SIEM', 'siem', { error, query });
       throw error;
     }
   }
@@ -167,26 +167,26 @@ export class SIEMIntegrationService {
    * Parse query results based on SIEM provider
    */
   private parseQueryResults(data: any): SIEMEvent[] {
-    switch (this?.config.provider) {
+    switch (this.config.provider) {
       case 'splunk':
-        return data?.results.map((result: any) => ({
+        return data.results.map((result: any) => ({
 
-          timestamp: new Date(result?.time * 1000),
-          severity: result?.event.severity,
-          category: result?.event.category,
-          message: result?.event.message,
-          source: result?.host,
-          metadata: result?.event,
+          timestamp: new Date(result.time * 1000),
+          severity: result.event.severity,
+          category: result.event.category,
+          message: result.event.message,
+          source: result.host,
+          metadata: result.event,
         }));
 
       case 'elastic':
-        return data?.hits.hits?.map((hit: any) => ({
-          timestamp: new Date(hit?._source['@timestamp']),
-          severity: hit?._source.log?.level,
-          category: hit?._source.event?.category,
-          message: hit?._source.message,
-          source: hit?._source.log?.logger,
-          metadata: hit?._source.metadata,
+        return data.hits.hits.map((hit: any) => ({
+          timestamp: new Date(hit._source['@timestamp']),
+          severity: hit._source.log.level,
+          category: hit._source.event.category,
+          message: hit._source.message,
+          source: hit._source.log.logger,
+          metadata: hit._source.metadata,
         }));
 
       default:

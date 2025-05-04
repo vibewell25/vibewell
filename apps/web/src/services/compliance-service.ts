@@ -35,9 +35,9 @@ export class ComplianceService {
   private fieldEncryption: FieldEncryptionService;
 
   constructor() {
-    this?.redis = new Redis(process?.env.REDIS_URL || '');
-    this?.auditLogging = new AuditLoggingService();
-    this?.fieldEncryption = new FieldEncryptionService();
+    this.redis = new Redis(process.env.REDIS_URL || '');
+    this.auditLogging = new AuditLoggingService();
+    this.fieldEncryption = new FieldEncryptionService();
   }
 
   /**
@@ -51,18 +51,18 @@ export class ComplianceService {
     try {
       const agreement: DataProcessingAgreement = {
         userId,
-        agreementVersion: process?.env.PRIVACY_POLICY_VERSION || '1?.0',
+        agreementVersion: process.env.PRIVACY_POLICY_VERSION || '1.0',
         acceptedAt: new Date(),
         purposes,
         dataCategories,
         retentionPeriod: 365, // 1 year default
       };
 
-      await this?.redis.hset(`compliance:consent:${userId}`, {
-        agreement: JSON?.stringify(agreement),
+      await this.redis.hset(`compliance:consent:${userId}`, {
+        agreement: JSON.stringify(agreement),
       });
 
-      await this?.auditLogging.log('consent_recorded', {
+      await this.auditLogging.log('consent_recorded', {
         userId,
         resourceType: 'consent',
         resourceId: userId,
@@ -74,7 +74,7 @@ export class ComplianceService {
 
       return agreement;
     } catch (error) {
-      logger?.error('Failed to record consent', 'compliance', { error, userId });
+      logger.error('Failed to record consent', 'compliance', { error, userId });
       throw error;
     }
   }
@@ -86,7 +86,7 @@ export class ComplianceService {
     request: Omit<DataSubjectRequest, 'id' | 'createdAt' | 'status'>,
   ): Promise<DataSubjectRequest> {
     try {
-      const id = `dsr:${Date?.now()}:${Math?.random().toString(36).slice(2)}`;
+      const id = `dsr:${Date.now()}:${Math.random().toString(36).slice(2)}`;
       const dsr: DataSubjectRequest = {
         ...request,
         id,
@@ -94,26 +94,26 @@ export class ComplianceService {
         status: 'pending',
       };
 
-      await this?.redis.hset(`compliance:dsr:${id}`, {
-        request: JSON?.stringify(dsr),
+      await this.redis.hset(`compliance:dsr:${id}`, {
+        request: JSON.stringify(dsr),
       });
 
-      await this?.auditLogging.log('data_subject_request_created', {
-        userId: request?.userId,
+      await this.auditLogging.log('data_subject_request_created', {
+        userId: request.userId,
         resourceType: 'data_subject_request',
         resourceId: id,
         metadata: {
-          type: request?.type,
-          details: request?.details,
+          type: request.type,
+          details: request.details,
         },
       });
 
       // Start processing the request
-      await this?.processDataSubjectRequest(dsr);
+      await this.processDataSubjectRequest(dsr);
 
       return dsr;
     } catch (error) {
-      logger?.error('Failed to handle data subject request', 'compliance', { error });
+      logger.error('Failed to handle data subject request', 'compliance', { error });
       throw error;
     }
   }
@@ -124,28 +124,28 @@ export class ComplianceService {
   private async processDataSubjectRequest(request: DataSubjectRequest): Promise<void> {
     try {
       // Update status to processing
-      await this?.updateRequestStatus(request?.id, 'processing');
+      await this.updateRequestStatus(request.id, 'processing');
 
-      switch (request?.type) {
+      switch (request.type) {
         case 'access':
-          await this?.handleAccessRequest(request);
+          await this.handleAccessRequest(request);
           break;
         case 'rectification':
-          await this?.handleRectificationRequest(request);
+          await this.handleRectificationRequest(request);
           break;
         case 'erasure':
-          await this?.handleErasureRequest(request);
+          await this.handleErasureRequest(request);
           break;
         case 'portability':
-          await this?.handlePortabilityRequest(request);
+          await this.handlePortabilityRequest(request);
           break;
       }
 
       // Update status to completed
-      await this?.updateRequestStatus(request?.id, 'completed');
+      await this.updateRequestStatus(request.id, 'completed');
     } catch (error) {
-      logger?.error('Failed to process data subject request', 'compliance', { error, request });
-      await this?.updateRequestStatus(request?.id, 'rejected');
+      logger.error('Failed to process data subject request', 'compliance', { error, request });
+      await this.updateRequestStatus(request.id, 'rejected');
     }
   }
 
@@ -190,7 +190,7 @@ export class ComplianceService {
     // Implement data portability logic
     // This would typically involve:
     // 1. Collecting all user data
-    // 2. Converting it to a standard format (e?.g., JSON)
+    // 2. Converting it to a standard format (e.g., JSON)
     // 3. Creating a secure download link
   }
 
@@ -202,26 +202,26 @@ export class ComplianceService {
     status: DataSubjectRequest['status'],
   ): Promise<void> {
     const key = `compliance:dsr:${requestId}`;
-    const data = await this?.redis.hget(key, 'request');
+    const data = await this.redis.hget(key, 'request');
 
     if (data) {
-      const request = JSON?.parse(data) as DataSubjectRequest;
-      request?.status = status;
+      const request = JSON.parse(data) as DataSubjectRequest;
+      request.status = status;
       if (status === 'completed' || status === 'rejected') {
-        request?.completedAt = new Date();
+        request.completedAt = new Date();
       }
 
-      await this?.redis.hset(key, {
-        request: JSON?.stringify(request),
+      await this.redis.hset(key, {
+        request: JSON.stringify(request),
       });
 
-      await this?.auditLogging.log('data_subject_request_updated', {
-        userId: request?.userId,
+      await this.auditLogging.log('data_subject_request_updated', {
+        userId: request.userId,
         resourceType: 'data_subject_request',
         resourceId: requestId,
         metadata: {
           status,
-          completedAt: request?.completedAt,
+          completedAt: request.completedAt,
         },
       });
     }
@@ -231,12 +231,12 @@ export class ComplianceService {
    * Check if data retention period has expired
    */
   async checkDataRetention(dataType: string, createdAt: Date): Promise<boolean> {
-    const policy = await this?.getRetentionPolicy(dataType);
+    const policy = await this.getRetentionPolicy(dataType);
     if (!policy) return false;
 
     const retentionEnd = new Date(
 
-      createdAt?.getTime() + policy?.retentionPeriod * 24 * 60 * 60 * 1000,
+      createdAt.getTime() + policy.retentionPeriod * 24 * 60 * 60 * 1000,
     );
     return new Date() > retentionEnd;
   }
@@ -245,24 +245,24 @@ export class ComplianceService {
    * Get data retention policy
    */
   private async getRetentionPolicy(dataType: string): Promise<DataRetentionPolicy | null> {
-    const policyData = await this?.redis.hget('compliance:retention_policies', dataType);
-    return policyData ? JSON?.parse(policyData) : null;
+    const policyData = await this.redis.hget('compliance:retention_policies', dataType);
+    return policyData ? JSON.parse(policyData) : null;
   }
 
   /**
    * Set data retention policy
    */
   async setRetentionPolicy(policy: DataRetentionPolicy): Promise<void> {
-    await this?.redis.hset('compliance:retention_policies', {
-      [policy?.type]: JSON?.stringify(policy),
+    await this.redis.hset('compliance:retention_policies', {
+      [policy.type]: JSON.stringify(policy),
     });
 
-    await this?.auditLogging.log('retention_policy_updated', {
+    await this.auditLogging.log('retention_policy_updated', {
       resourceType: 'retention_policy',
-      resourceId: policy?.type,
+      resourceId: policy.type,
       metadata: {
-        retentionPeriod: policy?.retentionPeriod,
-        dataCategories: policy?.dataCategories,
+        retentionPeriod: policy.retentionPeriod,
+        dataCategories: policy.dataCategories,
       },
     });
   }

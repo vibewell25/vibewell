@@ -49,11 +49,11 @@ export function BasicInfoForm({ form }: BasicInfoFormProps) {
             </Label>
             <Input
               id="businessName"
-              {...form?.register('businessName')}
+              {...form.register('businessName')}
               placeholder="Your Business Name"
             />
-            {form?.formState.errors?.businessName && (
-              <p className="text-sm text-red-500">{form?.formState.errors?.businessName.message}</p>
+            {form.formState.errors.businessName && (
+              <p className="text-sm text-red-500">{form.formState.errors.businessName.message}</p>
             )}
           </div>
 
@@ -63,15 +63,15 @@ export function BasicInfoForm({ form }: BasicInfoFormProps) {
             </Label>
             <Textarea
               id="description"
-              {...form?.register('description')}
+              {...form.register('description')}
               placeholder="Describe your business and services..."
               rows={4}
             />
-            {form?.formState.errors?.description && (
-              <p className="text-sm text-red-500">{form?.formState.errors?.description.message}</p>
+            {form.formState.errors.description && (
+              <p className="text-sm text-red-500">{form.formState.errors.description.message}</p>
             )}
             <p className="text-sm text-muted-foreground">
-              {form?.watch('description')?.length || 0}/500 characters
+              {form.watch('description').length || 0}/500 characters
             </p>
           </div>
 
@@ -80,24 +80,24 @@ export function BasicInfoForm({ form }: BasicInfoFormProps) {
               Business Type <span className="text-red-500">*</span>
             </Label>
             <Select
-              value={form?.watch('businessType')}
+              value={form.watch('businessType')}
               onValueChange={(value) =>
-                form?.setValue('businessType', value as any, { shouldValidate: true })
+                form.setValue('businessType', value as any, { shouldValidate: true })
               }
             >
               <SelectTrigger id="businessType">
                 <SelectValue placeholder="Select business type" />
               </SelectTrigger>
               <SelectContent>
-                {businessTypes?.map((type) => (
-                  <SelectItem key={type?.value} value={type?.value}>
-                    {type?.label}
+                {businessTypes.map((type) => (
+                  <SelectItem key={type.value} value={type.value}>
+                    {type.label}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            {form?.formState.errors?.businessType && (
-              <p className="text-sm text-red-500">{form?.formState.errors?.businessType.message}</p>
+            {form.formState.errors.businessType && (
+              <p className="text-sm text-red-500">{form.formState.errors.businessType.message}</p>
             )}
           </div>
         </CardContent>
@@ -116,11 +116,11 @@ export function BasicInfoForm({ form }: BasicInfoFormProps) {
             <Input
               id="email"
               type="email"
-              {...form?.register('email')}
-              placeholder="business@example?.com"
+              {...form.register('email')}
+              placeholder="business@example.com"
             />
-            {form?.formState.errors?.email && (
-              <p className="text-sm text-red-500">{form?.formState.errors?.email.message}</p>
+            {form.formState.errors.email && (
+              <p className="text-sm text-red-500">{form.formState.errors.email.message}</p>
             )}
           </div>
 
@@ -128,9 +128,9 @@ export function BasicInfoForm({ form }: BasicInfoFormProps) {
             <Label htmlFor="phone">
               Business Phone <span className="text-red-500">*</span>
             </Label>
-            <Input id="phone" {...form?.register('phone')} placeholder="+1 (555) 123-4567" />
-            {form?.formState.errors?.phone && (
-              <p className="text-sm text-red-500">{form?.formState.errors?.phone.message}</p>
+            <Input id="phone" {...form.register('phone')} placeholder="+1 (555) 123-4567" />
+            {form.formState.errors.phone && (
+              <p className="text-sm text-red-500">{form.formState.errors.phone.message}</p>
             )}
           </div>
 
@@ -138,11 +138,11 @@ export function BasicInfoForm({ form }: BasicInfoFormProps) {
             <Label htmlFor="website">Website</Label>
             <Input
               id="website"
-              {...form?.register('website')}
-              placeholder="https://yourbusiness?.com"
+              {...form.register('website')}
+              placeholder="https://yourbusiness.com"
             />
-            {form?.formState.errors?.website && (
-              <p className="text-sm text-red-500">{form?.formState.errors?.website.message}</p>
+            {form.formState.errors.website && (
+              <p className="text-sm text-red-500">{form.formState.errors.website.message}</p>
             )}
           </div>
         </CardContent>

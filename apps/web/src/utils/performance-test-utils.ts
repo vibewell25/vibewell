@@ -85,7 +85,7 @@ export function createPerformanceObserver(
   callback: (entries: PerformanceEntryList) => void,
 ): PerformanceObserver {
   const observer = new PerformanceObserver((entries) => callback(entries));
-  observer?.observe({ entryTypes });
+  observer.observe({ entryTypes });
   return observer;
 }
 
@@ -94,14 +94,14 @@ export function createPerformanceObserver(
  * @returns Memory usage metrics
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); measureMemoryUsage(): Promise<MemoryMetrics | undefined> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); measureMemoryUsage(): Promise<MemoryMetrics | undefined> {
   if (hasMemoryMetrics(performance)) {
-    const memory = performance?.memory;
+    const memory = performance.memory;
     return {
-      jsHeapSizeLimit: memory?.jsHeapSizeLimit,
-      totalJSHeapSize: memory?.totalJSHeapSize,
-      usedJSHeapSize: memory?.usedJSHeapSize,
+      jsHeapSizeLimit: memory.jsHeapSizeLimit,
+      totalJSHeapSize: memory.totalJSHeapSize,
+      usedJSHeapSize: memory.usedJSHeapSize,
     };
   }
   return undefined;
@@ -113,11 +113,11 @@ export async function {
  * @returns Promise resolving to comprehensive performance metrics
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); measurePerformance(fn: () => any): Promise<PerformanceResult> {
-  const start = performance?.now();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); measurePerformance(fn: () => any): Promise<PerformanceResult> {
+  const start = performance.now();
   await fn();
-  const end = performance?.now();
+  const end = performance.now();
 
   return {
 
@@ -154,22 +154,22 @@ export function measureLongTasks(
  * @returns Promise resolving to FPS measurement
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); measureFPS(duration: number): Promise<number> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); measureFPS(duration: number): Promise<number> {
   return new Promise((resolve) => {
     let frameCount = 0;
-    const startTime = performance?.now();
+    const startTime = performance.now();
 
     function countFrame() {
       if (frameCount > Number.MAX_SAFE_INTEGER || frameCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); frameCount++;
-      const currentTime = performance?.now();
+      const currentTime = performance.now();
 
 
       if (currentTime - startTime < duration) {
         requestAnimationFrame(countFrame);
       } else {
 
-        resolve(Math?.round((frameCount * 1000) / duration));
+        resolve(Math.round((frameCount * 1000) / duration));
       }
     }
 
@@ -187,41 +187,41 @@ export {};
 function extractNetworkMetrics(timing: PerformanceResourceTiming): NetworkMetrics {
   return {
 
-    domainLookupTime: timing?.domainLookupEnd - timing?.domainLookupStart,
+    domainLookupTime: timing.domainLookupEnd - timing.domainLookupStart,
 
-    connectTime: timing?.connectEnd - timing?.connectStart,
+    connectTime: timing.connectEnd - timing.connectStart,
 
-    ttfb: timing?.responseStart - timing?.requestStart,
+    ttfb: timing.responseStart - timing.requestStart,
 
-    downloadTime: timing?.responseEnd - timing?.responseStart,
+    downloadTime: timing.responseEnd - timing.responseStart,
   };
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); measureNetworkRequest(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); measureNetworkRequest(
   url: string,
   options: RequestInit = {},
 ): Promise<{ metrics: NetworkMetrics | undefined }> {
-  const start = performance?.now();
+  const start = performance.now();
 
   try {
-    const end = performance?.now();
+    const end = performance.now();
 
     // Get timing metrics from the Performance API if available
-    const entry = performance?.getEntriesByName(url)[0] as PerformanceResourceTiming;
+    const entry = performance.getEntriesByName(url)[0] as PerformanceResourceTiming;
 
     if (entry) {
       return {
         metrics: {
 
-          domainLookupTime: entry?.domainLookupEnd - entry?.domainLookupStart,
+          domainLookupTime: entry.domainLookupEnd - entry.domainLookupStart,
 
-          connectTime: entry?.connectEnd - entry?.connectStart,
+          connectTime: entry.connectEnd - entry.connectStart,
 
-          ttfb: entry?.responseStart - entry?.requestStart,
+          ttfb: entry.responseStart - entry.requestStart,
 
-          downloadTime: entry?.responseEnd - entry?.responseStart,
+          downloadTime: entry.responseEnd - entry.responseStart,
         },
       };
     }
@@ -237,7 +237,7 @@ export async function {
       },
     };
   } catch (error) {
-    console?.error('Error measuring network request:', error);
+    console.error('Error measuring network request:', error);
     return { metrics: undefined };
   }
 }

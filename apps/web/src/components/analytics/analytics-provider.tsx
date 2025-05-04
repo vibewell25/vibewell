@@ -2,13 +2,13 @@ import React from 'react';
 import { Analytics } from '@vercel/analytics/react';
 
 interface AnalyticsProviderProps {
-  children: React?.ReactNode;
+  children: React.ReactNode;
 }
 
 /**
  * Analytics provider component that includes Vercel Analytics
  */
-export function AnalyticsProvider({ children }: AnalyticsProviderProps): React?.ReactElement {
+export function AnalyticsProvider({ children }: AnalyticsProviderProps): React.ReactElement {
   return (
     <>
       <Analytics />

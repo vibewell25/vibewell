@@ -21,19 +21,19 @@ export default function AppointmentCalendar({ appointments }: AppointmentCalenda
   const days = eachDayOfInterval({ start: firstDayOfMonth, end: lastDayOfMonth });
 
   const previousMonth = () => {
-    setCurrentMonth(new Date(currentMonth?.getFullYear(), currentMonth?.getMonth() - 1, 1));
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
   };
 
   const nextMonth = () => {
-    setCurrentMonth(new Date(currentMonth?.getFullYear(), currentMonth?.getMonth() + 1, 1));
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
   };
 
   const getAppointmentsForDay = (day: Date) => {
-    return appointments?.filter(appointment => {
-      const appointmentDate = new Date(appointment?.startTime);
+    return appointments.filter(appointment => {
+      const appointmentDate = new Date(appointment.startTime);
       return isEqual(
-        new Date(appointmentDate?.getFullYear(), appointmentDate?.getMonth(), appointmentDate?.getDate()),
-        new Date(day?.getFullYear(), day?.getMonth(), day?.getDate())
+        new Date(appointmentDate.getFullYear(), appointmentDate.getMonth(), appointmentDate.getDate()),
+        new Date(day.getFullYear(), day.getMonth(), day.getDate())
       );
     });
   };
@@ -69,11 +69,11 @@ export default function AppointmentCalendar({ appointments }: AppointmentCalenda
       </div>
 
       <div className="grid grid-cols-7 gap-px bg-gray-200">
-        {days?.map((day, dayIdx) => {
+        {days.map((day, dayIdx) => {
           const dayAppointments = getAppointmentsForDay(day);
           return (
             <div
-              key={day?.toString()}
+              key={day.toString()}
               className={`bg-white min-h-[100px] p-2 ${
                 !isSameMonth(day, currentMonth) ? 'text-gray-400' : ''
               }`}
@@ -82,12 +82,12 @@ export default function AppointmentCalendar({ appointments }: AppointmentCalenda
                 {format(day, 'd')}
               </div>
               <div className="mt-2">
-                {dayAppointments?.map((appointment) => (
+                {dayAppointments.map((appointment) => (
                   <div
-                    key={appointment?.id}
+                    key={appointment.id}
                     className="text-xs mb-1 truncate text-indigo-600 hover:text-indigo-800"
                   >
-                    {format(new Date(appointment?.startTime), 'h:mm a')} - {appointment?.user.name}
+                    {format(new Date(appointment.startTime), 'h:mm a')} - {appointment.user.name}
                   </div>
                 ))}
               </div>

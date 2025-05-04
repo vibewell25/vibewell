@@ -21,7 +21,7 @@ interface MessageListProps {
   /**
    * Optional placeholder when the list is empty
    */
-  emptyPlaceholder?: React?.ReactNode;
+  emptyPlaceholder?: React.ReactNode;
 
   /**
    * Optional callback when a message is clicked
@@ -47,9 +47,9 @@ export function MessageList({
     const date = new Date(timestamp);
     const now = new Date();
     const isToday =
-      date?.getDate() === now?.getDate() &&
-      date?.getMonth() === now?.getMonth() &&
-      date?.getFullYear() === now?.getFullYear();
+      date.getDate() === now.getDate() &&
+      date.getMonth() === now.getMonth() &&
+      date.getFullYear() === now.getFullYear();
     if (isToday) {
       return format(date, 'HH:mm');
     } else {
@@ -58,11 +58,11 @@ export function MessageList({
   };
 
   // Group messages by date
-  const groupedMessages = React?.useMemo(() => {
+  const groupedMessages = React.useMemo(() => {
     const grouped: { [key: string]: Message[] } = {};
 
-    messages?.forEach((message) => {
-      const date = new Date(message?.timestamp);
+    messages.forEach((message) => {
+      const date = new Date(message.timestamp);
       const dateKey = format(date, 'yyyy-MM-dd');
 
       if (!grouped[dateKey]) {
@@ -80,7 +80,7 @@ export function MessageList({
     const date = new Date(dateKey);
     const now = new Date();
     const yesterday = new Date(now);
-    yesterday?.setDate(yesterday?.getDate() - 1);
+    yesterday.setDate(yesterday.getDate() - 1);
 
     if (dateKey === format(now, 'yyyy-MM-dd')) {
       return 'Today';
@@ -91,7 +91,7 @@ export function MessageList({
     }
   };
 
-  if (messages?.length === 0) {
+  if (messages.length === 0) {
     return (
       <div className={`flex flex-col items-center justify-center p-4 ${className}`}>
         {emptyPlaceholder || <p className="text-sm text-muted-foreground">No messages yet</p>}
@@ -102,7 +102,7 @@ export function MessageList({
   return (
     <div className={`flex flex-col space-y-4 p-4 ${className}`}>
       {/* Render messages grouped by date */}
-      {Object?.keys(groupedMessages).map((dateKey) => (
+      {Object.keys(groupedMessages).map((dateKey) => (
         <div key={dateKey} className="flex flex-col space-y-3">
           {/* Date header */}
           <div className="flex justify-center">
@@ -113,11 +113,11 @@ export function MessageList({
 
           {/* Messages for this date */}
           {groupedMessages[dateKey].map((message) => {
-            const isCurrentUser = message?.senderId === currentUserId;
+            const isCurrentUser = message.senderId === currentUserId;
 
             return (
               <div
-                key={message?.id}
+                key={message.id}
                 className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'}`}
                 onClick={() => onMessageClick && onMessageClick(message)}
               >
@@ -129,12 +129,12 @@ export function MessageList({
                   } `}
                 >
                   <div className="flex flex-col">
-                    <div>{message?.content}</div>
+                    <div>{message.content}</div>
                     <div
                       className={`mt-1 flex justify-end text-xs ${isCurrentUser ? 'text-primary-foreground/70' : 'text-muted-foreground'} `}
                     >
-                      {formatMessageTime(message?.timestamp)}
-                      {isCurrentUser && message?.read && <span className="ml-1">✓</span>}
+                      {formatMessageTime(message.timestamp)}
+                      {isCurrentUser && message.read && <span className="ml-1">✓</span>}
                     </div>
                   </div>
                 </div>

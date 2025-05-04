@@ -7,52 +7,52 @@ import i18n, { initializeI18n } from '../i18n';
 import LanguageSelector from '../components/LanguageSelector';
 
 // Settings screen component
-const SettingsScreen: React?.FC = () => {
+const SettingsScreen: React.FC = () => {
   // Initialize translations
   useEffect(() => {
     initializeI18n();
   }, []);
 
   // State for dark mode
-  const [isDarkMode, setIsDarkMode] = React?.useState(false);
+  const [isDarkMode, setIsDarkMode] = React.useState(false);
   // State for notifications
-  const [notificationsEnabled, setNotificationsEnabled] = React?.useState(true);
+  const [notificationsEnabled, setNotificationsEnabled] = React.useState(true);
   // State for biometric login
-  const [biometricLoginEnabled, setBiometricLoginEnabled] = React?.useState(false);
+  const [biometricLoginEnabled, setBiometricLoginEnabled] = React.useState(false);
   // State for language selector visibility
-  const [isLanguageSelectorVisible, setIsLanguageSelectorVisible] = React?.useState(false);
+  const [isLanguageSelectorVisible, setIsLanguageSelectorVisible] = React.useState(false);
 
   // Toggle dark mode
   const toggleDarkMode = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');value: boolean) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');value: boolean) => {
     setIsDarkMode(value);
-    await AsyncStorage?.setItem('@vibewell/dark_mode', value ? 'true' : 'false');
+    await AsyncStorage.setItem('@vibewell/dark_mode', value ? 'true' : 'false');
     // TODO: Implement actual theme switch
   };
 
   // Toggle notifications
   const toggleNotifications = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');value: boolean) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');value: boolean) => {
     setNotificationsEnabled(value);
-    await AsyncStorage?.setItem('@vibewell/notifications_enabled', value ? 'true' : 'false');
+    await AsyncStorage.setItem('@vibewell/notifications_enabled', value ? 'true' : 'false');
     // TODO: Implement notification permission handling
   };
 
   // Toggle biometric login
   const toggleBiometricLogin = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');value: boolean) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');value: boolean) => {
     setBiometricLoginEnabled(value);
-    await AsyncStorage?.setItem('@vibewell/biometric_login', value ? 'true' : 'false');
+    await AsyncStorage.setItem('@vibewell/biometric_login', value ? 'true' : 'false');
     // TODO: Implement biometric authentication setup
   };
 
   // Handle language change
   const handleLanguageChange = (locale: string) => {
     // Reload the component or update the UI as needed
-    console?.log(`Language changed to: ${locale}`);
+    console.log(`Language changed to: ${locale}`);
   };
 
   // Handle language selector close
@@ -62,7 +62,7 @@ const SettingsScreen: React?.FC = () => {
 
   // Render a settings section header
   const renderSectionHeader = (title: string) => (
-    <Text style={styles?.sectionHeader}>{title}</Text>
+    <Text style={styles.sectionHeader}>{title}</Text>
   );
 
   // Render a settings item with toggle
@@ -72,10 +72,10 @@ const SettingsScreen: React?.FC = () => {
     onToggle: (value: boolean) => void,
     icon: string
   ) => (
-    <View style={styles?.settingsItem}>
-      <View style={styles?.itemLeft}>
-        <Ionicons name={icon as any} size={24} color="#555" style={styles?.itemIcon} />
-        <Text style={styles?.itemText}>{title}</Text>
+    <View style={styles.settingsItem}>
+      <View style={styles.itemLeft}>
+        <Ionicons name={icon as any} size={24} color="#555" style={styles.itemIcon} />
+        <Text style={styles.itemText}>{title}</Text>
       </View>
       <Switch
         value={value}
@@ -92,34 +92,34 @@ const SettingsScreen: React?.FC = () => {
     onPress: () => void,
     icon: string
   ) => (
-    <TouchableOpacity style={styles?.settingsItem} onPress={onPress}>
-      <View style={styles?.itemLeft}>
-        <Ionicons name={icon as any} size={24} color="#555" style={styles?.itemIcon} />
-        <Text style={styles?.itemText}>{title}</Text>
+    <TouchableOpacity style={styles.settingsItem} onPress={onPress}>
+      <View style={styles.itemLeft}>
+        <Ionicons name={icon as any} size={24} color="#555" style={styles.itemIcon} />
+        <Text style={styles.itemText}>{title}</Text>
       </View>
       <Ionicons name="chevron-forward" size={20} color="#888" />
     </TouchableOpacity>
   );
 
   return (
-    <SafeAreaView style={styles?.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView>
-        <Text style={styles?.title}>{i18n?.t('settings?.title')}</Text>
+        <Text style={styles.title}>{i18n.t('settings.title')}</Text>
 
         {/* App Settings */}
-        {renderSectionHeader(i18n?.t('settings?.appearance'))}
+        {renderSectionHeader(i18n.t('settings.appearance'))}
         {renderToggleItem(
-          i18n?.t('profile?.darkMode'),
+          i18n.t('profile.darkMode'),
           isDarkMode,
           toggleDarkMode,
           'moon-outline'
         )}
         
         {/* Language Settings */}
-        {renderSectionHeader(i18n?.t('settings?.language'))}
-        <View style={styles?.languageContainer}>
+        {renderSectionHeader(i18n.t('settings.language'))}
+        <View style={styles.languageContainer}>
           <TouchableOpacity onPress={() => setIsLanguageSelectorVisible(true)}>
-            <Text style={styles?.itemText}>{i18n?.t('settings?.language')}</Text>
+            <Text style={styles.itemText}>{i18n.t('settings.language')}</Text>
           </TouchableOpacity>
           <LanguageSelector 
             isVisible={isLanguageSelectorVisible} 
@@ -129,64 +129,64 @@ const SettingsScreen: React?.FC = () => {
         </View>
 
         {/* Notification Settings */}
-        {renderSectionHeader(i18n?.t('settings?.notifications'))}
+        {renderSectionHeader(i18n.t('settings.notifications'))}
         {renderToggleItem(
-          i18n?.t('settings?.notifications'),
+          i18n.t('settings.notifications'),
           notificationsEnabled,
           toggleNotifications,
           'notifications-outline'
         )}
 
         {/* Security Settings */}
-        {renderSectionHeader(i18n?.t('settings?.privacy'))}
+        {renderSectionHeader(i18n.t('settings.privacy'))}
         {renderToggleItem(
-          i18n?.t('profile?.biometricLogin'),
+          i18n.t('profile.biometricLogin'),
           biometricLoginEnabled,
           toggleBiometricLogin,
           'finger-print-outline'
         )}
         
         {/* Support */}
-        {renderSectionHeader(i18n?.t('settings?.help'))}
+        {renderSectionHeader(i18n.t('settings.help'))}
         {renderChevronItem(
-          i18n?.t('settings?.contactUs'),
-          () => console?.log('Contact us pressed'),
+          i18n.t('settings.contactUs'),
+          () => console.log('Contact us pressed'),
           'mail-outline'
         )}
         {renderChevronItem(
-          i18n?.t('settings?.terms'),
-          () => console?.log('Terms pressed'),
+          i18n.t('settings.terms'),
+          () => console.log('Terms pressed'),
           'document-text-outline'
         )}
         {renderChevronItem(
-          i18n?.t('settings?.privacyPolicy'),
-          () => console?.log('Privacy policy pressed'),
+          i18n.t('settings.privacyPolicy'),
+          () => console.log('Privacy policy pressed'),
           'shield-checkmark-outline'
         )}
         
         {/* About */}
-        {renderSectionHeader(i18n?.t('settings?.about'))}
-        <View style={styles?.settingsItem}>
-          <View style={styles?.itemLeft}>
-            <Ionicons name="information-circle-outline" size={24} color="#555" style={styles?.itemIcon} />
-            <Text style={styles?.itemText}>{i18n?.t('settings?.version')}</Text>
+        {renderSectionHeader(i18n.t('settings.about'))}
+        <View style={styles.settingsItem}>
+          <View style={styles.itemLeft}>
+            <Ionicons name="information-circle-outline" size={24} color="#555" style={styles.itemIcon} />
+            <Text style={styles.itemText}>{i18n.t('settings.version')}</Text>
           </View>
-          <Text style={styles?.versionText}>1?.0.0</Text>
+          <Text style={styles.versionText}>1.0.0</Text>
         </View>
         
         {/* Logout */}
         <TouchableOpacity 
-          style={styles?.logoutButton}
-          onPress={() => console?.log('Logout pressed')}
+          style={styles.logoutButton}
+          onPress={() => console.log('Logout pressed')}
         >
-          <Text style={styles?.logoutText}>{i18n?.t('settings?.logout')}</Text>
+          <Text style={styles.logoutText}>{i18n.t('settings.logout')}</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f8f8',
@@ -213,7 +213,7 @@ const styles = StyleSheet?.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     backgroundColor: '#fff',
-    borderBottomWidth: StyleSheet?.hairlineWidth,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#e0e0e0',
   },
   itemLeft: {

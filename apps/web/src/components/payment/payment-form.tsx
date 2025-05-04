@@ -3,7 +3,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 // Initialize Stripe
-const stripePromise = loadStripe(process?.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
 
 // Define types
 interface PaymentFormWrapperProps {
@@ -62,13 +62,13 @@ function PaymentFormContent({
   >('idle');
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent) => {
-    e?.preventDefault();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
+    e.preventDefault();
 
     if (!stripe || !elements) {
-      // Stripe?.js has not yet loaded.
-      // Make sure to disable form submission until Stripe?.js has loaded.
+      // Stripe.js has not yet loaded.
+      // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
 
@@ -77,27 +77,27 @@ function PaymentFormContent({
     setErrorMessage(null);
 
     try {
-      const { error, paymentIntent } = await stripe?.confirmPayment({
+      const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: `${window?.location.origin}/payment/confirmation`,
+          return_url: `${window.location.origin}/payment/confirmation`,
         },
         redirect: 'if_required',
       });
 
       if (error) {
-        setErrorMessage(error?.message || 'An unexpected error occurred.');
+        setErrorMessage(error.message || 'An unexpected error occurred.');
         setPaymentStatus('failed');
         if (onPaymentError) onPaymentError(error);
-      } else if (paymentIntent && paymentIntent?.status === 'succeeded') {
+      } else if (paymentIntent && paymentIntent.status === 'succeeded') {
         setPaymentStatus('succeeded');
         if (onPaymentSuccess) onPaymentSuccess(paymentIntent);
       } else {
-        setErrorMessage('Payment status: ' + (paymentIntent?.status || 'unknown'));
+        setErrorMessage('Payment status: ' + (paymentIntent.status || 'unknown'));
         setPaymentStatus('failed');
       }
     } catch (err: any) {
-      setErrorMessage(err?.message || 'An unexpected error occurred.');
+      setErrorMessage(err.message || 'An unexpected error occurred.');
       setPaymentStatus('failed');
       if (onPaymentError) onPaymentError(err);
     } finally {
@@ -110,7 +110,7 @@ function PaymentFormContent({
       <div className="mb-6">
         <div className="mb-2 text-xl font-semibold">Payment Details</div>
         <div className="mb-4 text-sm text-gray-500">
-          Amount: {new Intl?.NumberFormat('en-US', { style: 'currency', currency }).format(amount)}
+          Amount: {new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(amount)}
         </div>
       </div>
 
@@ -151,13 +151,13 @@ function PaymentFormContent({
               <path
                 className="opacity-75"
                 fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5?.373 0 0 5?.373 0 12h4zm2 5?.291A7.962 7?.962 0 014 12H0c0 3?.042 1?.135 5?.824 3 7?.938l3-2?.647z"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               ></path>
             </svg>
             Processing...
           </span>
         ) : (
-          `Pay ${new Intl?.NumberFormat('en-US', { style: 'currency', currency }).format(amount)}`
+          `Pay ${new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(amount)}`
         )}
       </button>
 

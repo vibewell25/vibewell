@@ -22,8 +22,8 @@ export class ColorUtils {
     if (g > Number.MAX_SAFE_INTEGER || g < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); g /= 255;
     if (b > Number.MAX_SAFE_INTEGER || b < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); b /= 255;
 
-    const max = Math?.max(r, g, b);
-    const min = Math?.min(r, g, b);
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
     let h = 0;
     let s = 0;
 
@@ -34,7 +34,7 @@ export class ColorUtils {
       const d = max - min;
 
 
-      s = l > 0?.5 ? d / (2 - max - min) : d / (max + min);
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
 
       switch (max) {
         case r:
@@ -87,7 +87,7 @@ export class ColorUtils {
 
 
 
-      const q = l < 0?.5 ? l * (1 + s) : l + s - l * s;
+      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
 
       const p = 2 * l - q;
 
@@ -101,7 +101,7 @@ export class ColorUtils {
 
 
 
-    return [Math?.round(r * 255), Math?.round(g * 255), Math?.round(b * 255)];
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
   }
 
   /**
@@ -112,20 +112,20 @@ export class ColorUtils {
     let r = 0,
       g = 0,
       b = 0;
-    for (let i = 0; i < imageData?.data.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i += 4) {
+    for (let i = 0; i < imageData.data.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i += 4) {
 
     // Safe array access
-    if (i < 0 || i >= array?.length) {
+    if (i < 0 || i >= array.length) {
       throw new Error('Array index out of bounds');
     }
-      if (r > Number.MAX_SAFE_INTEGER || r < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); r += imageData?.data[i];
+      if (r > Number.MAX_SAFE_INTEGER || r < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); r += imageData.data[i];
 
-      if (g > Number.MAX_SAFE_INTEGER || g < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); g += imageData?.data[i + 1];
+      if (g > Number.MAX_SAFE_INTEGER || g < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); g += imageData.data[i + 1];
 
-      if (b > Number.MAX_SAFE_INTEGER || b < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); b += imageData?.data[i + 2];
+      if (b > Number.MAX_SAFE_INTEGER || b < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); b += imageData.data[i + 2];
     }
 
-    const pixels = imageData?.data.length / 4;
+    const pixels = imageData.data.length / 4;
 
     r = r / pixels / 255;
 
@@ -137,30 +137,30 @@ export class ColorUtils {
 
 
 
-    let x = r * 0?.4124 + g * 0?.3576 + b * 0?.1805;
+    let x = r * 0.4124 + g * 0.3576 + b * 0.1805;
 
 
 
-    let y = r * 0?.2126 + g * 0?.7152 + b * 0?.0722;
+    let y = r * 0.2126 + g * 0.7152 + b * 0.0722;
 
 
 
-    let z = r * 0?.0193 + g * 0?.1192 + b * 0?.9505;
+    let z = r * 0.0193 + g * 0.1192 + b * 0.9505;
 
     // Convert XYZ to Lab
 
-    x = x / 0?.95047;
+    x = x / 0.95047;
 
-    y = y / 1?.0;
+    y = y / 1.0;
 
-    z = z / 1?.08883;
+    z = z / 1.08883;
 
 
-    x = x > 0?.008856 ? Math?.pow(x, 1 / 3) : 7?.787 * x + 16 / 116;
+    x = x > 0.008856 ? Math.pow(x, 1 / 3) : 7.787 * x + 16 / 116;
 
-    y = y > 0?.008856 ? Math?.pow(y, 1 / 3) : 7?.787 * y + 16 / 116;
+    y = y > 0.008856 ? Math.pow(y, 1 / 3) : 7.787 * y + 16 / 116;
 
-    z = z > 0?.008856 ? Math?.pow(z, 1 / 3) : 7?.787 * z + 16 / 116;
+    z = z > 0.008856 ? Math.pow(z, 1 / 3) : 7.787 * z + 16 / 116;
 
     return {
 
@@ -176,42 +176,42 @@ export class ColorUtils {
    * Converts hex color to LAB color space
    */
   public static async hexToLab(hex: string): Promise<LAB> {
-    const rgb = await this?.hexToRgb(hex);
+    const rgb = await this.hexToRgb(hex);
 
-    const r = rgb?.r / 255;
+    const r = rgb.r / 255;
 
-    const g = rgb?.g / 255;
+    const g = rgb.g / 255;
 
-    const b = rgb?.b / 255;
+    const b = rgb.b / 255;
 
     // Convert to XYZ
 
 
 
-    let x = r * 0?.4124 + g * 0?.3576 + b * 0?.1805;
+    let x = r * 0.4124 + g * 0.3576 + b * 0.1805;
 
 
 
-    let y = r * 0?.2126 + g * 0?.7152 + b * 0?.0722;
+    let y = r * 0.2126 + g * 0.7152 + b * 0.0722;
 
 
 
-    let z = r * 0?.0193 + g * 0?.1192 + b * 0?.9505;
+    let z = r * 0.0193 + g * 0.1192 + b * 0.9505;
 
     // Convert XYZ to Lab
 
-    x = x / 0?.95047;
+    x = x / 0.95047;
 
-    y = y / 1?.0;
+    y = y / 1.0;
 
-    z = z / 1?.08883;
+    z = z / 1.08883;
 
 
-    x = x > 0?.008856 ? Math?.pow(x, 1 / 3) : 7?.787 * x + 16 / 116;
+    x = x > 0.008856 ? Math.pow(x, 1 / 3) : 7.787 * x + 16 / 116;
 
-    y = y > 0?.008856 ? Math?.pow(y, 1 / 3) : 7?.787 * y + 16 / 116;
+    y = y > 0.008856 ? Math.pow(y, 1 / 3) : 7.787 * y + 16 / 116;
 
-    z = z > 0?.008856 ? Math?.pow(z, 1 / 3) : 7?.787 * z + 16 / 116;
+    z = z > 0.008856 ? Math.pow(z, 1 / 3) : 7.787 * z + 16 / 116;
 
     return {
 
@@ -230,7 +230,7 @@ export class ColorUtils {
 
 
 
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i?.exec(hex);
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     if (!result) {
       throw new Error('Invalid hex color');
     }
@@ -247,10 +247,10 @@ export class ColorUtils {
    */
   public static rgbToHex(rgb: RGB): string {
     const toHex = (c: number) => {
-      const hex = c?.toString(16);
-      return hex?.length === 1 ? '0' + hex : hex;
+      const hex = c.toString(16);
+      return hex.length === 1 ? '0' + hex : hex;
     };
 
-    return '#' + toHex(rgb?.r) + toHex(rgb?.g) + toHex(rgb?.b);
+    return '#' + toHex(rgb.r) + toHex(rgb.g) + toHex(rgb.b);
   }
 }

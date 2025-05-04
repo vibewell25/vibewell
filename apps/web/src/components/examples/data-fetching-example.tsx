@@ -31,7 +31,7 @@ const productState = createState<{
     loading: false,
     filter: '',
   },
-  StateManagerType?.REDUX,
+  StateManagerType.REDUX,
 );
 
 /**
@@ -70,8 +70,8 @@ function ProductList() {
 
   // Fetch products with error handling
   const fetchProducts = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     // Update loading state
     dispatch({ type: 'state/setState', payload: { loading: true } });
 
@@ -79,11 +79,11 @@ function ProductList() {
       // Simulated API call
       const response = await fetch('/api/products');
 
-      if (!response?.ok) {
-        throw new Error(`Error fetching products: ${response?.statusText}`);
+      if (!response.ok) {
+        throw new Error(`Error fetching products: ${response.statusText}`);
       }
 
-      const data = await response?.json();
+      const data = await response.json();
 
       // Update state with products
       dispatch({
@@ -98,9 +98,9 @@ function ProductList() {
     } catch (error) {
       // Capture error with appropriate categorization
       captureError(error instanceof Error ? error : 'Failed to fetch products', {
-        source: ErrorSource?.NETWORK,
-        category: ErrorCategory?.RESOURCE,
-        severity: ErrorSeverity?.WARNING,
+        source: ErrorSource.NETWORK,
+        category: ErrorCategory.RESOURCE,
+        severity: ErrorSeverity.WARNING,
         metadata: {
           component: 'ProductList',
           endpoint: '/api/products',
@@ -118,8 +118,8 @@ function ProductList() {
   // Wrap the fetch function with error handling
   const fetchProductsWithErrorHandling = () => {
     return wrapPromise(fetchProducts(), {
-      source: ErrorSource?.NETWORK,
-      category: ErrorCategory?.RESOURCE,
+      source: ErrorSource.NETWORK,
+      category: ErrorCategory.RESOURCE,
     });
   };
 
@@ -131,10 +131,10 @@ function ProductList() {
   }, []);
 
   // Filter products based on search term
-  const handleFilterChange = (e: React?.ChangeEvent<HTMLInputElement>) => {
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
       type: 'state/setState',
-      payload: { filter: e?.target.value },
+      payload: { filter: e.target.value },
     });
   };
 
@@ -148,10 +148,10 @@ function ProductList() {
 
   // Filter products based on search term
   const filteredProducts = filter
-    ? products?.filter(
+    ? products.filter(
         (product: Product) =>
-          product?.name.toLowerCase().includes(filter?.toLowerCase()) ||
-          product?.description.toLowerCase().includes(filter?.toLowerCase()),
+          product.name.toLowerCase().includes(filter.toLowerCase()) ||
+          product.description.toLowerCase().includes(filter.toLowerCase()),
       )
     : products;
 
@@ -172,24 +172,24 @@ function ProductList() {
           <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
           <p className="mt-2">Loading products...</p>
         </div>
-      ) : filteredProducts?.length > 0 ? (
+      ) : filteredProducts.length > 0 ? (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          {filteredProducts?.map((product: Product) => (
+          {filteredProducts.map((product: Product) => (
             <div
-              key={product?.id}
+              key={product.id}
               className="cursor-pointer rounded border p-4 transition-shadow hover:shadow-md"
               onClick={() => selectProduct(product)}
             >
               <div className="mb-2 h-40 w-full overflow-hidden rounded bg-gray-100">
                 <img
-                  src={product?.imageUrl}
-                  alt={product?.name}
+                  src={product.imageUrl}
+                  alt={product.name}
                   className="h-full w-full object-cover"
                 />
               </div>
-              <h3 className="text-lg font-semibold">{product?.name}</h3>
-              <p className="truncate text-gray-500">{product?.description}</p>
-              <p className="mt-2 font-bold">${product?.price.toFixed(2)}</p>
+              <h3 className="text-lg font-semibold">{product.name}</h3>
+              <p className="truncate text-gray-500">{product.description}</p>
+              <p className="mt-2 font-bold">${product.price.toFixed(2)}</p>
             </div>
           ))}
         </div>
@@ -217,8 +217,8 @@ function ProductDetail() {
 
   // Add to cart with error handling
   const addToCart = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!selectedProduct) return;
 
     setIsAdding(true);
@@ -230,25 +230,25 @@ function ProductDetail() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify({ productId: selectedProduct?.id, quantity: 1 }),
+        body: JSON.stringify({ productId: selectedProduct.id, quantity: 1 }),
       });
 
-      if (!response?.ok) {
-        throw new Error(`Failed to add item to cart: ${response?.statusText}`);
+      if (!response.ok) {
+        throw new Error(`Failed to add item to cart: ${response.statusText}`);
       }
 
       // Show success message (would typically use a toast)
-      console?.log('Added to cart:', selectedProduct?.name);
+      console.log('Added to cart:', selectedProduct.name);
     } catch (error) {
       // Capture error with appropriate categorization
       captureError(error instanceof Error ? error : 'Failed to add to cart', {
-        source: ErrorSource?.NETWORK,
-        category: ErrorCategory?.RESOURCE,
-        severity: ErrorSeverity?.ERROR,
+        source: ErrorSource.NETWORK,
+        category: ErrorCategory.RESOURCE,
+        severity: ErrorSeverity.ERROR,
         metadata: {
           component: 'ProductDetail',
           endpoint: '/api/cart',
-          productId: selectedProduct?.id,
+          productId: selectedProduct.id,
         },
         // Provide retry function
         retryFunction: addToCart,
@@ -270,16 +270,16 @@ function ProductDetail() {
     <div className="rounded border p-6">
       <div className="mb-4 h-64 w-full overflow-hidden rounded bg-gray-100">
         <img
-          src={selectedProduct?.imageUrl}
-          alt={selectedProduct?.name}
+          src={selectedProduct.imageUrl}
+          alt={selectedProduct.name}
           className="h-full w-full object-cover"
         />
       </div>
-      <h2 className="mb-2 text-2xl font-bold">{selectedProduct?.name}</h2>
-      <p className="mb-4 text-3xl font-bold text-blue-600">${selectedProduct?.price.toFixed(2)}</p>
+      <h2 className="mb-2 text-2xl font-bold">{selectedProduct.name}</h2>
+      <p className="mb-4 text-3xl font-bold text-blue-600">${selectedProduct.price.toFixed(2)}</p>
       <div className="mb-6">
         <h3 className="mb-2 font-semibold">Description:</h3>
-        <p className="text-gray-600">{selectedProduct?.description}</p>
+        <p className="text-gray-600">{selectedProduct.description}</p>
       </div>
       <button
         onClick={addToCart}

@@ -8,30 +8,30 @@ import { AR_MODELS } from '../ar/modelConfig';
 // Navigation prop for model selection
 type ModelSelectionNavigationProp = StackNavigationProp<RootStackParamList, 'ModelSelection'>;
 
-const ModelSelectionScreen: React?.FC = () => {
+const ModelSelectionScreen: React.FC = () => {
   const navigation = useNavigation<ModelSelectionNavigationProp>();
 
   const renderItem = ({ item }: { item: typeof AR_MODELS[0] }) => (
-    <TouchableOpacity style={styles?.item} onPress={() => navigation?.navigate('TryOn', { source: item?.source, scale: item?.scale })}>
-      <Text style={styles?.label}>{item?.label}</Text>
+    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('TryOn', { source: item.source, scale: item.scale })}>
+      <Text style={styles.label}>{item.label}</Text>
     </TouchableOpacity>
   );
 
   return (
-    <View style={styles?.container}>
-      <Text style={styles?.title}>Choose your look:</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Choose your look:</Text>
       <FlatList
         data={AR_MODELS}
         renderItem={renderItem}
-        keyExtractor={(item) => item?.key}
+        keyExtractor={(item) => item.key}
         numColumns={2}
-        contentContainerStyle={styles?.list}
+        contentContainerStyle={styles.list}
       />
     </View>
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   title: { fontSize: 20, fontWeight: 'bold', marginBottom: 16 },
   list: { alignItems: 'center' },

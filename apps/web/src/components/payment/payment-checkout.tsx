@@ -48,8 +48,8 @@ export function PaymentCheckout({
 
   // Create payment intent when component mounts
   const createPaymentIntent = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setIsLoading(true);
       setError(null);
@@ -57,25 +57,25 @@ export function PaymentCheckout({
       const response = await fetch('/api/payments/intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify({
+        body: JSON.stringify({
           amount,
-          currency: currency?.toLowerCase(),
+          currency: currency.toLowerCase(),
           description,
           metadata,
         }),
       });
 
-      if (!response?.ok) {
-        const errorData = await response?.json();
-        throw new Error(errorData?.error || 'Failed to create payment intent');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to create payment intent');
       }
 
-      const data = await response?.json();
-      setClientSecret(data?.clientSecret);
-      setPaymentIntentId(data?.id);
+      const data = await response.json();
+      setClientSecret(data.clientSecret);
+      setPaymentIntentId(data.id);
     } catch (err: any) {
-      console?.error('Error creating payment intent:', err);
-      setError(err?.message || 'Failed to initialize payment');
+      console.error('Error creating payment intent:', err);
+      setError(err.message || 'Failed to initialize payment');
       if (onPaymentError) onPaymentError(err);
     } finally {
       setIsLoading(false);
@@ -90,24 +90,24 @@ export function PaymentCheckout({
     });
 
     if (onPaymentSuccess) {
-      onPaymentSuccess(paymentIntent?.id);
+      onPaymentSuccess(paymentIntent.id);
     }
 
     if (redirectUrl) {
       // Redirect after a short delay to allow user to see the success message
       setTimeout(() => {
-        router?.push(redirectUrl);
+        router.push(redirectUrl);
       }, 2000);
     }
   };
 
   const handlePaymentError = (error: any) => {
     setPaymentStatus('failed');
-    setError(error?.message || 'Payment processing failed');
+    setError(error.message || 'Payment processing failed');
 
     toast({
       title: 'Payment Failed',
-      description: error?.message || 'There was an error processing your payment.',
+      description: error.message || 'There was an error processing your payment.',
     });
 
     if (onPaymentError) {
@@ -146,7 +146,7 @@ export function PaymentCheckout({
             <div className="mb-2 flex justify-between">
               <span>Amount:</span>
               <span className="font-semibold">
-                {new Intl?.NumberFormat('en-US', { style: 'currency', currency }).format(amount)}
+                {new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(amount)}
               </span>
             </div>
             {metadata['itemName'] && (
@@ -177,7 +177,7 @@ export function PaymentCheckout({
 
       {paymentStatus === 'succeeded' && redirectUrl && (
         <CardFooter>
-          <Button variant="outline" onClick={() => router?.push(redirectUrl)} className="w-full">
+          <Button variant="outline" onClick={() => router.push(redirectUrl)} className="w-full">
             Continue
           </Button>
         </CardFooter>

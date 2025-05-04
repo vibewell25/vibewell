@@ -35,7 +35,7 @@ interface UserProfile {
   };
 }
 
-const ProfileScreen: React?.FC = () => {
+const ProfileScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const { user, logout } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -47,19 +47,19 @@ const ProfileScreen: React?.FC = () => {
   }, []);
 
   const loadProfile = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       // In a real app, this would be an API call
-      const savedProfile = await AsyncStorage?.getItem('@vibewell/user_profile');
+      const savedProfile = await AsyncStorage.getItem('@vibewell/user_profile');
       if (savedProfile) {
-        setProfile(JSON?.parse(savedProfile));
+        setProfile(JSON.parse(savedProfile));
       } else {
         // Mock data for demonstration
         const mockProfile: UserProfile = {
-          id: user?.id || '1',
-          name: user?.name || 'John Doe',
-          email: user?.email || 'john@example?.com',
+          id: user.id || '1',
+          name: user.name || 'John Doe',
+          email: user.email || 'john@example.com',
           preferences: {
             notifications: true,
             marketing: false,
@@ -72,57 +72,57 @@ const ProfileScreen: React?.FC = () => {
           }
         };
         setProfile(mockProfile);
-        await AsyncStorage?.setItem('@vibewell/user_profile', JSON?.stringify(mockProfile));
+        await AsyncStorage.setItem('@vibewell/user_profile', JSON.stringify(mockProfile));
       }
     } catch (error) {
-      console?.error('Error loading profile:', error);
-      Alert?.alert('Error', 'Failed to load profile data');
+      console.error('Error loading profile:', error);
+      Alert.alert('Error', 'Failed to load profile data');
     } finally {
       setLoading(false);
     }
   };
 
   const handleImagePick = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
-      const permissionResult = await ImagePicker?.requestMediaLibraryPermissionsAsync();
-      if (!permissionResult?.granted) {
-        Alert?.alert('Permission Required', 'Please allow access to your photo library');
+      const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (!permissionResult.granted) {
+        Alert.alert('Permission Required', 'Please allow access to your photo library');
         return;
       }
 
-      const result = await ImagePicker?.launchImageLibraryAsync({
-        mediaTypes: ImagePicker?.MediaTypeOptions.Images,
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [1, 1],
-        quality: 0?.8,
+        quality: 0.8,
       });
 
-      if (!result?.canceled && result?.assets[0] && profile) {
+      if (!result.canceled && result.assets[0] && profile) {
         setUploadingImage(true);
         try {
           // In a real app, upload image to server
-          const updatedProfile: UserProfile = { ...profile, avatar: result?.assets[0].uri };
+          const updatedProfile: UserProfile = { ...profile, avatar: result.assets[0].uri };
           setProfile(updatedProfile);
-          await AsyncStorage?.setItem('@vibewell/user_profile', JSON?.stringify(updatedProfile));
+          await AsyncStorage.setItem('@vibewell/user_profile', JSON.stringify(updatedProfile));
         } catch (error) {
-          console?.error('Error uploading image:', error);
-          Alert?.alert('Error', 'Failed to update profile picture');
+          console.error('Error uploading image:', error);
+          Alert.alert('Error', 'Failed to update profile picture');
         } finally {
           setUploadingImage(false);
         }
       }
     } catch (error) {
-      console?.error('Error picking image:', error);
-      Alert?.alert('Error', 'Failed to select image');
+      console.error('Error picking image:', error);
+      Alert.alert('Error', 'Failed to select image');
     }
   };
 
   const handleLogout = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-    Alert?.alert(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    Alert.alert(
       'Confirm Logout',
       'Are you sure you want to log out?',
       [
@@ -132,11 +132,11 @@ const ProfileScreen: React?.FC = () => {
           style: 'destructive',
           onPress: async () => {
             try {
-              await AsyncStorage?.clear();
+              await AsyncStorage.clear();
               await logout();
             } catch (error) {
-              console?.error('Error during logout:', error);
-              Alert?.alert('Error', 'Failed to log out');
+              console.error('Error during logout:', error);
+              Alert.alert('Error', 'Failed to log out');
             }
           },
         },
@@ -146,104 +146,104 @@ const ProfileScreen: React?.FC = () => {
 
   if (loading) {
     return (
-      <View style={[styles?.container, styles?.centered]}>
+      <View style={[styles.container, styles.centered]}>
         <ActivityIndicator size="large" color="#4F46E5" />
       </View>
     );
   }
 
   return (
-    <SafeAreaView style={[styles?.container, { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Profile Header */}
-        <View style={styles?.header}>
-          <View style={styles?.avatarContainer}>
+        <View style={styles.header}>
+          <View style={styles.avatarContainer}>
             {uploadingImage ? (
               <ActivityIndicator size="small" color="#4F46E5" />
             ) : (
               <TouchableOpacity onPress={handleImagePick}>
-                {profile?.avatar ? (
-                  <Image source={{ uri: profile?.avatar }} style={styles?.avatar} />
+                {profile.avatar ? (
+                  <Image source={{ uri: profile.avatar }} style={styles.avatar} />
                 ) : (
-                  <View style={[styles?.avatar, styles?.placeholderAvatar]}>
+                  <View style={[styles.avatar, styles.placeholderAvatar]}>
                     <Feather name="user" size={40} color={isDarkMode ? '#FFFFFF' : '#666666'} />
                   </View>
                 )}
-                <View style={styles?.editIconContainer}>
+                <View style={styles.editIconContainer}>
                   <Feather name="edit-2" size={16} color="#FFFFFF" />
                 </View>
               </TouchableOpacity>
             )}
           </View>
-          <Text style={[styles?.name, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
-            {profile?.name}
+          <Text style={[styles.name, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+            {profile.name}
           </Text>
-          <Text style={[styles?.email, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
-            {profile?.email}
+          <Text style={[styles.email, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
+            {profile.email}
           </Text>
         </View>
 
         {/* Stats */}
-        <View style={[styles?.statsContainer, { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }]}>
-          <View style={styles?.statItem}>
-            <Text style={[styles?.statNumber, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
-              {profile?.stats?.bookings}
+        <View style={[styles.statsContainer, { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }]}>
+          <View style={styles.statItem}>
+            <Text style={[styles.statNumber, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+              {profile.stats.bookings}
             </Text>
-            <Text style={[styles?.statLabel, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
+            <Text style={[styles.statLabel, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
               Bookings
             </Text>
           </View>
-          <View style={styles?.statItem}>
-            <Text style={[styles?.statNumber, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
-              {profile?.stats?.reviews}
+          <View style={styles.statItem}>
+            <Text style={[styles.statNumber, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+              {profile.stats.reviews}
             </Text>
-            <Text style={[styles?.statLabel, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
+            <Text style={[styles.statLabel, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
               Reviews
             </Text>
           </View>
-          <View style={styles?.statItem}>
-            <Text style={[styles?.statNumber, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
-              {profile?.stats?.favoriteServices}
+          <View style={styles.statItem}>
+            <Text style={[styles.statNumber, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+              {profile.stats.favoriteServices}
             </Text>
-            <Text style={[styles?.statLabel, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
+            <Text style={[styles.statLabel, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
               Favorites
             </Text>
           </View>
         </View>
 
         {/* Actions */}
-        <View style={styles?.section}>
-          <Text style={[styles?.sectionTitle, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
             Account Settings
           </Text>
           <TouchableOpacity
-            style={[styles?.actionItem, { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }]}
+            style={[styles.actionItem, { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }]}
             onPress={() => {/* Navigate to edit profile */}}
           >
             <Feather name="user" size={24} color={isDarkMode ? '#FFFFFF' : '#000000'} />
-            <Text style={[styles?.actionText, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+            <Text style={[styles.actionText, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
               Edit Profile
             </Text>
             <Feather name="chevron-right" size={24} color={isDarkMode ? '#FFFFFF' : '#000000'} />
           </TouchableOpacity>
           
           <TouchableOpacity
-            style={[styles?.actionItem, { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }]}
+            style={[styles.actionItem, { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }]}
             onPress={() => {/* Navigate to payment methods */}}
           >
             <Feather name="credit-card" size={24} color={isDarkMode ? '#FFFFFF' : '#000000'} />
-            <Text style={[styles?.actionText, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+            <Text style={[styles.actionText, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
               Payment Methods
             </Text>
             <Feather name="chevron-right" size={24} color={isDarkMode ? '#FFFFFF' : '#000000'} />
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles?.actionItem, { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }]}
+            style={[styles.actionItem, { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }]}
             onPress={() => {/* Navigate to notifications */}}
           >
             <Feather name="bell" size={24} color={isDarkMode ? '#FFFFFF' : '#000000'} />
-            <Text style={[styles?.actionText, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+            <Text style={[styles.actionText, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
               Notifications
             </Text>
             <Feather name="chevron-right" size={24} color={isDarkMode ? '#FFFFFF' : '#000000'} />
@@ -251,27 +251,27 @@ const ProfileScreen: React?.FC = () => {
         </View>
 
         {/* Support Section */}
-        <View style={styles?.section}>
-          <Text style={[styles?.sectionTitle, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
             Support
           </Text>
           <TouchableOpacity
-            style={[styles?.actionItem, { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }]}
+            style={[styles.actionItem, { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }]}
             onPress={() => {/* Navigate to help center */}}
           >
             <Feather name="help-circle" size={24} color={isDarkMode ? '#FFFFFF' : '#000000'} />
-            <Text style={[styles?.actionText, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+            <Text style={[styles.actionText, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
               Help Center
             </Text>
             <Feather name="chevron-right" size={24} color={isDarkMode ? '#FFFFFF' : '#000000'} />
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles?.actionItem, { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }]}
+            style={[styles.actionItem, { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }]}
             onPress={() => {/* Navigate to privacy policy */}}
           >
             <Feather name="shield" size={24} color={isDarkMode ? '#FFFFFF' : '#000000'} />
-            <Text style={[styles?.actionText, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+            <Text style={[styles.actionText, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
               Privacy Policy
             </Text>
             <Feather name="chevron-right" size={24} color={isDarkMode ? '#FFFFFF' : '#000000'} />
@@ -280,12 +280,12 @@ const ProfileScreen: React?.FC = () => {
 
         {/* Logout Button */}
         <TouchableOpacity
-          style={[styles?.logoutButton, { backgroundColor: isDarkMode ? '#FF4444' : '#FFE5E5' }]}
+          style={[styles.logoutButton, { backgroundColor: isDarkMode ? '#FF4444' : '#FFE5E5' }]}
           onPress={handleLogout}
         >
           <Feather name="log-out" size={24} color={isDarkMode ? '#FFFFFF' : '#FF4444'} />
           <Text style={[
-            styles?.logoutText,
+            styles.logoutText,
             { color: isDarkMode ? '#FFFFFF' : '#FF4444' }
           ]}>
             Log Out
@@ -296,7 +296,7 @@ const ProfileScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
   },

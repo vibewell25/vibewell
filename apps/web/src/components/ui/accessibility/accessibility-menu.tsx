@@ -26,7 +26,7 @@ const defaultSettings: AccessibilitySettings = {
   textSpacing: false,
 };
 
-const AccessibilityMenu: React?.FC = () => {
+const AccessibilityMenu: React.FC = () => {
   // State for menu open/closed
   const [isOpen, setIsOpen] = useState(false);
 
@@ -39,53 +39,53 @@ const AccessibilityMenu: React?.FC = () => {
   // Apply accessibility settings to document
   useEffect(() => {
     // High contrast mode
-    if (settings?.highContrast) {
-      document?.documentElement.classList?.add('high-contrast');
+    if (settings.highContrast) {
+      document.documentElement.classList.add('high-contrast');
     } else {
-      document?.documentElement.classList?.remove('high-contrast');
+      document.documentElement.classList.remove('high-contrast');
     }
 
     // Large text
-    if (settings?.largeText) {
-      document?.documentElement.classList?.add('large-text');
+    if (settings.largeText) {
+      document.documentElement.classList.add('large-text');
     } else {
-      document?.documentElement.classList?.remove('large-text');
+      document.documentElement.classList.remove('large-text');
     }
 
     // Reduced motion
-    if (settings?.reducedMotion) {
-      document?.documentElement.classList?.add('reduced-motion');
+    if (settings.reducedMotion) {
+      document.documentElement.classList.add('reduced-motion');
     } else {
-      document?.documentElement.classList?.remove('reduced-motion');
+      document.documentElement.classList.remove('reduced-motion');
     }
 
     // Dyslexic font
-    if (settings?.dyslexicFont) {
-      document?.documentElement.classList?.add('dyslexic-font');
+    if (settings.dyslexicFont) {
+      document.documentElement.classList.add('dyslexic-font');
     } else {
-      document?.documentElement.classList?.remove('dyslexic-font');
+      document.documentElement.classList.remove('dyslexic-font');
     }
 
     // Line height
-    document?.documentElement.classList?.remove(
+    document.documentElement.classList.remove(
       'line-height-normal',
       'line-height-increased',
       'line-height-large',
     );
-    document?.documentElement.classList?.add(`line-height-${settings?.lineHeight}`);
+    document.documentElement.classList.add(`line-height-${settings.lineHeight}`);
 
     // Keyboard mode
-    if (settings?.keyboardMode) {
-      document?.documentElement.classList?.add('keyboard-mode');
+    if (settings.keyboardMode) {
+      document.documentElement.classList.add('keyboard-mode');
     } else {
-      document?.documentElement.classList?.remove('keyboard-mode');
+      document.documentElement.classList.remove('keyboard-mode');
     }
 
     // Text spacing
-    if (settings?.textSpacing) {
-      document?.documentElement.classList?.add('text-spacing');
+    if (settings.textSpacing) {
+      document.documentElement.classList.add('text-spacing');
     } else {
-      document?.documentElement.classList?.remove('text-spacing');
+      document.documentElement.classList.remove('text-spacing');
     }
   }, [settings]);
 
@@ -102,8 +102,8 @@ const AccessibilityMenu: React?.FC = () => {
   // Handle line height change
   const changeLineHeight = () => {
     const heights: Array<AccessibilitySettings['lineHeight']> = ['normal', 'increased', 'large'];
-    const currentIndex = heights?.indexOf(settings?.lineHeight);
-    const nextIndex = (currentIndex + 1) % heights?.length;
+    const currentIndex = heights.indexOf(settings.lineHeight);
+    const nextIndex = (currentIndex + 1) % heights.length;
 
     setSettings({
       ...settings,
@@ -118,7 +118,7 @@ const AccessibilityMenu: React?.FC = () => {
 
   // Toggle text-to-speech
   const toggleTextToSpeech = () => {
-    const newValue = !settings?.textToSpeech;
+    const newValue = !settings.textToSpeech;
     setSettings({
       ...settings,
       textToSpeech: newValue,
@@ -127,7 +127,7 @@ const AccessibilityMenu: React?.FC = () => {
     if (newValue && 'speechSynthesis' in window) {
       // Initialize speech synthesis if not already initialized
       const msg = new SpeechSynthesisUtterance('Text to speech enabled');
-      window?.speechSynthesis.speak(msg);
+      window.speechSynthesis.speak(msg);
     }
   };
 
@@ -141,7 +141,7 @@ const AccessibilityMenu: React?.FC = () => {
         aria-label="Accessibility menu"
       >
         <svg
-          xmlns="http://www?.w3.org/2000/svg"
+          xmlns="http://www.w3.org/2000/svg"
           width="24"
           height="24"
           viewBox="0 0 24 24"
@@ -153,18 +153,18 @@ const AccessibilityMenu: React?.FC = () => {
         >
           <circle cx="12" cy="12" r="10"></circle>
           <path d="M12 8v4"></path>
-          <path d="M12 16h?.01"></path>
+          <path d="M12 16h.01"></path>
         </svg>
       </button>
 
       {/* Accessibility menu */}
       <AnimatePresence>
         {isOpen && (
-          <motion?.div
-            initial={{ opacity: 0, y: 20, scale: 0?.95 }}
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0?.95 }}
-            transition={{ duration: 0?.2 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
             className="accessibility-menu absolute bottom-16 right-0 w-72 rounded-lg border border-gray-200 bg-white p-4 shadow-xl dark:border-gray-700 dark:bg-gray-800"
           >
             <h2 className="mb-4 text-lg font-semibold text-gray-800 dark:text-gray-200">
@@ -177,11 +177,11 @@ const AccessibilityMenu: React?.FC = () => {
                 <label className="text-sm text-gray-700 dark:text-gray-300">High Contrast</label>
                 <button
                   onClick={() => toggleSetting('highContrast')}
-                  className={`h-6 w-10 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${settings?.highContrast ? 'bg-blue-600' : 'bg-gray-300'}`}
-                  aria-pressed={settings?.highContrast}
+                  className={`h-6 w-10 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${settings.highContrast ? 'bg-blue-600' : 'bg-gray-300'}`}
+                  aria-pressed={settings.highContrast}
                 >
                   <span
-                    className={`block h-4 w-4 transform rounded-full transition-transform duration-200 ${settings?.highContrast ? 'translate-x-5 bg-white' : 'translate-x-1 bg-white'}`}
+                    className={`block h-4 w-4 transform rounded-full transition-transform duration-200 ${settings.highContrast ? 'translate-x-5 bg-white' : 'translate-x-1 bg-white'}`}
                   />
                 </button>
               </div>
@@ -191,11 +191,11 @@ const AccessibilityMenu: React?.FC = () => {
                 <label className="text-sm text-gray-700 dark:text-gray-300">Large Text</label>
                 <button
                   onClick={() => toggleSetting('largeText')}
-                  className={`h-6 w-10 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${settings?.largeText ? 'bg-blue-600' : 'bg-gray-300'}`}
-                  aria-pressed={settings?.largeText}
+                  className={`h-6 w-10 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${settings.largeText ? 'bg-blue-600' : 'bg-gray-300'}`}
+                  aria-pressed={settings.largeText}
                 >
                   <span
-                    className={`block h-4 w-4 transform rounded-full transition-transform duration-200 ${settings?.largeText ? 'translate-x-5 bg-white' : 'translate-x-1 bg-white'}`}
+                    className={`block h-4 w-4 transform rounded-full transition-transform duration-200 ${settings.largeText ? 'translate-x-5 bg-white' : 'translate-x-1 bg-white'}`}
                   />
                 </button>
               </div>
@@ -205,11 +205,11 @@ const AccessibilityMenu: React?.FC = () => {
                 <label className="text-sm text-gray-700 dark:text-gray-300">Reduced Motion</label>
                 <button
                   onClick={() => toggleSetting('reducedMotion')}
-                  className={`h-6 w-10 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${settings?.reducedMotion ? 'bg-blue-600' : 'bg-gray-300'}`}
-                  aria-pressed={settings?.reducedMotion}
+                  className={`h-6 w-10 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${settings.reducedMotion ? 'bg-blue-600' : 'bg-gray-300'}`}
+                  aria-pressed={settings.reducedMotion}
                 >
                   <span
-                    className={`block h-4 w-4 transform rounded-full transition-transform duration-200 ${settings?.reducedMotion ? 'translate-x-5 bg-white' : 'translate-x-1 bg-white'}`}
+                    className={`block h-4 w-4 transform rounded-full transition-transform duration-200 ${settings.reducedMotion ? 'translate-x-5 bg-white' : 'translate-x-1 bg-white'}`}
                   />
                 </button>
               </div>
@@ -219,11 +219,11 @@ const AccessibilityMenu: React?.FC = () => {
                 <label className="text-sm text-gray-700 dark:text-gray-300">Text to Speech</label>
                 <button
                   onClick={toggleTextToSpeech}
-                  className={`h-6 w-10 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${settings?.textToSpeech ? 'bg-blue-600' : 'bg-gray-300'}`}
-                  aria-pressed={settings?.textToSpeech}
+                  className={`h-6 w-10 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${settings.textToSpeech ? 'bg-blue-600' : 'bg-gray-300'}`}
+                  aria-pressed={settings.textToSpeech}
                 >
                   <span
-                    className={`block h-4 w-4 transform rounded-full transition-transform duration-200 ${settings?.textToSpeech ? 'translate-x-5 bg-white' : 'translate-x-1 bg-white'}`}
+                    className={`block h-4 w-4 transform rounded-full transition-transform duration-200 ${settings.textToSpeech ? 'translate-x-5 bg-white' : 'translate-x-1 bg-white'}`}
                   />
                 </button>
               </div>
@@ -233,11 +233,11 @@ const AccessibilityMenu: React?.FC = () => {
                 <label className="text-sm text-gray-700 dark:text-gray-300">Dyslexic Font</label>
                 <button
                   onClick={() => toggleSetting('dyslexicFont')}
-                  className={`h-6 w-10 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${settings?.dyslexicFont ? 'bg-blue-600' : 'bg-gray-300'}`}
-                  aria-pressed={settings?.dyslexicFont}
+                  className={`h-6 w-10 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${settings.dyslexicFont ? 'bg-blue-600' : 'bg-gray-300'}`}
+                  aria-pressed={settings.dyslexicFont}
                 >
                   <span
-                    className={`block h-4 w-4 transform rounded-full transition-transform duration-200 ${settings?.dyslexicFont ? 'translate-x-5 bg-white' : 'translate-x-1 bg-white'}`}
+                    className={`block h-4 w-4 transform rounded-full transition-transform duration-200 ${settings.dyslexicFont ? 'translate-x-5 bg-white' : 'translate-x-1 bg-white'}`}
                   />
                 </button>
               </div>
@@ -249,9 +249,9 @@ const AccessibilityMenu: React?.FC = () => {
                   onClick={changeLineHeight}
                   className="rounded bg-gray-100 px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700"
                 >
-                  {settings?.lineHeight === 'normal'
+                  {settings.lineHeight === 'normal'
                     ? 'Normal'
-                    : settings?.lineHeight === 'increased'
+                    : settings.lineHeight === 'increased'
                       ? 'Medium'
                       : 'Large'}
                 </button>
@@ -262,11 +262,11 @@ const AccessibilityMenu: React?.FC = () => {
                 <label className="text-sm text-gray-700 dark:text-gray-300">Keyboard Mode</label>
                 <button
                   onClick={() => toggleSetting('keyboardMode')}
-                  className={`h-6 w-10 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${settings?.keyboardMode ? 'bg-blue-600' : 'bg-gray-300'}`}
-                  aria-pressed={settings?.keyboardMode}
+                  className={`h-6 w-10 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${settings.keyboardMode ? 'bg-blue-600' : 'bg-gray-300'}`}
+                  aria-pressed={settings.keyboardMode}
                 >
                   <span
-                    className={`block h-4 w-4 transform rounded-full transition-transform duration-200 ${settings?.keyboardMode ? 'translate-x-5 bg-white' : 'translate-x-1 bg-white'}`}
+                    className={`block h-4 w-4 transform rounded-full transition-transform duration-200 ${settings.keyboardMode ? 'translate-x-5 bg-white' : 'translate-x-1 bg-white'}`}
                   />
                 </button>
               </div>
@@ -276,11 +276,11 @@ const AccessibilityMenu: React?.FC = () => {
                 <label className="text-sm text-gray-700 dark:text-gray-300">Text Spacing</label>
                 <button
                   onClick={() => toggleSetting('textSpacing')}
-                  className={`h-6 w-10 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${settings?.textSpacing ? 'bg-blue-600' : 'bg-gray-300'}`}
-                  aria-pressed={settings?.textSpacing}
+                  className={`h-6 w-10 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${settings.textSpacing ? 'bg-blue-600' : 'bg-gray-300'}`}
+                  aria-pressed={settings.textSpacing}
                 >
                   <span
-                    className={`block h-4 w-4 transform rounded-full transition-transform duration-200 ${settings?.textSpacing ? 'translate-x-5 bg-white' : 'translate-x-1 bg-white'}`}
+                    className={`block h-4 w-4 transform rounded-full transition-transform duration-200 ${settings.textSpacing ? 'translate-x-5 bg-white' : 'translate-x-1 bg-white'}`}
                   />
                 </button>
               </div>
@@ -293,7 +293,7 @@ const AccessibilityMenu: React?.FC = () => {
                 Reset All Settings
               </button>
             </div>
-          </motion?.div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

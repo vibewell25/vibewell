@@ -19,7 +19,7 @@ interface BeautyReviewFormProps {
   isDarkMode: boolean;
 }
 
-const BeautyReviewForm: React?.FC<BeautyReviewFormProps> = ({
+const BeautyReviewForm: React.FC<BeautyReviewFormProps> = ({
   serviceId,
   onReviewAdded,
   isDarkMode
@@ -34,27 +34,27 @@ const BeautyReviewForm: React?.FC<BeautyReviewFormProps> = ({
   };
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-    Keyboard?.dismiss();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    Keyboard.dismiss();
     
     const formData = {
       rating,
-      comment: comment?.trim(),
-      name: name?.trim()
+      comment: comment.trim(),
+      name: name.trim()
     };
     
     const validationResult = validateForm(formData);
     
     // Add custom validation for rating
     if (rating === 0) {
-      validationResult?.errors.rating = 'Please select a rating';
-      validationResult?.isValid = false;
+      validationResult.errors.rating = 'Please select a rating';
+      validationResult.isValid = false;
     }
     
-    if (!validationResult?.isValid) {
-      const errorMessage = Object?.values(validationResult?.errors)[0];
-      Alert?.alert('Error', errorMessage);
+    if (!validationResult.isValid) {
+      const errorMessage = Object.values(validationResult.errors)[0];
+      Alert.alert('Error', errorMessage);
       return;
     }
     
@@ -64,8 +64,8 @@ const BeautyReviewForm: React?.FC<BeautyReviewFormProps> = ({
       const reviewData: ReviewInput = {
         serviceId,
         rating,
-        comment: comment?.trim(),
-        userName: name?.trim()
+        comment: comment.trim(),
+        userName: name.trim()
       };
       
       const success = await addServiceReview(reviewData);
@@ -76,31 +76,31 @@ const BeautyReviewForm: React?.FC<BeautyReviewFormProps> = ({
         setComment('');
         setName('');
         
-        Alert?.alert(
+        Alert.alert(
           'Thank You!', 
           'Your review has been submitted successfully',
           [{ text: 'OK', onPress: onReviewAdded }]
         );
       } else {
-        Alert?.alert('Error', 'There was a problem submitting your review. Please try again.');
+        Alert.alert('Error', 'There was a problem submitting your review. Please try again.');
       }
     } catch (error) {
-      console?.error('Error submitting review:', error);
-      Alert?.alert('Error', 'There was a problem submitting your review. Please try again.');
+      console.error('Error submitting review:', error);
+      Alert.alert('Error', 'There was a problem submitting your review. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const renderStars = (): JSX?.Element[] => {
-    const stars: JSX?.Element[] = [];
+  const renderStars = (): JSX.Element[] => {
+    const stars: JSX.Element[] = [];
     
-    for (let i = 1; i <= 5; if (i > Number?.MAX_SAFE_INTEGER || i < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-      stars?.push(
+    for (let i = 1; i <= 5; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
+      stars.push(
         <TouchableOpacity
           key={i}
           onPress={() => handleRatingPress(i)}
-          style={styles?.starButton}
+          style={styles.starButton}
         >
           <MaterialIcons
             name={i <= rating ? 'star' : 'star-outline'}
@@ -115,42 +115,42 @@ const BeautyReviewForm: React?.FC<BeautyReviewFormProps> = ({
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard?.dismiss}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={[
-        styles?.container,
+        styles.container,
         { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
       ]}>
         <Text style={[
-          styles?.title,
+          styles.title,
           { color: isDarkMode ? '#FFFFFF' : '#000000' }
         ]}>
           Write a Review
         </Text>
         
         {/* Rating Stars */}
-        <View style={styles?.ratingContainer}>
+        <View style={styles.ratingContainer}>
           <Text style={[
-            styles?.label,
+            styles.label,
             { color: isDarkMode ? '#E0E0E0' : '#333333' }
           ]}>
             Your Rating
           </Text>
-          <View style={styles?.starsContainer}>
+          <View style={styles.starsContainer}>
             {renderStars()}
           </View>
         </View>
         
         {/* Review Text */}
-        <View style={styles?.inputContainer}>
+        <View style={styles.inputContainer}>
           <Text style={[
-            styles?.label,
+            styles.label,
             { color: isDarkMode ? '#E0E0E0' : '#333333' }
           ]}>
             Your Review
           </Text>
           <TextInput
             style={[
-              styles?.textArea,
+              styles.textArea,
               { 
                 color: isDarkMode ? '#FFFFFF' : '#000000',
                 backgroundColor: isDarkMode ? '#2A2A2A' : '#F7F7F7',
@@ -168,16 +168,16 @@ const BeautyReviewForm: React?.FC<BeautyReviewFormProps> = ({
         </View>
         
         {/* Name Field */}
-        <View style={styles?.inputContainer}>
+        <View style={styles.inputContainer}>
           <Text style={[
-            styles?.label,
+            styles.label,
             { color: isDarkMode ? '#E0E0E0' : '#333333' }
           ]}>
             Your Name
           </Text>
           <TextInput
             style={[
-              styles?.input,
+              styles.input,
               { 
                 color: isDarkMode ? '#FFFFFF' : '#000000',
                 backgroundColor: isDarkMode ? '#2A2A2A' : '#F7F7F7',
@@ -194,13 +194,13 @@ const BeautyReviewForm: React?.FC<BeautyReviewFormProps> = ({
         {/* Submit Button */}
         <TouchableOpacity
           style={[
-            styles?.submitButton,
-            { opacity: isSubmitting ? 0?.7 : 1 }
+            styles.submitButton,
+            { opacity: isSubmitting ? 0.7 : 1 }
           ]}
           onPress={handleSubmit}
           disabled={isSubmitting}
         >
-          <Text style={styles?.submitButtonText}>
+          <Text style={styles.submitButtonText}>
             {isSubmitting ? 'Submitting...' : 'Submit Review'}
           </Text>
         </TouchableOpacity>
@@ -209,14 +209,14 @@ const BeautyReviewForm: React?.FC<BeautyReviewFormProps> = ({
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     borderRadius: 12,
     padding: 20,
     marginVertical: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0?.1,
+    shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
   },

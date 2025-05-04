@@ -13,9 +13,9 @@ import { Button } from '@/components/ui/Button';
  * to localStorage.
  *
  * @param props - Component props
- * @param props?.modelRef - Reference to the THREE?.Group containing the model
- * @param props?.type - Type of model ('makeup', 'hairstyle', 'accessory')
- * @param props?.intensity - Intensity value (1-10) affecting model appearance
+ * @param props.modelRef - Reference to the THREE.Group containing the model
+ * @param props.type - Type of model ('makeup', 'hairstyle', 'accessory')
+ * @param props.intensity - Intensity value (1-10) affecting model appearance
  * @returns React component
  */
 export function ModelControls({
@@ -23,7 +23,7 @@ export function ModelControls({
   type,
   intensity = 5,
 }: {
-  modelRef: React?.RefObject<THREE?.Group>;
+  modelRef: React.RefObject<THREE.Group>;
   type: string;
   intensity?: number;
 }) {
@@ -42,22 +42,22 @@ export function ModelControls({
           position: [0, 0, 0],
           rotation: [0, 0, 0],
           scale: [1, 1, 1],
-          opacity: Math?.min(intensityFactor, 1),
+          opacity: Math.min(intensityFactor, 1),
         };
       case 'hairstyle':
         return {
-          position: [0, 0?.5 * intensityFactor, 0],
+          position: [0, 0.5 * intensityFactor, 0],
           rotation: [0, 0, 0],
           scale: [
-            1 + (intensityFactor - 1) * 0?.2,
-            1 + (intensityFactor - 1) * 0?.2,
-            1 + (intensityFactor - 1) * 0?.2,
+            1 + (intensityFactor - 1) * 0.2,
+            1 + (intensityFactor - 1) * 0.2,
+            1 + (intensityFactor - 1) * 0.2,
           ],
           opacity: 1,
         };
       case 'accessory':
         return {
-          position: [0, 0?.2 * intensityFactor, 0],
+          position: [0, 0.2 * intensityFactor, 0],
           rotation: [0, 0, 0],
           scale: [1, 1, 1],
           opacity: 1,
@@ -87,40 +87,40 @@ export function ModelControls({
 
   // Apply transformations in a more efficient way
   useFrame(() => {
-    if (!modelRef?.current) return;
+    if (!modelRef.current) return;
 
     // Apply position without creating new vectors every frame
-    modelRef?.current.position?.set(
-      transformParams?.position[0],
-      transformParams?.position[1],
-      transformParams?.position[2],
+    modelRef.current.position.set(
+      transformParams.position[0],
+      transformParams.position[1],
+      transformParams.position[2],
     );
 
     // Apply scale
-    modelRef?.current.scale?.set(
-      transformParams?.scale[0],
-      transformParams?.scale[1],
-      transformParams?.scale[2],
+    modelRef.current.scale.set(
+      transformParams.scale[0],
+      transformParams.scale[1],
+      transformParams.scale[2],
     );
 
     // Apply material properties - only update when needed
     if (type === 'makeup') {
-      modelRef?.current.traverse((child) => {
-        if (child instanceof THREE?.Mesh && child?.material) {
-          if (Array?.isArray(child?.material)) {
-            child?.material.forEach((mat) => {
+      modelRef.current.traverse((child) => {
+        if (child instanceof THREE.Mesh && child.material) {
+          if (Array.isArray(child.material)) {
+            child.material.forEach((mat) => {
               if (
-                mat?.opacity !== undefined &&
-                Math?.abs(mat?.opacity - transformParams?.opacity) > 0?.01
+                mat.opacity !== undefined &&
+                Math.abs(mat.opacity - transformParams.opacity) > 0.01
               ) {
-                mat?.opacity = transformParams?.opacity;
+                mat.opacity = transformParams.opacity;
               }
             });
           } else if (
-            child?.material.opacity !== undefined &&
-            Math?.abs(child?.material.opacity - transformParams?.opacity) > 0?.01
+            child.material.opacity !== undefined &&
+            Math.abs(child.material.opacity - transformParams.opacity) > 0.01
           ) {
-            child?.material.opacity = transformParams?.opacity;
+            child.material.opacity = transformParams.opacity;
           }
         }
       });
@@ -159,19 +159,19 @@ export function ModelControls({
           </div>
         )}
       </div>
-      {showControls && modelRef?.current && (
+      {showControls && modelRef.current && (
         <TransformControls
-          object={modelRef?.current}
+          object={modelRef.current}
           mode={mode}
           onMouseUp={() => {
             // Save position to localStorage
-            if (modelRef?.current) {
-              localStorage?.setItem(
+            if (modelRef.current) {
+              localStorage.setItem(
                 `model-position-${type}`,
-                JSON?.stringify({
-                  position: modelRef?.current.position?.toArray(),
-                  rotation: modelRef?.current.rotation?.toArray(),
-                  scale: modelRef?.current.scale?.toArray(),
+                JSON.stringify({
+                  position: modelRef.current.position.toArray(),
+                  rotation: modelRef.current.rotation.toArray(),
+                  scale: modelRef.current.scale.toArray(),
                 }),
               );
             }

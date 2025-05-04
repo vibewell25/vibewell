@@ -13,27 +13,27 @@ export default function BeautyRoutine() {
   }, []);
 
   const loadRoutines = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const data = await getRoutines();
       setRoutines(data);
     } catch (error) {
-      console?.error('Error loading routines:', error);
+      console.error('Error loading routines:', error);
     }
   };
 
   const handleSaveRoutine = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!editingRoutine) return;
     try {
       const updatedRoutine = await updateRoutine(editingRoutine);
-      setRoutines(routines?.map((r) => (r?.id === updatedRoutine?.id ? updatedRoutine : r)));
+      setRoutines(routines.map((r) => (r.id === updatedRoutine.id ? updatedRoutine : r)));
       setIsEditing(false);
       setEditingRoutine(null);
     } catch (error) {
-      console?.error('Error saving routine:', error);
+      console.error('Error saving routine:', error);
     }
   };
 
@@ -43,7 +43,7 @@ export default function BeautyRoutine() {
     { value: 'weekly', label: 'Weekly Treatment' },
   ];
 
-  const currentRoutine = routines?.find((r) => r?.type === selectedRoutine);
+  const currentRoutine = routines.find((r) => r.type === selectedRoutine);
 
   return (
     <div className="space-y-6">
@@ -62,13 +62,13 @@ export default function BeautyRoutine() {
       </div>
 
       <div className="flex gap-4">
-        {routineTypes?.map((type) => (
+        {routineTypes.map((type) => (
           <Button
-            key={type?.value}
-            variant={selectedRoutine === type?.value ? 'default' : 'outline'}
-            onClick={() => setSelectedRoutine(type?.value)}
+            key={type.value}
+            variant={selectedRoutine === type.value ? 'default' : 'outline'}
+            onClick={() => setSelectedRoutine(type.value)}
           >
-            {type?.label}
+            {type.label}
           </Button>
         ))}
       </div>
@@ -77,31 +77,31 @@ export default function BeautyRoutine() {
         <Card className="p-6">
           <div className="space-y-4">
             <h3 className="text-xl font-semibold">
-              Edit {routineTypes?.find((t) => t?.value === selectedRoutine)?.label}
+              Edit {routineTypes.find((t) => t.value === selectedRoutine).label}
             </h3>
-            {editingRoutine?.steps?.map((step, index) => (
-              <div key={step?.id} className="flex items-center gap-4">
+            {editingRoutine.steps.map((step, index) => (
+              <div key={step.id} className="flex items-center gap-4">
                 <Input
-                  value={step?.order}
+                  value={step.order}
                   type="number"
                   className="w-16"
                   onChange={(e) => {
-                    const newSteps = [...editingRoutine?.steps];
-                    newSteps[index] = { ...step, order: parseInt(e?.target.value) };
+                    const newSteps = [...editingRoutine.steps];
+                    newSteps[index] = { ...step, order: parseInt(e.target.value) };
                     setEditingRoutine({ ...editingRoutine, steps: newSteps });
                   }}
                 />
                 <Input
-                  value={step?.name}
+                  value={step.name}
                   className="flex-1"
                   onChange={(e) => {
-                    const newSteps = [...editingRoutine?.steps];
-                    newSteps[index] = { ...step, name: e?.target.value };
+                    const newSteps = [...editingRoutine.steps];
+                    newSteps[index] = { ...step, name: e.target.value };
                     setEditingRoutine({ ...editingRoutine, steps: newSteps });
                   }}
                 />
                 <Select
-                  value={step?.category}
+                  value={step.category}
                   options={[
                     { value: 'cleanse', label: 'Cleanse' },
                     { value: 'treat', label: 'Treatment' },
@@ -109,15 +109,15 @@ export default function BeautyRoutine() {
                     { value: 'protect', label: 'Protection' },
                   ]}
                   onChange={(e) => {
-                    const newSteps = [...editingRoutine?.steps];
-                    newSteps[index] = { ...step, category: e?.target.value };
+                    const newSteps = [...editingRoutine.steps];
+                    newSteps[index] = { ...step, category: e.target.value };
                     setEditingRoutine({ ...editingRoutine, steps: newSteps });
                   }}
                 />
                 <Button
                   variant="destructive"
                   onClick={() => {
-                    const newSteps = editingRoutine?.steps.filter((_, i) => i !== index);
+                    const newSteps = editingRoutine.steps.filter((_, i) => i !== index);
                     setEditingRoutine({ ...editingRoutine, steps: newSteps });
                   }}
                 >
@@ -128,15 +128,15 @@ export default function BeautyRoutine() {
             <Button
               onClick={() => {
                 const newStep: RoutineStep = {
-                  id: Date?.now().toString(),
-                  order: editingRoutine?.steps?.length || 0,
+                  id: Date.now().toString(),
+                  order: editingRoutine.steps.length || 0,
                   name: '',
                   category: 'cleanse',
                   completed: false,
                 };
                 setEditingRoutine({
                   ...editingRoutine!,
-                  steps: [...(editingRoutine?.steps || []), newStep],
+                  steps: [...(editingRoutine.steps || []), newStep],
                 });
               }}
             >
@@ -159,28 +159,28 @@ export default function BeautyRoutine() {
       ) : (
         <Card className="p-6">
           <div className="space-y-4">
-            {currentRoutine?.steps?.map((step) => (
-              <div key={step?.id} className="flex items-center gap-4">
+            {currentRoutine.steps.map((step) => (
+              <div key={step.id} className="flex items-center gap-4">
                 <Switch
-                  checked={step?.completed}
+                  checked={step.completed}
                   onCheckedChange={(checked) => {
                     const updatedRoutine = {
                       ...currentRoutine,
-                      steps: currentRoutine?.steps.map((s) =>
-                        s?.id === step?.id ? { ...s, completed: checked } : s,
+                      steps: currentRoutine.steps.map((s) =>
+                        s.id === step.id ? { ...s, completed: checked } : s,
                       ),
                     };
                     updateRoutine(updatedRoutine);
                     setRoutines(
-                      routines?.map((r) => (r?.id === currentRoutine?.id ? updatedRoutine : r)),
+                      routines.map((r) => (r.id === currentRoutine.id ? updatedRoutine : r)),
                     );
                   }}
                 />
                 <div className="flex-1">
-                  <h4 className="font-medium">{step?.name}</h4>
-                  <p className="text-sm text-gray-600">{step?.category}</p>
+                  <h4 className="font-medium">{step.name}</h4>
+                  <p className="text-sm text-gray-600">{step.category}</p>
                 </div>
-                <span className="text-sm text-gray-500">Step {step?.order + 1}</span>
+                <span className="text-sm text-gray-500">Step {step.order + 1}</span>
               </div>
             ))}
           </div>
@@ -190,16 +190,16 @@ export default function BeautyRoutine() {
       <Card className="p-6">
         <h3 className="mb-4 text-xl font-semibold">Routine Progress</h3>
         <div className="space-y-4">
-          {routineTypes?.map((type) => {
-            const routine = routines?.find((r) => r?.type === type?.value);
-            const completed = routine?.steps?.filter((s) => s?.completed).length || 0;
-            const total = routine?.steps?.length || 0;
+          {routineTypes.map((type) => {
+            const routine = routines.find((r) => r.type === type.value);
+            const completed = routine.steps.filter((s) => s.completed).length || 0;
+            const total = routine.steps.length || 0;
             const progress = total > 0 ? (completed / total) * 100 : 0;
 
             return (
-              <div key={type?.value} className="space-y-2">
+              <div key={type.value} className="space-y-2">
                 <div className="flex justify-between">
-                  <span className="font-medium">{type?.label}</span>
+                  <span className="font-medium">{type.label}</span>
                   <span className="text-sm text-gray-600">
                     {completed}/{total} steps completed
                   </span>

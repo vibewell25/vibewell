@@ -8,38 +8,38 @@ import { useState, useEffect } from 'react';
 interface NavItem {
   name: string;
   href: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
 }
 const navItems: NavItem[] = [
   {
     name: 'Overview',
     href: '/business-hub/financial-management',
-    icon: <Icons?.ChartBarIcon className="h-5 w-5" />,
+    icon: <Icons.ChartBarIcon className="h-5 w-5" />,
   },
   {
     name: 'Budgeting',
     href: '/business-hub/financial-management/budgeting',
-    icon: <Icons?.ClipboardDocumentCheckIcon className="h-5 w-5" />,
+    icon: <Icons.ClipboardDocumentCheckIcon className="h-5 w-5" />,
   },
   {
     name: 'Pricing',
     href: '/business-hub/financial-management/pricing',
-    icon: <Icons?.CalculatorIcon className="h-5 w-5" />,
+    icon: <Icons.CalculatorIcon className="h-5 w-5" />,
   },
   {
     name: 'Tax',
     href: '/business-hub/financial-management/tax',
-    icon: <Icons?.DocumentTextIcon className="h-5 w-5" />,
+    icon: <Icons.DocumentTextIcon className="h-5 w-5" />,
   },
   {
     name: 'Cash Flow',
     href: '/business-hub/financial-management/cash-flow',
-    icon: <Icons?.ArrowTrendingUpIcon className="h-5 w-5" />,
+    icon: <Icons.ArrowTrendingUpIcon className="h-5 w-5" />,
   },
   {
     name: 'Resources',
     href: '/business-hub/financial-management/resources',
-    icon: <Icons?.DocumentTextIcon className="h-5 w-5" />,
+    icon: <Icons.DocumentTextIcon className="h-5 w-5" />,
   },
 ];
 export function FinancialNav() {
@@ -49,15 +49,15 @@ export function FinancialNav() {
   // Effect to track window size
   useEffect(() => {
     // Set initial window width
-    setWindowWidth(window?.innerWidth);
+    setWindowWidth(window.innerWidth);
     // Function to update window width
     function handleResize() {
-      setWindowWidth(window?.innerWidth);
+      setWindowWidth(window.innerWidth);
     }
     // Add event listener
-    window?.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize);
     // Clean up
-    return () => window?.removeEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
   // Check if path is active
   const isActive = (path: string) => {
@@ -67,13 +67,13 @@ export function FinancialNav() {
     ) {
       return true;
     }
-    if (path !== '/business-hub/financial-management' && pathname?.startsWith(path)) {
+    if (path !== '/business-hub/financial-management' && pathname.startsWith(path)) {
       return true;
     }
     return false;
   };
   // Find the currently active item
-  const activeItem = navItems?.find((item) => isActive(item?.href));
+  const activeItem = navItems.find((item) => isActive(item.href));
   // Toggle the dropdown
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -94,33 +94,33 @@ export function FinancialNav() {
             <div className="flex items-center">
               {activeItem ? (
                 <>
-                  <span className="mr-2">{activeItem?.icon}</span>
-                  <span className="font-medium">{activeItem?.name}</span>
+                  <span className="mr-2">{activeItem.icon}</span>
+                  <span className="font-medium">{activeItem.name}</span>
                 </>
               ) : (
                 <span className="font-medium">Financial Management</span>
               )}
             </div>
-            <Icons?.ChevronDownIcon
+            <Icons.ChevronDownIcon
               className={`h-5 w-5 transition-transform ${isOpen ? 'rotate-180 transform' : ''}`}
             />
           </button>
           {/* Dropdown menu */}
           {isOpen && (
             <div id="financial-nav-dropdown" className="border-t border-gray-200 py-2">
-              {navItems?.map((item) => (
+              {navItems.map((item) => (
                 <Link
-                  key={item?.name}
-                  href={item?.href}
+                  key={item.name}
+                  href={item.href}
                   className={`flex items-center px-4 py-3 ${
-                    isActive(item?.href)
+                    isActive(item.href)
                       ? 'bg-green-100 font-medium text-green-800'
                       : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                   }`}
                   onClick={() => setIsOpen(false)}
                 >
-                  <span className="mr-3">{item?.icon}</span>
-                  {item?.name}
+                  <span className="mr-3">{item.icon}</span>
+                  {item.name}
                 </Link>
               ))}
             </div>
@@ -130,18 +130,18 @@ export function FinancialNav() {
       {/* Desktop View */}
       {!isMobile && (
         <nav className="flex flex-wrap gap-1 p-1">
-          {navItems?.map((item) => (
+          {navItems.map((item) => (
             <Link
-              key={item?.name}
-              href={item?.href}
+              key={item.name}
+              href={item.href}
               className={`flex items-center rounded-md px-3 py-2 text-sm ${
-                isActive(item?.href)
+                isActive(item.href)
                   ? 'bg-green-100 font-medium text-green-800'
                   : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
               }`}
             >
-              <span className="mr-2">{item?.icon}</span>
-              {item?.name}
+              <span className="mr-2">{item.icon}</span>
+              {item.name}
             </Link>
           ))}
         </nav>

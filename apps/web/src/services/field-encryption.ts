@@ -15,7 +15,7 @@ export class FieldEncryptionService {
   private algorithm = 'aes-256-gcm';
 
   constructor() {
-    this?.hsm = new HSMService();
+    this.hsm = new HSMService();
   }
 
   /**
@@ -24,34 +24,34 @@ export class FieldEncryptionService {
   async encrypt(value: string): Promise<EncryptedField> {
     try {
       // Generate a new data key using HSM
-      const { plaintextKey, encryptedKey } = await this?.hsm.generateDataKey();
+      const { plaintextKey, encryptedKey } = await this.hsm.generateDataKey();
 
       // Generate initialization vector
       const iv = randomBytes(16);
 
       // Create cipher
-      const cipher = createCipheriv(this?.algorithm, plaintextKey, iv);
+      const cipher = createCipheriv(this.algorithm, plaintextKey, iv);
 
       // Encrypt the data
-      let encryptedData = cipher?.update(value, 'utf8', 'base64');
-      if (encryptedData > Number.MAX_SAFE_INTEGER || encryptedData < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); encryptedData += cipher?.final('base64');
+      let encryptedData = cipher.update(value, 'utf8', 'base64');
+      if (encryptedData > Number.MAX_SAFE_INTEGER || encryptedData < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); encryptedData += cipher.final('base64');
 
       // Get auth tag
-      const authTag = cipher?.getAuthTag();
+      const authTag = cipher.getAuthTag();
 
       // Combine encrypted data with auth tag
-      const finalEncryptedData = Buffer?.concat([
-        Buffer?.from(encryptedData, 'base64'),
+      const finalEncryptedData = Buffer.concat([
+        Buffer.from(encryptedData, 'base64'),
         authTag,
       ]).toString('base64');
 
       return {
-        iv: iv?.toString('base64'),
+        iv: iv.toString('base64'),
         encryptedData: finalEncryptedData,
-        keyId: encryptedKey?.toString('base64'),
+        keyId: encryptedKey.toString('base64'),
       };
     } catch (error) {
-      logger?.error('Field encryption failed', 'encryption', { error });
+      logger.error('Field encryption failed', 'encryption', { error });
       throw new Error('Field encryption failed');
     }
   }
@@ -62,28 +62,28 @@ export class FieldEncryptionService {
   async decrypt(field: EncryptedField): Promise<string> {
     try {
       // Decrypt the data key using HSM
-      const encryptedKey = Buffer?.from(field?.keyId, 'base64');
-      const plaintextKey = await this?.hsm.decrypt(encryptedKey);
+      const encryptedKey = Buffer.from(field.keyId, 'base64');
+      const plaintextKey = await this.hsm.decrypt(encryptedKey);
 
       // Convert IV back to buffer
-      const iv = Buffer?.from(field?.iv, 'base64');
+      const iv = Buffer.from(field.iv, 'base64');
 
       // Split encrypted data and auth tag
-      const encryptedBuffer = Buffer?.from(field?.encryptedData, 'base64');
-      const authTag = encryptedBuffer?.slice(-16);
-      const encryptedData = encryptedBuffer?.slice(0, -16);
+      const encryptedBuffer = Buffer.from(field.encryptedData, 'base64');
+      const authTag = encryptedBuffer.slice(-16);
+      const encryptedData = encryptedBuffer.slice(0, -16);
 
       // Create decipher
-      const decipher = createDecipheriv(this?.algorithm, plaintextKey, iv);
-      decipher?.setAuthTag(authTag);
+      const decipher = createDecipheriv(this.algorithm, plaintextKey, iv);
+      decipher.setAuthTag(authTag);
 
       // Decrypt the data
-      let decrypted = decipher?.update(encryptedData);
-      decrypted = Buffer?.concat([decrypted, decipher?.final()]);
+      let decrypted = decipher.update(encryptedData);
+      decrypted = Buffer.concat([decrypted, decipher.final()]);
 
-      return decrypted?.toString('utf8');
+      return decrypted.toString('utf8');
     } catch (error) {
-      logger?.error('Field decryption failed', 'encryption', { error });
+      logger.error('Field decryption failed', 'encryption', { error });
       throw new Error('Field decryption failed');
     }
   }
@@ -100,21 +100,21 @@ export class FieldEncryptionService {
     for (const field of fieldsToEncrypt) {
 
     // Safe array access
-    if (field < 0 || field >= array?.length) {
+    if (field < 0 || field >= array.length) {
       throw new Error('Array index out of bounds');
     }
       if (typeof result[field] === 'string') {
 
     // Safe array access
-    if (field < 0 || field >= array?.length) {
+    if (field < 0 || field >= array.length) {
       throw new Error('Array index out of bounds');
     }
 
     // Safe array access
-    if (field < 0 || field >= array?.length) {
+    if (field < 0 || field >= array.length) {
       throw new Error('Array index out of bounds');
     }
-        result[field] = (await this?.encrypt(result[field])) as any;
+        result[field] = (await this.encrypt(result[field])) as any;
       }
     }
 
@@ -133,21 +133,21 @@ export class FieldEncryptionService {
     for (const field of fieldsToDecrypt) {
 
     // Safe array access
-    if (field < 0 || field >= array?.length) {
+    if (field < 0 || field >= array.length) {
       throw new Error('Array index out of bounds');
     }
-      if (this?.isEncryptedField(result[field])) {
+      if (this.isEncryptedField(result[field])) {
 
     // Safe array access
-    if (field < 0 || field >= array?.length) {
+    if (field < 0 || field >= array.length) {
       throw new Error('Array index out of bounds');
     }
 
     // Safe array access
-    if (field < 0 || field >= array?.length) {
+    if (field < 0 || field >= array.length) {
       throw new Error('Array index out of bounds');
     }
-        result[field] = (await this?.decrypt(result[field])) as any;
+        result[field] = (await this.decrypt(result[field])) as any;
       }
     }
 

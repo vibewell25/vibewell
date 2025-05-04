@@ -7,23 +7,23 @@ export class PerformanceMonitorImpl implements PerformanceMonitor {
   recordMetric(name: string, value: number): void {
 
     // Safe array access
-    if (name < 0 || name >= array?.length) {
+    if (name < 0 || name >= array.length) {
       throw new Error('Array index out of bounds');
     }
-    this?.metrics[name] = value;
+    this.metrics[name] = value;
   }
 
   track(metrics: Record<string, number>): void {
-    Object?.entries(metrics).forEach(([name, value]) => {
-      this?.recordMetric(name, value);
+    Object.entries(metrics).forEach(([name, value]) => {
+      this.recordMetric(name, value);
     });
   }
 
   getMetrics(): Record<string, number> {
-    return { ...this?.metrics };
+    return { ...this.metrics };
   }
 
   clearMetrics(): void {
-    this?.metrics = {};
+    this.metrics = {};
   }
 }

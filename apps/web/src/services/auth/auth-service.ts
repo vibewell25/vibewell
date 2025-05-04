@@ -6,18 +6,18 @@ class AuthService {
   // Mock API functions - in real implementation these would call your backend API
   async getCurrentUser(): Promise<User | null> {
     // Check local storage or secure storage for token
-    const token = localStorage?.getItem('auth_token');
+    const token = localStorage.getItem('auth_token');
     if (!token) {
       return null;
     }
 
     try {
       // In a real app, you would validate the token with your backend
-      const userData = JSON?.parse(localStorage?.getItem('auth_user') || 'null');
+      const userData = JSON.parse(localStorage.getItem('auth_user') || 'null');
       return userData;
     } catch (error) {
-      localStorage?.removeItem('auth_token');
-      localStorage?.removeItem('auth_user');
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('auth_user');
       return null;
     }
   }
@@ -36,19 +36,19 @@ class AuthService {
 
         'Content-Type': 'application/json',
       },
-      body: JSON?.stringify({ email, password, name }),
+      body: JSON.stringify({ email, password, name }),
     });
 
-    if (!response?.ok) {
-      const error = await response?.json();
-      throw new Error(error?.message || 'Failed to sign up');
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to sign up');
     }
 
-    const data = await response?.json();
+    const data = await response.json();
 
     // Save auth data to local storage
-    localStorage?.setItem('auth_token', data?.session.token);
-    localStorage?.setItem('auth_user', JSON?.stringify(data?.user));
+    localStorage.setItem('auth_token', data.session.token);
+    localStorage.setItem('auth_user', JSON.stringify(data.user));
 
     return data;
   }
@@ -63,19 +63,19 @@ class AuthService {
 
         'Content-Type': 'application/json',
       },
-      body: JSON?.stringify({ email, password }),
+      body: JSON.stringify({ email, password }),
     });
 
-    if (!response?.ok) {
-      const error = await response?.json();
-      throw new Error(error?.message || 'Failed to sign in');
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to sign in');
     }
 
-    const data = await response?.json();
+    const data = await response.json();
 
     // Save auth data to local storage
-    localStorage?.setItem('auth_token', data?.session.token);
-    localStorage?.setItem('auth_user', JSON?.stringify(data?.user));
+    localStorage.setItem('auth_token', data.session.token);
+    localStorage.setItem('auth_user', JSON.stringify(data.user));
 
     return data;
   }
@@ -89,13 +89,13 @@ class AuthService {
 
 
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage?.getItem('auth_token')}`,
+        Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
       },
     });
 
     // Remove auth data from local storage
-    localStorage?.removeItem('auth_token');
-    localStorage?.removeItem('auth_user');
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('auth_user');
   }
 
   async resetPassword(email: string): Promise<void> {
@@ -109,12 +109,12 @@ class AuthService {
 
         'Content-Type': 'application/json',
       },
-      body: JSON?.stringify({ email }),
+      body: JSON.stringify({ email }),
     });
 
-    if (!response?.ok) {
-      const error = await response?.json();
-      throw new Error(error?.message || 'Failed to reset password');
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to reset password');
     }
   }
 }

@@ -33,7 +33,7 @@ export function WellnessContentModal({
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold">{content ? 'Edit Content' : 'Create New Content'}</h2>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
-            <Icons?.XMarkIcon className="h-6 w-6" />
+            <Icons.XMarkIcon className="h-6 w-6" />
           </button>
         </div>
         <WellnessContentEditor content={content} onSave={onSave} onCancel={onClose} />

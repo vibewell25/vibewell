@@ -51,18 +51,18 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
 
   useEffect(() => {
     async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); loadEvents() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); loadEvents() {
       try {
         setLoading(true);
-        if (initialEvents && initialEvents?.length > 0) {
+        if (initialEvents && initialEvents.length > 0) {
           setEvents(initialEvents);
         } else {
           const fetchedEvents = await getEvents();
           setEvents(fetchedEvents);
         }
       } catch (error) {
-        console?.error('Error loading events:', error);
+        console.error('Error loading events:', error);
       } finally {
         setLoading(false);
       }
@@ -72,49 +72,49 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
   }, [initialEvents]);
 
   // Filter events based on date range and category
-  const filteredEvents = events?.filter((event) => {
-    const eventDate = parseISO(event?.startDate);
-    const isInDateRange = eventDate >= dateRange?.from && eventDate <= dateRange?.to;
+  const filteredEvents = events.filter((event) => {
+    const eventDate = parseISO(event.startDate);
+    const isInDateRange = eventDate >= dateRange.from && eventDate <= dateRange.to;
     const matchesCategory =
-      selectedCategoryFilter === 'all' || event?.category === selectedCategoryFilter;
+      selectedCategoryFilter === 'all' || event.category === selectedCategoryFilter;
     return isInDateRange && matchesCategory;
   });
 
   // Calculate analytics metrics
-  const totalEvents = filteredEvents?.length;
-  const totalParticipants = filteredEvents?.reduce(
-    (sum, event) => sum + (event?.participantsCount || 0),
+  const totalEvents = filteredEvents.length;
+  const totalParticipants = filteredEvents.reduce(
+    (sum, event) => sum + (event.participantsCount || 0),
     0,
   );
-  const totalCheckIns = filteredEvents?.reduce(
-    (sum, event) => sum + (event?.checkedInParticipants?.length || 0),
+  const totalCheckIns = filteredEvents.reduce(
+    (sum, event) => sum + (event.checkedInParticipants.length || 0),
     0,
   );
   const checkInRate = totalParticipants > 0 ? (totalCheckIns / totalParticipants) * 100 : 0;
 
-  const eventsWithFeedback = filteredEvents?.filter(
-    (event) => event?.feedback && event?.feedback.length > 0,
+  const eventsWithFeedback = filteredEvents.filter(
+    (event) => event.feedback && event.feedback.length > 0,
   );
-  const totalFeedback = eventsWithFeedback?.reduce(
-    (sum, event) => sum + (event?.feedback?.length || 0),
+  const totalFeedback = eventsWithFeedback.reduce(
+    (sum, event) => sum + (event.feedback.length || 0),
     0,
   );
   const averageRating =
-    eventsWithFeedback?.length > 0
-      ? eventsWithFeedback?.reduce((sum, event) => sum + (event?.averageRating || 0), 0) /
-        eventsWithFeedback?.length
+    eventsWithFeedback.length > 0
+      ? eventsWithFeedback.reduce((sum, event) => sum + (event.averageRating || 0), 0) /
+        eventsWithFeedback.length
       : 0;
 
   // Data for charts
   const generateEventsByCategory = () => {
     const categoryMap = new Map<string, number>();
 
-    filteredEvents?.forEach((event) => {
-      const category = event?.category;
-      categoryMap?.set(category, (categoryMap?.get(category) || 0) + 1);
+    filteredEvents.forEach((event) => {
+      const category = event.category;
+      categoryMap.set(category, (categoryMap.get(category) || 0) + 1);
     });
 
-    return Array?.from(categoryMap?.entries()).map(([category, count]) => ({
+    return Array.from(categoryMap.entries()).map(([category, count]) => ({
       name: category,
       value: count,
     }));
@@ -123,12 +123,12 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
   const generateEventsByDate = () => {
     const dateMap = new Map<string, number>();
 
-    filteredEvents?.forEach((event) => {
-      const date = format(parseISO(event?.startDate), 'yyyy-MM-dd');
-      dateMap?.set(date, (dateMap?.get(date) || 0) + 1);
+    filteredEvents.forEach((event) => {
+      const date = format(parseISO(event.startDate), 'yyyy-MM-dd');
+      dateMap.set(date, (dateMap.get(date) || 0) + 1);
     });
 
-    return Array?.from(dateMap?.entries())
+    return Array.from(dateMap.entries())
       .sort((a, b) => a[0].localeCompare(b[0]))
       .map(([date, count]) => ({
         date: format(parseISO(date), 'MMM dd'),
@@ -138,29 +138,29 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
 
   const generateParticipantsByEvent = () => {
     return filteredEvents
-      .sort((a, b) => (b?.participantsCount || 0) - (a?.participantsCount || 0))
+      .sort((a, b) => (b.participantsCount || 0) - (a.participantsCount || 0))
       .slice(0, 10)
       .map((event) => ({
-        name: event?.title.length > 20 ? event?.title.substring(0, 20) + '...' : event?.title,
-        participants: event?.participantsCount || 0,
-        checkIns: event?.checkedInParticipants?.length || 0,
+        name: event.title.length > 20 ? event.title.substring(0, 20) + '...' : event.title,
+        participants: event.participantsCount || 0,
+        checkIns: event.checkedInParticipants.length || 0,
       }));
   };
 
   const generateRatingsByEvent = () => {
     return eventsWithFeedback
-      .sort((a, b) => (b?.averageRating || 0) - (a?.averageRating || 0))
+      .sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0))
       .slice(0, 10)
       .map((event) => ({
-        name: event?.title.length > 20 ? event?.title.substring(0, 20) + '...' : event?.title,
-        rating: event?.averageRating || 0,
-        reviews: event?.feedback?.length || 0,
+        name: event.title.length > 20 ? event.title.substring(0, 20) + '...' : event.title,
+        rating: event.averageRating || 0,
+        reviews: event.feedback.length || 0,
       }));
   };
 
   // Data for export
   const prepareEventsData = () => {
-    if (filteredEvents?.length === 0) {
+    if (filteredEvents.length === 0) {
       return [['No events data available']];
     }
 
@@ -178,16 +178,16 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
     ];
 
     // Add each event as a row
-    filteredEvents?.forEach((event) => {
-      const eventDate = format(parseISO(event?.startDate), 'MM/dd/yyyy');
-      data?.push([
-        event?.title,
-        event?.category,
+    filteredEvents.forEach((event) => {
+      const eventDate = format(parseISO(event.startDate), 'MM/dd/yyyy');
+      data.push([
+        event.title,
+        event.category,
         eventDate,
-        event?.participantsCount?.toString() || '0',
-        (event?.checkedInParticipants?.length || 0).toString(),
-        (event?.averageRating || 0).toFixed(1),
-        (event?.feedback?.length || 0).toString(),
+        event.participantsCount.toString() || '0',
+        (event.checkedInParticipants.length || 0).toString(),
+        (event.averageRating || 0).toFixed(1),
+        (event.feedback.length || 0).toString(),
       ]);
     });
 
@@ -196,8 +196,8 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
 
   const prepareCheckInsData = () => {
     if (
-      filteredEvents?.length === 0 ||
-      !filteredEvents?.some((e) => e?.checkedInParticipants && e?.checkedInParticipants.length > 0)
+      filteredEvents.length === 0 ||
+      !filteredEvents.some((e) => e.checkedInParticipants && e.checkedInParticipants.length > 0)
     ) {
       return [['No check-in data available']];
     }
@@ -206,12 +206,12 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
     const data = [['Event Title', 'Event Date', 'User Name', 'User ID', 'Check-in Time']];
 
     // Add each check-in as a row
-    filteredEvents?.forEach((event) => {
-      if (event?.checkedInParticipants && event?.checkedInParticipants.length > 0) {
-        const eventDate = format(parseISO(event?.startDate), 'MM/dd/yyyy');
-        event?.checkedInParticipants.forEach((participant) => {
-          const checkInTime = format(parseISO(participant?.checkedInAt), 'MM/dd/yyyy h:mm a');
-          data?.push([event?.title, eventDate, participant?.name, participant?.userId, checkInTime]);
+    filteredEvents.forEach((event) => {
+      if (event.checkedInParticipants && event.checkedInParticipants.length > 0) {
+        const eventDate = format(parseISO(event.startDate), 'MM/dd/yyyy');
+        event.checkedInParticipants.forEach((participant) => {
+          const checkInTime = format(parseISO(participant.checkedInAt), 'MM/dd/yyyy h:mm a');
+          data.push([event.title, eventDate, participant.name, participant.userId, checkInTime]);
         });
       }
     });
@@ -220,7 +220,7 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
   };
 
   const prepareFeedbackData = () => {
-    if (eventsWithFeedback?.length === 0) {
+    if (eventsWithFeedback.length === 0) {
       return [['No feedback data available']];
     }
 
@@ -228,17 +228,17 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
     const data = [['Event Title', 'Event Date', 'User ID', 'Rating', 'Comment', 'Submission Time']];
 
     // Add each feedback as a row
-    eventsWithFeedback?.forEach((event) => {
-      if (event?.feedback && event?.feedback.length > 0) {
-        const eventDate = format(parseISO(event?.startDate), 'MM/dd/yyyy');
-        event?.feedback.forEach((item) => {
-          const submissionTime = format(parseISO(item?.submittedAt), 'MM/dd/yyyy h:mm a');
-          data?.push([
-            event?.title,
+    eventsWithFeedback.forEach((event) => {
+      if (event.feedback && event.feedback.length > 0) {
+        const eventDate = format(parseISO(event.startDate), 'MM/dd/yyyy');
+        event.feedback.forEach((item) => {
+          const submissionTime = format(parseISO(item.submittedAt), 'MM/dd/yyyy h:mm a');
+          data.push([
+            event.title,
             eventDate,
-            item?.userId,
-            item?.rating.toString(),
-            item?.comment,
+            item.userId,
+            item.rating.toString(),
+            item.comment,
             submissionTime,
           ]);
         });
@@ -249,12 +249,12 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
   };
 
   // Get unique categories for the filter
-  const categories = Array?.from(new Set(events?.map((event) => event?.category)));
+  const categories = Array.from(new Set(events.map((event) => event.category)));
 
   if (loading) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <Icons?.spinner className="text-primary h-8 w-8 animate-spin" />
+        <Icons.spinner className="text-primary h-8 w-8 animate-spin" />
         <span className="ml-2">Loading analytics data...</span>
       </div>
     );
@@ -272,7 +272,7 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Categories</SelectItem>
-              {categories?.map((category) => (
+              {categories.map((category) => (
                 <SelectItem key={category} value={category}>
                   {category}
                 </SelectItem>
@@ -281,7 +281,7 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
           </Select>
           <CSVDownload
             data={prepareEventsData()}
-            filename="events-analytics?.csv"
+            filename="events-analytics.csv"
             buttonText="Export Data"
           />
         </div>
@@ -311,7 +311,7 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
             <CardTitle className="text-sm font-medium">Check-in Rate</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{checkInRate?.toFixed(1)}%</div>
+            <div className="text-2xl font-bold">{checkInRate.toFixed(1)}%</div>
             <Progress value={checkInRate} className="mt-2" />
           </CardContent>
         </Card>
@@ -320,7 +320,7 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
             <CardTitle className="text-sm font-medium">Average Rating</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{averageRating?.toFixed(1)}</div>
+            <div className="text-2xl font-bold">{averageRating.toFixed(1)}</div>
             <p className="text-xs text-muted-foreground">From {totalFeedback} reviews</p>
           </CardContent>
         </Card>
@@ -329,15 +329,15 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="mb-6">
           <TabsTrigger value="overview">
-            <Icons?.activity className="mr-2 h-4 w-4" />
+            <Icons.activity className="mr-2 h-4 w-4" />
             Overview
           </TabsTrigger>
           <TabsTrigger value="checkins">
-            <Icons?.checkCircle className="mr-2 h-4 w-4" />
+            <Icons.checkCircle className="mr-2 h-4 w-4" />
             Check-ins
           </TabsTrigger>
           <TabsTrigger value="feedback">
-            <Icons?.star className="mr-2 h-4 w-4" />
+            <Icons.star className="mr-2 h-4 w-4" />
             Feedback
           </TabsTrigger>
         </TabsList>
@@ -365,7 +365,7 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
                         label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                       >
                         {generateEventsByCategory().map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS?.length]} />
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Pie>
                       <Tooltip />
@@ -428,7 +428,7 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
             <h3 className="text-lg font-semibold">Check-in Analytics</h3>
             <CSVDownload
               data={prepareCheckInsData()}
-              filename="event-checkins?.csv"
+              filename="event-checkins.csv"
               buttonText="Export Check-ins"
             />
           </div>
@@ -477,15 +477,15 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
                 <div className="max-h-80 space-y-4 overflow-auto">
                   {filteredEvents
                     .flatMap((event) =>
-                      (event?.checkedInParticipants || []).map((participant) => ({
-                        eventTitle: event?.title,
-                        eventId: event?.id,
+                      (event.checkedInParticipants || []).map((participant) => ({
+                        eventTitle: event.title,
+                        eventId: event.id,
                         ...participant,
                       })),
                     )
                     .sort(
                       (a, b) =>
-                        new Date(b?.checkedInAt).getTime() - new Date(a?.checkedInAt).getTime(),
+                        new Date(b.checkedInAt).getTime() - new Date(a.checkedInAt).getTime(),
                     )
                     .slice(0, 10)
                     .map((checkIn, index) => (
@@ -494,22 +494,22 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
                         className="flex items-center justify-between rounded-md border p-2"
                       >
                         <div>
-                          <p className="font-medium">{checkIn?.name}</p>
+                          <p className="font-medium">{checkIn.name}</p>
                           <p className="text-sm text-muted-foreground">
                             Event:{' '}
-                            {checkIn?.eventTitle.length > 20
-                              ? checkIn?.eventTitle.substring(0, 20) + '...'
-                              : checkIn?.eventTitle}
+                            {checkIn.eventTitle.length > 20
+                              ? checkIn.eventTitle.substring(0, 20) + '...'
+                              : checkIn.eventTitle}
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            {format(parseISO(checkIn?.checkedInAt), 'MMM d, yyyy h:mm a')}
+                            {format(parseISO(checkIn.checkedInAt), 'MMM d, yyyy h:mm a')}
                           </p>
                         </div>
                         <Badge variant="outline">Checked In</Badge>
                       </div>
                     ))}
-                  {!filteredEvents?.some(
-                    (e) => e?.checkedInParticipants && e?.checkedInParticipants.length > 0,
+                  {!filteredEvents.some(
+                    (e) => e.checkedInParticipants && e.checkedInParticipants.length > 0,
                   ) && (
                     <div className="p-4 text-center">
                       <p className="text-muted-foreground">No check-in data available</p>
@@ -527,7 +527,7 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
             <h3 className="text-lg font-semibold">Feedback Analytics</h3>
             <CSVDownload
               data={prepareFeedbackData()}
-              filename="event-feedback?.csv"
+              filename="event-feedback.csv"
               buttonText="Export Feedback"
             />
           </div>
@@ -564,16 +564,16 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
               </CardHeader>
               <CardContent>
                 <div className="h-80">
-                  {eventsWithFeedback?.length > 0 ? (
+                  {eventsWithFeedback.length > 0 ? (
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie
                           data={(() => {
                             const ratingCounts = [0, 0, 0, 0, 0];
-                            eventsWithFeedback?.forEach((event) => {
-                              event?.feedback?.forEach((f) => {
-                                if (f?.rating >= 1 && f?.rating <= 5) {
-                                  ratingCounts[f?.rating - 1]++;
+                            eventsWithFeedback.forEach((event) => {
+                              event.feedback.forEach((f) => {
+                                if (f.rating >= 1 && f.rating <= 5) {
+                                  ratingCounts[f.rating - 1]++;
                                 }
                               });
                             });
@@ -620,15 +620,15 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
                 <div className="max-h-80 space-y-4 overflow-auto">
                   {eventsWithFeedback
                     .flatMap((event) =>
-                      (event?.feedback || []).map((feedback) => ({
-                        eventTitle: event?.title,
-                        eventId: event?.id,
+                      (event.feedback || []).map((feedback) => ({
+                        eventTitle: event.title,
+                        eventId: event.id,
                         ...feedback,
                       })),
                     )
                     .sort(
                       (a, b) =>
-                        new Date(b?.submittedAt).getTime() - new Date(a?.submittedAt).getTime(),
+                        new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime(),
                     )
                     .slice(0, 10)
                     .map((feedback, index) => (
@@ -636,25 +636,25 @@ export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashb
                         <div className="mb-2 flex justify-between">
                           <div className="flex items-center">
                             {[...Array(5)].map((_, i) => (
-                              <Icons?.star
+                              <Icons.star
                                 key={i}
                                 className={`h-5 w-5 ${
-                                  i < feedback?.rating ? 'text-yellow-400' : 'text-gray-300'
+                                  i < feedback.rating ? 'text-yellow-400' : 'text-gray-300'
                                 }`}
                               />
                             ))}
                           </div>
                           <span className="text-sm text-muted-foreground">
-                            {format(parseISO(feedback?.submittedAt), 'MMM d, yyyy')}
+                            {format(parseISO(feedback.submittedAt), 'MMM d, yyyy')}
                           </span>
                         </div>
                         <p className="mb-1 text-sm text-muted-foreground">
-                          Event: {feedback?.eventTitle}
+                          Event: {feedback.eventTitle}
                         </p>
-                        <p className="text-gray-700">{feedback?.comment}</p>
+                        <p className="text-gray-700">{feedback.comment}</p>
                       </div>
                     ))}
-                  {eventsWithFeedback?.length === 0 && (
+                  {eventsWithFeedback.length === 0 && (
                     <div className="p-4 text-center">
                       <p className="text-muted-foreground">No feedback data available</p>
                     </div>

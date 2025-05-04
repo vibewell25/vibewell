@@ -11,7 +11,7 @@ interface Session {
   location: string;
   lastActive: string;
   current: boolean;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
 }
 
 export function SessionManagement() {
@@ -51,11 +51,11 @@ export function SessionManagement() {
   ]);
 
   const handleEndSession = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');id: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');id: string) => {
     try {
       // Implement session termination logic here
-      setSessions((prev) => prev?.filter((session) => session?.id !== id));
+      setSessions((prev) => prev.filter((session) => session.id !== id));
       toast({
         title: 'Session Ended',
         description: 'The selected session has been terminated.',
@@ -70,11 +70,11 @@ export function SessionManagement() {
   };
 
   const handleEndAllSessions = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       // Implement logic to end all sessions except current
-      setSessions((prev) => prev?.filter((session) => session?.current));
+      setSessions((prev) => prev.filter((session) => session.current));
       toast({
         title: 'Sessions Ended',
         description: 'All other sessions have been terminated.',
@@ -95,30 +95,30 @@ export function SessionManagement() {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">
-          {sessions?.map((session) => (
-            <div key={session?.id} className="flex items-start space-x-4 rounded-lg border p-4">
-              <div className="mt-1">{session?.icon}</div>
+          {sessions.map((session) => (
+            <div key={session.id} className="flex items-start space-x-4 rounded-lg border p-4">
+              <div className="mt-1">{session.icon}</div>
               <div className="flex-1 space-y-1">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-medium">{session?.device}</h3>
-                  {session?.current && (
+                  <h3 className="text-sm font-medium">{session.device}</h3>
+                  {session.current && (
                     <span className="rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
                       Current Session
                     </span>
                   )}
                 </div>
                 <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                  <span>{session?.location}</span>
+                  <span>{session.location}</span>
                   <span>
                     Last active{' '}
-                    {formatDistanceToNow(new Date(session?.lastActive), {
+                    {formatDistanceToNow(new Date(session.lastActive), {
                       addSuffix: true,
                     })}
                   </span>
                 </div>
               </div>
-              {!session?.current && (
-                <Button variant="outline" size="sm" onClick={() => handleEndSession(session?.id)}>
+              {!session.current && (
+                <Button variant="outline" size="sm" onClick={() => handleEndSession(session.id)}>
                   <XCircle className="h-4 w-4" />
                 </Button>
               )}

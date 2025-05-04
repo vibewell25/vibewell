@@ -20,7 +20,7 @@ interface AccessibleSearchProps {
   onResultSelect?: (result: SearchResult) => void;
 }
 
-export const AccessibleSearch: React?.FC<AccessibleSearchProps> = ({
+export const AccessibleSearch: React.FC<AccessibleSearchProps> = ({
   onSearch,
   results = [],
   placeholder = 'Search...',
@@ -38,81 +38,81 @@ export const AccessibleSearch: React?.FC<AccessibleSearchProps> = ({
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const timerRef = useRef<NodeJS?.Timeout | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (timerRef?.current) {
-      clearTimeout(timerRef?.current);
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
     }
 
-    timerRef?.current = setTimeout(() => {
-      if (query?.trim()) {
+    timerRef.current = setTimeout(() => {
+      if (query.trim()) {
         onSearch(query);
       }
     }, debounceTime);
 
     return () => {
-      if (timerRef?.current) {
-        clearTimeout(timerRef?.current);
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
       }
     };
   }, [query]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef?.current && !containerRef?.current.contains(event?.target as Node)) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
 
     if (isOpen) {
-      document?.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
-      document?.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isOpen]);
 
-  const handleKeyDown = (e: React?.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isOpen) return;
 
-    switch (e?.key) {
+    switch (e.key) {
       case 'ArrowDown':
-        e?.preventDefault();
+        e.preventDefault();
         setFocusedIndex((prev) => {
           if (prev === null) return 0;
-          return prev < results?.length - 1 ? prev + 1 : prev;
+          return prev < results.length - 1 ? prev + 1 : prev;
         });
         break;
       case 'ArrowUp':
-        e?.preventDefault();
+        e.preventDefault();
         setFocusedIndex((prev) => {
-          if (prev === null) return results?.length - 1;
+          if (prev === null) return results.length - 1;
           return prev > 0 ? prev - 1 : prev;
         });
         break;
       case 'Enter':
-        e?.preventDefault();
+        e.preventDefault();
         if (focusedIndex !== null && results[focusedIndex]) {
           handleResultSelect(results[focusedIndex]);
         }
         break;
       case 'Escape':
-        e?.preventDefault();
+        e.preventDefault();
         setIsOpen(false);
         break;
     }
   };
 
   const handleResultSelect = (result: SearchResult) => {
-    setQuery(result?.label);
+    setQuery(result.label);
     setIsOpen(false);
-    onResultSelect?.(result);
+    onResultSelect.(result);
   };
 
-  const handleInputChange = (e: React?.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e?.target.value);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
     setIsOpen(true);
     setFocusedIndex(null);
   };
@@ -147,21 +147,21 @@ export const AccessibleSearch: React?.FC<AccessibleSearchProps> = ({
           required={required}
           role="combobox"
         />
-        {isOpen && results?.length > 0 && (
+        {isOpen && results.length > 0 && (
           <ul
             id="search-results"
             role="listbox"
             className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white shadow-lg"
           >
-            {results?.map((result, index) => (
+            {results.map((result, index) => (
               <li
-                key={result?.id}
+                key={result.id}
                 role="option"
                 aria-selected={focusedIndex === index}
                 onClick={() => handleResultSelect(result)}
                 className={`cursor-pointer px-3 py-2 ${focusedIndex === index ? 'bg-primary text-white' : 'hover:bg-gray-100'} focus:bg-gray-100 focus:outline-none`}
               >
-                {result?.label}
+                {result.label}
               </li>
             ))}
           </ul>
@@ -178,7 +178,7 @@ export const AccessibleSearch: React?.FC<AccessibleSearchProps> = ({
         </p>
       )}
       <div role="status" aria-live="polite" className="sr-only">
-        {results?.length > 0 ? `${results?.length} results found` : query && 'No results found'}
+        {results.length > 0 ? `${results.length} results found` : query && 'No results found'}
       </div>
     </div>
   );

@@ -27,19 +27,19 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList, BookingConfirmationParams } from '../types/navigation';
 import { theme } from '../styles/theme';
 
-const { width } = Dimensions?.get('window');
+const { width } = Dimensions.get('window');
 
 interface BookingConfirmationScreenProps {
   navigation: BookingConfirmationNavigationProp;
   route: BookingConfirmationRouteProp;
 }
 
-const BookingConfirmationScreen: React?.FC<BookingConfirmationScreenProps> = ({
+const BookingConfirmationScreen: React.FC<BookingConfirmationScreenProps> = ({
   navigation,
   route
 }) => {
   const { isDarkMode } = useTheme();
-  const { bookingId, serviceTitle, amount, date, time, status, serviceId, userInfo, duration, location, providerName } = route?.params;
+  const { bookingId, serviceTitle, amount, date, time, status, serviceId, userInfo, duration, location, providerName } = route.params;
   
   const [isAddingToCalendar, setIsAddingToCalendar] = useState<boolean>(false);
   const [calendarAdded, setCalendarAdded] = useState<boolean>(false);
@@ -48,8 +48,8 @@ const BookingConfirmationScreen: React?.FC<BookingConfirmationScreenProps> = ({
   // Send confirmation notification when screen loads
   useEffect(() => {
     const sendConfirmation = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       if (notificationSent) return;
       
       try {
@@ -57,9 +57,9 @@ const BookingConfirmationScreen: React?.FC<BookingConfirmationScreenProps> = ({
         const bookingData: BookingResponse = {
           bookingId,
           serviceId: serviceId || '',
-          userId: userInfo?.email || 'user',
+          userId: userInfo.email || 'user',
           serviceTitle,
-          appointmentDate: `${date}T${time?.replace(/\s/g, '')}`,
+          appointmentDate: `${date}T${time.replace(/\s/g, '')}`,
           duration: 60, // Default duration if not provided
           status: 'confirmed',
           price: amount,
@@ -76,10 +76,10 @@ const BookingConfirmationScreen: React?.FC<BookingConfirmationScreenProps> = ({
         const success = await sendBookingConfirmation(bookingData);
         if (success) {
           setNotificationSent(true);
-          console?.log('Booking confirmation notification sent');
+          console.log('Booking confirmation notification sent');
         }
       } catch (error) {
-        console?.error('Error sending booking confirmation:', error);
+        console.error('Error sending booking confirmation:', error);
       }
     };
     
@@ -88,24 +88,24 @@ const BookingConfirmationScreen: React?.FC<BookingConfirmationScreenProps> = ({
 
   // Share booking details
   const shareBooking = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const message = `I've booked a "${serviceTitle}" appointment with VibeWell! Booking reference: ${bookingId}`;
-      await Share?.share({
+      await Share.share({
         message,
         title: 'My VibeWell Booking',
       });
     } catch (error) {
-      console?.error('Error sharing booking:', error);
-      Alert?.alert('Error', 'Unable to share your booking details at this time.');
+      console.error('Error sharing booking:', error);
+      Alert.alert('Error', 'Unable to share your booking details at this time.');
     }
   };
   
   // Add to calendar
   const addToCalendar = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setIsAddingToCalendar(true);
     try {
       // Verify calendar permissions
@@ -114,12 +114,12 @@ const BookingConfirmationScreen: React?.FC<BookingConfirmationScreenProps> = ({
         const granted = await requestCalendarPermissions();
         if (!granted) {
           setIsAddingToCalendar(false);
-          Alert?.alert(
+          Alert.alert(
             'Permission Required',
             'Calendar access is needed to add events. Please enable it in your device settings.',
             [
               { text: 'Cancel', style: 'cancel' },
-              { text: 'Open Settings', onPress: () => Linking?.openSettings() },
+              { text: 'Open Settings', onPress: () => Linking.openSettings() },
             ]
           );
           return;
@@ -127,10 +127,10 @@ const BookingConfirmationScreen: React?.FC<BookingConfirmationScreenProps> = ({
       }
 
       // Build booking event details
-      const appointmentDateISO = new Date(`${date}T${time?.replace(/\s/g, '')}`).toISOString();
+      const appointmentDateISO = new Date(`${date}T${time.replace(/\s/g, '')}`).toISOString();
       const bookingData: BookingResponse = {
         bookingId,
-        userId: userInfo?.email,
+        userId: userInfo.email,
         serviceId,
         serviceTitle,
         appointmentDate: appointmentDateISO,
@@ -151,11 +151,11 @@ const BookingConfirmationScreen: React?.FC<BookingConfirmationScreenProps> = ({
       const eventId = await addBookingToCalendar(bookingData);
       if (eventId) {
         setCalendarAdded(true);
-        Alert?.alert('Success', 'Your booking has been added to your calendar');
+        Alert.alert('Success', 'Your booking has been added to your calendar');
       }
     } catch (error: any) {
-      console?.error('Error adding to calendar:', error);
-      Alert?.alert('Error', error?.message || 'Failed to add booking to calendar.');
+      console.error('Error adding to calendar:', error);
+      Alert.alert('Error', error.message || 'Failed to add booking to calendar.');
     } finally {
       setIsAddingToCalendar(false);
     }
@@ -163,7 +163,7 @@ const BookingConfirmationScreen: React?.FC<BookingConfirmationScreenProps> = ({
   
   // Go back to home screen
   const goToHome = () => {
-    navigation?.reset({
+    navigation.reset({
       index: 0,
       routes: [{ name: 'Main' }],
     });
@@ -171,32 +171,32 @@ const BookingConfirmationScreen: React?.FC<BookingConfirmationScreenProps> = ({
   
   return (
     <ScrollView
-      contentContainerStyle={styles?.container}
+      contentContainerStyle={styles.container}
       style={{ backgroundColor: isDarkMode ? '#121212' : '#F8F8F8' }}
     >
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       
-      <View style={styles?.content}>
+      <View style={styles.content}>
         {/* Success Icon */}
         <View style={[
-          styles?.iconContainer,
+          styles.iconContainer,
           { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
         ]}>
-          <View style={styles?.iconCircle}>
+          <View style={styles.iconCircle}>
             <Feather name="check" size={50} color="#FFFFFF" />
           </View>
         </View>
         
         {/* Confirmation Message */}
         <Text style={[
-          styles?.title,
+          styles.title,
           { color: isDarkMode ? '#FFFFFF' : '#000000' }
         ]}>
           Booking Confirmed!
         </Text>
         
         <Text style={[
-          styles?.subtitle,
+          styles.subtitle,
           { color: isDarkMode ? '#E0E0E0' : '#666666' }
         ]}>
           Your appointment for {serviceTitle} has been successfully booked. We've sent a confirmation to your email.
@@ -204,131 +204,131 @@ const BookingConfirmationScreen: React?.FC<BookingConfirmationScreenProps> = ({
         
         {/* Booking Details */}
         <View style={[
-          styles?.bookingDetails,
+          styles.bookingDetails,
           { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
         ]}>
-          <View style={styles?.detailRow}>
+          <View style={styles.detailRow}>
             <Text style={[
-              styles?.detailLabel,
+              styles.detailLabel,
               { color: isDarkMode ? '#BBBBBB' : '#666666' }
             ]}>
               Booking Reference
             </Text>
             <Text style={[
-              styles?.detailValue,
+              styles.detailValue,
               { color: isDarkMode ? '#FFFFFF' : '#000000' }
             ]}>
               {bookingId}
             </Text>
           </View>
           
-          <View style={styles?.detailRow}>
+          <View style={styles.detailRow}>
             <Text style={[
-              styles?.detailLabel,
+              styles.detailLabel,
               { color: isDarkMode ? '#BBBBBB' : '#666666' }
             ]}>
               Service
             </Text>
             <Text style={[
-              styles?.detailValue,
+              styles.detailValue,
               { color: isDarkMode ? '#FFFFFF' : '#000000' }
             ]}>
               {serviceTitle}
             </Text>
           </View>
           
-          <View style={styles?.detailRow}>
+          <View style={styles.detailRow}>
             <Text style={[
-              styles?.detailLabel,
+              styles.detailLabel,
               { color: isDarkMode ? '#BBBBBB' : '#666666' }
             ]}>
               Status
             </Text>
-            <View style={styles?.statusContainer}>
-              <View style={styles?.statusDot} />
-              <Text style={styles?.statusText}>Confirmed</Text>
+            <View style={styles.statusContainer}>
+              <View style={styles.statusDot} />
+              <Text style={styles.statusText}>Confirmed</Text>
             </View>
           </View>
         </View>
         
         {/* Next Steps */}
         <View style={[
-          styles?.nextSteps,
+          styles.nextSteps,
           { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
         ]}>
           <Text style={[
-            styles?.nextStepsTitle,
+            styles.nextStepsTitle,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             What's Next?
           </Text>
           
-          <View style={styles?.stepItem}>
+          <View style={styles.stepItem}>
             <View style={[
-              styles?.stepNumber,
+              styles.stepNumber,
               { backgroundColor: isDarkMode ? '#2D3748' : '#E6F7FF' }
             ]}>
               <Text style={[
-                styles?.stepNumberText,
+                styles.stepNumberText,
                 { color: isDarkMode ? '#FFFFFF' : '#4F46E5' }
               ]}>1</Text>
             </View>
             <Text style={[
-              styles?.stepText,
+              styles.stepText,
               { color: isDarkMode ? '#E0E0E0' : '#444444' }
             ]}>
               You will receive a confirmation email with your booking details.
             </Text>
           </View>
           
-          <View style={styles?.stepItem}>
+          <View style={styles.stepItem}>
             <View style={[
-              styles?.stepNumber,
+              styles.stepNumber,
               { backgroundColor: isDarkMode ? '#2D3748' : '#E6F7FF' }
             ]}>
               <Text style={[
-                styles?.stepNumberText,
+                styles.stepNumberText,
                 { color: isDarkMode ? '#FFFFFF' : '#4F46E5' }
               ]}>2</Text>
             </View>
             <Text style={[
-              styles?.stepText,
+              styles.stepText,
               { color: isDarkMode ? '#E0E0E0' : '#444444' }
             ]}>
               Arrive 10 minutes before your appointment time.
             </Text>
           </View>
           
-          <View style={styles?.stepItem}>
+          <View style={styles.stepItem}>
             <View style={[
-              styles?.stepNumber,
+              styles.stepNumber,
               { backgroundColor: isDarkMode ? '#2D3748' : '#E6F7FF' }
             ]}>
               <Text style={[
-                styles?.stepNumberText,
+                styles.stepNumberText,
                 { color: isDarkMode ? '#FFFFFF' : '#4F46E5' }
               ]}>3</Text>
             </View>
             <Text style={[
-              styles?.stepText,
+              styles.stepText,
               { color: isDarkMode ? '#E0E0E0' : '#444444' }
             ]}>
               You can manage or reschedule your booking from your profile.
             </Text>
           </View>
           {notificationSent && (
-            <View style={styles?.stepItem}>
+            <View style={styles.stepItem}>
               <View style={[
-                styles?.stepNumber,
+                styles.stepNumber,
                 { backgroundColor: isDarkMode ? '#2D3748' : '#E6F7FF' }
               ]}>
                 <Text style={[
-                  styles?.stepNumberText,
+                  styles.stepNumberText,
                   { color: isDarkMode ? '#FFFFFF' : '#4F46E5' }
                 ]}>4</Text>
               </View>
               <Text style={[
-                styles?.stepText,
+                styles.stepText,
                 { color: isDarkMode ? '#E0E0E0' : '#444444' }
               ]}>
                 Reminder notifications are scheduled 1 day and 1 hour before your appointment.
@@ -338,10 +338,10 @@ const BookingConfirmationScreen: React?.FC<BookingConfirmationScreenProps> = ({
         </View>
         
         {/* Action Buttons */}
-        <View style={styles?.actions}>
+        <View style={styles.actions}>
           <TouchableOpacity
             style={[
-              styles?.actionButton,
+              styles.actionButton,
               { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
             ]}
             onPress={addToCalendar}
@@ -357,7 +357,7 @@ const BookingConfirmationScreen: React?.FC<BookingConfirmationScreenProps> = ({
                   color={calendarAdded ? '#4CAF50' : (isDarkMode ? '#FFFFFF' : '#000000')} 
                 />
                 <Text style={[
-                  styles?.actionButtonText,
+                  styles.actionButtonText,
                   { color: isDarkMode ? '#FFFFFF' : '#000000' }
                 ]}>
                   {calendarAdded ? 'Added to Calendar' : 'Add to Calendar'}
@@ -368,14 +368,14 @@ const BookingConfirmationScreen: React?.FC<BookingConfirmationScreenProps> = ({
           
           <TouchableOpacity
             style={[
-              styles?.actionButton,
+              styles.actionButton,
               { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
             ]}
             onPress={shareBooking}
           >
             <Feather name="share-2" size={20} color={isDarkMode ? '#FFFFFF' : '#000000'} />
             <Text style={[
-              styles?.actionButtonText,
+              styles.actionButtonText,
               { color: isDarkMode ? '#FFFFFF' : '#000000' }
             ]}>
               Share Booking
@@ -384,14 +384,14 @@ const BookingConfirmationScreen: React?.FC<BookingConfirmationScreenProps> = ({
           
           <TouchableOpacity
             style={[
-              styles?.actionButton,
+              styles.actionButton,
               { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
             ]}
-            onPress={() => Linking?.openURL('tel:+1234567890')}
+            onPress={() => Linking.openURL('tel:+1234567890')}
           >
             <Feather name="phone" size={20} color={isDarkMode ? '#FFFFFF' : '#000000'} />
             <Text style={[
-              styles?.actionButtonText,
+              styles.actionButtonText,
               { color: isDarkMode ? '#FFFFFF' : '#000000' }
             ]}>
               Contact Us
@@ -401,19 +401,19 @@ const BookingConfirmationScreen: React?.FC<BookingConfirmationScreenProps> = ({
       </View>
       
       {/* Bottom Button */}
-      <View style={styles?.bottomContainer}>
+      <View style={styles.bottomContainer}>
         <TouchableOpacity
-          style={styles?.doneButton}
+          style={styles.doneButton}
           onPress={goToHome}
         >
-          <Text style={styles?.doneButtonText}>Done</Text>
+          <Text style={styles.doneButtonText}>Done</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     paddingVertical: 40,
@@ -434,7 +434,7 @@ const styles = StyleSheet?.create({
     marginBottom: 25,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0?.1,
+    shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 3,
   },
@@ -465,7 +465,7 @@ const styles = StyleSheet?.create({
     marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0?.1,
+    shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 2,
   },
@@ -505,7 +505,7 @@ const styles = StyleSheet?.create({
     marginBottom: 30,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0?.1,
+    shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 2,
   },

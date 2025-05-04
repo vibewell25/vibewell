@@ -6,7 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 // This significantly reduces the initial bundle size
 const AdaptiveARViewer = dynamic(
   () =>
-    import('@/components/ar/AdaptiveARViewer').then((mod) => ({ default: mod?.AdaptiveARViewer })),
+    import('@/components/ar/AdaptiveARViewer').then((mod) => ({ default: mod.AdaptiveARViewer })),
   {
     ssr: false,
     loading: () => <ARViewerSkeleton />,
@@ -17,7 +17,7 @@ const AdaptiveARViewer = dynamic(
 const OptimizedModelLoader = dynamic(
   () =>
     import('@/components/ar/OptimizedModelLoader').then((mod) => ({
-      default: mod?.OptimizedModelLoader,
+      default: mod.OptimizedModelLoader,
     })),
   { ssr: false },
 );
@@ -49,7 +49,7 @@ function ARErrorFallback({ error, resetErrorBoundary }: ARErrorFallbackProps) {
       <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
         <div className="mb-2 text-lg font-medium text-red-500">Something went wrong</div>
         <div className="mb-4 text-center text-sm text-gray-600">
-          {error?.message ||
+          {error.message ||
             'Failed to load AR experience. Your device may not support AR features.'}
         </div>
         <button
@@ -108,7 +108,7 @@ export function DynamicARViewer(props: DynamicARViewerProps) {
   const handleError = (error: Error) => {
     setHasError(true);
     setError(error);
-    props?.onError?.(error);
+    props.onError.(error);
   };
 
   // Reset error state
@@ -132,13 +132,13 @@ export function DynamicARViewer(props: DynamicARViewerProps) {
 }
 
 // Simple error boundary component
-class ErrorBoundary extends React?.Component<
-  { children: React?.ReactNode; onError: (error: Error) => void },
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode; onError: (error: Error) => void },
   { hasError: boolean }
 > {
-  constructor(props: { children: React?.ReactNode; onError: (error: Error) => void }) {
+  constructor(props: { children: React.ReactNode; onError: (error: Error) => void }) {
     super(props);
-    this?.state = { hasError: false };
+    this.state = { hasError: false };
   }
 
   static getDerivedStateFromError() {
@@ -146,14 +146,14 @@ class ErrorBoundary extends React?.Component<
   }
 
   componentDidCatch(error: Error) {
-    this?.props.onError(error);
+    this.props.onError(error);
   }
 
   render() {
-    if (this?.state.hasError) {
+    if (this.state.hasError) {
       return null; // The parent component will show the error UI
     }
 
-    return this?.props.children;
+    return this.props.children;
   }
 }

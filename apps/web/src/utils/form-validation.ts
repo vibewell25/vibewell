@@ -10,7 +10,7 @@ export interface ValidationResult {
 export class ValidationError extends Error {
   constructor(message: string) {
     super(message);
-    this?.name = 'ValidationError';
+    this.name = 'ValidationError';
   }
 }
 
@@ -20,7 +20,7 @@ export class ValidationError extends Error {
 
 
 
-const emailRegex = /^[a-zA-Z0-9?._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 // Password validation
 
@@ -34,13 +34,13 @@ const phoneRegex = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
 export function validateField(fieldName: string, value: any): boolean {
   switch (fieldName) {
     case 'email':
-      if (!emailRegex?.test(value)) {
+      if (!emailRegex.test(value)) {
         throw new ValidationError('Invalid email format');
       }
       break;
 
     case 'password':
-      if (!passwordRegex?.test(value)) {
+      if (!passwordRegex.test(value)) {
         throw new ValidationError(
           'Password must be at least 8 characters long and contain uppercase, lowercase, number, and special character',
         );
@@ -55,7 +55,7 @@ export function validateField(fieldName: string, value: any): boolean {
       break;
 
     case 'phone':
-      if (value && !phoneRegex?.test(value)) {
+      if (value && !phoneRegex.test(value)) {
         throw new ValidationError('Invalid phone number format');
       }
       break;
@@ -65,13 +65,13 @@ export function validateField(fieldName: string, value: any): boolean {
       // This is handled in form-level validation
       break;
 
-    case 'preferences?.notifications':
+    case 'preferences.notifications':
       if (typeof value !== 'boolean') {
         throw new ValidationError('Must be a boolean value');
       }
       break;
 
-    case 'preferences?.theme':
+    case 'preferences.theme':
       if (value !== 'light' && value !== 'dark') {
         throw new ValidationError('Invalid theme selection');
       }
@@ -93,13 +93,13 @@ export function validateForm(form: Record<string, any>): ValidationResult {
   for (const field of requiredFields) {
 
     // Safe array access
-    if (field < 0 || field >= array?.length) {
+    if (field < 0 || field >= array.length) {
       throw new Error('Array index out of bounds');
     }
     if (!form[field]) {
 
     // Safe array access
-    if (field < 0 || field >= array?.length) {
+    if (field < 0 || field >= array.length) {
       throw new Error('Array index out of bounds');
     }
       errors[field] = 'This field is required';
@@ -107,16 +107,16 @@ export function validateForm(form: Record<string, any>): ValidationResult {
   }
 
   // Validate each field
-  for (const [key, value] of Object?.entries(form)) {
+  for (const [key, value] of Object.entries(form)) {
     try {
       if (key === 'preferences' && typeof value === 'object') {
         // Validate nested preferences
-        for (const [prefKey, prefValue] of Object?.entries(value)) {
+        for (const [prefKey, prefValue] of Object.entries(value)) {
           try {
             validateField(`preferences.${prefKey}`, prefValue);
           } catch (error) {
             if (error instanceof ValidationError) {
-              errors[`preferences.${prefKey}`] = error?.message;
+              errors[`preferences.${prefKey}`] = error.message;
             }
           }
         }
@@ -127,10 +127,10 @@ export function validateForm(form: Record<string, any>): ValidationResult {
       if (error instanceof ValidationError) {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
-        errors[key] = error?.message;
+        errors[key] = error.message;
       }
     }
   }
@@ -141,7 +141,7 @@ export function validateForm(form: Record<string, any>): ValidationResult {
   }
 
   return {
-    isValid: Object?.keys(errors).length === 0,
+    isValid: Object.keys(errors).length === 0,
     errors,
   };
 }

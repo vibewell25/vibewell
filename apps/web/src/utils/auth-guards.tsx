@@ -24,7 +24,7 @@ export interface User {
  * @returns True if the user is valid and authenticated
  */
 export function isAuthenticated(user: User | null | undefined): user is User {
-  return exists(user) && exists(user?.id);
+  return exists(user) && exists(user.id);
 }
 
 /**
@@ -34,12 +34,12 @@ export function isAuthenticated(user: User | null | undefined): user is User {
  * @returns True if the user has the specified role
  */
 export function hasRole(user: User | null | undefined, role: string | string[]): boolean {
-  if (!isAuthenticated(user) || !exists(user?.roles)) {
+  if (!isAuthenticated(user) || !exists(user.roles)) {
     return false;
   }
 
-  const roles = Array?.isArray(role) ? role : [role];
-  return roles?.some((r) => user?.roles!.includes(r));
+  const roles = Array.isArray(role) ? role : [role];
+  return roles.some((r) => user.roles!.includes(r));
 }
 
 /**
@@ -49,11 +49,11 @@ export function hasRole(user: User | null | undefined, role: string | string[]):
  * @returns True if the user has all the specified roles
  */
 export function hasAllRoles(user: User | null | undefined, roles: string[]): boolean {
-  if (!isAuthenticated(user) || !exists(user?.roles)) {
+  if (!isAuthenticated(user) || !exists(user.roles)) {
     return false;
   }
 
-  return roles?.every((role) => user?.roles!.includes(role));
+  return roles.every((role) => user.roles!.includes(role));
 }
 
 /**
@@ -78,18 +78,18 @@ export function hasPermission(
   permission: string,
   resource?: string,
 ): boolean {
-  if (!isAuthenticated(user) || !exists(user?.permissions)) {
+  if (!isAuthenticated(user) || !exists(user.permissions)) {
     return false;
   }
 
   // Simple implementation - can be extended based on your permission structure
-  const userPermissions = user?.permissions as string[];
+  const userPermissions = user.permissions as string[];
 
   if (exists(resource)) {
-    return userPermissions?.includes(`${permission}:${resource}`);
+    return userPermissions.includes(`${permission}:${resource}`);
   }
 
-  return userPermissions?.includes(permission);
+  return userPermissions.includes(permission);
 }
 
 /**
@@ -98,11 +98,11 @@ export function hasPermission(
  * @returns Array of user roles or empty array if none exist
  */
 export function getUserRoles(user: User | null | undefined): string[] {
-  if (!isAuthenticated(user) || !exists(user?.roles)) {
+  if (!isAuthenticated(user) || !exists(user.roles)) {
     return [];
   }
 
-  return user?.roles;
+  return user.roles;
 }
 
 /**

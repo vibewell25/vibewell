@@ -22,102 +22,102 @@ export class RealTimeAnalytics extends EventEmitter {
 
   private constructor() {
     super();
-    this?.startBufferFlush();
+    this.startBufferFlush();
   }
 
   public static getInstance(): RealTimeAnalytics {
-    if (!RealTimeAnalytics?.instance) {
-      RealTimeAnalytics?.instance = new RealTimeAnalytics();
+    if (!RealTimeAnalytics.instance) {
+      RealTimeAnalytics.instance = new RealTimeAnalytics();
     }
-    return RealTimeAnalytics?.instance;
+    return RealTimeAnalytics.instance;
   }
 
   public addConnection(ws: WebSocket): void {
-    this?.connections.add(ws);
-    ws?.on('close', () => this?.connections.delete(ws));
+    this.connections.add(ws);
+    ws.on('close', () => this.connections.delete(ws));
   }
 
   public async trackEvent(event: AnalyticsEvent): Promise<void> {
     try {
       // Add to buffer
-      this?.eventBuffer.push(event);
+      this.eventBuffer.push(event);
 
       // Broadcast to all connected clients
-      this?.broadcastEvent(event);
+      this.broadcastEvent(event);
 
       // Flush buffer if size limit reached
-      if (this?.eventBuffer.length >= this?.BUFFER_SIZE_LIMIT) {
-        await this?.flushBuffer();
+      if (this.eventBuffer.length >= this.BUFFER_SIZE_LIMIT) {
+        await this.flushBuffer();
       }
     } catch (error) {
-      logger?.error('Error tracking analytics event:', error);
+      logger.error('Error tracking analytics event:', error);
     }
   }
 
   private broadcastEvent(event: AnalyticsEvent): void {
-    const message = JSON?.stringify(event);
-    this?.connections.forEach((client) => {
-      if (client?.readyState === WebSocket?.OPEN) {
-        client?.send(message);
+    const message = JSON.stringify(event);
+    this.connections.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message);
       }
     });
   }
 
   private startBufferFlush(): void {
     setInterval(async () => {
-      await this?.flushBuffer();
-    }, this?.BUFFER_FLUSH_INTERVAL);
+      await this.flushBuffer();
+    }, this.BUFFER_FLUSH_INTERVAL);
   }
 
   private async flushBuffer(): Promise<void> {
-    if (this?.eventBuffer.length === 0) return;
+    if (this.eventBuffer.length === 0) return;
 
     try {
       // Group events by type for batch processing
-      const events = [...this?.eventBuffer];
-      this?.eventBuffer = [];
+      const events = [...this.eventBuffer];
+      this.eventBuffer = [];
 
       // Batch insert events into database
       await prisma.$transaction(async (tx) => {
         for (const event of events) {
-          switch (event?.type) {
+          switch (event.type) {
             case 'view':
-              await tx?.analyticsView.create({
+              await tx.analyticsView.create({
                 data: {
-                  sessionId: event?.sessionId,
-                  userId: event?.userId,
-                  timestamp: new Date(event?.timestamp),
-                  ...event?.data,
+                  sessionId: event.sessionId,
+                  userId: event.userId,
+                  timestamp: new Date(event.timestamp),
+                  ...event.data,
                 },
               });
               break;
             case 'interaction':
-              await tx?.analyticsInteraction.create({
+              await tx.analyticsInteraction.create({
                 data: {
-                  sessionId: event?.sessionId,
-                  userId: event?.userId,
-                  timestamp: new Date(event?.timestamp),
-                  ...event?.data,
+                  sessionId: event.sessionId,
+                  userId: event.userId,
+                  timestamp: new Date(event.timestamp),
+                  ...event.data,
                 },
               });
               break;
             case 'conversion':
-              await tx?.analyticsConversion.create({
+              await tx.analyticsConversion.create({
                 data: {
-                  sessionId: event?.sessionId,
-                  userId: event?.userId,
-                  timestamp: new Date(event?.timestamp),
-                  ...event?.data,
+                  sessionId: event.sessionId,
+                  userId: event.userId,
+                  timestamp: new Date(event.timestamp),
+                  ...event.data,
                 },
               });
               break;
             case 'error':
-              await tx?.analyticsError.create({
+              await tx.analyticsError.create({
                 data: {
-                  sessionId: event?.sessionId,
-                  userId: event?.userId,
-                  timestamp: new Date(event?.timestamp),
-                  ...event?.data,
+                  sessionId: event.sessionId,
+                  userId: event.userId,
+                  timestamp: new Date(event.timestamp),
+                  ...event.data,
                 },
               });
               break;
@@ -125,34 +125,34 @@ export class RealTimeAnalytics extends EventEmitter {
         }
       });
     } catch (error) {
-      logger?.error('Error flushing analytics buffer:', error);
+      logger.error('Error flushing analytics buffer:', error);
       // Retry failed events in next flush
-      this?.eventBuffer = [...this?.eventBuffer, ...this?.eventBuffer];
+      this.eventBuffer = [...this.eventBuffer, ...this.eventBuffer];
     }
   }
 
   public async getRealtimeMetrics(): Promise<Record<string, any>> {
     try {
       const now = new Date();
-      const fiveMinutesAgo = new Date(now?.getTime() - 5 * 60 * 1000);
+      const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000);
 
-      const [views, interactions, conversions, errors] = await Promise?.all([
-        prisma?.analyticsView.count({
+      const [views, interactions, conversions, errors] = await Promise.all([
+        prisma.analyticsView.count({
           where: { timestamp: { gte: fiveMinutesAgo } },
         }),
-        prisma?.analyticsInteraction.count({
+        prisma.analyticsInteraction.count({
           where: { timestamp: { gte: fiveMinutesAgo } },
         }),
-        prisma?.analyticsConversion.count({
+        prisma.analyticsConversion.count({
           where: { timestamp: { gte: fiveMinutesAgo } },
         }),
-        prisma?.analyticsError.count({
+        prisma.analyticsError.count({
           where: { timestamp: { gte: fiveMinutesAgo } },
         }),
       ]);
 
       return {
-        lastUpdated: now?.toISOString(),
+        lastUpdated: now.toISOString(),
         metrics: {
           views,
           interactions,
@@ -163,7 +163,7 @@ export class RealTimeAnalytics extends EventEmitter {
         },
       };
     } catch (error) {
-      logger?.error('Error getting realtime metrics:', error);
+      logger.error('Error getting realtime metrics:', error);
       throw error;
     }
   }

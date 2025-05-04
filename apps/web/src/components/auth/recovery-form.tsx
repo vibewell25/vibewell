@@ -12,33 +12,33 @@ export function RecoveryForm() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent) => {
-    e?.preventDefault();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
+    e.preventDefault();
     setIsLoading(true);
 
     try {
       const response = await fetch('/api/auth/2fa/recovery', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify({
+        body: JSON.stringify({
           action: 'verify',
-          code: code?.trim().toUpperCase(),
+          code: code.trim().toUpperCase(),
         }),
       });
 
-      const data = await response?.json();
+      const data = await response.json();
 
-      if (!response?.ok) {
-        throw new Error(data?.error || 'Failed to verify recovery code');
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to verify recovery code');
       }
 
-      toast?.success('Recovery code verified successfully');
+      toast.success('Recovery code verified successfully');
 
       // Redirect to the dashboard or home page
-      router?.push('/dashboard');
+      router.push('/dashboard');
     } catch (error) {
-      toast?.error(error instanceof Error ? error?.message : 'Invalid recovery code');
+      toast.error(error instanceof Error ? error.message : 'Invalid recovery code');
     } finally {
       setIsLoading(false);
     }
@@ -55,7 +55,7 @@ export function RecoveryForm() {
             id="code"
             type="text"
             value={code}
-            onChange={(e) => setCode(e?.target.value)}
+            onChange={(e) => setCode(e.target.value)}
             placeholder="XXXX-XXXX-XXXX-XXXX"
             pattern="^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$"
             required
@@ -67,7 +67,7 @@ export function RecoveryForm() {
           </p>
         </div>
 
-        <Button type="submit" className="w-full" disabled={isLoading || !code?.trim()}>
+        <Button type="submit" className="w-full" disabled={isLoading || !code.trim()}>
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Verify Recovery Code
         </Button>
@@ -76,7 +76,7 @@ export function RecoveryForm() {
           <Button
             variant="link"
             type="button"
-            onClick={() => router?.push('/auth/login')}
+            onClick={() => router.push('/auth/login')}
             className="text-sm"
           >
             Return to login

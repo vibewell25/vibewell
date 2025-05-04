@@ -3,12 +3,12 @@
 import React from 'react';
 import { useKeyboardInteraction } from './accessibility-utils';
 
-export interface AccessibleButtonProps extends React?.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface AccessibleButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
-  leftIcon?: React?.ReactNode;
-  rightIcon?: React?.ReactNode;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
   description?: string;
 }
 
@@ -24,7 +24,7 @@ const variantStyles = {
 };
 
 const sizeStyles = {
-  sm: 'px-3 py-1?.5 text-sm',
+  sm: 'px-3 py-1.5 text-sm',
   md: 'px-4 py-2 text-base',
   lg: 'px-6 py-3 text-lg',
 };
@@ -41,18 +41,18 @@ export function AccessibleButton({
   disabled,
   ...props
 }: AccessibleButtonProps) {
-  const buttonRef = React?.useRef<HTMLButtonElement>(null);
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
 
   useKeyboardInteraction(
     () => {
-      if (buttonRef?.current && !disabled && !isLoading) {
-        buttonRef?.current.click();
+      if (buttonRef.current && !disabled && !isLoading) {
+        buttonRef.current.click();
       }
     },
     undefined,
     () => {
-      if (buttonRef?.current && !disabled && !isLoading) {
-        buttonRef?.current.click();
+      if (buttonRef.current && !disabled && !isLoading) {
+        buttonRef.current.click();
       }
     },
   );
@@ -100,7 +100,7 @@ export function AccessibleButton({
 <AccessibleButton
   variant="primary"
   size="md"
-  onClick={() => console?.log('Clicked!')}
+  onClick={() => console.log('Clicked!')}
   description="Submit the form"
   leftIcon={<PlusIcon className="h-4 w-4" />}
 >

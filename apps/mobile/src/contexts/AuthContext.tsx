@@ -17,8 +17,8 @@ export type AuthContextType = UnifiedAuthContextType;
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Create a compatibility provider that uses the unified auth provider
-export const AuthProvider: React?.FC<{ children: React?.ReactNode }> = ({ children }) => {
-  console?.warn(
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  console.warn(
     'Warning: The AuthProvider from mobile/src/contexts/AuthContext is deprecated. ' +
     'Use the AuthProvider from @/contexts/unified-auth-context instead.'
   );
@@ -28,7 +28,7 @@ export const AuthProvider: React?.FC<{ children: React?.ReactNode }> = ({ childr
 
 // Create a compatibility hook that uses the unified auth hook
 export const useAuth = (): AuthContextType => {
-  console?.warn(
+  console.warn(
     'Warning: The useAuth hook from mobile/src/contexts/AuthContext is deprecated. ' +
     'Use the useAuth hook from @/contexts/unified-auth-context instead.'
   );

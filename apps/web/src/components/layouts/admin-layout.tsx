@@ -22,23 +22,23 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   useEffect(() => {
     const validateSession = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         const session = await getSession();
-        if (!session?.user) {
-          router?.push('https://app?.getvibewell.com/login');
+        if (!session.user) {
+          router.push('https://app.getvibewell.com/login');
           return;
         }
-        if (!session?.user.isAdmin) {
-          router?.push('https://app?.getvibewell.com/unauthorized');
+        if (!session.user.isAdmin) {
+          router.push('https://app.getvibewell.com/unauthorized');
           return;
         }
 
         // Set user data
         setUser({
-          name: session?.user.name || 'Admin User',
-          email: session?.user.email || '',
+          name: session.user.name || 'Admin User',
+          email: session.user.email || '',
           role: 'Administrator',
           lastActive: new Date().toISOString(),
         });
@@ -47,15 +47,15 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         await fetch('/api/admin/activity-log', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON?.stringify({
+          body: JSON.stringify({
             action: 'page_view',
-            path: router?.pathname,
+            path: router.pathname,
             timestamp: new Date().toISOString(),
           }),
         });
       } catch (error) {
-        console?.error('Session validation error:', error);
-        router?.push('https://app?.getvibewell.com/login');
+        console.error('Session validation error:', error);
+        router.push('https://app.getvibewell.com/login');
       } finally {
         setIsLoading(false);
       }
@@ -83,22 +83,22 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   }
 
   const handleLogout = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       // Log the logout activity
       await fetch('/api/admin/activity-log', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify({
+        body: JSON.stringify({
           action: 'logout',
           timestamp: new Date().toISOString(),
         }),
       });
-      router?.push('https://app?.getvibewell.com/api/auth/logout');
+      router.push('https://app.getvibewell.com/api/auth/logout');
     } catch (error) {
-      console?.error('Logout error:', error);
-      router?.push('https://app?.getvibewell.com/api/auth/logout');
+      console.error('Logout error:', error);
+      router.push('https://app.getvibewell.com/api/auth/logout');
     }
   };
 
@@ -116,9 +116,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <SecurityNotifications />
               {user && (
                 <div className="text-sm text-gray-600">
-                  <span className="font-medium">{user?.name}</span>
+                  <span className="font-medium">{user.name}</span>
                   <span className="mx-2">•</span>
-                  <span>{user?.role}</span>
+                  <span>{user.role}</span>
                 </div>
               )}
               <button
@@ -138,18 +138,18 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         <div className="w-64 bg-white shadow-sm min-h-screen">
           <nav className="mt-5 px-2">
             <div className="space-y-1">
-              {navigationItems?.map((item) => (
+              {navigationItems.map((item) => (
                 <Link
-                  key={item?.href}
-                  href={item?.href}
+                  key={item.href}
+                  href={item.href}
                   className={`group flex items-center px-2 py-2 text-base font-medium rounded-md ${
-                    router?.pathname === item?.href
+                    router.pathname === item.href
                       ? 'bg-gray-100 text-gray-900'
                       : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                 >
-                  <span className="mr-3">{item?.icon}</span>
-                  {item?.label}
+                  <span className="mr-3">{item.icon}</span>
+                  {item.label}
                 </Link>
               ))}
             </div>

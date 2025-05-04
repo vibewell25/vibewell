@@ -143,7 +143,7 @@ export class StaffManagementService {
   ): Promise<ScheduleOptimizationResult> {
     try {
       // Gather historical booking data
-      const historicalBookings = await prisma?.serviceBooking.findMany({
+      const historicalBookings = await prisma.serviceBooking.findMany({
         where: {
           providerId: { in: staffIds },
           createdAt: {
@@ -158,14 +158,14 @@ export class StaffManagementService {
       });
 
       // Gather staff performance data
-      const staffPerformanceData = await prisma?.staffPerformance.findMany({
+      const staffPerformanceData = await prisma.staffPerformance.findMany({
         where: {
           staffId: { in: staffIds },
         },
       });
 
       // Generate optimization prompt
-      const prompt = this?.buildScheduleOptimizationPrompt(
+      const prompt = this.buildScheduleOptimizationPrompt(
         historicalBookings,
         staffPerformanceData,
         startDate,
@@ -173,7 +173,7 @@ export class StaffManagementService {
       );
 
       // Get AI suggestions
-      const completion = await openai?.chat.completions?.create({
+      const completion = await openai.chat.completions.create({
 
         model: 'gpt-4',
         messages: [
@@ -186,19 +186,19 @@ export class StaffManagementService {
             content: prompt,
           },
         ],
-        temperature: 0?.7,
+        temperature: 0.7,
         max_tokens: 2000,
       });
 
-      const content = completion?.choices[0].message?.content || '';
-      const suggestedSchedule = this?.parseAIScheduleSuggestions(content);
+      const content = completion.choices[0].message.content || '';
+      const suggestedSchedule = this.parseAIScheduleSuggestions(content);
 
       return {
         suggestedSchedule,
         reasoning: content,
       };
     } catch (error) {
-      logger?.error('Failed to optimize schedule', 'StaffManagement', { error });
+      logger.error('Failed to optimize schedule', 'StaffManagement', { error });
       throw error;
     }
   }
@@ -209,40 +209,40 @@ export class StaffManagementService {
   async analyzePerformance(staffId: string): Promise<StaffAnalytics> {
     try {
       // Gather comprehensive data
-      const [bookings, reviews, sales, attendance, performance] = await Promise?.all([
-        this?.getStaffBookings(staffId),
-        this?.getStaffReviews(staffId),
-        this?.getStaffSales(staffId),
-        this?.getStaffAttendance(staffId),
-        this?.getStaffPerformance(staffId),
+      const [bookings, reviews, sales, attendance, performance] = await Promise.all([
+        this.getStaffBookings(staffId),
+        this.getStaffReviews(staffId),
+        this.getStaffSales(staffId),
+        this.getStaffAttendance(staffId),
+        this.getStaffPerformance(staffId),
       ]);
 
       // Calculate current metrics
       const analytics: StaffAnalytics = {
         performance: {
-          clientSatisfaction: this?.calculateClientSatisfaction(reviews),
-          efficiency: this?.calculateEfficiency(bookings),
-          salesPerformance: this?.calculateSalesPerformance(sales),
-          attendance: this?.calculateAttendanceScore(attendance),
+          clientSatisfaction: this.calculateClientSatisfaction(reviews),
+          efficiency: this.calculateEfficiency(bookings),
+          salesPerformance: this.calculateSalesPerformance(sales),
+          attendance: this.calculateAttendanceScore(attendance),
         },
         trends: {
-          bookingTrend: this?.calculateTrend(bookings, 'bookings'),
-          revenueTrend: this?.calculateTrend(sales, 'revenue'),
-          clientRetentionRate: this?.calculateClientRetention(bookings),
+          bookingTrend: this.calculateTrend(bookings, 'bookings'),
+          revenueTrend: this.calculateTrend(sales, 'revenue'),
+          clientRetentionRate: this.calculateClientRetention(bookings),
         },
         predictions: {
-          expectedBookings: this?.predictFutureBookings(bookings),
-          potentialRevenue: this?.predictPotentialRevenue(sales),
-          burnoutRisk: this?.calculateBurnoutRisk(bookings, attendance),
+          expectedBookings: this.predictFutureBookings(bookings),
+          potentialRevenue: this.predictPotentialRevenue(sales),
+          burnoutRisk: this.calculateBurnoutRisk(bookings, attendance),
         },
       };
 
       // Update performance records
-      await this?.updatePerformanceMetrics(staffId, analytics);
+      await this.updatePerformanceMetrics(staffId, analytics);
 
       return analytics;
     } catch (error) {
-      logger?.error('Failed to analyze staff performance', 'StaffManagement', { error });
+      logger.error('Failed to analyze staff performance', 'StaffManagement', { error });
       throw error;
     }
   }
@@ -253,30 +253,30 @@ export class StaffManagementService {
   async processCommissions(staffId: string, period: { start: Date; end: Date }): Promise<void> {
     try {
       // Get all relevant transactions
-      const [serviceBookings, productSales] = await Promise?.all([
-        this?.getServiceBookings(staffId, period),
-        this?.getProductSales(staffId, period),
+      const [serviceBookings, productSales] = await Promise.all([
+        this.getServiceBookings(staffId, period),
+        this.getProductSales(staffId, period),
       ]);
 
       // Calculate commissions
-      const serviceCommission = this?.calculateServiceCommission(serviceBookings);
-      const productCommission = this?.calculateProductCommission(productSales);
-      const bonusCommission = await this?.calculateBonusCommission(staffId, period);
+      const serviceCommission = this.calculateServiceCommission(serviceBookings);
+      const productCommission = this.calculateProductCommission(productSales);
+      const bonusCommission = await this.calculateBonusCommission(staffId, period);
 
       // Create commission records
-      await Promise?.all([
-        this?.createCommissionRecord(staffId, 'SERVICE', serviceCommission),
-        this?.createCommissionRecord(staffId, 'PRODUCT_SALE', productCommission),
-        this?.createCommissionRecord(staffId, 'BONUS', bonusCommission),
+      await Promise.all([
+        this.createCommissionRecord(staffId, 'SERVICE', serviceCommission),
+        this.createCommissionRecord(staffId, 'PRODUCT_SALE', productCommission),
+        this.createCommissionRecord(staffId, 'BONUS', bonusCommission),
       ]);
 
-      logger?.info('Processed staff commissions', 'StaffManagement', {
+      logger.info('Processed staff commissions', 'StaffManagement', {
         staffId,
 
         totalCommission: serviceCommission + productCommission + bonusCommission,
       });
     } catch (error) {
-      logger?.error('Failed to process commissions', 'StaffManagement', { error });
+      logger.error('Failed to process commissions', 'StaffManagement', { error });
       throw error;
     }
   }
@@ -294,19 +294,19 @@ export class StaffManagementService {
       `;
 
       // Check for expiring certifications
-      const expiringCertifications = certifications?.filter(
-        (cert: any) => cert?.expiry_date && differenceInDays(cert?.expiry_date, new Date()) <= 30,
+      const expiringCertifications = certifications.filter(
+        (cert: any) => cert.expiry_date && differenceInDays(cert.expiry_date, new Date()) <= 30,
       );
 
-      if (expiringCertifications?.length > 0) {
-        await this?.notifyExpiringCertifications(staffId, expiringCertifications);
+      if (expiringCertifications.length > 0) {
+        await this.notifyExpiringCertifications(staffId, expiringCertifications);
       }
 
       // Suggest relevant training
-      const suggestedTraining = await this?.suggestTraining(staffId, certifications);
-      await this?.notifyTrainingSuggestions(staffId, suggestedTraining);
+      const suggestedTraining = await this.suggestTraining(staffId, certifications);
+      await this.notifyTrainingSuggestions(staffId, suggestedTraining);
     } catch (error) {
-      logger?.error('Failed to manage certifications', 'StaffManagement', { error });
+      logger.error('Failed to manage certifications', 'StaffManagement', { error });
       throw error;
     }
   }
@@ -317,27 +317,27 @@ export class StaffManagementService {
   async manageAvailability(staffId: string, preferences: AvailabilityPreference[]): Promise<void> {
     try {
       // Validate and store preferences
-      await prisma?.staffAvailability.deleteMany({
+      await prisma.staffAvailability.deleteMany({
         where: { staffId },
       });
 
-      await prisma?.staffAvailability.createMany({
-        data: preferences?.map((pref) => ({
+      await prisma.staffAvailability.createMany({
+        data: preferences.map((pref) => ({
           staffId,
-          dayOfWeek: pref?.dayOfWeek,
-          startTime: pref?.startTime,
-          endTime: pref?.endTime,
-          isPreferred: pref?.isPreferred,
-          notes: pref?.notes,
+          dayOfWeek: pref.dayOfWeek,
+          startTime: pref.startTime,
+          endTime: pref.endTime,
+          isPreferred: pref.isPreferred,
+          notes: pref.notes,
         })),
       });
 
-      logger?.info('Updated staff availability preferences', 'StaffManagement', {
+      logger.info('Updated staff availability preferences', 'StaffManagement', {
         staffId,
-        preferencesCount: preferences?.length,
+        preferencesCount: preferences.length,
       });
     } catch (error) {
-      logger?.error('Failed to update availability preferences', 'StaffManagement', { error });
+      logger.error('Failed to update availability preferences', 'StaffManagement', { error });
       throw error;
     }
   }
@@ -359,7 +359,7 @@ export class StaffManagementService {
         )
       `;
     } catch (error) {
-      logger?.error('Failed to schedule break', 'StaffManagement', { error });
+      logger.error('Failed to schedule break', 'StaffManagement', { error });
       throw error;
     }
   }
@@ -375,8 +375,8 @@ export class StaffManagementService {
       const schedule = await prisma.$queryRaw`
         SELECT id
         FROM schedule
-        WHERE id = ${request?.scheduleId}
-          AND staff_id = ${request?.requestingStaffId}
+        WHERE id = ${request.scheduleId}
+          AND staff_id = ${request.requestingStaffId}
       `;
 
       if (!schedule) {
@@ -391,15 +391,15 @@ export class StaffManagementService {
           status,
           notes
         ) VALUES (
-          ${request?.requestingStaffId},
-          ${request?.targetStaffId},
-          ${request?.scheduleId},
+          ${request.requestingStaffId},
+          ${request.targetStaffId},
+          ${request.scheduleId},
           'PENDING',
-          ${request?.notes || null}
+          ${request.notes || null}
         )
       `;
     } catch (error) {
-      logger?.error('Failed to request shift swap', 'StaffManagement', { error });
+      logger.error('Failed to request shift swap', 'StaffManagement', { error });
       throw error;
     }
   }
@@ -413,7 +413,7 @@ export class StaffManagementService {
     accept: boolean,
   ): Promise<ShiftSwapRequest> {
     try {
-      const swapRequest = await prisma?.shiftSwapRequest.findFirst({
+      const swapRequest = await prisma.shiftSwapRequest.findFirst({
         where: {
           id: swapRequestId,
           recipientId,
@@ -431,7 +431,7 @@ export class StaffManagementService {
       const status = accept ? 'APPROVED' : 'REJECTED';
 
       // Update swap request status
-      const updatedRequest = await prisma?.shiftSwapRequest.update({
+      const updatedRequest = await prisma.shiftSwapRequest.update({
         where: { id: swapRequestId },
         data: {
           status,
@@ -441,27 +441,27 @@ export class StaffManagementService {
 
       if (accept) {
         // Swap the shifts
-        await prisma?.schedule.update({
-          where: { id: swapRequest?.shiftId },
+        await prisma.schedule.update({
+          where: { id: swapRequest.shiftId },
           data: { staffId: recipientId },
         });
 
         // Notify both parties
-        await Promise?.all([
-          this?.notifyStaffMember(swapRequest?.requesterId, {
+        await Promise.all([
+          this.notifyStaffMember(swapRequest.requesterId, {
             type: 'SHIFT_SWAP_APPROVED',
             message: `Your shift swap request has been approved`,
-            data: { shiftId: swapRequest?.shiftId },
+            data: { shiftId: swapRequest.shiftId },
           }),
-          this?.notifyStaffMember(recipientId, {
+          this.notifyStaffMember(recipientId, {
             type: 'SHIFT_SWAP_CONFIRMED',
             message: `You have been assigned a new shift`,
-            data: { shiftId: swapRequest?.shiftId },
+            data: { shiftId: swapRequest.shiftId },
           }),
         ]);
       }
 
-      logger?.info('Processed shift swap response', 'StaffManagement', {
+      logger.info('Processed shift swap response', 'StaffManagement', {
         swapRequestId,
         recipientId,
         status,
@@ -469,7 +469,7 @@ export class StaffManagementService {
 
       return updatedRequest as ShiftSwapRequest;
     } catch (error) {
-      logger?.error('Failed to process shift swap response', 'StaffManagement', { error });
+      logger.error('Failed to process shift swap response', 'StaffManagement', { error });
       throw error;
     }
   }
@@ -483,83 +483,83 @@ export class StaffManagementService {
     },
   ): Promise<void> {
     try {
-      await prisma?.notification.create({
+      await prisma.notification.create({
         data: {
           staffId,
-          type: notification?.type,
-          message: notification?.message,
-          data: notification?.data || {},
+          type: notification.type,
+          message: notification.message,
+          data: notification.data || {},
           isRead: false,
         },
       });
     } catch (error) {
-      logger?.error('Failed to send notification', 'StaffManagement', { error });
+      logger.error('Failed to send notification', 'StaffManagement', { error });
       // Don't throw error to prevent disrupting the main flow
     }
   }
 
   // Private helper methods
   private async getStaffBookings(staffId: string) {
-    return prisma?.serviceBooking.findMany({
+    return prisma.serviceBooking.findMany({
       where: { providerId: staffId },
       include: { service: true },
     });
   }
 
   private async getStaffReviews(staffId: string) {
-    return prisma?.practitionerReview.findMany({
+    return prisma.practitionerReview.findMany({
       where: { practitionerId: staffId },
     });
   }
 
   private async getStaffSales(staffId: string) {
-    return prisma?.serviceBooking.findMany({
+    return prisma.serviceBooking.findMany({
       where: { providerId: staffId },
       include: { payment: true },
     });
   }
 
   private async getStaffAttendance(staffId: string) {
-    return prisma?.schedule.findMany({
+    return prisma.schedule.findMany({
       where: { staffId },
     });
   }
 
   private async getStaffPerformance(staffId: string): Promise<StaffPerformance | null> {
     try {
-      return await prisma?.staffPerformance.findUnique({
+      return await prisma.staffPerformance.findUnique({
         where: { staffId },
       });
     } catch (error) {
-      logger?.error('Failed to get staff performance', 'StaffManagement', { error });
+      logger.error('Failed to get staff performance', 'StaffManagement', { error });
       throw error;
     }
   }
 
   private calculateClientSatisfaction(reviews: any[]): number {
-    if (reviews?.length === 0) return 0;
+    if (reviews.length === 0) return 0;
 
-    return reviews?.reduce((sum, review) => sum + review?.rating, 0) / reviews?.length;
+    return reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
   }
 
   private calculateEfficiency(bookings: any[]): number {
     // Calculate ratio of completed bookings to allocated time
-    const completed = bookings?.filter((b) => b?.status === 'COMPLETED').length;
+    const completed = bookings.filter((b) => b.status === 'COMPLETED').length;
 
-    return bookings?.length > 0 ? completed / bookings?.length : 0;
+    return bookings.length > 0 ? completed / bookings.length : 0;
   }
 
   private calculateSalesPerformance(sales: any[]): number {
     // Calculate total revenue and compare against targets
-    const totalRevenue = sales?.reduce((sum, sale) => sum + (sale?.payment?.amount || 0), 0);
+    const totalRevenue = sales.reduce((sum, sale) => sum + (sale.payment.amount || 0), 0);
     const target = 5000; // This should be configurable
 
-    return Math?.min(totalRevenue / target, 1);
+    return Math.min(totalRevenue / target, 1);
   }
 
   private calculateAttendanceScore(attendance: any[]): number {
-    const total = attendance?.length;
-    const present = attendance?.filter((a) => a?.isAvailable).length;
+    const total = attendance.length;
+    const present = attendance.filter((a) => a.isAvailable).length;
 
     return total > 0 ? present / total : 0;
   }
@@ -572,9 +572,9 @@ export class StaffManagementService {
 
   private calculateClientRetention(bookings: any[]): number {
     // Calculate percentage of repeat clients
-    const uniqueClients = new Set(bookings?.map((b) => b?.userId)).size;
+    const uniqueClients = new Set(bookings.map((b) => b.userId)).size;
 
-    const repeatClients = bookings?.length - uniqueClients;
+    const repeatClients = bookings.length - uniqueClients;
 
     return uniqueClients > 0 ? repeatClients / uniqueClients : 0;
   }
@@ -599,20 +599,20 @@ export class StaffManagementService {
     staffId: string,
     analytics: StaffAnalytics,
   ): Promise<void> {
-    await prisma?.staffPerformance.upsert({
+    await prisma.staffPerformance.upsert({
       where: { staffId },
       create: {
         staffId,
-        clientSatisfaction: analytics?.performance.clientSatisfaction,
-        efficiency: analytics?.performance.efficiency,
-        salesPerformance: analytics?.performance.salesPerformance,
-        attendance: analytics?.performance.attendance,
+        clientSatisfaction: analytics.performance.clientSatisfaction,
+        efficiency: analytics.performance.efficiency,
+        salesPerformance: analytics.performance.salesPerformance,
+        attendance: analytics.performance.attendance,
       },
       update: {
-        clientSatisfaction: analytics?.performance.clientSatisfaction,
-        efficiency: analytics?.performance.efficiency,
-        salesPerformance: analytics?.performance.salesPerformance,
-        attendance: analytics?.performance.attendance,
+        clientSatisfaction: analytics.performance.clientSatisfaction,
+        efficiency: analytics.performance.efficiency,
+        salesPerformance: analytics.performance.salesPerformance,
+        attendance: analytics.performance.attendance,
       },
     });
   }
@@ -622,9 +622,9 @@ export class StaffManagementService {
     certifications: any[],
   ): Promise<void> {
     // Implement notification logic
-    logger?.info('Notifying about expiring certifications', 'StaffManagement', {
+    logger.info('Notifying about expiring certifications', 'StaffManagement', {
       staffId,
-      certifications: certifications?.map((c) => c?.name),
+      certifications: certifications.map((c) => c.name),
     });
   }
 
@@ -635,7 +635,7 @@ export class StaffManagementService {
 
   private async notifyTrainingSuggestions(staffId: string, suggestions: string[]): Promise<void> {
     // Implement notification logic
-    logger?.info('Notifying about training suggestions', 'StaffManagement', {
+    logger.info('Notifying about training suggestions', 'StaffManagement', {
       staffId,
       suggestions,
     });
@@ -648,8 +648,8 @@ export class StaffManagementService {
     endDate: Date,
   ): string {
     return `Optimize staff schedule based on:
-      - Historical bookings: ${JSON?.stringify(historicalBookings)}
-      - Staff performance: ${JSON?.stringify(staffPerformance)}
+      - Historical bookings: ${JSON.stringify(historicalBookings)}
+      - Staff performance: ${JSON.stringify(staffPerformance)}
       - Period: ${startDate} to ${endDate}
       Consider peak hours, staff expertise, and client preferences.`;
   }
@@ -661,8 +661,8 @@ export class StaffManagementService {
     predictedDemand: number;
   }> {
     try {
-      const suggestions = JSON?.parse(aiResponse);
-      return Array?.isArray(suggestions) ? suggestions : [];
+      const suggestions = JSON.parse(aiResponse);
+      return Array.isArray(suggestions) ? suggestions : [];
     } catch {
       return [];
     }
@@ -683,29 +683,29 @@ export class StaffManagementService {
   ): Promise<void> {
     try {
       // Store performance metric
-      await prisma?.performanceMetric.create({
+      await prisma.performanceMetric.create({
         data: {
           staffId,
-          type: metrics?.type,
-          value: metrics?.value,
-          timestamp: metrics?.timestamp,
-          metadata: metrics?.metadata,
+          type: metrics.type,
+          value: metrics.value,
+          timestamp: metrics.timestamp,
+          metadata: metrics.metadata,
         },
       });
 
       // Update rolling averages
-      await this?.updateRollingAverages(staffId, metrics?.type);
+      await this.updateRollingAverages(staffId, metrics.type);
 
       // Check for goal progress
-      await this?.checkGoalProgress(staffId, metrics);
+      await this.checkGoalProgress(staffId, metrics);
 
-      logger?.info('Tracked performance metric', 'StaffManagement', {
+      logger.info('Tracked performance metric', 'StaffManagement', {
         staffId,
-        metricType: metrics?.type,
-        value: metrics?.value,
+        metricType: metrics.type,
+        value: metrics.value,
       });
     } catch (error) {
-      logger?.error('Failed to track performance metric', 'StaffManagement', { error });
+      logger.error('Failed to track performance metric', 'StaffManagement', { error });
       throw error;
     }
   }
@@ -720,13 +720,13 @@ export class StaffManagementService {
   ): Promise<TeamMetrics> {
     try {
       // Get team members
-      const teamMembers = await prisma?.staff.findMany({
+      const teamMembers = await prisma.staff.findMany({
         where: { teamId },
       });
 
       // Calculate individual metrics for each team member
-      const memberMetrics = await Promise?.all(
-        teamMembers?.map((member) => this?.analyzePerformance(member?.id)),
+      const memberMetrics = await Promise.all(
+        teamMembers.map((member) => this.analyzePerformance(member.id)),
       );
 
 
@@ -734,27 +734,27 @@ export class StaffManagementService {
       const teamMetrics: TeamMetrics = {
         teamId,
         metrics: {
-          overallEfficiency: this?.calculateAverageMetric(memberMetrics, 'efficiency'),
-          clientSatisfaction: this?.calculateAverageMetric(memberMetrics, 'clientSatisfaction'),
-          teamCollaboration: await this?.calculateTeamCollaboration(teamId, period),
-          goalCompletion: await this?.calculateTeamGoalCompletion(teamId, period),
+          overallEfficiency: this.calculateAverageMetric(memberMetrics, 'efficiency'),
+          clientSatisfaction: this.calculateAverageMetric(memberMetrics, 'clientSatisfaction'),
+          teamCollaboration: await this.calculateTeamCollaboration(teamId, period),
+          goalCompletion: await this.calculateTeamGoalCompletion(teamId, period),
         },
         period,
       };
 
       // Store team metrics
-      await prisma?.teamMetrics.create({
+      await prisma.teamMetrics.create({
         data: {
           teamId,
-          ...teamMetrics?.metrics,
-          periodStart: period?.start,
-          periodEnd: period?.end,
+          ...teamMetrics.metrics,
+          periodStart: period.start,
+          periodEnd: period.end,
         },
       });
 
       return teamMetrics;
     } catch (error) {
-      logger?.error('Failed to calculate team metrics', 'StaffManagement', { error });
+      logger.error('Failed to calculate team metrics', 'StaffManagement', { error });
       throw error;
     }
   }
@@ -768,30 +768,30 @@ export class StaffManagementService {
   ): Promise<StaffGoal> {
     try {
       // Create new goal
-      const newGoal = await prisma?.staffGoal.create({
+      const newGoal = await prisma.staffGoal.create({
         data: {
           staffId,
-          type: goal?.type,
-          target: goal?.target,
+          type: goal.type,
+          target: goal.target,
           current: 0,
-          deadline: goal?.deadline,
+          deadline: goal.deadline,
           status: 'IN_PROGRESS',
-          description: goal?.description,
+          description: goal.description,
         },
       });
 
       // Set up tracking
-      await this?.initializeGoalTracking(newGoal?.id);
+      await this.initializeGoalTracking(newGoal.id);
 
-      logger?.info('Created staff goal', 'StaffManagement', {
+      logger.info('Created staff goal', 'StaffManagement', {
         staffId,
-        goalType: goal?.type,
-        target: goal?.target,
+        goalType: goal.type,
+        target: goal.target,
       });
 
       return newGoal as StaffGoal;
     } catch (error) {
-      logger?.error('Failed to create staff goal', 'StaffManagement', { error });
+      logger.error('Failed to create staff goal', 'StaffManagement', { error });
       throw error;
     }
   }
@@ -809,19 +809,19 @@ export class StaffManagementService {
 
       const average =
 
-        recentMetrics?.reduce((sum: number, metric: { value: number }) => sum + metric?.value, 0) /
-        (recentMetrics?.length || 1);
+        recentMetrics.reduce((sum: number, metric: { value: number }) => sum + metric.value, 0) /
+        (recentMetrics.length || 1);
 
       await prisma.$executeRaw`
-        INSERT INTO staff_performance (staff_id, ${Prisma?.raw(`${metricType}_average`)}, updated_at)
+        INSERT INTO staff_performance (staff_id, ${Prisma.raw(`${metricType}_average`)}, updated_at)
         VALUES (${staffId}, ${average}, ${new Date()})
         ON CONFLICT (staff_id)
         DO UPDATE SET
-          ${Prisma?.raw(`${metricType}_average`)} = ${average},
+          ${Prisma.raw(`${metricType}_average`)} = ${average},
           updated_at = ${new Date()}
       `;
     } catch (error) {
-      logger?.error('Failed to update rolling averages', 'StaffManagement', { error });
+      logger.error('Failed to update rolling averages', 'StaffManagement', { error });
     }
   }
 
@@ -830,21 +830,21 @@ export class StaffManagementService {
     metrics: { type: string; value: number },
   ): Promise<void> {
     try {
-      const activeGoals = await prisma?.staffGoal.findMany({
+      const activeGoals = await prisma.staffGoal.findMany({
         where: {
           staffId,
           status: 'IN_PROGRESS',
-          type: metrics?.type,
+          type: metrics.type,
         },
       });
 
       for (const goal of activeGoals) {
 
-        const newCurrent = goal?.current + metrics?.value;
-        const status = newCurrent >= goal?.target ? 'COMPLETED' : 'IN_PROGRESS';
+        const newCurrent = goal.current + metrics.value;
+        const status = newCurrent >= goal.target ? 'COMPLETED' : 'IN_PROGRESS';
 
-        await prisma?.staffGoal.update({
-          where: { id: goal?.id },
+        await prisma.staffGoal.update({
+          where: { id: goal.id },
           data: {
             current: newCurrent,
             status,
@@ -852,15 +852,15 @@ export class StaffManagementService {
         });
 
         if (status === 'COMPLETED') {
-          await this?.notifyStaffMember(staffId, {
+          await this.notifyStaffMember(staffId, {
             type: 'GOAL_COMPLETED',
-            message: `Congratulations! You've achieved your goal: ${goal?.description}`,
-            data: { goalId: goal?.id },
+            message: `Congratulations! You've achieved your goal: ${goal.description}`,
+            data: { goalId: goal.id },
           });
         }
       }
     } catch (error) {
-      logger?.error('Failed to check goal progress', 'StaffManagement', { error });
+      logger.error('Failed to check goal progress', 'StaffManagement', { error });
       // Don't throw to prevent disrupting the main flow
     }
   }
@@ -871,12 +871,12 @@ export class StaffManagementService {
   ): number {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
-    const values = metrics?.map((m) => m?.performance[key]);
+    const values = metrics.map((m) => m.performance[key]);
 
-    return values?.reduce((sum: number, val: number) => sum + val, 0) / values?.length;
+    return values.reduce((sum: number, val: number) => sum + val, 0) / values.length;
   }
 
   private async calculateTeamCollaboration(
@@ -884,17 +884,17 @@ export class StaffManagementService {
     period: { start: Date; end: Date },
   ): Promise<number> {
     try {
-      const [messages, handovers] = await Promise?.all([
-        prisma?.message.count({
+      const [messages, handovers] = await Promise.all([
+        prisma.message.count({
           where: {
             teamId,
             createdAt: {
-              gte: period?.start,
-              lte: period?.end,
+              gte: period.start,
+              lte: period.end,
             },
           },
         }),
-        prisma?.shiftHandover.count({
+        prisma.shiftHandover.count({
           where: {
             shift: {
               staff: {
@@ -902,23 +902,23 @@ export class StaffManagementService {
               },
             },
             createdAt: {
-              gte: period?.start,
-              lte: period?.end,
+              gte: period.start,
+              lte: period.end,
             },
           },
         }),
       ]);
 
-      const teamSize = await prisma?.staff.count({ where: { teamId } });
+      const teamSize = await prisma.staff.count({ where: { teamId } });
 
-      const expectedInteractions = teamSize * 2 * differenceInDays(period?.end, period?.start);
+      const expectedInteractions = teamSize * 2 * differenceInDays(period.end, period.start);
 
       const actualInteractions = messages + handovers;
 
 
-      return Math?.min(actualInteractions / expectedInteractions, 1);
+      return Math.min(actualInteractions / expectedInteractions, 1);
     } catch (error) {
-      logger?.error('Failed to calculate team collaboration', 'StaffManagement', { error });
+      logger.error('Failed to calculate team collaboration', 'StaffManagement', { error });
       return 0;
     }
   }
@@ -928,25 +928,25 @@ export class StaffManagementService {
     period: { start: Date; end: Date },
   ): Promise<number> {
     try {
-      const goals = await prisma?.staffGoal.findMany({
+      const goals = await prisma.staffGoal.findMany({
         where: {
           staff: {
             teamId,
           },
           deadline: {
-            gte: period?.start,
-            lte: period?.end,
+            gte: period.start,
+            lte: period.end,
           },
         },
       });
 
-      if (goals?.length === 0) return 0;
+      if (goals.length === 0) return 0;
 
-      const completedGoals = goals?.filter((g) => g?.status === 'COMPLETED').length;
+      const completedGoals = goals.filter((g) => g.status === 'COMPLETED').length;
 
-      return completedGoals / goals?.length;
+      return completedGoals / goals.length;
     } catch (error) {
-      logger?.error('Failed to calculate team goal completion', 'StaffManagement', { error });
+      logger.error('Failed to calculate team goal completion', 'StaffManagement', { error });
       return 0;
     }
   }
@@ -955,9 +955,9 @@ export class StaffManagementService {
     try {
       // Set up any necessary tracking or notifications
       // This is a placeholder for more complex initialization logic
-      logger?.info('Initialized goal tracking', 'StaffManagement', { goalId });
+      logger.info('Initialized goal tracking', 'StaffManagement', { goalId });
     } catch (error) {
-      logger?.error('Failed to initialize goal tracking', 'StaffManagement', { error });
+      logger.error('Failed to initialize goal tracking', 'StaffManagement', { error });
       // Don't throw to prevent disrupting the main flow
     }
   }
@@ -976,21 +976,21 @@ export class StaffManagementService {
     },
   ): Promise<Message> {
     try {
-      if (!message?.recipientId && !message?.teamId) {
+      if (!message.recipientId && !message.teamId) {
         throw new Error('Either recipientId or teamId must be provided');
       }
 
-      const newMessage = await prisma?.message.create({
+      const newMessage = await prisma.message.create({
         data: {
           senderId,
-          recipientId: message?.recipientId,
-          teamId: message?.teamId,
-          type: message?.type,
-          content: message?.content,
-          attachments: message?.attachments,
+          recipientId: message.recipientId,
+          teamId: message.teamId,
+          type: message.type,
+          content: message.content,
+          attachments: message.attachments,
 
     // Safe array access
-    if (senderId < 0 || senderId >= array?.length) {
+    if (senderId < 0 || senderId >= array.length) {
       throw new Error('Array index out of bounds');
     }
           readBy: [senderId],
@@ -999,40 +999,40 @@ export class StaffManagementService {
       });
 
       // Send notifications
-      if (message?.type === 'DIRECT' && message?.recipientId) {
-        await this?.notifyStaffMember(message?.recipientId, {
+      if (message.type === 'DIRECT' && message.recipientId) {
+        await this.notifyStaffMember(message.recipientId, {
           type: 'NEW_MESSAGE',
           message: `New message from ${senderId}`,
-          data: { messageId: newMessage?.id },
+          data: { messageId: newMessage.id },
         });
-      } else if (message?.type === 'TEAM' && message?.teamId) {
-        const teamMembers = await prisma?.staff.findMany({
-          where: { teamId: message?.teamId },
+      } else if (message.type === 'TEAM' && message.teamId) {
+        const teamMembers = await prisma.staff.findMany({
+          where: { teamId: message.teamId },
         });
 
-        await Promise?.all(
+        await Promise.all(
           teamMembers
-            .filter((member) => member?.id !== senderId)
+            .filter((member) => member.id !== senderId)
             .map((member) =>
-              this?.notifyStaffMember(member?.id, {
+              this.notifyStaffMember(member.id, {
                 type: 'NEW_TEAM_MESSAGE',
                 message: `New team message from ${senderId}`,
-                data: { messageId: newMessage?.id },
+                data: { messageId: newMessage.id },
               }),
             ),
         );
       }
 
-      logger?.info('Sent message', 'StaffManagement', {
+      logger.info('Sent message', 'StaffManagement', {
         senderId,
-        type: message?.type,
-        recipientId: message?.recipientId,
-        teamId: message?.teamId,
+        type: message.type,
+        recipientId: message.recipientId,
+        teamId: message.teamId,
       });
 
       return newMessage as Message;
     } catch (error) {
-      logger?.error('Failed to send message', 'StaffManagement', { error });
+      logger.error('Failed to send message', 'StaffManagement', { error });
       throw error;
     }
   }
@@ -1053,19 +1053,19 @@ export class StaffManagementService {
     },
   ): Promise<ShiftHandover> {
     try {
-      const newHandover = await prisma?.shiftHandover.create({
+      const newHandover = await prisma.shiftHandover.create({
         data: {
           staffId,
-          shiftId: handover?.shiftId,
-          notes: handover?.notes,
-          tasks: handover?.tasks,
-          incidents: handover?.incidents,
+          shiftId: handover.shiftId,
+          notes: handover.notes,
+          tasks: handover.tasks,
+          incidents: handover.incidents,
           createdAt: new Date(),
         },
       });
 
       // Notify next shift staff
-      const nextShift = await prisma?.schedule.findFirst({
+      const nextShift = await prisma.schedule.findFirst({
         where: {
           startTime: {
             gt: new Date(),
@@ -1077,21 +1077,21 @@ export class StaffManagementService {
       });
 
       if (nextShift) {
-        await this?.notifyStaffMember(nextShift?.staffId, {
+        await this.notifyStaffMember(nextShift.staffId, {
           type: 'NEW_HANDOVER',
           message: 'New shift handover note available',
-          data: { handoverId: newHandover?.id },
+          data: { handoverId: newHandover.id },
         });
       }
 
-      logger?.info('Created shift handover', 'StaffManagement', {
+      logger.info('Created shift handover', 'StaffManagement', {
         staffId,
-        shiftId: handover?.shiftId,
+        shiftId: handover.shiftId,
       });
 
       return newHandover as ShiftHandover;
     } catch (error) {
-      logger?.error('Failed to create handover', 'StaffManagement', { error });
+      logger.error('Failed to create handover', 'StaffManagement', { error });
       throw error;
     }
   }
@@ -1111,7 +1111,7 @@ export class StaffManagementService {
     },
   ): Promise<Task> {
     try {
-      const newTask = await prisma?.task.create({
+      const newTask = await prisma.task.create({
         data: {
           ...task,
           status: 'TODO',
@@ -1121,25 +1121,25 @@ export class StaffManagementService {
       });
 
       // Notify assigned staff
-      await Promise?.all(
-        task?.assignedTo.map((staffId) =>
-          this?.notifyStaffMember(staffId, {
+      await Promise.all(
+        task.assignedTo.map((staffId) =>
+          this.notifyStaffMember(staffId, {
             type: 'TASK_ASSIGNED',
-            message: `You have been assigned a new task: ${task?.title}`,
-            data: { taskId: newTask?.id },
+            message: `You have been assigned a new task: ${task.title}`,
+            data: { taskId: newTask.id },
           }),
         ),
       );
 
-      logger?.info('Created task', 'StaffManagement', {
+      logger.info('Created task', 'StaffManagement', {
         creatorId,
-        taskTitle: task?.title,
-        assignedTo: task?.assignedTo,
+        taskTitle: task.title,
+        assignedTo: task.assignedTo,
       });
 
       return newTask as Task;
     } catch (error) {
-      logger?.error('Failed to create task', 'StaffManagement', { error });
+      logger.error('Failed to create task', 'StaffManagement', { error });
       throw error;
     }
   }
@@ -1153,7 +1153,7 @@ export class StaffManagementService {
     status: 'TODO' | 'IN_PROGRESS' | 'COMPLETED',
   ): Promise<Task> {
     try {
-      const task = await prisma?.task.findUnique({
+      const task = await prisma.task.findUnique({
         where: { id: taskId },
         include: {
           assignedTo: true,
@@ -1164,11 +1164,11 @@ export class StaffManagementService {
         throw new Error('Task not found');
       }
 
-      if (!task?.assignedTo.some((assigned) => assigned?.id === staffId)) {
+      if (!task.assignedTo.some((assigned) => assigned.id === staffId)) {
         throw new Error('Staff member not assigned to this task');
       }
 
-      const updatedTask = await prisma?.task.update({
+      const updatedTask = await prisma.task.update({
         where: { id: taskId },
         data: {
           status,
@@ -1178,14 +1178,14 @@ export class StaffManagementService {
 
       if (status === 'COMPLETED') {
         // Notify task creator
-        await this?.notifyStaffMember(task?.creatorId, {
+        await this.notifyStaffMember(task.creatorId, {
           type: 'TASK_COMPLETED',
-          message: `Task "${task?.title}" has been completed`,
+          message: `Task "${task.title}" has been completed`,
           data: { taskId },
         });
       }
 
-      logger?.info('Updated task status', 'StaffManagement', {
+      logger.info('Updated task status', 'StaffManagement', {
         taskId,
         staffId,
         status,
@@ -1193,7 +1193,7 @@ export class StaffManagementService {
 
       return updatedTask as Task;
     } catch (error) {
-      logger?.error('Failed to update task status', 'StaffManagement', { error });
+      logger.error('Failed to update task status', 'StaffManagement', { error });
       throw error;
     }
   }
@@ -1211,19 +1211,19 @@ export class StaffManagementService {
     },
   ): Promise<Task[]> {
     try {
-      const tasks = await prisma?.task.findMany({
+      const tasks = await prisma.task.findMany({
         where: {
           assignedTo: {
             some: {
               id: staffId,
             },
           },
-          ...(filters?.status && { status: filters?.status }),
-          ...(filters?.priority && { priority: filters?.priority }),
-          ...(filters?.tags && { tags: { hasEvery: filters?.tags } }),
-          ...(filters?.deadline && {
+          ...(filters.status && { status: filters.status }),
+          ...(filters.priority && { priority: filters.priority }),
+          ...(filters.tags && { tags: { hasEvery: filters.tags } }),
+          ...(filters.deadline && {
             deadline: {
-              lte: filters?.deadline,
+              lte: filters.deadline,
             },
           }),
         },
@@ -1232,7 +1232,7 @@ export class StaffManagementService {
 
       return tasks as Task[];
     } catch (error) {
-      logger?.error('Failed to get staff tasks', 'StaffManagement', { error });
+      logger.error('Failed to get staff tasks', 'StaffManagement', { error });
       throw error;
     }
   }
@@ -1244,12 +1244,12 @@ export class StaffManagementService {
     staffId: string,
     period: { start: Date; end: Date },
   ): Promise<any[]> {
-    return prisma?.serviceBooking.findMany({
+    return prisma.serviceBooking.findMany({
       where: {
         providerId: staffId,
         createdAt: {
-          gte: period?.start,
-          lte: period?.end,
+          gte: period.start,
+          lte: period.end,
         },
       },
       include: {
@@ -1271,12 +1271,12 @@ export class StaffManagementService {
     staffId: string,
     period: { start: Date; end: Date },
   ): Promise<any[]> {
-    return prisma?.productSale.findMany({
+    return prisma.productSale.findMany({
       where: {
         staffId,
         createdAt: {
-          gte: period?.start,
-          lte: period?.end,
+          gte: period.start,
+          lte: period.end,
         },
       },
       include: {
@@ -1295,9 +1295,9 @@ export class StaffManagementService {
    * Calculates commission for services
    */
   private calculateServiceCommission(bookings: any[]): number {
-    return bookings?.reduce((total, booking) => {
-      const commissionRate = 0?.2; // 20% commission rate
-      const amount = booking?.payment?.amount || 0;
+    return bookings.reduce((total, booking) => {
+      const commissionRate = 0.2; // 20% commission rate
+      const amount = booking.payment.amount || 0;
 
       return total + amount * commissionRate;
     }, 0);
@@ -1307,9 +1307,9 @@ export class StaffManagementService {
    * Calculates commission for product sales
    */
   private calculateProductCommission(sales: any[]): number {
-    return sales?.reduce((total, sale) => {
-      const commissionRate = 0?.1; // 10% commission rate
-      const amount = sale?.payment?.amount || 0;
+    return sales.reduce((total, sale) => {
+      const commissionRate = 0.1; // 10% commission rate
+      const amount = sale.payment.amount || 0;
 
       return total + amount * commissionRate;
     }, 0);
@@ -1322,11 +1322,11 @@ export class StaffManagementService {
     staffId: string,
     period: { start: Date; end: Date },
   ): Promise<number> {
-    const performance = await this?.analyzePerformance(staffId);
-    const bonusThreshold = 0?.8; // 80% performance threshold
+    const performance = await this.analyzePerformance(staffId);
+    const bonusThreshold = 0.8; // 80% performance threshold
     const bonusAmount = 100; // $100 bonus
 
-    return performance?.performance.efficiency >= bonusThreshold ? bonusAmount : 0;
+    return performance.performance.efficiency >= bonusThreshold ? bonusAmount : 0;
   }
 
   /**
@@ -1337,7 +1337,7 @@ export class StaffManagementService {
     type: 'SERVICE' | 'PRODUCT_SALE' | 'BONUS',
     amount: number,
   ): Promise<void> {
-    await prisma?.commission.create({
+    await prisma.commission.create({
       data: {
         staffId,
         type,
@@ -1362,7 +1362,7 @@ export class StaffManagementService {
       `;
       return availabilities;
     } catch (error) {
-      logger?.error('Failed to get staff availability', 'StaffManagement', { error });
+      logger.error('Failed to get staff availability', 'StaffManagement', { error });
       throw error;
     }
   }
@@ -1378,22 +1378,22 @@ export class StaffManagementService {
           is_preferred,
           notes
         ) VALUES (
-          ${availability?.staffId},
-          ${availability?.dayOfWeek},
-          ${availability?.startTime},
-          ${availability?.endTime},
-          ${availability?.isPreferred},
-          ${availability?.notes || null}
+          ${availability.staffId},
+          ${availability.dayOfWeek},
+          ${availability.startTime},
+          ${availability.endTime},
+          ${availability.isPreferred},
+          ${availability.notes || null}
         )
         ON CONFLICT (staff_id, day_of_week)
         DO UPDATE SET
-          start_time = ${availability?.startTime},
-          end_time = ${availability?.endTime},
-          is_preferred = ${availability?.isPreferred},
-          notes = ${availability?.notes || null}
+          start_time = ${availability.startTime},
+          end_time = ${availability.endTime},
+          is_preferred = ${availability.isPreferred},
+          notes = ${availability.notes || null}
       `;
     } catch (error) {
-      logger?.error('Failed to update staff availability', 'StaffManagement', { error });
+      logger.error('Failed to update staff availability', 'StaffManagement', { error });
       throw error;
     }
   }
@@ -1409,7 +1409,7 @@ export class StaffManagementService {
           AND end_time <= ${endDate}
       `;
     } catch (error) {
-      logger?.error('Failed to get schedule', 'StaffManagement', { error });
+      logger.error('Failed to get schedule', 'StaffManagement', { error });
       throw error;
     }
   }

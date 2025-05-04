@@ -39,8 +39,8 @@ export function OptimizedModelLoader({
 
     // Progressive loading strategy
     const loadModel = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         // First load a low-quality version quickly
         await loadModelAtQuality('low');
@@ -59,11 +59,11 @@ export function OptimizedModelLoader({
 
         setLoadingProgress(100);
         setIsLoading(false);
-        onLoad?.();
+        onLoad.();
       } catch (error) {
-        console?.error('Error loading model:', error);
+        console.error('Error loading model:', error);
         setModelError(error instanceof Error ? error : new Error('Unknown error loading model'));
-        onError?.(error instanceof Error ? error : new Error('Unknown error loading model'));
+        onError.(error instanceof Error ? error : new Error('Unknown error loading model'));
       }
     };
 
@@ -72,10 +72,10 @@ export function OptimizedModelLoader({
     // Cleanup function
     return () => {
       // Cleanup any loaded models or WebGL contexts
-      if (containerRef?.current) {
+      if (containerRef.current) {
         // Remove any 3D renderer elements
-        while (containerRef?.current.firstChild) {
-          containerRef?.current.removeChild(containerRef?.current.firstChild);
+        while (containerRef.current.firstChild) {
+          containerRef.current.removeChild(containerRef.current.firstChild);
         }
       }
     };
@@ -83,13 +83,13 @@ export function OptimizedModelLoader({
 
   // Simulate loading a model at different quality levels
   const loadModelAtQuality = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');quality: 'low' | 'medium' | 'high'): Promise<void> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');quality: 'low' | 'medium' | 'high'): Promise<void> => {
     return new Promise((resolve, reject) => {
       // This is a placeholder for actual model loading code
       // In a real implementation, you would:
       // 1. Load the appropriate LOD (Level of Detail) based on quality
-      // 2. Set up WebGL/Three?.js with the correct performance settings
+      // 2. Set up WebGL/Three.js with the correct performance settings
       // 3. Initialize the AR session with proper configurations
 
       // Simulate network delay and processing time
@@ -115,7 +115,7 @@ export function OptimizedModelLoader({
           },
         };
 
-        console?.log(
+        console.log(
           `Loaded model ${modelId} at ${quality} quality with settings:`,
           settings[quality],
         );
@@ -132,7 +132,7 @@ export function OptimizedModelLoader({
     return (
       <div className="flex h-full flex-col items-center justify-center rounded-md bg-red-50 p-4">
         <p className="mb-2 text-red-500">Error loading model</p>
-        <p className="text-sm text-gray-600">{modelError?.message}</p>
+        <p className="text-sm text-gray-600">{modelError.message}</p>
       </div>
     );
   }

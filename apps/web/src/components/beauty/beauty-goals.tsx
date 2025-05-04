@@ -32,35 +32,35 @@ export default function BeautyGoals() {
   }, []);
 
   const loadGoals = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const userGoals = await getBeautyGoals();
       setGoals(userGoals);
     } catch (error) {
-      console?.error('Error loading goals:', error);
+      console.error('Error loading goals:', error);
     }
   };
 
   const handleAddMilestone = () => {
     setNewGoal((prev) => ({
       ...prev,
-      milestones: [...prev?.milestones, { description: '', completed: false }],
+      milestones: [...prev.milestones, { description: '', completed: false }],
     }));
   };
 
   const handleMilestoneChange = (index: number, description: string) => {
     setNewGoal((prev) => ({
       ...prev,
-      milestones: prev?.milestones.map((milestone, i) =>
+      milestones: prev.milestones.map((milestone, i) =>
         i === index ? { ...milestone, description } : milestone,
       ),
     }));
   };
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       await createBeautyGoal(newGoal);
       setShowNewGoal(false);
@@ -75,18 +75,18 @@ export default function BeautyGoals() {
       });
       loadGoals();
     } catch (error) {
-      console?.error('Error creating goal:', error);
+      console.error('Error creating goal:', error);
     }
   };
 
   const handleUpdateStatus = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');goalId: string, newStatus: (typeof goalStatuses)[number]) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');goalId: string, newStatus: (typeof goalStatuses)[number]) => {
     try {
       await updateBeautyGoal(goalId, { status: newStatus });
       loadGoals();
     } catch (error) {
-      console?.error('Error updating goal status:', error);
+      console.error('Error updating goal status:', error);
     }
   };
 
@@ -103,31 +103,31 @@ export default function BeautyGoals() {
         <Card className="space-y-4 p-6">
           <Input
             label="Goal Title"
-            value={newGoal?.title}
-            onChange={(e) => setNewGoal((prev) => ({ ...prev, title: e?.target.value }))}
+            value={newGoal.title}
+            onChange={(e) => setNewGoal((prev) => ({ ...prev, title: e.target.value }))}
           />
 
           <Input
             label="Description"
-            value={newGoal?.description}
-            onChange={(e) => setNewGoal((prev) => ({ ...prev, description: e?.target.value }))}
+            value={newGoal.description}
+            onChange={(e) => setNewGoal((prev) => ({ ...prev, description: e.target.value }))}
           />
 
           <Select
             label="Category"
-            value={newGoal?.category}
+            value={newGoal.category}
             onChange={(e) =>
               setNewGoal((prev) => ({
                 ...prev,
-                category: e?.target.value as (typeof goalCategories)[number],
+                category: e.target.value as (typeof goalCategories)[number],
               }))
             }
-            options={goalCategories?.map((cat) => ({
+            options={goalCategories.map((cat) => ({
               value: cat,
               label: cat
                 .replace('_', ' ')
                 .split('_')
-                .map((word) => word?.charAt(0).toUpperCase() + word?.slice(1))
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                 .join(' '),
             }))}
           />
@@ -135,8 +135,8 @@ export default function BeautyGoals() {
           <Input
             type="date"
             label="Target Date"
-            value={newGoal?.targetDate}
-            onChange={(e) => setNewGoal((prev) => ({ ...prev, targetDate: e?.target.value }))}
+            value={newGoal.targetDate}
+            onChange={(e) => setNewGoal((prev) => ({ ...prev, targetDate: e.target.value }))}
           />
 
           <div className="space-y-4">
@@ -147,12 +147,12 @@ export default function BeautyGoals() {
               </Button>
             </div>
 
-            {newGoal?.milestones.map((milestone, index) => (
+            {newGoal.milestones.map((milestone, index) => (
               <Input
                 key={index}
                 label={`Milestone ${index + 1}`}
-                value={milestone?.description}
-                onChange={(e) => handleMilestoneChange(index, e?.target.value)}
+                value={milestone.description}
+                onChange={(e) => handleMilestoneChange(index, e.target.value)}
               />
             ))}
           </div>
@@ -162,56 +162,56 @@ export default function BeautyGoals() {
       )}
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {goals?.map((goal) => (
-          <Card key={goal?.id} className="p-6">
+        {goals.map((goal) => (
+          <Card key={goal.id} className="p-6">
             <div className="mb-4 flex items-start justify-between">
               <div>
-                <h3 className="text-xl font-semibold">{goal?.title}</h3>
-                <p className="text-gray-600">{goal?.description}</p>
+                <h3 className="text-xl font-semibold">{goal.title}</h3>
+                <p className="text-gray-600">{goal.description}</p>
               </div>
-              <Badge>{goal?.category.replace('_', ' ')}</Badge>
+              <Badge>{goal.category.replace('_', ' ')}</Badge>
             </div>
 
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <p className="text-sm text-gray-600">
-                  Target Date: {new Date(goal?.targetDate).toLocaleDateString()}
+                  Target Date: {new Date(goal.targetDate).toLocaleDateString()}
                 </p>
                 <Select
-                  value={goal?.status}
+                  value={goal.status}
                   onChange={(e) =>
-                    handleUpdateStatus(goal?.id, e?.target.value as (typeof goalStatuses)[number])
+                    handleUpdateStatus(goal.id, e.target.value as (typeof goalStatuses)[number])
                   }
-                  options={goalStatuses?.map((status) => ({
+                  options={goalStatuses.map((status) => ({
                     value: status,
                     label: status
                       .replace('_', ' ')
                       .split('_')
-                      .map((word) => word?.charAt(0).toUpperCase() + word?.slice(1))
+                      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                       .join(' '),
                   }))}
                 />
               </div>
 
-              {goal?.milestones.length > 0 && (
+              {goal.milestones.length > 0 && (
                 <div>
                   <h4 className="mb-2 text-sm font-medium">Milestones</h4>
                   <div className="space-y-2">
-                    {goal?.milestones.map((milestone, index) => (
+                    {goal.milestones.map((milestone, index) => (
                       <div key={index} className="flex items-center gap-2 text-sm">
                         <input
                           type="checkbox"
-                          checked={milestone?.completed}
+                          checked={milestone.completed}
                           onChange={() => {
-                            const updatedMilestones = goal?.milestones.map((m, i) =>
-                              i === index ? { ...m, completed: !m?.completed } : m,
+                            const updatedMilestones = goal.milestones.map((m, i) =>
+                              i === index ? { ...m, completed: !m.completed } : m,
                             );
-                            updateBeautyGoal(goal?.id, { milestones: updatedMilestones });
+                            updateBeautyGoal(goal.id, { milestones: updatedMilestones });
                             loadGoals();
                           }}
                         />
-                        <span className={milestone?.completed ? 'text-gray-500 line-through' : ''}>
-                          {milestone?.description}
+                        <span className={milestone.completed ? 'text-gray-500 line-through' : ''}>
+                          {milestone.description}
                         </span>
                       </div>
                     ))}

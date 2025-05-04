@@ -1,13 +1,13 @@
 import React from 'react';
 
-interface AccessibleTextareaProps extends React?.TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface AccessibleTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
   error?: string;
   helperText?: string;
   resize?: 'none' | 'vertical' | 'horizontal' | 'both';
 }
 
-export const AccessibleTextarea: React?.FC<AccessibleTextareaProps> = ({
+export const AccessibleTextarea: React.FC<AccessibleTextareaProps> = ({
   label,
   error,
   helperText,
@@ -17,7 +17,7 @@ export const AccessibleTextarea: React?.FC<AccessibleTextareaProps> = ({
   required,
   ...props
 }) => {
-  const textareaId = id || `textarea-${Math?.random().toString(36).substr(2, 9)}`;
+  const textareaId = id || `textarea-${Math.random().toString(36).substr(2, 9)}`;
   const errorId = error ? `${textareaId}-error` : undefined;
   const helperId = helperText ? `${textareaId}-helper` : undefined;
 

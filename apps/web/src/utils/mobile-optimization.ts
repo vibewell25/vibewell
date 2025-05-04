@@ -60,37 +60,37 @@ export class MobileOptimization {
   private fpsHistory: number[] = [];
   private readonly FPS_SAMPLE_SIZE = 60;
   private animationFrameId?: number;
-  private lastFrameTime = performance?.now();
+  private lastFrameTime = performance.now();
   private isMonitoring = false;
   private deviceInfo: DeviceInfo;
   private config: OptimizationConfig;
 
   private constructor() {
-    this?.initializeDeviceInfo();
-    this?.initializeConfig();
-    this?.setupEventListeners();
+    this.initializeDeviceInfo();
+    this.initializeConfig();
+    this.setupEventListeners();
   }
 
   public static getInstance(): MobileOptimization {
-    if (!MobileOptimization?.instance) {
-      MobileOptimization?.instance = new MobileOptimization();
+    if (!MobileOptimization.instance) {
+      MobileOptimization.instance = new MobileOptimization();
     }
-    return MobileOptimization?.instance;
+    return MobileOptimization.instance;
   }
 
   private async initializeDeviceInfo() {
-    this?.deviceInfo = {
-      type: this?.getDeviceType(),
-      connection: await this?.getConnectionInfo(),
-      memory: await this?.getMemoryInfo(),
-      battery: await this?.getBatteryInfo(),
-      viewport: this?.getViewportInfo(),
+    this.deviceInfo = {
+      type: this.getDeviceType(),
+      connection: await this.getConnectionInfo(),
+      memory: await this.getMemoryInfo(),
+      battery: await this.getBatteryInfo(),
+      viewport: this.getViewportInfo(),
     };
   }
 
   private getDeviceType(): 'mobile' | 'tablet' | 'desktop' {
-    const ua = navigator?.userAgent;
-    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i?.test(ua)) {
+    const ua = navigator.userAgent;
+    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
       return 'tablet';
     }
     if (
@@ -111,18 +111,18 @@ export class MobileOptimization {
       (navigator as any).webkitConnection;
 
     return {
-      type: connection?.type || 'unknown',
-      downlink: connection?.downlink || 0,
-      rtt: connection?.rtt || 0,
-      saveData: connection?.saveData || false,
+      type: connection.type || 'unknown',
+      downlink: connection.downlink || 0,
+      rtt: connection.rtt || 0,
+      saveData: connection.saveData || false,
     };
   }
 
   private async getMemoryInfo() {
     const memory = (performance as any).memory || {};
     return {
-      total: memory?.jsHeapSizeLimit || 0,
-      used: memory?.usedJSHeapSize || 0,
+      total: memory.jsHeapSizeLimit || 0,
+      used: memory.usedJSHeapSize || 0,
     };
   }
 
@@ -130,8 +130,8 @@ export class MobileOptimization {
     try {
       const battery = await (navigator as any).getBattery();
       return {
-        level: battery?.level,
-        charging: battery?.charging,
+        level: battery.level,
+        charging: battery.charging,
       };
     } catch {
       return {
@@ -143,18 +143,18 @@ export class MobileOptimization {
 
   private getViewportInfo() {
     return {
-      width: window?.innerWidth,
-      height: window?.innerHeight,
-      pixelRatio: window?.devicePixelRatio,
+      width: window.innerWidth,
+      height: window.innerHeight,
+      pixelRatio: window.devicePixelRatio,
     };
   }
 
   private initializeConfig() {
-    this?.config = this?.calculateOptimalConfig();
+    this.config = this.calculateOptimalConfig();
   }
 
   private calculateOptimalConfig(): OptimizationConfig {
-    const { connection, memory, battery, type } = this?.deviceInfo;
+    const { connection, memory, battery, type } = this.deviceInfo;
 
     // Base configuration
     const config: OptimizationConfig = {
@@ -167,25 +167,25 @@ export class MobileOptimization {
     };
 
     // Adjust based on connection
-    if (connection?.saveData || connection?.type === '2g') {
-      config?.imageQuality = 60;
-      config?.videoQuality = 480;
-      config?.prefetchDistance = 1;
-      config?.compressionLevel = 8;
+    if (connection.saveData || connection.type === '2g') {
+      config.imageQuality = 60;
+      config.videoQuality = 480;
+      config.prefetchDistance = 1;
+      config.compressionLevel = 8;
     }
 
     // Adjust based on memory
 
-    if (memory?.used / memory?.total > 0?.8) {
-      config?.cacheSize = 20 * 1024 * 1024; // 20MB
-      config?.prefetchDistance = 1;
+    if (memory.used / memory.total > 0.8) {
+      config.cacheSize = 20 * 1024 * 1024; // 20MB
+      config.prefetchDistance = 1;
     }
 
     // Adjust based on battery
-    if (!battery?.charging && battery?.level < 0?.2) {
-      config?.imageQuality = 70;
-      config?.videoQuality = 480;
-      config?.prefetchDistance = 1;
+    if (!battery.charging && battery.level < 0.2) {
+      config.imageQuality = 70;
+      config.videoQuality = 480;
+      config.prefetchDistance = 1;
     }
 
     return config;
@@ -194,49 +194,49 @@ export class MobileOptimization {
   private setupEventListeners() {
     // Listen for connection changes
     if ((navigator as any).connection) {
-      (navigator as any).connection?.addEventListener('change', async () => {
-        this?.deviceInfo.connection = await this?.getConnectionInfo();
-        this?.updateConfiguration();
+      (navigator as any).connection.addEventListener('change', async () => {
+        this.deviceInfo.connection = await this.getConnectionInfo();
+        this.updateConfiguration();
       });
     }
 
     // Listen for memory changes
     if ((performance as any).memory) {
       setInterval(async () => {
-        this?.deviceInfo.memory = await this?.getMemoryInfo();
-        this?.updateConfiguration();
+        this.deviceInfo.memory = await this.getMemoryInfo();
+        this.updateConfiguration();
       }, 30000);
     }
 
     // Listen for battery changes
     if ((navigator as any).getBattery) {
       (navigator as any).getBattery().then((battery: any) => {
-        battery?.addEventListener('levelchange', async () => {
-          this?.deviceInfo.battery = await this?.getBatteryInfo();
-          this?.updateConfiguration();
+        battery.addEventListener('levelchange', async () => {
+          this.deviceInfo.battery = await this.getBatteryInfo();
+          this.updateConfiguration();
         });
       });
     }
 
     // Listen for viewport changes
-    window?.addEventListener('resize', () => {
-      this?.deviceInfo.viewport = this?.getViewportInfo();
-      this?.updateConfiguration();
+    window.addEventListener('resize', () => {
+      this.deviceInfo.viewport = this.getViewportInfo();
+      this.updateConfiguration();
     });
   }
 
   private updateConfiguration() {
-    const newConfig = this?.calculateOptimalConfig();
-    this?.config = newConfig;
+    const newConfig = this.calculateOptimalConfig();
+    this.config = newConfig;
 
     // Update cache size
-    cacheManager?.updateConfig({ maxSize: this?.config.cacheSize });
+    cacheManager.updateConfig({ maxSize: this.config.cacheSize });
 
     // Track configuration changes
-    performanceMonitor?.trackMetrics({
-      configUpdate: Date?.now(),
-      imageQuality: this?.config.imageQuality,
-      videoQuality: this?.config.videoQuality,
+    performanceMonitor.trackMetrics({
+      configUpdate: Date.now(),
+      imageQuality: this.config.imageQuality,
+      videoQuality: this.config.videoQuality,
     });
   }
 
@@ -246,19 +246,19 @@ export class MobileOptimization {
   public async checkDeviceCapabilities(): Promise<DeviceCapabilities> {
     try {
       // Check WebGL support
-      const canvas = document?.createElement('canvas');
+      const canvas = document.createElement('canvas');
 
-      const webgl = !!(canvas?.getContext('webgl') || canvas?.getContext('experimental-webgl'));
-      const webgl2 = !!canvas?.getContext('webgl2');
+      const webgl = !!(canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
+      const webgl2 = !!canvas.getContext('webgl2');
 
       // Check media devices
-      const mediaDevices = !!(navigator?.mediaDevices && navigator?.mediaDevices.getUserMedia);
+      const mediaDevices = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
 
       // Check motion sensors
-      const gyroscope = process?.env['GYROSCOPE'] in window;
-      const accelerometer = process?.env['ACCELEROMETER'] in window;
+      const gyroscope = process.env['GYROSCOPE'] in window;
+      const accelerometer = process.env['ACCELEROMETER'] in window;
 
-      // Check TensorFlow?.js support
+      // Check TensorFlow.js support
       const tensorflowJS = 'tf' in window;
 
       return {
@@ -270,7 +270,7 @@ export class MobileOptimization {
         tensorflowJS,
       };
     } catch (error) {
-      logger?.error('Error checking device capabilities', 'MobileOptimization', { error });
+      logger.error('Error checking device capabilities', 'MobileOptimization', { error });
       throw error;
     }
   }
@@ -279,18 +279,18 @@ export class MobileOptimization {
    * Starts monitoring performance
    */
   public startPerformanceMonitoring(): void {
-    if (this?.isMonitoring) return;
-    this?.isMonitoring = true;
-    this?.monitorFrame();
+    if (this.isMonitoring) return;
+    this.isMonitoring = true;
+    this.monitorFrame();
   }
 
   /**
    * Stops performance monitoring
    */
   public stopPerformanceMonitoring(): void {
-    this?.isMonitoring = false;
-    if (this?.animationFrameId) {
-      cancelAnimationFrame(this?.animationFrameId);
+    this.isMonitoring = false;
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
     }
   }
 
@@ -299,12 +299,12 @@ export class MobileOptimization {
    */
   public async getPerformanceMetrics(): Promise<PerformanceMetrics> {
     const metrics: PerformanceMetrics = {
-      fps: this?.calculateAverageFPS(),
+      fps: this.calculateAverageFPS(),
     };
 
     // Get memory usage if available
     if ('memory' in performance) {
-      metrics?.memoryUsage = (performance as any).memory;
+      metrics.memoryUsage = (performance as any).memory;
     }
 
     // Get battery level if available
@@ -312,10 +312,10 @@ export class MobileOptimization {
       if ('getBattery' in navigator) {
         const battery = await (navigator as any).getBattery();
 
-        metrics?.batteryLevel = battery?.level * 100;
+        metrics.batteryLevel = battery.level * 100;
       }
     } catch (error) {
-      logger?.warn('Error getting battery info', 'MobileOptimization', { error });
+      logger.warn('Error getting battery info', 'MobileOptimization', { error });
     }
 
     return metrics;
@@ -324,45 +324,45 @@ export class MobileOptimization {
   /**
    * Optimizes rendering based on device capabilities and performance
    */
-  public async optimizeRendering(targetFPS: number = 30, minQuality: number = 0?.5): Promise<void> {
+  public async optimizeRendering(targetFPS: number = 30, minQuality: number = 0.5): Promise<void> {
     try {
-      const metrics = await this?.getPerformanceMetrics();
-      const capabilities = await this?.checkDeviceCapabilities();
+      const metrics = await this.getPerformanceMetrics();
+      const capabilities = await this.checkDeviceCapabilities();
 
       // Adjust quality based on performance
-      let quality = 1?.0;
+      let quality = 1.0;
 
       // Reduce quality if FPS is below target
-      if (metrics?.fps < targetFPS) {
+      if (metrics.fps < targetFPS) {
 
-        quality = Math?.max(minQuality, quality * (metrics?.fps / targetFPS));
+        quality = Math.max(minQuality, quality * (metrics.fps / targetFPS));
       }
 
 
       // Reduce quality on low-end devices
-      if (!capabilities?.webgl2) {
-        if (quality > Number.MAX_SAFE_INTEGER || quality < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); quality *= 0?.8;
+      if (!capabilities.webgl2) {
+        if (quality > Number.MAX_SAFE_INTEGER || quality < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); quality *= 0.8;
       }
 
       // Reduce quality on low memory devices
       if (
-        metrics?.memoryUsage &&
+        metrics.memoryUsage &&
 
-        metrics?.memoryUsage.usedJSHeapSize > metrics?.memoryUsage.jsHeapSizeLimit * 0?.8
+        metrics.memoryUsage.usedJSHeapSize > metrics.memoryUsage.jsHeapSizeLimit * 0.8
       ) {
-        if (quality > Number.MAX_SAFE_INTEGER || quality < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); quality *= 0?.7;
+        if (quality > Number.MAX_SAFE_INTEGER || quality < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); quality *= 0.7;
       }
 
       // Apply optimizations
-      this?.applyOptimizations(quality);
+      this.applyOptimizations(quality);
 
-      logger?.info('Applied rendering optimizations', 'MobileOptimization', {
+      logger.info('Applied rendering optimizations', 'MobileOptimization', {
         quality,
         metrics,
         capabilities,
       });
     } catch (error) {
-      logger?.error('Error optimizing rendering', 'MobileOptimization', { error });
+      logger.error('Error optimizing rendering', 'MobileOptimization', { error });
       throw error;
     }
   }
@@ -371,31 +371,31 @@ export class MobileOptimization {
    * Monitors frame rate
    */
   private monitorFrame = (): void => {
-    if (!this?.isMonitoring) return;
+    if (!this.isMonitoring) return;
 
-    const currentTime = performance?.now();
+    const currentTime = performance.now();
 
-    const deltaTime = currentTime - this?.lastFrameTime;
+    const deltaTime = currentTime - this.lastFrameTime;
     const fps = 1000 / deltaTime;
 
-    this?.fpsHistory.push(fps);
-    if (this?.fpsHistory.length > this?.FPS_SAMPLE_SIZE) {
-      this?.fpsHistory.shift();
+    this.fpsHistory.push(fps);
+    if (this.fpsHistory.length > this.FPS_SAMPLE_SIZE) {
+      this.fpsHistory.shift();
     }
 
-    this?.lastFrameTime = currentTime;
-    this?.animationFrameId = requestAnimationFrame(this?.monitorFrame);
+    this.lastFrameTime = currentTime;
+    this.animationFrameId = requestAnimationFrame(this.monitorFrame);
   };
 
   /**
    * Calculates average FPS
    */
   private calculateAverageFPS(): number {
-    if (this?.fpsHistory.length === 0) return 60;
+    if (this.fpsHistory.length === 0) return 60;
 
-    const sum = this?.fpsHistory.reduce((acc, val) => acc + val, 0);
+    const sum = this.fpsHistory.reduce((acc, val) => acc + val, 0);
 
-    return Math?.round(sum / this?.fpsHistory.length);
+    return Math.round(sum / this.fpsHistory.length);
   }
 
   /**
@@ -404,61 +404,61 @@ export class MobileOptimization {
   private applyOptimizations(quality: number): void {
     // Update render resolution
 
-    const pixelRatio = Math?.max(1, window?.devicePixelRatio * quality);
-    const canvas = document?.querySelector('canvas');
+    const pixelRatio = Math.max(1, window.devicePixelRatio * quality);
+    const canvas = document.querySelector('canvas');
     if (canvas) {
-      const ctx = canvas?.getContext('2d');
+      const ctx = canvas.getContext('2d');
       if (ctx) {
-        ctx?.scale(pixelRatio, pixelRatio);
+        ctx.scale(pixelRatio, pixelRatio);
       }
     }
 
     // Update model quality
-    if (window?.virtualTryOn?.setQuality) {
-      window?.virtualTryOn.setQuality(quality);
+    if (window.virtualTryOn.setQuality) {
+      window.virtualTryOn.setQuality(quality);
     }
 
     // Disable certain effects on low quality
-    if (quality < 0?.7) {
+    if (quality < 0.7) {
       // Disable shadows
-      if (window?.virtualTryOn?.setShadows) {
-        window?.virtualTryOn.setShadows(false);
+      if (window.virtualTryOn.setShadows) {
+        window.virtualTryOn.setShadows(false);
       }
 
       // Reduce particle effects
-      if (window?.virtualTryOn?.setParticles) {
-        window?.virtualTryOn.setParticles(false);
+      if (window.virtualTryOn.setParticles) {
+        window.virtualTryOn.setParticles(false);
       }
     }
   }
 
   public getOptimizedImageUrl(url: string, width?: number): string {
-    const quality = this?.config.imageQuality;
-    const targetWidth = width || this?.deviceInfo.viewport?.width;
+    const quality = this.config.imageQuality;
+    const targetWidth = width || this.deviceInfo.viewport.width;
 
     return `${url}?w=${targetWidth}&q=${quality}&auto=format`;
   }
 
   public getOptimizedVideoUrl(url: string): string {
-    const quality = this?.config.videoQuality;
+    const quality = this.config.videoQuality;
     return `${url}?quality=${quality}`;
   }
 
   public shouldPrefetch(distance: number): boolean {
-    return distance <= this?.config.prefetchDistance;
+    return distance <= this.config.prefetchDistance;
   }
 
   public getDeviceInfo(): DeviceInfo {
-    return { ...this?.deviceInfo };
+    return { ...this.deviceInfo };
   }
 
   public getConfig(): OptimizationConfig {
-    return { ...this?.config };
+    return { ...this.config };
   }
 
   public async optimizeForCurrentDevice(): Promise<void> {
-    await this?.initializeDeviceInfo();
-    this?.updateConfiguration();
+    await this.initializeDeviceInfo();
+    this.updateConfiguration();
   }
 }
 

@@ -19,13 +19,13 @@ interface BusinessHour {
 }
 
 const DAYS_OF_WEEK = [
-  DayOfWeek?.MONDAY,
-  DayOfWeek?.TUESDAY,
-  DayOfWeek?.WEDNESDAY,
-  DayOfWeek?.THURSDAY,
-  DayOfWeek?.FRIDAY,
-  DayOfWeek?.SATURDAY,
-  DayOfWeek?.SUNDAY,
+  DayOfWeek.MONDAY,
+  DayOfWeek.TUESDAY,
+  DayOfWeek.WEDNESDAY,
+  DayOfWeek.THURSDAY,
+  DayOfWeek.FRIDAY,
+  DayOfWeek.SATURDAY,
+  DayOfWeek.SUNDAY,
 ];
 
 export function BusinessHours({ businessId }: BusinessHoursProps) {
@@ -37,15 +37,15 @@ export function BusinessHours({ businessId }: BusinessHoursProps) {
   }, [businessId]);
 
   const fetchBusinessHours = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const response = await fetch(`/api/business/hours?businessId=${businessId}`);
-      if (!response?.ok) throw new Error('Failed to fetch business hours');
-      const data = await response?.json();
+      if (!response.ok) throw new Error('Failed to fetch business hours');
+      const data = await response.json();
       setHours(data);
     } catch (error) {
-      console?.error('Error fetching business hours:', error);
+      console.error('Error fetching business hours:', error);
       toast({
         title: 'Error',
         description: 'Failed to load business hours',
@@ -57,23 +57,23 @@ export function BusinessHours({ businessId }: BusinessHoursProps) {
   };
 
   const handleSave = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const response = await fetch('/api/business/hours', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify({ businessId, hours }),
+        body: JSON.stringify({ businessId, hours }),
       });
 
-      if (!response?.ok) throw new Error('Failed to save business hours');
+      if (!response.ok) throw new Error('Failed to save business hours');
 
       toast({
         title: 'Success',
         description: 'Business hours updated successfully',
       });
     } catch (error) {
-      console?.error('Error saving business hours:', error);
+      console.error('Error saving business hours:', error);
       toast({
         title: 'Error',
         description: 'Failed to save business hours',
@@ -84,7 +84,7 @@ export function BusinessHours({ businessId }: BusinessHoursProps) {
 
   const handleHourChange = (day: DayOfWeek, field: keyof BusinessHour, value: any) => {
     setHours((prev) =>
-      prev?.map((hour) => (hour?.dayOfWeek === day ? { ...hour, [field]: value } : hour)),
+      prev.map((hour) => (hour.dayOfWeek === day ? { ...hour, [field]: value } : hour)),
     );
   };
 
@@ -99,22 +99,22 @@ export function BusinessHours({ businessId }: BusinessHoursProps) {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {DAYS_OF_WEEK?.map((day) => (
+          {DAYS_OF_WEEK.map((day) => (
             <div key={day} className="flex items-center space-x-4">
               <div className="w-32">{day}</div>
               <Switch
-                checked={!hours?.find((h) => h?.dayOfWeek === day)?.isClosed}
+                checked={!hours.find((h) => h.dayOfWeek === day).isClosed}
                 onCheckedChange={(checked) => handleHourChange(day, 'isClosed', !checked)}
               />
-              {!hours?.find((h) => h?.dayOfWeek === day)?.isClosed && (
+              {!hours.find((h) => h.dayOfWeek === day).isClosed && (
                 <>
                   <TimeInput
-                    value={hours?.find((h) => h?.dayOfWeek === day)?.openTime || '09:00'}
+                    value={hours.find((h) => h.dayOfWeek === day).openTime || '09:00'}
                     onChange={(value) => handleHourChange(day, 'openTime', value)}
                   />
                   <span>to</span>
                   <TimeInput
-                    value={hours?.find((h) => h?.dayOfWeek === day)?.closeTime || '17:00'}
+                    value={hours.find((h) => h.dayOfWeek === day).closeTime || '17:00'}
                     onChange={(value) => handleHourChange(day, 'closeTime', value)}
                   />
                 </>

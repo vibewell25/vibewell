@@ -5,10 +5,10 @@ import { InventoryItem } from '../types/inventory';
 import { inventoryApi } from '../services/inventoryService';
 import { InventoryDetailRouteProp, InventoryDetailNavigationProp } from '../types/navigation';
 
-const InventoryDetailScreen: React?.FC = () => {
+const InventoryDetailScreen: React.FC = () => {
   const route = useRoute<InventoryDetailRouteProp>();
   const navigation = useNavigation<InventoryDetailNavigationProp>();
-  const { id } = route?.params;
+  const { id } = route.params;
 
   const [item, setItem] = useState<InventoryItem | null>(null);
   const [loading, setLoading] = useState(true);
@@ -17,11 +17,11 @@ const InventoryDetailScreen: React?.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        const data = await inventoryApi?.getItemById(id);
+        const data = await inventoryApi.getItemById(id);
         setItem(data);
       } catch (err) {
-        console?.error(err);
-        Alert?.alert('Error', 'Failed to load item');
+        console.error(err);
+        Alert.alert('Error', 'Failed to load item');
       } finally {
         setLoading(false);
       }
@@ -29,23 +29,23 @@ const InventoryDetailScreen: React?.FC = () => {
   }, [id]);
 
   const confirmDelete = () => {
-    Alert?.alert('Confirm Delete', 'Are you sure you want to delete this item?', [
+    Alert.alert('Confirm Delete', 'Are you sure you want to delete this item?', [
       { text: 'Cancel', style: 'cancel' },
       { text: 'Delete', style: 'destructive', onPress: handleDelete },
     ]);
   };
 
   const handleDelete = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setDeleting(true);
     try {
-      await inventoryApi?.deleteItem(id);
-      Alert?.alert('Success', 'Item deleted');
-      navigation?.goBack();
+      await inventoryApi.deleteItem(id);
+      Alert.alert('Success', 'Item deleted');
+      navigation.goBack();
     } catch (err) {
-      console?.error(err);
-      Alert?.alert('Error', 'Failed to delete item');
+      console.error(err);
+      Alert.alert('Error', 'Failed to delete item');
     } finally {
       setDeleting(false);
     }
@@ -54,17 +54,17 @@ const InventoryDetailScreen: React?.FC = () => {
   if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
-    <View style={styles?.container}>
-      <Text style={styles?.title}>{item?.name}</Text>
-      <Text>Description: {item?.description}</Text>
-      <Text>Quantity: {item?.quantity}</Text>
-      <Button title="Edit" onPress={() => navigation?.navigate('InventoryForm', { item: item! })} />
+    <View style={styles.container}>
+      <Text style={styles.title}>{item.name}</Text>
+      <Text>Description: {item.description}</Text>
+      <Text>Quantity: {item.quantity}</Text>
+      <Button title="Edit" onPress={() => navigation.navigate('InventoryForm', { item: item! })} />
       <Button title={deleting ? 'Deleting...' : 'Delete'} onPress={confirmDelete} color="red" disabled={deleting} />
     </View>
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   title: { fontSize: 20, fontWeight: 'bold', marginBottom: 8 },
 });

@@ -37,7 +37,7 @@ export function PostReaction({
 }: PostReactionProps) {
   // Initialize reactions with defaults
   const [reactions, setReactions] = useState<Reaction[]>(
-    REACTION_TYPES?.map((type) => ({
+    REACTION_TYPES.map((type) => ({
       type,
       count: initialReactions[type] || 0,
       reacted: type === userReaction,
@@ -47,7 +47,7 @@ export function PostReaction({
   const [selectedReaction, setSelectedReaction] = useState<ReactionType | null>(userReaction);
 
   // Calculate total reaction count
-  const totalReactions = reactions?.reduce((sum, reaction) => sum + reaction?.count, 0);
+  const totalReactions = reactions.reduce((sum, reaction) => sum + reaction.count, 0);
 
   // Handle reaction selection
   const handleReactionClick = (type: ReactionType) => {
@@ -56,7 +56,7 @@ export function PostReaction({
     // If the same reaction is clicked again, remove it
     if (selectedReaction === type) {
       // Find the reaction and decrement its count
-      const index = newReactions?.findIndex((r) => r?.type === type);
+      const index = newReactions.findIndex((r) => r.type === type);
       if (index !== -1 && newReactions[index].count > 0) {
         newReactions[index].if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count -= 1;
         newReactions[index].reacted = false;
@@ -70,7 +70,7 @@ export function PostReaction({
     } else {
       // If user had previously reacted, remove that reaction first
       if (selectedReaction) {
-        const previousIndex = newReactions?.findIndex((r) => r?.type === selectedReaction);
+        const previousIndex = newReactions.findIndex((r) => r.type === selectedReaction);
         if (previousIndex !== -1 && newReactions[previousIndex].count > 0) {
           newReactions[previousIndex].if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count -= 1;
           newReactions[previousIndex].reacted = false;
@@ -78,7 +78,7 @@ export function PostReaction({
       }
 
       // Add the new reaction
-      const index = newReactions?.findIndex((r) => r?.type === type);
+      const index = newReactions.findIndex((r) => r.type === type);
       if (index !== -1) {
         newReactions[index].if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += 1;
         newReactions[index].reacted = true;
@@ -117,7 +117,7 @@ export function PostReaction({
     <div className="relative">
       {/* Main reaction button */}
       <button
-        className={`flex items-center space-x-1 rounded-md px-3 py-1?.5 text-sm ${
+        className={`flex items-center space-x-1 rounded-md px-3 py-1.5 text-sm ${
           selectedReaction
             ? 'bg-primary/10 text-primary'
             : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
@@ -131,10 +131,10 @@ export function PostReaction({
       {/* Reaction picker */}
       {showReactionPicker && (
         <div className="absolute bottom-full left-0 z-10 mb-2 flex space-x-1 rounded-lg border border-border bg-card p-2 shadow-lg">
-          {REACTION_TYPES?.map((type) => (
+          {REACTION_TYPES.map((type) => (
             <Tooltip key={type} content={REACTION_LABELS[type]}>
               <button
-                className={`rounded-full p-1?.5 text-xl transition-transform hover:scale-125 ${
+                className={`rounded-full p-1.5 text-xl transition-transform hover:scale-125 ${
                   selectedReaction === type ? 'bg-primary/10' : 'hover:bg-muted'
                 }`}
                 onClick={() => handleReactionClick(type)}

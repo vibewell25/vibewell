@@ -86,8 +86,8 @@ export class PerformanceReviewService {
   ];
 
   constructor(notificationService: NotificationService, analyticsService: AnalyticsService) {
-    this?.notificationService = notificationService;
-    this?.analyticsService = analyticsService;
+    this.notificationService = notificationService;
+    this.analyticsService = analyticsService;
   }
 
   /**
@@ -99,11 +99,11 @@ export class PerformanceReviewService {
     period: { start: Date; end: Date },
   ): Promise<PerformanceReview> {
     // Check for existing review in the same period
-    const existingReview = await PerformanceReviewModel?.findOne({
+    const existingReview = await PerformanceReviewModel.findOne({
       practitionerId,
       reviewType,
-      'reviewPeriod?.start': { $lte: period?.end },
-      'reviewPeriod?.end': { $gte: period?.start },
+      'reviewPeriod.start': { $lte: period.end },
+      'reviewPeriod.end': { $gte: period.start },
     });
 
     if (existingReview) {
@@ -114,8 +114,8 @@ export class PerformanceReviewService {
       practitionerId,
       reviewType,
       reviewPeriod: period,
-      metrics: this?.STANDARD_METRICS.map((metric) => ({
-        metricId: metric?.id,
+      metrics: this.STANDARD_METRICS.map((metric) => ({
+        metricId: metric.id,
         score: 0,
         notes: '',
         evaluatorId: null,
@@ -123,13 +123,13 @@ export class PerformanceReviewService {
       })),
     });
 
-    await review?.save();
+    await review.save();
 
     // Notify practitioner
-    await this?.notificationService.notifyUser(practitionerId, {
+    await this.notificationService.notifyUser(practitionerId, {
       type: 'REVIEW',
       title: 'New Performance Review',
-      message: `A new ${reviewType} review has been created for the period ${period?.start.toLocaleDateString()} to ${period?.end.toLocaleDateString()}`,
+      message: `A new ${reviewType} review has been created for the period ${period.start.toLocaleDateString()} to ${period.end.toLocaleDateString()}`,
     });
 
     return review;
@@ -143,13 +143,13 @@ export class PerformanceReviewService {
     metricId: string,
     evaluation: Partial<MetricEvaluation>,
   ): Promise<PerformanceReview> {
-    const review = await PerformanceReviewModel?.findById(reviewId);
+    const review = await PerformanceReviewModel.findById(reviewId);
 
     if (!review) {
       throw new Error('Review not found');
     }
 
-    const metricIndex = review?.metrics.findIndex((m) => m?.metricId === metricId);
+    const metricIndex = review.metrics.findIndex((m) => m.metricId === metricId);
 
     if (metricIndex === -1) {
       throw new Error('Metric not found in review');
@@ -157,33 +157,33 @@ export class PerformanceReviewService {
 
 
     // Safe array access
-    if (metricIndex < 0 || metricIndex >= array?.length) {
+    if (metricIndex < 0 || metricIndex >= array.length) {
       throw new Error('Array index out of bounds');
     }
-    review?.metrics[metricIndex] = {
+    review.metrics[metricIndex] = {
 
     // Safe array access
-    if (metricIndex < 0 || metricIndex >= array?.length) {
+    if (metricIndex < 0 || metricIndex >= array.length) {
       throw new Error('Array index out of bounds');
     }
-      ...review?.metrics[metricIndex],
+      ...review.metrics[metricIndex],
       ...evaluation,
       evaluationDate: new Date(),
     };
 
     // Calculate overall score
 
-    const totalWeight = this?.STANDARD_METRICS.reduce((sum, m) => sum + m?.weight, 0);
-    const weightedSum = review?.metrics.reduce((sum, m) => {
-      const metric = this?.STANDARD_METRICS.find((sm) => sm?.id === m?.metricId);
+    const totalWeight = this.STANDARD_METRICS.reduce((sum, m) => sum + m.weight, 0);
+    const weightedSum = review.metrics.reduce((sum, m) => {
+      const metric = this.STANDARD_METRICS.find((sm) => sm.id === m.metricId);
 
-      return sum + m?.score * (metric?.weight || 0);
+      return sum + m.score * (metric.weight || 0);
     }, 0);
 
 
-    review?.overallScore = weightedSum / totalWeight;
+    review.overallScore = weightedSum / totalWeight;
 
-    return await review?.save();
+    return await review.save();
   }
 
   /**
@@ -193,7 +193,7 @@ export class PerformanceReviewService {
     reviewId: string,
     goal: Omit<DevelopmentGoal, 'id' | 'status' | 'progress'>,
   ): Promise<PerformanceReview> {
-    const review = await PerformanceReviewModel?.findById(reviewId);
+    const review = await PerformanceReviewModel.findById(reviewId);
 
     if (!review) {
       throw new Error('Review not found');
@@ -206,8 +206,8 @@ export class PerformanceReviewService {
       progress: 0,
     };
 
-    review?.developmentGoals.push(newGoal);
-    return await review?.save();
+    review.developmentGoals.push(newGoal);
+    return await review.save();
   }
 
   /**
@@ -222,13 +222,13 @@ export class PerformanceReviewService {
       completedMilestones?: string[];
     },
   ): Promise<PerformanceReview> {
-    const review = await PerformanceReviewModel?.findById(reviewId);
+    const review = await PerformanceReviewModel.findById(reviewId);
 
     if (!review) {
       throw new Error('Review not found');
     }
 
-    const goalIndex = review?.developmentGoals.findIndex((g) => g?.id === goalId);
+    const goalIndex = review.developmentGoals.findIndex((g) => g.id === goalId);
 
     if (goalIndex === -1) {
       throw new Error('Goal not found');
@@ -236,34 +236,34 @@ export class PerformanceReviewService {
 
 
     // Safe array access
-    if (goalIndex < 0 || goalIndex >= array?.length) {
+    if (goalIndex < 0 || goalIndex >= array.length) {
       throw new Error('Array index out of bounds');
     }
-    const goal = review?.developmentGoals[goalIndex];
+    const goal = review.developmentGoals[goalIndex];
 
-    if (update?.status) {
-      goal?.status = update?.status;
+    if (update.status) {
+      goal.status = update.status;
     }
 
-    if (update?.progress !== undefined) {
-      goal?.progress = update?.progress;
+    if (update.progress !== undefined) {
+      goal.progress = update.progress;
     }
 
-    if (update?.completedMilestones) {
-      goal?.milestones = goal?.milestones.map((m) => ({
+    if (update.completedMilestones) {
+      goal.milestones = goal.milestones.map((m) => ({
         ...m,
-        status: update?.completedMilestones?.includes(m?.title) ? 'completed' : m?.status,
-        completedDate: update?.completedMilestones?.includes(m?.title) ? new Date() : m?.completedDate,
+        status: update.completedMilestones.includes(m.title) ? 'completed' : m.status,
+        completedDate: update.completedMilestones.includes(m.title) ? new Date() : m.completedDate,
       }));
     }
 
 
     // Safe array access
-    if (goalIndex < 0 || goalIndex >= array?.length) {
+    if (goalIndex < 0 || goalIndex >= array.length) {
       throw new Error('Array index out of bounds');
     }
-    review?.developmentGoals[goalIndex] = goal;
-    return await review?.save();
+    review.developmentGoals[goalIndex] = goal;
+    return await review.save();
   }
 
   /**
@@ -277,18 +277,18 @@ export class PerformanceReviewService {
       comments: string;
     },
   ): Promise<PerformanceReview> {
-    const review = await PerformanceReviewModel?.findById(reviewId);
+    const review = await PerformanceReviewModel.findById(reviewId);
 
     if (!review) {
       throw new Error('Review not found');
     }
 
-    review?.feedback.peerFeedback?.push({
+    review.feedback.peerFeedback.push({
       ...feedback,
       date: new Date(),
     } as any);
 
-    return await review?.save();
+    return await review.save();
   }
 
   /**
@@ -302,18 +302,18 @@ export class PerformanceReviewService {
       goals: string[];
     },
   ): Promise<PerformanceReview> {
-    const review = await PerformanceReviewModel?.findById(reviewId);
+    const review = await PerformanceReviewModel.findById(reviewId);
 
     if (!review) {
       throw new Error('Review not found');
     }
 
-    review?.feedback.selfAssessment = {
+    review.feedback.selfAssessment = {
       ...assessment,
       submitted: new Date(),
     };
 
-    return await review?.save();
+    return await review.save();
   }
 
   /**
@@ -327,26 +327,26 @@ export class PerformanceReviewService {
       attendees: string[];
     },
   ): Promise<PerformanceReview> {
-    const review = await PerformanceReviewModel?.findById(reviewId);
+    const review = await PerformanceReviewModel.findById(reviewId);
 
     if (!review) {
       throw new Error('Review not found');
     }
 
-    review?.reviewMeetings.push({
+    review.reviewMeetings.push({
       ...meeting,
       notes: '',
       actionItems: [],
     } as any);
 
-    await review?.save();
+    await review.save();
 
     // Notify attendees
-    for (const attendeeId of meeting?.attendees) {
-      await this?.notificationService.notifyUser(attendeeId, {
+    for (const attendeeId of meeting.attendees) {
+      await this.notificationService.notifyUser(attendeeId, {
         type: 'REVIEW',
         title: 'Performance Review Meeting Scheduled',
-        message: `A review meeting has been scheduled for ${meeting?.scheduledDate.toLocaleString()}`,
+        message: `A review meeting has been scheduled for ${meeting.scheduledDate.toLocaleString()}`,
       });
     }
 
@@ -370,30 +370,30 @@ export class PerformanceReviewService {
       };
     },
   ): Promise<PerformanceReview> {
-    const review = await PerformanceReviewModel?.findById(reviewId);
+    const review = await PerformanceReviewModel.findById(reviewId);
 
     if (!review) {
       throw new Error('Review not found');
     }
 
-    if (review?.status !== 'in_review') {
+    if (review.status !== 'in_review') {
       throw new Error('Review must be in review status to complete');
     }
 
-    if (!review?.metrics.every((m) => m?.score > 0)) {
+    if (!review.metrics.every((m) => m.score > 0)) {
       throw new Error('All metrics must be evaluated before completion');
     }
 
-    Object?.assign(review, {
+    Object.assign(review, {
       status: 'completed',
-      strengths: completionData?.strengths,
-      areasForImprovement: completionData?.areasForImprovement,
+      strengths: completionData.strengths,
+      areasForImprovement: completionData.areasForImprovement,
       compensation: {
-        ...review?.compensation,
-        ...completionData?.compensation,
+        ...review.compensation,
+        ...completionData.compensation,
       },
       signatures: {
-        ...review?.signatures,
+        ...review.signatures,
         reviewer: {
           userId: reviewerId,
           signed: true,
@@ -402,10 +402,10 @@ export class PerformanceReviewService {
       },
     });
 
-    await review?.save();
+    await review.save();
 
     // Notify practitioner
-    await this?.notificationService.notifyUser(review?.practitionerId.toString(), {
+    await this.notificationService.notifyUser(review.practitionerId.toString(), {
       type: 'REVIEW',
       title: 'Performance Review Completed',
       message: 'Your performance review has been completed. Please sign to acknowledge.',
@@ -421,29 +421,29 @@ export class PerformanceReviewService {
     const query = {
       practitionerId,
       ...(period && {
-        'reviewPeriod?.start': { $gte: period?.start },
-        'reviewPeriod?.end': { $lte: period?.end },
+        'reviewPeriod.start': { $gte: period.start },
+        'reviewPeriod.end': { $lte: period.end },
       }),
     };
 
-    const reviews = await PerformanceReviewModel?.find(query).sort({ 'reviewPeriod?.start': -1 });
+    const reviews = await PerformanceReviewModel.find(query).sort({ 'reviewPeriod.start': -1 });
 
     return {
-      totalReviews: reviews?.length,
-      averageScore: reviews?.reduce((sum, r) => sum + (r?.overallScore || 0), 0) / reviews?.length,
-      completedGoals: reviews?.reduce(
+      totalReviews: reviews.length,
+      averageScore: reviews.reduce((sum, r) => sum + (r.overallScore || 0), 0) / reviews.length,
+      completedGoals: reviews.reduce(
 
-        (sum, r) => sum + r?.developmentGoals.filter((g) => g?.status === 'completed').length,
+        (sum, r) => sum + r.developmentGoals.filter((g) => g.status === 'completed').length,
         0,
       ),
-      strengthAreas: this?.aggregateStrengths(reviews),
-      improvementAreas: this?.aggregateImprovements(reviews),
-      recentReviews: reviews?.slice(0, 3).map((r) => ({
-        id: r?._id,
-        period: r?.reviewPeriod,
-        type: r?.reviewType,
-        status: r?.status,
-        score: r?.overallScore,
+      strengthAreas: this.aggregateStrengths(reviews),
+      improvementAreas: this.aggregateImprovements(reviews),
+      recentReviews: reviews.slice(0, 3).map((r) => ({
+        id: r._id,
+        period: r.reviewPeriod,
+        type: r.reviewType,
+        status: r.status,
+        score: r.overallScore,
       })),
     };
   }
@@ -451,16 +451,16 @@ export class PerformanceReviewService {
   private aggregateStrengths(reviews: PerformanceReview[]): { area: string; frequency: number }[] {
     const strengthCounts = new Map<string, number>();
 
-    reviews?.forEach((review) => {
-      review?.strengths.forEach((strength) => {
-        strengthCounts?.set(strength, (strengthCounts?.get(strength) || 0) + 1);
+    reviews.forEach((review) => {
+      review.strengths.forEach((strength) => {
+        strengthCounts.set(strength, (strengthCounts.get(strength) || 0) + 1);
       });
     });
 
-    return Array?.from(strengthCounts?.entries())
+    return Array.from(strengthCounts.entries())
       .map(([area, frequency]) => ({ area, frequency }))
 
-      .sort((a, b) => b?.frequency - a?.frequency);
+      .sort((a, b) => b.frequency - a.frequency);
   }
 
   private aggregateImprovements(
@@ -468,15 +468,15 @@ export class PerformanceReviewService {
   ): { area: string; frequency: number }[] {
     const improvementCounts = new Map<string, number>();
 
-    reviews?.forEach((review) => {
-      review?.areasForImprovement.forEach((area) => {
-        improvementCounts?.set(area, (improvementCounts?.get(area) || 0) + 1);
+    reviews.forEach((review) => {
+      review.areasForImprovement.forEach((area) => {
+        improvementCounts.set(area, (improvementCounts.get(area) || 0) + 1);
       });
     });
 
-    return Array?.from(improvementCounts?.entries())
+    return Array.from(improvementCounts.entries())
       .map(([area, frequency]) => ({ area, frequency }))
 
-      .sort((a, b) => b?.frequency - a?.frequency);
+      .sort((a, b) => b.frequency - a.frequency);
   }
 }

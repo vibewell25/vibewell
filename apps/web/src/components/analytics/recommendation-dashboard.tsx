@@ -28,21 +28,21 @@ export default function RecommendationDashboard() {
 
   useEffect(() => {
     async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); fetchMetrics() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); fetchMetrics() {
       setLoading(true);
       setError(null);
 
       try {
         const analyticsService = new AnalyticsService();
-        const metrics = await analyticsService?.getRecommendationMetrics({
-          start: startDate?.toISOString(),
-          end: endDate?.toISOString(),
+        const metrics = await analyticsService.getRecommendationMetrics({
+          start: startDate.toISOString(),
+          end: endDate.toISOString(),
         });
 
         setMetrics(metrics);
       } catch (err) {
-        console?.error('Error fetching recommendation metrics:', err);
+        console.error('Error fetching recommendation metrics:', err);
         setError('Failed to load recommendation data. Please try again later.');
       } finally {
         setLoading(false);
@@ -56,40 +56,40 @@ export default function RecommendationDashboard() {
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
   // Transform metrics for visualization
-  const topRecommendationsData = metrics?.topRecommendedProducts || [];
+  const topRecommendationsData = metrics.topRecommendedProducts || [];
 
   // Calculate click-through-rate by product
   const ctrByProductData =
-    metrics?.topRecommendedProducts?.map((product) => ({
-      name: product?.name.length > 15 ? `${product?.name.substring(0, 15)}...` : product?.name,
-      ctr: product?.recommendations > 0 ? (product?.clicks / product?.recommendations) * 100 : 0,
+    metrics.topRecommendedProducts.map((product) => ({
+      name: product.name.length > 15 ? `${product.name.substring(0, 15)}...` : product.name,
+      ctr: product.recommendations > 0 ? (product.clicks / product.recommendations) * 100 : 0,
     })) || [];
 
   // Simulated funnel data - in a real app, this would come from the API
   const funnelData = [
-    { name: 'Recommendations Shown', value: metrics?.totalRecommendations || 0 },
+    { name: 'Recommendations Shown', value: metrics.totalRecommendations || 0 },
     {
       name: 'Clicked',
-      value: Math?.round(
-        ((metrics?.totalRecommendations || 0) * (metrics?.clickThroughRate || 0)) / 100,
+      value: Math.round(
+        ((metrics.totalRecommendations || 0) * (metrics.clickThroughRate || 0)) / 100,
       ),
     },
     {
       name: 'Added to Cart',
-      value: Math?.round(
-        ((metrics?.totalRecommendations || 0) *
-          (metrics?.clickThroughRate || 0) *
-          (metrics?.conversionRate || 0)) /
+      value: Math.round(
+        ((metrics.totalRecommendations || 0) *
+          (metrics.clickThroughRate || 0) *
+          (metrics.conversionRate || 0)) /
           10000,
       ),
     },
     {
       name: 'Purchased',
-      value: Math?.round(
-        ((metrics?.totalRecommendations || 0) *
-          (metrics?.clickThroughRate || 0) *
-          (metrics?.conversionRate || 0) *
-          0?.7) /
+      value: Math.round(
+        ((metrics.totalRecommendations || 0) *
+          (metrics.clickThroughRate || 0) *
+          (metrics.conversionRate || 0) *
+          0.7) /
           10000,
       ),
     },
@@ -99,7 +99,7 @@ export default function RecommendationDashboard() {
     return (
       <div className="w-full space-y-4">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          {Array?.from({ length: 3 }).map((_, i) => (
+          {Array.from({ length: 3 }).map((_, i) => (
             <Card key={i}>
               <CardHeader className="pb-2">
                 <Skeleton className="h-4 w-24" />
@@ -154,8 +154,8 @@ export default function RecommendationDashboard() {
     <div className="w-full space-y-6">
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
-          Data from {format(new Date(metrics?.timeRange.start), 'MMMM d, yyyy')} to{' '}
-          {format(new Date(metrics?.timeRange.end), 'MMMM d, yyyy')}
+          Data from {format(new Date(metrics.timeRange.start), 'MMMM d, yyyy')} to{' '}
+          {format(new Date(metrics.timeRange.end), 'MMMM d, yyyy')}
         </p>
         <Button variant="outline" size="sm">
           <Download className="mr-2 h-4 w-4" /> Export
@@ -169,7 +169,7 @@ export default function RecommendationDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">
-              {metrics?.totalRecommendations.toLocaleString()}
+              {metrics.totalRecommendations.toLocaleString()}
             </div>
           </CardContent>
         </Card>
@@ -179,7 +179,7 @@ export default function RecommendationDashboard() {
             <CardTitle className="text-sm font-medium">Click-Through Rate</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{metrics?.clickThroughRate.toFixed(1)}%</div>
+            <div className="text-3xl font-bold">{metrics.clickThroughRate.toFixed(1)}%</div>
           </CardContent>
         </Card>
 
@@ -188,7 +188,7 @@ export default function RecommendationDashboard() {
             <CardTitle className="text-sm font-medium">Conversion Rate</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{metrics?.conversionRate.toFixed(1)}%</div>
+            <div className="text-3xl font-bold">{metrics.conversionRate.toFixed(1)}%</div>
           </CardContent>
         </Card>
       </div>
@@ -218,7 +218,7 @@ export default function RecommendationDashboard() {
                   }}
                   width={150}
                   tickFormatter={(value) =>
-                    value?.length > 20 ? `${value?.substring(0, 20)}...` : value
+                    value.length > 20 ? `${value.substring(0, 20)}...` : value
                   }
                 />
                 <Tooltip />
@@ -246,8 +246,8 @@ export default function RecommendationDashboard() {
                 <YAxis label={{ value: 'CTR (%)', angle: -90, position: 'insideLeft' }} />
                 <Tooltip formatter={(value) => [`${Number(value).toFixed(1)}%`, 'CTR']} />
                 <Bar dataKey="ctr" fill="#8884d8" name="Click-Through Rate">
-                  {ctrByProductData?.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS?.length]} />
+                  {ctrByProductData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Bar>
               </BarChart>
@@ -269,8 +269,8 @@ export default function RecommendationDashboard() {
               <YAxis />
               <Tooltip />
               <Bar dataKey="value" fill="#8884d8">
-                {funnelData?.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS?.length]} />
+                {funnelData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Bar>
             </BarChart>
@@ -287,7 +287,7 @@ export default function RecommendationDashboard() {
             <div className="rounded-md border p-4">
               <h3 className="mb-2 font-medium">Increase recommendation relevance</h3>
               <p className="mb-2 text-sm text-muted-foreground">
-                Current click-through rate ({metrics?.clickThroughRate.toFixed(1)}%) is below
+                Current click-through rate ({metrics.clickThroughRate.toFixed(1)}%) is below
                 industry average (15-20%).
               </p>
               <ul className="list-disc pl-5 text-sm">
@@ -300,7 +300,7 @@ export default function RecommendationDashboard() {
             <div className="rounded-md border p-4">
               <h3 className="mb-2 font-medium">Optimize conversion rate</h3>
               <p className="mb-2 text-sm text-muted-foreground">
-                Current conversion rate ({metrics?.conversionRate.toFixed(1)}%) has room for
+                Current conversion rate ({metrics.conversionRate.toFixed(1)}%) has room for
                 improvement.
               </p>
               <ul className="list-disc pl-5 text-sm">

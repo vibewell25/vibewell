@@ -14,13 +14,13 @@ export type AnalyticsStackParamList = {
 
 const Stack = createStackNavigator<AnalyticsStackParamList>();
 
-const AnalyticsStackNavigator: React?.FC = () => (
-  <Stack?.Navigator>
-    <Stack?.Screen name="RevenueAnalytics" component={RevenueAnalyticsScreen} options={{ title: 'Revenue' }} />
-    <Stack?.Screen name="ClientAnalytics" component={ClientAnalyticsScreen} options={{ title: 'Clients' }} />
-    <Stack?.Screen name="ServiceUsage" component={ServiceUsageScreen} options={{ title: 'Service Usage' }} />
-    <Stack?.Screen name="ChurnAnalytics" component={ChurnAnalyticsScreen} options={{ title: 'Churn' }} />
-  </Stack?.Navigator>
+const AnalyticsStackNavigator: React.FC = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="RevenueAnalytics" component={RevenueAnalyticsScreen} options={{ title: 'Revenue' }} />
+    <Stack.Screen name="ClientAnalytics" component={ClientAnalyticsScreen} options={{ title: 'Clients' }} />
+    <Stack.Screen name="ServiceUsage" component={ServiceUsageScreen} options={{ title: 'Service Usage' }} />
+    <Stack.Screen name="ChurnAnalytics" component={ChurnAnalyticsScreen} options={{ title: 'Churn' }} />
+  </Stack.Navigator>
 );
 
 export default AnalyticsStackNavigator;

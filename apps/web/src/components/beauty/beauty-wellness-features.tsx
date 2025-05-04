@@ -29,20 +29,20 @@ export function BeautyWellnessFeatures({
   const [showReviewForm, setShowReviewForm] = useState(false);
 
   const handleSubmitReview = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const response = await fetch('/api/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify({
+        body: JSON.stringify({
           serviceId,
           rating,
           comment,
         }),
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to submit review');
       }
 
@@ -55,7 +55,7 @@ export function BeautyWellnessFeatures({
       setComment('');
       setRating(5);
     } catch (error) {
-      console?.error('Error submitting review:', error);
+      console.error('Error submitting review:', error);
       toast({
         title: 'Error',
         description: 'Failed to submit review. Please try again.',
@@ -119,7 +119,7 @@ export function BeautyWellnessFeatures({
               <label className="block text-sm font-medium">Your Review</label>
               <Textarea
                 value={comment}
-                onChange={(e) => setComment(e?.target.value)}
+                onChange={(e) => setComment(e.target.value)}
                 placeholder="Share your experience..."
                 className="min-h-[100px]"
               />
@@ -129,24 +129,24 @@ export function BeautyWellnessFeatures({
         )}
 
         <div className="space-y-4">
-          {reviews?.map((review) => (
-            <Card key={review?.id} className="p-4">
+          {reviews.map((review) => (
+            <Card key={review.id} className="p-4">
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-medium">{review?.userName}</span>
+                    <span className="font-medium">{review.userName}</span>
                     <span className="text-sm text-muted-foreground">
-                      {review?.createdAt.toLocaleDateString()}
+                      {review.createdAt.toLocaleDateString()}
                     </span>
                   </div>
                   <div className="flex items-center gap-1 text-yellow-400">
-                    {Array?.from({ length: review?.rating }).map((_, i) => (
+                    {Array.from({ length: review.rating }).map((_, i) => (
                       <span key={i}>★</span>
                     ))}
                   </div>
                 </div>
               </div>
-              <p className="mt-2 text-sm">{review?.comment}</p>
+              <p className="mt-2 text-sm">{review.comment}</p>
             </Card>
           ))}
         </div>

@@ -5,13 +5,13 @@ import { Label } from '@/components/ui/label';
 import { Smartphone } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from '@/components/ui/use-toast';
-import { QRCodeSVG } from 'qrcode?.react';
+import { QRCodeSVG } from 'qrcode.react';
 
 interface TwoFactorMethod {
   id: string;
   name: string;
   description: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
   enabled: boolean;
 }
 
@@ -38,8 +38,8 @@ export function TwoFactorAuth() {
   const [phoneNumber, setPhoneNumber] = useState('');
 
   const handleEnable = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');methodId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');methodId: string) => {
     try {
       if (methodId === 'authenticator') {
         setShowQRCode(true);
@@ -60,13 +60,13 @@ export function TwoFactorAuth() {
   };
 
   const handleDisable = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');methodId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');methodId: string) => {
     try {
       // Implement disable logic here
       setMethods((prev) =>
-        prev?.map((method) => {
-          if (method?.id === methodId) {
+        prev.map((method) => {
+          if (method.id === methodId) {
             return { ...method, enabled: false };
           }
           return method;
@@ -86,15 +86,15 @@ export function TwoFactorAuth() {
   };
 
   const handleVerify = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       // Implement verification logic here
       setShowQRCode(false);
       setVerificationCode('');
       setMethods((prev) =>
-        prev?.map((method) => {
-          if (method?.id === 'authenticator') {
+        prev.map((method) => {
+          if (method.id === 'authenticator') {
             return { ...method, enabled: true };
           }
           return method;
@@ -122,20 +122,20 @@ export function TwoFactorAuth() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {methods?.map((method) => (
-          <div key={method?.id} className="space-y-4">
+        {methods.map((method) => (
+          <div key={method.id} className="space-y-4">
             <div className="flex items-start space-x-4">
-              <div className="mt-1">{method?.icon}</div>
+              <div className="mt-1">{method.icon}</div>
               <div className="flex-1 space-y-1">
-                <h3 className="text-sm font-medium">{method?.name}</h3>
-                <p className="text-sm text-muted-foreground">{method?.description}</p>
+                <h3 className="text-sm font-medium">{method.name}</h3>
+                <p className="text-sm text-muted-foreground">{method.description}</p>
               </div>
-              {method?.enabled ? (
-                <Button variant="outline" onClick={() => handleDisable(method?.id)}>
+              {method.enabled ? (
+                <Button variant="outline" onClick={() => handleDisable(method.id)}>
                   Disable
                 </Button>
               ) : (
-                <Button onClick={() => handleEnable(method?.id)}>Enable</Button>
+                <Button onClick={() => handleEnable(method.id)}>Enable</Button>
               )}
             </div>
           </div>
@@ -145,7 +145,7 @@ export function TwoFactorAuth() {
           <div className="space-y-4">
             <div className="flex flex-col items-center space-y-4">
               <QRCodeSVG
-                value="otpauth://totp/Vibewell:user@example?.com?secret=JBSWY3DPEHPK3PXP&issuer=Vibewell"
+                value="otpauth://totp/Vibewell:user@example.com?secret=JBSWY3DPEHPK3PXP&issuer=Vibewell"
                 size={200}
               />
               <p className="text-sm text-muted-foreground">
@@ -157,7 +157,7 @@ export function TwoFactorAuth() {
               <Input
                 id="verification-code"
                 value={verificationCode}
-                onChange={(e) => setVerificationCode(e?.target.value)}
+                onChange={(e) => setVerificationCode(e.target.value)}
                 placeholder="Enter the 6-digit code"
               />
             </div>
@@ -167,14 +167,14 @@ export function TwoFactorAuth() {
           </div>
         )}
 
-        {methods?.find((m) => m?.id === 'sms')?.enabled && (
+        {methods.find((m) => m.id === 'sms').enabled && (
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="phone-number">Phone Number</Label>
               <Input
                 id="phone-number"
                 value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e?.target.value)}
+                onChange={(e) => setPhoneNumber(e.target.value)}
                 placeholder="Enter your phone number"
               />
             </div>

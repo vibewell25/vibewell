@@ -35,10 +35,10 @@ export default function FileUploader({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');event: ChangeEvent<HTMLInputElement>) => {
-    const files = event?.target.files;
-    if (!files || files?.length === 0) return;
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
 
     try {
       setIsUploading(true);
@@ -46,11 +46,11 @@ export default function FileUploader({
       setUploadProgress(0);
 
       // Process each file
-      for (let i = 0; i < files?.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
+      for (let i = 0; i < files.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
         const file = files[i];
 
         // Validate file size
-        const fileSizeMB = file?.size / (1024 * 1024);
+        const fileSizeMB = file.size / (1024 * 1024);
         if (fileSizeMB > maxSizeMB) {
           throw new Error(`File size exceeds the ${maxSizeMB}MB limit.`);
         }
@@ -61,46 +61,46 @@ export default function FileUploader({
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON?.stringify({
-            fileName: file?.name,
-            contentType: file?.type,
+          body: JSON.stringify({
+            fileName: file.name,
+            contentType: file.type,
             folder,
           }),
         });
 
-        if (!response?.ok) {
-          const errorData = await response?.json();
-          throw new Error(errorData?.error || 'Failed to get upload URL');
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to get upload URL');
         }
 
-        const { uploadUrl, key, fileUrl } = await response?.json();
+        const { uploadUrl, key, fileUrl } = await response.json();
 
         // For progress tracking, we need to use XMLHttpRequest instead of fetch
         await new Promise<void>((resolve, reject) => {
           const xhr = new XMLHttpRequest();
 
-          xhr?.upload.addEventListener('progress', (event: ProgressEvent) => {
-            if (event?.lengthComputable) {
-              const percentCompleted = Math?.round((event?.loaded * 100) / event?.total);
+          xhr.upload.addEventListener('progress', (event: ProgressEvent) => {
+            if (event.lengthComputable) {
+              const percentCompleted = Math.round((event.loaded * 100) / event.total);
               setUploadProgress(percentCompleted);
             }
           });
 
-          xhr?.addEventListener('load', () => {
-            if (xhr?.status >= 200 && xhr?.status < 300) {
+          xhr.addEventListener('load', () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
               resolve();
             } else {
               reject(new Error('Failed to upload file to storage'));
             }
           });
 
-          xhr?.addEventListener('error', () => {
+          xhr.addEventListener('error', () => {
             reject(new Error('Failed to upload file to storage'));
           });
 
-          xhr?.open('PUT', uploadUrl);
-          xhr?.setRequestHeader('Content-Type', file?.type);
-          xhr?.send(file);
+          xhr.open('PUT', uploadUrl);
+          xhr.setRequestHeader('Content-Type', file.type);
+          xhr.send(file);
         });
 
         // Call the onUploadComplete callback if provided
@@ -109,8 +109,8 @@ export default function FileUploader({
         }
       }
     } catch (error) {
-      console?.error('Upload error:', error);
-      setUploadError(error instanceof Error ? error?.message : 'An unknown error occurred');
+      console.error('Upload error:', error);
+      setUploadError(error instanceof Error ? error.message : 'An unknown error occurred');
 
       if (onUploadError && error instanceof Error) {
         onUploadError(error);
@@ -120,15 +120,15 @@ export default function FileUploader({
       setUploadProgress(0);
 
       // Reset file input
-      if (fileInputRef?.current) {
-        fileInputRef?.current.value = '';
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
       }
     }
   };
 
   const triggerFileInput = () => {
-    if (fileInputRef?.current) {
-      fileInputRef?.current.click();
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
     }
   };
 
@@ -158,9 +158,9 @@ export default function FileUploader({
 
       {isUploading && (
         <div className="mt-2">
-          <div className="mt-1 h-2?.5 w-full rounded-full bg-gray-200">
+          <div className="mt-1 h-2.5 w-full rounded-full bg-gray-200">
             <div
-              className="h-2?.5 rounded-full bg-blue-600"
+              className="h-2.5 rounded-full bg-blue-600"
               style={{ width: `${uploadProgress}%` }}
             ></div>
           </div>
@@ -173,7 +173,7 @@ export default function FileUploader({
       <p className="mt-2 text-xs text-gray-500">
         Max file size: {maxSizeMB}MB
         {acceptedFileTypes !== '*' &&
-          ` • Accepted formats: ${acceptedFileTypes?.replace('*', 'All')}`}
+          ` • Accepted formats: ${acceptedFileTypes.replace('*', 'All')}`}
       </p>
     </div>
   );

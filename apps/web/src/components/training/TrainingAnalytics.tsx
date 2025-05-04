@@ -34,13 +34,13 @@ export default function TrainingAnalytics({ staffId }: TrainingAnalyticsProps) {
 
   useEffect(() => {
     async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); loadAnalytics() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); loadAnalytics() {
       try {
         const data = await getTrainingAnalytics(staffId);
         setAnalytics(data);
       } catch (error) {
-        console?.error('Error loading analytics:', error);
+        console.error('Error loading analytics:', error);
       } finally {
         setLoading(false);
       }
@@ -53,16 +53,16 @@ export default function TrainingAnalytics({ staffId }: TrainingAnalyticsProps) {
     return <div>Loading...</div>;
   }
 
-  const statusData = Object?.entries(analytics?.moduleBreakdown).map(([status, count]) => ({
-    name: status?.replace('_', ' '),
+  const statusData = Object.entries(analytics.moduleBreakdown).map(([status, count]) => ({
+    name: status.replace('_', ' '),
     value: count,
   }));
 
   const progressData = [
     {
       name: 'Completion',
-      completed: analytics?.completedModules,
-      total: analytics?.totalModules,
+      completed: analytics.completedModules,
+      total: analytics.totalModules,
     },
   ];
 
@@ -101,10 +101,10 @@ export default function TrainingAnalytics({ staffId }: TrainingAnalyticsProps) {
                   outerRadius={80}
                   label
                 >
-                  {statusData?.map((entry, index) => (
+                  {statusData.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
-                      fill={COLORS[entry?.name.replace(' ', '_') as keyof typeof COLORS]}
+                      fill={COLORS[entry.name.replace(' ', '_') as keyof typeof COLORS]}
                     />
                   ))}
                 </Pie>
@@ -121,16 +121,16 @@ export default function TrainingAnalytics({ staffId }: TrainingAnalyticsProps) {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <div className="rounded-lg bg-gray-50 p-4">
             <h3 className="text-sm font-medium text-gray-500">Completion Rate</h3>
-            <p className="mt-1 text-2xl font-semibold">{analytics?.completionRate.toFixed(1)}%</p>
+            <p className="mt-1 text-2xl font-semibold">{analytics.completionRate.toFixed(1)}%</p>
           </div>
           <div className="rounded-lg bg-gray-50 p-4">
             <h3 className="text-sm font-medium text-gray-500">Average Score</h3>
-            <p className="mt-1 text-2xl font-semibold">{analytics?.averageScore.toFixed(1)}</p>
+            <p className="mt-1 text-2xl font-semibold">{analytics.averageScore.toFixed(1)}</p>
           </div>
           <div className="rounded-lg bg-gray-50 p-4">
             <h3 className="text-sm font-medium text-gray-500">Total Time Spent</h3>
             <p className="mt-1 text-2xl font-semibold">
-              {Math?.round(analytics?.totalTimeSpent / 60)} hrs
+              {Math.round(analytics.totalTimeSpent / 60)} hrs
             </p>
           </div>
         </div>
@@ -140,17 +140,17 @@ export default function TrainingAnalytics({ staffId }: TrainingAnalyticsProps) {
       <Card className="p-6">
         <h2 className="mb-4 text-lg font-semibold">Module Status Breakdown</h2>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
-          {statusData?.map((status) => (
+          {statusData.map((status) => (
             <div
-              key={status?.name}
+              key={status.name}
               className="rounded-lg p-4"
               style={{
                 backgroundColor:
-                  COLORS[status?.name.replace(' ', '_') as keyof typeof COLORS] + '20',
+                  COLORS[status.name.replace(' ', '_') as keyof typeof COLORS] + '20',
               }}
             >
-              <h3 className="text-sm font-medium text-gray-500">{status?.name}</h3>
-              <p className="mt-1 text-2xl font-semibold">{status?.value}</p>
+              <h3 className="text-sm font-medium text-gray-500">{status.name}</h3>
+              <p className="mt-1 text-2xl font-semibold">{status.value}</p>
             </div>
           ))}
         </div>

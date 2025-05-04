@@ -15,7 +15,7 @@ interface Preference {
   id: string;
   title: string;
   description: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
   type: 'switch' | 'select';
   value: boolean | string;
   options?: { value: string; label: string }[];
@@ -104,22 +104,22 @@ export function ProfilePreferences() {
   ]);
 
   const handlePreferenceChange = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');id: string, newValue: boolean | string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');id: string, newValue: boolean | string) => {
     try {
       // Simulate API call to update preference
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       setPreferences((prev) =>
-        prev?.map((preference) =>
-          preference?.id === id ? { ...preference, value: newValue } : preference,
+        prev.map((preference) =>
+          preference.id === id ? { ...preference, value: newValue } : preference,
         ),
       );
 
-      toast?.success('Preference updated successfully!');
+      toast.success('Preference updated successfully!');
     } catch (error) {
-      console?.error('Error updating preference:', error);
-      toast?.error('Failed to update preference');
+      console.error('Error updating preference:', error);
+      toast.error('Failed to update preference');
     }
   };
 
@@ -130,40 +130,40 @@ export function ProfilePreferences() {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">
-          {preferences?.map((preference) => (
+          {preferences.map((preference) => (
             <div
-              key={preference?.id}
+              key={preference.id}
               className="flex items-start justify-between rounded-lg border p-4"
             >
               <div className="flex items-start gap-3">
                 <div className="bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-full">
-                  {preference?.icon}
+                  {preference.icon}
                 </div>
                 <div className="space-y-1">
-                  <h3 className="font-medium">{preference?.title}</h3>
-                  <p className="text-sm text-muted-foreground">{preference?.description}</p>
+                  <h3 className="font-medium">{preference.title}</h3>
+                  <p className="text-sm text-muted-foreground">{preference.description}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                {preference?.type === 'switch' ? (
+                {preference.type === 'switch' ? (
                   <Switch
-                    checked={preference?.value as boolean}
+                    checked={preference.value as boolean}
                     onCheckedChange={(checked: boolean) =>
-                      handlePreferenceChange(preference?.id, checked)
+                      handlePreferenceChange(preference.id, checked)
                     }
                   />
                 ) : (
                   <Select
-                    value={preference?.value as string}
-                    onValueChange={(value) => handlePreferenceChange(preference?.id, value)}
+                    value={preference.value as string}
+                    onValueChange={(value) => handlePreferenceChange(preference.id, value)}
                   >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {preference?.options?.map((option) => (
-                        <SelectItem key={option?.value} value={option?.value}>
-                          {option?.label}
+                      {preference.options.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
                         </SelectItem>
                       ))}
                     </SelectContent>

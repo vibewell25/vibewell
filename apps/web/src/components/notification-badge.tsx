@@ -13,10 +13,10 @@ export function NotificationBadge({ onClick }: NotificationBadgeProps) {
   const { data, isLoading } = useQuery({
     queryKey: ['notifications-unread-count'],
     queryFn: async () => {
-      const response = await axios?.get<{ success: boolean; data: { unread: number } }>(
+      const response = await axios.get<{ success: boolean; data: { unread: number } }>(
         '/api/notifications/count',
       );
-      return response?.data.data?.unread;
+      return response.data.data.unread;
     },
     refetchInterval: 60000, // Refetch every minute
     refetchOnWindowFocus: true,

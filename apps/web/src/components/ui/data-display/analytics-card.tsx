@@ -6,12 +6,12 @@ interface AnalyticsCardProps {
   title: string;
   value: string | number;
   description?: string;
-  icon?: React?.ReactNode;
+  icon?: React.ReactNode;
   trend?: {
     value: number;
     isPositive: boolean;
   };
-  footer?: React?.ReactNode;
+  footer?: React.ReactNode;
   className?: string;
   valueClassName?: string;
   onClick?: () => void;
@@ -56,11 +56,11 @@ export function AnalyticsCard({
           <div
             className={cn(
               'mt-2 flex items-center text-xs font-medium',
-              trend?.isPositive ? 'text-green-600' : 'text-red-600',
+              trend.isPositive ? 'text-green-600' : 'text-red-600',
             )}
           >
-            <span className="mr-1">{trend?.isPositive ? '↑' : '↓'}</span>
-            <span>{trend?.value}% from previous period</span>
+            <span className="mr-1">{trend.isPositive ? '↑' : '↓'}</span>
+            <span>{trend.value}% from previous period</span>
           </div>
         )}
 

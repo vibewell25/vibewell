@@ -94,13 +94,13 @@ export function ARResourceMonitor({
   const { gl, scene } = useThree();
   const frameRate = useRef<number>(0);
   const frameCount = useRef<number>(0);
-  const lastUpdate = useRef<number>(Date?.now());
+  const lastUpdate = useRef<number>(Date.now());
   const lastWarningTime = useRef<number>(0);
   const batteryRef = useRef<any>(null);
   const wasPerformanceIssue = useRef<boolean>(false);
   const optimizationsApplied = useRef<boolean>(false);
-  const startTime = useRef<number>(Date?.now());
-  const loggingTimer = useRef<NodeJS?.Timeout | null>(null);
+  const startTime = useRef<number>(Date.now());
+  const loggingTimer = useRef<NodeJS.Timeout | null>(null);
   const performanceHistory = useRef<ARResourceMetrics[]>([]);
 
   const [metrics, setMetrics] = useState<ARResourceMetrics>({
@@ -117,7 +117,7 @@ export function ARResourceMonitor({
   useEffect(() => {
     // Set up performance logging
     if (enablePerformanceLogging) {
-      loggingTimer?.current = setInterval(() => {
+      loggingTimer.current = setInterval(() => {
         logPerformanceSnapshot();
       }, loggingInterval);
     }
@@ -127,14 +127,14 @@ export function ARResourceMonitor({
       (navigator as any)
         .getBattery()
         .then((battery: any) => {
-          batteryRef?.current = battery;
+          batteryRef.current = battery;
 
           // Add battery event listeners
-          battery?.addEventListener('levelchange', updateBatteryInfo);
-          battery?.addEventListener('chargingchange', updateBatteryInfo);
+          battery.addEventListener('levelchange', updateBatteryInfo);
+          battery.addEventListener('chargingchange', updateBatteryInfo);
         })
         .catch((err: Error) => {
-          console?.warn('Battery API not available:', err);
+          console.warn('Battery API not available:', err);
         });
     }
 
@@ -145,13 +145,13 @@ export function ARResourceMonitor({
 
     // Cleanup function
     return () => {
-      if (loggingTimer?.current) {
-        clearInterval(loggingTimer?.current);
+      if (loggingTimer.current) {
+        clearInterval(loggingTimer.current);
       }
 
-      if (batteryRef?.current) {
-        batteryRef?.current.removeEventListener('levelchange', updateBatteryInfo);
-        batteryRef?.current.removeEventListener('chargingchange', updateBatteryInfo);
+      if (batteryRef.current) {
+        batteryRef.current.removeEventListener('levelchange', updateBatteryInfo);
+        batteryRef.current.removeEventListener('chargingchange', updateBatteryInfo);
       }
     };
   }, [enablePerformanceLogging, loggingInterval, enableAdaptiveQuality]);
@@ -165,23 +165,23 @@ export function ARResourceMonitor({
     let textureCount = 0;
 
     // Traverse scene to count objects
-    const traverseNode = (node: THREE?.Object3D, depth = 0) => {
+    const traverseNode = (node: THREE.Object3D, depth = 0) => {
       if (objectCount > Number.MAX_SAFE_INTEGER || objectCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); objectCount++;
-      maxDepth = Math?.max(maxDepth, depth);
+      maxDepth = Math.max(maxDepth, depth);
 
-      if (node?.type === 'Mesh') {
-        const mesh = node as THREE?.Mesh;
-        if (mesh?.geometry) {
-          if (mesh?.geometry.index) {
-            if (triangleCount > Number.MAX_SAFE_INTEGER || triangleCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); triangleCount += mesh?.geometry.index?.count / 3;
-          } else if (mesh?.geometry.attributes?.position) {
-            if (triangleCount > Number.MAX_SAFE_INTEGER || triangleCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); triangleCount += mesh?.geometry.attributes?.position.count / 3;
+      if (node.type === 'Mesh') {
+        const mesh = node as THREE.Mesh;
+        if (mesh.geometry) {
+          if (mesh.geometry.index) {
+            if (triangleCount > Number.MAX_SAFE_INTEGER || triangleCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); triangleCount += mesh.geometry.index.count / 3;
+          } else if (mesh.geometry.attributes.position) {
+            if (triangleCount > Number.MAX_SAFE_INTEGER || triangleCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); triangleCount += mesh.geometry.attributes.position.count / 3;
           }
         }
 
-        if (mesh?.material) {
-          const materials = Array?.isArray(mesh?.material) ? mesh?.material : [mesh?.material];
-          materials?.forEach((material) => {
+        if (mesh.material) {
+          const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+          materials.forEach((material) => {
             if ((material as any).map) if (textureCount > Number.MAX_SAFE_INTEGER || textureCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); textureCount++;
             if ((material as any).normalMap) if (textureCount > Number.MAX_SAFE_INTEGER || textureCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); textureCount++;
             if ((material as any).roughnessMap) if (textureCount > Number.MAX_SAFE_INTEGER || textureCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); textureCount++;
@@ -189,30 +189,30 @@ export function ARResourceMonitor({
         }
       }
 
-      if (node?.type.includes('Light')) {
+      if (node.type.includes('Light')) {
         if (lightCount > Number.MAX_SAFE_INTEGER || lightCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); lightCount++;
       }
 
-      node?.children.forEach((child) => traverseNode(child, depth + 1));
+      node.children.forEach((child) => traverseNode(child, depth + 1));
     };
 
     traverseNode(scene);
 
     // Calculate complexity score (1-10)
-    const triangleScore = Math?.min(10, (triangleCount / 50000) * 10);
-    const objectScore = Math?.min(10, (objectCount / 100) * 10);
-    const lightScore = Math?.min(10, (lightCount / 5) * 10);
-    const depthScore = Math?.min(10, (maxDepth / 10) * 10);
-    const textureScore = Math?.min(10, (textureCount / 10) * 10);
+    const triangleScore = Math.min(10, (triangleCount / 50000) * 10);
+    const objectScore = Math.min(10, (objectCount / 100) * 10);
+    const lightScore = Math.min(10, (lightCount / 5) * 10);
+    const depthScore = Math.min(10, (maxDepth / 10) * 10);
+    const textureScore = Math.min(10, (textureCount / 10) * 10);
 
     // Weighted average
     return (
-      Math?.round(
-        (triangleScore * 0?.4 +
-          objectScore * 0?.2 +
-          lightScore * 0?.2 +
-          depthScore * 0?.1 +
-          textureScore * 0?.1) *
+      Math.round(
+        (triangleScore * 0.4 +
+          objectScore * 0.2 +
+          lightScore * 0.2 +
+          depthScore * 0.1 +
+          textureScore * 0.1) *
           10,
       ) / 10
     );
@@ -220,13 +220,13 @@ export function ARResourceMonitor({
 
   // Get GPU info if available
   const getGPUInfo = () => {
-    const canvas = gl?.domElement;
-    const debugInfo = canvas?.getContext('webgl2')?.getExtension('WEBGL_debug_renderer_info');
+    const canvas = gl.domElement;
+    const debugInfo = canvas.getContext('webgl2').getExtension('WEBGL_debug_renderer_info');
 
     if (debugInfo) {
-      const gl2 = canvas?.getContext('webgl2');
-      const vendor = gl2?.getParameter(debugInfo?.UNMASKED_VENDOR_WEBGL);
-      const renderer = gl2?.getParameter(debugInfo?.UNMASKED_RENDERER_WEBGL);
+      const gl2 = canvas.getContext('webgl2');
+      const vendor = gl2.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
+      const renderer = gl2.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
 
       return { vendor, renderer };
     }
@@ -237,24 +237,24 @@ export function ARResourceMonitor({
   // Log performance snapshot for analytics
   const logPerformanceSnapshot = () => {
     const currentMetrics = { ...metrics };
-    performanceHistory?.current.push(currentMetrics);
+    performanceHistory.current.push(currentMetrics);
 
     // Keep history limited to last 10 snapshots
-    if (performanceHistory?.current.length > 10) {
-      performanceHistory?.current.shift();
+    if (performanceHistory.current.length > 10) {
+      performanceHistory.current.shift();
     }
 
     // Calculate trends
-    if (performanceHistory?.current.length >= 2) {
-      const current = performanceHistory?.current[performanceHistory?.current.length - 1];
-      const previous = performanceHistory?.current[performanceHistory?.current.length - 2];
+    if (performanceHistory.current.length >= 2) {
+      const current = performanceHistory.current[performanceHistory.current.length - 1];
+      const previous = performanceHistory.current[performanceHistory.current.length - 2];
 
-      const fpsChange = current?.fps - previous?.fps;
-      const memoryChange = current?.memoryUsage - previous?.memoryUsage;
+      const fpsChange = current.fps - previous.fps;
+      const memoryChange = current.memoryUsage - previous.memoryUsage;
 
       // Log significant changes
-      if (Math?.abs(fpsChange) > 5 || Math?.abs(memoryChange) > 20) {
-        console?.info('AR Performance Change:', {
+      if (Math.abs(fpsChange) > 5 || Math.abs(memoryChange) > 20) {
+        console.info('AR Performance Change:', {
           fpsChange,
           memoryChange,
           timestamp: new Date().toISOString(),
@@ -264,42 +264,42 @@ export function ARResourceMonitor({
     }
 
     // If enabled, send to analytics service
-    // analyticsService?.trackPerformance(currentMetrics, componentId);
+    // analyticsService.trackPerformance(currentMetrics, componentId);
   };
 
   // Update battery info
   const updateBatteryInfo = () => {
-    if (!batteryRef?.current) return;
+    if (!batteryRef.current) return;
 
     setMetrics((prev) => ({
       ...prev,
-      batteryLevel: batteryRef?.current.level * 100,
-      batteryCharging: batteryRef?.current.charging,
+      batteryLevel: batteryRef.current.level * 100,
+      batteryCharging: batteryRef.current.charging,
     }));
   };
 
   // Apply optimizations based on device capabilities
   const applyInitialOptimizations = () => {
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i?.test(
-      navigator?.userAgent,
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent,
     );
 
     // Set initial render quality based on device type
     if (isMobile) {
-      gl?.setPixelRatio(Math?.min(window?.devicePixelRatio, 1?.5));
+      gl.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
       // Apply mobile-specific optimizations
-      if (optimizations?.reduceTextureQuality) {
-        scene?.traverse((node) => {
-          if (node?.type === 'Mesh') {
-            const mesh = node as THREE?.Mesh;
-            if (mesh?.material) {
-              const materials = Array?.isArray(mesh?.material) ? mesh?.material : [mesh?.material];
-              materials?.forEach((material) => {
+      if (optimizations.reduceTextureQuality) {
+        scene.traverse((node) => {
+          if (node.type === 'Mesh') {
+            const mesh = node as THREE.Mesh;
+            if (mesh.material) {
+              const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+              materials.forEach((material) => {
                 // Lower texture quality
                 if ((material as any).map) {
-                  (material as any).map?.minFilter = THREE?.LinearFilter;
-                  (material as any).map?.anisotropy = 1;
+                  (material as any).map.minFilter = THREE.LinearFilter;
+                  (material as any).map.anisotropy = 1;
                 }
               });
             }
@@ -308,64 +308,64 @@ export function ARResourceMonitor({
       }
 
       // Disable shadows on mobile
-      if (optimizations?.disableShadows) {
-        gl?.shadowMap.enabled = false;
+      if (optimizations.disableShadows) {
+        gl.shadowMap.enabled = false;
       }
     }
   };
 
   // Apply progressive performance optimizations
   const applyProgressiveOptimizations = () => {
-    if (optimizationsApplied?.current) return;
+    if (optimizationsApplied.current) return;
 
     // First level optimizations
-    const pixelRatio = Math?.max(1, window?.devicePixelRatio * 0?.75);
-    gl?.setPixelRatio(pixelRatio);
+    const pixelRatio = Math.max(1, window.devicePixelRatio * 0.75);
+    gl.setPixelRatio(pixelRatio);
 
     // Reduce shadow quality
-    if (gl?.shadowMap.enabled && optimizations?.disableShadows) {
-      gl?.shadowMap.autoUpdate = false;
-      gl?.shadowMap.needsUpdate = true;
+    if (gl.shadowMap.enabled && optimizations.disableShadows) {
+      gl.shadowMap.autoUpdate = false;
+      gl.shadowMap.needsUpdate = true;
     }
 
     // Reduce draw distance
-    if (optimizations?.reduceDrawDistance) {
-      const camera = scene?.getObjectByProperty(
+    if (optimizations.reduceDrawDistance) {
+      const camera = scene.getObjectByProperty(
         'type',
         'PerspectiveCamera',
-      ) as THREE?.PerspectiveCamera;
+      ) as THREE.PerspectiveCamera;
       if (camera) {
-        camera?.far = Math?.min(camera?.far, 500);
-        camera?.updateProjectionMatrix();
+        camera.far = Math.min(camera.far, 500);
+        camera.updateProjectionMatrix();
       }
     }
 
     // Enable frustum culling
-    if (optimizations?.enableFrustumCulling) {
-      scene?.traverse((node) => {
-        if (node?.type === 'Mesh') {
-          node?.frustumCulled = true;
+    if (optimizations.enableFrustumCulling) {
+      scene.traverse((node) => {
+        if (node.type === 'Mesh') {
+          node.frustumCulled = true;
         }
       });
     }
 
     // Simplify lighting
-    if (optimizations?.reduceLightCount) {
+    if (optimizations.reduceLightCount) {
       let lightCount = 0;
-      scene?.traverse((node) => {
-        if (node?.type.includes('Light') && lightCount > 1) {
-          node?.visible = false;
+      scene.traverse((node) => {
+        if (node.type.includes('Light') && lightCount > 1) {
+          node.visible = false;
           if (lightCount > Number.MAX_SAFE_INTEGER || lightCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); lightCount++;
         }
       });
     }
 
-    optimizationsApplied?.current = true;
+    optimizationsApplied.current = true;
 
     // Log optimization applied
     if (enableErrorTracking) {
-      errorTrackingService?.captureError('AR performance optimizations applied', {
-        category: ErrorCategory?.PERFORMANCE,
+      errorTrackingService.captureError('AR performance optimizations applied', {
+        category: ErrorCategory.PERFORMANCE,
         severity: 'medium',
         context: {
           component: componentId,
@@ -379,43 +379,43 @@ export function ARResourceMonitor({
 
   // Reset optimizations when performance improves
   const resetOptimizations = () => {
-    if (!optimizationsApplied?.current) return;
+    if (!optimizationsApplied.current) return;
 
     // Reset pixel ratio
-    gl?.setPixelRatio(window?.devicePixelRatio);
+    gl.setPixelRatio(window.devicePixelRatio);
 
     // Re-enable shadow updates
-    if (gl?.shadowMap.enabled) {
-      gl?.shadowMap.autoUpdate = true;
+    if (gl.shadowMap.enabled) {
+      gl.shadowMap.autoUpdate = true;
     }
 
     // Other resets if needed...
 
-    optimizationsApplied?.current = false;
+    optimizationsApplied.current = false;
   };
 
   // Update metrics each frame
   useFrame((state) => {
-    frameCount?.if (current > Number.MAX_SAFE_INTEGER || current < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); current += 1;
-    const now = Date?.now();
-    const delta = now - lastUpdate?.current;
+    frameCount.if (current > Number.MAX_SAFE_INTEGER || current < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); current += 1;
+    const now = Date.now();
+    const delta = now - lastUpdate.current;
 
     if (delta > 1000) {
-      frameRate?.current = (frameCount?.current * 1000) / delta;
+      frameRate.current = (frameCount.current * 1000) / delta;
 
       // Update metrics
-      const fpsValue = Math?.round(frameRate?.current);
+      const fpsValue = Math.round(frameRate.current);
       const isPerformanceIssue = fpsValue < performanceThreshold;
 
       // Get renderer info
-      const info = gl?.info;
-      const triangles = info?.render?.triangles || 0;
-      const drawCalls = info?.render?.calls || 0;
-      const memoryGeometries = info?.memory?.geometries || 0;
-      const memoryTextures = info?.memory?.textures || 0;
+      const info = gl.info;
+      const triangles = info.render.triangles || 0;
+      const drawCalls = info.render.calls || 0;
+      const memoryGeometries = info.memory.geometries || 0;
+      const memoryTextures = info.memory.textures || 0;
 
       // Calculate estimated memory usage
-      const geometryMemory = memoryGeometries * 0?.25; // MB
+      const geometryMemory = memoryGeometries * 0.25; // MB
       const textureMemory = memoryTextures * 2; // MB
       const totalMemory = geometryMemory + textureMemory;
 
@@ -431,18 +431,18 @@ export function ARResourceMonitor({
         textureMemory: textureMemory,
         modelComplexity: modelComplexity,
         isPerformanceIssue,
-        batteryLevel: batteryRef?.current?.level * 100,
-        batteryCharging: batteryRef?.current?.charging,
+        batteryLevel: batteryRef.current.level * 100,
+        batteryCharging: batteryRef.current.charging,
       };
 
       // Set temperature level based on FPS and battery
-      if (newMetrics?.batteryLevel !== undefined) {
-        if (isPerformanceIssue && newMetrics?.batteryLevel < 20) {
-          newMetrics?.temperatureLevel = 'hot';
+      if (newMetrics.batteryLevel !== undefined) {
+        if (isPerformanceIssue && newMetrics.batteryLevel < 20) {
+          newMetrics.temperatureLevel = 'hot';
         } else if (fpsValue < performanceThreshold + 10) {
-          newMetrics?.temperatureLevel = 'warm';
+          newMetrics.temperatureLevel = 'warm';
         } else {
-          newMetrics?.temperatureLevel = 'cool';
+          newMetrics.temperatureLevel = 'cool';
         }
       }
 
@@ -451,7 +451,7 @@ export function ARResourceMonitor({
       // Handle performance issue
       if (isPerformanceIssue && enableAdaptiveQuality) {
         // Only trigger warning/optimization once per 10 seconds
-        if (now - lastWarningTime?.current > 10000) {
+        if (now - lastWarningTime.current > 10000) {
           // Apply progressive optimizations
           applyProgressiveOptimizations();
 
@@ -462,29 +462,29 @@ export function ARResourceMonitor({
 
           // Log performance issue if tracking enabled
           if (enableErrorTracking) {
-            errorTrackingService?.captureError(`AR performance issue detected: ${fpsValue} FPS`, {
-              category: ErrorCategory?.PERFORMANCE,
+            errorTrackingService.captureError(`AR performance issue detected: ${fpsValue} FPS`, {
+              category: ErrorCategory.PERFORMANCE,
               severity: 'low',
               context: {
                 component: componentId,
                 metrics: newMetrics,
-                duration: now - startTime?.current,
+                duration: now - startTime.current,
               },
               isSilent: true,
             });
           }
 
-          lastWarningTime?.current = now;
+          lastWarningTime.current = now;
         }
 
-        wasPerformanceIssue?.current = true;
+        wasPerformanceIssue.current = true;
       }
       // Check if we recovered from a performance issue
-      else if (wasPerformanceIssue?.current && !isPerformanceIssue) {
-        wasPerformanceIssue?.current = false;
+      else if (wasPerformanceIssue.current && !isPerformanceIssue) {
+        wasPerformanceIssue.current = false;
 
         // Reset optimizations when we've recovered
-        if (optimizationsApplied?.current) {
+        if (optimizationsApplied.current) {
           resetOptimizations();
         }
 
@@ -494,37 +494,37 @@ export function ARResourceMonitor({
         }
       }
 
-      frameCount?.current = 0;
-      lastUpdate?.current = now;
+      frameCount.current = 0;
+      lastUpdate.current = now;
     }
   });
 
   // Only render in development mode if devModeOnly is true
-  if (devModeOnly && process?.env.NODE_ENV !== 'development') {
+  if (devModeOnly && process.env.NODE_ENV !== 'development') {
     return null;
   }
 
   return (
     <div className="absolute left-0 top-0 rounded bg-black bg-opacity-50 p-1 text-xs text-white">
       <div className="flex items-center">
-        <div>FPS: {metrics?.fps}</div>
-        {metrics?.isPerformanceIssue && <div className="ml-1 text-yellow-300">⚠️</div>}
+        <div>FPS: {metrics.fps}</div>
+        {metrics.isPerformanceIssue && <div className="ml-1 text-yellow-300">⚠️</div>}
       </div>
-      <div>Triangles: {metrics?.triangles.toLocaleString()}</div>
-      <div>Draw calls: {metrics?.drawCalls}</div>
-      <div>Memory: {Math?.round(metrics?.memoryUsage)}MB</div>
-      <div>Complexity: {metrics?.modelComplexity}/10</div>
-      {metrics?.batteryLevel !== undefined && (
+      <div>Triangles: {metrics.triangles.toLocaleString()}</div>
+      <div>Draw calls: {metrics.drawCalls}</div>
+      <div>Memory: {Math.round(metrics.memoryUsage)}MB</div>
+      <div>Complexity: {metrics.modelComplexity}/10</div>
+      {metrics.batteryLevel !== undefined && (
         <div className="flex items-center">
-          <div>Battery: {Math?.round(metrics?.batteryLevel)}%</div>
-          {metrics?.batteryCharging && <div className="ml-1 text-green-400">⚡</div>}
+          <div>Battery: {Math.round(metrics.batteryLevel)}%</div>
+          {metrics.batteryCharging && <div className="ml-1 text-green-400">⚡</div>}
         </div>
       )}
-      {metrics?.temperatureLevel && (
+      {metrics.temperatureLevel && (
         <div
-          className={` ${metrics?.temperatureLevel === 'cool' && 'text-blue-300'} ${metrics?.temperatureLevel === 'warm' && 'text-yellow-300'} ${metrics?.temperatureLevel === 'hot' && 'text-red-400'} `}
+          className={` ${metrics.temperatureLevel === 'cool' && 'text-blue-300'} ${metrics.temperatureLevel === 'warm' && 'text-yellow-300'} ${metrics.temperatureLevel === 'hot' && 'text-red-400'} `}
         >
-          Temp: {metrics?.temperatureLevel}
+          Temp: {metrics.temperatureLevel}
         </div>
       )}
     </div>

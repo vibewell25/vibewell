@@ -41,18 +41,18 @@ export function WellnessContent() {
 
   useEffect(() => {
     const fetchContents = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         const response = await fetch('/api/wellness/contents');
-        if (!response?.ok) {
+        if (!response.ok) {
           throw new Error('Failed to fetch contents');
         }
-        const data = await response?.json();
+        const data = await response.json();
         setContents(data);
       } catch (error) {
-        console?.error('Error fetching contents:', error);
-        toast?.error('Failed to load contents');
+        console.error('Error fetching contents:', error);
+        toast.error('Failed to load contents');
       } finally {
         setLoading(false);
       }
@@ -62,10 +62,10 @@ export function WellnessContent() {
   }, []);
 
   const handleAddContent = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-    if (!newContent?.title || !newContent?.category || !newContent?.type || !newContent?.content) {
-      toast?.error('Please fill in all required fields');
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    if (!newContent.title || !newContent.category || !newContent.type || !newContent.content) {
+      toast.error('Please fill in all required fields');
       return;
     }
 
@@ -75,17 +75,17 @@ export function WellnessContent() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify({
+        body: JSON.stringify({
           ...newContent,
-          tags: newContent?.tags.split(',').map((tag) => tag?.trim()),
+          tags: newContent.tags.split(',').map((tag) => tag.trim()),
         }),
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to add content');
       }
 
-      const data = await response?.json();
+      const data = await response.json();
       setContents([...contents, data]);
       setNewContent({
         title: '',
@@ -95,30 +95,30 @@ export function WellnessContent() {
         content: '',
         tags: '',
       });
-      toast?.success('Content added successfully!');
+      toast.success('Content added successfully!');
     } catch (error) {
-      console?.error('Error adding content:', error);
-      toast?.error('Failed to add content');
+      console.error('Error adding content:', error);
+      toast.error('Failed to add content');
     }
   };
 
   const handleDeleteContent = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');contentId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');contentId: string) => {
     try {
       const response = await fetch(`/api/wellness/contents/${contentId}`, {
         method: 'DELETE',
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to delete content');
       }
 
-      setContents(contents?.filter((content) => content?.id !== contentId));
-      toast?.success('Content deleted successfully!');
+      setContents(contents.filter((content) => content.id !== contentId));
+      toast.success('Content deleted successfully!');
     } catch (error) {
-      console?.error('Error deleting content:', error);
-      toast?.error('Failed to delete content');
+      console.error('Error deleting content:', error);
+      toast.error('Failed to delete content');
     }
   };
 
@@ -142,14 +142,14 @@ export function WellnessContent() {
               <Label htmlFor="title">Title</Label>
               <Input
                 id="title"
-                value={newContent?.title}
-                onChange={(e) => setNewContent({ ...newContent, title: e?.target.value })}
+                value={newContent.title}
+                onChange={(e) => setNewContent({ ...newContent, title: e.target.value })}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="category">Category</Label>
               <Select
-                value={newContent?.category}
+                value={newContent.category}
                 onValueChange={(value) => setNewContent({ ...newContent, category: value })}
               >
                 <SelectTrigger>
@@ -166,7 +166,7 @@ export function WellnessContent() {
             <div className="space-y-2">
               <Label htmlFor="type">Type</Label>
               <Select
-                value={newContent?.type}
+                value={newContent.type}
                 onValueChange={(value) => setNewContent({ ...newContent, type: value })}
               >
                 <SelectTrigger>
@@ -184,24 +184,24 @@ export function WellnessContent() {
               <Label htmlFor="tags">Tags (comma-separated)</Label>
               <Input
                 id="tags"
-                value={newContent?.tags}
-                onChange={(e) => setNewContent({ ...newContent, tags: e?.target.value })}
+                value={newContent.tags}
+                onChange={(e) => setNewContent({ ...newContent, tags: e.target.value })}
               />
             </div>
             <div className="space-y-2 md:col-span-2">
               <Label htmlFor="description">Description</Label>
               <Textarea
                 id="description"
-                value={newContent?.description}
-                onChange={(e) => setNewContent({ ...newContent, description: e?.target.value })}
+                value={newContent.description}
+                onChange={(e) => setNewContent({ ...newContent, description: e.target.value })}
               />
             </div>
             <div className="space-y-2 md:col-span-2">
               <Label htmlFor="content">Content</Label>
               <Textarea
                 id="content"
-                value={newContent?.content}
-                onChange={(e) => setNewContent({ ...newContent, content: e?.target.value })}
+                value={newContent.content}
+                onChange={(e) => setNewContent({ ...newContent, content: e.target.value })}
               />
             </div>
           </div>
@@ -213,11 +213,11 @@ export function WellnessContent() {
       </Card>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {contents?.map((content) => (
-          <Card key={content?.id}>
+        {contents.map((content) => (
+          <Card key={content.id}>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">{content?.title}</CardTitle>
+                <CardTitle className="text-lg">{content.title}</CardTitle>
                 <div className="flex items-center gap-2">
                   <Button variant="ghost" size="icon">
                     <Eye className="h-4 w-4" />
@@ -228,7 +228,7 @@ export function WellnessContent() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => handleDeleteContent(content?.id)}
+                    onClick={() => handleDeleteContent(content.id)}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -237,21 +237,21 @@ export function WellnessContent() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">{content?.description}</p>
+                <p className="text-sm text-muted-foreground">{content.description}</p>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium">{content?.category}</span>
+                  <span className="text-sm font-medium">{content.category}</span>
                   <span className="text-sm text-muted-foreground">•</span>
-                  <span className="text-sm text-muted-foreground">{content?.type}</span>
+                  <span className="text-sm text-muted-foreground">{content.type}</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {content?.tags.map((tag) => (
+                  {content.tags.map((tag) => (
                     <span key={tag} className="bg-secondary rounded-full px-2 py-1 text-xs">
                       {tag}
                     </span>
                   ))}
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  By {content?.author} • {format(new Date(content?.publishedAt), 'MMM d, yyyy')}
+                  By {content.author} • {format(new Date(content.publishedAt), 'MMM d, yyyy')}
                 </p>
               </div>
             </CardContent>

@@ -6,7 +6,7 @@ export interface ValidationResult {
 /**
 
     // Safe integer operation
-    if (non > Number?.MAX_SAFE_INTEGER || non < Number?.MIN_SAFE_INTEGER) {
+    if (non > Number.MAX_SAFE_INTEGER || non < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * Validates that each field in data is non-empty.
@@ -14,18 +14,18 @@ export interface ValidationResult {
  */
 export function validateForm(data: Record<string, any>): ValidationResult {
   const errors: Record<string, string> = {};
-  Object?.entries(data).forEach(([key, value]) => {
+  Object.entries(data).forEach(([key, value]) => {
     if (value === undefined || value === null || value === '') {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
       errors[key] = `${key} is required`;
     }
   });
   return {
-    isValid: Object?.keys(errors).length === 0,
+    isValid: Object.keys(errors).length === 0,
     errors,
   };
 }

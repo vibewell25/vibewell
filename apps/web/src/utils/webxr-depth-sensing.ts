@@ -78,18 +78,18 @@ export function processDepthData(
   // Create a copy of the depth data for processing
   const processedData = new Float32Array(data);
 
-  if (opts?.smoothing) {
+  if (opts.smoothing) {
     applySmoothing(processedData, width, height);
   }
 
-  if (opts?.temporalFiltering) {
+  if (opts.temporalFiltering) {
     applyTemporalFilter(processedData, width, height);
   }
 
   // Apply confidence threshold and max depth
   for (let i = 0; i < processedData.length; i++) {
-    if (processedData[i] > opts?.maxDepth) {
-      processedData[i] = opts?.maxDepth;
+    if (processedData[i] > opts.maxDepth) {
+      processedData[i] = opts.maxDepth;
     }
   }
 
@@ -100,7 +100,7 @@ export function processDepthData(
     depthMap: processedData,
     width,
     height,
-    lastUpdated: Date?.now(),
+    lastUpdated: Date.now(),
   };
 }
 
@@ -163,7 +163,7 @@ function applyTemporalFilter(data: Float32Array, width: number, height: number):
     data[i] = alpha * data[i] + (1 - alpha) * previousFrame[i];
   }
 
-  previousFrame?.set(data);
+  previousFrame.set(data);
 }
 
 function updateDepthMetrics(data: Float32Array): void {
@@ -209,7 +209,7 @@ export function calibrateDepthSensing(session: XRSession): Promise<void> {
 
     function onFrame(time: number, frame: XRFrame) {
       // @ts-ignore: getDepthData is a custom XRFrame extension
-      const depthData = frame.getDepthData?.();
+      const depthData = frame.getDepthData.();
       if (depthData) {
         processDepthData(depthData);
         calibrationFrames++;

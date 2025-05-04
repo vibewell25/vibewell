@@ -18,7 +18,7 @@ export class WaitlistService {
   private notificationService: NotificationService;
 
   constructor() {
-    this?.notificationService = new NotificationService();
+    this.notificationService = new NotificationService();
   }
 
   /**
@@ -26,11 +26,11 @@ export class WaitlistService {
    */
   async addToWaitlist(entry: WaitlistEntry) {
     try {
-      const waitlistEntry = await prisma?.waitlist.create({
+      const waitlistEntry = await prisma.waitlist.create({
         data: {
           ...entry,
-          status: WaitlistStatus?.PENDING,
-          expiresAt: new Date(entry?.requestedDate.getTime() + 24 * 60 * 60 * 1000), // 24 hours expiry
+          status: WaitlistStatus.PENDING,
+          expiresAt: new Date(entry.requestedDate.getTime() + 24 * 60 * 60 * 1000), // 24 hours expiry
         },
         include: {
           service: true,
@@ -39,15 +39,15 @@ export class WaitlistService {
       });
 
       // Notify customer
-      await this?.notificationService.notifyUser(waitlistEntry?.customer.userId, {
+      await this.notificationService.notifyUser(waitlistEntry.customer.userId, {
         type: 'SYSTEM',
         title: 'Added to Waitlist',
-        message: `You've been added to the waitlist for ${waitlistEntry?.service.name}`,
+        message: `You've been added to the waitlist for ${waitlistEntry.service.name}`,
       });
 
       return waitlistEntry;
     } catch (error) {
-      logger?.error('Error adding to waitlist', error);
+      logger.error('Error adding to waitlist', error);
       throw error;
     }
   }
@@ -58,10 +58,10 @@ export class WaitlistService {
   async processWaitlist(serviceId: string, availableDate: Date) {
     try {
       // Find eligible waitlist entries
-      const entries = await prisma?.waitlist.findMany({
+      const entries = await prisma.waitlist.findMany({
         where: {
           serviceId,
-          status: WaitlistStatus?.PENDING,
+          status: WaitlistStatus.PENDING,
           requestedDate: {
             lte: availableDate,
           },
@@ -81,25 +81,25 @@ export class WaitlistService {
 
       for (const entry of entries) {
         // Update status and notification time
-        await prisma?.waitlist.update({
-          where: { id: entry?.id },
+        await prisma.waitlist.update({
+          where: { id: entry.id },
           data: {
-            status: WaitlistStatus?.NOTIFIED,
+            status: WaitlistStatus.NOTIFIED,
             notifiedAt: new Date(),
           },
         });
 
         // Notify customer
-        await this?.notificationService.notifyUser(entry?.customer.userId, {
+        await this.notificationService.notifyUser(entry.customer.userId, {
           type: 'SYSTEM',
           title: 'Slot Available',
-          message: `A slot is now available for ${entry?.service.name}. Please book within 24 hours.`,
+          message: `A slot is now available for ${entry.service.name}. Please book within 24 hours.`,
         });
       }
 
       return entries;
     } catch (error) {
-      logger?.error('Error processing waitlist', error);
+      logger.error('Error processing waitlist', error);
       throw error;
     }
   }
@@ -109,10 +109,10 @@ export class WaitlistService {
    */
   async handleWaitlistResponse(entryId: string, accepted: boolean) {
     try {
-      const entry = await prisma?.waitlist.update({
+      const entry = await prisma.waitlist.update({
         where: { id: entryId },
         data: {
-          status: accepted ? WaitlistStatus?.ACCEPTED : WaitlistStatus?.DECLINED,
+          status: accepted ? WaitlistStatus.ACCEPTED : WaitlistStatus.DECLINED,
         },
         include: {
           service: true,
@@ -122,12 +122,12 @@ export class WaitlistService {
 
       if (!accepted) {
         // Process next person in waitlist
-        await this?.processWaitlist(entry?.serviceId, entry?.requestedDate);
+        await this.processWaitlist(entry.serviceId, entry.requestedDate);
       }
 
       return entry;
     } catch (error) {
-      logger?.error('Error handling waitlist response', error);
+      logger.error('Error handling waitlist response', error);
       throw error;
     }
   }
@@ -137,21 +137,21 @@ export class WaitlistService {
    */
   async cleanupExpiredEntries() {
     try {
-      const expiredEntries = await prisma?.waitlist.updateMany({
+      const expiredEntries = await prisma.waitlist.updateMany({
         where: {
-          status: WaitlistStatus?.PENDING,
+          status: WaitlistStatus.PENDING,
           expiresAt: {
             lt: new Date(),
           },
         },
         data: {
-          status: WaitlistStatus?.EXPIRED,
+          status: WaitlistStatus.EXPIRED,
         },
       });
 
       return expiredEntries;
     } catch (error) {
-      logger?.error('Error cleaning up expired waitlist entries', error);
+      logger.error('Error cleaning up expired waitlist entries', error);
       throw error;
     }
   }
@@ -161,44 +161,44 @@ export class WaitlistService {
    */
   async getWaitlistAnalytics(businessId: string) {
     try {
-      const [totalEntries, acceptedEntries, conversionRate] = await Promise?.all([
-        prisma?.waitlist.count({
+      const [totalEntries, acceptedEntries, conversionRate] = await Promise.all([
+        prisma.waitlist.count({
           where: { businessId },
         }),
-        prisma?.waitlist.count({
+        prisma.waitlist.count({
           where: {
             businessId,
-            status: WaitlistStatus?.ACCEPTED,
+            status: WaitlistStatus.ACCEPTED,
           },
         }),
-        this?.calculateConversionRate(businessId),
+        this.calculateConversionRate(businessId),
       ]);
 
       return {
         totalEntries,
         acceptedEntries,
         conversionRate,
-        averageWaitTime: await this?.calculateAverageWaitTime(businessId),
+        averageWaitTime: await this.calculateAverageWaitTime(businessId),
       };
     } catch (error) {
-      logger?.error('Error getting waitlist analytics', error);
+      logger.error('Error getting waitlist analytics', error);
       throw error;
     }
   }
 
   private async calculateConversionRate(businessId: string): Promise<number> {
-    const [accepted, total] = await Promise?.all([
-      prisma?.waitlist.count({
+    const [accepted, total] = await Promise.all([
+      prisma.waitlist.count({
         where: {
           businessId,
-          status: WaitlistStatus?.ACCEPTED,
+          status: WaitlistStatus.ACCEPTED,
         },
       }),
-      prisma?.waitlist.count({
+      prisma.waitlist.count({
         where: {
           businessId,
           status: {
-            in: [WaitlistStatus?.ACCEPTED, WaitlistStatus?.DECLINED, WaitlistStatus?.EXPIRED],
+            in: [WaitlistStatus.ACCEPTED, WaitlistStatus.DECLINED, WaitlistStatus.EXPIRED],
           },
         },
       }),
@@ -209,10 +209,10 @@ export class WaitlistService {
   }
 
   private async calculateAverageWaitTime(businessId: string): Promise<number> {
-    const entries = await prisma?.waitlist.findMany({
+    const entries = await prisma.waitlist.findMany({
       where: {
         businessId,
-        status: WaitlistStatus?.ACCEPTED,
+        status: WaitlistStatus.ACCEPTED,
         notifiedAt: { not: null },
       },
       select: {
@@ -221,13 +221,13 @@ export class WaitlistService {
       },
     });
 
-    if (entries?.length === 0) return 0;
+    if (entries.length === 0) return 0;
 
-    const totalWaitTime = entries?.reduce((sum, entry) => {
-      return sum + (entry?.notifiedAt!.getTime() - entry?.createdAt.getTime());
+    const totalWaitTime = entries.reduce((sum, entry) => {
+      return sum + (entry.notifiedAt!.getTime() - entry.createdAt.getTime());
     }, 0);
 
 
-    return totalWaitTime / entries?.length / (1000 * 60 * 60); // Convert to hours
+    return totalWaitTime / entries.length / (1000 * 60 * 60); // Convert to hours
   }
 }

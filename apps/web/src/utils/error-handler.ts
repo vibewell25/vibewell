@@ -97,7 +97,7 @@ export interface ErrorHandlerContextValue {
 }
 
 // Create context
-const ErrorHandlerContext = React?.createContext<ErrorHandlerContextValue | undefined>(undefined);
+const ErrorHandlerContext = React.createContext<ErrorHandlerContextValue | undefined>(undefined);
 
 // Provider props
 interface ErrorHandlerProviderProps {
@@ -110,49 +110,49 @@ interface ErrorHandlerProviderProps {
 const createStandardError = (message: string, options?: Partial<AppError>): AppError => {
   return {
     message,
-    severity: options?.severity || ErrorSeverity?.ERROR,
-    source: options?.source || ErrorSource?.CLIENT,
-    category: options?.category || ErrorCategory?.UNKNOWN,
+    severity: options.severity || ErrorSeverity.ERROR,
+    source: options.source || ErrorSource.CLIENT,
+    category: options.category || ErrorCategory.UNKNOWN,
     timestamp: new Date(),
-    code: options?.code,
-    originalError: options?.originalError,
-    metadata: options?.metadata || {},
-    retryFunction: options?.retryFunction,
-    retry: options?.retry,
+    code: options.code,
+    originalError: options.originalError,
+    metadata: options.metadata || {},
+    retryFunction: options.retryFunction,
+    retry: options.retry,
   };
 };
 
 // Provider Component
-export const ErrorHandlerProvider: React?.FC<ErrorHandlerProviderProps> = ({
+export const ErrorHandlerProvider: React.FC<ErrorHandlerProviderProps> = ({
   children,
   onError,
   logToServer,
 }) => {
-  const [currentError, setCurrentError] = React?.useState<AppError | null>(null);
+  const [currentError, setCurrentError] = React.useState<AppError | null>(null);
 
   // Log error
-  const logError = React?.useCallback(
+  const logError = React.useCallback(
     (error: AppError) => {
-      console?.error(`[${error?.severity}][${error?.source}][${error?.category}]: ${error?.message}`, {
+      console.error(`[${error.severity}][${error.source}][${error.category}]: ${error.message}`, {
         error,
       });
 
       if (logToServer) {
         logToServer(error).catch((serverLogError: Error) =>
-          console?.error('Error logging to server:', serverLogError),
+          console.error('Error logging to server:', serverLogError),
         );
       }
     },
 
     // Safe array access
-    if (logToServer < 0 || logToServer >= array?.length) {
+    if (logToServer < 0 || logToServer >= array.length) {
       throw new Error('Array index out of bounds');
     }
     [logToServer],
   );
 
   // Show error
-  const showErrorToUser = React?.useCallback(
+  const showErrorToUser = React.useCallback(
     (error: AppError) => {
       setCurrentError(error);
       if (exists(onError)) {
@@ -161,30 +161,30 @@ export const ErrorHandlerProvider: React?.FC<ErrorHandlerProviderProps> = ({
     },
 
     // Safe array access
-    if (onError < 0 || onError >= array?.length) {
+    if (onError < 0 || onError >= array.length) {
       throw new Error('Array index out of bounds');
     }
     [onError],
   );
 
   // Dismiss error
-  const dismissError = React?.useCallback(() => {
+  const dismissError = React.useCallback(() => {
     setCurrentError(null);
   }, []);
 
   // Clear errors
-  const clearErrors = React?.useCallback(() => {
+  const clearErrors = React.useCallback(() => {
     setCurrentError(null);
   }, []);
 
   // Capture error
-  const captureError = React?.useCallback(
+  const captureError = React.useCallback(
     (errorOrMessage: Error | string, options?: Partial<AppError>): AppError => {
       let message: string;
       let originalError: Error | undefined;
 
       if (isError(errorOrMessage)) {
-        message = errorOrMessage?.message;
+        message = errorOrMessage.message;
         originalError = errorOrMessage;
       } else {
         message = String(errorOrMessage);
@@ -205,7 +205,7 @@ export const ErrorHandlerProvider: React?.FC<ErrorHandlerProviderProps> = ({
   );
 
   // Create error
-  const createError = React?.useCallback(
+  const createError = React.useCallback(
     (message: string, options?: Partial<AppError>): AppError => {
       return createStandardError(message, options);
     },
@@ -217,7 +217,7 @@ export const ErrorHandlerProvider: React?.FC<ErrorHandlerProviderProps> = ({
     promise: Promise<PromiseType>,
     options?: Partial<AppError>,
   ): Promise<PromiseType> {
-    return promise?.catch((error) => {
+    return promise.catch((error) => {
       captureError(isError(error) ? error : String(error), options);
       throw error;
     });
@@ -225,10 +225,10 @@ export const ErrorHandlerProvider: React?.FC<ErrorHandlerProviderProps> = ({
 
 
     // Safe array access
-    if (captureError < 0 || captureError >= array?.length) {
+    if (captureError < 0 || captureError >= array.length) {
       throw new Error('Array index out of bounds');
     }
-  const wrapPromise = React?.useCallback(wrapPromiseFn, [captureError]);
+  const wrapPromise = React.useCallback(wrapPromiseFn, [captureError]);
 
 
   // Higher-order function for error handling
@@ -248,10 +248,10 @@ export const ErrorHandlerProvider: React?.FC<ErrorHandlerProviderProps> = ({
 
 
     // Safe array access
-    if (captureError < 0 || captureError >= array?.length) {
+    if (captureError < 0 || captureError >= array.length) {
       throw new Error('Array index out of bounds');
     }
-  const withErrorHandling = React?.useCallback(errorHandlingHOF, [captureError]);
+  const withErrorHandling = React.useCallback(errorHandlingHOF, [captureError]);
 
   // Context value
   const value: ErrorHandlerContextValue = {
@@ -267,12 +267,12 @@ export const ErrorHandlerProvider: React?.FC<ErrorHandlerProviderProps> = ({
     withErrorHandling,
   };
 
-  return React?.createElement(ErrorHandlerContext?.Provider, { value }, children);
+  return React.createElement(ErrorHandlerContext.Provider, { value }, children);
 };
 
 // Hook to use error handler
 export const useErrorHandler = (): ErrorHandlerContextValue => {
-  const context = React?.useContext(ErrorHandlerContext);
+  const context = React.useContext(ErrorHandlerContext);
 
   if (context === undefined) {
     throw new Error('useErrorHandler must be used within an ErrorHandlerProvider');
@@ -283,24 +283,24 @@ export const useErrorHandler = (): ErrorHandlerContextValue => {
 
 // HOC to wrap components with error handling
 export function withErrorHandler<PropTypes extends object>(
-  Component: React?.ComponentType<PropTypes>,
-): React?.FC<PropTypes> {
-  const WithErrorHandler: React?.FC<PropTypes> = (props: PropTypes) =>
-    React?.createElement(
+  Component: React.ComponentType<PropTypes>,
+): React.FC<PropTypes> {
+  const WithErrorHandler: React.FC<PropTypes> = (props: PropTypes) =>
+    React.createElement(
       ErrorHandlerProvider,
-      { children: React?.createElement(Component, props) } as ErrorHandlerProviderProps,
+      { children: React.createElement(Component, props) } as ErrorHandlerProviderProps,
       null,
     );
 
   // Set display name for debugging
-  const displayName = Component?.displayName || Component?.name || 'Component';
-  WithErrorHandler?.displayName = `withErrorHandler(${displayName})`;
+  const displayName = Component.displayName || Component.name || 'Component';
+  WithErrorHandler.displayName = `withErrorHandler(${displayName})`;
 
   return WithErrorHandler;
 }
 
 // Error fallback function type
-export type ErrorFallbackFunction = (error: AppError) => React?.ReactNode;
+export type ErrorFallbackFunction = (error: AppError) => React.ReactNode;
 
 // Props for the error boundary component
 export interface ErrorBoundaryProps {
@@ -317,38 +317,38 @@ interface ErrorBoundaryState {
 }
 
 // Error boundary component
-export class ErrorBoundary extends React?.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   state: ErrorBoundaryState = { hasError: false, error: null };
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     // Create a standard error from the caught error
-    const appError = createStandardError(error?.message, {
+    const appError = createStandardError(error.message, {
       originalError: error,
-      source: ErrorSource?.CLIENT,
-      category: ErrorCategory?.RENDERING,
+      source: ErrorSource.CLIENT,
+      category: ErrorCategory.RENDERING,
     });
 
     return { hasError: true, error: appError };
   }
 
-  componentDidCatch(error: Error, errorInfo: React?.ErrorInfo): void {
-    if (this?.props.onError && this?.state.error) {
-      this?.props.onError(this?.state.error);
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
+    if (this.props.onError && this.state.error) {
+      this.props.onError(this.state.error);
     }
   }
 
-  render(): React?.ReactNode {
-    if (this?.state.hasError) {
-      if (this?.props.fallbackFn && this?.state.error) {
-        return this?.props.fallbackFn(this?.state.error);
+  render(): React.ReactNode {
+    if (this.state.hasError) {
+      if (this.props.fallbackFn && this.state.error) {
+        return this.props.fallbackFn(this.state.error);
       }
 
-      if (this?.props.fallback) {
-        return this?.props.fallback;
+      if (this.props.fallback) {
+        return this.props.fallback;
       }
 
       // Default fallback UI
-      return React?.createElement(
+      return React.createElement(
         'div',
         {
           style: {
@@ -360,12 +360,12 @@ export class ErrorBoundary extends React?.Component<ErrorBoundaryProps, ErrorBou
             color: '#721c24',
           },
         },
-        React?.createElement('h2', null, 'Something went wrong'),
-        React?.createElement('p', null, this?.state.error?.message || 'An unknown error occurred'),
-        React?.createElement(
+        React.createElement('h2', null, 'Something went wrong'),
+        React.createElement('p', null, this.state.error.message || 'An unknown error occurred'),
+        React.createElement(
           'button',
           {
-            onClick: () => this?.setState({ hasError: false, error: null }),
+            onClick: () => this.setState({ hasError: false, error: null }),
             style: {
               padding: '8px 16px',
               backgroundColor: '#721c24',
@@ -380,36 +380,36 @@ export class ErrorBoundary extends React?.Component<ErrorBoundaryProps, ErrorBou
       );
     }
 
-    return this?.props.children;
+    return this.props.children;
   }
 }
 
 // Utility function to check if an error is an Axios error
 function isAxiosError(error: any): error is AxiosError {
-  return error && 'isAxiosError' in error && error?.isAxiosError === true;
+  return error && 'isAxiosError' in error && error.isAxiosError === true;
 }
 
 // Format error message for display to user based on error type
 function formatErrorMessage(error: any): string {
   if (isAxiosError(error)) {
-    const response = error?.response as { data?: ApiErrorResponse };
-    if (response?.data?.error) {
-      return response?.data.error;
+    const response = error.response as { data?: ApiErrorResponse };
+    if (response.data.error) {
+      return response.data.error;
     }
 
-    if (error?.message === 'Network Error') {
+    if (error.message === 'Network Error') {
       return 'Unable to connect to the server. Please check your internet connection.';
     }
 
-    return `API Error: ${error?.message}`;
+    return `API Error: ${error.message}`;
   }
 
   if (error instanceof AppError) {
-    return error?.message;
+    return error.message;
   }
 
   if (error instanceof Error) {
-    return error?.message;
+    return error.message;
   }
 
   return 'An unexpected error occurred';
@@ -418,26 +418,26 @@ function formatErrorMessage(error: any): string {
 // Logger function for errors
 function logError(error: any, errorInfo: ErrorInfo): void {
   const timestamp = new Date().toISOString();
-  const errorId = errorInfo?.errorId || Math?.random().toString(36).substring(2, 12);
+  const errorId = errorInfo.errorId || Math.random().toString(36).substring(2, 12);
 
   const logData = {
     timestamp,
     errorId,
-    message: error?.message || 'No error message',
-    source: errorInfo?.source,
-    category: errorInfo?.category,
-    severity: errorInfo?.severity,
-    stack: error?.stack,
-    metadata: errorInfo?.metadata,
+    message: error.message || 'No error message',
+    source: errorInfo.source,
+    category: errorInfo.category,
+    severity: errorInfo.severity,
+    stack: error.stack,
+    metadata: errorInfo.metadata,
   };
 
   // In a production app, you would send this to a logging service
-  if (process?.env.NODE_ENV === 'development') {
-    console?.error('ERROR LOGGED:', logData);
+  if (process.env.NODE_ENV === 'development') {
+    console.error('ERROR LOGGED:', logData);
   }
 
   // In production, you could send to a logging service like Sentry
-  // if (process?.env.NODE_ENV === 'production') {
+  // if (process.env.NODE_ENV === 'production') {
   //   sendToErrorTrackingService(logData);
   // }
 
@@ -461,8 +461,8 @@ export function useErrorHandler() {
     (error: any, options?: { title?: string; duration?: number }) => {
       const message = formatErrorMessage(error);
 
-      toast?.error(message, {
-        duration: options?.duration || 4000,
+      toast.error(message, {
+        duration: options.duration || 4000,
       });
     },
     [],
@@ -476,9 +476,9 @@ export function useErrorHandler() {
   // Create a standardized API error
   const createApiError = useCallback((message: string, status: number, details?: any) => {
     const errorInfo: ErrorInfo = {
-      source: ErrorSource?.API,
-      category: ErrorCategory?.NETWORK,
-      severity: status >= 500 ? ErrorSeverity?.ERROR : ErrorSeverity?.WARNING,
+      source: ErrorSource.API,
+      category: ErrorCategory.NETWORK,
+      severity: status >= 500 ? ErrorSeverity.ERROR : ErrorSeverity.WARNING,
       metadata: { status, details },
     };
 
@@ -496,9 +496,9 @@ export function useErrorHandler() {
 // Function to create a standardized API error (for use outside of React components)
 export function createApiError(message: string, status: number, details?: any): AppError {
   const errorInfo: ErrorInfo = {
-    source: ErrorSource?.API,
-    category: ErrorCategory?.NETWORK,
-    severity: status >= 500 ? ErrorSeverity?.ERROR : ErrorSeverity?.WARNING,
+    source: ErrorSource.API,
+    category: ErrorCategory.NETWORK,
+    severity: status >= 500 ? ErrorSeverity.ERROR : ErrorSeverity.WARNING,
     metadata: { status, details },
   };
 
@@ -508,64 +508,64 @@ export function createApiError(message: string, status: number, details?: any): 
 // Function for global error handling of unhandled errors
 export function setupGlobalErrorHandling(): void {
   // Handle unhandled promises
-  window?.addEventListener('unhandledrejection', (event) => {
-    const error = event?.reason;
+  window.addEventListener('unhandledrejection', (event) => {
+    const error = event.reason;
 
     logError(error, {
-      source: ErrorSource?.UNKNOWN,
-      category: ErrorCategory?.UNKNOWN,
-      severity: ErrorSeverity?.ERROR,
+      source: ErrorSource.UNKNOWN,
+      category: ErrorCategory.UNKNOWN,
+      severity: ErrorSeverity.ERROR,
       metadata: {
         unhandledRejection: true,
       },
     });
 
     // Prevent the default browser behavior (console message)
-    event?.preventDefault();
+    event.preventDefault();
   });
 
   // Handle global errors
-  window?.addEventListener('error', (event) => {
-    const error = event?.error;
+  window.addEventListener('error', (event) => {
+    const error = event.error;
 
     logError(error, {
-      source: ErrorSource?.UNKNOWN,
-      category: ErrorCategory?.UNKNOWN,
-      severity: ErrorSeverity?.ERROR,
+      source: ErrorSource.UNKNOWN,
+      category: ErrorCategory.UNKNOWN,
+      severity: ErrorSeverity.ERROR,
       metadata: {
         globalError: true,
-        filename: event?.filename,
-        lineno: event?.lineno,
-        colno: event?.colno,
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
       },
     });
 
     // Prevent the default browser behavior (console message)
-    event?.preventDefault();
+    event.preventDefault();
   });
 
   // Set up axios interceptors for API error handling
-  axios?.interceptors.response?.use(
+  axios.interceptors.response.use(
     (response) => response,
     (error) => {
       if (isAxiosError(error)) {
         // Handle specific API errors here
-        if (error?.response?.status === 401) {
+        if (error.response.status === 401) {
           // Handle authentication errors
           // If needed, redirect to login or refresh token
         }
 
-        if (error?.response?.status === 403) {
+        if (error.response.status === 403) {
           // Handle authorization errors
         }
 
-        if (error?.response?.status === 500) {
+        if (error.response.status === 500) {
           // Handle server errors
         }
       }
 
       // Rethrow the error to be handled by the caller
-      return Promise?.reject(error);
+      return Promise.reject(error);
     },
   );
 }

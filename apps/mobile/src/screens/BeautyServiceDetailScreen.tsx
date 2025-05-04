@@ -28,13 +28,13 @@ import ReviewList from '../components/beauty/ReviewList';
 import BeautyReviewCard from '../components/beauty/BeautyReviewCard';
 import BeautyReviewForm from '../components/beauty/BeautyReviewForm';
 
-const { width } = Dimensions?.get('window');
+const { width } = Dimensions.get('window');
 
-const BeautyServiceDetailScreen: React?.FC = () => {
+const BeautyServiceDetailScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const navigation = useNavigation<BeautyServiceDetailNavigationProp>();
   const route = useRoute<BeautyServiceDetailRouteProp>();
-  const { serviceId } = route?.params;
+  const { serviceId } = route.params;
   
   const [service, setService] = useState<BeautyServiceDetails | null>(null);
   const [similarServices, setSimilarServices] = useState<BeautyService[]>([]);
@@ -49,8 +49,8 @@ const BeautyServiceDetailScreen: React?.FC = () => {
   }, [serviceId]);
   
   const fetchServiceDetails = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setLoading(true);
     try {
       const serviceData = await getBeautyServiceById(serviceId);
@@ -80,23 +80,23 @@ const BeautyServiceDetailScreen: React?.FC = () => {
       });
       
       // If service has reviews, use them
-      if (serviceData?.reviews) {
-        setReviews(serviceData?.reviews);
+      if (serviceData.reviews) {
+        setReviews(serviceData.reviews);
       } else {
         // Otherwise fetch reviews separately
         const fetchedReviews = await getServiceReviews(serviceId);
         setReviews(fetchedReviews);
       }
     } catch (error) {
-      console?.error("Error fetching service details:", error);
+      console.error("Error fetching service details:", error);
     } finally {
       setLoading(false);
     }
   };
   
   const handleRefresh = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setRefreshing(true);
     await fetchServiceDetails();
     setRefreshing(false);
@@ -104,19 +104,19 @@ const BeautyServiceDetailScreen: React?.FC = () => {
   
   const handleBookNow = () => {
     if (service) {
-      navigation?.navigate('BeautyBooking', { service });
+      navigation.navigate('BeautyBooking', { service });
     }
   };
   
   const handleSimilarServicePress = (similarServiceId: string) => {
-    navigation?.replace('BeautyServiceDetail', { serviceId: similarServiceId });
+    navigation.replace('BeautyServiceDetail', { serviceId: similarServiceId });
   };
   
   if (loading) {
     return (
       <View 
         style={[
-          styles?.loadingContainer, 
+          styles.loadingContainer, 
           { backgroundColor: isDarkMode ? '#121212' : '#F8F8F8' }
         ]}
       >
@@ -129,24 +129,24 @@ const BeautyServiceDetailScreen: React?.FC = () => {
     return (
       <View 
         style={[
-          styles?.errorContainer, 
+          styles.errorContainer, 
           { backgroundColor: isDarkMode ? '#121212' : '#F8F8F8' }
         ]}
       >
         <Feather name="alert-circle" size={50} color="#FF4D4F" />
         <Text 
           style={[
-            styles?.errorText,
+            styles.errorText,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}
         >
           Service not found
         </Text>
         <TouchableOpacity
-          style={styles?.backButton}
-          onPress={() => navigation?.goBack()}
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
         >
-          <Text style={styles?.backButtonText}>Go Back</Text>
+          <Text style={styles.backButtonText}>Go Back</Text>
         </TouchableOpacity>
       </View>
     );
@@ -155,28 +155,28 @@ const BeautyServiceDetailScreen: React?.FC = () => {
   return (
     <View 
       style={[
-        styles?.container,
+        styles.container,
         { backgroundColor: isDarkMode ? '#121212' : '#F8F8F8' }
       ]}
     >
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       
       {/* Header with back button */}
-      <View style={styles?.header}>
+      <View style={styles.header}>
         <TouchableOpacity
           style={[
-            styles?.headerButton,
-            { backgroundColor: isDarkMode ? 'rgba(30, 30, 30, 0?.7)' : 'rgba(255, 255, 255, 0?.7)' }
+            styles.headerButton,
+            { backgroundColor: isDarkMode ? 'rgba(30, 30, 30, 0.7)' : 'rgba(255, 255, 255, 0.7)' }
           ]}
-          onPress={() => navigation?.goBack()}
+          onPress={() => navigation.goBack()}
         >
           <Feather name="arrow-left" size={20} color={isDarkMode ? '#FFFFFF' : '#000000'} />
         </TouchableOpacity>
         
         <TouchableOpacity
           style={[
-            styles?.headerButton,
-            { backgroundColor: isDarkMode ? 'rgba(30, 30, 30, 0?.7)' : 'rgba(255, 255, 255, 0?.7)' }
+            styles.headerButton,
+            { backgroundColor: isDarkMode ? 'rgba(30, 30, 30, 0.7)' : 'rgba(255, 255, 255, 0.7)' }
           ]}
         >
           <Feather name="share" size={20} color={isDarkMode ? '#FFFFFF' : '#000000'} />
@@ -185,7 +185,7 @@ const BeautyServiceDetailScreen: React?.FC = () => {
       
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles?.scrollContent}
+        contentContainerStyle={styles.scrollContent}
         refreshControl={
           <RefreshControl 
             refreshing={refreshing} 
@@ -197,96 +197,96 @@ const BeautyServiceDetailScreen: React?.FC = () => {
       >
         {/* Main Image */}
         <Image 
-          source={{ uri: service?.imageUrls[activeImageIndex] }}
-          style={styles?.mainImage}
+          source={{ uri: service.imageUrls[activeImageIndex] }}
+          style={styles.mainImage}
           resizeMode="cover"
         />
         
         {/* Content Container */}
         <View 
           style={[
-            styles?.contentContainer,
+            styles.contentContainer,
             { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
           ]}
         >
           {/* Service Title and Provider */}
-          <View style={styles?.titleContainer}>
+          <View style={styles.titleContainer}>
             <Text 
               style={[
-                styles?.serviceTitle,
+                styles.serviceTitle,
                 { color: isDarkMode ? '#FFFFFF' : '#000000' }
               ]}
             >
-              {service?.title}
+              {service.title}
             </Text>
             
-            <View style={styles?.providerContainer}>
+            <View style={styles.providerContainer}>
               <Text 
                 style={[
-                  styles?.providerText,
+                  styles.providerText,
                   { color: isDarkMode ? '#BBBBBB' : '#666666' }
                 ]}
               >
-                Provider ID: {service?.providerId}
+                Provider ID: {service.providerId}
               </Text>
-              <View style={styles?.ratingContainer}>
+              <View style={styles.ratingContainer}>
                 <Feather name="star" size={14} color="#FFD700" />
                 <Text 
                   style={[
-                    styles?.ratingText,
+                    styles.ratingText,
                     { color: isDarkMode ? '#FFFFFF' : '#000000' }
                   ]}
                 >
-                  {service?.rating?.toFixed(1)} ({service?.reviews.length})
+                  {service.rating.toFixed(1)} ({service.reviews.length})
                 </Text>
               </View>
             </View>
           </View>
           
           {/* Service Details */}
-          <View style={styles?.detailsContainer}>
-            <View style={styles?.detailItem}>
+          <View style={styles.detailsContainer}>
+            <View style={styles.detailItem}>
               <Feather name="clock" size={16} color={isDarkMode ? '#BBBBBB' : '#666666'} />
               <Text 
                 style={[
-                  styles?.detailText,
+                  styles.detailText,
                   { color: isDarkMode ? '#FFFFFF' : '#000000' }
                 ]}
               >
-                {service?.duration}
+                {service.duration}
               </Text>
             </View>
             
-            <View style={styles?.detailItem}>
+            <View style={styles.detailItem}>
               <Feather name="tag" size={16} color={isDarkMode ? '#BBBBBB' : '#666666'} />
               <Text 
                 style={[
-                  styles?.detailText,
+                  styles.detailText,
                   { color: isDarkMode ? '#FFFFFF' : '#000000' }
                 ]}
               >
-                {service?.price}
+                {service.price}
               </Text>
             </View>
             
-            <View style={styles?.detailItem}>
+            <View style={styles.detailItem}>
               <Feather name="map-pin" size={16} color={isDarkMode ? '#BBBBBB' : '#666666'} />
               <Text 
                 style={[
-                  styles?.detailText,
+                  styles.detailText,
                   { color: isDarkMode ? '#FFFFFF' : '#000000' }
                 ]}
               >
-                {service?.categoryId}
+                {service.categoryId}
               </Text>
             </View>
           </View>
           
           {/* Description */}
-          <View style={styles?.descriptionContainer}>
+          <View style={styles.descriptionContainer}>
             <Text 
               style={[
-                styles?.sectionTitle,
+                styles.sectionTitle,
                 { color: isDarkMode ? '#FFFFFF' : '#000000' }
               ]}
             >
@@ -294,36 +294,36 @@ const BeautyServiceDetailScreen: React?.FC = () => {
             </Text>
             <Text 
               style={[
-                styles?.descriptionText,
+                styles.descriptionText,
                 { color: isDarkMode ? '#E0E0E0' : '#333333' }
               ]}
             >
-              {service?.longDescription}
+              {service.longDescription}
             </Text>
           </View>
           
           {/* Highlights */}
-          <View style={styles?.highlightsContainer}>
+          <View style={styles.highlightsContainer}>
             <Text 
               style={[
-                styles?.sectionTitle,
+                styles.sectionTitle,
                 { color: isDarkMode ? '#FFFFFF' : '#000000' }
               ]}
             >
               Highlights
             </Text>
-            <View style={styles?.highlightsList}>
-              {service?.highlights.map((highlight, index) => (
-                <View key={`highlight-${index}`} style={styles?.highlightItem}>
+            <View style={styles.highlightsList}>
+              {service.highlights.map((highlight, index) => (
+                <View key={`highlight-${index}`} style={styles.highlightItem}>
                   <View 
                     style={[
-                      styles?.bulletPoint,
+                      styles.bulletPoint,
                       { backgroundColor: '#4F46E5' }
                     ]}
                   />
                   <Text 
                     style={[
-                      styles?.highlightText,
+                      styles.highlightText,
                       { color: isDarkMode ? '#E0E0E0' : '#333333' }
                     ]}
                   >
@@ -335,19 +335,19 @@ const BeautyServiceDetailScreen: React?.FC = () => {
           </View>
           
           {/* Reviews Section */}
-          <View style={styles?.section}>
-            <View style={styles?.sectionHeader}>
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
               <Text style={[
-                styles?.sectionTitle,
+                styles.sectionTitle,
                 { color: isDarkMode ? '#FFFFFF' : '#000000' }
               ]}>
-                Reviews ({reviews?.length})
+                Reviews ({reviews.length})
               </Text>
               <TouchableOpacity 
                 onPress={() => setShowReviewForm(!showReviewForm)}
-                style={styles?.writeReviewButton}
+                style={styles.writeReviewButton}
               >
-                <Text style={styles?.writeReviewText}>
+                <Text style={styles.writeReviewText}>
                   {showReviewForm ? 'Cancel' : 'Write a Review'}
                 </Text>
               </TouchableOpacity>
@@ -369,22 +369,22 @@ const BeautyServiceDetailScreen: React?.FC = () => {
             )}
             
             {/* Reviews List */}
-            {reviews?.length > 0 ? (
-              reviews?.map((review) => (
+            {reviews.length > 0 ? (
+              reviews.map((review) => (
                 <BeautyReviewCard
-                  key={review?.id}
+                  key={review.id}
                   review={review}
                   isDarkMode={isDarkMode}
                   onLike={() => {}}
                   onReport={() => {
-                    Alert?.alert(
+                    Alert.alert(
                       'Report Review',
                       'Are you sure you want to report this review?',
                       [
                         { text: 'Cancel', style: 'cancel' },
                         { 
                           text: 'Report', 
-                          onPress: () => Alert?.alert('Thanks', 'Thank you for reporting this review. We will review it shortly.') 
+                          onPress: () => Alert.alert('Thanks', 'Thank you for reporting this review. We will review it shortly.') 
                         }
                       ]
                     );
@@ -393,7 +393,7 @@ const BeautyServiceDetailScreen: React?.FC = () => {
               ))
             ) : (
               <Text style={[
-                styles?.noReviewsText,
+                styles.noReviewsText,
                 { color: isDarkMode ? '#BBBBBB' : '#666666' }
               ]}>
                 No reviews yet. Be the first to leave a review!
@@ -402,11 +402,11 @@ const BeautyServiceDetailScreen: React?.FC = () => {
           </View>
           
           {/* Similar Services */}
-          {similarServices?.length > 0 && (
-            <View style={styles?.similarServicesContainer}>
+          {similarServices.length > 0 && (
+            <View style={styles.similarServicesContainer}>
               <Text 
                 style={[
-                  styles?.sectionTitle,
+                  styles.sectionTitle,
                   { color: isDarkMode ? '#FFFFFF' : '#000000' }
                 ]}
               >
@@ -416,38 +416,38 @@ const BeautyServiceDetailScreen: React?.FC = () => {
                 data={similarServices}
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                keyExtractor={(item) => item?.id}
-                contentContainerStyle={styles?.similarServicesList}
+                keyExtractor={(item) => item.id}
+                contentContainerStyle={styles.similarServicesList}
                 renderItem={({ item }) => (
                   <TouchableOpacity 
                     style={[
-                      styles?.similarServiceItem,
+                      styles.similarServiceItem,
                       { backgroundColor: isDarkMode ? '#2A2A2A' : '#F0F0F0' }
                     ]}
-                    onPress={() => handleSimilarServicePress(item?.id)}
+                    onPress={() => handleSimilarServicePress(item.id)}
                   >
                     <Image 
-                      source={{ uri: item?.imageUrl }}
-                      style={styles?.similarServiceImage}
+                      source={{ uri: item.imageUrl }}
+                      style={styles.similarServiceImage}
                       resizeMode="cover"
                     />
-                    <View style={styles?.similarServiceInfo}>
+                    <View style={styles.similarServiceInfo}>
                       <Text 
                         style={[
-                          styles?.similarServiceTitle,
+                          styles.similarServiceTitle,
                           { color: isDarkMode ? '#FFFFFF' : '#000000' }
                         ]}
                         numberOfLines={1}
                       >
-                        {item?.title}
+                        {item.title}
                       </Text>
                       <Text 
                         style={[
-                          styles?.similarServicePrice,
+                          styles.similarServicePrice,
                           { color: isDarkMode ? '#BBBBBB' : '#666666' }
                         ]}
                       >
-                        ${item?.price}
+                        ${item.price}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -461,22 +461,22 @@ const BeautyServiceDetailScreen: React?.FC = () => {
       {/* Book Now Button */}
       <View 
         style={[
-          styles?.bookNowContainer,
+          styles.bookNowContainer,
           { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
         ]}
       >
         <TouchableOpacity
-          style={styles?.bookNowButton}
+          style={styles.bookNowButton}
           onPress={handleBookNow}
         >
-          <Text style={styles?.bookNowText}>Book Now</Text>
+          <Text style={styles.bookNowText}>Book Now</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
   },

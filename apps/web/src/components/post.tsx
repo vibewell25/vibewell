@@ -71,7 +71,7 @@ export interface Post {
  * @property {Function} onReactionChange - Handler for when reaction changes
  * @property {Function} onToggleSave - Handler for when save status changes
  * @property {Function} onCommentSubmit - Handler for when a comment is submitted
- * @property {React?.ReactNode} [customActions] - Optional additional action buttons
+ * @property {React.ReactNode} [customActions] - Optional additional action buttons
  */
 export interface PostProps {
   post: Post;
@@ -82,7 +82,7 @@ export interface PostProps {
   onReactionChange: (reactionType: ReactionType | null) => void;
   onToggleSave: () => void;
   onCommentSubmit: (comment: string) => void;
-  customActions?: React?.ReactNode;
+  customActions?: React.ReactNode;
 }
 
 /**
@@ -92,7 +92,7 @@ export interface PostProps {
  * reaction buttons, comments section, and comment form for authenticated users.
  *
  * @param {PostProps} props - Component properties
- * @returns {JSX?.Element} Rendered post component
+ * @returns {JSX.Element} Rendered post component
  */
 export function Post({
   post,
@@ -107,7 +107,7 @@ export function Post({
 }: PostProps) {
   const { user: currentUser } = useAuth();
   const [commentText, setCommentText] = useState('');
-  const [expandedComments, setExpandedComments] = useState(post?.comments.length < 3);
+  const [expandedComments, setExpandedComments] = useState(post.comments.length < 3);
 
   /**
    * Toggles the expanded state of the comments section
@@ -118,11 +118,11 @@ export function Post({
 
   /**
    * Handles submission of a new comment
-   * @param {React?.FormEvent} e - Form event
+   * @param {React.FormEvent} e - Form event
    */
-  const handleCommentSubmit = (e: React?.FormEvent) => {
-    e?.preventDefault();
-    if (!commentText?.trim() || !isAuthenticated) return;
+  const handleCommentSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!commentText.trim() || !isAuthenticated) return;
     onCommentSubmit(commentText);
     setCommentText('');
   };
@@ -149,19 +149,19 @@ export function Post({
     <div className="card p-4">
       {/* Post Header */}
       <div className="mb-4 flex items-start space-x-3">
-        <UserAvatar src={post?.user.avatar} alt={`${post?.user.name}'s avatar`} size="md" />
+        <UserAvatar src={post.user.avatar} alt={`${post.user.name}'s avatar`} size="md" />
         <div>
-          <h3 className="font-medium">{post?.user.name}</h3>
-          <p className="text-xs text-muted-foreground">{formatDateTime(post?.createdAt)}</p>
+          <h3 className="font-medium">{post.user.name}</h3>
+          <p className="text-xs text-muted-foreground">{formatDateTime(post.createdAt)}</p>
         </div>
       </div>
       {/* Post Content */}
-      <p className="mb-4">{post?.content}</p>
+      <p className="mb-4">{post.content}</p>
       {/* Post Image */}
-      {post?.image && (
+      {post.image && (
         <div className="mb-4 overflow-hidden rounded-lg bg-muted">
           <div className="flex aspect-video items-center justify-center">
-            <p className="text-muted-foreground">Image: {post?.image}</p>
+            <p className="text-muted-foreground">Image: {post.image}</p>
           </div>
         </div>
       )}
@@ -169,19 +169,19 @@ export function Post({
       <div className="flex items-center justify-between border-t border-border pt-2">
         <div className="flex items-center space-x-2">
           <PostReaction
-            postId={post?.id.toString()}
-            initialReactions={post?.reactions}
+            postId={post.id.toString()}
+            initialReactions={post.reactions}
             userReaction={currentUserReaction}
             onReactionChange={(postId, reactionType) => onReactionChange(reactionType)}
           />
           <button
-            className="flex items-center space-x-1 rounded-md px-3 py-1?.5 text-sm text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+            className="flex items-center space-x-1 rounded-md px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
             onClick={toggleComments}
           >
-            <Icons?.messageCircle className="h-5 w-5" />
-            <span>{post?.comments.length}</span>
+            <Icons.messageCircle className="h-5 w-5" />
+            <span>{post.comments.length}</span>
           </button>
-          <SharePost postId={post?.id.toString()} postContent={post?.content} />
+          <SharePost postId={post.id.toString()} postContent={post.content} />
           {customActions}
         </div>
         <button
@@ -191,30 +191,30 @@ export function Post({
           onClick={onToggleSave}
           disabled={!isAuthenticated}
         >
-          <Icons?.bookmark className="h-5 w-5" />
+          <Icons.bookmark className="h-5 w-5" />
         </button>
       </div>
       {/* Comments */}
       {expandedComments && (
         <div className="mt-4 space-y-4">
-          {post?.comments.map((comment) => (
+          {post.comments.map((comment) => (
             <div
-              key={comment?.id}
+              key={comment.id}
               className="mt-3 flex items-start space-x-3 border-l-2 border-muted pl-4"
             >
               <UserAvatar
-                src={comment?.user.avatar}
-                alt={`${comment?.user.name}'s avatar`}
+                src={comment.user.avatar}
+                alt={`${comment.user.name}'s avatar`}
                 size="sm"
               />
               <div className="flex-grow">
                 <div className="flex items-baseline space-x-2">
-                  <h4 className="text-sm font-medium">{comment?.user.name}</h4>
+                  <h4 className="text-sm font-medium">{comment.user.name}</h4>
                   <span className="text-xs text-muted-foreground">
-                    {formatDateTime(comment?.createdAt)}
+                    {formatDateTime(comment.createdAt)}
                   </span>
                 </div>
-                <p className="mt-1 text-sm">{comment?.content}</p>
+                <p className="mt-1 text-sm">{comment.content}</p>
               </div>
             </div>
           ))}
@@ -223,12 +223,12 @@ export function Post({
             <form onSubmit={handleCommentSubmit} className="mt-3 flex items-start space-x-3">
               <UserAvatar
                 src={
-                  currentUser?.name
-                    ? `https://ui-avatars?.com/api/?name=${encodeURIComponent(currentUser?.name)}`
+                  currentUser.name
+                    ? `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.name)}`
                     : undefined
                 }
-                alt={currentUser?.name || 'User'}
-                fallbackInitials={currentUser?.name}
+                alt={currentUser.name || 'User'}
+                fallbackInitials={currentUser.name}
                 size="sm"
               />
               <div className="relative flex-grow">
@@ -237,14 +237,14 @@ export function Post({
                   className="form-input w-full py-2 pr-10 text-sm"
                   placeholder="Add a comment..."
                   value={commentText}
-                  onChange={(e) => setCommentText(e?.target.value)}
+                  onChange={(e) => setCommentText(e.target.value)}
                 />
                 <button
                   type="submit"
-                  disabled={!commentText?.trim()}
+                  disabled={!commentText.trim()}
                   className="text-primary absolute right-2 top-2 disabled:text-muted-foreground"
                 >
-                  <Icons?.send className="h-5 w-5" />
+                  <Icons.send className="h-5 w-5" />
                 </button>
               </div>
             </form>
@@ -259,12 +259,12 @@ export function Post({
         </div>
       )}
       {/* Show Comments Toggle */}
-      {!expandedComments && post?.comments.length > 0 && (
+      {!expandedComments && post.comments.length > 0 && (
         <button
           onClick={toggleComments}
           className="mt-2 w-full text-center text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
-          Show {post?.comments.length} comment{post?.comments.length !== 1 ? 's' : ''}
+          Show {post.comments.length} comment{post.comments.length !== 1 ? 's' : ''}
         </button>
       )}
     </div>

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 
 interface CarouselItem {
   id: string;
-  content: React?.ReactNode;
+  content: React.ReactNode;
   alt?: string;
 }
 
@@ -16,7 +16,7 @@ interface AccessibleCarouselProps {
   onSlideChange?: (index: number) => void;
 }
 
-export const AccessibleCarousel: React?.FC<AccessibleCarouselProps> = ({
+export const AccessibleCarousel: React.FC<AccessibleCarouselProps> = ({
   items,
   className = '',
   autoPlay = false,
@@ -27,12 +27,12 @@ export const AccessibleCarousel: React?.FC<AccessibleCarouselProps> = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(autoPlay);
-  const timerRef = useRef<NodeJS?.Timeout | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const goToSlide = (index: number) => {
-    const newIndex = (index + items?.length) % items?.length;
+    const newIndex = (index + items.length) % items.length;
     setCurrentIndex(newIndex);
-    onSlideChange?.(newIndex);
+    onSlideChange.(newIndex);
   };
 
   const goToNext = () => {
@@ -43,26 +43,26 @@ export const AccessibleCarousel: React?.FC<AccessibleCarouselProps> = ({
     goToSlide(currentIndex - 1);
   };
 
-  const handleKeyDown = (e: React?.KeyboardEvent) => {
-    switch (e?.key) {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    switch (e.key) {
       case 'ArrowLeft':
-        e?.preventDefault();
+        e.preventDefault();
         goToPrevious();
         break;
       case 'ArrowRight':
-        e?.preventDefault();
+        e.preventDefault();
         goToNext();
         break;
       case 'Home':
-        e?.preventDefault();
+        e.preventDefault();
         goToSlide(0);
         break;
       case 'End':
-        e?.preventDefault();
-        goToSlide(items?.length - 1);
+        e.preventDefault();
+        goToSlide(items.length - 1);
         break;
       case ' ':
-        e?.preventDefault();
+        e.preventDefault();
         setIsPlaying(!isPlaying);
         break;
     }
@@ -70,14 +70,14 @@ export const AccessibleCarousel: React?.FC<AccessibleCarouselProps> = ({
 
   useEffect(() => {
     if (isPlaying) {
-      timerRef?.current = setInterval(goToNext, interval);
-    } else if (timerRef?.current) {
-      clearInterval(timerRef?.current);
+      timerRef.current = setInterval(goToNext, interval);
+    } else if (timerRef.current) {
+      clearInterval(timerRef.current);
     }
 
     return () => {
-      if (timerRef?.current) {
-        clearInterval(timerRef?.current);
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
       }
     };
   }, [isPlaying, currentIndex]);
@@ -94,21 +94,21 @@ export const AccessibleCarousel: React?.FC<AccessibleCarouselProps> = ({
         className="overflow-hidden"
         role="group"
         aria-roledescription="carousel"
-        aria-label={`Slide ${currentIndex + 1} of ${items?.length}`}
+        aria-label={`Slide ${currentIndex + 1} of ${items.length}`}
       >
         <div
           className="flex transition-transform duration-300 ease-in-out"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
-          {items?.map((item, index) => (
+          {items.map((item, index) => (
             <div
-              key={item?.id}
+              key={item.id}
               className="w-full flex-shrink-0"
               role="group"
               aria-roledescription="slide"
-              aria-label={`Slide ${index + 1} of ${items?.length}`}
+              aria-label={`Slide ${index + 1} of ${items.length}`}
             >
-              {item?.content}
+              {item.content}
             </div>
           ))}
         </div>
@@ -139,7 +139,7 @@ export const AccessibleCarousel: React?.FC<AccessibleCarouselProps> = ({
           role="tablist"
           aria-label="Slide indicators"
         >
-          {items?.map((_, index) => (
+          {items.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}

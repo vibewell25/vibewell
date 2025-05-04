@@ -26,7 +26,7 @@ import {
 const prisma = new PrismaClient();
 
 // Initialize Twilio client
-const twilioClient = twilio(process?.env.TWILIO_ACCOUNT_SID, process?.env.TWILIO_AUTH_TOKEN);
+const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
 interface NotificationData {
   type: NotificationType;
@@ -54,77 +54,77 @@ export class NotificationService {
   async notifyUser(userId: string, payload: NotificationPayload): Promise<void> {
     try {
       // Create notification record
-      const notification = await prisma?.notification.create({
+      const notification = await prisma.notification.create({
         data: {
           userId,
-          type: payload?.type,
-          title: payload?.title,
-          message: payload?.message,
-          data: payload?.data,
-          status: NotificationStatus?.PENDING,
+          type: payload.type,
+          title: payload.title,
+          message: payload.message,
+          data: payload.data,
+          status: NotificationStatus.PENDING,
         },
       });
 
       // Get user's notification preferences
-      const preferences = await prisma?.notificationPreferences.findUnique({
+      const preferences = await prisma.notificationPreferences.findUnique({
         where: { userId },
       });
 
       if (!preferences) {
-        logger?.warn('User has no notification preferences', 'NotificationService', { userId });
+        logger.warn('User has no notification preferences', 'NotificationService', { userId });
         return;
       }
 
       // Check if user has enabled this type of notification
-      if (!this?.isNotificationEnabled(preferences, payload?.type)) {
-        logger?.info('Notification type disabled by user', 'NotificationService', {
+      if (!this.isNotificationEnabled(preferences, payload.type)) {
+        logger.info('Notification type disabled by user', 'NotificationService', {
           userId,
-          type: payload?.type,
+          type: payload.type,
         });
         return;
       }
 
       // Send push notification if enabled
-      if (preferences?.pushEnabled) {
-        await this?.sendPushNotification(userId, payload);
+      if (preferences.pushEnabled) {
+        await this.sendPushNotification(userId, payload);
       }
 
       // Send email notification if enabled
-      if (preferences?.emailEnabled) {
-        await this?.sendEmailNotification(userId, payload);
+      if (preferences.emailEnabled) {
+        await this.sendEmailNotification(userId, payload);
       }
 
       // Send SMS notification if enabled
-      if (preferences?.smsEnabled) {
-        await this?.sendSMSNotification(userId, payload);
+      if (preferences.smsEnabled) {
+        await this.sendSMSNotification(userId, payload);
       }
 
       // Update notification status
-      await prisma?.notification.update({
-        where: { id: notification?.id },
-        data: { status: NotificationStatus?.DELIVERED },
+      await prisma.notification.update({
+        where: { id: notification.id },
+        data: { status: NotificationStatus.DELIVERED },
       });
 
-      logger?.info('Notification sent successfully', 'NotificationService', {
+      logger.info('Notification sent successfully', 'NotificationService', {
         userId,
-        notificationId: notification?.id,
+        notificationId: notification.id,
       });
     } catch (error) {
-      logger?.error('Failed to send notification', 'NotificationService', { error });
+      logger.error('Failed to send notification', 'NotificationService', { error });
       throw error;
     }
   }
 
   private isNotificationEnabled(preferences: any, type: NotificationType): boolean {
     switch (type) {
-      case NotificationType?.SYSTEM:
-        return preferences?.systemNotifications;
-      case NotificationType?.BOOKING:
-        return preferences?.bookingNotifications;
-      case NotificationType?.LOYALTY:
-        return preferences?.loyaltyNotifications;
-      case NotificationType?.MARKETING:
-        return preferences?.marketingNotifications;
+      case NotificationType.SYSTEM:
+        return preferences.systemNotifications;
+      case NotificationType.BOOKING:
+        return preferences.bookingNotifications;
+      case NotificationType.LOYALTY:
+        return preferences.loyaltyNotifications;
+      case NotificationType.MARKETING:
+        return preferences.marketingNotifications;
       default:
         return true;
     }
@@ -133,12 +133,12 @@ export class NotificationService {
   private async sendPushNotification(userId: string, payload: NotificationPayload): Promise<void> {
     try {
       // Get user's push tokens
-      const user = await prisma?.user.findUnique({
+      const user = await prisma.user.findUnique({
         where: { id: userId },
         select: { pushTokens: true },
       });
 
-      if (!user?.pushTokens?.length) {
+      if (!user.pushTokens.length) {
         return;
       }
 
@@ -146,45 +146,45 @@ export class NotificationService {
       const pushService = new PushNotificationService();
 
       // Send notifications to all user devices
-      await Promise?.all(
-        user?.pushTokens.map((token) =>
-          pushService?.sendNotification({
+      await Promise.all(
+        user.pushTokens.map((token) =>
+          pushService.sendNotification({
             token,
-            title: payload?.title,
-            body: payload?.message,
-            data: payload?.data || {},
-            type: payload?.type,
+            title: payload.title,
+            body: payload.message,
+            data: payload.data || {},
+            type: payload.type,
           }),
         ),
       );
 
-      logger?.info('Push notification sent', 'NotificationService', {
+      logger.info('Push notification sent', 'NotificationService', {
         userId,
-        tokenCount: user?.pushTokens.length,
+        tokenCount: user.pushTokens.length,
       });
     } catch (error) {
-      logger?.error('Failed to send push notification', 'NotificationService', { error });
+      logger.error('Failed to send push notification', 'NotificationService', { error });
     }
   }
 
   private async sendEmailNotification(userId: string, payload: NotificationPayload): Promise<void> {
     try {
-      const user = await prisma?.user.findUnique({
+      const user = await prisma.user.findUnique({
         where: { id: userId },
         select: { email: true, name: true },
       });
 
-      if (!user?.email) {
+      if (!user.email) {
         return;
       }
 
       const emailService = new EmailService();
 
       // Prepare email content based on notification type
-      const subject = payload?.title;
+      const subject = payload.title;
       let template = '';
 
-      switch (payload?.type) {
+      switch (payload.type) {
         case 'BOOKING':
 
           template = 'booking-notification';
@@ -205,107 +205,107 @@ export class NotificationService {
       }
 
       // Send email through email service
-      await emailService?.sendEmail({
-        to: user?.email,
+      await emailService.sendEmail({
+        to: user.email,
         subject,
         template,
         data: {
-          userName: user?.name || 'Valued Customer',
-          message: payload?.message,
-          ...payload?.data,
+          userName: user.name || 'Valued Customer',
+          message: payload.message,
+          ...payload.data,
         },
       });
 
-      logger?.info('Email notification sent', 'NotificationService', {
+      logger.info('Email notification sent', 'NotificationService', {
         userId,
-        email: user?.email,
-        notificationType: payload?.type,
+        email: user.email,
+        notificationType: payload.type,
       });
     } catch (error) {
-      logger?.error('Failed to send email notification', 'NotificationService', { error });
+      logger.error('Failed to send email notification', 'NotificationService', { error });
     }
   }
 
   private async sendSMSNotification(userId: string, payload: NotificationPayload): Promise<void> {
     try {
-      const user = await prisma?.user.findUnique({
+      const user = await prisma.user.findUnique({
         where: { id: userId },
         select: { phone: true },
       });
 
-      if (!user?.phone) {
+      if (!user.phone) {
         return;
       }
 
-      // Format phone number to E?.164 format if needed
-      const formattedPhone = user?.phone.startsWith('+') ? user?.phone : `+${user?.phone}`;
+      // Format phone number to E.164 format if needed
+      const formattedPhone = user.phone.startsWith('+') ? user.phone : `+${user.phone}`;
 
       // Send SMS using Twilio
-      await twilioClient?.messages.create({
-        body: `${payload?.title}: ${payload?.message}`,
-        from: process?.env.TWILIO_PHONE_NUMBER || '',
+      await twilioClient.messages.create({
+        body: `${payload.title}: ${payload.message}`,
+        from: process.env.TWILIO_PHONE_NUMBER || '',
         to: formattedPhone,
       });
 
-      logger?.info('SMS notification sent', 'NotificationService', {
+      logger.info('SMS notification sent', 'NotificationService', {
         userId,
         phone: formattedPhone,
       });
     } catch (error) {
-      logger?.error('Failed to send SMS notification', 'NotificationService', { error });
+      logger.error('Failed to send SMS notification', 'NotificationService', { error });
     }
   }
 
   async sendBulkNotifications(userIds: string[], notification: NotificationData) {
     try {
-      const notifications = await Promise?.all(
-        userIds?.map((userId) => this?.notifyUser(userId, notification as NotificationPayload)),
+      const notifications = await Promise.all(
+        userIds.map((userId) => this.notifyUser(userId, notification as NotificationPayload)),
       );
 
-      logger?.info(`Sent bulk notifications`, {
-        userCount: userIds?.length,
-        type: notification?.type,
+      logger.info(`Sent bulk notifications`, {
+        userCount: userIds.length,
+        type: notification.type,
       });
 
       return notifications;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error(`Error sending bulk notifications: ${errorMessage}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error(`Error sending bulk notifications: ${errorMessage}`);
       throw error;
     }
   }
 
   async scheduleNotification(userId: string, notification: NotificationData, scheduledFor: Date) {
     try {
-      const scheduledNotification = await prisma?.scheduledNotification.create({
+      const scheduledNotification = await prisma.scheduledNotification.create({
         data: {
           userId,
-          type: notification?.type,
-          title: notification?.title,
-          message: notification?.message,
-          data: notification?.data || {},
+          type: notification.type,
+          title: notification.title,
+          message: notification.message,
+          data: notification.data || {},
           scheduledFor,
           status: 'SCHEDULED',
         },
       });
 
-      logger?.info(`Scheduled notification`, {
+      logger.info(`Scheduled notification`, {
         userId,
-        notificationId: scheduledNotification?.id,
+        notificationId: scheduledNotification.id,
         scheduledFor,
       });
 
       return scheduledNotification;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error(`Error scheduling notification: ${errorMessage}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error(`Error scheduling notification: ${errorMessage}`);
       throw error;
     }
   }
 
   async getUserPreferences(userId: string): Promise<NotificationPreference> {
     try {
-      const preferences = await prisma?.notificationPreferences.findUnique({
+      const preferences = await prisma.notificationPreferences.findUnique({
         where: { userId },
       });
 
@@ -322,15 +322,15 @@ export class NotificationService {
 
       return preferences;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error(`Error getting user preferences: ${errorMessage}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error(`Error getting user preferences: ${errorMessage}`);
       throw error;
     }
   }
 
   async updateUserPreferences(userId: string, preferences: Partial<NotificationPreference>) {
     try {
-      const updatedPreferences = await prisma?.notificationPreferences.upsert({
+      const updatedPreferences = await prisma.notificationPreferences.upsert({
         where: { userId },
         create: {
           userId,
@@ -339,15 +339,15 @@ export class NotificationService {
         update: preferences,
       });
 
-      logger?.info(`Updated notification preferences`, {
+      logger.info(`Updated notification preferences`, {
         userId,
         preferences: updatedPreferences,
       });
 
       return updatedPreferences;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error(`Error updating user preferences: ${errorMessage}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error(`Error updating user preferences: ${errorMessage}`);
       throw error;
     }
   }
@@ -366,7 +366,7 @@ export class NotificationService {
     try {
       const { unreadOnly = false, limit = 10, offset = 0 } = options;
 
-      return await prisma?.notification.findMany({
+      return await prisma.notification.findMany({
         where: {
           userId,
           ...(unreadOnly && { read: false }),
@@ -378,7 +378,7 @@ export class NotificationService {
         skip: offset,
       });
     } catch (error) {
-      logger?.error('Error getting user notifications', error);
+      logger.error('Error getting user notifications', error);
       throw error;
     }
   }
@@ -388,7 +388,7 @@ export class NotificationService {
    */
   async markAsRead(notificationId: string) {
     try {
-      return await prisma?.notification.update({
+      return await prisma.notification.update({
         where: { id: notificationId },
         data: {
           read: true,
@@ -396,7 +396,7 @@ export class NotificationService {
         },
       });
     } catch (error) {
-      logger?.error('Error marking notification as read', error);
+      logger.error('Error marking notification as read', error);
       throw error;
     }
   }
@@ -406,7 +406,7 @@ export class NotificationService {
    */
   async markAllAsRead(userId: string) {
     try {
-      return await prisma?.notification.updateMany({
+      return await prisma.notification.updateMany({
         where: {
           userId,
           read: false,
@@ -417,7 +417,7 @@ export class NotificationService {
         },
       });
     } catch (error) {
-      logger?.error('Error marking all notifications as read', error);
+      logger.error('Error marking all notifications as read', error);
       throw error;
     }
   }
@@ -427,11 +427,11 @@ export class NotificationService {
    */
   async deleteNotification(notificationId: string) {
     try {
-      return await prisma?.notification.delete({
+      return await prisma.notification.delete({
         where: { id: notificationId },
       });
     } catch (error) {
-      logger?.error('Error deleting notification', error);
+      logger.error('Error deleting notification', error);
       throw error;
     }
   }
@@ -441,14 +441,14 @@ export class NotificationService {
    */
   async getUnreadCount(userId: string): Promise<number> {
     try {
-      return await prisma?.notification.count({
+      return await prisma.notification.count({
         where: {
           userId,
           read: false,
         },
       });
     } catch (error) {
-      logger?.error('Error getting unread notification count', error);
+      logger.error('Error getting unread notification count', error);
       throw error;
     }
   }
@@ -458,7 +458,7 @@ export class NotificationService {
    */
   async sendBookingConfirmation(booking: ServiceBooking): Promise<void> {
     try {
-      const user = await this?.getUser(booking?.userId);
+      const user = await this.getUser(booking.userId);
 
       if (!user) {
         throw new Error('User not found');
@@ -466,48 +466,48 @@ export class NotificationService {
 
       const message = {
         title: 'Booking Confirmed',
-        body: `Your booking for ${booking?.services.length} service(s) on ${booking?.startTime.toLocaleDateString()} has been confirmed.`,
+        body: `Your booking for ${booking.services.length} service(s) on ${booking.startTime.toLocaleDateString()} has been confirmed.`,
         data: {
-          bookingId: booking?.id,
+          bookingId: booking.id,
           type: 'BOOKING_CONFIRMATION',
         },
       };
 
       // Send email notification
-      if (user?.preferences?.emailEnabled) {
-        await EmailService?.send({
-          to: user?.email!,
+      if (user.preferences.emailEnabled) {
+        await EmailService.send({
+          to: user.email!,
           subject: 'Booking Confirmation',
 
           template: 'booking-confirmation',
           data: {
-            userName: user?.name,
+            userName: user.name,
             bookingDetails: {
-              services: booking?.services,
-              date: booking?.startTime.toLocaleDateString(),
-              time: booking?.startTime.toLocaleTimeString(),
+              services: booking.services,
+              date: booking.startTime.toLocaleDateString(),
+              time: booking.startTime.toLocaleTimeString(),
             },
           },
         });
       }
 
       // Send push notification
-      if (user?.preferences?.pushEnabled) {
-        await this?.notifyUser(user?.id, message as NotificationPayload);
+      if (user.preferences.pushEnabled) {
+        await this.notifyUser(user.id, message as NotificationPayload);
       }
 
       // Create notification record
-      await prisma?.notification.create({
+      await prisma.notification.create({
         data: {
-          userId: user?.id,
-          type: NotificationType?.BOOKING_CONFIRMATION,
-          title: message?.title,
-          body: message?.body,
-          data: message?.data,
+          userId: user.id,
+          type: NotificationType.BOOKING_CONFIRMATION,
+          title: message.title,
+          body: message.body,
+          data: message.data,
         },
       });
     } catch (error) {
-      logger?.error('Error sending booking confirmation:', error);
+      logger.error('Error sending booking confirmation:', error);
       throw error;
     }
   }
@@ -517,9 +517,9 @@ export class NotificationService {
    */
   async sendWaitlistConfirmation(userId: string, serviceId: string): Promise<void> {
     try {
-      const [user, service] = await Promise?.all([
-        this?.getUser(userId),
-        prisma?.beautyService.findUnique({
+      const [user, service] = await Promise.all([
+        this.getUser(userId),
+        prisma.beautyService.findUnique({
           where: { id: serviceId },
         }),
       ]);
@@ -530,7 +530,7 @@ export class NotificationService {
 
       const message = {
         title: 'Added to Waitlist',
-        body: `You've been added to the waitlist for ${service?.name}. We'll notify you when a slot becomes available.`,
+        body: `You've been added to the waitlist for ${service.name}. We'll notify you when a slot becomes available.`,
         data: {
           serviceId,
           type: 'WAITLIST_CONFIRMATION',
@@ -538,36 +538,36 @@ export class NotificationService {
       };
 
       // Send email notification
-      if (user?.preferences?.emailEnabled) {
-        await EmailService?.send({
-          to: user?.email!,
+      if (user.preferences.emailEnabled) {
+        await EmailService.send({
+          to: user.email!,
           subject: 'Waitlist Confirmation',
 
           template: 'waitlist-confirmation',
           data: {
-            userName: user?.name,
-            serviceName: service?.name,
+            userName: user.name,
+            serviceName: service.name,
           },
         });
       }
 
       // Send push notification
-      if (user?.preferences?.pushEnabled) {
-        await this?.notifyUser(user?.id, message as NotificationPayload);
+      if (user.preferences.pushEnabled) {
+        await this.notifyUser(user.id, message as NotificationPayload);
       }
 
       // Create notification record
-      await prisma?.notification.create({
+      await prisma.notification.create({
         data: {
-          userId: user?.id,
-          type: NotificationType?.WAITLIST_CONFIRMATION,
-          title: message?.title,
-          body: message?.body,
-          data: message?.data,
+          userId: user.id,
+          type: NotificationType.WAITLIST_CONFIRMATION,
+          title: message.title,
+          body: message.body,
+          data: message.data,
         },
       });
     } catch (error) {
-      logger?.error('Error sending waitlist confirmation:', error);
+      logger.error('Error sending waitlist confirmation:', error);
       throw error;
     }
   }
@@ -581,9 +581,9 @@ export class NotificationService {
     availableSlot: Date,
   ): Promise<void> {
     try {
-      const [user, service] = await Promise?.all([
-        this?.getUser(userId),
-        prisma?.beautyService.findUnique({
+      const [user, service] = await Promise.all([
+        this.getUser(userId),
+        prisma.beautyService.findUnique({
           where: { id: serviceId },
         }),
       ]);
@@ -594,65 +594,65 @@ export class NotificationService {
 
       const message = {
         title: 'Slot Available',
-        body: `A slot is now available for ${service?.name} on ${availableSlot?.toLocaleDateString()} at ${availableSlot?.toLocaleTimeString()}. Book now!`,
+        body: `A slot is now available for ${service.name} on ${availableSlot.toLocaleDateString()} at ${availableSlot.toLocaleTimeString()}. Book now!`,
         data: {
           serviceId,
-          availableSlot: availableSlot?.toISOString(),
+          availableSlot: availableSlot.toISOString(),
           type: 'WAITLIST_SLOT_AVAILABLE',
         },
       };
 
       // Send email notification
-      if (user?.preferences?.emailEnabled) {
-        await EmailService?.send({
-          to: user?.email!,
+      if (user.preferences.emailEnabled) {
+        await EmailService.send({
+          to: user.email!,
           subject: 'Waitlist Slot Available',
 
           template: 'waitlist-slot-available',
           data: {
-            userName: user?.name,
-            serviceName: service?.name,
-            date: availableSlot?.toLocaleDateString(),
-            time: availableSlot?.toLocaleTimeString(),
+            userName: user.name,
+            serviceName: service.name,
+            date: availableSlot.toLocaleDateString(),
+            time: availableSlot.toLocaleTimeString(),
           },
         });
       }
 
       // Send push notification
-      if (user?.preferences?.pushEnabled) {
-        await this?.notifyUser(user?.id, message as NotificationPayload);
+      if (user.preferences.pushEnabled) {
+        await this.notifyUser(user.id, message as NotificationPayload);
       }
 
       // Create notification record
-      await prisma?.notification.create({
+      await prisma.notification.create({
         data: {
-          userId: user?.id,
-          type: NotificationType?.WAITLIST_SLOT_AVAILABLE,
-          title: message?.title,
-          body: message?.body,
-          data: message?.data,
+          userId: user.id,
+          type: NotificationType.WAITLIST_SLOT_AVAILABLE,
+          title: message.title,
+          body: message.body,
+          data: message.data,
         },
       });
     } catch (error) {
-      logger?.error('Error sending waitlist notification:', error);
+      logger.error('Error sending waitlist notification:', error);
       throw error;
     }
   }
 
   async sendPointsExpiringNotification(userId: string, points: number, daysUntilExpiry: number) {
-    const user = await this?.getUser(userId);
-    if (!user || !user?.email) return;
+    const user = await this.getUser(userId);
+    if (!user || !user.email) return;
 
     const emailContent = pointsExpiringTemplate(points, daysUntilExpiry);
-    await this?.notifyUser(user?.id, {
+    await this.notifyUser(user.id, {
       type: 'LOYALTY',
       title: 'Your Points Are About to Expire!',
       message: emailContent,
     } as NotificationPayload);
 
     // Send push notification if enabled
-    if (user?.preferences?.pushEnabled) {
-      await this?.notifyUser(user?.id, {
+    if (user.preferences.pushEnabled) {
+      await this.notifyUser(user.id, {
         type: 'LOYALTY',
         title: 'Points Expiring Soon',
         body: `${points} points will expire in ${daysUntilExpiry} days. Use them now!`,
@@ -661,19 +661,19 @@ export class NotificationService {
   }
 
   async sendPointMultiplierNotification(userId: string, multiplier: number, endDate: Date) {
-    const user = await this?.getUser(userId);
-    if (!user || !user?.email) return;
+    const user = await this.getUser(userId);
+    if (!user || !user.email) return;
 
-    const formattedDate = endDate?.toLocaleDateString();
+    const formattedDate = endDate.toLocaleDateString();
     const emailContent = pointMultiplierTemplate(multiplier, formattedDate);
-    await this?.notifyUser(user?.id, {
+    await this.notifyUser(user.id, {
       type: 'LOYALTY',
       title: `${multiplier}x Points Event!`,
       message: emailContent,
     } as NotificationPayload);
 
-    if (user?.preferences?.pushEnabled) {
-      await this?.notifyUser(user?.id, {
+    if (user.preferences.pushEnabled) {
+      await this.notifyUser(user.id, {
         type: 'LOYALTY',
         title: 'Points Multiplier Event',
         body: `Earn ${multiplier}x points on all services until ${formattedDate}!`,
@@ -682,18 +682,18 @@ export class NotificationService {
   }
 
   async sendRewardUnlockedNotification(userId: string, rewardName: string, pointsCost: number) {
-    const user = await this?.getUser(userId);
-    if (!user || !user?.email) return;
+    const user = await this.getUser(userId);
+    if (!user || !user.email) return;
 
     const emailContent = rewardUnlockedTemplate(rewardName, pointsCost);
-    await this?.notifyUser(user?.id, {
+    await this.notifyUser(user.id, {
       type: 'LOYALTY',
       title: 'New Reward Unlocked! 🎉',
       message: emailContent,
     } as NotificationPayload);
 
-    if (user?.preferences?.pushEnabled) {
-      await this?.notifyUser(user?.id, {
+    if (user.preferences.pushEnabled) {
+      await this.notifyUser(user.id, {
         type: 'LOYALTY',
         title: 'New Reward Unlocked!',
         body: `You've unlocked ${rewardName}! Redeem now for ${pointsCost} points.`,
@@ -702,18 +702,18 @@ export class NotificationService {
   }
 
   async sendSeasonalChallengeNotification(userId: string, challengeName: string, reward: string) {
-    const user = await this?.getUser(userId);
-    if (!user || !user?.email) return;
+    const user = await this.getUser(userId);
+    if (!user || !user.email) return;
 
     const emailContent = seasonalChallengeTemplate(challengeName, reward);
-    await this?.notifyUser(user?.id, {
+    await this.notifyUser(user.id, {
       type: 'LOYALTY',
       title: 'New Seasonal Challenge Available!',
       message: emailContent,
     } as NotificationPayload);
 
-    if (user?.preferences?.pushEnabled) {
-      await this?.notifyUser(user?.id, {
+    if (user.preferences.pushEnabled) {
+      await this.notifyUser(user.id, {
         type: 'LOYALTY',
         title: 'New Seasonal Challenge',
         body: `Complete "${challengeName}" to earn ${reward}!`,
@@ -722,7 +722,7 @@ export class NotificationService {
   }
 
   private async getUser(userId: string) {
-    return prisma?.user.findUnique({
+    return prisma.user.findUnique({
       where: { id: userId },
       include: {
         preferences: true, // Assuming we have a preferences relation

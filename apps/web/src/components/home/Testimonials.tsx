@@ -9,10 +9,10 @@ export default function Testimonials() {
     <section className="testimonials py-16">
       <h2 className="mb-6 text-center text-3xl font-bold">Testimonials</h2>
       <div className="mx-auto max-w-xl space-y-8">
-        {testimonials?.map((item) => (
-          <blockquote key={item?.id} className="text-center">
-            <p className="text-lg italic">“{item?.text}”</p>
-            <cite className="mt-2 block text-gray-600">— {item?.author}</cite>
+        {testimonials.map((item) => (
+          <blockquote key={item.id} className="text-center">
+            <p className="text-lg italic">“{item.text}”</p>
+            <cite className="mt-2 block text-gray-600">— {item.author}</cite>
           </blockquote>
         ))}
       </div>

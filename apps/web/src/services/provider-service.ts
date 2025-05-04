@@ -65,7 +65,7 @@ export class ProviderService {
    */
   async getAllProviders(limit = 20, offset = 0): Promise<Provider[]> {
     try {
-      const providers = await prisma?.provider.findMany({
+      const providers = await prisma.provider.findMany({
         skip: offset,
         take: limit,
         orderBy: { name: 'asc' },
@@ -73,7 +73,7 @@ export class ProviderService {
 
       return providers as Provider[];
     } catch (error) {
-      console?.error('Error fetching providers:', error);
+      console.error('Error fetching providers:', error);
       return [];
     }
   }
@@ -89,7 +89,7 @@ export class ProviderService {
         ttl: 15 * 60 * 1000, // Cache for 15 minutes
       });
     } catch (error) {
-      console?.error('Error fetching provider:', error);
+      console.error('Error fetching provider:', error);
       return null;
     }
   }
@@ -107,7 +107,7 @@ export class ProviderService {
         ttl: 5 * 60 * 1000, // Cache for 5 minutes
       });
     } catch (error) {
-      console?.error('Error searching providers:', error);
+      console.error('Error searching providers:', error);
       return [];
     }
   }
@@ -122,7 +122,7 @@ export class ProviderService {
         ttl: 60 * 60 * 1000, // Cache for 1 hour
       });
     } catch (error) {
-      console?.error('Error fetching featured providers:', error);
+      console.error('Error fetching featured providers:', error);
       return [];
     }
   }
@@ -141,7 +141,7 @@ export class ProviderService {
         },
       );
     } catch (error) {
-      console?.error(`Error fetching providers by category ${category}:`, error);
+      console.error(`Error fetching providers by category ${category}:`, error);
       return [];
     }
   }
@@ -157,7 +157,7 @@ export class ProviderService {
         ttl: 20 * 60 * 1000, // Cache for 20 minutes
       });
     } catch (error) {
-      console?.error(`Error fetching services for provider ${providerId}:`, error);
+      console.error(`Error fetching services for provider ${providerId}:`, error);
       return [];
     }
   }
@@ -174,7 +174,7 @@ export class ProviderService {
         ttl: 5 * 60 * 1000, // Cache for 5 minutes
       });
     } catch (error) {
-      console?.error('Error fetching nearby providers:', error);
+      console.error('Error fetching nearby providers:', error);
       return [];
     }
   }

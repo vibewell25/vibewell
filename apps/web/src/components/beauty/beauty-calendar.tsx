@@ -42,19 +42,19 @@ export default function BeautyCalendar() {
   }, []);
 
   const loadEvents = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const beautyEvents = await getBeautyEvents();
       setEvents(beautyEvents);
     } catch (error) {
-      console?.error('Error loading events:', error);
+      console.error('Error loading events:', error);
     }
   };
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       await createBeautyEvent(newEvent);
       setShowNewEvent(false);
@@ -70,45 +70,45 @@ export default function BeautyCalendar() {
       });
       loadEvents();
     } catch (error) {
-      console?.error('Error creating event:', error);
+      console.error('Error creating event:', error);
     }
   };
 
   const handleToggleComplete = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');eventId: string, completed: boolean) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');eventId: string, completed: boolean) => {
     try {
       await updateBeautyEvent(eventId, { completed });
       loadEvents();
     } catch (error) {
-      console?.error('Error updating event:', error);
+      console.error('Error updating event:', error);
     }
   };
 
   const getEventsByDate = (date: Date) => {
-    return events?.filter((event) => {
-      const eventDate = new Date(event?.date);
+    return events.filter((event) => {
+      const eventDate = new Date(event.date);
       return (
-        eventDate?.getDate() === date?.getDate() &&
-        eventDate?.getMonth() === date?.getMonth() &&
-        eventDate?.getFullYear() === date?.getFullYear()
+        eventDate.getDate() === date.getDate() &&
+        eventDate.getMonth() === date.getMonth() &&
+        eventDate.getFullYear() === date.getFullYear()
       );
     });
   };
 
   const generateCalendarDays = () => {
     const days = [];
-    const firstDay = new Date(selectedDate?.getFullYear(), selectedDate?.getMonth(), 1);
-    const lastDay = new Date(selectedDate?.getFullYear(), selectedDate?.getMonth() + 1, 0);
+    const firstDay = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+    const lastDay = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
 
     // Add empty cells for days before the first day of the month
-    for (let i = 0; i < firstDay?.getDay(); if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-      days?.push(null);
+    for (let i = 0; i < firstDay.getDay(); if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
+      days.push(null);
     }
 
     // Add days of the month
-    for (let i = 1; i <= lastDay?.getDate(); if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-      days?.push(new Date(selectedDate?.getFullYear(), selectedDate?.getMonth(), i));
+    for (let i = 1; i <= lastDay.getDate(); if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
+      days.push(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), i));
     }
 
     return days;
@@ -117,9 +117,9 @@ export default function BeautyCalendar() {
   const navigateMonth = (direction: 'prev' | 'next') => {
     const newDate = new Date(selectedDate);
     if (direction === 'prev') {
-      newDate?.setMonth(newDate?.getMonth() - 1);
+      newDate.setMonth(newDate.getMonth() - 1);
     } else {
-      newDate?.setMonth(newDate?.getMonth() + 1);
+      newDate.setMonth(newDate.getMonth() + 1);
     }
     setSelectedDate(newDate);
   };
@@ -137,19 +137,19 @@ export default function BeautyCalendar() {
         <Card className="space-y-4 p-6">
           <Input
             label="Event Title"
-            value={newEvent?.title}
-            onChange={(e) => setNewEvent((prev) => ({ ...prev, title: e?.target.value }))}
+            value={newEvent.title}
+            onChange={(e) => setNewEvent((prev) => ({ ...prev, title: e.target.value }))}
           />
 
           <Select
             label="Event Type"
-            value={newEvent?.type}
+            value={newEvent.type}
             onChange={(e) =>
-              setNewEvent((prev) => ({ ...prev, type: e?.target.value as EventType }))
+              setNewEvent((prev) => ({ ...prev, type: e.target.value as EventType }))
             }
-            options={eventTypes?.map((type) => ({
+            options={eventTypes.map((type) => ({
               value: type,
-              label: type?.charAt(0).toUpperCase() + type?.slice(1),
+              label: type.charAt(0).toUpperCase() + type.slice(1),
             }))}
           />
 
@@ -157,39 +157,39 @@ export default function BeautyCalendar() {
             <Input
               type="datetime-local"
               label="Date & Time"
-              value={new Date(newEvent?.date).toISOString().slice(0, 16)}
+              value={new Date(newEvent.date).toISOString().slice(0, 16)}
               onChange={(e) =>
-                setNewEvent((prev) => ({ ...prev, date: new Date(e?.target.value).toISOString() }))
+                setNewEvent((prev) => ({ ...prev, date: new Date(e.target.value).toISOString() }))
               }
             />
             <Input
               type="number"
               label="Duration (minutes)"
-              value={newEvent?.duration}
+              value={newEvent.duration}
               onChange={(e) =>
-                setNewEvent((prev) => ({ ...prev, duration: parseInt(e?.target.value) || 30 }))
+                setNewEvent((prev) => ({ ...prev, duration: parseInt(e.target.value) || 30 }))
               }
             />
           </div>
 
           <Select
             label="Repeat"
-            value={newEvent?.repeat}
-            onChange={(e) => setNewEvent((prev) => ({ ...prev, repeat: e?.target.value }))}
+            value={newEvent.repeat}
+            onChange={(e) => setNewEvent((prev) => ({ ...prev, repeat: e.target.value }))}
             options={repeatOptions}
           />
 
           <Input
             label="Notes"
-            value={newEvent?.notes}
-            onChange={(e) => setNewEvent((prev) => ({ ...prev, notes: e?.target.value }))}
+            value={newEvent.notes}
+            onChange={(e) => setNewEvent((prev) => ({ ...prev, notes: e.target.value }))}
           />
 
           <div className="flex items-center gap-2">
             <input
               type="checkbox"
-              checked={newEvent?.notification}
-              onChange={(e) => setNewEvent((prev) => ({ ...prev, notification: e?.target.checked }))}
+              checked={newEvent.notification}
+              onChange={(e) => setNewEvent((prev) => ({ ...prev, notification: e.target.checked }))}
             />
             <label className="text-sm">Enable notifications</label>
           </div>
@@ -204,7 +204,7 @@ export default function BeautyCalendar() {
             Previous
           </Button>
           <h3 className="text-xl font-semibold">
-            {selectedDate?.toLocaleString('default', { month: 'long', year: 'numeric' })}
+            {selectedDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
           </h3>
           <Button variant="outline" onClick={() => navigateMonth('next')}>
             Next
@@ -226,18 +226,18 @@ export default function BeautyCalendar() {
             >
               {date && (
                 <>
-                  <div className="text-right text-sm text-gray-600">{date?.getDate()}</div>
+                  <div className="text-right text-sm text-gray-600">{date.getDate()}</div>
                   <div className="mt-1 space-y-1">
                     {getEventsByDate(date).map((event) => (
                       <div
-                        key={event?.id}
+                        key={event.id}
                         className={`rounded p-1 text-xs ${
-                          event?.completed
+                          event.completed
                             ? 'bg-green-100 text-green-800'
                             : 'bg-blue-100 text-blue-800'
                         }`}
                       >
-                        {event?.title}
+                        {event.title}
                       </div>
                     ))}
                   </div>
@@ -252,30 +252,30 @@ export default function BeautyCalendar() {
         <h3 className="mb-4 text-xl font-semibold">Upcoming Events</h3>
         <div className="space-y-4">
           {events
-            .filter((event) => new Date(event?.date) >= new Date())
-            .sort((a, b) => new Date(a?.date).getTime() - new Date(b?.date).getTime())
+            .filter((event) => new Date(event.date) >= new Date())
+            .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
             .slice(0, 5)
             .map((event) => (
               <div
-                key={event?.id}
+                key={event.id}
                 className="flex items-start justify-between rounded-lg bg-gray-50 p-3"
               >
                 <div className="flex items-start gap-3">
                   <input
                     type="checkbox"
-                    checked={event?.completed}
-                    onChange={() => handleToggleComplete(event?.id, !event?.completed)}
+                    checked={event.completed}
+                    onChange={() => handleToggleComplete(event.id, !event.completed)}
                     className="mt-1"
                   />
                   <div>
-                    <h4 className="font-medium">{event?.title}</h4>
+                    <h4 className="font-medium">{event.title}</h4>
                     <p className="text-sm text-gray-600">
-                      {new Date(event?.date).toLocaleString()} • {event?.duration} mins
+                      {new Date(event.date).toLocaleString()} • {event.duration} mins
                     </p>
-                    {event?.notes && <p className="mt-1 text-sm text-gray-500">{event?.notes}</p>}
+                    {event.notes && <p className="mt-1 text-sm text-gray-500">{event.notes}</p>}
                   </div>
                 </div>
-                <Badge>{event?.type}</Badge>
+                <Badge>{event.type}</Badge>
               </div>
             ))}
         </div>

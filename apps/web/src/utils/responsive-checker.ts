@@ -31,17 +31,17 @@ export function detectDeviceType(): DeviceType {
 
   // Check for mobile devices via user agent
 
-  const isMobileUserAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i?.test(
-    navigator?.userAgent,
+  const isMobileUserAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent,
   );
 
   // Get the screen width
-  const screenWidth = window?.innerWidth;
+  const screenWidth = window.innerWidth;
 
   // Determine device type based on screen width and user agent
-  if (isMobileUserAgent && screenWidth < BREAKPOINTS?.md) {
+  if (isMobileUserAgent && screenWidth < BREAKPOINTS.md) {
     return 'mobile';
-  } else if (screenWidth < BREAKPOINTS?.lg || (isMobileUserAgent && screenWidth >= BREAKPOINTS?.md)) {
+  } else if (screenWidth < BREAKPOINTS.lg || (isMobileUserAgent && screenWidth >= BREAKPOINTS.md)) {
     return 'tablet';
   } else {
     return 'desktop';
@@ -59,7 +59,7 @@ export function isTouchDevice(): boolean {
 
   return (
     'ontouchstart' in window ||
-    navigator?.maxTouchPoints > 0 ||
+    navigator.maxTouchPoints > 0 ||
     (navigator as any).msMaxTouchPoints > 0
   );
 }
@@ -74,8 +74,8 @@ export function getViewportDimensions(): { width: number; height: number } {
   }
 
   return {
-    width: window?.innerWidth,
-    height: window?.innerHeight,
+    width: window.innerWidth,
+    height: window.innerHeight,
   };
 }
 
@@ -92,15 +92,15 @@ export function matchesBreakpoint(breakpoint: keyof typeof BREAKPOINTS): boolean
 
   switch (breakpoint) {
     case 'xs':
-      return width >= BREAKPOINTS?.xs && width < BREAKPOINTS?.sm;
+      return width >= BREAKPOINTS.xs && width < BREAKPOINTS.sm;
     case 'sm':
-      return width >= BREAKPOINTS?.sm && width < BREAKPOINTS?.md;
+      return width >= BREAKPOINTS.sm && width < BREAKPOINTS.md;
     case 'md':
-      return width >= BREAKPOINTS?.md && width < BREAKPOINTS?.lg;
+      return width >= BREAKPOINTS.md && width < BREAKPOINTS.lg;
     case 'lg':
-      return width >= BREAKPOINTS?.lg && width < BREAKPOINTS?.xl;
+      return width >= BREAKPOINTS.lg && width < BREAKPOINTS.xl;
     case 'xl':
-      return width >= BREAKPOINTS?.xl && width < BREAKPOINTS['2xl'];
+      return width >= BREAKPOINTS.xl && width < BREAKPOINTS['2xl'];
     case '2xl':
       return width >= BREAKPOINTS['2xl'];
     default:
@@ -127,13 +127,13 @@ export function createResponsiveListener(
   };
 
   // Add event listener
-  window?.addEventListener('resize', handleResize);
+  window.addEventListener('resize', handleResize);
 
   // Initial call
   handleResize();
 
   // Return cleanup function
   return () => {
-    window?.removeEventListener('resize', handleResize);
+    window.removeEventListener('resize', handleResize);
   };
 }

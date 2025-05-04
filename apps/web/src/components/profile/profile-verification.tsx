@@ -11,7 +11,7 @@ interface VerificationMethod {
   status: 'verified' | 'pending' | 'unverified';
   label: string;
   description: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
 }
 
 export function ProfileVerification() {
@@ -44,26 +44,26 @@ export function ProfileVerification() {
 
   const [isVerifying, setIsVerifying] = useState(false);
 
-  const verifiedMethods = methods?.filter((m) => m?.status === 'verified').length;
-  const totalMethods = methods?.length;
+  const verifiedMethods = methods.filter((m) => m.status === 'verified').length;
+  const totalMethods = methods.length;
   const verificationPercentage = (verifiedMethods / totalMethods) * 100;
 
   const handleVerify = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');methodId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');methodId: string) => {
     try {
       setIsVerifying(true);
       // Simulate verification process
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       setMethods((prev) =>
-        prev?.map((method) => (method?.id === methodId ? { ...method, status: 'verified' } : method)),
+        prev.map((method) => (method.id === methodId ? { ...method, status: 'verified' } : method)),
       );
 
-      toast?.success('Verification completed successfully');
+      toast.success('Verification completed successfully');
     } catch (error) {
-      console?.error('Error during verification:', error);
-      toast?.error('Failed to complete verification');
+      console.error('Error during verification:', error);
+      toast.error('Failed to complete verification');
     } finally {
       setIsVerifying(false);
     }
@@ -94,7 +94,7 @@ export function ProfileVerification() {
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">
-              {verificationPercentage?.toFixed(0)}% Verified
+              {verificationPercentage.toFixed(0)}% Verified
             </span>
             {verifiedMethods === totalMethods && (
               <span className="text-sm text-green-500">Fully verified</span>
@@ -104,37 +104,37 @@ export function ProfileVerification() {
         </div>
 
         <div className="space-y-4">
-          {methods?.map((method) => (
+          {methods.map((method) => (
             <div
-              key={method?.id}
+              key={method.id}
               className="flex items-center justify-between rounded-lg border p-4"
             >
               <div className="flex items-center gap-3">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
-                  {method?.icon}
+                  {method.icon}
                 </div>
                 <div>
-                  <h4 className="font-medium">{method?.label}</h4>
-                  <p className="text-sm text-muted-foreground">{method?.description}</p>
+                  <h4 className="font-medium">{method.label}</h4>
+                  <p className="text-sm text-muted-foreground">{method.description}</p>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
-                {getStatusIcon(method?.status)}
-                {method?.status === 'unverified' && (
+                {getStatusIcon(method.status)}
+                {method.status === 'unverified' && (
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleVerify(method?.id)}
+                    onClick={() => handleVerify(method.id)}
                     disabled={isVerifying}
                   >
                     Verify
                   </Button>
                 )}
-                {method?.status === 'pending' && (
+                {method.status === 'pending' && (
                   <span className="text-sm text-yellow-500">Pending</span>
                 )}
-                {method?.status === 'verified' && (
+                {method.status === 'verified' && (
                   <span className="text-sm text-green-500">Verified</span>
                 )}
               </div>

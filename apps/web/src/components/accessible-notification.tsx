@@ -10,7 +10,7 @@ interface AccessibleNotificationProps {
   showCloseButton?: boolean;
 }
 
-export const AccessibleNotification: React?.FC<AccessibleNotificationProps> = ({
+export const AccessibleNotification: React.FC<AccessibleNotificationProps> = ({
   message,
   type = 'info',
   duration = 5000,
@@ -33,7 +33,7 @@ export const AccessibleNotification: React?.FC<AccessibleNotificationProps> = ({
 
   const handleClose = () => {
     setIsVisible(false);
-    onClose?.();
+    onClose.();
   };
 
   const getIcon = () => {

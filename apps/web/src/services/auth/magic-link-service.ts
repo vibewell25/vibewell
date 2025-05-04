@@ -21,19 +21,19 @@ export class MagicLinkService {
   private static tokens = new Map<string, MagicLinkToken>();
 
   static async generateToken(email: string, options: MagicLinkOptions = {}): Promise<string> {
-    const { expiresIn = this?.DEFAULT_EXPIRES_IN, tokenLength = this?.DEFAULT_TOKEN_LENGTH } =
+    const { expiresIn = this.DEFAULT_EXPIRES_IN, tokenLength = this.DEFAULT_TOKEN_LENGTH } =
       options;
 
     // Generate a secure random token
     const token = randomBytes(tokenLength).toString('hex');
-    const hashedToken = this?.hashToken(token);
+    const hashedToken = this.hashToken(token);
 
     // Store the token with expiration
-    this?.tokens.set(hashedToken, {
+    this.tokens.set(hashedToken, {
       token: hashedToken,
       email,
 
-      expiresAt: new Date(Date?.now() + expiresIn * 1000),
+      expiresAt: new Date(Date.now() + expiresIn * 1000),
     });
 
     // Return the original token (not hashed) to be sent via email
@@ -41,54 +41,54 @@ export class MagicLinkService {
   }
 
   static async verifyToken(token: string, email: string): Promise<boolean> {
-    const hashedToken = this?.hashToken(token);
-    const storedToken = this?.tokens.get(hashedToken);
+    const hashedToken = this.hashToken(token);
+    const storedToken = this.tokens.get(hashedToken);
 
     if (!storedToken) {
       return false;
     }
 
     // Check if token is expired or email doesn't match
-    if (storedToken?.expiresAt < new Date() || storedToken?.email !== email) {
-      this?.tokens.delete(hashedToken);
+    if (storedToken.expiresAt < new Date() || storedToken.email !== email) {
+      this.tokens.delete(hashedToken);
       return false;
     }
 
 
     // Token is valid - remove it so it can't be used again
-    this?.tokens.delete(hashedToken);
+    this.tokens.delete(hashedToken);
     return true;
   }
 
   static async sendMagicLink(email: string): Promise<void> {
-    const token = await this?.generateToken(email);
-    const magicLink = this?.createMagicLink(token, email);
+    const token = await this.generateToken(email);
+    const magicLink = this.createMagicLink(token, email);
 
     // In development, log the link for easy testing
-    if (process?.env['NODE_ENV'] !== 'production') {
-      console?.log(`Magic link for ${email}:`, magicLink);
+    if (process.env['NODE_ENV'] !== 'production') {
+      console.log(`Magic link for ${email}:`, magicLink);
     }
 
     try {
       // Send the magic link via email
-      await EmailService?.send({
+      await EmailService.send({
         to: email,
         subject: 'VibeWell: Your Login Link',
-        html: this?.generateEmailHtml(email, magicLink),
-        text: this?.generateEmailText(email, magicLink),
+        html: this.generateEmailHtml(email, magicLink),
+        text: this.generateEmailText(email, magicLink),
       });
-      logger?.info(`Magic link sent to ${email}`);
+      logger.info(`Magic link sent to ${email}`);
     } catch (error) {
-      logger?.error(
+      logger.error(
         `Failed to send magic link to ${email}:`,
-        error instanceof Error ? error?.message : String(error),
+        error instanceof Error ? error.message : String(error),
       );
       throw new Error('Failed to send magic link email');
     }
   }
 
   private static createMagicLink(token: string, email: string): string {
-    const baseUrl = process?.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000';
+    const baseUrl = process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000';
     const params = new URLSearchParams({
       token,
       email,
@@ -111,7 +111,7 @@ export class MagicLinkService {
 
 
 
-            body { font-family: Arial, sans-serif; line-height: 1?.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
 
             .container { border: 1px solid #eee; border-radius: 10px; padding: 20px; }
 
@@ -174,9 +174,9 @@ VibeWell - Your well-being journey starts here
   // Clean up expired tokens periodically
   static cleanupExpiredTokens(): void {
     const now = new Date();
-    for (const [key, value] of this?.tokens.entries()) {
-      if (value?.expiresAt < now) {
-        this?.tokens.delete(key);
+    for (const [key, value] of this.tokens.entries()) {
+      if (value.expiresAt < now) {
+        this.tokens.delete(key);
       }
     }
   }
@@ -185,7 +185,7 @@ VibeWell - Your well-being journey starts here
 // Set up periodic cleanup of expired tokens
 setInterval(
   () => {
-    MagicLinkService?.cleanupExpiredTokens();
+    MagicLinkService.cleanupExpiredTokens();
   },
   60 * 60 * 1000,
 ); // Run every hour

@@ -3,7 +3,7 @@ import { useARService } from '@/hooks/useARService';
 import { useARModels } from '@/hooks/useARModels';
 import { ModelInfo } from '@/types/ar-types';
 
-const ARViewComponent: React?.FC = () => {
+const ARViewComponent: React.FC = () => {
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -12,12 +12,12 @@ const ARViewComponent: React?.FC = () => {
 
   useEffect(() => {
     const initialize = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         await initializeAR();
       } catch (error) {
-        console?.error('Failed to initialize AR:', error);
+        console.error('Failed to initialize AR:', error);
       }
     };
 
@@ -25,33 +25,33 @@ const ARViewComponent: React?.FC = () => {
   }, [initializeAR]);
 
   const handleModelSelect = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');modelId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');modelId: string) => {
     setIsLoading(true);
     setSelectedModel(modelId);
 
     try {
       const result = await loadModel(modelId);
-      if (result?.success) {
+      if (result.success) {
         // Apply any default filter settings
-        await applyFilter(1?.0); // Default intensity
+        await applyFilter(1.0); // Default intensity
       }
     } catch (error) {
-      console?.error('Failed to load model:', error);
+      console.error('Failed to load model:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleCapture = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const imageData = await captureImage();
       // Handle the captured image data
-      console?.log('Image captured:', imageData?.substring(0, 50) + '...');
+      console.log('Image captured:', imageData.substring(0, 50) + '...');
     } catch (error) {
-      console?.error('Failed to capture image:', error);
+      console.error('Failed to capture image:', error);
     }
   };
 
@@ -73,13 +73,13 @@ const ARViewComponent: React?.FC = () => {
       <div className="model-selection">
         <h3>Select a Model</h3>
         <div className="models-grid">
-          {models?.map((model: ModelInfo) => (
+          {models.map((model: ModelInfo) => (
             <button
-              key={model?.id}
-              className={`model-btn ${selectedModel === model?.id ? 'selected' : ''}`}
-              onClick={() => handleModelSelect(model?.id)}
+              key={model.id}
+              className={`model-btn ${selectedModel === model.id ? 'selected' : ''}`}
+              onClick={() => handleModelSelect(model.id)}
             >
-              {model?.name}
+              {model.name}
             </button>
           ))}
         </div>

@@ -23,52 +23,52 @@ export function useFocusTrap(
   const previousFocus = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    if (!containerRef?.current) return;
+    if (!containerRef.current) return;
 
-    const container = containerRef?.current;
-    previousFocus?.current = document?.activeElement as HTMLElement;
+    const container = containerRef.current;
+    previousFocus.current = document.activeElement as HTMLElement;
 
-    if (initialFocus?.current) {
-      initialFocus?.current.focus({ preventScroll });
+    if (initialFocus.current) {
+      initialFocus.current.focus({ preventScroll });
     } else {
       const firstFocusable = getFocusableElements(container)[0];
       if (firstFocusable) {
-        firstFocusable?.focus({ preventScroll });
+        firstFocusable.focus({ preventScroll });
       }
     }
 
     if (lockFocus) {
-      document?.addEventListener('keydown', handleTabKey);
+      document.addEventListener('keydown', handleTabKey);
     }
 
     return () => {
       if (lockFocus) {
-        document?.removeEventListener('keydown', handleTabKey);
+        document.removeEventListener('keydown', handleTabKey);
       }
-      if (returnFocus && previousFocus?.current) {
-        previousFocus?.current.focus({ preventScroll });
+      if (returnFocus && previousFocus.current) {
+        previousFocus.current.focus({ preventScroll });
       }
     };
   }, [containerRef, initialFocus, returnFocus, lockFocus, preventScroll]);
 
   const handleTabKey = (event: KeyboardEvent) => {
-    if (!containerRef?.current || event?.key !== 'Tab') return;
+    if (!containerRef.current || event.key !== 'Tab') return;
 
-    const focusableElements = getFocusableElements(containerRef?.current);
-    if (focusableElements?.length === 0) return;
+    const focusableElements = getFocusableElements(containerRef.current);
+    if (focusableElements.length === 0) return;
 
     const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements?.length - 1];
+    const lastElement = focusableElements[focusableElements.length - 1];
 
-    if (event?.shiftKey) {
-      if (document?.activeElement === firstElement) {
-        event?.preventDefault();
-        lastElement?.focus({ preventScroll });
+    if (event.shiftKey) {
+      if (document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus({ preventScroll });
       }
     } else {
-      if (document?.activeElement === lastElement) {
-        event?.preventDefault();
-        firstElement?.focus({ preventScroll });
+      if (document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus({ preventScroll });
       }
     }
   };
@@ -79,15 +79,15 @@ export function useAriaAnnounce() {
   const announceRef = useRef<HTMLDivElement>(null);
 
   const announce = (message: string, options: AriaLiveOptions = { 'aria-live': 'polite' }) => {
-    if (announceRef?.current) {
-      announceRef?.current.textContent = '';
+    if (announceRef.current) {
+      announceRef.current.textContent = '';
       // Force a DOM reflow
-      void announceRef?.current.offsetHeight;
-      announceRef?.current.textContent = message;
+      void announceRef.current.offsetHeight;
+      announceRef.current.textContent = message;
     }
   };
 
-  const Announcer = React?.memo(() => (
+  const Announcer = React.memo(() => (
     <div
       ref={announceRef}
       style={{
@@ -118,55 +118,55 @@ export function useKeyboardNavigation(
   const { orientation = 'both' } = options;
 
   useEffect(() => {
-    if (!containerRef?.current) return;
+    if (!containerRef.current) return;
 
-    const container = containerRef?.current;
-    container?.addEventListener('keydown', handleKeyDown);
+    const container = containerRef.current;
+    container.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      container?.removeEventListener('keydown', handleKeyDown);
+      container.removeEventListener('keydown', handleKeyDown);
     };
   }, [containerRef, orientation]);
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    const target = event?.target as HTMLElement;
-    if (!target || !containerRef?.current) return;
+    const target = event.target as HTMLElement;
+    if (!target || !containerRef.current) return;
 
-    const focusableElements = getFocusableElements(containerRef?.current);
-    const currentIndex = focusableElements?.indexOf(target);
+    const focusableElements = getFocusableElements(containerRef.current);
+    const currentIndex = focusableElements.indexOf(target);
 
-    switch (event?.key) {
+    switch (event.key) {
       case 'ArrowRight':
         if (orientation !== 'vertical') {
-          event?.preventDefault();
+          event.preventDefault();
           focusNext(focusableElements, currentIndex);
         }
         break;
       case 'ArrowLeft':
         if (orientation !== 'vertical') {
-          event?.preventDefault();
+          event.preventDefault();
           focusPrevious(focusableElements, currentIndex);
         }
         break;
       case 'ArrowDown':
         if (orientation !== 'horizontal') {
-          event?.preventDefault();
+          event.preventDefault();
           focusNext(focusableElements, currentIndex);
         }
         break;
       case 'ArrowUp':
         if (orientation !== 'horizontal') {
-          event?.preventDefault();
+          event.preventDefault();
           focusPrevious(focusableElements, currentIndex);
         }
         break;
       case 'Home':
-        event?.preventDefault();
-        focusableElements[0]?.focus();
+        event.preventDefault();
+        focusableElements[0].focus();
         break;
       case 'End':
-        event?.preventDefault();
-        focusableElements[focusableElements?.length - 1]?.focus();
+        event.preventDefault();
+        focusableElements[focusableElements.length - 1].focus();
         break;
     }
   };
@@ -183,25 +183,25 @@ function getFocusableElements(container: HTMLElement): HTMLElement[] {
     '[tabindex]:not([tabindex="-1"])',
   ].join(',');
 
-  return Array?.from(container?.querySelectorAll(selector)).filter((el) => {
+  return Array.from(container.querySelectorAll(selector)).filter((el) => {
     const element = el as HTMLElement;
     return (
-      !element?.hasAttribute('disabled') &&
-      !element?.getAttribute('aria-hidden') &&
-      element?.offsetWidth > 0 &&
-      element?.offsetHeight > 0
+      !element.hasAttribute('disabled') &&
+      !element.getAttribute('aria-hidden') &&
+      element.offsetWidth > 0 &&
+      element.offsetHeight > 0
     );
   }) as HTMLElement[];
 }
 
 function focusNext(elements: HTMLElement[], currentIndex: number) {
-  const nextIndex = currentIndex + 1 < elements?.length ? currentIndex + 1 : 0;
-  elements[nextIndex]?.focus();
+  const nextIndex = currentIndex + 1 < elements.length ? currentIndex + 1 : 0;
+  elements[nextIndex].focus();
 }
 
 function focusPrevious(elements: HTMLElement[], currentIndex: number) {
-  const previousIndex = currentIndex - 1 >= 0 ? currentIndex - 1 : elements?.length - 1;
-  elements[previousIndex]?.focus();
+  const previousIndex = currentIndex - 1 >= 0 ? currentIndex - 1 : elements.length - 1;
+  elements[previousIndex].focus();
 }
 
 // Skip link component
@@ -214,30 +214,30 @@ export {};
 export function useFocusVisible() {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event?.key === 'Tab') {
-        document?.body.classList?.add('focus-visible');
+      if (event.key === 'Tab') {
+        document.body.classList.add('focus-visible');
       }
     };
 
     const handleMouseDown = () => {
-      document?.body.classList?.remove('focus-visible');
+      document.body.classList.remove('focus-visible');
     };
 
-    document?.addEventListener('keydown', handleKeyDown);
-    document?.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('mousedown', handleMouseDown);
 
     return () => {
-      document?.removeEventListener('keydown', handleKeyDown);
-      document?.removeEventListener('mousedown', handleMouseDown);
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('mousedown', handleMouseDown);
     };
   }, []);
 }
 
 // Semantic heading level context
-export const HeadingLevelContext = React?.createContext(1);
+export const HeadingLevelContext = React.createContext(1);
 
 export function useHeadingLevel() {
-  return React?.useContext(HeadingLevelContext);
+  return React.useContext(HeadingLevelContext);
 }
 
 export {};

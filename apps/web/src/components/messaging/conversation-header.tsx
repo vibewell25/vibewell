@@ -75,28 +75,28 @@ export function ConversationHeader({
         )}
 
         <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-muted">
-          {participant?.avatar ? (
+          {participant.avatar ? (
             <div className="relative h-full w-full">
               <Image
-                src={participant?.avatar}
-                alt={participant?.name || 'User'}
+                src={participant.avatar}
+                alt={participant.name || 'User'}
                 fill
                 sizes="40px"
                 className="object-cover"
               />
             </div>
           ) : (
-            <span className="text-md font-semibold">{participant?.name?.charAt(0) || '?'}</span>
+            <span className="text-md font-semibold">{participant.name.charAt(0) || '?'}</span>
           )}
         </div>
 
         <div>
-          <h3 className="font-medium">{participant?.name}</h3>
-          {participant?.status === 'online' ? (
+          <h3 className="font-medium">{participant.name}</h3>
+          {participant.status === 'online' ? (
             <p className="text-xs text-green-500">Online</p>
-          ) : participant?.lastSeen ? (
+          ) : participant.lastSeen ? (
             <p className="text-xs text-muted-foreground">
-              Last seen: {formatLastSeen(participant?.lastSeen)}
+              Last seen: {formatLastSeen(participant.lastSeen)}
             </p>
           ) : null}
         </div>

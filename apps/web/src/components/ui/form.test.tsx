@@ -6,35 +6,35 @@ import { Form } from '../Form';
 
 // Mock server handler for form submission
 beforeAll(() => {
-  server?.use(
-    http?.post('/api/submit-form', async ({ request }) => {
-      const requestBody = await request?.json();
+  server.use(
+    http.post('/api/submit-form', async ({ request }) => {
+      const requestBody = await request.json();
 
-      if (!requestBody || !requestBody?.email || !requestBody?.password) {
+      if (!requestBody || !requestBody.email || !requestBody.password) {
         return new HttpResponse(null, {
           status: 400,
           statusText: 'Bad Request',
         });
       }
 
-      return HttpResponse?.json({ success: true, message: 'Form submitted successfully' });
+      return HttpResponse.json({ success: true, message: 'Form submitted successfully' });
     }),
   );
 });
 
 describe('Form Component - Integration', () => {
   it('should validate and submit form data', async () => {
-    const user = userEvent?.setup ? userEvent?.setup() : userEvent;
-    const onSuccess = jest?.fn();
+    const user = userEvent.setup ? userEvent.setup() : userEvent;
+    const onSuccess = jest.fn();
 
     render(<Form onSuccess={onSuccess} />);
 
     // Fill in the form fields
-    await user?.type(screen?.getByLabelText(/email/i), 'test@example?.com');
-    await user?.type(screen?.getByLabelText(/password/i), 'password123');
+    await user.type(screen.getByLabelText(/email/i), 'test@example.com');
+    await user.type(screen.getByLabelText(/password/i), 'password123');
 
     // Submit the form
-    await user?.click(screen?.getByRole('button', { name: /submit/i }));
+    await user.click(screen.getByRole('button', { name: /submit/i }));
 
     // Check that the success callback was called
     await waitFor(() => {
@@ -43,53 +43,53 @@ describe('Form Component - Integration', () => {
   });
 
   it('should display validation errors for empty fields', async () => {
-    const user = userEvent?.setup ? userEvent?.setup() : userEvent;
+    const user = userEvent.setup ? userEvent.setup() : userEvent;
 
     render(<Form />);
 
     // Submit the form without filling in any fields
-    await user?.click(screen?.getByRole('button', { name: /submit/i }));
+    await user.click(screen.getByRole('button', { name: /submit/i }));
 
     // Check that validation errors are displayed
-    expect(screen?.getByText(/email is required/i)).toBeTruthy();
-    expect(screen?.getByText(/password is required/i)).toBeTruthy();
+    expect(screen.getByText(/email is required/i)).toBeTruthy();
+    expect(screen.getByText(/password is required/i)).toBeTruthy();
   });
 
   it('should display validation error for invalid email format', async () => {
-    const user = userEvent?.setup ? userEvent?.setup() : userEvent;
+    const user = userEvent.setup ? userEvent.setup() : userEvent;
 
     render(<Form />);
 
     // Enter an invalid email
-    await user?.type(screen?.getByLabelText(/email/i), 'invalid-email');
-    await user?.type(screen?.getByLabelText(/password/i), 'password123');
+    await user.type(screen.getByLabelText(/email/i), 'invalid-email');
+    await user.type(screen.getByLabelText(/password/i), 'password123');
 
     // Submit the form
-    await user?.click(screen?.getByRole('button', { name: /submit/i }));
+    await user.click(screen.getByRole('button', { name: /submit/i }));
 
     // Check that validation error is displayed for email
-    expect(screen?.getByText(/enter a valid email/i)).toBeTruthy();
+    expect(screen.getByText(/enter a valid email/i)).toBeTruthy();
   });
 
   it('should disable the submit button while submitting', async () => {
-    const user = userEvent?.setup ? userEvent?.setup() : userEvent;
+    const user = userEvent.setup ? userEvent.setup() : userEvent;
 
     render(<Form />);
 
     // Fill in the form fields
-    await user?.type(screen?.getByLabelText(/email/i), 'test@example?.com');
-    await user?.type(screen?.getByLabelText(/password/i), 'password123');
+    await user.type(screen.getByLabelText(/email/i), 'test@example.com');
+    await user.type(screen.getByLabelText(/password/i), 'password123');
 
     // Submit the form
-    const submitButton = screen?.getByRole('button', { name: /submit/i });
-    await user?.click(submitButton);
+    const submitButton = screen.getByRole('button', { name: /submit/i });
+    await user.click(submitButton);
 
     // Check that the button is disabled during submission
     expect(submitButton).toBeDisabled();
 
     // Wait for submission to complete
     await waitFor(() => {
-      expect(submitButton).not?.toBeDisabled();
+      expect(submitButton).not.toBeDisabled();
     });
   });
 });

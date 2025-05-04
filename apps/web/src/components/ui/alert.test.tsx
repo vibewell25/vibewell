@@ -3,7 +3,7 @@ import { Alert, AlertTitle, AlertDescription } from './alert';
 import { axe, toHaveNoViolations } from 'jest-axe';
 
 // Add jest-axe matchers
-expect?.extend(toHaveNoViolations);
+expect.extend(toHaveNoViolations);
 
 describe('Alert Component', () => {
   it('renders alert with default variant', () => {
@@ -13,7 +13,7 @@ describe('Alert Component', () => {
       </Alert>,
     );
 
-    const alert = screen?.getByRole('alert');
+    const alert = screen.getByRole('alert');
     expect(alert).toBeInTheDocument();
     expect(alert).toHaveTextContent('Alert content');
     expect(alert).toHaveClass('bg-background');
@@ -26,7 +26,7 @@ describe('Alert Component', () => {
       </Alert>,
     );
 
-    const alert = screen?.getByRole('alert');
+    const alert = screen.getByRole('alert');
     expect(alert).toBeInTheDocument();
     expect(alert).toHaveTextContent('Destructive alert');
     expect(alert).toHaveClass('border-destructive/50');
@@ -40,9 +40,9 @@ describe('Alert Component', () => {
       </Alert>,
     );
 
-    expect(screen?.getByText('Alert Title')).toBeInTheDocument();
+    expect(screen.getByText('Alert Title')).toBeInTheDocument();
     expect(
-      screen?.getByText('This is the alert description providing more details.'),
+      screen.getByText('This is the alert description providing more details.'),
     ).toBeInTheDocument();
   });
 
@@ -53,7 +53,7 @@ describe('Alert Component', () => {
       </Alert>,
     );
 
-    const alert = screen?.getByRole('alert');
+    const alert = screen.getByRole('alert');
     expect(alert).toHaveClass('custom-alert-class');
   });
 
@@ -64,7 +64,7 @@ describe('Alert Component', () => {
       </Alert>,
     );
 
-    expect(screen?.getByTestId('custom-alert')).toBeInTheDocument();
+    expect(screen.getByTestId('custom-alert')).toBeInTheDocument();
   });
 
   it('applies custom class names to AlertTitle', () => {
@@ -74,7 +74,7 @@ describe('Alert Component', () => {
       </Alert>,
     );
 
-    const title = screen?.getByText('Alert Title');
+    const title = screen.getByText('Alert Title');
     expect(title).toHaveClass('custom-title-class');
   });
 
@@ -85,7 +85,7 @@ describe('Alert Component', () => {
       </Alert>,
     );
 
-    const description = screen?.getByText('Alert Description');
+    const description = screen.getByText('Alert Description');
     expect(description).toHaveClass('custom-description-class');
   });
 
@@ -116,10 +116,10 @@ describe('Alert Component', () => {
       </Alert>,
     );
 
-    expect(screen?.getByText('Complex Alert')).toBeInTheDocument();
-    expect(screen?.getByText('This is a paragraph inside the alert.')).toBeInTheDocument();
-    expect(screen?.getByText('List item 1')).toBeInTheDocument();
-    expect(screen?.getByText('List item 2')).toBeInTheDocument();
-    expect(screen?.getByRole('button')).toBeInTheDocument();
+    expect(screen.getByText('Complex Alert')).toBeInTheDocument();
+    expect(screen.getByText('This is a paragraph inside the alert.')).toBeInTheDocument();
+    expect(screen.getByText('List item 1')).toBeInTheDocument();
+    expect(screen.getByText('List item 2')).toBeInTheDocument();
+    expect(screen.getByRole('button')).toBeInTheDocument();
   });
 });

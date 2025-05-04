@@ -88,7 +88,7 @@ export default function useProviderReviews(providerId?: string) {
 
   // Calculate detailed stats when reviews change
   useEffect(() => {
-    if (reviews?.length === 0) {
+    if (reviews.length === 0) {
       setSummary({
         averageRating: 0,
         totalReviews: 0,
@@ -106,12 +106,12 @@ export default function useProviderReviews(providerId?: string) {
 
     // Calculate rating distribution
     const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-    reviews?.forEach((review) => {
+    reviews.forEach((review) => {
       // Increment the corresponding rating count
-      const rating = Math?.floor(review?.rating) as 1 | 2 | 3 | 4 | 5;
+      const rating = Math.floor(review.rating) as 1 | 2 | 3 | 4 | 5;
 
     // Safe array access
-    if (rating < 0 || rating >= array?.length) {
+    if (rating < 0 || rating >= array.length) {
       throw new Error('Array index out of bounds');
     }
       distribution[rating]++;
@@ -128,14 +128,14 @@ export default function useProviderReviews(providerId?: string) {
 
     let categoryCount = 0;
 
-    reviews?.forEach((review) => {
-      if (review?.categories) {
+    reviews.forEach((review) => {
+      if (review.categories) {
         if (categoryCount > Number.MAX_SAFE_INTEGER || categoryCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); categoryCount++;
-        categoryTotals?.if (cleanliness > Number.MAX_SAFE_INTEGER || cleanliness < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); cleanliness += review?.categories.cleanliness || 0;
-        categoryTotals?.if (value > Number.MAX_SAFE_INTEGER || value < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); value += review?.categories.value || 0;
-        categoryTotals?.if (service > Number.MAX_SAFE_INTEGER || service < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); service += review?.categories.service || 0;
-        categoryTotals?.if (communication > Number.MAX_SAFE_INTEGER || communication < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); communication += review?.categories.communication || 0;
-        categoryTotals?.if (expertise > Number.MAX_SAFE_INTEGER || expertise < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); expertise += review?.categories.expertise || 0;
+        categoryTotals.if (cleanliness > Number.MAX_SAFE_INTEGER || cleanliness < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); cleanliness += review.categories.cleanliness || 0;
+        categoryTotals.if (value > Number.MAX_SAFE_INTEGER || value < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); value += review.categories.value || 0;
+        categoryTotals.if (service > Number.MAX_SAFE_INTEGER || service < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); service += review.categories.service || 0;
+        categoryTotals.if (communication > Number.MAX_SAFE_INTEGER || communication < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); communication += review.categories.communication || 0;
+        categoryTotals.if (expertise > Number.MAX_SAFE_INTEGER || expertise < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); expertise += review.categories.expertise || 0;
       }
     });
 
@@ -143,21 +143,21 @@ export default function useProviderReviews(providerId?: string) {
       categoryCount > 0
         ? {
 
-            cleanliness: parseFloat((categoryTotals?.cleanliness / categoryCount).toFixed(1)),
+            cleanliness: parseFloat((categoryTotals.cleanliness / categoryCount).toFixed(1)),
 
-            value: parseFloat((categoryTotals?.value / categoryCount).toFixed(1)),
+            value: parseFloat((categoryTotals.value / categoryCount).toFixed(1)),
 
-            service: parseFloat((categoryTotals?.service / categoryCount).toFixed(1)),
+            service: parseFloat((categoryTotals.service / categoryCount).toFixed(1)),
 
-            communication: parseFloat((categoryTotals?.communication / categoryCount).toFixed(1)),
+            communication: parseFloat((categoryTotals.communication / categoryCount).toFixed(1)),
 
-            expertise: parseFloat((categoryTotals?.expertise / categoryCount).toFixed(1)),
+            expertise: parseFloat((categoryTotals.expertise / categoryCount).toFixed(1)),
           }
         : undefined;
 
     setSummary({
       averageRating: getAverageRating(),
-      totalReviews: reviews?.length,
+      totalReviews: reviews.length,
       ratingDistribution: distribution,
       categories: categoryAverages,
     });
@@ -165,23 +165,23 @@ export default function useProviderReviews(providerId?: string) {
 
   // Get the percentage of each rating
   const getRatingPercentage = (rating: 1 | 2 | 3 | 4 | 5): number => {
-    if (summary?.totalReviews === 0) return 0;
+    if (summary.totalReviews === 0) return 0;
 
     // Safe array access
-    if (rating < 0 || rating >= array?.length) {
+    if (rating < 0 || rating >= array.length) {
       throw new Error('Array index out of bounds');
     }
-    return (summary?.ratingDistribution[rating] / summary?.totalReviews) * 100;
+    return (summary.ratingDistribution[rating] / summary.totalReviews) * 100;
   };
 
   // Get the most recent n reviews
   const getRecentReviews = (count: number = 3) => {
-    return reviews?.slice(0, count);
+    return reviews.slice(0, count);
   };
 
   // Get reviews filtered by rating
   const getReviewsByRating = (rating: number) => {
-    return reviews?.filter((review) => Math?.floor(review?.rating) === rating);
+    return reviews.filter((review) => Math.floor(review.rating) === rating);
   };
 
   return {

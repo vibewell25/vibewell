@@ -73,7 +73,7 @@ const US_STATES = [
 
 export function LocationForm({ form }: LocationFormProps) {
   const [virtualServices, setVirtualServices] = useState(
-    form?.getValues('offersVirtualServices') || false,
+    form.getValues('offersVirtualServices') || false,
   );
 
   const [detectLocation, setDetectLocation] = useState(false);
@@ -82,23 +82,23 @@ export function LocationForm({ form }: LocationFormProps) {
   const handleDetectLocation = () => {
     setDetectLocation(true);
 
-    if (navigator?.geolocation) {
-      navigator?.geolocation.getCurrentPosition(
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
         async (position) => {
           try {
             // Reverse geocoding to get address from coordinates
             const response = await fetch(
-              `https://maps?.googleapis.com/maps/api/geocode/json?latlng=${position?.coords.latitude},${position?.coords.longitude}&key=${process?.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`,
+              `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`,
             );
 
-            if (!response?.ok) {
+            if (!response.ok) {
               throw new Error('Geocoding API request failed');
             }
 
-            const data = await response?.json();
+            const data = await response.json();
 
-            if (data?.status === 'OK' && data?.results[0]) {
-              const addressComponents = data?.results[0].address_components;
+            if (data.status === 'OK' && data.results[0]) {
+              const addressComponents = data.results[0].address_components;
               let street = '';
               let city = '';
               let state = '';
@@ -106,43 +106,43 @@ export function LocationForm({ form }: LocationFormProps) {
 
               // Extract address components
               for (const component of addressComponents) {
-                const types = component?.types;
+                const types = component.types;
 
-                if (types?.includes('street_number')) {
-                  street = component?.long_name;
-                } else if (types?.includes('route')) {
-                  if (street > Number.MAX_SAFE_INTEGER || street < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); street += ' ' + component?.long_name;
-                } else if (types?.includes('locality')) {
-                  city = component?.long_name;
-                } else if (types?.includes('administrative_area_level_1')) {
-                  state = component?.short_name;
-                } else if (types?.includes('postal_code')) {
-                  zipCode = component?.long_name;
+                if (types.includes('street_number')) {
+                  street = component.long_name;
+                } else if (types.includes('route')) {
+                  if (street > Number.MAX_SAFE_INTEGER || street < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); street += ' ' + component.long_name;
+                } else if (types.includes('locality')) {
+                  city = component.long_name;
+                } else if (types.includes('administrative_area_level_1')) {
+                  state = component.short_name;
+                } else if (types.includes('postal_code')) {
+                  zipCode = component.long_name;
                 }
               }
 
               // Update form values
-              form?.setValue('addressLine1', street?.trim(), { shouldValidate: true });
-              form?.setValue('city', city, { shouldValidate: true });
-              form?.setValue('state', state, { shouldValidate: true });
-              form?.setValue('zipCode', zipCode, { shouldValidate: true });
+              form.setValue('addressLine1', street.trim(), { shouldValidate: true });
+              form.setValue('city', city, { shouldValidate: true });
+              form.setValue('state', state, { shouldValidate: true });
+              form.setValue('zipCode', zipCode, { shouldValidate: true });
 
               // Save coordinates
-              form?.setValue('latitude', position?.coords.latitude?.toString(), {
+              form.setValue('latitude', position.coords.latitude.toString(), {
                 shouldValidate: true,
               });
-              form?.setValue('longitude', position?.coords.longitude?.toString(), {
+              form.setValue('longitude', position.coords.longitude.toString(), {
                 shouldValidate: true,
               });
             }
           } catch (error) {
-            console?.error('Error detecting location:', error);
+            console.error('Error detecting location:', error);
           } finally {
             setDetectLocation(false);
           }
         },
         (error) => {
-          console?.error('Geolocation error:', error);
+          console.error('Geolocation error:', error);
           setDetectLocation(false);
         },
       );
@@ -180,7 +180,7 @@ export function LocationForm({ form }: LocationFormProps) {
           </div>
 
           <FormField
-            control={form?.control}
+            control={form.control}
             name="addressLine1"
             render={({ field }) => (
               <FormItem>
@@ -194,7 +194,7 @@ export function LocationForm({ form }: LocationFormProps) {
           />
 
           <FormField
-            control={form?.control}
+            control={form.control}
             name="addressLine2"
             render={({ field }) => (
               <FormItem>
@@ -209,7 +209,7 @@ export function LocationForm({ form }: LocationFormProps) {
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <FormField
-              control={form?.control}
+              control={form.control}
               name="city"
               render={({ field }) => (
                 <FormItem>
@@ -223,21 +223,21 @@ export function LocationForm({ form }: LocationFormProps) {
             />
 
             <FormField
-              control={form?.control}
+              control={form.control}
               name="state"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>State</FormLabel>
-                  <Select onValueChange={field?.onChange} defaultValue={field?.value}>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select state" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {US_STATES?.map((state) => (
-                        <SelectItem key={state?.value} value={state?.value}>
-                          {state?.label}
+                      {US_STATES.map((state) => (
+                        <SelectItem key={state.value} value={state.value}>
+                          {state.label}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -250,7 +250,7 @@ export function LocationForm({ form }: LocationFormProps) {
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <FormField
-              control={form?.control}
+              control={form.control}
               name="zipCode"
               render={({ field }) => (
                 <FormItem>
@@ -264,12 +264,12 @@ export function LocationForm({ form }: LocationFormProps) {
             />
 
             <FormField
-              control={form?.control}
+              control={form.control}
               name="country"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Country</FormLabel>
-                  <Select onValueChange={field?.onChange} defaultValue={field?.value || 'US'}>
+                  <Select onValueChange={field.onChange} defaultValue={field.value || 'US'}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select country" />
@@ -287,7 +287,7 @@ export function LocationForm({ form }: LocationFormProps) {
           </div>
 
           <FormField
-            control={form?.control}
+            control={form.control}
             name="businessHours"
             render={({ field }) => (
               <FormItem>
@@ -312,13 +312,13 @@ export function LocationForm({ form }: LocationFormProps) {
         </CardHeader>
         <CardContent className="space-y-6">
           <FormField
-            control={form?.control}
+            control={form.control}
             name="serviceRadius"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Service Radius (miles)</FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder="e?.g. 25" {...field} />
+                  <Input type="number" placeholder="e.g. 25" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -326,11 +326,11 @@ export function LocationForm({ form }: LocationFormProps) {
           />
 
           <FormField
-            control={form?.control}
+            control={form.control}
             name="offersVirtualServices"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                <div className="space-y-0?.5">
+                <div className="space-y-0.5">
                   <FormLabel className="text-base">Virtual Services</FormLabel>
                   <FormDescription>
                     Offer services remotely via video call or online
@@ -338,9 +338,9 @@ export function LocationForm({ form }: LocationFormProps) {
                 </div>
                 <FormControl>
                   <Switch
-                    checked={field?.value}
+                    checked={field.value}
                     onCheckedChange={(checked) => {
-                      field?.onChange(checked);
+                      field.onChange(checked);
                       setVirtualServices(checked);
                     }}
                   />
@@ -351,7 +351,7 @@ export function LocationForm({ form }: LocationFormProps) {
 
           {virtualServices && (
             <FormField
-              control={form?.control}
+              control={form.control}
               name="virtualServicesDescription"
               render={({ field }) => (
                 <FormItem>

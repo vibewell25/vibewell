@@ -22,8 +22,8 @@ export function TwoFactorSetup({ userId, onComplete }: TwoFactorSetupProps) {
 
   // Generate TOTP secret and QR code
   const generateTOTP = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
       const response = await fetch('/api/auth/2fa', {
@@ -31,20 +31,20 @@ export function TwoFactorSetup({ userId, onComplete }: TwoFactorSetupProps) {
         headers: { 'Content-Type': 'application/json' }
       });
 
-      if (!response?.ok) {
-        const error = await response?.json().catch(() => ({}));
-        throw new Error(error?.message || 'Failed to generate 2FA secret');
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.message || 'Failed to generate 2FA secret');
       }
 
-      const data = await response?.json();
-      setQrCode(data?.qrCode);
-      setSecret(data?.secret);
+      const data = await response.json();
+      setQrCode(data.qrCode);
+      setSecret(data.secret);
       setStep('qr');
     } catch (error) {
-      console?.error('TOTP Generation Error:', error);
+      console.error('TOTP Generation Error:', error);
       toast({
         title: 'Error',
-        description: error instanceof Error ? error?.message : 'Failed to generate QR code. Please try again.',
+        description: error instanceof Error ? error.message : 'Failed to generate QR code. Please try again.',
       });
     } finally {
       setLoading(false);
@@ -53,7 +53,7 @@ export function TwoFactorSetup({ userId, onComplete }: TwoFactorSetupProps) {
 
   // Validate token format
   const validateToken = (token: string) => {
-    if (token?.length !== 6) {
+    if (token.length !== 6) {
       setTokenError('Token must be 6 digits');
       return false;
     }
@@ -67,8 +67,8 @@ export function TwoFactorSetup({ userId, onComplete }: TwoFactorSetupProps) {
 
   // Verify TOTP token and enable 2FA
   const verifyTOTP = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!validateToken(token)) {
       return;
     }
@@ -78,16 +78,16 @@ export function TwoFactorSetup({ userId, onComplete }: TwoFactorSetupProps) {
       const response = await fetch('/api/auth/2fa', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify({ token })
+        body: JSON.stringify({ token })
       });
 
-      if (!response?.ok) {
-        const error = await response?.json().catch(() => ({}));
-        throw new Error(error?.message || 'Invalid token');
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.message || 'Invalid token');
       }
 
-      const data = await response?.json();
-      setBackupCodes(data?.backupCodes);
+      const data = await response.json();
+      setBackupCodes(data.backupCodes);
       setStep('webauthn');
       toast({
         title: 'TOTP Setup Complete',
@@ -95,10 +95,10 @@ export function TwoFactorSetup({ userId, onComplete }: TwoFactorSetupProps) {
         duration: 5000
       });
     } catch (error) {
-      console?.error('TOTP Verification Error:', error);
+      console.error('TOTP Verification Error:', error);
       toast({
         title: 'Error',
-        description: error instanceof Error ? error?.message : 'Failed to verify code. Please try again.',
+        description: error instanceof Error ? error.message : 'Failed to verify code. Please try again.',
       });
     } finally {
       setLoading(false);
@@ -107,8 +107,8 @@ export function TwoFactorSetup({ userId, onComplete }: TwoFactorSetupProps) {
 
   // Set up WebAuthn
   const setupWebAuthn = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
       
@@ -118,12 +118,12 @@ export function TwoFactorSetup({ userId, onComplete }: TwoFactorSetupProps) {
         headers: { 'Content-Type': 'application/json' }
       });
 
-      if (!optionsRes?.ok) {
-        const error = await optionsRes?.json().catch(() => ({}));
-        throw new Error(error?.message || 'Failed to get registration options');
+      if (!optionsRes.ok) {
+        const error = await optionsRes.json().catch(() => ({}));
+        throw new Error(error.message || 'Failed to get registration options');
       }
 
-      const options = await optionsRes?.json();
+      const options = await optionsRes.json();
       
       // Create credentials
       const credential = await startRegistration(options);
@@ -132,12 +132,12 @@ export function TwoFactorSetup({ userId, onComplete }: TwoFactorSetupProps) {
       const verifyRes = await fetch('/api/auth/webauthn', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify(credential)
+        body: JSON.stringify(credential)
       });
 
-      if (!verifyRes?.ok) {
-        const error = await verifyRes?.json().catch(() => ({}));
-        throw new Error(error?.message || 'Failed to verify registration');
+      if (!verifyRes.ok) {
+        const error = await verifyRes.json().catch(() => ({}));
+        throw new Error(error.message || 'Failed to verify registration');
       }
 
       toast({
@@ -146,12 +146,12 @@ export function TwoFactorSetup({ userId, onComplete }: TwoFactorSetupProps) {
         duration: 5000
       });
 
-      onComplete?.();
+      onComplete.();
     } catch (error) {
-      console?.error('WebAuthn Setup Error:', error);
+      console.error('WebAuthn Setup Error:', error);
       toast({
         title: 'Error',
-        description: error instanceof Error ? error?.message : 'Failed to register security key. Please try again.',
+        description: error instanceof Error ? error.message : 'Failed to register security key. Please try again.',
         duration: 5000
       });
     } finally {
@@ -160,9 +160,9 @@ export function TwoFactorSetup({ userId, onComplete }: TwoFactorSetupProps) {
   };
 
   const handleTokenChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e?.target.value;
+    const value = e.target.value;
     setToken(value);
-    if (value?.length === 6) {
+    if (value.length === 6) {
       validateToken(value);
     } else {
       setTokenError('');
@@ -187,7 +187,7 @@ export function TwoFactorSetup({ userId, onComplete }: TwoFactorSetupProps) {
         <div className="space-y-4">
           <h2 className="text-lg font-semibold">Scan QR Code</h2>
           <p className="text-sm text-gray-600">
-            Scan this QR code with your authenticator app (e?.g., Google Authenticator, Authy).
+            Scan this QR code with your authenticator app (e.g., Google Authenticator, Authy).
           </p>
           <div className="flex justify-center">
             {qrCode ? (
@@ -210,7 +210,7 @@ export function TwoFactorSetup({ userId, onComplete }: TwoFactorSetupProps) {
             />
             <Button 
               onClick={verifyTOTP} 
-              disabled={loading || !token || token?.length !== 6 || !!tokenError}
+              disabled={loading || !token || token.length !== 6 || !!tokenError}
             >
               {loading ? 'Verifying...' : 'Verify Code'}
             </Button>
@@ -225,7 +225,7 @@ export function TwoFactorSetup({ userId, onComplete }: TwoFactorSetupProps) {
             Save these backup codes in a secure place. You can use them to access your account if you lose your authenticator device.
           </p>
           <div className="grid grid-cols-2 gap-2">
-            {backupCodes?.map((code, i) => (
+            {backupCodes.map((code, i) => (
               <code key={i} className="bg-gray-100 px-2 py-1 rounded text-center">
                 {code}
               </code>

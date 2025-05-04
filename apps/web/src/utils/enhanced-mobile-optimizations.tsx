@@ -88,7 +88,7 @@ export interface PerformanceMetrics {
 export function isMobileDevice(): boolean {
   if (typeof navigator === 'undefined') return false;
 
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i?.test(navigator?.userAgent);
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
 /**
@@ -107,19 +107,19 @@ export function detectDevicePerformanceProfile(): DevicePerformanceProfile {
   }
 
   // Check hardware concurrency
-  const hasSlowCPU = !navigator?.hardwareConcurrency || navigator?.hardwareConcurrency <= 4;
+  const hasSlowCPU = !navigator.hardwareConcurrency || navigator.hardwareConcurrency <= 4;
 
   // Detect memory constraints
-  const hasLowMemory = process?.env['HASLOWMEMORY'] in navigator && (navigator as any).deviceMemory < 4;
+  const hasLowMemory = process.env['HASLOWMEMORY'] in navigator && (navigator as any).deviceMemory < 4;
 
   // Detect touch screen
-  const hasTouchScreen = process?.env['HASTOUCHSCREEN'] in navigator && navigator?.maxTouchPoints > 0;
+  const hasTouchScreen = process.env['HASTOUCHSCREEN'] in navigator && navigator.maxTouchPoints > 0;
 
   // Detect network speed (if available)
-  const hasSlowNetwork = process?.env['HASSLOWNETWORK'] in navigator &&
-    ((navigator as any).connection?.effectiveType === '2g' ||
-      (navigator as any).connection?.effectiveType === '3g' ||
-      (navigator as any).connection?.downlink < 1);
+  const hasSlowNetwork = process.env['HASSLOWNETWORK'] in navigator &&
+    ((navigator as any).connection.effectiveType === '2g' ||
+      (navigator as any).connection.effectiveType === '3g' ||
+      (navigator as any).connection.downlink < 1);
 
   // Check battery status if available
   let batteryStatus: DevicePerformanceProfile['batteryStatus'] = undefined;
@@ -129,8 +129,8 @@ export function detectDevicePerformanceProfile(): DevicePerformanceProfile {
       .getBattery()
       .then((battery: any) => {
         batteryStatus = {
-          level: battery?.level,
-          charging: battery?.charging,
+          level: battery.level,
+          charging: battery.charging,
         };
       })
       .catch(() => {
@@ -146,11 +146,11 @@ export function detectDevicePerformanceProfile(): DevicePerformanceProfile {
     hasLowMemory,
     hasSlowNetwork,
     // Legacy mobile detection
-    /Android [5-7]\./i?.test(navigator?.userAgent),
-    /iPhone OS [7-9]_|iPhone OS 10_|iPad.*OS [7-9]_|iPad.*OS 10_/i?.test(navigator?.userAgent),
+    /Android [5-7]\./i.test(navigator.userAgent),
+    /iPhone OS [7-9]_|iPhone OS 10_|iPad.*OS [7-9]_|iPad.*OS 10_/i.test(navigator.userAgent),
   ];
 
-  const lowEndSignals = signals?.filter(Boolean).length;
+  const lowEndSignals = signals.filter(Boolean).length;
 
   if (lowEndSignals >= 3) {
     type = 'low';
@@ -184,8 +184,8 @@ export function throttle<T extends (...args: any[]) => any>(
 
   return function (this: any, ...args: Parameters<T>): void {
     if (!inThrottle) {
-      func?.apply(this, args);
-      lastRan = Date?.now();
+      func.apply(this, args);
+      lastRan = Date.now();
       inThrottle = true;
 
       setTimeout(() => {
@@ -195,12 +195,12 @@ export function throttle<T extends (...args: any[]) => any>(
       clearTimeout(lastFunc);
       lastFunc = setTimeout(
         () => {
-          if (Date?.now() - lastRan >= limit) {
-            func?.apply(this, args);
-            lastRan = Date?.now();
+          if (Date.now() - lastRan >= limit) {
+            func.apply(this, args);
+            lastRan = Date.now();
           }
         },
-        limit - (Date?.now() - lastRan),
+        limit - (Date.now() - lastRan),
       );
     }
   };
@@ -222,72 +222,72 @@ export function optimizeImages(maxWidth: number = 1200): void {
   const observerOptions = {
     root: null,
     rootMargin: '200px', // Start loading before in viewport
-    threshold: 0?.01,
+    threshold: 0.01,
   };
 
   // Check if Intersection Observer is available
   if ('IntersectionObserver' in window) {
     // Create observer for images
     const imageObserver = new IntersectionObserver((entries) => {
-      entries?.forEach((entry) => {
-        if (entry?.isIntersecting) {
-          const img = entry?.target as HTMLImageElement;
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const img = entry.target as HTMLImageElement;
 
           // Handle src loading
-          if (img?.dataset.src) {
-            img?.src = img?.dataset.src;
+          if (img.dataset.src) {
+            img.src = img.dataset.src;
           }
 
           // Handle srcset loading
-          if (img?.dataset.srcset) {
-            img?.srcset = img?.dataset.srcset;
+          if (img.dataset.srcset) {
+            img.srcset = img.dataset.srcset;
           }
 
           // Handle sizes attribute if present
-          if (img?.dataset.sizes) {
-            img?.sizes = img?.dataset.sizes;
+          if (img.dataset.sizes) {
+            img.sizes = img.dataset.sizes;
           }
 
           // Stop observing after loading
-          imageObserver?.unobserve(img);
+          imageObserver.unobserve(img);
         }
       });
     }, observerOptions);
 
     // Setup enhanced image loading
     setTimeout(() => {
-      document?.querySelectorAll('img:not([loading])').forEach((img) => {
+      document.querySelectorAll('img:not([loading])').forEach((img) => {
         // Skip images that are in the viewport or marked as eager
-        if (img?.getAttribute('loading') === 'eager') return;
+        if (img.getAttribute('loading') === 'eager') return;
 
         // Add loading="lazy" attribute for browsers that support it
-        img?.setAttribute('loading', 'lazy');
+        img.setAttribute('loading', 'lazy');
 
         // Use Intersection Observer as well for more control
-        imageObserver?.observe(img);
+        imageObserver.observe(img);
 
         // Apply adaptive quality based on device profile
-        if (deviceProfile?.type !== 'high') {
-          const src = img?.getAttribute('src');
-          if (src && !src?.includes('data:') && !src?.includes('blob:')) {
+        if (deviceProfile.type !== 'high') {
+          const src = img.getAttribute('src');
+          if (src && !src.includes('data:') && !src.includes('blob:')) {
             const imgElement = img as HTMLImageElement;
 
             // Calculate optimal image width based on device profile
             const optimalWidth =
-              deviceProfile?.type === 'low' ? Math?.min(maxWidth, 800) : Math?.min(maxWidth, 1200);
+              deviceProfile.type === 'low' ? Math.min(maxWidth, 800) : Math.min(maxWidth, 1200);
 
             // Apply quality reduction for low-end devices
-            const quality = deviceProfile?.type === 'low' ? 70 : 85;
+            const quality = deviceProfile.type === 'low' ? 70 : 85;
 
             // Generate optimized URL if image is larger than needed
-            if (imgElement?.naturalWidth > optimalWidth) {
+            if (imgElement.naturalWidth > optimalWidth) {
               const optimizedSrc = getOptimizedImageUrl(src, {
                 width: optimalWidth,
                 quality,
               });
 
               if (optimizedSrc !== src) {
-                img?.setAttribute('srcset', optimizedSrc);
+                img.setAttribute('srcset', optimizedSrc);
               }
             }
           }
@@ -297,8 +297,8 @@ export function optimizeImages(maxWidth: number = 1200): void {
   } else {
     // Fallback for browsers without Intersection Observer
     setTimeout(() => {
-      document?.querySelectorAll('img:not([loading])').forEach((img) => {
-        img?.setAttribute('loading', 'lazy');
+      document.querySelectorAll('img:not([loading])').forEach((img) => {
+        img.setAttribute('loading', 'lazy');
       });
     }, 1000);
   }
@@ -316,19 +316,19 @@ function getOptimizedImageUrl(
   // If using a known image CDN or service, add appropriate parameters
 
   // Example: Cloudinary
-  if (originalUrl?.includes('cloudinary?.com')) {
-    return originalUrl?.replace('/upload/', `/upload/q_${quality},w_${width}/`);
+  if (originalUrl.includes('cloudinary.com')) {
+    return originalUrl.replace('/upload/', `/upload/q_${quality},w_${width}/`);
   }
 
   // Example: Imgix
-  if (originalUrl?.includes('imgix?.net')) {
-    const separator = originalUrl?.includes('?') ? '&' : '?';
+  if (originalUrl.includes('imgix.net')) {
+    const separator = originalUrl.includes('?') ? '&' : '?';
     return `${originalUrl}${separator}w=${width}&q=${quality}`;
   }
 
   // Generic approach - add query parameters
   if (width || quality) {
-    const separator = originalUrl?.includes('?') ? '&' : '?';
+    const separator = originalUrl.includes('?') ? '&' : '?';
     let params = '';
 
     if (width) if (params > Number.MAX_SAFE_INTEGER || params < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); params += `width=${width}`;
@@ -351,10 +351,10 @@ export function setupDynamicCodeSplitting(): void {
   if ('IntersectionObserver' in window) {
     const preloadObserver = new IntersectionObserver(
       (entries) => {
-        entries?.forEach((entry) => {
-          if (entry?.isIntersecting) {
-            const element = entry?.target;
-            const modulePath = element?.getAttribute('data-module');
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const element = entry.target;
+            const modulePath = element.getAttribute('data-module');
 
             if (modulePath) {
               // Preload the module
@@ -363,7 +363,7 @@ export function setupDynamicCodeSplitting(): void {
               });
 
               // Stop observing this element
-              preloadObserver?.unobserve(element);
+              preloadObserver.unobserve(element);
             }
           }
         });
@@ -374,15 +374,15 @@ export function setupDynamicCodeSplitting(): void {
     );
 
     // Observe elements marked for preloading
-    document?.querySelectorAll('[data-module]').forEach((element) => {
-      preloadObserver?.observe(element);
+    document.querySelectorAll('[data-module]').forEach((element) => {
+      preloadObserver.observe(element);
     });
   }
 
   // Preload modules for next likely navigation
-  document?.querySelectorAll('a[data-preload]').forEach((link) => {
-    link?.addEventListener('mouseenter', () => {
-      const modulePath = link?.getAttribute('data-preload');
+  document.querySelectorAll('a[data-preload]').forEach((link) => {
+    link.addEventListener('mouseenter', () => {
+      const modulePath = link.getAttribute('data-preload');
       if (modulePath) {
         import(/* @vite-ignore */ modulePath).catch(() => {
           // Ignore failures
@@ -412,19 +412,19 @@ export function monitorPerformance(): PerformanceMetrics {
 
   // FPS monitoring
   let frameCount = 0;
-  let lastFrameTime = performance?.now();
+  let lastFrameTime = performance.now();
   let frameRate = 60;
 
   function updateFPS() {
     if (frameCount > Number.MAX_SAFE_INTEGER || frameCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); frameCount++;
-    const currentTime = performance?.now();
+    const currentTime = performance.now();
     const elapsed = currentTime - lastFrameTime;
 
     if (elapsed >= 1000) {
-      frameRate = Math?.min(60, Math?.round((frameCount * 1000) / elapsed));
+      frameRate = Math.min(60, Math.round((frameCount * 1000) / elapsed));
       frameCount = 0;
       lastFrameTime = currentTime;
-      metrics?.fps = frameRate;
+      metrics.fps = frameRate;
     }
 
     requestAnimationFrame(updateFPS);
@@ -435,52 +435,52 @@ export function monitorPerformance(): PerformanceMetrics {
   // Memory usage monitoring
   if ('performance' in window && 'memory' in performance) {
     setInterval(() => {
-      metrics?.memoryUsage =
-        (performance as any).memory?.usedJSHeapSize / (performance as any).memory?.jsHeapSizeLimit;
+      metrics.memoryUsage =
+        (performance as any).memory.usedJSHeapSize / (performance as any).memory.jsHeapSizeLimit;
     }, 5000);
   }
 
   // Network latency
   if ('connection' in navigator) {
-    metrics?.networkLatency = (navigator as any).connection?.rtt || null;
+    metrics.networkLatency = (navigator as any).connection.rtt || null;
 
     // Update when network conditions change
-    (navigator as any).connection?.addEventListener('change', () => {
-      metrics?.networkLatency = (navigator as any).connection?.rtt || null;
+    (navigator as any).connection.addEventListener('change', () => {
+      metrics.networkLatency = (navigator as any).connection.rtt || null;
     });
   }
 
   // Battery level
   if ('getBattery' in navigator) {
     (navigator as any).getBattery().then((battery: any) => {
-      metrics?.batteryLevel = battery?.level;
+      metrics.batteryLevel = battery.level;
 
-      battery?.addEventListener('levelchange', () => {
-        metrics?.batteryLevel = battery?.level;
+      battery.addEventListener('levelchange', () => {
+        metrics.batteryLevel = battery.level;
       });
     });
   }
 
   // Resource load times
   const observer = new PerformanceObserver((list) => {
-    list?.getEntries().forEach((entry) => {
-      if (entry?.entryType === 'resource') {
+    list.getEntries().forEach((entry) => {
+      if (entry.entryType === 'resource') {
         const resourceEntry = entry as PerformanceResourceTiming;
-        metrics?.resourceLoadTimes[resourceEntry?.name] = resourceEntry?.duration;
+        metrics.resourceLoadTimes[resourceEntry.name] = resourceEntry.duration;
       }
     });
   });
 
-  observer?.observe({ entryTypes: ['resource'] });
+  observer.observe({ entryTypes: ['resource'] });
 
   // Interaction delay monitoring
-  document?.addEventListener('click', (event) => {
-    const startTime = performance?.now();
+  document.addEventListener('click', (event) => {
+    const startTime = performance.now();
 
     // Measure time until visual feedback
     requestAnimationFrame(() => {
-      const delay = performance?.now() - startTime;
-      metrics?.interactionDelay = delay;
+      const delay = performance.now() - startTime;
+      metrics.interactionDelay = delay;
     });
   });
 
@@ -497,38 +497,38 @@ export function applyAllMobileOptimizations(options: MobileOptimizationOptions =
   const isMobile = isMobileDevice();
 
   // Only apply full optimizations on mobile or low-end devices
-  const shouldOptimize = isMobile || deviceProfile?.type !== 'high';
+  const shouldOptimize = isMobile || deviceProfile.type !== 'high';
 
-  if (!shouldOptimize && !options?.lazyLoadImages) {
+  if (!shouldOptimize && !options.lazyLoadImages) {
     // Skip optimizations for high-end desktop devices
     return;
   }
 
   // Apply optimizations
-  if (options?.lazyLoadImages !== false) {
-    optimizeImages(options?.maxImageWidth || 1200);
+  if (options.lazyLoadImages !== false) {
+    optimizeImages(options.maxImageWidth || 1200);
   }
 
-  if (options?.enableDynamicCodeSplitting !== false) {
+  if (options.enableDynamicCodeSplitting !== false) {
     setupDynamicCodeSplitting();
   }
 
-  if (options?.reduceMotion !== false && (deviceProfile?.type === 'low' || isMobile)) {
-    document?.body.classList?.add('reduce-motion');
+  if (options.reduceMotion !== false && (deviceProfile.type === 'low' || isMobile)) {
+    document.body.classList.add('reduce-motion');
   }
 
-  if (options?.compactUI !== false && (deviceProfile?.type === 'low' || window?.innerWidth < 768)) {
-    document?.body.classList?.add('compact-ui');
+  if (options.compactUI !== false && (deviceProfile.type === 'low' || window.innerWidth < 768)) {
+    document.body.classList.add('compact-ui');
   }
 
   // Add device profile classes for CSS optimizations
-  document?.body.classList?.add(`device-${deviceProfile?.type}`);
+  document.body.classList.add(`device-${deviceProfile.type}`);
   if (isMobile) {
-    document?.body.classList?.add('mobile-device');
+    document.body.classList.add('mobile-device');
   }
 
   // Performance monitoring (optional)
-  if (options?.monitorMemoryUsage) {
+  if (options.monitorMemoryUsage) {
     const metrics = monitorPerformance();
 
     // Expose metrics globally for debugging
@@ -537,18 +537,18 @@ export function applyAllMobileOptimizations(options: MobileOptimizationOptions =
     // Auto-adjust based on metrics
     setInterval(() => {
       // If FPS drops below threshold, apply more aggressive optimizations
-      if (metrics?.fps < 30) {
-        document?.body.classList?.add('performance-mode');
-      } else if (metrics?.fps > 50) {
-        document?.body.classList?.remove('performance-mode');
+      if (metrics.fps < 30) {
+        document.body.classList.add('performance-mode');
+      } else if (metrics.fps > 50) {
+        document.body.classList.remove('performance-mode');
       }
 
       // If memory usage is high, try to free up resources
-      if (metrics?.memoryUsage && metrics?.memoryUsage > 0?.8) {
+      if (metrics.memoryUsage && metrics.memoryUsage > 0.8) {
         // Trigger event for components to respond
-        window?.dispatchEvent(
+        window.dispatchEvent(
           new CustomEvent('memory-pressure', {
-            detail: { level: 'high', usage: metrics?.memoryUsage },
+            detail: { level: 'high', usage: metrics.memoryUsage },
           }),
         );
       }
@@ -563,8 +563,8 @@ export function initializeMobileOptimizations(options: MobileOptimizationOptions
   if (typeof window === 'undefined') return;
 
   // Wait for document to be ready
-  if (document?.readyState === 'loading') {
-    document?.addEventListener('DOMContentLoaded', () => {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
       applyAllMobileOptimizations(options);
     });
   } else {

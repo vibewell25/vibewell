@@ -19,21 +19,21 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { Loader2 } from 'lucide-react';
 
-const businessProfileSchema = z?.object({
-  name: z?.string().min(2, 'Business name must be at least 2 characters'),
-  description: z?.string().min(10, 'Description must be at least 10 characters'),
-  address: z?.string().min(5, 'Address must be at least 5 characters'),
-  phone: z?.string().min(10, 'Phone number must be at least 10 characters'),
-  email: z?.string().email('Invalid email address'),
-  website: z?.string().url('Invalid website URL').optional().or(z?.literal('')),
-  socialMedia: z?.object({
-    facebook: z?.string().url('Invalid Facebook URL').optional().or(z?.literal('')),
-    instagram: z?.string().url('Invalid Instagram URL').optional().or(z?.literal('')),
-    twitter: z?.string().url('Invalid Twitter URL').optional().or(z?.literal('')),
+const businessProfileSchema = z.object({
+  name: z.string().min(2, 'Business name must be at least 2 characters'),
+  description: z.string().min(10, 'Description must be at least 10 characters'),
+  address: z.string().min(5, 'Address must be at least 5 characters'),
+  phone: z.string().min(10, 'Phone number must be at least 10 characters'),
+  email: z.string().email('Invalid email address'),
+  website: z.string().url('Invalid website URL').optional().or(z.literal('')),
+  socialMedia: z.object({
+    facebook: z.string().url('Invalid Facebook URL').optional().or(z.literal('')),
+    instagram: z.string().url('Invalid Instagram URL').optional().or(z.literal('')),
+    twitter: z.string().url('Invalid Twitter URL').optional().or(z.literal('')),
   }),
 });
 
-type BusinessProfileData = z?.infer<typeof businessProfileSchema>;
+type BusinessProfileData = z.infer<typeof businessProfileSchema>;
 
 interface BusinessProfileWizardProps {
   initialData?: Partial<BusinessProfileData>;
@@ -47,23 +47,23 @@ export function BusinessProfileWizard({ initialData }: BusinessProfileWizardProp
   const form = useForm<BusinessProfileData>({
     resolver: zodResolver(businessProfileSchema),
     defaultValues: {
-      name: initialData?.name || '',
-      description: initialData?.description || '',
-      address: initialData?.address || '',
-      phone: initialData?.phone || '',
-      email: initialData?.email || '',
-      website: initialData?.website || '',
+      name: initialData.name || '',
+      description: initialData.description || '',
+      address: initialData.address || '',
+      phone: initialData.phone || '',
+      email: initialData.email || '',
+      website: initialData.website || '',
       socialMedia: {
-        facebook: initialData?.socialMedia?.facebook || '',
-        instagram: initialData?.socialMedia?.instagram || '',
-        twitter: initialData?.socialMedia?.twitter || '',
+        facebook: initialData.socialMedia.facebook || '',
+        instagram: initialData.socialMedia.instagram || '',
+        twitter: initialData.socialMedia.twitter || '',
       },
     },
   });
 
   async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); onSubmit(data: BusinessProfileData) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); onSubmit(data: BusinessProfileData) {
     setIsLoading(true);
     try {
       const response = await fetch('/api/business/profile', {
@@ -71,10 +71,10 @@ export function BusinessProfileWizard({ initialData }: BusinessProfileWizardProp
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify(data),
+        body: JSON.stringify(data),
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to create business profile');
       }
 
@@ -83,9 +83,9 @@ export function BusinessProfileWizard({ initialData }: BusinessProfileWizardProp
         description: 'Your business profile has been created.',
       });
 
-      router?.push('/business/dashboard');
+      router.push('/business/dashboard');
     } catch (error) {
-      console?.error('Error creating business profile:', error);
+      console.error('Error creating business profile:', error);
       toast({
         title: 'Error',
         description: 'Failed to create business profile. Please try again.',
@@ -98,9 +98,9 @@ export function BusinessProfileWizard({ initialData }: BusinessProfileWizardProp
 
   return (
     <Form {...form}>
-      <form onSubmit={form?.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
-          control={form?.control}
+          control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
@@ -114,7 +114,7 @@ export function BusinessProfileWizard({ initialData }: BusinessProfileWizardProp
         />
 
         <FormField
-          control={form?.control}
+          control={form.control}
           name="description"
           render={({ field }) => (
             <FormItem>
@@ -132,7 +132,7 @@ export function BusinessProfileWizard({ initialData }: BusinessProfileWizardProp
         />
 
         <FormField
-          control={form?.control}
+          control={form.control}
           name="address"
           render={({ field }) => (
             <FormItem>
@@ -146,7 +146,7 @@ export function BusinessProfileWizard({ initialData }: BusinessProfileWizardProp
         />
 
         <FormField
-          control={form?.control}
+          control={form.control}
           name="phone"
           render={({ field }) => (
             <FormItem>
@@ -160,7 +160,7 @@ export function BusinessProfileWizard({ initialData }: BusinessProfileWizardProp
         />
 
         <FormField
-          control={form?.control}
+          control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
@@ -174,7 +174,7 @@ export function BusinessProfileWizard({ initialData }: BusinessProfileWizardProp
         />
 
         <FormField
-          control={form?.control}
+          control={form.control}
           name="website"
           render={({ field }) => (
             <FormItem>
@@ -191,8 +191,8 @@ export function BusinessProfileWizard({ initialData }: BusinessProfileWizardProp
           <h3 className="text-lg font-medium">Social Media</h3>
 
           <FormField
-            control={form?.control}
-            name="socialMedia?.facebook"
+            control={form.control}
+            name="socialMedia.facebook"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Facebook</FormLabel>
@@ -205,8 +205,8 @@ export function BusinessProfileWizard({ initialData }: BusinessProfileWizardProp
           />
 
           <FormField
-            control={form?.control}
-            name="socialMedia?.instagram"
+            control={form.control}
+            name="socialMedia.instagram"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Instagram</FormLabel>
@@ -219,8 +219,8 @@ export function BusinessProfileWizard({ initialData }: BusinessProfileWizardProp
           />
 
           <FormField
-            control={form?.control}
-            name="socialMedia?.twitter"
+            control={form.control}
+            name="socialMedia.twitter"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Twitter</FormLabel>

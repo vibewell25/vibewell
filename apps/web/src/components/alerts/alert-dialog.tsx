@@ -107,22 +107,22 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
   useEffect(() => {
     // Load products
     async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); loadProducts() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); loadProducts() {
       try {
         const productService = new ProductService();
-        const response = await productService?.getProducts({ limit: 100 });
+        const response = await productService.getProducts({ limit: 100 });
 
-        if (response?.products && response?.products.length > 0) {
+        if (response.products && response.products.length > 0) {
           setProducts(
-            response?.products.map((p) => ({
-              id: p?.id,
-              name: p?.name,
+            response.products.map((p) => ({
+              id: p.id,
+              name: p.name,
             })),
           );
         }
       } catch (error) {
-        console?.error('Error loading products:', error);
+        console.error('Error loading products:', error);
         toast({
           title: 'Error',
           description: 'Failed to load products',
@@ -136,8 +136,8 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
 
   useEffect(() => {
     // Update metric label based on selected metric type
-    const selectedMetric = metricOptions?.find((m) => m?.value === currentMetricType);
-    setMetricLabel(selectedMetric?.label || 'Value');
+    const selectedMetric = metricOptions.find((m) => m.value === currentMetricType);
+    setMetricLabel(selectedMetric.label || 'Value');
 
     // Set appropriate default values based on metric type
     if (currentMetricType === 'conversion') {
@@ -155,19 +155,19 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
     // Populate form when editing an alert
     if (alertToEdit) {
       reset({
-        name: alertToEdit?.name,
-        description: alertToEdit?.description || '',
-        isActive: alertToEdit?.isActive,
-        productId: alertToEdit?.productId || '',
-        metricType: alertToEdit?.threshold.metricType,
-        condition: alertToEdit?.threshold.condition,
-        value: alertToEdit?.threshold.value,
-        timeframeHours: alertToEdit?.threshold.timeframeHours,
+        name: alertToEdit.name,
+        description: alertToEdit.description || '',
+        isActive: alertToEdit.isActive,
+        productId: alertToEdit.productId || '',
+        metricType: alertToEdit.threshold.metricType,
+        condition: alertToEdit.threshold.condition,
+        value: alertToEdit.threshold.value,
+        timeframeHours: alertToEdit.threshold.timeframeHours,
         emailEnabled:
-          alertToEdit?.notificationMethods.find((m) => m?.type === 'email')?.enabled || false,
-        smsEnabled: alertToEdit?.notificationMethods.find((m) => m?.type === 'sms')?.enabled || false,
+          alertToEdit.notificationMethods.find((m) => m.type === 'email').enabled || false,
+        smsEnabled: alertToEdit.notificationMethods.find((m) => m.type === 'sms').enabled || false,
         inAppEnabled:
-          alertToEdit?.notificationMethods.find((m) => m?.type === 'inApp')?.enabled || false,
+          alertToEdit.notificationMethods.find((m) => m.type === 'inApp').enabled || false,
       });
     } else {
       reset({
@@ -187,9 +187,9 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
   }, [alertToEdit, reset]);
 
   const onSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');data: FormValues) => {
-    if (!user?.id) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');data: FormValues) => {
+    if (!user.id) {
       toast({
         title: 'Authentication error',
         description: 'You must be logged in to create alerts',
@@ -203,22 +203,22 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
     try {
       const alertService = new AnalyticsAlertService();
       const notificationMethods = [
-        { type: 'email' as const, enabled: data?.emailEnabled },
-        { type: 'sms' as const, enabled: data?.smsEnabled },
-        { type: 'inApp' as const, enabled: data?.inAppEnabled },
+        { type: 'email' as const, enabled: data.emailEnabled },
+        { type: 'sms' as const, enabled: data.smsEnabled },
+        { type: 'inApp' as const, enabled: data.inAppEnabled },
       ];
 
       const alertData: CreateAlertParams = {
-        userId: user?.id,
-        name: data?.name,
-        description: data?.description,
-        isActive: data?.isActive,
-        productId: data?.productId || undefined,
+        userId: user.id,
+        name: data.name,
+        description: data.description,
+        isActive: data.isActive,
+        productId: data.productId || undefined,
         threshold: {
-          metricType: data?.metricType,
-          condition: data?.condition,
-          value: data?.value,
-          timeframeHours: data?.timeframeHours,
+          metricType: data.metricType,
+          condition: data.condition,
+          value: data.value,
+          timeframeHours: data.timeframeHours,
         },
         notificationMethods,
       };
@@ -226,17 +226,17 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
       let response;
 
       if (alertToEdit) {
-        response = await alertService?.updateAlert(alertToEdit?.id, alertData);
+        response = await alertService.updateAlert(alertToEdit.id, alertData);
       } else {
-        response = await alertService?.createAlert(alertData);
+        response = await alertService.createAlert(alertData);
       }
 
-      if (response?.error) {
-        throw new Error(response?.error.message);
+      if (response.error) {
+        throw new Error(response.error.message);
       }
 
-      if (response?.data) {
-        onSuccess(response?.data);
+      if (response.data) {
+        onSuccess(response.data);
         onClose();
         toast({
           title: 'Success',
@@ -245,10 +245,10 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
         });
       }
     } catch (error) {
-      console?.error('Error saving alert:', error);
+      console.error('Error saving alert:', error);
       toast({
         title: 'Error',
-        description: `Failed to ${alertToEdit ? 'update' : 'create'} alert: ${error instanceof Error ? error?.message : 'Unknown error'}`,
+        description: `Failed to ${alertToEdit ? 'update' : 'create'} alert: ${error instanceof Error ? error.message : 'Unknown error'}`,
         variant: 'destructive',
       });
     } finally {
@@ -273,7 +273,7 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
                 {...register('name', { required: 'Alert name is required' })}
                 placeholder="Sales Spike Alert"
               />
-              {errors?.name && <p className="text-sm text-red-500">{errors?.name.message}</p>}
+              {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
             </div>
 
             {/* Description */}
@@ -309,9 +309,9 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="">All Products</SelectItem>
-                  {products?.map((product) => (
-                    <SelectItem key={product?.id} value={product?.id}>
-                      {product?.name}
+                  {products.map((product) => (
+                    <SelectItem key={product.id} value={product.id}>
+                      {product.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -330,9 +330,9 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
                   <SelectValue placeholder="Select a metric" />
                 </SelectTrigger>
                 <SelectContent>
-                  {metricOptions?.map((option) => (
-                    <SelectItem key={option?.value} value={option?.value}>
-                      {option?.label}
+                  {metricOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -376,9 +376,9 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
                 }
                 step={
                   currentMetricType === 'rating'
-                    ? 0?.1
+                    ? 0.1
                     : currentMetricType === 'conversion'
-                      ? 0?.5
+                      ? 0.5
                       : 5
                 }
                 value={[currentValue]}
@@ -397,9 +397,9 @@ export function AlertDialog({ isOpen, onClose, onSuccess, alertToEdit }: AlertDi
                   <SelectValue placeholder="Select time period" />
                 </SelectTrigger>
                 <SelectContent>
-                  {timeframeOptions?.map((option) => (
-                    <SelectItem key={option?.value} value={option?.value.toString()}>
-                      {option?.label}
+                  {timeframeOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value.toString()}>
+                      {option.label}
                     </SelectItem>
                   ))}
                 </SelectContent>

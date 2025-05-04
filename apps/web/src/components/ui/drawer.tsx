@@ -23,82 +23,82 @@ const drawerVariants = cva(
   },
 );
 
-interface DrawerProps extends DialogPrimitive?.DialogProps {}
+interface DrawerProps extends DialogPrimitive.DialogProps {}
 
 const Drawer = ({ children, ...props }: DrawerProps) => (
-  <DialogPrimitive?.Root {...props}>
-    <DialogPrimitive?.Portal>
-      <DialogPrimitive?.Overlay className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" />
+  <DialogPrimitive.Root {...props}>
+    <DialogPrimitive.Portal>
+      <DialogPrimitive.Overlay className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" />
       {children}
-    </DialogPrimitive?.Portal>
-  </DialogPrimitive?.Root>
+    </DialogPrimitive.Portal>
+  </DialogPrimitive.Root>
 );
-Drawer?.displayName = 'Drawer';
+Drawer.displayName = 'Drawer';
 
-interface DrawerTriggerProps extends DialogPrimitive?.DialogTriggerProps {}
+interface DrawerTriggerProps extends DialogPrimitive.DialogTriggerProps {}
 
-const DrawerTrigger = DialogPrimitive?.Trigger;
-DrawerTrigger?.displayName = 'DrawerTrigger';
+const DrawerTrigger = DialogPrimitive.Trigger;
+DrawerTrigger.displayName = 'DrawerTrigger';
 
-interface DrawerCloseProps extends DialogPrimitive?.DialogCloseProps {}
+interface DrawerCloseProps extends DialogPrimitive.DialogCloseProps {}
 
-const DrawerClose = DialogPrimitive?.Close;
-DrawerClose?.displayName = 'DrawerClose';
+const DrawerClose = DialogPrimitive.Close;
+DrawerClose.displayName = 'DrawerClose';
 
 interface DrawerContentProps
-  extends React?.ComponentPropsWithoutRef<typeof DialogPrimitive?.Content>,
+  extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>,
     VariantProps<typeof drawerVariants> {}
 
-const DrawerContent = React?.forwardRef<
-  React?.ElementRef<typeof DialogPrimitive?.Content>,
+const DrawerContent = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Content>,
   DrawerContentProps
 >(({ side = 'right', className, children, ...props }, ref) => (
-  <DialogPrimitive?.Content ref={ref} className={cn(drawerVariants({ side }), className)} {...props}>
+  <DialogPrimitive.Content ref={ref} className={cn(drawerVariants({ side }), className)} {...props}>
     {children}
-    <DialogPrimitive?.Close className="data-[state=open]:bg-secondary absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
+    <DialogPrimitive.Close className="data-[state=open]:bg-secondary absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
       <X className="h-4 w-4" />
       <span className="sr-only">Close</span>
-    </DialogPrimitive?.Close>
-  </DialogPrimitive?.Content>
+    </DialogPrimitive.Close>
+  </DialogPrimitive.Content>
 ));
-DrawerContent?.displayName = 'DrawerContent';
+DrawerContent.displayName = 'DrawerContent';
 
-interface DrawerHeaderProps extends React?.HTMLAttributes<HTMLDivElement> {}
+interface DrawerHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const DrawerHeader = ({ className, ...props }: DrawerHeaderProps) => (
   <div className={cn('flex flex-col space-y-2 text-center sm:text-left', className)} {...props} />
 );
-DrawerHeader?.displayName = 'DrawerHeader';
+DrawerHeader.displayName = 'DrawerHeader';
 
-interface DrawerTitleProps extends DialogPrimitive?.DialogTitleProps {}
+interface DrawerTitleProps extends DialogPrimitive.DialogTitleProps {}
 
-const DrawerTitle = React?.forwardRef<
-  React?.ElementRef<typeof DialogPrimitive?.Title>,
-  React?.ComponentPropsWithoutRef<typeof DialogPrimitive?.Title>
+const DrawerTitle = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
 >(({ className, ...props }, ref) => (
-  <DialogPrimitive?.Title
+  <DialogPrimitive.Title
     ref={ref}
     className={cn('text-lg font-semibold text-foreground', className)}
     {...props}
   />
 ));
-DrawerTitle?.displayName = 'DrawerTitle';
+DrawerTitle.displayName = 'DrawerTitle';
 
-interface DrawerDescriptionProps extends DialogPrimitive?.DialogDescriptionProps {}
+interface DrawerDescriptionProps extends DialogPrimitive.DialogDescriptionProps {}
 
-const DrawerDescription = React?.forwardRef<
-  React?.ElementRef<typeof DialogPrimitive?.Description>,
-  React?.ComponentPropsWithoutRef<typeof DialogPrimitive?.Description>
+const DrawerDescription = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Description>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
 >(({ className, ...props }, ref) => (
-  <DialogPrimitive?.Description
+  <DialogPrimitive.Description
     ref={ref}
     className={cn('text-sm text-muted-foreground', className)}
     {...props}
   />
 ));
-DrawerDescription?.displayName = 'DrawerDescription';
+DrawerDescription.displayName = 'DrawerDescription';
 
-interface DrawerFooterProps extends React?.HTMLAttributes<HTMLDivElement> {}
+interface DrawerFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const DrawerFooter = ({ className, ...props }: DrawerFooterProps) => (
   <div
@@ -106,7 +106,7 @@ const DrawerFooter = ({ className, ...props }: DrawerFooterProps) => (
     {...props}
   />
 );
-DrawerFooter?.displayName = 'DrawerFooter';
+DrawerFooter.displayName = 'DrawerFooter';
 
 export {
   Drawer,

@@ -14,7 +14,7 @@ export interface Column {
   accessorKey?: string;
   header: string;
   id?: string;
-  cell?: (props: { row: { original: any } }) => React?.ReactNode;
+  cell?: (props: { row: { original: any } }) => React.ReactNode;
 }
 
 interface DataTableProps {
@@ -32,24 +32,24 @@ export function DataTable({
   sorting = false,
   filtering = false,
 }: DataTableProps) {
-  const [page, setPage] = React?.useState(1);
-  const [pageSize, setPageSize] = React?.useState(10);
-  const [sortColumn, setSortColumn] = React?.useState<string | null>(null);
-  const [sortDirection, setSortDirection] = React?.useState<'asc' | 'desc'>('asc');
-  const [filterValue, setFilterValue] = React?.useState('');
+  const [page, setPage] = React.useState(1);
+  const [pageSize, setPageSize] = React.useState(10);
+  const [sortColumn, setSortColumn] = React.useState<string | null>(null);
+  const [sortDirection, setSortDirection] = React.useState<'asc' | 'desc'>('asc');
+  const [filterValue, setFilterValue] = React.useState('');
 
   // Apply filtering
-  const filteredData = React?.useMemo(() => {
+  const filteredData = React.useMemo(() => {
     if (!filtering || !filterValue) return data;
-    return data?.filter((item) =>
-      Object?.values(item).some((value) =>
-        String(value).toLowerCase().includes(filterValue?.toLowerCase()),
+    return data.filter((item) =>
+      Object.values(item).some((value) =>
+        String(value).toLowerCase().includes(filterValue.toLowerCase()),
       ),
     );
   }, [data, filterValue, filtering]);
 
   // Apply sorting
-  const sortedData = React?.useMemo(() => {
+  const sortedData = React.useMemo(() => {
     if (!sorting || !sortColumn) return filteredData;
     return [...filteredData].sort((a, b) => {
       const aValue = a[sortColumn];
@@ -62,13 +62,13 @@ export function DataTable({
   }, [filteredData, sortColumn, sortDirection, sorting]);
 
   // Apply pagination
-  const paginatedData = React?.useMemo(() => {
+  const paginatedData = React.useMemo(() => {
     if (!pagination) return sortedData;
     const start = (page - 1) * pageSize;
-    return sortedData?.slice(start, start + pageSize);
+    return sortedData.slice(start, start + pageSize);
   }, [sortedData, page, pageSize, pagination]);
 
-  const totalPages = Math?.ceil(sortedData?.length / pageSize);
+  const totalPages = Math.ceil(sortedData.length / pageSize);
 
   return (
     <div>
@@ -77,7 +77,7 @@ export function DataTable({
           <Input
             placeholder="Filter records..."
             value={filterValue}
-            onChange={(e) => setFilterValue(e?.target.value)}
+            onChange={(e) => setFilterValue(e.target.value)}
             className="max-w-sm"
           />
         </div>
@@ -86,23 +86,23 @@ export function DataTable({
       <Table>
         <TableHeader>
           <TableRow>
-            {columns?.map((column) => (
+            {columns.map((column) => (
               <TableHead
-                key={column?.id || column?.accessorKey}
+                key={column.id || column.accessorKey}
                 onClick={() => {
-                  if (sorting && column?.accessorKey) {
-                    if (sortColumn === column?.accessorKey) {
+                  if (sorting && column.accessorKey) {
+                    if (sortColumn === column.accessorKey) {
                       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
                     } else {
-                      setSortColumn(column?.accessorKey);
+                      setSortColumn(column.accessorKey);
                       setSortDirection('asc');
                     }
                   }
                 }}
-                className={sorting && column?.accessorKey ? 'cursor-pointer' : ''}
+                className={sorting && column.accessorKey ? 'cursor-pointer' : ''}
               >
-                {column?.header}
-                {sorting && column?.accessorKey === sortColumn && (
+                {column.header}
+                {sorting && column.accessorKey === sortColumn && (
                   <span>{sortDirection === 'asc' ? ' ↑' : ' ↓'}</span>
                 )}
               </TableHead>
@@ -110,14 +110,14 @@ export function DataTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {paginatedData?.map((row, rowIndex) => (
+          {paginatedData.map((row, rowIndex) => (
             <TableRow key={rowIndex}>
-              {columns?.map((column) => (
-                <TableCell key={column?.id || column?.accessorKey}>
-                  {column?.cell
-                    ? column?.cell({ row: { original: row } })
-                    : column?.accessorKey
-                      ? row[column?.accessorKey]
+              {columns.map((column) => (
+                <TableCell key={column.id || column.accessorKey}>
+                  {column.cell
+                    ? column.cell({ row: { original: row } })
+                    : column.accessorKey
+                      ? row[column.accessorKey]
                       : null}
                 </TableCell>
               ))}
@@ -131,7 +131,7 @@ export function DataTable({
           <div className="flex items-center gap-2">
             <select
               value={pageSize}
-              onChange={(e) => setPageSize(Number(e?.target.value))}
+              onChange={(e) => setPageSize(Number(e.target.value))}
               className="rounded border p-1"
             >
               <option value="10">10</option>

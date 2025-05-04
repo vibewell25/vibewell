@@ -15,19 +15,19 @@ export default function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const handleChange = (e: React?.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e?.target;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent) => {
-    e?.preventDefault();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
+    e.preventDefault();
     setIsLoading(true);
     setError('');
 
-    if (formData?.password !== formData?.confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       setIsLoading(false);
       return;
@@ -37,34 +37,34 @@ export default function SignUpForm() {
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify({
-          name: formData?.name,
-          email: formData?.email,
-          password: formData?.password,
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
         }),
       });
 
-      const data = await response?.json();
+      const data = await response.json();
 
-      if (!response?.ok) {
-        throw new Error(data?.message || 'Something went wrong');
+      if (!response.ok) {
+        throw new Error(data.message || 'Something went wrong');
       }
 
       // Sign in the user after successful registration
       const result = await signIn('credentials', {
-        email: formData?.email,
-        password: formData?.password,
+        email: formData.email,
+        password: formData.password,
         redirect: false,
       });
 
-      if (result?.error) {
+      if (result.error) {
         setError('Error signing in after registration');
         return;
       }
 
-      router?.push('/dashboard');
+      router.push('/dashboard');
     } catch (error) {
-      setError(error instanceof Error ? error?.message : 'An error occurred');
+      setError(error instanceof Error ? error.message : 'An error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -93,7 +93,7 @@ export default function SignUpForm() {
               type="text"
               autoComplete="name"
               required
-              value={formData?.name}
+              value={formData.name}
               onChange={handleChange}
               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
@@ -111,7 +111,7 @@ export default function SignUpForm() {
               type="email"
               autoComplete="email"
               required
-              value={formData?.email}
+              value={formData.email}
               onChange={handleChange}
               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
@@ -129,7 +129,7 @@ export default function SignUpForm() {
               type="password"
               autoComplete="new-password"
               required
-              value={formData?.password}
+              value={formData.password}
               onChange={handleChange}
               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
@@ -147,7 +147,7 @@ export default function SignUpForm() {
               type="password"
               autoComplete="new-password"
               required
-              value={formData?.confirmPassword}
+              value={formData.confirmPassword}
               onChange={handleChange}
               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
@@ -182,7 +182,7 @@ export default function SignUpForm() {
           >
             <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
               <path
-                d="M12?.545,10?.239v3.821h5?.445c-0?.712,2?.315-2?.647,3?.972-5?.445,3?.972c-3?.332,0-6?.033-2?.701-6?.033-6?.032 s2?.701-6?.032,6?.033-6?.032c1.498,0,2?.866,0?.549,3?.921,1?.453l2.814-2?.814C17.503,2?.988,15?.139,2,12?.545,2 C7?.021,2,2?.543,6?.477,2?.543,12s4?.478,10,10?.002,10c8?.396,0,10?.249-7?.85,9?.426-11?.748L12.545,10?.239z"
+                d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032 s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2 C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z"
                 fill="currentColor"
               />
             </svg>

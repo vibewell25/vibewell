@@ -6,14 +6,14 @@ interface AccessibleToggleProps {
   helperText?: string;
   size?: 'sm' | 'md' | 'lg';
   checked?: boolean;
-  onChange?: (event: React?.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   required?: boolean;
   id?: string;
   className?: string;
 }
 
-export const AccessibleToggle: React?.FC<AccessibleToggleProps> = ({
+export const AccessibleToggle: React.FC<AccessibleToggleProps> = ({
   label,
   error,
   helperText,
@@ -25,7 +25,7 @@ export const AccessibleToggle: React?.FC<AccessibleToggleProps> = ({
   onChange,
   disabled,
 }) => {
-  const toggleId = id || `toggle-${Math?.random().toString(36).substr(2, 9)}`;
+  const toggleId = id || `toggle-${Math.random().toString(36).substr(2, 9)}`;
   const errorId = error ? `${toggleId}-error` : undefined;
   const helperId = helperText ? `${toggleId}-helper` : undefined;
 
@@ -55,7 +55,7 @@ export const AccessibleToggle: React?.FC<AccessibleToggleProps> = ({
             if (onChange) {
               const event = {
                 target: { checked: !checked },
-              } as React?.ChangeEvent<HTMLInputElement>;
+              } as React.ChangeEvent<HTMLInputElement>;
               onChange(event);
             }
           }}

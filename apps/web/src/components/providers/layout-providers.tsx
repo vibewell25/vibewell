@@ -5,7 +5,7 @@ import { AccessibilityProvider } from '@/contexts/AccessibilityContext';
 import { AccessibilityStyleProvider } from '@/components/accessibility/AccessibilityProvider';
 
 interface LayoutProvidersProps {
-  children: React?.ReactNode;
+  children: React.ReactNode;
 }
 
 export function LayoutProviders({ children }: LayoutProvidersProps) {

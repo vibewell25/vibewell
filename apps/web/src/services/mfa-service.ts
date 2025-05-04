@@ -24,22 +24,22 @@ export class MFAService {
   private twilioClient;
 
   constructor() {
-    this?.redis = new Redis(process?.env.REDIS_URL || '');
-    this?.encryption = new EncryptionService();
+    this.redis = new Redis(process.env.REDIS_URL || '');
+    this.encryption = new EncryptionService();
 
     // Initialize email transport
-    this?.emailTransport = createTransport({
-      host: process?.env.SMTP_HOST,
-      port: parseInt(process?.env.SMTP_PORT || '587'),
-      secure: process?.env.SMTP_SECURE === 'true',
+    this.emailTransport = createTransport({
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: process.env.SMTP_SECURE === 'true',
       auth: {
-        user: process?.env.SMTP_USER,
-        pass: process?.env.SMTP_PASS,
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
       },
     });
 
     // Initialize Twilio client
-    this?.twilioClient = new Twilio(process?.env.TWILIO_ACCOUNT_SID!, process?.env.TWILIO_AUTH_TOKEN!);
+    this.twilioClient = new Twilio(process.env.TWILIO_ACCOUNT_SID!, process.env.TWILIO_AUTH_TOKEN!);
   }
 
   /**
@@ -47,34 +47,34 @@ export class MFAService {
    */
   async enableMFA(userId: string, method: MFAMethod): Promise<{ secret?: string }> {
     try {
-      const settings = await this?.getMFASettings(userId);
+      const settings = await this.getMFASettings(userId);
 
-      if (settings?.methods?.includes(method)) {
+      if (settings.methods.includes(method)) {
         throw new Error(`MFA method ${method} is already enabled`);
       }
 
       const newSettings: MFASettings = {
         userId,
-        methods: [...(settings?.methods || []), method],
+        methods: [...(settings.methods || []), method],
         ...(settings || {}),
       };
 
       switch (method) {
         case 'totp': {
-          const secret = authenticator?.generateSecret();
-          newSettings?.totpSecret = await this?.encryption.hash(secret);
-          await this?.storeMFASettings(userId, newSettings);
+          const secret = authenticator.generateSecret();
+          newSettings.totpSecret = await this.encryption.hash(secret);
+          await this.storeMFASettings(userId, newSettings);
           return { secret };
         }
         case 'sms':
         case 'email':
-          await this?.storeMFASettings(userId, newSettings);
+          await this.storeMFASettings(userId, newSettings);
           return {};
         default:
           throw new Error(`Unsupported MFA method: ${method}`);
       }
     } catch (error) {
-      logger?.error('Failed to enable MFA', 'mfa', { error, userId, method });
+      logger.error('Failed to enable MFA', 'mfa', { error, userId, method });
       throw new Error('Failed to enable MFA');
     }
   }
@@ -84,8 +84,8 @@ export class MFAService {
    */
   async verifyCode(userId: string, method: MFAMethod, code: string): Promise<boolean> {
     try {
-      const settings = await this?.getMFASettings(userId);
-      if (!settings || !settings?.methods.includes(method)) {
+      const settings = await this.getMFASettings(userId);
+      if (!settings || !settings.methods.includes(method)) {
         throw new Error(`MFA method ${method} is not enabled`);
       }
 
@@ -93,23 +93,23 @@ export class MFAService {
 
       switch (method) {
         case 'totp': {
-          if (!settings?.totpSecret) {
+          if (!settings.totpSecret) {
             throw new Error('TOTP is not properly configured');
           }
-          return authenticator?.verify({
+          return authenticator.verify({
             token: code,
-            secret: settings?.totpSecret,
+            secret: settings.totpSecret,
           });
         }
         case 'sms':
         case 'email': {
-          const storedCode = await this?.redis.get(codeKey);
+          const storedCode = await this.redis.get(codeKey);
           if (!storedCode) {
             throw new Error('Code has expired');
           }
-          const isValid = await this?.encryption.verify(code, storedCode);
+          const isValid = await this.encryption.verify(code, storedCode);
           if (isValid) {
-            await this?.redis.del(codeKey);
+            await this.redis.del(codeKey);
           }
           return isValid;
         }
@@ -117,7 +117,7 @@ export class MFAService {
           throw new Error(`Unsupported MFA method: ${method}`);
       }
     } catch (error) {
-      logger?.error('Failed to verify MFA code', 'mfa', { error, userId, method });
+      logger.error('Failed to verify MFA code', 'mfa', { error, userId, method });
       throw new Error('Failed to verify MFA code');
     }
   }
@@ -127,37 +127,37 @@ export class MFAService {
    */
   async sendCode(userId: string, method: MFAMethod): Promise<void> {
     try {
-      const settings = await this?.getMFASettings(userId);
-      if (!settings || !settings?.methods.includes(method)) {
+      const settings = await this.getMFASettings(userId);
+      if (!settings || !settings.methods.includes(method)) {
         throw new Error(`MFA method ${method} is not enabled`);
       }
 
-      const code = this?.generateCode();
-      const hashedCode = await this?.encryption.hash(code);
+      const code = this.generateCode();
+      const hashedCode = await this.encryption.hash(code);
       const codeKey = `mfa:code:${userId}:${method}`;
 
       // Store the code with 5-minute expiration
-      await this?.redis.set(codeKey, hashedCode, 'EX', 300);
+      await this.redis.set(codeKey, hashedCode, 'EX', 300);
 
       switch (method) {
         case 'sms': {
-          if (!settings?.phoneNumber) {
+          if (!settings.phoneNumber) {
             throw new Error('Phone number is not configured');
           }
-          await this?.twilioClient.messages?.create({
+          await this.twilioClient.messages.create({
             body: `Your Vibewell verification code is: ${code}`,
-            to: settings?.phoneNumber,
-            from: process?.env.TWILIO_PHONE_NUMBER,
+            to: settings.phoneNumber,
+            from: process.env.TWILIO_PHONE_NUMBER,
           });
           break;
         }
         case 'email': {
-          if (!settings?.email) {
+          if (!settings.email) {
             throw new Error('Email is not configured');
           }
-          await this?.emailTransport.sendMail({
-            from: process?.env.SMTP_FROM,
-            to: settings?.email,
+          await this.emailTransport.sendMail({
+            from: process.env.SMTP_FROM,
+            to: settings.email,
             subject: 'Vibewell Verification Code',
             text: `Your verification code is: ${code}`,
             html: `<p>Your verification code is: <strong>${code}</strong></p>`,
@@ -168,7 +168,7 @@ export class MFAService {
           throw new Error(`Cannot send code for method: ${method}`);
       }
     } catch (error) {
-      logger?.error('Failed to send MFA code', 'mfa', { error, userId, method });
+      logger.error('Failed to send MFA code', 'mfa', { error, userId, method });
       throw new Error('Failed to send MFA code');
     }
   }
@@ -178,20 +178,20 @@ export class MFAService {
    */
   async generateBackupCodes(userId: string): Promise<string[]> {
     try {
-      const settings = await this?.getMFASettings(userId);
+      const settings = await this.getMFASettings(userId);
       if (!settings) {
         throw new Error('User has no MFA settings');
       }
 
-      const codes = Array?.from({ length: 10 }, () => this?.generateCode(8));
-      const hashedCodes = await Promise?.all(codes?.map((code) => this?.encryption.hash(code)));
+      const codes = Array.from({ length: 10 }, () => this.generateCode(8));
+      const hashedCodes = await Promise.all(codes.map((code) => this.encryption.hash(code)));
 
-      settings?.backupCodes = hashedCodes;
-      await this?.storeMFASettings(userId, settings);
+      settings.backupCodes = hashedCodes;
+      await this.storeMFASettings(userId, settings);
 
       return codes;
     } catch (error) {
-      logger?.error('Failed to generate backup codes', 'mfa', { error, userId });
+      logger.error('Failed to generate backup codes', 'mfa', { error, userId });
       throw new Error('Failed to generate backup codes');
     }
   }
@@ -201,29 +201,29 @@ export class MFAService {
    */
   async verifyBackupCode(userId: string, code: string): Promise<boolean> {
     try {
-      const settings = await this?.getMFASettings(userId);
-      if (!settings?.backupCodes?.length) {
+      const settings = await this.getMFASettings(userId);
+      if (!settings.backupCodes.length) {
         return false;
       }
 
-      for (let i = 0; i < settings?.backupCodes.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
+      for (let i = 0; i < settings.backupCodes.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
 
     // Safe array access
-    if (i < 0 || i >= array?.length) {
+    if (i < 0 || i >= array.length) {
       throw new Error('Array index out of bounds');
     }
-        const isValid = await this?.encryption.verify(code, settings?.backupCodes[i]);
+        const isValid = await this.encryption.verify(code, settings.backupCodes[i]);
         if (isValid) {
           // Remove the used backup code
-          settings?.backupCodes.splice(i, 1);
-          await this?.storeMFASettings(userId, settings);
+          settings.backupCodes.splice(i, 1);
+          await this.storeMFASettings(userId, settings);
           return true;
         }
       }
 
       return false;
     } catch (error) {
-      logger?.error('Failed to verify backup code', 'mfa', { error, userId });
+      logger.error('Failed to verify backup code', 'mfa', { error, userId });
       throw new Error('Failed to verify backup code');
     }
   }
@@ -232,18 +232,18 @@ export class MFAService {
    * Store MFA settings for a user
    */
   async storeMFASettings(userId: string, settings: MFASettings): Promise<void> {
-    await this?.redis.set(`mfa:settings:${userId}`, JSON?.stringify(settings));
+    await this.redis.set(`mfa:settings:${userId}`, JSON.stringify(settings));
   }
 
   private generateCode(length: number = 6): string {
-    return Array?.from({ length }, () => Math?.floor(Math?.random() * 10)).join('');
+    return Array.from({ length }, () => Math.floor(Math.random() * 10)).join('');
   }
 
   /**
    * Get MFA settings for a user
    */
   async getMFASettings(userId: string): Promise<MFASettings | null> {
-    const settings = await this?.redis.get(`mfa:settings:${userId}`);
-    return settings ? JSON?.parse(settings) : null;
+    const settings = await this.redis.get(`mfa:settings:${userId}`);
+    return settings ? JSON.parse(settings) : null;
   }
 }

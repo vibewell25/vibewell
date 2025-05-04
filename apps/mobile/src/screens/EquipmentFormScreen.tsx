@@ -5,54 +5,54 @@ import { EquipmentItem } from '../types/equipment';
 import { equipmentApi } from '../services/equipmentService';
 import { EquipmentFormRouteProp, EquipmentFormNavigationProp } from '../types/navigation';
 
-const EquipmentFormScreen: React?.FC = () => {
+const EquipmentFormScreen: React.FC = () => {
   const route = useRoute<EquipmentFormRouteProp>();
   const navigation = useNavigation<EquipmentFormNavigationProp>();
-  const { item } = route?.params || {};
+  const { item } = route.params || {};
 
-  const [name, setName] = useState(item?.name || '');
-  const [description, setDescription] = useState(item?.description || '');
-  const [serialNumber, setSerialNumber] = useState(item?.serialNumber || '');
+  const [name, setName] = useState(item.name || '');
+  const [description, setDescription] = useState(item.description || '');
+  const [serialNumber, setSerialNumber] = useState(item.serialNumber || '');
   const [saving, setSaving] = useState(false);
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setSaving(true);
     try {
       if (item) {
-        await equipmentApi?.updateItem(item?.id, { name, description, serialNumber });
-        Alert?.alert('Success', 'Equipment updated');
+        await equipmentApi.updateItem(item.id, { name, description, serialNumber });
+        Alert.alert('Success', 'Equipment updated');
       } else {
-        await equipmentApi?.createItem({ name, description, serialNumber });
-        Alert?.alert('Success', 'Equipment created');
+        await equipmentApi.createItem({ name, description, serialNumber });
+        Alert.alert('Success', 'Equipment created');
       }
-      navigation?.goBack();
+      navigation.goBack();
     } catch (err) {
-      console?.error(err);
-      Alert?.alert('Error', 'Failed to save equipment');
+      console.error(err);
+      Alert.alert('Error', 'Failed to save equipment');
     } finally {
       setSaving(false);
     }
   };
 
   return (
-    <View style={styles?.container}>
-      <Text style={styles?.title}>{item ? 'Edit Equipment' : 'New Equipment'}</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>{item ? 'Edit Equipment' : 'New Equipment'}</Text>
       <TextInput
-        style={styles?.input}
+        style={styles.input}
         placeholder="Name"
         value={name}
         onChangeText={setName}
       />
       <TextInput
-        style={styles?.input}
+        style={styles.input}
         placeholder="Description"
         value={description}
         onChangeText={setDescription}
       />
       <TextInput
-        style={styles?.input}
+        style={styles.input}
         placeholder="Serial Number"
         value={serialNumber}
         onChangeText={setSerialNumber}
@@ -66,7 +66,7 @@ const EquipmentFormScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   title: { fontSize: 20, fontWeight: 'bold', marginBottom: 16 },
   input: { borderWidth: 1, borderColor: '#ccc', padding: 8, marginBottom: 12, borderRadius: 4 },

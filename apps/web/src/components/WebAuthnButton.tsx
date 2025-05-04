@@ -35,67 +35,67 @@ export function WebAuthnButton({ mode, onSuccess, onError }: WebAuthnButtonProps
         const optionsResponse = await fetch('/api/auth/webauthn/register-options', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId: user?.id }),
+          body: JSON.stringify({ userId: user.id }),
         });
 
-        const options = await optionsResponse?.json();
+        const options = await optionsResponse.json();
         const attResp = await startRegistration(options);
 
         const verificationResponse = await fetch('/api/auth/webauthn/verify-registration', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            userId: user?.id,
+            userId: user.id,
             attestationResponse: attResp,
           }),
         });
 
-        const verification = await verificationResponse?.json();
+        const verification = await verificationResponse.json();
 
-        if (verification?.verified) {
+        if (verification.verified) {
           toast({
             title: 'Success',
             description: 'Biometric authentication registered successfully',
           });
-          onSuccess?.();
+          onSuccess.();
         }
       } else {
         const optionsResponse = await fetch('/api/auth/webauthn/auth-options', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId: user?.id }),
+          body: JSON.stringify({ userId: user.id }),
         });
 
-        const options = await optionsResponse?.json();
+        const options = await optionsResponse.json();
         const assertResp = await startAuthentication(options);
 
         const verificationResponse = await fetch('/api/auth/webauthn/verify-authentication', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            userId: user?.id,
+            userId: user.id,
             assertionResponse: assertResp,
           }),
         });
 
-        const verification = await verificationResponse?.json();
+        const verification = await verificationResponse.json();
 
-        if (verification?.verified) {
+        if (verification.verified) {
           toast({
             title: 'Success',
             description: 'Biometric authentication successful',
           });
-          onSuccess?.();
+          onSuccess.();
         }
       }
     } catch (error) {
-      console?.error('WebAuthn error:', error);
+      console.error('WebAuthn error:', error);
       toast({
         title: 'Error',
-        description: error instanceof Error ? error?.message : 'An error occurred',
+        description: error instanceof Error ? error.message : 'An error occurred',
         variant: 'destructive',
       });
-      onError?.(error instanceof Error ? error : new Error('An error occurred'));
+      onError.(error instanceof Error ? error : new Error('An error occurred'));
     } finally {
       setIsLoading(false);
     }

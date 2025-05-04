@@ -16,10 +16,10 @@ export class HSMKeyManagementService {
   private readonly keyAlias: string;
 
 
-  constructor(region: string = process?.env.AWS_REGION || 'us-east-1') {
-    this?.kms = new KMSClient({ region });
+  constructor(region: string = process.env.AWS_REGION || 'us-east-1') {
+    this.kms = new KMSClient({ region });
 
-    this?.keyAlias = process?.env.KMS_KEY_ALIAS || 'alias/vibewell-encryption';
+    this.keyAlias = process.env.KMS_KEY_ALIAS || 'alias/vibewell-encryption';
   }
 
   /**
@@ -29,22 +29,22 @@ export class HSMKeyManagementService {
   async generateDataKey(): Promise<{ plaintextKey: Buffer; encryptedKey: Buffer }> {
     try {
       const command = new GenerateDataKeyCommand({
-        KeyId: this?.keyAlias,
+        KeyId: this.keyAlias,
         KeySpec: 'AES_256',
       });
 
-      const result = await this?.kms.send(command);
+      const result = await this.kms.send(command);
 
-      if (!result?.Plaintext || !result?.CiphertextBlob) {
+      if (!result.Plaintext || !result.CiphertextBlob) {
         throw new Error('Failed to generate data key');
       }
 
       return {
-        plaintextKey: Buffer?.from(result?.Plaintext),
-        encryptedKey: Buffer?.from(result?.CiphertextBlob),
+        plaintextKey: Buffer.from(result.Plaintext),
+        encryptedKey: Buffer.from(result.CiphertextBlob),
       };
     } catch (error) {
-      logger?.error('Failed to generate data key', 'hsm', { error });
+      logger.error('Failed to generate data key', 'hsm', { error });
       throw new Error('Failed to generate data key');
     }
   }
@@ -58,15 +58,15 @@ export class HSMKeyManagementService {
         CiphertextBlob: encryptedKey,
       });
 
-      const result = await this?.kms.send(command);
+      const result = await this.kms.send(command);
 
-      if (!result?.Plaintext) {
+      if (!result.Plaintext) {
         throw new Error('Failed to decrypt data key');
       }
 
-      return Buffer?.from(result?.Plaintext);
+      return Buffer.from(result.Plaintext);
     } catch (error) {
-      logger?.error('Failed to decrypt data key', 'hsm', { error });
+      logger.error('Failed to decrypt data key', 'hsm', { error });
       throw new Error('Failed to decrypt data key');
     }
   }
@@ -79,20 +79,20 @@ export class HSMKeyManagementService {
     try {
       const command = new ReEncryptCommand({
         CiphertextBlob: encryptedKey,
-        DestinationKeyId: this?.keyAlias,
+        DestinationKeyId: this.keyAlias,
       });
 
-      const result = await this?.kms.send(command);
+      const result = await this.kms.send(command);
 
-      if (!result?.CiphertextBlob) {
+      if (!result.CiphertextBlob) {
 
         throw new Error('Failed to re-encrypt data key');
       }
 
-      return Buffer?.from(result?.CiphertextBlob);
+      return Buffer.from(result.CiphertextBlob);
     } catch (error) {
 
-      logger?.error('Failed to re-encrypt data key', 'hsm', { error });
+      logger.error('Failed to re-encrypt data key', 'hsm', { error });
 
       throw new Error('Failed to re-encrypt data key');
     }
@@ -109,22 +109,22 @@ export class HSMKeyManagementService {
         Origin: 'AWS_KMS',
       });
 
-      const newKey = await this?.kms.send(createKeyCommand);
+      const newKey = await this.kms.send(createKeyCommand);
 
-      if (!newKey?.KeyMetadata?.KeyId) {
+      if (!newKey.KeyMetadata.KeyId) {
         throw new Error('Failed to create new master key');
       }
 
       // Update the key alias to point to the new key
       const updateAliasCommand = new UpdateAliasCommand({
-        AliasName: this?.keyAlias,
-        TargetKeyId: newKey?.KeyMetadata.KeyId,
+        AliasName: this.keyAlias,
+        TargetKeyId: newKey.KeyMetadata.KeyId,
       });
 
-      await this?.kms.send(updateAliasCommand);
-      logger?.info('Master key rotated successfully', 'hsm');
+      await this.kms.send(updateAliasCommand);
+      logger.info('Master key rotated successfully', 'hsm');
     } catch (error) {
-      logger?.error('Failed to rotate master key', 'hsm', { error });
+      logger.error('Failed to rotate master key', 'hsm', { error });
       throw new Error('Failed to rotate master key');
     }
   }

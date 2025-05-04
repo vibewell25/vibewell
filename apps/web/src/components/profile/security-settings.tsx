@@ -6,13 +6,13 @@ import { toast } from 'sonner';
 import { Shield, Key, Lock, Bell, Smartphone, Mail } from 'lucide-react';
 import Input from '@/components/ui/Input';
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, Box, Text } from '@chakra-ui/react';
-import QRCode from 'qrcode?.react';
+import QRCode from 'qrcode.react';
 
 interface SecuritySetting {
   id: string;
   title: string;
   description: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
   type: 'switch' | 'button' | 'input';
   value?: boolean | string;
   action?: () => Promise<void>;
@@ -39,10 +39,10 @@ export function SecuritySettings() {
         try {
           // Simulate API call to change password
           await new Promise((resolve) => setTimeout(resolve, 1000));
-          toast?.success('Password changed successfully!');
+          toast.success('Password changed successfully!');
         } catch (error) {
-          console?.error('Error changing password:', error);
-          toast?.error('Failed to change password');
+          console.error('Error changing password:', error);
+          toast.error('Failed to change password');
         }
       },
     },
@@ -57,10 +57,10 @@ export function SecuritySettings() {
         try {
           // Simulate API call to update login alerts
           await new Promise((resolve) => setTimeout(resolve, 1000));
-          toast?.success('Login alerts updated successfully!');
+          toast.success('Login alerts updated successfully!');
         } catch (error) {
-          console?.error('Error updating login alerts:', error);
-          toast?.error('Failed to update login alerts');
+          console.error('Error updating login alerts:', error);
+          toast.error('Failed to update login alerts');
         }
       },
     },
@@ -74,10 +74,10 @@ export function SecuritySettings() {
         try {
           // Simulate API call to manage devices
           await new Promise((resolve) => setTimeout(resolve, 1000));
-          toast?.success('Device management updated successfully!');
+          toast.success('Device management updated successfully!');
         } catch (error) {
-          console?.error('Error managing devices:', error);
-          toast?.error('Failed to manage devices');
+          console.error('Error managing devices:', error);
+          toast.error('Failed to manage devices');
         }
       },
     },
@@ -91,10 +91,10 @@ export function SecuritySettings() {
         try {
           // Simulate API call to set up security questions
           await new Promise((resolve) => setTimeout(resolve, 1000));
-          toast?.success('Security questions updated successfully!');
+          toast.success('Security questions updated successfully!');
         } catch (error) {
-          console?.error('Error setting up security questions:', error);
-          toast?.error('Failed to set up security questions');
+          console.error('Error setting up security questions:', error);
+          toast.error('Failed to set up security questions');
         }
       },
     },
@@ -108,10 +108,10 @@ export function SecuritySettings() {
         try {
           // Simulate API call to verify email
           await new Promise((resolve) => setTimeout(resolve, 1000));
-          toast?.success('Verification email sent!');
+          toast.success('Verification email sent!');
         } catch (error) {
-          console?.error('Error sending verification email:', error);
-          toast?.error('Failed to send verification email');
+          console.error('Error sending verification email:', error);
+          toast.error('Failed to send verification email');
         }
       },
     },
@@ -126,60 +126,60 @@ export function SecuritySettings() {
 
   useEffect(() => {
     fetch('/api/2fa/status')
-      .then((res) => res?.json())
+      .then((res) => res.json())
       .then((data) =>
         setSettings((prev) =>
-          prev?.map((s) =>
-            s?.id === 'two-factor' ? { ...s, value: data?.enabled } : s
+          prev.map((s) =>
+            s.id === 'two-factor' ? { ...s, value: data.enabled } : s
           )
         )
       );
   }, []);
 
   const handleSettingChange = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');id: string, newValue?: boolean | string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');id: string, newValue?: boolean | string) => {
     if (id === 'two-factor') {
       if (newValue) {
         try {
           const res = await fetch('/api/2fa/register', { method: 'POST' });
-          const data = await res?.json();
-          setOtpAuthUrl(data?.otpAuthUrl);
-          setBackupCodes(data?.backupCodes);
+          const data = await res.json();
+          setOtpAuthUrl(data.otpAuthUrl);
+          setBackupCodes(data.backupCodes);
           setShow2FAModal(true);
         } catch {
-          toast?.error('Failed to initiate 2FA registration');
+          toast.error('Failed to initiate 2FA registration');
         }
       } else {
         try {
           const res = await fetch('/api/2fa/disable', { method: 'POST' });
-          if (res?.ok) {
+          if (res.ok) {
             setSettings((prev) =>
-              prev?.map((s) =>
-                s?.id === id ? { ...s, value: false } : s
+              prev.map((s) =>
+                s.id === id ? { ...s, value: false } : s
               )
             );
-            toast?.success('Two-factor authentication disabled');
+            toast.success('Two-factor authentication disabled');
           } else {
             throw new Error('Disable failed');
           }
         } catch (err) {
-          toast?.error((err as Error).message || 'Failed to disable 2FA');
+          toast.error((err as Error).message || 'Failed to disable 2FA');
         }
       }
       return;
     }
     try {
-      const setting = settings?.find((s) => s?.id === id);
-      if (setting?.action) {
-        await setting?.action();
+      const setting = settings.find((s) => s.id === id);
+      if (setting.action) {
+        await setting.action();
         if (newValue !== undefined) {
-          setSettings((prev) => prev?.map((s) => (s?.id === id ? { ...s, value: newValue } : s)));
+          setSettings((prev) => prev.map((s) => (s.id === id ? { ...s, value: newValue } : s)));
         }
       }
     } catch (error) {
-      console?.error('Error updating security setting:', error);
-      toast?.error('Failed to update security setting');
+      console.error('Error updating security setting:', error);
+      toast.error('Failed to update security setting');
     }
   };
 
@@ -191,32 +191,32 @@ export function SecuritySettings() {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-4">
-            {settings?.map((setting) => (
+            {settings.map((setting) => (
               <div
-                key={setting?.id}
+                key={setting.id}
                 className="flex items-start justify-between rounded-lg border p-4"
               >
                 <div className="flex items-start gap-3">
                   <div className="bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-full">
-                    {setting?.icon}
+                    {setting.icon}
                   </div>
                   <div className="space-y-1">
-                    <h3 className="font-medium">{setting?.title}</h3>
-                    <p className="text-sm text-muted-foreground">{setting?.description}</p>
+                    <h3 className="font-medium">{setting.title}</h3>
+                    <p className="text-sm text-muted-foreground">{setting.description}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  {setting?.type === 'switch' && (
+                  {setting.type === 'switch' && (
                     <Switch
-                      checked={setting?.value as boolean}
-                      onCheckedChange={(checked: boolean) => handleSettingChange(setting?.id, checked)}
+                      checked={setting.value as boolean}
+                      onCheckedChange={(checked: boolean) => handleSettingChange(setting.id, checked)}
                     />
                   )}
-                  {setting?.type === 'button' && (
+                  {setting.type === 'button' && (
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => handleSettingChange(setting?.id)}
+                      onClick={() => handleSettingChange(setting.id)}
                     >
                       Manage
                     </Button>
@@ -239,11 +239,11 @@ export function SecuritySettings() {
                 <Text className="mt-4">Scan the QR code with your authenticator app.</Text>
                 <Text className="mt-2">Backup Codes:</Text>
                 <Box as="ul" className="list-disc list-inside">
-                  {backupCodes?.map((code) => (
+                  {backupCodes.map((code) => (
                     <Box as="li" key={code} className="font-mono">{code}</Box>
                   ))}
                 </Box>
-                <Input placeholder="Enter code from app" value={totpToken} onChange={(e) => setTotpToken(e?.target.value)} className="mt-4" />
+                <Input placeholder="Enter code from app" value={totpToken} onChange={(e) => setTotpToken(e.target.value)} className="mt-4" />
                 {verifyError && <Text className="text-red-500 mt-2">{verifyError}</Text>}
               </Box>
             </ModalBody>
@@ -257,15 +257,15 @@ export function SecuritySettings() {
                     const res = await fetch('/api/2fa/enable', {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
-                      body: JSON?.stringify({ token: totpToken }),
+                      body: JSON.stringify({ token: totpToken }),
                     });
-                    const data = await res?.json();
-                    if (res?.ok && data?.enabled) {
-                      setSettings((prev) => prev?.map((s) => (s?.id === 'two-factor' ? { ...s, value: true } : s)));
-                      toast?.success('Two-factor authentication enabled');
+                    const data = await res.json();
+                    if (res.ok && data.enabled) {
+                      setSettings((prev) => prev.map((s) => (s.id === 'two-factor' ? { ...s, value: true } : s)));
+                      toast.success('Two-factor authentication enabled');
                       setShow2FAModal(false);
                     } else {
-                      setVerifyError(data?.error || 'Invalid code');
+                      setVerifyError(data.error || 'Invalid code');
                     }
                   } catch (err) {
                     setVerifyError((err as Error).message);

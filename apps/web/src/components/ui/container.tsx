@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 type MaxWidth = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
 
 interface ContainerProps {
-  children: React?.ReactNode;
+  children: React.ReactNode;
   maxWidth?: MaxWidth;
   className?: string;
 }

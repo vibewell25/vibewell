@@ -5,7 +5,7 @@ interface AccessibleInputProps extends Omit<BaseInputProps, 'helpText'> {
   helperText?: string;
 }
 
-export const AccessibleInput: React?.FC<AccessibleInputProps> = ({
+export const AccessibleInput: React.FC<AccessibleInputProps> = ({
   label,
   error,
   helperText,

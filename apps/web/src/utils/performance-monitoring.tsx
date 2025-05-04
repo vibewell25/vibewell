@@ -16,9 +16,9 @@ class PerformanceMonitoringError extends Error implements PerformanceError {
 
   constructor(message: string, code: string, context?: any) {
     super(message);
-    this?.name = 'PerformanceMonitoringError';
-    this?.code = code;
-    this?.context = context;
+    this.name = 'PerformanceMonitoringError';
+    this.code = code;
+    this.context = context;
   }
 }
 
@@ -54,7 +54,7 @@ export const PERFORMANCE_BUDGETS = {
   largestContentfulPaint: 2500, // ms
   firstInputDelay: 100, // ms
   timeToInteractive: 3000, // ms
-  cumulativeLayoutShift: 0?.1, // score (lower is better)
+  cumulativeLayoutShift: 0.1, // score (lower is better)
 
   // Component-specific budgets
   components: {
@@ -108,8 +108,8 @@ const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000;
 
 async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); retryMeasurement<T>(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); retryMeasurement<T>(
   measureFn: () => Promise<T>,
   retries = MAX_RETRIES,
 ): Promise<T | null> {
@@ -120,7 +120,7 @@ async function {
       await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
       return retryMeasurement(measureFn, retries - 1);
     }
-    console?.error('[Performance] Measurement failed after retries:', error);
+    console.error('[Performance] Measurement failed after retries:', error);
     return null;
   }
 }
@@ -128,14 +128,14 @@ async function {
 // Add performance data batching
 const BATCH_INTERVAL = 5000; // 5 seconds
 let metricsQueue: PerformanceMetrics[] = [];
-let batchTimeout: NodeJS?.Timeout | null = null;
+let batchTimeout: NodeJS.Timeout | null = null;
 
 function queueMetrics(metrics: Partial<PerformanceMetrics>) {
-  metricsQueue?.push(metrics as PerformanceMetrics);
+  metricsQueue.push(metrics as PerformanceMetrics);
 
   if (!batchTimeout) {
     batchTimeout = setTimeout(() => {
-      if (metricsQueue?.length > 0) {
+      if (metricsQueue.length > 0) {
         sendPerformanceMetricsToAnalytics(metricsQueue);
         metricsQueue = [];
       }
@@ -156,7 +156,7 @@ export function initPerformanceMonitoring(options = {}) {
   // Capture initial page load metrics
   capturePageLoadMetrics();
 
-  console?.log('[Performance] Monitoring initialized');
+  console.log('[Performance] Monitoring initialized');
 
   // Return API for manual performance monitoring
   return {
@@ -174,7 +174,7 @@ export function initPerformanceMonitoring(options = {}) {
  * Setup Performance Observers for Web Vitals
  */
 function setupPerformanceObservers(): void {
-  if (typeof window === 'undefined' || !window?.PerformanceObserver) return;
+  if (typeof window === 'undefined' || !window.PerformanceObserver) return;
 
   try {
     // First cleanup any existing observers
@@ -183,8 +183,8 @@ function setupPerformanceObservers(): void {
     const observeEntries = (type: string) => {
       try {
         const observer = new PerformanceObserver((list) => {
-          const entries = list?.getEntries();
-          entries?.forEach((entry) => {
+          const entries = list.getEntries();
+          entries.forEach((entry) => {
             switch (type) {
               case 'largest-contentful-paint':
                 handleLCPEntry(entry as LCPEntry);
@@ -202,8 +202,8 @@ function setupPerformanceObservers(): void {
           });
         });
 
-        observer?.observe({ entryTypes: [type] });
-        observers?.push(observer);
+        observer.observe({ entryTypes: [type] });
+        observers.push(observer);
       } catch (error) {
         throw new PerformanceMonitoringError(
           `Failed to setup observer for ${type}`,
@@ -216,9 +216,9 @@ function setupPerformanceObservers(): void {
     ['paint', 'largest-contentful-paint', 'first-input', 'layout-shift'].forEach(observeEntries);
   } catch (error) {
     if (error instanceof PerformanceMonitoringError) {
-      console?.error(`[Performance] ${error?.code}:`, error?.message, error?.context);
+      console.error(`[Performance] ${error.code}:`, error.message, error.context);
     } else {
-      console?.error('[Performance] Error setting up observers:', error);
+      console.error('[Performance] Error setting up observers:', error);
     }
   }
 }
@@ -227,46 +227,46 @@ function setupPerformanceObservers(): void {
  * Capture metrics for initial page load
  */
 function capturePageLoadMetrics() {
-  if (typeof window === 'undefined' || !window?.performance) return;
+  if (typeof window === 'undefined' || !window.performance) return;
 
   // Use requestAnimationFrame to ensure we capture metrics after render
-  window?.requestAnimationFrame(() => {
-    window?.requestAnimationFrame(() => {
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
       try {
-        const navigation = performance?.getEntriesByType(
+        const navigation = performance.getEntriesByType(
           'navigation',
         )[0] as PerformanceNavigationTiming;
 
         if (navigation) {
           // Time to First Byte
-          const ttfb = navigation?.responseStart - navigation?.requestStart;
-          sessionStorage?.setItem('ttfb', ttfb?.toString());
+          const ttfb = navigation.responseStart - navigation.requestStart;
+          sessionStorage.setItem('ttfb', ttfb.toString());
           checkAgainstBudget('timeToFirstByte', ttfb);
 
           // DOM Content Loaded
-          const dcl = navigation?.domContentLoadedEventEnd - navigation?.fetchStart;
-          sessionStorage?.setItem('dcl', dcl?.toString());
+          const dcl = navigation.domContentLoadedEventEnd - navigation.fetchStart;
+          sessionStorage.setItem('dcl', dcl.toString());
           checkAgainstBudget('domContentLoaded', dcl);
 
           // Full Page Load
-          const load = navigation?.loadEventEnd - navigation?.fetchStart;
-          sessionStorage?.setItem('load', load?.toString());
+          const load = navigation.loadEventEnd - navigation.fetchStart;
+          sessionStorage.setItem('load', load.toString());
           checkAgainstBudget('fullPageLoad', load);
         }
 
         // First Contentful Paint
-        const paintMetrics = performance?.getEntriesByType('paint');
-        const fcpEntry = paintMetrics?.find((entry) => entry?.name === 'first-contentful-paint');
+        const paintMetrics = performance.getEntriesByType('paint');
+        const fcpEntry = paintMetrics.find((entry) => entry.name === 'first-contentful-paint');
 
         if (fcpEntry) {
-          sessionStorage?.setItem('fcp', fcpEntry?.startTime.toString());
-          checkAgainstBudget('firstContentfulPaint', fcpEntry?.startTime);
+          sessionStorage.setItem('fcp', fcpEntry.startTime.toString());
+          checkAgainstBudget('firstContentfulPaint', fcpEntry.startTime);
         }
 
         // Log performance data
         sendPerformanceMetricsToAnalytics(getMetrics());
       } catch (error) {
-        console?.error('[Performance] Error capturing page metrics:', error);
+        console.error('[Performance] Error capturing page metrics:', error);
       }
     });
   });
@@ -276,10 +276,10 @@ function capturePageLoadMetrics() {
  * Component render timing - call at start of component render
  */
 export function startComponentRender(componentName: string): string | null {
-  if (typeof window === 'undefined' || !window?.performance) return null;
+  if (typeof window === 'undefined' || !window.performance) return null;
 
   const markName = `component-start-${componentName}`;
-  performance?.mark(markName);
+  performance.mark(markName);
   return markName;
 }
 
@@ -287,32 +287,32 @@ export function startComponentRender(componentName: string): string | null {
  * Component render timing - call when component has rendered
  */
 export function endComponentRender(componentName: string, startMark?: string | null): void {
-  if (typeof window === 'undefined' || !window?.performance) return;
+  if (typeof window === 'undefined' || !window.performance) return;
 
   try {
     // Use default mark name if startMark is null or undefined
     const markName = startMark ?? `component-start-${componentName}`;
     const endMarkName = `component-end-${componentName}`;
 
-    performance?.mark(endMarkName);
-    performance?.measure(`component-${componentName}`, markName, endMarkName);
+    performance.mark(endMarkName);
+    performance.measure(`component-${componentName}`, markName, endMarkName);
 
-    const measures = performance?.getEntriesByName(`component-${componentName}`, 'measure');
-    if (measures?.length > 0) {
+    const measures = performance.getEntriesByName(`component-${componentName}`, 'measure');
+    if (measures.length > 0) {
       const duration = measures[0].duration;
 
       // Safely get stored component render times
       let storedComponentTimes: Record<string, number> = {};
       try {
-        const storedData = sessionStorage?.getItem('componentRenderTimes');
-        storedComponentTimes = storedData ? JSON?.parse(storedData) : {};
+        const storedData = sessionStorage.getItem('componentRenderTimes');
+        storedComponentTimes = storedData ? JSON.parse(storedData) : {};
       } catch (error) {
-        console?.error('[Performance] Error parsing stored component times:', error);
+        console.error('[Performance] Error parsing stored component times:', error);
         storedComponentTimes = {};
       }
 
       storedComponentTimes[componentName] = duration;
-      sessionStorage?.setItem('componentRenderTimes', JSON?.stringify(storedComponentTimes));
+      sessionStorage.setItem('componentRenderTimes', JSON.stringify(storedComponentTimes));
 
       // Check against budget
       checkComponentAgainstBudget(componentName, duration);
@@ -320,12 +320,12 @@ export function endComponentRender(componentName: string, startMark?: string | n
 
     // Clean up marks
     if (markName) {
-      performance?.clearMarks(markName);
+      performance.clearMarks(markName);
     }
-    performance?.clearMarks(endMarkName);
-    performance?.clearMeasures(`component-${componentName}`);
+    performance.clearMarks(endMarkName);
+    performance.clearMeasures(`component-${componentName}`);
   } catch (error) {
-    console?.error(`[Performance] Error measuring component ${componentName}:`, error);
+    console.error(`[Performance] Error measuring component ${componentName}:`, error);
   }
 }
 
@@ -333,10 +333,10 @@ export function endComponentRender(componentName: string, startMark?: string | n
  * API call timing - call before making API request
  */
 export function startApiCall(endpoint: string): string | null {
-  if (typeof window === 'undefined' || !window?.performance) return null;
+  if (typeof window === 'undefined' || !window.performance) return null;
 
   const markName = `api-start-${endpoint}`;
-  performance?.mark(markName);
+  performance.mark(markName);
   return markName;
 }
 
@@ -344,32 +344,32 @@ export function startApiCall(endpoint: string): string | null {
  * API call timing - call after API response received
  */
 export function endApiCall(endpoint: string, startMark?: string | null): void {
-  if (typeof window === 'undefined' || !window?.performance) return;
+  if (typeof window === 'undefined' || !window.performance) return;
 
   try {
     // Use default mark name if startMark is null or undefined
     const markName = startMark ?? `api-start-${endpoint}`;
     const endMarkName = `api-end-${endpoint}`;
 
-    performance?.mark(endMarkName);
-    performance?.measure(`api-${endpoint}`, markName, endMarkName);
+    performance.mark(endMarkName);
+    performance.measure(`api-${endpoint}`, markName, endMarkName);
 
-    const measures = performance?.getEntriesByName(`api-${endpoint}`, 'measure');
-    if (measures?.length > 0) {
+    const measures = performance.getEntriesByName(`api-${endpoint}`, 'measure');
+    if (measures.length > 0) {
       const duration = measures[0].duration;
 
       // Safely get stored API call durations
       let storedApiCalls: Record<string, number> = {};
       try {
-        const storedData = sessionStorage?.getItem('apiCallDurations');
-        storedApiCalls = storedData ? JSON?.parse(storedData) : {};
+        const storedData = sessionStorage.getItem('apiCallDurations');
+        storedApiCalls = storedData ? JSON.parse(storedData) : {};
       } catch (error) {
-        console?.error('[Performance] Error parsing stored API calls:', error);
+        console.error('[Performance] Error parsing stored API calls:', error);
         storedApiCalls = {};
       }
 
       storedApiCalls[endpoint] = duration;
-      sessionStorage?.setItem('apiCallDurations', JSON?.stringify(storedApiCalls));
+      sessionStorage.setItem('apiCallDurations', JSON.stringify(storedApiCalls));
 
       // Check against budget
       checkApiAgainstBudget(endpoint, duration);
@@ -377,12 +377,12 @@ export function endApiCall(endpoint: string, startMark?: string | null): void {
 
     // Clean up marks
     if (markName) {
-      performance?.clearMarks(markName);
+      performance.clearMarks(markName);
     }
-    performance?.clearMarks(endMarkName);
-    performance?.clearMeasures(`api-${endpoint}`);
+    performance.clearMarks(endMarkName);
+    performance.clearMeasures(`api-${endpoint}`);
   } catch (error) {
-    console?.error(`[Performance] Error measuring API call ${endpoint}:`, error);
+    console.error(`[Performance] Error measuring API call ${endpoint}:`, error);
   }
 }
 
@@ -404,7 +404,7 @@ function checkAgainstBudget(metricName: keyof typeof PERFORMANCE_BUDGETS, value:
  * Check component render time against its budget
  */
 function checkComponentAgainstBudget(componentName: string, duration: number) {
-  const componentBudgets = PERFORMANCE_BUDGETS?.components;
+  const componentBudgets = PERFORMANCE_BUDGETS.components;
 
   if (componentName in componentBudgets) {
     const budget = componentBudgets[componentName as keyof typeof componentBudgets];
@@ -419,13 +419,13 @@ function checkComponentAgainstBudget(componentName: string, duration: number) {
  * Check API call time against its budget
  */
 function checkApiAgainstBudget(endpoint: string, duration: number) {
-  const apiBudgets = PERFORMANCE_BUDGETS?.api;
+  const apiBudgets = PERFORMANCE_BUDGETS.api;
 
   // Find the closest matching endpoint
   let matchingEndpoint: string | null = null;
 
   for (const budgetEndpoint in apiBudgets) {
-    if (endpoint?.includes(budgetEndpoint)) {
+    if (endpoint.includes(budgetEndpoint)) {
       matchingEndpoint = budgetEndpoint;
       break;
     }
@@ -444,23 +444,23 @@ function checkApiAgainstBudget(endpoint: string, duration: number) {
  * Report a performance budget violation
  */
 export function reportPerformanceViolation(metricName: string, value: number, budget: number) {
-  console?.warn(
-    `[Performance] Budget exceeded for ${metricName}: ${value?.toFixed(2)}ms (budget: ${budget}ms)`,
+  console.warn(
+    `[Performance] Budget exceeded for ${metricName}: ${value.toFixed(2)}ms (budget: ${budget}ms)`,
   );
 
   // Store violations for analysis
-  const violations = JSON?.parse(sessionStorage?.getItem('performanceViolations') || '[]');
-  violations?.push({
+  const violations = JSON.parse(sessionStorage.getItem('performanceViolations') || '[]');
+  violations.push({
     metric: metricName,
     value,
     budget,
-    timestamp: Date?.now(),
-    url: window?.location.pathname,
+    timestamp: Date.now(),
+    url: window.location.pathname,
   });
-  sessionStorage?.setItem('performanceViolations', JSON?.stringify(violations));
+  sessionStorage.setItem('performanceViolations', JSON.stringify(violations));
 
   // Send violation to analytics in production
-  if (process?.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production') {
     sendViolationToAnalytics(metricName, value, budget);
   }
 }
@@ -472,11 +472,11 @@ function sendPerformanceMetricsToAnalytics(
   metrics: Partial<PerformanceMetrics> | Partial<PerformanceMetrics>[],
 ): void {
   // Handle both single metrics and arrays
-  const metricsArray = Array?.isArray(metrics) ? metrics : [metrics];
+  const metricsArray = Array.isArray(metrics) ? metrics : [metrics];
 
-  metricsArray?.forEach((metric) => {
+  metricsArray.forEach((metric) => {
     // Your analytics implementation here
-    console?.debug('[Performance] Sending metrics to analytics:', metric);
+    console.debug('[Performance] Sending metrics to analytics:', metric);
   });
 }
 
@@ -485,19 +485,19 @@ function sendPerformanceMetricsToAnalytics(
  */
 function sendViolationToAnalytics(metricName: string, value: number, budget: number) {
   // In a real app, you would send this to your analytics service
-  console?.log('[Performance] Would send violation to analytics:', {
+  console.log('[Performance] Would send violation to analytics:', {
     metric: metricName,
     value,
     budget,
-    url: window?.location.pathname,
+    url: window.location.pathname,
   });
 
   // Example of sending to analytics:
-  // analytics?.trackEvent('performance_violation', {
+  // analytics.trackEvent('performance_violation', {
   //   metric: metricName,
   //   value,
   //   budget,
-  //   url: window?.location.pathname,
+  //   url: window.location.pathname,
   // });
 }
 
@@ -510,11 +510,11 @@ export function getMetrics(): Partial<PerformanceMetrics> {
   try {
     // Safely parse JSON items from sessionStorage
     const safeGetItem = (key: string, defaultValue: any): any => {
-      const item = sessionStorage?.getItem(key);
+      const item = sessionStorage.getItem(key);
       if (item === null) return defaultValue;
 
       try {
-        return JSON?.parse(item);
+        return JSON.parse(item);
       } catch (e) {
         return defaultValue;
       }
@@ -522,7 +522,7 @@ export function getMetrics(): Partial<PerformanceMetrics> {
 
     // Safely get numeric values
     const safeGetNumber = (key: string, defaultValue = 0): number => {
-      const value = sessionStorage?.getItem(key);
+      const value = sessionStorage.getItem(key);
       if (value === null) return defaultValue;
 
       const num = Number(value);
@@ -541,7 +541,7 @@ export function getMetrics(): Partial<PerformanceMetrics> {
       apiCallDuration: safeGetItem('apiCallDurations', {}),
     };
   } catch (error) {
-    console?.error('[Performance] Error getting metrics:', error);
+    console.error('[Performance] Error getting metrics:', error);
     return {};
   }
 }
@@ -554,37 +554,37 @@ export function checkBudgets() {
   const violations = [];
 
   // Check core metrics
-  for (const [key, value] of Object?.entries(metrics)) {
+  for (const [key, value] of Object.entries(metrics)) {
     if (key in PERFORMANCE_BUDGETS && typeof value === 'number') {
       const budget = PERFORMANCE_BUDGETS[key as keyof typeof PERFORMANCE_BUDGETS];
       // Only compare if budget is a number
       if (typeof budget === 'number' && value > budget) {
-        violations?.push({ metric: key, value, budget });
+        violations.push({ metric: key, value, budget });
       }
     }
   }
 
   // Check component metrics
-  const componentTimes = metrics?.componentRenderTime || {};
-  for (const [component, time] of Object?.entries(componentTimes)) {
-    const componentBudgets = PERFORMANCE_BUDGETS?.components;
+  const componentTimes = metrics.componentRenderTime || {};
+  for (const [component, time] of Object.entries(componentTimes)) {
+    const componentBudgets = PERFORMANCE_BUDGETS.components;
     if (component in componentBudgets) {
       const budget = componentBudgets[component as keyof typeof componentBudgets];
       if (typeof time === 'number' && time > budget) {
-        violations?.push({ metric: `Component: ${component}`, value: time, budget });
+        violations.push({ metric: `Component: ${component}`, value: time, budget });
       }
     }
   }
 
   // Check API metrics
-  const apiTimes = metrics?.apiCallDuration || {};
-  for (const [endpoint, time] of Object?.entries(apiTimes)) {
-    const apiBudgets = PERFORMANCE_BUDGETS?.api;
+  const apiTimes = metrics.apiCallDuration || {};
+  for (const [endpoint, time] of Object.entries(apiTimes)) {
+    const apiBudgets = PERFORMANCE_BUDGETS.api;
     for (const budgetEndpoint in apiBudgets) {
-      if (endpoint?.includes(budgetEndpoint)) {
+      if (endpoint.includes(budgetEndpoint)) {
         const budget = apiBudgets[budgetEndpoint as keyof typeof apiBudgets];
         if (typeof time === 'number' && time > budget) {
-          violations?.push({ metric: `API: ${endpoint}`, value: time, budget });
+          violations.push({ metric: `API: ${endpoint}`, value: time, budget });
         }
         break;
       }
@@ -599,41 +599,41 @@ export function cleanupPerformanceMonitoring(): void {
   if (typeof window === 'undefined') return;
 
   // Disconnect all observers
-  observers?.forEach((observer) => {
+  observers.forEach((observer) => {
     try {
-      observer?.disconnect();
+      observer.disconnect();
     } catch (error) {
-      console?.error('[Performance] Error disconnecting observer:', error);
+      console.error('[Performance] Error disconnecting observer:', error);
     }
   });
   observers = [];
 
   // Clear marks and measures
-  if (window?.performance && window?.performance.clearMarks) {
-    window?.performance.clearMarks();
+  if (window.performance && window.performance.clearMarks) {
+    window.performance.clearMarks();
   }
-  if (window?.performance && window?.performance.clearMeasures) {
-    window?.performance.clearMeasures();
+  if (window.performance && window.performance.clearMeasures) {
+    window.performance.clearMeasures();
   }
 }
 
 // Add specific entry type handlers
 function handleLCPEntry(entry: LCPEntry) {
   queueMetrics({
-    largestContentfulPaint: entry?.renderTime || entry?.loadTime,
+    largestContentfulPaint: entry.renderTime || entry.loadTime,
   });
 }
 
 function handleFIDEntry(entry: FIDEntry) {
   queueMetrics({
-    firstInputDelay: entry?.processingStart - entry?.startTime,
+    firstInputDelay: entry.processingStart - entry.startTime,
   });
 }
 
 let cumulativeLayoutShift = 0;
 function handleCLSEntry(entry: CLSEntry) {
-  if (!entry?.hadRecentInput) {
-    if (cumulativeLayoutShift > Number.MAX_SAFE_INTEGER || cumulativeLayoutShift < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); cumulativeLayoutShift += entry?.value;
+  if (!entry.hadRecentInput) {
+    if (cumulativeLayoutShift > Number.MAX_SAFE_INTEGER || cumulativeLayoutShift < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); cumulativeLayoutShift += entry.value;
     queueMetrics({
       cumulativeLayoutShift,
     });
@@ -641,9 +641,9 @@ function handleCLSEntry(entry: CLSEntry) {
 }
 
 function handlePaintEntry(entry: PerformanceEntry) {
-  if (entry?.name === 'first-contentful-paint') {
+  if (entry.name === 'first-contentful-paint') {
     queueMetrics({
-      firstContentfulPaint: entry?.startTime,
+      firstContentfulPaint: entry.startTime,
     });
   }
 }

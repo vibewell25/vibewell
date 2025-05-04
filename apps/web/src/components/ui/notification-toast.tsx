@@ -34,7 +34,7 @@ export function NotificationToast({
   const dismiss = () => {
     setIsVisible(false);
     setTimeout(() => {
-      onClose?.();
+      onClose.();
     }, 300); // Wait for animation to complete
   };
   // Determine toast colors based on type
@@ -53,18 +53,18 @@ export function NotificationToast({
   return (
     <AnimatePresence>
       {isVisible && (
-        <motion?.div
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0?.3 }}
+          transition={{ duration: 0.3 }}
           className={cn(
             'fixed right-4 top-4 z-50 flex max-w-sm items-start rounded-lg border p-4 shadow-md',
             toastStyles[type],
           )}
         >
           <div className={cn('h-6 w-6 flex-shrink-0', iconStyles[type])}>
-            <Icons?.BellIcon className="h-6 w-6" />
+            <Icons.BellIcon className="h-6 w-6" />
           </div>
           <div className="ml-3 flex-1">
             <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">{title}</h3>
@@ -76,9 +76,9 @@ export function NotificationToast({
             onClick={dismiss}
             aria-label="Close notification"
           >
-            <Icons?.XMarkIcon className="h-5 w-5" />
+            <Icons.XMarkIcon className="h-5 w-5" />
           </button>
-        </motion?.div>
+        </motion.div>
       )}
     </AnimatePresence>
   );
@@ -88,7 +88,7 @@ export function NotificationPermissionButton() {
   const { notificationPermission, requestPermission } = usePushNotifications();
   // Button text based on permission status
   const getButtonText = () => {
-    switch (notificationPermission?.permission) {
+    switch (notificationPermission.permission) {
       case 'granted':
         return 'Notifications Enabled';
       case 'denied':
@@ -99,7 +99,7 @@ export function NotificationPermissionButton() {
   };
   // Button styles based on permission status
   const getButtonStyles = () => {
-    switch (notificationPermission?.permission) {
+    switch (notificationPermission.permission) {
       case 'granted':
         return 'bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-800 dark:text-green-100 dark:hover:bg-green-700';
       case 'denied':
@@ -109,9 +109,9 @@ export function NotificationPermissionButton() {
     }
   };
   const handleRequestPermission = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-    if (notificationPermission?.permission === 'denied') {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    if (notificationPermission.permission === 'denied') {
       alert('Please enable notifications in your browser settings and refresh the page.');
       return;
     }
@@ -120,13 +120,13 @@ export function NotificationPermissionButton() {
   return (
     <button
       onClick={handleRequestPermission}
-      disabled={notificationPermission?.permission === 'granted'}
+      disabled={notificationPermission.permission === 'granted'}
       className={cn(
         'flex items-center space-x-2 rounded-md px-4 py-2 transition-colors',
         getButtonStyles(),
       )}
     >
-      <Icons?.BellIcon className="h-5 w-5" />
+      <Icons.BellIcon className="h-5 w-5" />
       <span>{getButtonText()}</span>
     </button>
   );

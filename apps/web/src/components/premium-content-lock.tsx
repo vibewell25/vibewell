@@ -7,7 +7,7 @@ import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
 
 interface PremiumContentLockProps {
-  children: React?.ReactNode;
+  children: React.ReactNode;
   resourceName?: string;
   resourceType?: string;
   redirectPath?: string;
@@ -24,14 +24,14 @@ export function PremiumContentLock({
   const [checkingSubscription, setCheckingSubscription] = useState(true);
   // Mock premium check function - in a real app, this would call an API
   const checkPremiumStatus = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setCheckingSubscription(true);
     // Simulate API call to check subscription status
     const mockApiCall = new Promise<boolean>((resolve) => {
       setTimeout(() => {
         // For demo purposes, assume user with email containing "premium" has a subscription
-        const hasPremium = user?.email?.includes('premium') || false;
+        const hasPremium = user.email.includes('premium') || false;
         resolve(hasPremium);
       }, 800);
     });
@@ -50,18 +50,18 @@ export function PremiumContentLock({
     if (typeof window !== 'undefined') {
       // Simple localStorage usage tracking
       const now = new Date().toISOString();
-      const key = `resource_access_${name?.replace(/\s+/g, '_')}`;
+      const key = `resource_access_${name.replace(/\s+/g, '_')}`;
       try {
-        const accessData = JSON?.parse(localStorage?.getItem('resource_access_log') || '{}');
+        const accessData = JSON.parse(localStorage.getItem('resource_access_log') || '{}');
         accessData[key] = {
           name,
           type,
           lastAccessed: now,
-          count: (accessData[key]?.count || 0) + 1,
+          count: (accessData[key].count || 0) + 1,
         };
-        localStorage?.setItem('resource_access_log', JSON?.stringify(accessData));
+        localStorage.setItem('resource_access_log', JSON.stringify(accessData));
       } catch (e) {
-        console?.error('Failed to track resource access', e);
+        console.error('Failed to track resource access', e);
       }
     }
   };
@@ -74,7 +74,7 @@ export function PremiumContentLock({
     return (
       <div className="rounded-lg border border-amber-200 bg-amber-50 p-8 text-center">
         <div className="flex animate-pulse flex-col items-center">
-          <Icons?.SparklesIcon className="mb-4 h-12 w-12 text-amber-500" />
+          <Icons.SparklesIcon className="mb-4 h-12 w-12 text-amber-500" />
           <p className="text-amber-800">Checking subscription status...</p>
         </div>
       </div>
@@ -89,7 +89,7 @@ export function PremiumContentLock({
     return (
       <div className="rounded-lg border border-amber-200 bg-amber-50 p-8">
         <div className="flex flex-col items-center text-center">
-          <Icons?.LockClosedIcon className="mb-4 h-12 w-12 text-amber-500" />
+          <Icons.LockClosedIcon className="mb-4 h-12 w-12 text-amber-500" />
           <h3 className="mb-2 text-xl font-bold">Premium {resourceType} Locked</h3>
           <p className="mb-6 text-amber-800">
             This {resourceType} requires a premium subscription to access.
@@ -99,7 +99,7 @@ export function PremiumContentLock({
               <Button className="bg-amber-600 hover:bg-amber-700">Upgrade to Premium</Button>
             </Link>
             <p className="text-sm text-amber-700">
-              Starting at $19?.99/month - Unlock all premium resources
+              Starting at $19.99/month - Unlock all premium resources
             </p>
           </div>
         </div>
@@ -110,7 +110,7 @@ export function PremiumContentLock({
   return (
     <div className="rounded-lg border border-amber-200 bg-amber-50 p-8">
       <div className="flex flex-col items-center text-center">
-        <Icons?.LockClosedIcon className="mb-4 h-12 w-12 text-amber-500" />
+        <Icons.LockClosedIcon className="mb-4 h-12 w-12 text-amber-500" />
         <h3 className="mb-2 text-xl font-bold">Premium {resourceType} Locked</h3>
         <p className="mb-6 text-amber-800">Please sign in to access this premium {resourceType}.</p>
         <div className="space-y-3">

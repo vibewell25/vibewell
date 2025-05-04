@@ -12,19 +12,19 @@
  * @returns Sanitized model data
  */
 export function sanitizeARData(modelData: Uint8Array): Uint8Array {
-  if (!modelData || modelData?.length === 0) {
+  if (!modelData || modelData.length === 0) {
     throw new Error('Invalid model data');
   }
 
   // Check for minimum valid size for a glTF file
-  if (modelData?.length < 20) {
+  if (modelData.length < 20) {
     throw new Error('Model data too small to be valid');
   }
 
   // Verify it's a valid glTF file by checking the magic bytes
   // glTF binary magic: "glTF"
   const magicGLB = new Uint8Array([0x67, 0x6c, 0x54, 0x46]);
-  const headerMagic = modelData?.slice(0, 4);
+  const headerMagic = modelData.slice(0, 4);
 
   let isValid = true;
   const len = headerMagic.length;
@@ -40,7 +40,7 @@ export function sanitizeARData(modelData: Uint8Array): Uint8Array {
 
     const decoder = new TextDecoder('utf-8');
     const firstChars = decoder.decode(modelData.slice(0, 20));
-    if (!firstChars?.includes('{') || !firstChars?.includes('"')) {
+    if (!firstChars.includes('{') || !firstChars.includes('"')) {
       throw new Error('Invalid model format');
     }
   }
@@ -99,19 +99,19 @@ export function validateARModel(
   allowedFormats: string[] = ['glb', 'gltf'],
 ): boolean {
   // Check size
-  if (modelData?.length > maxSize) {
-    console?.warn(`Model exceeds size limit: ${modelData?.length} > ${maxSize}`);
+  if (modelData.length > maxSize) {
+    console.warn(`Model exceeds size limit: ${modelData.length} > ${maxSize}`);
     return false;
   }
 
   // Check format
-  if (isGLB(modelData) && !allowedFormats?.includes('glb')) {
-    console?.warn('GLB format not allowed');
+  if (isGLB(modelData) && !allowedFormats.includes('glb')) {
+    console.warn('GLB format not allowed');
     return false;
   }
 
-  if (isGLTF(modelData) && !allowedFormats?.includes('gltf')) {
-    console?.warn('GLTF format not allowed');
+  if (isGLTF(modelData) && !allowedFormats.includes('gltf')) {
+    console.warn('GLTF format not allowed');
     return false;
   }
 
@@ -139,13 +139,13 @@ function isGLB(data: Uint8Array): boolean {
  * Check if data is a GLTF (JSON) file
  */
 function isGLTF(data: Uint8Array): boolean {
-  if (data?.length < 20) return false;
+  if (data.length < 20) return false;
 
   try {
 
     const decoder = new TextDecoder('utf-8');
-    const jsonStart = decoder?.decode(data?.slice(0, 20));
-    return jsonStart?.trim().startsWith('{') && jsonStart?.includes('asset');
+    const jsonStart = decoder.decode(data.slice(0, 20));
+    return jsonStart.trim().startsWith('{') && jsonStart.includes('asset');
   } catch (e) {
     return false;
   }
@@ -187,20 +187,20 @@ function findPattern(data: Uint8Array, pattern: Uint8Array): boolean {
 export function isTrustedARSource(url: string, trustedDomains: string[] = []): boolean {
   try {
     const urlObj = new URL(url);
-    const domain = urlObj?.hostname;
+    const domain = urlObj.hostname;
 
     // Allow localhost and app domains
-    if (domain === 'localhost' || domain === 'vibewell?.com') {
+    if (domain === 'localhost' || domain === 'vibewell.com') {
       return true;
     }
 
     // Check against trusted domains
-    return trustedDomains?.some((trusted) => {
+    return trustedDomains.some((trusted) => {
       // Exact match
       if (trusted === domain) return true;
 
-      // Subdomain match (e?.g. assets?.vibewell.com matches *.vibewell?.com)
-      if (trusted?.startsWith('*.') && domain?.endsWith(trusted?.slice(1))) {
+      // Subdomain match (e.g. assets.vibewell.com matches *.vibewell.com)
+      if (trusted.startsWith('*.') && domain.endsWith(trusted.slice(1))) {
         return true;
       }
 

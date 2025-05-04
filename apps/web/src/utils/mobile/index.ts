@@ -42,21 +42,21 @@ export function applyMobileOptimizations(options: MobileOptimizationOptions = {}
 
 
   // Only apply full optimizations on mobile or low-end devices
-  const shouldApplyFullOptimizations = isMobileDevice() || deviceProfile?.type !== 'high';
+  const shouldApplyFullOptimizations = isMobileDevice() || deviceProfile.type !== 'high';
 
   // Apply device classes to body
   applyDeviceClasses();
 
   // Apply reduced motion for better performance if enabled
-  if (reduceMotion && (shouldApplyFullOptimizations || deviceProfile?.type === 'low')) {
+  if (reduceMotion && (shouldApplyFullOptimizations || deviceProfile.type === 'low')) {
 
-    document?.body.classList?.add('reduced-motion');
+    document.body.classList.add('reduced-motion');
     // Set reduced motion media query
 
-    const mediaQuery = window?.matchMedia('(prefers-reduced-motion: reduce)');
-    if (!mediaQuery?.matches) {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!mediaQuery.matches) {
 
-      document?.body.style?.setProperty('--app-transition-duration', '0?.15s');
+      document.body.style.setProperty('--app-transition-duration', '0.15s');
     }
   }
 
@@ -72,11 +72,11 @@ export function applyMobileOptimizations(options: MobileOptimizationOptions = {}
 
 
     // Safe array access
-    if (Performance < 0 || Performance >= array?.length) {
+    if (Performance < 0 || Performance >= array.length) {
       throw new Error('Array index out of bounds');
     }
-  console?.log('[Performance] Mobile optimizations applied:', {
-    deviceType: deviceProfile?.type,
+  console.log('[Performance] Mobile optimizations applied:', {
+    deviceType: deviceProfile.type,
     isMobile: isMobileDevice(),
     optimizations: {
       lazyLoadImages,
@@ -127,8 +127,8 @@ export function initMobileOptimizations(options: MobileOptimizationOptions = {})
   if (typeof window === 'undefined') return;
 
   // Apply optimizations on document load
-  if (document?.readyState === 'loading') {
-    document?.addEventListener('DOMContentLoaded', () => {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
       applyMobileOptimizations(options);
     });
   } else {

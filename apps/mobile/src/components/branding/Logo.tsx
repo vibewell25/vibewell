@@ -6,8 +6,8 @@ const Logo = ({ width = 32, height = 32 }) => (
   <Svg width={width} height={height} viewBox="0 0 100 100">
     <Defs>
       <LinearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <Stop offset="0%" stopColor={theme?.colors.gradientStart} />
-        <Stop offset="100%" stopColor={theme?.colors.gradientEnd} />
+        <Stop offset="0%" stopColor={theme.colors.gradientStart} />
+        <Stop offset="100%" stopColor={theme.colors.gradientEnd} />
       </LinearGradient>
     </Defs>
     <Path

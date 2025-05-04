@@ -31,18 +31,18 @@ export function ThemeSelector({
   ];
 
   const setColorTheme = (theme: string) => {
-    const root = window?.document.documentElement;
-    colorThemes?.forEach((ct) => {
-      root?.classList.remove(ct?.value);
+    const root = window.document.documentElement;
+    colorThemes.forEach((ct) => {
+      root.classList.remove(ct.value);
     });
-    root?.classList.add(theme);
+    root.classList.add(theme);
     // Store the color theme preference
-    localStorage?.setItem('vibewell-color-theme', theme);
+    localStorage.setItem('vibewell-color-theme', theme);
   };
 
   // On component mount, restore any previously selected color theme
   if (typeof window !== 'undefined') {
-    const storedColorTheme = localStorage?.getItem('vibewell-color-theme');
+    const storedColorTheme = localStorage.getItem('vibewell-color-theme');
     if (storedColorTheme) {
       setColorTheme(storedColorTheme);
     }
@@ -60,7 +60,7 @@ export function ThemeSelector({
               onClick={() => setTheme('light')}
               aria-label="Light mode"
             >
-              <Icons?.SunIcon className="h-5 w-5" />
+              <Icons.SunIcon className="h-5 w-5" />
             </Button>
             <Button
               variant={theme === 'dark' ? 'default' : 'outline'}
@@ -68,7 +68,7 @@ export function ThemeSelector({
               onClick={() => setTheme('dark')}
               aria-label="Dark mode"
             >
-              <Icons?.MoonIcon className="h-5 w-5" />
+              <Icons.MoonIcon className="h-5 w-5" />
             </Button>
             <Button
               variant={theme === 'system' ? 'default' : 'outline'}
@@ -76,7 +76,7 @@ export function ThemeSelector({
               onClick={() => setTheme('system')}
               aria-label="System preference"
             >
-              <Icons?.ComputerDesktopIcon className="h-5 w-5" />
+              <Icons.ComputerDesktopIcon className="h-5 w-5" />
             </Button>
           </div>
         </div>
@@ -85,13 +85,13 @@ export function ThemeSelector({
           <div className="space-y-2">
             <h3 className="text-lg font-medium">Color Theme</h3>
             <div className="flex flex-wrap gap-2">
-              {colorThemes?.map((colorTheme) => (
+              {colorThemes.map((colorTheme) => (
                 <button
-                  key={colorTheme?.value}
+                  key={colorTheme.value}
                   className="focus:ring-primary h-8 w-8 rounded-full border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:border-gray-700"
-                  style={{ backgroundColor: colorTheme?.color }}
-                  onClick={() => setColorTheme(colorTheme?.value)}
-                  aria-label={`Select ${colorTheme?.name} theme`}
+                  style={{ backgroundColor: colorTheme.color }}
+                  onClick={() => setColorTheme(colorTheme.value)}
+                  aria-label={`Select ${colorTheme.name} theme`}
                 />
               ))}
             </div>
@@ -105,41 +105,41 @@ export function ThemeSelector({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Icons?.SunIcon className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Icons?.MoonIcon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <Icons.SunIcon className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Icons.MoonIcon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme('light')}>
-          <Icons?.SunIcon className="mr-2 h-4 w-4" />
+          <Icons.SunIcon className="mr-2 h-4 w-4" />
           <span>Light</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('dark')}>
-          <Icons?.MoonIcon className="mr-2 h-4 w-4" />
+          <Icons.MoonIcon className="mr-2 h-4 w-4" />
           <span>Dark</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('system')}>
-          <Icons?.ComputerDesktopIcon className="mr-2 h-4 w-4" />
+          <Icons.ComputerDesktopIcon className="mr-2 h-4 w-4" />
           <span>System</span>
         </DropdownMenuItem>
 
         {showColorThemes && (
           <>
             <DropdownMenuItem className="mt-1 border-t pt-1">
-              <Icons?.PaintBrushIcon className="mr-2 h-4 w-4" />
+              <Icons.PaintBrushIcon className="mr-2 h-4 w-4" />
               <span>Color Themes</span>
             </DropdownMenuItem>
-            {colorThemes?.map((colorTheme) => (
+            {colorThemes.map((colorTheme) => (
               <DropdownMenuItem
-                key={colorTheme?.value}
-                onClick={() => setColorTheme(colorTheme?.value)}
+                key={colorTheme.value}
+                onClick={() => setColorTheme(colorTheme.value)}
               >
                 <div
                   className="mr-2 h-4 w-4 rounded-full"
-                  style={{ backgroundColor: colorTheme?.color }}
+                  style={{ backgroundColor: colorTheme.color }}
                 />
-                <span>{colorTheme?.name}</span>
+                <span>{colorTheme.name}</span>
               </DropdownMenuItem>
             ))}
           </>

@@ -10,32 +10,32 @@ export function useAnalytics() {
 
   // Initialize analytics service
   useEffect(() => {
-    if (typeof window !== 'undefined' && !analyticsService?.current) {
-      analyticsService?.current = new AnalyticsService();
+    if (typeof window !== 'undefined' && !analyticsService.current) {
+      analyticsService.current = new AnalyticsService();
     }
   }, []);
 
   // Track page views
   useEffect(() => {
     // This check ensures we're running on the client
-    if (typeof window === 'undefined' || !analyticsService?.current) return;
+    if (typeof window === 'undefined' || !analyticsService.current) return;
 
     const trackPageView = () => {
-      const path = window?.location.pathname;
+      const path = window.location.pathname;
 
       // Only track if the path has changed
-      if (path !== lastPath?.current) {
-        lastPath?.current = path;
+      if (path !== lastPath.current) {
+        lastPath.current = path;
 
         // Get page title
-        const pageTitle = document?.title || 'Unknown Page';
+        const pageTitle = document.title || 'Unknown Page';
 
         // Track the page view
-        analyticsService?.current?.trackEvent('page_view', {
+        analyticsService.current.trackEvent('page_view', {
           path,
           title: pageTitle,
-          referrer: document?.referrer || '',
-          url: window?.location.href,
+          referrer: document.referrer || '',
+          url: window.location.href,
         });
       }
     };
@@ -50,22 +50,22 @@ export function useAnalytics() {
     };
 
     // Add listener
-    window?.addEventListener('popstate', handleRouteChange);
+    window.addEventListener('popstate', handleRouteChange);
 
     // Cleanup
     return () => {
-      window?.removeEventListener('popstate', handleRouteChange);
+      window.removeEventListener('popstate', handleRouteChange);
     };
   }, []);
 
   // Function to track an event
   const trackEvent = useCallback((event: EventName, properties: Record<string, any> = {}) => {
-    if (!analyticsService?.current) {
-      console?.warn('Analytics service not initialized');
+    if (!analyticsService.current) {
+      console.warn('Analytics service not initialized');
       return;
     }
 
-    analyticsService?.current.trackEvent(event, properties);
+    analyticsService.current.trackEvent(event, properties);
   }, []);
 
   // Function to track product views

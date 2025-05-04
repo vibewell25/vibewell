@@ -2,7 +2,7 @@ interface ErrorMessageProps {
   message: string;
 }
 
-export function ErrorMessage({ message }: ErrorMessageProps): JSX?.Element {
+export function ErrorMessage({ message }: ErrorMessageProps): JSX.Element {
   return (
     <div className="flex h-full items-center justify-center">
       <div

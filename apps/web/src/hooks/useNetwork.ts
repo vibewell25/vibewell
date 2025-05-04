@@ -8,16 +8,16 @@ export function useNetwork() {
     const handleOffline = () => setIsOnline(false);
 
     // Check initial state
-    setIsOnline(navigator?.onLine);
+    setIsOnline(navigator.onLine);
 
     // Add event listeners
-    window?.addEventListener('online', handleOnline);
-    window?.addEventListener('offline', handleOffline);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
 
     // Cleanup
     return () => {
-      window?.removeEventListener('online', handleOnline);
-      window?.removeEventListener('offline', handleOffline);
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
     };
   }, []);
 

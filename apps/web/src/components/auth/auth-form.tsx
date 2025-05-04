@@ -39,7 +39,7 @@ export function AuthForm({
     return (
       <div className="container mx-auto max-w-md px-4 py-8">
         <div className="mb-8 flex flex-col items-center">
-          <Icons?.logo className="text-primary mb-4 h-12 w-12" />
+          <Icons.logo className="text-primary mb-4 h-12 w-12" />
           {successContent}
         </div>
       </div>
@@ -49,7 +49,7 @@ export function AuthForm({
   return (
     <div className="container mx-auto max-w-md px-4 py-8">
       <div className="mb-8 flex flex-col items-center">
-        <Icons?.logo className="text-primary mb-4 h-12 w-12" />
+        <Icons.logo className="text-primary mb-4 h-12 w-12" />
         <h1 className="mb-2 text-2xl font-bold">{title}</h1>
         {subtitle && <p className="text-center text-muted-foreground">{subtitle}</p>}
       </div>
@@ -63,8 +63,8 @@ export function AuthForm({
       {footerText && footerLink && (
         <p className="mt-6 text-center text-sm text-muted-foreground">
           {footerText}{' '}
-          <Link href={footerLink?.href} className="text-primary hover:underline">
-            {footerLink?.text}
+          <Link href={footerLink.href} className="text-primary hover:underline">
+            {footerLink.text}
           </Link>
         </p>
       )}
@@ -94,7 +94,7 @@ export function AuthFormInput({
   type?: string;
   placeholder?: string;
   value: string;
-  onChange: (e: React?.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
   disabled?: boolean;
   minLength?: number;

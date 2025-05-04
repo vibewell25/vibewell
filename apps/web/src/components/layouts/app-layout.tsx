@@ -12,11 +12,11 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
   useEffect(() => {
     const checkAuth = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       const session = await getSession();
-      if (!session?.user) {
-        router?.push('https://app?.getvibewell.com/login');
+      if (!session.user) {
+        router.push('https://app.getvibewell.com/login');
       }
     };
     checkAuth();
@@ -46,7 +46,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 🔔
               </Link>
               <button
-                onClick={() => router?.push('https://app?.getvibewell.com/api/auth/logout')}
+                onClick={() => router.push('https://app.getvibewell.com/api/auth/logout')}
                 className="text-gray-600 hover:text-gray-900"
               >
                 Logout
@@ -59,18 +59,18 @@ export default function AppLayout({ children }: AppLayoutProps) {
       {/* Bottom Navigation for Mobile */}
       <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
         <div className="grid grid-cols-5 gap-1">
-          {navigationItems?.map((item) => (
+          {navigationItems.map((item) => (
             <Link
-              key={item?.href}
-              href={item?.href}
+              key={item.href}
+              href={item.href}
               className={`flex flex-col items-center justify-center py-2 ${
-                router?.pathname === item?.href
+                router.pathname === item.href
                   ? 'text-pink-500'
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              <span className="text-xl">{item?.icon}</span>
-              <span className="text-xs mt-1">{item?.label}</span>
+              <span className="text-xl">{item.icon}</span>
+              <span className="text-xs mt-1">{item.label}</span>
             </Link>
           ))}
         </div>
@@ -81,18 +81,18 @@ export default function AppLayout({ children }: AppLayoutProps) {
         <div className="w-64 bg-white shadow-sm min-h-screen">
           <nav className="mt-5 px-2">
             <div className="space-y-1">
-              {navigationItems?.map((item) => (
+              {navigationItems.map((item) => (
                 <Link
-                  key={item?.href}
-                  href={item?.href}
+                  key={item.href}
+                  href={item.href}
                   className={`group flex items-center px-2 py-2 text-base font-medium rounded-md ${
-                    router?.pathname === item?.href
+                    router.pathname === item.href
                       ? 'bg-gray-100 text-gray-900'
                       : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                 >
-                  <span className="mr-3">{item?.icon}</span>
-                  {item?.label}
+                  <span className="mr-3">{item.icon}</span>
+                  {item.label}
                 </Link>
               ))}
             </div>

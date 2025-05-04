@@ -19,7 +19,7 @@ interface PaymentMethod {
   isDefault: boolean;
 }
 
-const PaymentMethodsScreen: React?.FC = () => {
+const PaymentMethodsScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const navigation = useNavigation();
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
@@ -31,12 +31,12 @@ const PaymentMethodsScreen: React?.FC = () => {
   }, []);
 
   const loadPaymentMethods = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
-      const saved = await AsyncStorage?.getItem('@vibewell/payment_methods');
+      const saved = await AsyncStorage.getItem('@vibewell/payment_methods');
       if (saved) {
-        setPaymentMethods(JSON?.parse(saved));
+        setPaymentMethods(JSON.parse(saved));
       } else {
         // Mock data for demonstration
         const mockMethods: PaymentMethod[] = [
@@ -60,36 +60,36 @@ const PaymentMethodsScreen: React?.FC = () => {
           }
         ];
         setPaymentMethods(mockMethods);
-        await AsyncStorage?.setItem('@vibewell/payment_methods', JSON?.stringify(mockMethods));
+        await AsyncStorage.setItem('@vibewell/payment_methods', JSON.stringify(mockMethods));
       }
     } catch (error) {
-      console?.error('Error loading payment methods:', error);
-      Alert?.alert('Error', 'Failed to load payment methods');
+      console.error('Error loading payment methods:', error);
+      Alert.alert('Error', 'Failed to load payment methods');
     } finally {
       setLoading(false);
     }
   };
 
   const handleSetDefault = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');id: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');id: string) => {
     try {
-      const updated = paymentMethods?.map(method => ({
+      const updated = paymentMethods.map(method => ({
         ...method,
-        isDefault: method?.id === id
+        isDefault: method.id === id
       }));
       setPaymentMethods(updated);
-      await AsyncStorage?.setItem('@vibewell/payment_methods', JSON?.stringify(updated));
+      await AsyncStorage.setItem('@vibewell/payment_methods', JSON.stringify(updated));
     } catch (error) {
-      console?.error('Error setting default payment method:', error);
-      Alert?.alert('Error', 'Failed to set default payment method');
+      console.error('Error setting default payment method:', error);
+      Alert.alert('Error', 'Failed to set default payment method');
     }
   };
 
   const handleDelete = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');id: string) => {
-    Alert?.alert(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');id: string) => {
+    Alert.alert(
       'Delete Payment Method',
       'Are you sure you want to delete this payment method?',
       [
@@ -99,12 +99,12 @@ const PaymentMethodsScreen: React?.FC = () => {
           style: 'destructive',
           onPress: async () => {
             try {
-              const updated = paymentMethods?.filter(method => method?.id !== id);
+              const updated = paymentMethods.filter(method => method.id !== id);
               setPaymentMethods(updated);
-              await AsyncStorage?.setItem('@vibewell/payment_methods', JSON?.stringify(updated));
+              await AsyncStorage.setItem('@vibewell/payment_methods', JSON.stringify(updated));
             } catch (error) {
-              console?.error('Error deleting payment method:', error);
-              Alert?.alert('Error', 'Failed to delete payment method');
+              console.error('Error deleting payment method:', error);
+              Alert.alert('Error', 'Failed to delete payment method');
             }
           }
         }
@@ -113,7 +113,7 @@ const PaymentMethodsScreen: React?.FC = () => {
   };
 
   const getCardIconName = (brand?: string) => {
-    switch (brand?.toLowerCase()) {
+    switch (brand.toLowerCase()) {
       case 'visa':
         return 'cc-visa';
       case 'mastercard':
@@ -126,41 +126,41 @@ const PaymentMethodsScreen: React?.FC = () => {
   };
 
   const handleAddPaymentMethod = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setLoading(true);
     try {
       const res = await fetch(`${serverBaseUrl}/api/stripe/setup-intent`, { method: 'POST' });
-      const { clientSecret } = await res?.json();
+      const { clientSecret } = await res.json();
       const { error: initError } = await initPaymentSheet({
         setupIntentClientSecret: clientSecret,
         merchantDisplayName: 'VibeWell',
       });
       if (initError) {
-        Alert?.alert('Error', initError?.message);
+        Alert.alert('Error', initError.message);
         return;
       }
       const { error: presentError } = await presentPaymentSheet();
       if (presentError) {
-        Alert?.alert('Error', presentError?.message);
+        Alert.alert('Error', presentError.message);
         return;
       }
-      Alert?.alert('Success', 'Payment method added');
+      Alert.alert('Success', 'Payment method added');
       loadPaymentMethods();
     } catch (error) {
-      console?.error('Error adding payment method:', error);
-      Alert?.alert('Error', 'Failed to add payment method');
+      console.error('Error adding payment method:', error);
+      Alert.alert('Error', 'Failed to add payment method');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <SafeAreaView style={[styles?.container, { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }]}>
-      <View style={styles?.header}>
+    <SafeAreaView style={[styles.container, { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }]}>
+      <View style={styles.header}>
         <TouchableOpacity
-          onPress={() => navigation?.goBack()}
-          style={styles?.backButton}
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
         >
           <Feather
             name="arrow-left"
@@ -168,56 +168,56 @@ const PaymentMethodsScreen: React?.FC = () => {
             color={isDarkMode ? '#FFFFFF' : '#000000'}
           />
         </TouchableOpacity>
-        <Text style={[styles?.title, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+        <Text style={[styles.title, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
           Payment Methods
         </Text>
       </View>
 
-      <ScrollView style={styles?.content}>
-        {paymentMethods?.map(method => (
+      <ScrollView style={styles.content}>
+        {paymentMethods.map(method => (
           <View
-            key={method?.id}
+            key={method.id}
             style={[
-              styles?.card,
+              styles.card,
               { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }
             ]}
           >
-            <View style={styles?.cardHeader}>
+            <View style={styles.cardHeader}>
               <FontAwesome
-                name={getCardIconName(method?.brand)}
+                name={getCardIconName(method.brand)}
                 size={40}
                 color={isDarkMode ? '#FFFFFF' : '#000000'}
-                style={styles?.cardImage}
+                style={styles.cardImage}
               />
-              {method?.isDefault && (
-                <View style={styles?.defaultBadge}>
-                  <Text style={styles?.defaultText}>Default</Text>
+              {method.isDefault && (
+                <View style={styles.defaultBadge}>
+                  <Text style={styles.defaultText}>Default</Text>
                 </View>
               )}
             </View>
 
-            <Text style={[styles?.cardNumber, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
-              •••• •••• •••• {method?.last4}
+            <Text style={[styles.cardNumber, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+              •••• •••• •••• {method.last4}
             </Text>
             
-            <Text style={[styles?.cardExpiry, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
-              Expires {method?.expiryMonth}/{method?.expiryYear}
+            <Text style={[styles.cardExpiry, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
+              Expires {method.expiryMonth}/{method.expiryYear}
             </Text>
 
-            <View style={styles?.cardActions}>
-              {!method?.isDefault && (
+            <View style={styles.cardActions}>
+              {!method.isDefault && (
                 <TouchableOpacity
-                  style={styles?.actionButton}
-                  onPress={() => handleSetDefault(method?.id)}
+                  style={styles.actionButton}
+                  onPress={() => handleSetDefault(method.id)}
                 >
-                  <Text style={styles?.actionButtonText}>Set as Default</Text>
+                  <Text style={styles.actionButtonText}>Set as Default</Text>
                 </TouchableOpacity>
               )}
               <TouchableOpacity
-                style={[styles?.actionButton, styles?.deleteButton]}
-                onPress={() => handleDelete(method?.id)}
+                style={[styles.actionButton, styles.deleteButton]}
+                onPress={() => handleDelete(method.id)}
               >
-                <Text style={[styles?.actionButtonText, styles?.deleteButtonText]}>
+                <Text style={[styles.actionButtonText, styles.deleteButtonText]}>
                   Delete
                 </Text>
               </TouchableOpacity>
@@ -227,14 +227,14 @@ const PaymentMethodsScreen: React?.FC = () => {
 
         <TouchableOpacity
           style={[
-            styles?.addButton,
+            styles.addButton,
             { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }
           ]}
           onPress={handleAddPaymentMethod}
         >
           <Feather name="plus" size={24} color={isDarkMode ? '#FFF' : '#000'} />
           <Text style={[
-            styles?.addButtonText,
+            styles.addButtonText,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             Add New Payment Method
@@ -245,7 +245,7 @@ const PaymentMethodsScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
   },

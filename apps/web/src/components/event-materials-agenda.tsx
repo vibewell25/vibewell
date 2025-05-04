@@ -52,7 +52,7 @@ export function EventMaterialsAgenda({
     },
   });
   const handleMaterialSubmit = () => {
-    if (newMaterial?.title && newMaterial?.url) {
+    if (newMaterial.title && newMaterial.url) {
       onMaterialAdd(newMaterial);
       setNewMaterial({
         title: '',
@@ -63,7 +63,7 @@ export function EventMaterialsAgenda({
     }
   };
   const handleAgendaSubmit = () => {
-    if (newAgendaItem?.title && newAgendaItem?.startTime && newAgendaItem?.endTime) {
+    if (newAgendaItem.title && newAgendaItem.startTime && newAgendaItem.endTime) {
       onAgendaAdd(newAgendaItem);
       setNewAgendaItem({
         title: '',
@@ -81,13 +81,13 @@ export function EventMaterialsAgenda({
   const getMaterialIcon = (type: string) => {
     switch (type) {
       case 'document':
-        return <Icons?.DocumentTextIcon className="h-5 w-5" />;
+        return <Icons.DocumentTextIcon className="h-5 w-5" />;
       case 'video':
-        return <Icons?.VideoCameraIcon className="h-5 w-5" />;
+        return <Icons.VideoCameraIcon className="h-5 w-5" />;
       case 'link':
-        return <Icons?.LinkIcon className="h-5 w-5" />;
+        return <Icons.LinkIcon className="h-5 w-5" />;
       case 'image':
-        return <Icons?.PhotoIcon className="h-5 w-5" />;
+        return <Icons.PhotoIcon className="h-5 w-5" />;
       default:
         return null;
     }
@@ -98,11 +98,11 @@ export function EventMaterialsAgenda({
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList>
             <TabsTrigger value="materials">
-              <Icons?.DocumentTextIcon className="mr-2 h-4 w-4" />
+              <Icons.DocumentTextIcon className="mr-2 h-4 w-4" />
               Materials
             </TabsTrigger>
             <TabsTrigger value="agenda">
-              <Icons?.ClockIcon className="mr-2 h-4 w-4" />
+              <Icons.ClockIcon className="mr-2 h-4 w-4" />
               Agenda
             </TabsTrigger>
           </TabsList>
@@ -118,8 +118,8 @@ export function EventMaterialsAgenda({
                   <div className="space-y-2">
                     <Label>Title</Label>
                     <Input
-                      value={newMaterial?.title}
-                      onChange={(e) => setNewMaterial({ ...newMaterial, title: e?.target.value })}
+                      value={newMaterial.title}
+                      onChange={(e) => setNewMaterial({ ...newMaterial, title: e.target.value })}
                       placeholder="Material title"
                     />
                   </div>
@@ -127,9 +127,9 @@ export function EventMaterialsAgenda({
                     <Label>Type</Label>
                     <select
                       className="w-full rounded-md border border-input bg-background px-3 py-2"
-                      value={newMaterial?.type}
+                      value={newMaterial.type}
                       onChange={(e) =>
-                        setNewMaterial({ ...newMaterial, type: e?.target.value as any })
+                        setNewMaterial({ ...newMaterial, type: e.target.value as any })
                       }
                     >
                       <option value="document">Document</option>
@@ -142,17 +142,17 @@ export function EventMaterialsAgenda({
                 <div className="space-y-2">
                   <Label>URL</Label>
                   <Input
-                    value={newMaterial?.url}
-                    onChange={(e) => setNewMaterial({ ...newMaterial, url: e?.target.value })}
+                    value={newMaterial.url}
+                    onChange={(e) => setNewMaterial({ ...newMaterial, url: e.target.value })}
                     placeholder="Material URL"
                   />
                 </div>
                 <div className="space-y-2">
                   <Label>Description (Optional)</Label>
                   <Textarea
-                    value={newMaterial?.description}
+                    value={newMaterial.description}
                     onChange={(e) =>
-                      setNewMaterial({ ...newMaterial, description: e?.target.value })
+                      setNewMaterial({ ...newMaterial, description: e.target.value })
                     }
                     placeholder="Material description"
                     rows={2}
@@ -161,28 +161,28 @@ export function EventMaterialsAgenda({
                 <Button onClick={handleMaterialSubmit}>Add Material</Button>
               </div>
             </div>
-            {event?.materials && event?.materials.length > 0 && (
+            {event.materials && event.materials.length > 0 && (
               <div className="space-y-2">
                 <Label>Event Materials</Label>
                 <div className="space-y-2">
-                  {event?.materials.map((material) => (
+                  {event.materials.map((material) => (
                     <div
-                      key={material?.id}
+                      key={material.id}
                       className="flex items-center justify-between rounded-md border p-2"
                     >
                       <div className="flex items-center gap-2">
-                        {getMaterialIcon(material?.type)}
+                        {getMaterialIcon(material.type)}
                         <div>
-                          <p className="font-medium">{material?.title}</p>
-                          {material?.description && (
-                            <p className="text-sm text-muted-foreground">{material?.description}</p>
+                          <p className="font-medium">{material.title}</p>
+                          {material.description && (
+                            <p className="text-sm text-muted-foreground">{material.description}</p>
                           )}
                         </div>
                       </div>
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => window?.open(material?.url, '_blank')}
+                        onClick={() => window.open(material.url, '_blank')}
                       >
                         View
                       </Button>
@@ -201,17 +201,17 @@ export function EventMaterialsAgenda({
                 <div className="space-y-2">
                   <Label>Title</Label>
                   <Input
-                    value={newAgendaItem?.title}
-                    onChange={(e) => setNewAgendaItem({ ...newAgendaItem, title: e?.target.value })}
+                    value={newAgendaItem.title}
+                    onChange={(e) => setNewAgendaItem({ ...newAgendaItem, title: e.target.value })}
                     placeholder="Agenda item title"
                   />
                 </div>
                 <div className="space-y-2">
                   <Label>Description (Optional)</Label>
                   <Textarea
-                    value={newAgendaItem?.description}
+                    value={newAgendaItem.description}
                     onChange={(e) =>
-                      setNewAgendaItem({ ...newAgendaItem, description: e?.target.value })
+                      setNewAgendaItem({ ...newAgendaItem, description: e.target.value })
                     }
                     placeholder="Agenda item description"
                     rows={2}
@@ -222,9 +222,9 @@ export function EventMaterialsAgenda({
                     <Label>Start Time</Label>
                     <Input
                       type="time"
-                      value={newAgendaItem?.startTime}
+                      value={newAgendaItem.startTime}
                       onChange={(e) =>
-                        setNewAgendaItem({ ...newAgendaItem, startTime: e?.target.value })
+                        setNewAgendaItem({ ...newAgendaItem, startTime: e.target.value })
                       }
                     />
                   </div>
@@ -232,9 +232,9 @@ export function EventMaterialsAgenda({
                     <Label>End Time</Label>
                     <Input
                       type="time"
-                      value={newAgendaItem?.endTime}
+                      value={newAgendaItem.endTime}
                       onChange={(e) =>
-                        setNewAgendaItem({ ...newAgendaItem, endTime: e?.target.value })
+                        setNewAgendaItem({ ...newAgendaItem, endTime: e.target.value })
                       }
                     />
                   </div>
@@ -243,21 +243,21 @@ export function EventMaterialsAgenda({
                   <Label>Speaker (Optional)</Label>
                   <div className="grid grid-cols-2 gap-4">
                     <Input
-                      value={newAgendaItem?.speaker.name}
+                      value={newAgendaItem.speaker.name}
                       onChange={(e) =>
                         setNewAgendaItem({
                           ...newAgendaItem,
-                          speaker: { ...newAgendaItem?.speaker, name: e?.target.value },
+                          speaker: { ...newAgendaItem.speaker, name: e.target.value },
                         })
                       }
                       placeholder="Speaker name"
                     />
                     <Input
-                      value={newAgendaItem?.speaker.title}
+                      value={newAgendaItem.speaker.title}
                       onChange={(e) =>
                         setNewAgendaItem({
                           ...newAgendaItem,
-                          speaker: { ...newAgendaItem?.speaker, title: e?.target.value },
+                          speaker: { ...newAgendaItem.speaker, title: e.target.value },
                         })
                       }
                       placeholder="Speaker title"
@@ -267,29 +267,29 @@ export function EventMaterialsAgenda({
                 <Button onClick={handleAgendaSubmit}>Add Agenda Item</Button>
               </div>
             </div>
-            {event?.agenda && event?.agenda.length > 0 && (
+            {event.agenda && event.agenda.length > 0 && (
               <div className="space-y-2">
                 <Label>Event Agenda</Label>
                 <div className="space-y-2">
-                  {event?.agenda.map((item) => (
-                    <div key={item?.id} className="rounded-md border p-4">
+                  {event.agenda.map((item) => (
+                    <div key={item.id} className="rounded-md border p-4">
                       <div className="flex items-start justify-between">
                         <div>
-                          <h4 className="font-medium">{item?.title}</h4>
-                          {item?.description && (
-                            <p className="mt-1 text-sm text-muted-foreground">{item?.description}</p>
+                          <h4 className="font-medium">{item.title}</h4>
+                          {item.description && (
+                            <p className="mt-1 text-sm text-muted-foreground">{item.description}</p>
                           )}
                         </div>
                         <Badge variant="outline">
-                          {item?.startTime} - {item?.endTime}
+                          {item.startTime} - {item.endTime}
                         </Badge>
                       </div>
-                      {item?.speaker && (
+                      {item.speaker && (
                         <div className="mt-2 flex items-center gap-2">
-                          <Icons?.UserIcon className="h-4 w-4 text-muted-foreground" />
+                          <Icons.UserIcon className="h-4 w-4 text-muted-foreground" />
                           <span className="text-sm">
-                            {item?.speaker.name}
-                            {item?.speaker.title && `, ${item?.speaker.title}`}
+                            {item.speaker.name}
+                            {item.speaker.title && `, ${item.speaker.title}`}
                           </span>
                         </div>
                       )}

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 
     // Safe integer operation
-    if (utils > Number?.MAX_SAFE_INTEGER || utils < Number?.MIN_SAFE_INTEGER) {
+    if (utils > Number.MAX_SAFE_INTEGER || utils < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import OfflineStorage from '../utils/offline-storage';
@@ -23,26 +23,26 @@ export function useOfflineData<T>({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [syncStatus, setSyncStatus] = useState<SyncStatus>(null);
-  const storage = OfflineStorage?.getInstance();
+  const storage = OfflineStorage.getInstance();
 
   useEffect(() => {
     loadData();
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
   }, [key]);
 
   const loadData = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setIsLoading(true);
       setError(null);
-      const storedData = await storage?.getData<T>(key);
+      const storedData = await storage.getData<T>(key);
       setData(storedData);
-      const status = await storage?.getSyncStatus(key);
+      const status = await storage.getSyncStatus(key);
       setSyncStatus(status ? 'synced' : 'failed');
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Failed to load data'));
@@ -54,10 +54,10 @@ export function useOfflineData<T>({
   const saveData = useCallback(async (newData: T) => {
     try {
       setSyncStatus('syncing');
-      await storage?.storeData(key, newData);
+      await storage.storeData(key, newData);
       setData(newData);
       setSyncStatus('synced');
-      onSync?.(newData);
+      onSync.(newData);
     } catch (err) {
       setSyncStatus('failed');
       setError(err instanceof Error ? err : new Error('Failed to save data'));
@@ -66,7 +66,7 @@ export function useOfflineData<T>({
 
   const removeData = useCallback(async () => {
     try {
-      await storage?.removeData(key);
+      await storage.removeData(key);
       setData(null);
       setSyncStatus(null);
     } catch (err) {
@@ -74,7 +74,7 @@ export function useOfflineData<T>({
     }
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
   }, [key]);

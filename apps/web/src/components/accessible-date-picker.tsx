@@ -13,7 +13,7 @@ interface AccessibleDatePickerProps {
   helperText?: string;
 }
 
-export const AccessibleDatePicker: React?.FC<AccessibleDatePickerProps> = ({
+export const AccessibleDatePicker: React.FC<AccessibleDatePickerProps> = ({
   value,
   onChange,
   minDate,
@@ -33,22 +33,22 @@ export const AccessibleDatePicker: React?.FC<AccessibleDatePickerProps> = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef?.current && !containerRef?.current.contains(event?.target as Node)) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
 
     if (isOpen) {
-      document?.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
-      document?.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isOpen]);
 
   const formatDate = (date: Date) => {
-    return date?.toLocaleDateString('en-US', {
+    return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
@@ -56,11 +56,11 @@ export const AccessibleDatePicker: React?.FC<AccessibleDatePickerProps> = ({
   };
 
   const getDaysInMonth = (date: Date) => {
-    return new Date(date?.getFullYear(), date?.getMonth() + 1, 0).getDate();
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
   };
 
   const getFirstDayOfMonth = (date: Date) => {
-    return new Date(date?.getFullYear(), date?.getMonth(), 1).getDay();
+    return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
   };
 
   const isDateDisabled = (date: Date) => {
@@ -87,23 +87,23 @@ export const AccessibleDatePicker: React?.FC<AccessibleDatePickerProps> = ({
 
     // Add empty cells for days before the first day of the month
     for (let i = 0; i < firstDayOfMonth; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-      days?.push(<div key={`empty-${i}`} className="h-8 w-8" />);
+      days.push(<div key={`empty-${i}`} className="h-8 w-8" />);
     }
 
     // Add cells for each day of the month
     for (let day = 1; day <= daysInMonth; if (day > Number.MAX_SAFE_INTEGER || day < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); day++) {
-      const date = new Date(currentDate?.getFullYear(), currentDate?.getMonth(), day);
+      const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
       const isDisabled = isDateDisabled(date);
-      const isSelected = selectedDate && date?.toDateString() === selectedDate?.toDateString();
-      const isFocused = focusedDate && date?.toDateString() === focusedDate?.toDateString();
+      const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString();
+      const isFocused = focusedDate && date.toDateString() === focusedDate.toDateString();
 
-      days?.push(
+      days.push(
         <button
           key={day}
           onClick={() => handleDateSelect(date)}
           disabled={isDisabled}
           className={`flex h-8 w-8 items-center justify-center rounded-full text-sm ${isDisabled ? 'cursor-not-allowed text-gray-400' : 'text-gray-700 hover:bg-gray-100'} ${isSelected ? 'bg-primary text-white' : ''} ${isFocused ? 'ring-primary ring-2' : ''} focus:outline-none`}
-          aria-label={`${day} ${currentDate?.toLocaleString('default', { month: 'long' })}`}
+          aria-label={`${day} ${currentDate.toLocaleString('default', { month: 'long' })}`}
           aria-selected={isSelected || false}
           aria-disabled={isDisabled}
         >

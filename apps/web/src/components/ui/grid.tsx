@@ -1,8 +1,8 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-interface GridProps extends React?.HTMLAttributes<HTMLDivElement> {
-  children: React?.ReactNode;
+interface GridProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
   columns?: 1 | 2 | 3 | 4 | 5 | 6 | 12 | 'auto-fill' | 'auto-fit';
   gap?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   rowGap?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -132,8 +132,8 @@ export function Grid({
   );
 }
 
-interface GridItemProps extends React?.HTMLAttributes<HTMLDivElement> {
-  children: React?.ReactNode;
+interface GridItemProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
   span?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 'full';
   start?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 'auto';
   end?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 'auto';

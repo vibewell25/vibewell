@@ -5,7 +5,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 const EventCalendar = lazy(() => import('./EventCalendar'));
 
 // Props type should match the underlying component
-type EventCalendarProps = React?.ComponentProps<typeof EventCalendar>;
+type EventCalendarProps = React.ComponentProps<typeof EventCalendar>;
 
 /**
  * Lazy-loaded version of EventCalendar

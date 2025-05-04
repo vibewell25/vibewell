@@ -25,7 +25,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-const stripePromise = loadStripe(process?.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 // Available time slots for booking
 const TIME_SLOTS = [
@@ -77,24 +77,24 @@ function PaymentForm({
   const [processing, setProcessing] = useState(false);
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent) => {
-    e?.preventDefault();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
+    e.preventDefault();
     if (!stripe || !elements) return;
 
     setProcessing(true);
     setError(null);
 
-    const { error: submitError } = await stripe?.confirmPayment({
+    const { error: submitError } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${window?.location.origin}/booking-confirmation`,
+        return_url: `${window.location.origin}/booking-confirmation`,
       },
       redirect: 'if_required',
     });
 
     if (submitError) {
-      setError(submitError?.message || 'An error occurred');
+      setError(submitError.message || 'An error occurred');
       setProcessing(false);
     } else {
       onPaymentSuccess();
@@ -112,24 +112,24 @@ function PaymentForm({
   );
 }
 
-const bookingSchema = z?.object({
-  date: z?.date({
+const bookingSchema = z.object({
+  date: z.date({
     required_error: 'Please select a date',
     invalid_type_error: 'Invalid date format',
   }),
-  timeSlot: z?.string().min(1, 'Please select a time slot'),
-  serviceId: z?.string().min(1, 'Please select a service'),
-  notes: z?.string().optional(),
-  contactPreference: z?.enum(['email', 'phone', 'text'], {
+  timeSlot: z.string().min(1, 'Please select a time slot'),
+  serviceId: z.string().min(1, 'Please select a service'),
+  notes: z.string().optional(),
+  contactPreference: z.enum(['email', 'phone', 'text'], {
     required_error: 'Please select a contact preference',
   }),
-  sendReminders: z?.boolean(),
-  agreeToTerms: z?.literal(true, {
+  sendReminders: z.boolean(),
+  agreeToTerms: z.literal(true, {
     errorMap: () => ({ message: 'You must agree to the terms and conditions' }),
   }),
 });
 
-type BookingFormData = z?.infer<typeof bookingSchema>;
+type BookingFormData = z.infer<typeof bookingSchema>;
 
 export function BookingForm({
   providerId,
@@ -168,46 +168,46 @@ export function BookingForm({
     // Simulating API call to fetch available time slots
     setTimeout(() => {
       // Randomly remove some time slots to simulate availability
-      const unavailableCount = Math?.floor(Math?.random() * 8);
+      const unavailableCount = Math.floor(Math.random() * 8);
       const unavailableIndices = new Set();
 
-      while (unavailableIndices?.size < unavailableCount) {
-        unavailableIndices?.add(Math?.floor(Math?.random() * TIME_SLOTS?.length));
+      while (unavailableIndices.size < unavailableCount) {
+        unavailableIndices.add(Math.floor(Math.random() * TIME_SLOTS.length));
       }
 
-      const available = TIME_SLOTS?.filter((_, index) => !unavailableIndices?.has(index));
+      const available = TIME_SLOTS.filter((_, index) => !unavailableIndices.has(index));
       setAvailableTimeSlots(available);
       setIsLoading(false);
     }, 500);
   }, [date]);
 
   const handleCreatePaymentIntent = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');bookingData: any) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');bookingData: any) => {
     try {
       const response = await fetch('/api/create-payment-intent', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify({
-          amount: bookingData?.price,
+        body: JSON.stringify({
+          amount: bookingData.price,
           currency: 'usd',
-          description: `Booking for ${bookingData?.serviceName}`,
+          description: `Booking for ${bookingData.serviceName}`,
           metadata: {
-            bookingId: bookingData?.id,
-            serviceId: bookingData?.serviceId,
+            bookingId: bookingData.id,
+            serviceId: bookingData.serviceId,
           },
         }),
       });
 
-      const data = await response?.json();
-      if (data?.clientSecret) {
-        setClientSecret(data?.clientSecret);
+      const data = await response.json();
+      if (data.clientSecret) {
+        setClientSecret(data.clientSecret);
         setBookingStep('payment');
       }
     } catch (error) {
-      console?.error('Error creating payment intent:', error);
+      console.error('Error creating payment intent:', error);
       toast({
         title: 'Payment Error',
         description: 'Unable to process payment. Please try again.',
@@ -217,24 +217,24 @@ export function BookingForm({
   };
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');data: BookingFormData) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');data: BookingFormData) => {
     try {
       setIsLoading(true);
 
-      const selectedService = SERVICES?.find((s) => s?.id === data?.serviceId);
+      const selectedService = SERVICES.find((s) => s.id === data.serviceId);
       const bookingData = {
         providerId,
-        clientId: user?.id,
-        serviceId: data?.serviceId,
-        serviceName: selectedService?.name,
-        date: format(data?.date, 'yyyy-MM-dd'),
-        timeSlot: data?.timeSlot,
-        notes: data?.notes,
-        contactPreference: data?.contactPreference,
-        sendReminders: data?.sendReminders,
-        price: selectedService?.price,
-        duration: selectedService?.duration,
+        clientId: user.id,
+        serviceId: data.serviceId,
+        serviceName: selectedService.name,
+        date: format(data.date, 'yyyy-MM-dd'),
+        timeSlot: data.timeSlot,
+        notes: data.notes,
+        contactPreference: data.contactPreference,
+        sendReminders: data.sendReminders,
+        price: selectedService.price,
+        duration: selectedService.duration,
       };
 
       // Create booking first
@@ -243,28 +243,28 @@ export function BookingForm({
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify(bookingData),
+        body: JSON.stringify(bookingData),
       });
 
-      if (!bookingResponse?.ok) {
-        const errorData = await bookingResponse?.json();
-        throw new Error(errorData?.error || 'Failed to create booking');
+      if (!bookingResponse.ok) {
+        const errorData = await bookingResponse.json();
+        throw new Error(errorData.error || 'Failed to create booking');
       }
 
-      const bookingResult = await bookingResponse?.json();
+      const bookingResult = await bookingResponse.json();
 
       // Create payment intent
       await handleCreatePaymentIntent({
         ...bookingData,
-        id: bookingResult?.id,
+        id: bookingResult.id,
       });
     } catch (error) {
-      console?.error('Booking error:', error);
+      console.error('Booking error:', error);
       toast({
         title: 'Booking failed',
         description:
           error instanceof Error
-            ? error?.message
+            ? error.message
             : 'There was an error creating your booking. Please try again.',
         variant: 'destructive',
       });
@@ -274,8 +274,8 @@ export function BookingForm({
   };
 
   const handlePaymentSuccess = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     toast({
       title: 'Booking confirmed',
       description: `Your appointment with ${providerName} has been booked successfully!`,
@@ -284,7 +284,7 @@ export function BookingForm({
     if (onSuccess) {
       onSuccess();
     } else {
-      router?.push('/bookings');
+      router.push('/bookings');
     }
   };
 
@@ -294,7 +294,7 @@ export function BookingForm({
         <h2 className="mb-6 text-xl font-bold">Book an Appointment with {providerName}</h2>
 
         {bookingStep === 'details' ? (
-          <form onSubmit={form?.handleSubmit(handleSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
             {/* Date Selection */}
             <div>
               <Label htmlFor="date" className="mb-2 block">
@@ -308,8 +308,8 @@ export function BookingForm({
                   disabled={(date) => {
                     // Disable dates in the past and weekends
                     const now = new Date();
-                    now?.setHours(0, 0, 0, 0);
-                    const isWeekend = date?.getDay() === 0 || date?.getDay() === 6;
+                    now.setHours(0, 0, 0, 0);
+                    const isWeekend = date.getDay() === 0 || date.getDay() === 6;
                     return date < now || isWeekend;
                   }}
                   className="rounded-md border"
@@ -327,13 +327,13 @@ export function BookingForm({
                   <Fallback className="h-20" message="Loading available time slots..." />
                 ) : (
                   <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5">
-                    {availableTimeSlots?.length > 0 ? (
-                      availableTimeSlots?.map((slot) => (
+                    {availableTimeSlots.length > 0 ? (
+                      availableTimeSlots.map((slot) => (
                         <Button
                           key={slot}
                           type="button"
                           variant={timeSlot === slot ? 'default' : 'outline'}
-                          onClick={() => form?.setValue('timeSlot', slot)}
+                          onClick={() => form.setValue('timeSlot', slot)}
                           className="justify-center"
                         >
                           {slot}
@@ -363,9 +363,9 @@ export function BookingForm({
                   <SelectValue placeholder="Select a service" />
                 </SelectTrigger>
                 <SelectContent>
-                  {SERVICES?.map((service) => (
-                    <SelectItem key={service?.id} value={service?.id}>
-                      {service?.name} - ${service?.price} ({service?.duration} min)
+                  {SERVICES.map((service) => (
+                    <SelectItem key={service.id} value={service.id}>
+                      {service.name} - ${service.price} ({service.duration} min)
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -381,7 +381,7 @@ export function BookingForm({
                 id="notes"
                 placeholder="Any special requirements or information for your provider"
                 value={notes}
-                onChange={(e) => form?.setValue('notes', e?.target.value)}
+                onChange={(e) => form.setValue('notes', e.target.value)}
                 rows={3}
               />
             </div>
@@ -414,7 +414,7 @@ export function BookingForm({
               <Checkbox
                 id="reminders"
                 checked={sendReminders}
-                onCheckedChange={(checked) => form?.setValue('sendReminders', checked as boolean)}
+                onCheckedChange={(checked) => form.setValue('sendReminders', checked as boolean)}
               />
               <Label htmlFor="reminders">Send me appointment reminders</Label>
             </div>
@@ -424,7 +424,7 @@ export function BookingForm({
               <Checkbox
                 id="terms"
                 checked={agreeToTerms}
-                onCheckedChange={(checked) => form?.setValue('agreeToTerms', checked as boolean)}
+                onCheckedChange={(checked) => form.setValue('agreeToTerms', checked as boolean)}
                 required
               />
               <Label htmlFor="terms" className="text-sm">

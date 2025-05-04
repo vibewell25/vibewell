@@ -26,18 +26,18 @@ export function ReviewList({ providerId }: ReviewListProps) {
 
   useEffect(() => {
     const fetchReviews = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         const response = await fetch(`/api/providers/${providerId}/reviews`);
-        if (!response?.ok) {
+        if (!response.ok) {
           throw new Error('Failed to fetch reviews');
         }
-        const data = await response?.json();
+        const data = await response.json();
         setReviews(data);
       } catch (error) {
-        console?.error('Error fetching reviews:', error);
-        toast?.error('Failed to load reviews');
+        console.error('Error fetching reviews:', error);
+        toast.error('Failed to load reviews');
       } finally {
         setLoading(false);
       }
@@ -54,7 +54,7 @@ export function ReviewList({ providerId }: ReviewListProps) {
     );
   }
 
-  if (reviews?.length === 0) {
+  if (reviews.length === 0) {
     return (
       <div className="flex items-center justify-center py-8 text-muted-foreground">
         No reviews yet
@@ -64,14 +64,14 @@ export function ReviewList({ providerId }: ReviewListProps) {
 
   return (
     <div className="space-y-4">
-      {reviews?.map((review) => (
-        <Card key={review?.id}>
+      {reviews.map((review) => (
+        <Card key={review.id}>
           <CardContent className="pt-6">
             <div className="flex items-start gap-4">
               <Avatar>
-                <AvatarImage src={review?.user.avatar} alt={review?.user.name} />
+                <AvatarImage src={review.user.avatar} alt={review.user.name} />
                 <AvatarFallback>
-                  {review?.user.name
+                  {review.user.name
                     .split(' ')
                     .map((n) => n[0])
                     .join('')}
@@ -80,20 +80,20 @@ export function ReviewList({ providerId }: ReviewListProps) {
               <div className="flex-1 space-y-2">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-medium">{review?.user.name}</h3>
+                    <h3 className="font-medium">{review.user.name}</h3>
                     <p className="text-sm text-muted-foreground">
-                      {new Date(review?.date).toLocaleDateString()}
+                      {new Date(review.date).toLocaleDateString()}
                     </p>
                   </div>
                   <div className="flex items-center gap-1">
                     <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm font-medium">{review?.rating}</span>
+                    <span className="text-sm font-medium">{review.rating}</span>
                   </div>
                 </div>
-                <p className="text-sm text-muted-foreground">{review?.comment}</p>
-                {review?.images && review?.images.length > 0 && (
+                <p className="text-sm text-muted-foreground">{review.comment}</p>
+                {review.images && review.images.length > 0 && (
                   <div className="grid grid-cols-3 gap-2 pt-2">
-                    {review?.images.map((image, index) => (
+                    {review.images.map((image, index) => (
                       <img
                         key={index}
                         src={image}

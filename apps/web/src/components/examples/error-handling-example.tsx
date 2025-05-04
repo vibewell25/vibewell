@@ -26,9 +26,9 @@ function ErrorHandlingExampleComponent() {
   // Example 1: Direct error creation with specific category and severity
   const handleBasicError = () => {
     const error = captureError('This is a basic error example', {
-      source: ErrorSource?.CLIENT,
-      category: ErrorCategory?.USER_INPUT,
-      severity: ErrorSeverity?.WARNING,
+      source: ErrorSource.CLIENT,
+      category: ErrorCategory.USER_INPUT,
+      severity: ErrorSeverity.WARNING,
     });
 
     // Log the error
@@ -45,9 +45,9 @@ function ErrorHandlingExampleComponent() {
       throw new Error('This is a simulated existing error');
     } catch (error) {
       const appError = captureError(error as Error, {
-        source: ErrorSource?.CLIENT,
-        category: ErrorCategory?.UNKNOWN,
-        severity: ErrorSeverity?.ERROR,
+        source: ErrorSource.CLIENT,
+        category: ErrorCategory.UNKNOWN,
+        severity: ErrorSeverity.ERROR,
       });
 
       // Log and show to user in one step for significant errors
@@ -60,13 +60,13 @@ function ErrorHandlingExampleComponent() {
   const handleErrorWithMetadata = () => {
     const retryFunc = () => {
       setRetryCount((prev) => prev + 1);
-      return Promise?.resolve(`Retry attempt #${retryCount + 1} successful`);
+      return Promise.resolve(`Retry attempt #${retryCount + 1} successful`);
     };
 
     const error = captureError('Failed to process data', {
-      source: ErrorSource?.API,
-      category: ErrorCategory?.TIMEOUT,
-      severity: ErrorSeverity?.WARNING,
+      source: ErrorSource.API,
+      category: ErrorCategory.TIMEOUT,
+      severity: ErrorSeverity.WARNING,
       metadata: {
         attemptCount: retryCount,
         timestamp: new Date().toISOString(),
@@ -80,28 +80,28 @@ function ErrorHandlingExampleComponent() {
   };
 
   // Example 4: Wrapping an async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); with error handling
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); with error handling
   const fetchDataAsync = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     // Simulate an API call that fails
     await new Promise((resolve) => setTimeout(resolve, 1000));
     throw new Error('Failed to fetch data from API');
   };
 
   const handleWrappedAsync = withErrorHandling(fetchDataAsync, {
-    source: ErrorSource?.API,
-    category: ErrorCategory?.SERVER,
-    severity: ErrorSeverity?.ERROR,
+    source: ErrorSource.API,
+    category: ErrorCategory.SERVER,
+    severity: ErrorSeverity.ERROR,
   });
 
   // Example 5: Different severity levels
   const handleInfoError = () => {
     const error = captureError('This is just informational', {
-      severity: ErrorSeverity?.INFO,
-      source: ErrorSource?.CLIENT,
-      category: ErrorCategory?.USER_INPUT,
+      severity: ErrorSeverity.INFO,
+      source: ErrorSource.CLIENT,
+      category: ErrorCategory.USER_INPUT,
     });
     logError(error);
     showErrorToUser(error);
@@ -109,9 +109,9 @@ function ErrorHandlingExampleComponent() {
 
   const handleCriticalError = () => {
     const error = captureError('A critical system error occurred', {
-      severity: ErrorSeverity?.CRITICAL,
-      source: ErrorSource?.SERVER,
-      category: ErrorCategory?.SERVER,
+      severity: ErrorSeverity.CRITICAL,
+      source: ErrorSource.SERVER,
+      category: ErrorCategory.SERVER,
     });
     logError(error);
     showErrorToUser(error);
@@ -170,7 +170,7 @@ export const ErrorHandlingExample = withErrorBoundary(ErrorHandlingExampleCompon
     </div>
   ),
   onError: (error) => {
-    console?.error('Error boundary caught error:', error);
+    console.error('Error boundary caught error:', error);
     // You could send this to your monitoring service
   },
 });

@@ -3,10 +3,10 @@ import { cn } from '@/lib/utils';
 
 interface AccessibleIconProps {
   className?: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
   label: string;
   labelPosition?: 'before' | 'after' | 'hidden';
-  onClick?: (event: React?.MouseEvent<HTMLButtonElement | HTMLSpanElement>) => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement | HTMLSpanElement>) => void;
 }
 
 /**

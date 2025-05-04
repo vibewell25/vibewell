@@ -23,18 +23,18 @@ export function ServiceList({ providerId }: ServiceListProps) {
 
   useEffect(() => {
     const fetchServices = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         const response = await fetch(`/api/providers/${providerId}/services`);
-        if (!response?.ok) {
+        if (!response.ok) {
           throw new Error('Failed to fetch services');
         }
-        const data = await response?.json();
+        const data = await response.json();
         setServices(data);
       } catch (error) {
-        console?.error('Error fetching services:', error);
-        toast?.error('Failed to load services');
+        console.error('Error fetching services:', error);
+        toast.error('Failed to load services');
       } finally {
         setLoading(false);
       }
@@ -51,7 +51,7 @@ export function ServiceList({ providerId }: ServiceListProps) {
     );
   }
 
-  if (services?.length === 0) {
+  if (services.length === 0) {
     return (
       <div className="flex items-center justify-center py-8 text-muted-foreground">
         No services available
@@ -61,21 +61,21 @@ export function ServiceList({ providerId }: ServiceListProps) {
 
   return (
     <div className="grid gap-4">
-      {services?.map((service) => (
-        <Card key={service?.id}>
+      {services.map((service) => (
+        <Card key={service.id}>
           <CardContent className="pt-6">
             <div className="flex items-start justify-between">
               <div className="space-y-1">
-                <h3 className="font-medium">{service?.name}</h3>
-                <p className="text-sm text-muted-foreground">{service?.description}</p>
+                <h3 className="font-medium">{service.name}</h3>
+                <p className="text-sm text-muted-foreground">{service.description}</p>
                 <div className="flex items-center gap-4 pt-2">
                   <div className="flex items-center gap-1 text-sm text-muted-foreground">
                     <Clock className="h-4 w-4" />
-                    <span>{service?.duration}</span>
+                    <span>{service.duration}</span>
                   </div>
                   <div className="flex items-center gap-1 text-sm text-muted-foreground">
                     <DollarSign className="h-4 w-4" />
-                    <span>{service?.price}</span>
+                    <span>{service.price}</span>
                   </div>
                 </div>
               </div>

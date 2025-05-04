@@ -6,10 +6,10 @@ import { PerformanceMonitor, OptimizationController, MetricsDisplay, usePerforma
 
 // Mock performance monitoring service
 const mockPerformanceService = {
-  measurePerformance: vi?.fn(),
-  getMetrics: vi?.fn(),
-  optimizePerformance: vi?.fn(),
-  applyOptimizations: vi?.fn(),
+  measurePerformance: vi.fn(),
+  getMetrics: vi.fn(),
+  optimizePerformance: vi.fn(),
+  applyOptimizations: vi.fn(),
 };
 
 // Mock performance metrics
@@ -23,40 +23,40 @@ const mockMetrics = {
 };
 
 describe('Performance Components', () => {
-  const user = userEvent?.setup();
+  const user = userEvent.setup();
 
   beforeEach(() => {
-    vi?.clearAllMocks();
-    mockPerformanceService?.getMetrics.mockResolvedValue(mockMetrics);
+    vi.clearAllMocks();
+    mockPerformanceService.getMetrics.mockResolvedValue(mockMetrics);
   });
 
   describe('PerformanceMonitor', () => {
     it('initializes performance monitoring', async () => {
-      const onMetricsUpdate = vi?.fn();
+      const onMetricsUpdate = vi.fn();
 
       render(<PerformanceMonitor interval={1000} onMetricsUpdate={onMetricsUpdate} />);
 
       await waitFor(() => {
-        expect(mockPerformanceService?.measurePerformance).toHaveBeenCalled();
+        expect(mockPerformanceService.measurePerformance).toHaveBeenCalled();
       });
     });
 
     it('updates metrics at specified interval', async () => {
-      vi?.useFakeTimers();
-      const onMetricsUpdate = vi?.fn();
+      vi.useFakeTimers();
+      const onMetricsUpdate = vi.fn();
 
       render(<PerformanceMonitor interval={1000} onMetricsUpdate={onMetricsUpdate} />);
 
-      vi?.advanceTimersByTime(3000);
+      vi.advanceTimersByTime(3000);
 
-      expect(mockPerformanceService?.measurePerformance).toHaveBeenCalledTimes(3);
-      vi?.useRealTimers();
+      expect(mockPerformanceService.measurePerformance).toHaveBeenCalledTimes(3);
+      vi.useRealTimers();
     });
 
     it('stops monitoring when disabled', async () => {
       const TestComponent = () => {
         const performance = usePerformance();
-        return <button onClick={() => performance?.setEnabled(false)}>Disable Monitoring</button>;
+        return <button onClick={() => performance.setEnabled(false)}>Disable Monitoring</button>;
       };
 
       render(
@@ -65,13 +65,13 @@ describe('Performance Components', () => {
         </PerformanceMonitor>,
       );
 
-      await user?.click(screen?.getByText('Disable Monitoring'));
-      expect(mockPerformanceService?.measurePerformance).not?.toHaveBeenCalled();
+      await user.click(screen.getByText('Disable Monitoring'));
+      expect(mockPerformanceService.measurePerformance).not.toHaveBeenCalled();
     });
 
     it('handles performance measurement errors', async () => {
-      const consoleSpy = vi?.spyOn(console, 'error').mockImplementation(() => {});
-      mockPerformanceService?.measurePerformance.mockRejectedValueOnce(
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      mockPerformanceService.measurePerformance.mockRejectedValueOnce(
         new Error('Measurement failed'),
       );
 
@@ -80,7 +80,7 @@ describe('Performance Components', () => {
       await waitFor(() => {
         expect(consoleSpy).toHaveBeenCalled();
       });
-      consoleSpy?.mockRestore();
+      consoleSpy.mockRestore();
     });
   });
 
@@ -91,11 +91,11 @@ describe('Performance Components', () => {
         memoryUsage: 90,
         cpuUsage: 80,
       },
-      onOptimize: vi?.fn(),
+      onOptimize: vi.fn(),
     };
 
     it('applies optimizations when metrics exceed thresholds', async () => {
-      mockPerformanceService?.getMetrics.mockResolvedValue({
+      mockPerformanceService.getMetrics.mockResolvedValue({
         ...mockMetrics,
         fps: 25,
         memoryUsage: 95,
@@ -104,18 +104,18 @@ describe('Performance Components', () => {
       render(<OptimizationController {...defaultProps} />);
 
       await waitFor(() => {
-        expect(mockPerformanceService?.applyOptimizations).toHaveBeenCalled();
-        expect(defaultProps?.onOptimize).toHaveBeenCalled();
+        expect(mockPerformanceService.applyOptimizations).toHaveBeenCalled();
+        expect(defaultProps.onOptimize).toHaveBeenCalled();
       });
     });
 
     it('supports custom optimization strategies', async () => {
-      const customStrategy = vi?.fn();
+      const customStrategy = vi.fn();
 
       render(<OptimizationController {...defaultProps} optimizationStrategy={customStrategy} />);
 
       await waitFor(() => {
-        expect(customStrategy).toHaveBeenCalledWith(expect?.objectContaining({ fps: 60 }));
+        expect(customStrategy).toHaveBeenCalledWith(expect.objectContaining({ fps: 60 }));
       });
     });
 
@@ -126,21 +126,21 @@ describe('Performance Components', () => {
         </OptimizationController>,
       );
 
-      await user?.click(screen?.getByText('Optimize Now'));
-      expect(mockPerformanceService?.applyOptimizations).toHaveBeenCalled();
+      await user.click(screen.getByText('Optimize Now'));
+      expect(mockPerformanceService.applyOptimizations).toHaveBeenCalled();
     });
 
     it('logs optimization actions', async () => {
-      const logSpy = vi?.spyOn(console, 'log').mockImplementation(() => {});
+      const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
 
       render(<OptimizationController {...defaultProps} enableLogging />);
 
       await waitFor(() => {
         expect(logSpy).toHaveBeenCalledWith(
-          expect?.stringContaining('Performance optimization applied'),
+          expect.stringContaining('Performance optimization applied'),
         );
       });
-      logSpy?.mockRestore();
+      logSpy.mockRestore();
     });
   });
 
@@ -149,9 +149,9 @@ describe('Performance Components', () => {
       render(<MetricsDisplay />);
 
       await waitFor(() => {
-        expect(screen?.getByText(/60 FPS/)).toBeInTheDocument();
-        expect(screen?.getByText(/80% Memory Usage/)).toBeInTheDocument();
-        expect(screen?.getByText(/45% CPU Usage/)).toBeInTheDocument();
+        expect(screen.getByText(/60 FPS/)).toBeInTheDocument();
+        expect(screen.getByText(/80% Memory Usage/)).toBeInTheDocument();
+        expect(screen.getByText(/45% CPU Usage/)).toBeInTheDocument();
       });
     });
 
@@ -159,10 +159,10 @@ describe('Performance Components', () => {
       const updatedMetrics = { ...mockMetrics, fps: 45 };
 
       const { rerender } = render(<MetricsDisplay metrics={mockMetrics} />);
-      expect(screen?.getByText(/60 FPS/)).toBeInTheDocument();
+      expect(screen.getByText(/60 FPS/)).toBeInTheDocument();
 
       rerender(<MetricsDisplay metrics={updatedMetrics} />);
-      expect(screen?.getByText(/45 FPS/)).toBeInTheDocument();
+      expect(screen.getByText(/45 FPS/)).toBeInTheDocument();
     });
 
     it('displays warning indicators for poor performance', async () => {
@@ -174,24 +174,24 @@ describe('Performance Components', () => {
 
       render(<MetricsDisplay metrics={poorMetrics} />);
 
-      expect(screen?.getByTestId('fps-warning')).toBeInTheDocument();
-      expect(screen?.getByTestId('memory-warning')).toBeInTheDocument();
+      expect(screen.getByTestId('fps-warning')).toBeInTheDocument();
+      expect(screen.getByTestId('memory-warning')).toBeInTheDocument();
     });
 
     it('supports different display modes', () => {
       const { rerender } = render(<MetricsDisplay metrics={mockMetrics} mode="compact" />);
-      expect(screen?.getByTestId('compact-view')).toBeInTheDocument();
+      expect(screen.getByTestId('compact-view')).toBeInTheDocument();
 
       rerender(<MetricsDisplay metrics={mockMetrics} mode="detailed" />);
-      expect(screen?.getByTestId('detailed-view')).toBeInTheDocument();
+      expect(screen.getByTestId('detailed-view')).toBeInTheDocument();
     });
 
     it('formats metrics appropriately', () => {
       render(<MetricsDisplay metrics={mockMetrics} />);
 
-      expect(screen?.getByText('1?.2s')).toBeInTheDocument(); // loadTime
-      expect(screen?.getByText('800ms')).toBeInTheDocument(); // timeToInteractive
-      expect(screen?.getByText('400ms')).toBeInTheDocument(); // firstContentfulPaint
+      expect(screen.getByText('1.2s')).toBeInTheDocument(); // loadTime
+      expect(screen.getByText('800ms')).toBeInTheDocument(); // timeToInteractive
+      expect(screen.getByText('400ms')).toBeInTheDocument(); // firstContentfulPaint
     });
   });
 

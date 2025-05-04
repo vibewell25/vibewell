@@ -5,7 +5,7 @@ import { EquipmentItem } from '../types/equipment';
 import { equipmentApi } from '../services/equipmentService';
 import { EquipmentListNavigationProp } from '../types/navigation';
 
-const EquipmentListScreen: React?.FC = () => {
+const EquipmentListScreen: React.FC = () => {
   const navigation = useNavigation<EquipmentListNavigationProp>();
   const [items, setItems] = useState<EquipmentItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -13,10 +13,10 @@ const EquipmentListScreen: React?.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        const data = await equipmentApi?.getItems();
+        const data = await equipmentApi.getItems();
         setItems(data);
       } catch (err) {
-        console?.error(err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -26,18 +26,18 @@ const EquipmentListScreen: React?.FC = () => {
   if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
-    <View style={styles?.container}>
-      <Button title="Add Equipment" onPress={() => navigation?.navigate('EquipmentForm', {})} />
+    <View style={styles.container}>
+      <Button title="Add Equipment" onPress={() => navigation.navigate('EquipmentForm', {})} />
       <FlatList
         data={items}
-        keyExtractor={item => item?.id}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity
-            style={styles?.item}
-            onPress={() => navigation?.navigate('EquipmentDetail', { id: item?.id })}
+            style={styles.item}
+            onPress={() => navigation.navigate('EquipmentDetail', { id: item.id })}
           >
-            <Text style={styles?.title}>{item?.name}</Text>
-            <Text>Serial: {item?.serialNumber || '-'}</Text>
+            <Text style={styles.title}>{item.name}</Text>
+            <Text>Serial: {item.serialNumber || '-'}</Text>
           </TouchableOpacity>
         )}
       />
@@ -45,7 +45,7 @@ const EquipmentListScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   item: { padding: 12, borderBottomWidth: 1, borderColor: '#ccc' },
   title: { fontSize: 16, fontWeight: 'bold' }

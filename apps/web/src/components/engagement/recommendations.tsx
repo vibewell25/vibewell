@@ -22,7 +22,7 @@ export function Recommendations({
   const { recommendations, isLoading } = useEngagement();
 
   // Limit the number of recommendations to display
-  const displayRecommendations = recommendations?.slice(0, maxItems);
+  const displayRecommendations = recommendations.slice(0, maxItems);
 
   if (isLoading) {
     return (
@@ -41,7 +41,7 @@ export function Recommendations({
     );
   }
 
-  if (displayRecommendations?.length === 0) {
+  if (displayRecommendations.length === 0) {
     return null;
   }
 
@@ -55,19 +55,19 @@ export function Recommendations({
       )}
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {displayRecommendations?.map((product) => (
-          <Card key={product?.id} className="group overflow-hidden">
+        {displayRecommendations.map((product) => (
+          <Card key={product.id} className="group overflow-hidden">
             <div className="relative h-36">
               <Image
-                src={product?.image_url || '/images/placeholder?.jpg'}
-                alt={product?.name}
+                src={product.image_url || '/images/placeholder.jpg'}
+                alt={product.name}
                 fill
                 className="object-cover transition-transform group-hover:scale-105"
               />
               <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-3">
                 <div className="text-white">
-                  <h4 className="font-medium">{product?.name}</h4>
-                  <p className="text-xs opacity-90">{product?.type}</p>
+                  <h4 className="font-medium">{product.name}</h4>
+                  <p className="text-xs opacity-90">{product.type}</p>
                 </div>
               </div>
             </div>
@@ -75,18 +75,18 @@ export function Recommendations({
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="flex">
-                    {[...Array(Math?.floor(product?.rating))].map((_, i) => (
+                    {[...Array(Math.floor(product.rating))].map((_, i) => (
                       <span key={i} className="text-xs text-yellow-400">
                         ★
                       </span>
                     ))}
-                    {product?.rating % 1 > 0 && <span className="text-xs text-yellow-400">☆</span>}
+                    {product.rating % 1 > 0 && <span className="text-xs text-yellow-400">☆</span>}
                   </div>
                   <span className="ml-1 text-xs text-muted-foreground">
-                    {product?.rating.toFixed(1)}
+                    {product.rating.toFixed(1)}
                   </span>
                 </div>
-                <Link href={`/try-on/${product?.id}`}>
+                <Link href={`/try-on/${product.id}`}>
                   <Button variant="ghost" size="sm" className="h-8 px-2">
                     Try on <MoveRight className="ml-1 h-3 w-3" />
                   </Button>
@@ -97,7 +97,7 @@ export function Recommendations({
         ))}
       </div>
 
-      {recommendations?.length > maxItems && (
+      {recommendations.length > maxItems && (
         <div className="mt-4 flex justify-center">
           <Link href="/recommendations">
             <Button variant="outline" size="sm">

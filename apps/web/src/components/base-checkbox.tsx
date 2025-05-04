@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface BaseCheckboxProps extends Omit<React?.InputHTMLAttributes<HTMLInputElement>, 'type'> {
+interface BaseCheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string;
   error?: string;
   helperText?: string;
@@ -12,7 +12,7 @@ interface BaseCheckboxProps extends Omit<React?.InputHTMLAttributes<HTMLInputEle
   helperTextClassName?: string;
 }
 
-export const BaseCheckbox: React?.FC<BaseCheckboxProps> = ({
+export const BaseCheckbox: React.FC<BaseCheckboxProps> = ({
   label,
   error,
   helperText,
@@ -27,7 +27,7 @@ export const BaseCheckbox: React?.FC<BaseCheckboxProps> = ({
   helperTextClassName = 'mt-1 text-sm text-gray-500',
   ...props
 }) => {
-  const checkboxId = id || `checkbox-${Math?.random().toString(36).substr(2, 9)}`;
+  const checkboxId = id || `checkbox-${Math.random().toString(36).substr(2, 9)}`;
   const errorId = error ? `${checkboxId}-error` : undefined;
   const helperId = helperText ? `${checkboxId}-helper` : undefined;
 

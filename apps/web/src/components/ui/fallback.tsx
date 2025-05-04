@@ -29,7 +29,7 @@ export function Fallback({
 export function CardFallback({ count = 1 }: { count?: number }) {
   return (
     <>
-      {Array?.from({ length: count }).map((_, index) => (
+      {Array.from({ length: count }).map((_, index) => (
         <div
           key={index}
           className="animate-pulse overflow-hidden rounded-lg border border-gray-200 shadow-sm"
@@ -60,13 +60,13 @@ export function TableFallback({ rows = 5, columns = 4 }: { rows?: number; column
         <div className="h-6 w-1/4 rounded bg-gray-200" />
       </div>
       <div className="divide-y divide-gray-200">
-        {Array?.from({ length: rows }).map((_, rowIndex) => (
+        {Array.from({ length: rows }).map((_, rowIndex) => (
           <div key={rowIndex} className="flex space-x-4 p-4">
-            {Array?.from({ length: columns }).map((_, colIndex) => (
+            {Array.from({ length: columns }).map((_, colIndex) => (
               <div
                 key={colIndex}
                 className="h-5 rounded bg-gray-200"
-                style={{ width: `${Math?.floor(Math?.random() * 30) + 10}%` }}
+                style={{ width: `${Math.floor(Math.random() * 30) + 10}%` }}
               />
             ))}
           </div>

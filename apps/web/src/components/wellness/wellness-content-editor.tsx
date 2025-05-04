@@ -59,7 +59,7 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
     content: '',
     tags: [],
     videoUrl: '',
-    image: '/placeholder?.png',
+    image: '/placeholder.png',
   });
 
   // Initialize form with content data if editing
@@ -70,8 +70,8 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
   }, [content]);
 
   // Handle input changes
-  const handleChange = (e: React?.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e?.target;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -87,8 +87,8 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
   };
 
   // Handle tags input
-  const handleTagsChange = (e: React?.ChangeEvent<HTMLInputElement>) => {
-    const tags = e?.target.value?.split(',').map((tag) => tag?.trim());
+  const handleTagsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const tags = e.target.value.split(',').map((tag) => tag.trim());
     setFormData((prev) => ({
       ...prev,
       tags,
@@ -96,8 +96,8 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
   };
 
   // Handle form submission
-  const handleSubmit = (e: React?.FormEvent) => {
-    e?.preventDefault();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     onSave(formData);
   };
 
@@ -109,7 +109,7 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
         <Input
           id="title"
           name="title"
-          value={formData?.title}
+          value={formData.title}
           onChange={handleChange}
           placeholder="Enter content title"
           required
@@ -122,7 +122,7 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
         <Textarea
           id="description"
           name="description"
-          value={formData?.description}
+          value={formData.description}
           onChange={handleChange}
           placeholder="Enter content description"
           required
@@ -133,16 +133,16 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
       <div className="space-y-2">
         <Label htmlFor="category">Category *</Label>
         <Select
-          value={formData?.category}
+          value={formData.category}
           onValueChange={(value) => handleSelectChange('category', value)}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select category" />
           </SelectTrigger>
           <SelectContent>
-            {categories?.map((category) => (
-              <SelectItem key={category?.id} value={category?.id}>
-                {category?.name}
+            {categories.map((category) => (
+              <SelectItem key={category.id} value={category.id}>
+                {category.name}
               </SelectItem>
             ))}
           </SelectContent>
@@ -155,9 +155,9 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
         <Input
           id="duration"
           name="duration"
-          value={formData?.duration}
+          value={formData.duration}
           onChange={handleChange}
-          placeholder="e?.g., 15 mins"
+          placeholder="e.g., 15 mins"
           required
         />
       </div>
@@ -166,16 +166,16 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
       <div className="space-y-2">
         <Label htmlFor="level">Level *</Label>
         <Select
-          value={formData?.level}
+          value={formData.level}
           onValueChange={(value) => handleSelectChange('level', value)}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select level" />
           </SelectTrigger>
           <SelectContent>
-            {levels?.map((level) => (
-              <SelectItem key={level?.id} value={level?.id}>
-                {level?.name}
+            {levels.map((level) => (
+              <SelectItem key={level.id} value={level.id}>
+                {level.name}
               </SelectItem>
             ))}
           </SelectContent>
@@ -185,7 +185,7 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
       {/* Content Type */}
       <div className="space-y-2">
         <ContentTypeSelector
-          value={formData?.contentType}
+          value={formData.contentType}
           onChange={(value) => handleSelectChange('contentType', value)}
           label="Content Type *"
         />
@@ -197,7 +197,7 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
         <Textarea
           id="content"
           name="content"
-          value={formData?.content}
+          value={formData.content}
           onChange={handleChange}
           placeholder="Enter content details"
           required
@@ -211,20 +211,20 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
         <Input
           id="tags"
           name="tags"
-          value={formData?.tags?.join(', ')}
+          value={formData.tags.join(', ')}
           onChange={handleTagsChange}
           placeholder="Enter tags separated by commas"
         />
       </div>
 
       {/* Video URL (if content type is video) */}
-      {formData?.contentType === 'video' && (
+      {formData.contentType === 'video' && (
         <div className="space-y-2">
           <Label htmlFor="videoUrl">Video URL</Label>
           <Input
             id="videoUrl"
             name="videoUrl"
-            value={formData?.videoUrl}
+            value={formData.videoUrl}
             onChange={handleChange}
             placeholder="Enter video URL"
           />
@@ -237,7 +237,7 @@ export function WellnessContentEditor({ content, onSave, onCancel }: WellnessCon
         <Input
           id="image"
           name="image"
-          value={formData?.image}
+          value={formData.image}
           onChange={handleChange}
           placeholder="Enter image URL"
         />

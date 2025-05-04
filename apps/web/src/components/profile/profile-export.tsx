@@ -11,7 +11,7 @@ interface ExportOption {
   id: string;
   label: string;
   description: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
 }
 
 export function ProfileExport() {
@@ -40,35 +40,35 @@ export function ProfileExport() {
   ];
 
   const handleExport = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       // Simulate API call to generate export
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      toast?.success('Export generated successfully!');
+      toast.success('Export generated successfully!');
 
       // Simulate file download
-      const blob = new Blob([JSON?.stringify({ format, selectedOptions })], {
+      const blob = new Blob([JSON.stringify({ format, selectedOptions })], {
         type: 'application/json',
       });
-      const url = window?.URL.createObjectURL(blob);
-      const a = document?.createElement('a');
-      a?.href = url;
-      a?.download = `profile-export-${new Date().toISOString()}.${format}`;
-      document?.body.appendChild(a);
-      a?.click();
-      window?.URL.revokeObjectURL(url);
-      document?.body.removeChild(a);
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `profile-export-${new Date().toISOString()}.${format}`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
     } catch (error) {
-      console?.error('Error generating export:', error);
-      toast?.error('Failed to generate export');
+      console.error('Error generating export:', error);
+      toast.error('Failed to generate export');
     }
   };
 
   const toggleOption = (optionId: string) => {
     setSelectedOptions((prev) =>
-      prev?.includes(optionId) ? prev?.filter((id) => id !== optionId) : [...prev, optionId],
+      prev.includes(optionId) ? prev.filter((id) => id !== optionId) : [...prev, optionId],
     );
   };
 
@@ -122,27 +122,27 @@ export function ProfileExport() {
           <div className="space-y-2">
             <Label>Data to Export</Label>
             <div className="space-y-4">
-              {exportOptions?.map((option) => (
-                <div key={option?.id} className="flex items-start space-x-4 rounded-lg border p-4">
+              {exportOptions.map((option) => (
+                <div key={option.id} className="flex items-start space-x-4 rounded-lg border p-4">
                   <div className="bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-full">
-                    {option?.icon}
+                    {option.icon}
                   </div>
                   <div className="flex-1 space-y-1">
                     <div className="flex items-center justify-between">
-                      <h3 className="font-medium">{option?.label}</h3>
+                      <h3 className="font-medium">{option.label}</h3>
                       <Checkbox
-                        checked={selectedOptions?.includes(option?.id)}
-                        onCheckedChange={() => toggleOption(option?.id)}
+                        checked={selectedOptions.includes(option.id)}
+                        onCheckedChange={() => toggleOption(option.id)}
                       />
                     </div>
-                    <p className="text-sm text-muted-foreground">{option?.description}</p>
+                    <p className="text-sm text-muted-foreground">{option.description}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <Button className="w-full" onClick={handleExport} disabled={selectedOptions?.length === 0}>
+          <Button className="w-full" onClick={handleExport} disabled={selectedOptions.length === 0}>
             <Download className="mr-2 h-4 w-4" />
             Export Data
           </Button>

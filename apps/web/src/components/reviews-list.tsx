@@ -30,11 +30,11 @@ export default function ReviewsList({
   // Sort reviews based on the selected option
   const sortedReviews = [...reviews].sort((a, b) => {
     if (sortBy === 'newest') {
-      return new Date(b?.created_at).getTime() - new Date(a?.created_at).getTime();
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
     } else if (sortBy === 'highest') {
-      return b?.rating - a?.rating;
+      return b.rating - a.rating;
     } else {
-      return a?.rating - b?.rating;
+      return a.rating - b.rating;
     }
   });
 
@@ -58,7 +58,7 @@ export default function ReviewsList({
     );
   }
 
-  if (reviews?.length === 0) {
+  if (reviews.length === 0) {
     return (
       <div className="rounded-lg bg-white p-8 text-center shadow">
         <p className="mb-2 text-gray-500">No reviews yet</p>
@@ -70,7 +70,7 @@ export default function ReviewsList({
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-medium text-gray-900">Customer Reviews ({reviews?.length})</h3>
+        <h3 className="text-lg font-medium text-gray-900">Customer Reviews ({reviews.length})</h3>
         <div>
           <label htmlFor="sort-by" className="sr-only">
             Sort by
@@ -79,7 +79,7 @@ export default function ReviewsList({
             id="sort-by"
             className="rounded-md border-gray-300 text-sm focus:border-indigo-500 focus:ring-indigo-500"
             value={sortBy}
-            onChange={(e) => setSortBy(e?.target.value as 'newest' | 'highest' | 'lowest')}
+            onChange={(e) => setSortBy(e.target.value as 'newest' | 'highest' | 'lowest')}
           >
             <option value="newest">Newest First</option>
             <option value="highest">Highest Rated</option>
@@ -89,15 +89,15 @@ export default function ReviewsList({
       </div>
 
       <div className="space-y-4">
-        {sortedReviews?.map((review) => (
+        {sortedReviews.map((review) => (
           <ReviewCard
-            key={review?.id}
-            id={review?.id}
-            title={review?.title}
-            text={review?.text}
-            rating={review?.rating}
-            createdAt={review?.created_at}
-            customer={review?.customer}
+            key={review.id}
+            id={review.id}
+            title={review.title}
+            text={review.text}
+            rating={review.rating}
+            createdAt={review.created_at}
+            customer={review.customer}
             compact={compact}
           />
         ))}

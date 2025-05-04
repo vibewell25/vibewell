@@ -54,14 +54,14 @@ export class AuditLoggingService {
   private readonly logTTL = 365 * 24 * 60 * 60; // 1 year
 
   constructor() {
-    this?.redis = new Redis(process?.env.REDIS_URL || '');
+    this.redis = new Redis(process.env.REDIS_URL || '');
   }
 
   /**
    * Log an auditable action
    */
   async log(action: string, details: Omit<AuditLog, 'id' | 'timestamp'>): Promise<void> {
-    const id = `${Date?.now()}:${Math?.random().toString(36).slice(2)}`;
+    const id = `${Date.now()}:${Math.random().toString(36).slice(2)}`;
     const log: AuditLog = {
       id,
       timestamp: new Date(),
@@ -71,32 +71,32 @@ export class AuditLoggingService {
 
     try {
       // Store in Redis with TTL
-      await this?.redis.setex(`audit:log:${id}`, this?.logTTL, JSON?.stringify(log));
+      await this.redis.setex(`audit:log:${id}`, this.logTTL, JSON.stringify(log));
 
       // Store index by user
-      if (log?.userId) {
-        await this?.redis.zadd(`audit:user:${log?.userId}`, log?.timestamp.getTime(), id);
+      if (log.userId) {
+        await this.redis.zadd(`audit:user:${log.userId}`, log.timestamp.getTime(), id);
       }
 
       // Store index by resource
-      if (log?.resourceType && log?.resourceId) {
-        await this?.redis.zadd(
-          `audit:resource:${log?.resourceType}:${log?.resourceId}`,
-          log?.timestamp.getTime(),
+      if (log.resourceType && log.resourceId) {
+        await this.redis.zadd(
+          `audit:resource:${log.resourceType}:${log.resourceId}`,
+          log.timestamp.getTime(),
           id,
         );
       }
 
       // Log to application logger
-      logger?.info('Audit log', 'audit', {
-        action: log?.action,
-        userId: log?.userId,
-        resourceType: log?.resourceType,
-        resourceId: log?.resourceId,
-        changes: log?.changes,
+      logger.info('Audit log', 'audit', {
+        action: log.action,
+        userId: log.userId,
+        resourceType: log.resourceType,
+        resourceId: log.resourceId,
+        changes: log.changes,
       });
     } catch (error) {
-      logger?.error('Failed to create audit log', 'audit', { error, log });
+      logger.error('Failed to create audit log', 'audit', { error, log });
     }
   }
 
@@ -116,19 +116,19 @@ export class AuditLoggingService {
       const { limit = 100, offset = 0, startTime, endTime } = options;
 
       // Get log IDs from sorted set
-      const logIds = await this?.redis.zrevrangebyscore(
+      const logIds = await this.redis.zrevrangebyscore(
         `audit:user:${userId}`,
-        endTime?.getTime() || '+inf',
-        startTime?.getTime() || '-inf',
+        endTime.getTime() || '+inf',
+        startTime.getTime() || '-inf',
         'LIMIT',
         offset,
         limit,
       );
 
       // Get log details
-      return await this?.getLogDetails(logIds);
+      return await this.getLogDetails(logIds);
     } catch (error) {
-      logger?.error('Failed to get user audit logs', 'audit', { error, userId });
+      logger.error('Failed to get user audit logs', 'audit', { error, userId });
       return [];
     }
   }
@@ -150,19 +150,19 @@ export class AuditLoggingService {
       const { limit = 100, offset = 0, startTime, endTime } = options;
 
       // Get log IDs from sorted set
-      const logIds = await this?.redis.zrevrangebyscore(
+      const logIds = await this.redis.zrevrangebyscore(
         `audit:resource:${resourceType}:${resourceId}`,
-        endTime?.getTime() || '+inf',
-        startTime?.getTime() || '-inf',
+        endTime.getTime() || '+inf',
+        startTime.getTime() || '-inf',
         'LIMIT',
         offset,
         limit,
       );
 
       // Get log details
-      return await this?.getLogDetails(logIds);
+      return await this.getLogDetails(logIds);
     } catch (error) {
-      logger?.error('Failed to get resource audit logs', 'audit', {
+      logger.error('Failed to get resource audit logs', 'audit', {
         error,
         resourceType,
         resourceId,
@@ -193,36 +193,36 @@ export class AuditLoggingService {
       let logIds: string[] = [];
 
       // Get candidate log IDs based on query
-      if (query?.userId) {
-        logIds = await this?.redis.zrevrangebyscore(
-          `audit:user:${query?.userId}`,
-          query?.endTime?.getTime() || '+inf',
-          query?.startTime?.getTime() || '-inf',
+      if (query.userId) {
+        logIds = await this.redis.zrevrangebyscore(
+          `audit:user:${query.userId}`,
+          query.endTime.getTime() || '+inf',
+          query.startTime.getTime() || '-inf',
         );
-      } else if (query?.resourceType && query?.resourceId) {
-        logIds = await this?.redis.zrevrangebyscore(
-          `audit:resource:${query?.resourceType}:${query?.resourceId}`,
-          query?.endTime?.getTime() || '+inf',
-          query?.startTime?.getTime() || '-inf',
+      } else if (query.resourceType && query.resourceId) {
+        logIds = await this.redis.zrevrangebyscore(
+          `audit:resource:${query.resourceType}:${query.resourceId}`,
+          query.endTime.getTime() || '+inf',
+          query.startTime.getTime() || '-inf',
         );
       }
 
       // Get log details and filter
-      const logs = await this?.getLogDetails(logIds);
-      const filtered = logs?.filter((log) => {
-        if (query?.action && log?.action !== query?.action) return false;
-        if (query?.userId && log?.userId !== query?.userId) return false;
-        if (query?.resourceType && log?.resourceType !== query?.resourceType) return false;
-        if (query?.resourceId && log?.resourceId !== query?.resourceId) return false;
-        if (query?.startTime && log?.timestamp < query?.startTime) return false;
-        if (query?.endTime && log?.timestamp > query?.endTime) return false;
+      const logs = await this.getLogDetails(logIds);
+      const filtered = logs.filter((log) => {
+        if (query.action && log.action !== query.action) return false;
+        if (query.userId && log.userId !== query.userId) return false;
+        if (query.resourceType && log.resourceType !== query.resourceType) return false;
+        if (query.resourceId && log.resourceId !== query.resourceId) return false;
+        if (query.startTime && log.timestamp < query.startTime) return false;
+        if (query.endTime && log.timestamp > query.endTime) return false;
         return true;
       });
 
 
-      return filtered?.slice(offset, offset + limit);
+      return filtered.slice(offset, offset + limit);
     } catch (error) {
-      logger?.error('Failed to search audit logs', 'audit', { error, query });
+      logger.error('Failed to search audit logs', 'audit', { error, query });
       return [];
     }
   }
@@ -231,14 +231,14 @@ export class AuditLoggingService {
     const logs: AuditLog[] = [];
 
     for (const id of logIds) {
-      const logData = await this?.redis.get(`audit:log:${id}`);
+      const logData = await this.redis.get(`audit:log:${id}`);
       if (logData) {
         try {
-          const log = JSON?.parse(logData);
-          log?.timestamp = new Date(log?.timestamp);
-          logs?.push(log);
+          const log = JSON.parse(logData);
+          log.timestamp = new Date(log.timestamp);
+          logs.push(log);
         } catch (error) {
-          logger?.error('Failed to parse audit log', 'audit', { error, id });
+          logger.error('Failed to parse audit log', 'audit', { error, id });
         }
       }
     }
@@ -256,7 +256,7 @@ export class AuditLoggingService {
   ): Promise<void> {
     try {
       const auditLog: AuditLog = {
-        id: crypto?.randomUUID(),
+        id: crypto.randomUUID(),
         userId,
         action,
         resourceType,
@@ -266,18 +266,18 @@ export class AuditLoggingService {
         metadata: metadata || {},
       };
 
-      await prisma?.auditLog.create({
+      await prisma.auditLog.create({
         data: auditLog,
       });
 
 
       // Store in Redis for real-time analysis
       const key = `audit:${resourceType}:${resourceId}`;
-      await this?.redis.lpush(key, JSON?.stringify(auditLog));
-      await this?.redis.ltrim(key, 0, 99); // Keep last 100 events
-      await this?.redis.expire(key, 86400 * 30); // Expire after 30 days
+      await this.redis.lpush(key, JSON.stringify(auditLog));
+      await this.redis.ltrim(key, 0, 99); // Keep last 100 events
+      await this.redis.expire(key, 86400 * 30); // Expire after 30 days
     } catch (error) {
-      logger?.error('Failed to log audit event', {
+      logger.error('Failed to log audit event', {
         error,
         userId,
         action,
@@ -308,30 +308,30 @@ export class AuditLoggingService {
     try {
       const where: Record<string, unknown> = {};
 
-      if (filters?.userId) where?.userId = filters?.userId;
-      if (filters?.action) where?.action = filters?.action;
-      if (filters?.resourceType) where?.resourceType = filters?.resourceType;
-      if (filters?.resourceId) where?.resourceId = filters?.resourceId;
-      if (filters?.startDate || filters?.endDate) {
-        where?.timestamp = {};
-        if (filters?.startDate) where?.timestamp.gte = filters?.startDate;
-        if (filters?.endDate) where?.timestamp.lte = filters?.endDate;
+      if (filters.userId) where.userId = filters.userId;
+      if (filters.action) where.action = filters.action;
+      if (filters.resourceType) where.resourceType = filters.resourceType;
+      if (filters.resourceId) where.resourceId = filters.resourceId;
+      if (filters.startDate || filters.endDate) {
+        where.timestamp = {};
+        if (filters.startDate) where.timestamp.gte = filters.startDate;
+        if (filters.endDate) where.timestamp.lte = filters.endDate;
       }
 
-      const [logs, total] = await Promise?.all([
-        prisma?.auditLog.findMany({
+      const [logs, total] = await Promise.all([
+        prisma.auditLog.findMany({
           where,
 
-          skip: (pagination?.page - 1) * pagination?.limit,
-          take: pagination?.limit,
+          skip: (pagination.page - 1) * pagination.limit,
+          take: pagination.limit,
           orderBy: { timestamp: 'desc' },
         }),
-        prisma?.auditLog.count({ where }),
+        prisma.auditLog.count({ where }),
       ]);
 
       return { logs, total };
     } catch (error) {
-      logger?.error('Failed to get audit logs', { error, filters });
+      logger.error('Failed to get audit logs', { error, filters });
       throw error;
     }
   }

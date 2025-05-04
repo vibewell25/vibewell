@@ -46,27 +46,27 @@ export class BusinessIntelligenceService {
   private openai: OpenAI;
 
   constructor() {
-    this?.openai = new OpenAI({
-      apiKey: process?.env.OPENAI_API_KEY || '',
+    this.openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY || '',
     });
   }
 
   async generateAnalytics(businessId: string, period: string, date: Date): Promise<void> {
     try {
       // Calculate metrics
-      const metrics = await this?.calculateMetrics(businessId, period, date);
+      const metrics = await this.calculateMetrics(businessId, period, date);
 
       // Analyze trends
-      const trends = await this?.analyzeTrends(businessId, metrics);
+      const trends = await this.analyzeTrends(businessId, metrics);
 
       // Get competitor analysis
-      const competitors = await this?.analyzeCompetitors(businessId);
+      const competitors = await this.analyzeCompetitors(businessId);
 
       // Get customer segments
-      const segments = await this?.analyzeCustomerSegments(businessId);
+      const segments = await this.analyzeCustomerSegments(businessId);
 
       // Generate AI recommendations
-      const recommendations = await this?.generateRecommendations(
+      const recommendations = await this.generateRecommendations(
         businessId,
         metrics,
         trends,
@@ -75,7 +75,7 @@ export class BusinessIntelligenceService {
       );
 
       // Save analytics
-      await prisma?.businessAnalytics.create({
+      await prisma.businessAnalytics.create({
         data: {
           businessId,
           period,
@@ -88,9 +88,9 @@ export class BusinessIntelligenceService {
         },
       });
 
-      logger?.info('Generated business analytics', 'BusinessIntelligence', { businessId, period });
+      logger.info('Generated business analytics', 'BusinessIntelligence', { businessId, period });
     } catch (error) {
-      logger?.error('Failed to generate analytics', 'BusinessIntelligence', { error });
+      logger.error('Failed to generate analytics', 'BusinessIntelligence', { error });
       throw error;
     }
   }
@@ -100,15 +100,15 @@ export class BusinessIntelligenceService {
     period: string,
     date: Date,
   ): Promise<AnalyticsMetrics> {
-    const [startDate, endDate] = this?.getDateRange(period, date);
+    const [startDate, endDate] = this.getDateRange(period, date);
 
-    const [revenue, bookings, customers, avgTicket, retention, utilization] = await Promise?.all([
-      this?.calculateRevenue(businessId, startDate, endDate),
-      this?.calculateBookings(businessId, startDate, endDate),
-      this?.calculateUniqueCustomers(businessId, startDate, endDate),
-      this?.calculateAverageTicket(businessId, startDate, endDate),
-      this?.calculateRetention(businessId, startDate, endDate),
-      this?.calculateUtilization(businessId, startDate, endDate),
+    const [revenue, bookings, customers, avgTicket, retention, utilization] = await Promise.all([
+      this.calculateRevenue(businessId, startDate, endDate),
+      this.calculateBookings(businessId, startDate, endDate),
+      this.calculateUniqueCustomers(businessId, startDate, endDate),
+      this.calculateAverageTicket(businessId, startDate, endDate),
+      this.calculateRetention(businessId, startDate, endDate),
+      this.calculateUtilization(businessId, startDate, endDate),
     ]);
 
     return {
@@ -124,16 +124,16 @@ export class BusinessIntelligenceService {
   private async analyzeTrends(businessId: string, metrics: AnalyticsMetrics): Promise<TrendData[]> {
     try {
       // Get market trends from external sources
-      const marketTrends = await this?.getMarketTrends();
+      const marketTrends = await this.getMarketTrends();
 
       // Analyze internal trends
-      const internalTrends = await this?.analyzeInternalTrends(businessId, metrics);
+      const internalTrends = await this.analyzeInternalTrends(businessId, metrics);
 
       // Save trends
       const trends = [...marketTrends, ...internalTrends];
-      await Promise?.all(
-        trends?.map((trend) =>
-          prisma?.marketTrend.create({
+      await Promise.all(
+        trends.map((trend) =>
+          prisma.marketTrend.create({
             data: {
               businessId,
               ...trend,
@@ -144,7 +144,7 @@ export class BusinessIntelligenceService {
 
       return trends;
     } catch (error) {
-      logger?.error('Failed to analyze trends', 'BusinessIntelligence', { error });
+      logger.error('Failed to analyze trends', 'BusinessIntelligence', { error });
       throw error;
     }
   }
@@ -152,34 +152,34 @@ export class BusinessIntelligenceService {
   private async analyzeCompetitors(businessId: string): Promise<CompetitorData[]> {
     try {
       // Get business location
-      const business = await prisma?.business.findUnique({
+      const business = await prisma.business.findUnique({
         where: { id: businessId },
       });
 
       if (!business) throw new Error('Business not found');
 
       // Get competitors in the area
-      const competitors = await this?.findLocalCompetitors(business?.address);
+      const competitors = await this.findLocalCompetitors(business.address);
 
       // Analyze each competitor
-      const competitorData = await Promise?.all(
-        competitors?.map(async (competitor) => {
-          const services = await this?.getCompetitorServices(competitor?.id);
-          const ratings = await this?.getCompetitorRatings(competitor?.id);
+      const competitorData = await Promise.all(
+        competitors.map(async (competitor) => {
+          const services = await this.getCompetitorServices(competitor.id);
+          const ratings = await this.getCompetitorRatings(competitor.id);
 
           return {
-            name: competitor?.name,
+            name: competitor.name,
             services,
-            ratings: ratings?.average,
-            reviews: ratings?.count,
-            location: competitor?.address,
+            ratings: ratings.average,
+            reviews: ratings.count,
+            location: competitor.address,
           };
         }),
       );
 
       return competitorData;
     } catch (error) {
-      logger?.error('Failed to analyze competitors', 'BusinessIntelligence', { error });
+      logger.error('Failed to analyze competitors', 'BusinessIntelligence', { error });
       throw error;
     }
   }
@@ -187,7 +187,7 @@ export class BusinessIntelligenceService {
   private async analyzeCustomerSegments(businessId: string): Promise<CustomerSegmentData[]> {
     try {
       // Get all customers
-      const customers = await prisma?.user.findMany({
+      const customers = await prisma.user.findMany({
         where: {
           bookings: {
             some: {
@@ -209,19 +209,19 @@ export class BusinessIntelligenceService {
       });
 
       // Segment customers based on behavior and preferences
-      const segments = this?.segmentCustomers(customers);
+      const segments = this.segmentCustomers(customers);
 
       // Save segments
-      await Promise?.all(
-        segments?.map((segment) =>
-          prisma?.customerSegment.create({
+      await Promise.all(
+        segments.map((segment) =>
+          prisma.customerSegment.create({
             data: {
               businessId,
-              name: segment?.name,
-              description: `${segment?.name} segment with ${segment?.size} customers`,
-              criteria: segment?.characteristics,
-              size: segment?.size,
-              value: segment?.value,
+              name: segment.name,
+              description: `${segment.name} segment with ${segment.size} customers`,
+              criteria: segment.characteristics,
+              size: segment.size,
+              value: segment.value,
             },
           }),
         ),
@@ -229,7 +229,7 @@ export class BusinessIntelligenceService {
 
       return segments;
     } catch (error) {
-      logger?.error('Failed to analyze customer segments', 'BusinessIntelligence', { error });
+      logger.error('Failed to analyze customer segments', 'BusinessIntelligence', { error });
       throw error;
     }
   }
@@ -245,16 +245,16 @@ export class BusinessIntelligenceService {
       const prompt = `Based on the following business data, provide strategic recommendations:
         
         Metrics:
-        ${JSON?.stringify(metrics, null, 2)}
+        ${JSON.stringify(metrics, null, 2)}
         
         Market Trends:
-        ${JSON?.stringify(trends, null, 2)}
+        ${JSON.stringify(trends, null, 2)}
         
         Competitor Analysis:
-        ${JSON?.stringify(competitors, null, 2)}
+        ${JSON.stringify(competitors, null, 2)}
         
         Customer Segments:
-        ${JSON?.stringify(segments, null, 2)}
+        ${JSON.stringify(segments, null, 2)}
         
         Provide recommendations for:
         1. Revenue optimization
@@ -263,7 +263,7 @@ export class BusinessIntelligenceService {
         4. Marketing strategies
         5. Competitive positioning`;
 
-      const response = await this?.openai.chat?.completions.create({
+      const response = await this.openai.chat.completions.create({
 
         model: 'gpt-4',
         messages: [
@@ -276,13 +276,13 @@ export class BusinessIntelligenceService {
             content: prompt,
           },
         ],
-        temperature: 0?.7,
+        temperature: 0.7,
         max_tokens: 1000,
       });
 
-      return JSON?.parse(response?.choices[0].message?.content || '{}');
+      return JSON.parse(response.choices[0].message.content || '{}');
     } catch (error) {
-      logger?.error('Failed to generate recommendations', 'BusinessIntelligence', { error });
+      logger.error('Failed to generate recommendations', 'BusinessIntelligence', { error });
       throw error;
     }
   }
@@ -293,7 +293,7 @@ export class BusinessIntelligenceService {
     startDate: Date,
     endDate: Date,
   ): Promise<number> {
-    const result = await prisma?.payment.aggregate({
+    const result = await prisma.payment.aggregate({
       where: {
         businessId,
         status: 'COMPLETED',
@@ -307,7 +307,7 @@ export class BusinessIntelligenceService {
       },
     });
 
-    return result?._sum.amount || 0;
+    return result._sum.amount || 0;
   }
 
   private async calculateBookings(
@@ -315,7 +315,7 @@ export class BusinessIntelligenceService {
     startDate: Date,
     endDate: Date,
   ): Promise<number> {
-    return prisma?.booking.count({
+    return prisma.booking.count({
       where: {
         businessId,
         status: 'COMPLETED',
@@ -332,7 +332,7 @@ export class BusinessIntelligenceService {
     startDate: Date,
     endDate: Date,
   ): Promise<number> {
-    const result = await prisma?.booking.groupBy({
+    const result = await prisma.booking.groupBy({
       by: ['userId'],
       where: {
         businessId,
@@ -343,7 +343,7 @@ export class BusinessIntelligenceService {
       },
     });
 
-    return result?.length;
+    return result.length;
   }
 
   private async calculateAverageTicket(
@@ -351,8 +351,8 @@ export class BusinessIntelligenceService {
     startDate: Date,
     endDate: Date,
   ): Promise<number> {
-    const revenue = await this?.calculateRevenue(businessId, startDate, endDate);
-    const bookings = await this?.calculateBookings(businessId, startDate, endDate);
+    const revenue = await this.calculateRevenue(businessId, startDate, endDate);
+    const bookings = await this.calculateBookings(businessId, startDate, endDate);
 
     return bookings > 0 ? revenue / bookings : 0;
   }
@@ -363,9 +363,9 @@ export class BusinessIntelligenceService {
     endDate: Date,
   ): Promise<number> {
     // Calculate retention rate based on repeat customers
-    const totalCustomers = await this?.calculateUniqueCustomers(businessId, startDate, endDate);
+    const totalCustomers = await this.calculateUniqueCustomers(businessId, startDate, endDate);
 
-    const repeatCustomers = await prisma?.booking.groupBy({
+    const repeatCustomers = await prisma.booking.groupBy({
       by: ['userId'],
       where: {
         businessId,
@@ -387,7 +387,7 @@ export class BusinessIntelligenceService {
     });
 
 
-    return totalCustomers > 0 ? (repeatCustomers?.length / totalCustomers) * 100 : 0;
+    return totalCustomers > 0 ? (repeatCustomers.length / totalCustomers) * 100 : 0;
   }
 
   private async calculateUtilization(
@@ -396,8 +396,8 @@ export class BusinessIntelligenceService {
     endDate: Date,
   ): Promise<number> {
     // Calculate service utilization rate
-    const totalSlots = await this?.calculateTotalTimeSlots(businessId, startDate, endDate);
-    const bookedSlots = await this?.calculateBookedTimeSlots(businessId, startDate, endDate);
+    const totalSlots = await this.calculateTotalTimeSlots(businessId, startDate, endDate);
+    const bookedSlots = await this.calculateBookedTimeSlots(businessId, startDate, endDate);
 
 
     return totalSlots > 0 ? (bookedSlots / totalSlots) * 100 : 0;
@@ -409,16 +409,16 @@ export class BusinessIntelligenceService {
 
     switch (period) {
       case 'daily':
-        end?.setDate(end?.getDate() + 1);
+        end.setDate(end.getDate() + 1);
         break;
       case 'weekly':
-        end?.setDate(end?.getDate() + 7);
+        end.setDate(end.getDate() + 7);
         break;
       case 'monthly':
-        end?.setMonth(end?.getMonth() + 1);
+        end.setMonth(end.getMonth() + 1);
         break;
       case 'yearly':
-        end?.setFullYear(end?.getFullYear() + 1);
+        end.setFullYear(end.getFullYear() + 1);
         break;
       default:
         throw new Error('Invalid period');
@@ -443,7 +443,7 @@ export class BusinessIntelligenceService {
   }
 
   private async findLocalCompetitors(location: string): Promise<any[]> {
-    // This would integrate with external APIs (e?.g., Google Places)
+    // This would integrate with external APIs (e.g., Google Places)
     // Placeholder implementation
     return [];
   }

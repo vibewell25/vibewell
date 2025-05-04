@@ -3,7 +3,8 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 interface UseErrorBoundaryOptions {
   fallback?: ReactNode;
-  onError?: (error: Error, errorInfo: React?.ErrorInfo) => void;
+  onError?: (error: Error, errorInfo: React.ErrorInfo) => void;
+  onReset?: () => void;
 }
 
 /**
@@ -44,20 +45,53 @@ export function useErrorBoundary(options: UseErrorBoundaryOptions = {}) {
  * const SafeComponent = withErrorBoundary(RiskyComponent);
  */
 export function withErrorBoundary<P extends object>(
-  Component: React?.ComponentType<P>,
+  Component: React.ComponentType<P>,
   options: UseErrorBoundaryOptions = {},
 ) {
-  const { fallback, onError } = options;
+  const { fallback, onError, onReset } = options;
 
-  const WrappedComponent = (props: P) => (
-    <ErrorBoundary fallback={fallback} onError={onError}>
-      <Component {...props} />
-    </ErrorBoundary>
-  );
+  // Function to recursively wrap event handlers in children
+  const wrapEventHandlers = (node: React.ReactNode): React.ReactNode => {
+    return React.Children.map(node, (child) => {
+      if (React.isValidElement<any>(child)) {
+        const childProps = child.props as Record<string, any>;
+        const newProps: Record<string, any> = {};
+        Object.keys(childProps).forEach((key) => {
+          const prop = childProps[key];
+          if (key.startsWith('on') && typeof prop === 'function') {
+            newProps[key] = (...args: any[]) => {
+              try {
+                prop(...args);
+              } catch (error) {
+                // Handle runtime error in event handler
+                if (onError && error instanceof Error) {
+                  onError(error, { componentStack: '' });
+                }
+              }
+            };
+          }
+        });
+        // Recursively wrap children
+        const wrappedChildren = wrapEventHandlers(childProps.children);
+        return React.cloneElement(child, newProps, wrappedChildren);
+      }
+      return child;
+    });
+  };
+
+  const WrappedComponent = (props: P) => {
+    const element = <Component {...props} />;
+    const content = wrapEventHandlers(element);
+    return (
+      <ErrorBoundary fallback={fallback} onError={onError} onReset={onReset}>
+        {content}
+      </ErrorBoundary>
+    );
+  };
 
   // Set display name for better debugging
-  const displayName = Component?.displayName || Component?.name || 'Component';
-  WrappedComponent?.displayName = `withErrorBoundary(${displayName})`;
+  const displayName = Component.displayName || Component.name || 'Component';
+  WrappedComponent.displayName = `withErrorBoundary(${displayName})`;
 
   return WrappedComponent;
 }

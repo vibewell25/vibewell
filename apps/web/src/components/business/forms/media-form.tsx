@@ -21,17 +21,17 @@ export function MediaForm({ form }: MediaFormProps) {
   const galleryInputRef = useRef<HTMLInputElement>(null);
 
   // Handle logo file selection
-  const handleLogoChange = (e: React?.ChangeEvent<HTMLInputElement>) => {
-    const file = e?.target.files?.[0];
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files.[0];
     if (!file) return;
 
     // Validate file type and size
-    if (!file?.type.startsWith('image/')) {
+    if (!file.type.startsWith('image/')) {
       alert('Please select an image file');
       return;
     }
 
-    if (file?.size > 5 * 1024 * 1024) {
+    if (file.size > 5 * 1024 * 1024) {
       // 5MB max
       alert('Image must be less than 5MB');
       return;
@@ -39,125 +39,125 @@ export function MediaForm({ form }: MediaFormProps) {
 
     // Create and set preview
     const reader = new FileReader();
-    reader?.onload = () => {
-      setLogoPreview(reader?.result as string);
+    reader.onload = () => {
+      setLogoPreview(reader.result as string);
     };
-    reader?.readAsDataURL(file);
+    reader.readAsDataURL(file);
 
     // Set form value
-    form?.setValue('logo', file, { shouldValidate: true });
+    form.setValue('logo', file, { shouldValidate: true });
   };
 
   // Handle cover image file selection
-  const handleCoverChange = (e: React?.ChangeEvent<HTMLInputElement>) => {
-    const file = e?.target.files?.[0];
+  const handleCoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files.[0];
     if (!file) return;
 
-    if (!file?.type.startsWith('image/')) {
+    if (!file.type.startsWith('image/')) {
       alert('Please select an image file');
       return;
     }
 
-    if (file?.size > 10 * 1024 * 1024) {
+    if (file.size > 10 * 1024 * 1024) {
       // 10MB max
       alert('Image must be less than 10MB');
       return;
     }
 
     const reader = new FileReader();
-    reader?.onload = () => {
-      setCoverPreview(reader?.result as string);
+    reader.onload = () => {
+      setCoverPreview(reader.result as string);
     };
-    reader?.readAsDataURL(file);
+    reader.readAsDataURL(file);
 
-    form?.setValue('coverImage', file, { shouldValidate: true });
+    form.setValue('coverImage', file, { shouldValidate: true });
   };
 
   // Handle gallery image file selection
-  const handleGalleryChange = (e: React?.ChangeEvent<HTMLInputElement>) => {
-    const files = e?.target.files;
-    if (!files || files?.length === 0) return;
+  const handleGalleryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
     // Validate and process each file
     const validFiles: File[] = [];
     const newPreviews: string[] = [...galleryPreviews];
 
-    Array?.from(files).forEach((file) => {
-      if (!file?.type.startsWith('image/')) {
-        alert(`File "${file?.name}" is not an image.`);
+    Array.from(files).forEach((file) => {
+      if (!file.type.startsWith('image/')) {
+        alert(`File "${file.name}" is not an image.`);
         return;
       }
 
-      if (file?.size > 10 * 1024 * 1024) {
-        alert(`File "${file?.name}" exceeds 10MB size limit.`);
+      if (file.size > 10 * 1024 * 1024) {
+        alert(`File "${file.name}" exceeds 10MB size limit.`);
         return;
       }
 
-      validFiles?.push(file);
+      validFiles.push(file);
 
       // Create preview
       const reader = new FileReader();
-      reader?.onload = () => {
-        newPreviews?.push(reader?.result as string);
+      reader.onload = () => {
+        newPreviews.push(reader.result as string);
         setGalleryPreviews([...newPreviews]);
       };
-      reader?.readAsDataURL(file);
+      reader.readAsDataURL(file);
     });
 
     // Add to existing gallery images
-    const currentGallery = form?.watch('galleryImages') || [];
-    form?.setValue('galleryImages', [...currentGallery, ...validFiles], { shouldValidate: true });
+    const currentGallery = form.watch('galleryImages') || [];
+    form.setValue('galleryImages', [...currentGallery, ...validFiles], { shouldValidate: true });
   };
 
   // Remove a gallery image
   const removeGalleryImage = (index: number) => {
-    const currentGallery = form?.watch('galleryImages') || [];
+    const currentGallery = form.watch('galleryImages') || [];
     const updatedGallery = [...currentGallery];
-    updatedGallery?.splice(index, 1);
-    form?.setValue('galleryImages', updatedGallery, { shouldValidate: true });
+    updatedGallery.splice(index, 1);
+    form.setValue('galleryImages', updatedGallery, { shouldValidate: true });
 
     // Update previews
     const newPreviews = [...galleryPreviews];
-    newPreviews?.splice(index, 1);
+    newPreviews.splice(index, 1);
     setGalleryPreviews(newPreviews);
   };
 
   // Remove logo
   const removeLogo = () => {
-    form?.setValue('logo', null, { shouldValidate: true });
+    form.setValue('logo', null, { shouldValidate: true });
     setLogoPreview(null);
-    if (logoInputRef?.current) {
-      logoInputRef?.current.value = '';
+    if (logoInputRef.current) {
+      logoInputRef.current.value = '';
     }
   };
 
   // Remove cover image
   const removeCover = () => {
-    form?.setValue('coverImage', null, { shouldValidate: true });
+    form.setValue('coverImage', null, { shouldValidate: true });
     setCoverPreview(null);
-    if (coverInputRef?.current) {
-      coverInputRef?.current.value = '';
+    if (coverInputRef.current) {
+      coverInputRef.current.value = '';
     }
   };
 
   // Add keyboard support for interactive elements
-  const handleRemoveLogoKeyDown = (e: React?.KeyboardEvent) => {
-    if (e?.key === 'Enter' || e?.key === ' ') {
-      e?.preventDefault();
+  const handleRemoveLogoKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
       removeLogo();
     }
   };
 
-  const handleRemoveCoverKeyDown = (e: React?.KeyboardEvent) => {
-    if (e?.key === 'Enter' || e?.key === ' ') {
-      e?.preventDefault();
+  const handleRemoveCoverKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
       removeCover();
     }
   };
 
-  const handleRemoveGalleryImageKeyDown = (e: React?.KeyboardEvent, index: number) => {
-    if (e?.key === 'Enter' || e?.key === ' ') {
-      e?.preventDefault();
+  const handleRemoveGalleryImageKeyDown = (e: React.KeyboardEvent, index: number) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
       removeGalleryImage(index);
     }
   };
@@ -208,7 +208,7 @@ export function MediaForm({ form }: MediaFormProps) {
                 onChange={handleLogoChange}
                 aria-label="Upload business logo"
               />
-              <Button type="button" variant="outline" onClick={() => logoInputRef?.current?.click()}>
+              <Button type="button" variant="outline" onClick={() => logoInputRef.current.click()}>
                 <Upload className="mr-2 h-4 w-4" aria-hidden="true" />
                 {logoPreview ? 'Change Logo' : 'Upload Logo'}
               </Button>
@@ -264,7 +264,7 @@ export function MediaForm({ form }: MediaFormProps) {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => coverInputRef?.current?.click()}
+                onClick={() => coverInputRef.current.click()}
               >
                 <Upload className="mr-2 h-4 w-4" aria-hidden="true" />
                 {coverPreview ? 'Change Cover Image' : 'Upload Cover Image'}
@@ -284,10 +284,10 @@ export function MediaForm({ form }: MediaFormProps) {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {galleryPreviews?.length > 0 && (
+            {galleryPreviews.length > 0 && (
               <ScrollArea className="h-64 w-full rounded-md border">
                 <div className="grid grid-cols-2 gap-4 p-4 md:grid-cols-3">
-                  {galleryPreviews?.map((preview, index) => (
+                  {galleryPreviews.map((preview, index) => (
                     <div key={index} className="relative h-32 overflow-hidden rounded-md bg-muted">
                       <img
                         src={preview}
@@ -323,7 +323,7 @@ export function MediaForm({ form }: MediaFormProps) {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => galleryInputRef?.current?.click()}
+                onClick={() => galleryInputRef.current.click()}
               >
                 <Upload className="mr-2 h-4 w-4" aria-hidden="true" />
                 Add Gallery Images

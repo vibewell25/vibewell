@@ -31,11 +31,11 @@ export function BusinessFilters({
       <div className="space-y-2">
         <Label>Category</Label>
         <RadioGroup value={selectedCategory} onValueChange={onCategoryChange} className="space-y-2">
-          {CATEGORIES?.map((category) => (
-            <div key={category?.value} className="flex items-center space-x-2">
-              <RadioGroupItem value={category?.value} id={category?.value} />
-              <Label htmlFor={category?.value} className="text-sm">
-                {category?.label}
+          {CATEGORIES.map((category) => (
+            <div key={category.value} className="flex items-center space-x-2">
+              <RadioGroupItem value={category.value} id={category.value} />
+              <Label htmlFor={category.value} className="text-sm">
+                {category.label}
               </Label>
             </div>
           ))}
@@ -50,10 +50,10 @@ export function BusinessFilters({
             onValueChange={([value]) => onRatingChange(value)}
             min={0}
             max={5}
-            step={0?.5}
+            step={0.5}
             className="flex-1"
           />
-          <span className="w-12 text-sm font-medium">{minRating?.toFixed(1)}</span>
+          <span className="w-12 text-sm font-medium">{minRating.toFixed(1)}</span>
         </div>
       </div>
     </div>

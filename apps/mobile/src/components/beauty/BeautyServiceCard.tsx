@@ -9,7 +9,7 @@ interface BeautyServiceCardProps {
   isDarkMode: boolean;
 }
 
-const BeautyServiceCard: React?.FC<BeautyServiceCardProps> = ({ 
+const BeautyServiceCard: React.FC<BeautyServiceCardProps> = ({ 
   service, 
   onPress, 
   isDarkMode 
@@ -17,88 +17,88 @@ const BeautyServiceCard: React?.FC<BeautyServiceCardProps> = ({
   return (
     <TouchableOpacity 
       style={[
-        styles?.container,
+        styles.container,
         { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
       ]}
       onPress={() => onPress(service)}
       testID="beautyServiceCard"
     >
       <Image 
-        source={{ uri: service?.imageUrl }} 
-        style={styles?.image}
+        source={{ uri: service.imageUrl }} 
+        style={styles.image}
         resizeMode="cover"
         testID="serviceImage"
       />
-      <View style={styles?.content}>
+      <View style={styles.content}>
         <Text 
           style={[
-            styles?.title,
+            styles.title,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}
           numberOfLines={1}
           testID="serviceTitle"
         >
-          {service?.title}
+          {service.title}
         </Text>
         <Text 
           style={[
-            styles?.description,
+            styles.description,
             { color: isDarkMode ? '#E0E0E0' : '#444444' }
           ]}
           numberOfLines={2}
           testID="serviceDescription"
         >
-          {service?.description}
+          {service.description}
         </Text>
-        <View style={styles?.footer}>
+        <View style={styles.footer}>
           <Text 
             style={[
-              styles?.price,
+              styles.price,
               { color: isDarkMode ? '#FFFFFF' : '#000000' }
             ]}
             testID="servicePrice"
           >
-            ${service?.price}
+            ${service.price}
           </Text>
           <Text 
             style={[
-              styles?.duration,
+              styles.duration,
               { color: isDarkMode ? '#E0E0E0' : '#444444' }
             ]}
             testID="serviceDuration"
           >
-            {service?.duration} min
+            {service.duration} min
           </Text>
-          <View style={styles?.ratingContainer}>
+          <View style={styles.ratingContainer}>
             <MaterialIcons name="star" size={14} color="#FFD700" />
             <Text 
               style={[
-                styles?.rating,
+                styles.rating,
                 { color: isDarkMode ? '#E0E0E0' : '#444444' }
               ]}
               testID="serviceRating"
             >
-              {service?.rating}
+              {service.rating}
             </Text>
           </View>
         </View>
       </View>
-      {service?.featured && (
-        <View style={styles?.featuredBadge} testID="featuredBadge">
-          <Text style={styles?.featuredText}>Featured</Text>
+      {service.featured && (
+        <View style={styles.featuredBadge} testID="featuredBadge">
+          <Text style={styles.featuredText}>Featured</Text>
         </View>
       )}
     </TouchableOpacity>
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     borderRadius: 12,
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0?.1,
+    shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 2,
     position: 'relative',

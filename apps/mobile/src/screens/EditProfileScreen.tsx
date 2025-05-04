@@ -19,14 +19,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const validationSchema = Yup?.object().shape({
-  name: Yup?.string().required('Name is required'),
-  email: Yup?.string().email('Invalid email').required('Email is required'),
-  phone: Yup?.string().matches(/^[0-9]{10}$/, 'Invalid phone number'),
-  bio: Yup?.string().max(200, 'Bio must be less than 200 characters'),
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required('Name is required'),
+  email: Yup.string().email('Invalid email').required('Email is required'),
+  phone: Yup.string().matches(/^[0-9]{10}$/, 'Invalid phone number'),
+  bio: Yup.string().max(200, 'Bio must be less than 200 characters'),
 });
 
-const EditProfileScreen: React?.FC = () => {
+const EditProfileScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const navigation = useNavigation();
   const [saving, setSaving] = useState(false);
@@ -34,9 +34,9 @@ const EditProfileScreen: React?.FC = () => {
   const [loadingProfile, setLoadingProfile] = useState(true);
 
   useEffect(() => {
-    AsyncStorage?.getItem('@vibewell/user_profile').then(item => {
-      const current = item ? JSON?.parse(item) : {};
-      setInitialValues({ name: current?.name || '', email: current?.email || '', phone: current?.phone || '', bio: current?.bio || '' });
+    AsyncStorage.getItem('@vibewell/user_profile').then(item => {
+      const current = item ? JSON.parse(item) : {};
+      setInitialValues({ name: current.name || '', email: current.email || '', phone: current.phone || '', bio: current.bio || '' });
       setLoadingProfile(false);
     });
   }, []);
@@ -48,42 +48,42 @@ const EditProfileScreen: React?.FC = () => {
   );
 
   const handleSave = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');values: any) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');values: any) => {
     setSaving(true);
     try {
-      const savedProfile = await AsyncStorage?.getItem('@vibewell/user_profile');
-      const currentProfile = savedProfile ? JSON?.parse(savedProfile) : {};
+      const savedProfile = await AsyncStorage.getItem('@vibewell/user_profile');
+      const currentProfile = savedProfile ? JSON.parse(savedProfile) : {};
       
       const updatedProfile = {
         ...currentProfile,
-        name: values?.name,
-        email: values?.email,
-        phone: values?.phone,
-        bio: values?.bio
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+        bio: values.bio
       };
 
-      await AsyncStorage?.setItem('@vibewell/user_profile', JSON?.stringify(updatedProfile));
-      navigation?.goBack();
+      await AsyncStorage.setItem('@vibewell/user_profile', JSON.stringify(updatedProfile));
+      navigation.goBack();
     } catch (error) {
-      console?.error('Error saving profile:', error);
-      Alert?.alert('Error', 'Failed to save profile changes');
+      console.error('Error saving profile:', error);
+      Alert.alert('Error', 'Failed to save profile changes');
     } finally {
       setSaving(false);
     }
   };
 
   return (
-    <SafeAreaView style={[styles?.container, { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }]}>
       <KeyboardAvoidingView
-        behavior={Platform?.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
       >
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles?.header}>
+          <View style={styles.header}>
             <TouchableOpacity
-              onPress={() => navigation?.goBack()}
-              style={styles?.backButton}
+              onPress={() => navigation.goBack()}
+              style={styles.backButton}
             >
               <Feather
                 name="arrow-left"
@@ -91,7 +91,7 @@ const EditProfileScreen: React?.FC = () => {
                 color={isDarkMode ? '#FFFFFF' : '#000000'}
               />
             </TouchableOpacity>
-            <Text style={[styles?.title, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+            <Text style={[styles.title, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
               Edit Profile
             </Text>
           </View>
@@ -103,14 +103,14 @@ const EditProfileScreen: React?.FC = () => {
             onSubmit={handleSave}
           >
             {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-              <View style={styles?.form}>
-                <View style={styles?.inputGroup}>
-                  <Text style={[styles?.label, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+              <View style={styles.form}>
+                <View style={styles.inputGroup}>
+                  <Text style={[styles.label, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
                     Name
                   </Text>
                   <TextInput
                     style={[
-                      styles?.input,
+                      styles.input,
                       { 
                         backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5',
                         color: isDarkMode ? '#FFFFFF' : '#000000'
@@ -118,22 +118,22 @@ const EditProfileScreen: React?.FC = () => {
                     ]}
                     placeholder="Enter your name"
                     placeholderTextColor={isDarkMode ? '#888888' : '#666666'}
-                    value={values?.name}
+                    value={values.name}
                     onChangeText={handleChange('name')}
                     onBlur={handleBlur('name')}
                   />
-                  {touched?.name && errors?.name && (
-                    <Text style={styles?.errorText}>{errors?.name}</Text>
+                  {touched.name && errors.name && (
+                    <Text style={styles.errorText}>{errors.name}</Text>
                   )}
                 </View>
 
-                <View style={styles?.inputGroup}>
-                  <Text style={[styles?.label, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+                <View style={styles.inputGroup}>
+                  <Text style={[styles.label, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
                     Email
                   </Text>
                   <TextInput
                     style={[
-                      styles?.input,
+                      styles.input,
                       { 
                         backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5',
                         color: isDarkMode ? '#FFFFFF' : '#000000'
@@ -141,24 +141,24 @@ const EditProfileScreen: React?.FC = () => {
                     ]}
                     placeholder="Enter your email"
                     placeholderTextColor={isDarkMode ? '#888888' : '#666666'}
-                    value={values?.email}
+                    value={values.email}
                     onChangeText={handleChange('email')}
                     onBlur={handleBlur('email')}
                     keyboardType="email-address"
                     autoCapitalize="none"
                   />
-                  {touched?.email && errors?.email && (
-                    <Text style={styles?.errorText}>{errors?.email}</Text>
+                  {touched.email && errors.email && (
+                    <Text style={styles.errorText}>{errors.email}</Text>
                   )}
                 </View>
 
-                <View style={styles?.inputGroup}>
-                  <Text style={[styles?.label, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+                <View style={styles.inputGroup}>
+                  <Text style={[styles.label, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
                     Phone
                   </Text>
                   <TextInput
                     style={[
-                      styles?.input,
+                      styles.input,
                       { 
                         backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5',
                         color: isDarkMode ? '#FFFFFF' : '#000000'
@@ -166,24 +166,24 @@ const EditProfileScreen: React?.FC = () => {
                     ]}
                     placeholder="Enter your phone number"
                     placeholderTextColor={isDarkMode ? '#888888' : '#666666'}
-                    value={values?.phone}
+                    value={values.phone}
                     onChangeText={handleChange('phone')}
                     onBlur={handleBlur('phone')}
                     keyboardType="phone-pad"
                   />
-                  {touched?.phone && errors?.phone && (
-                    <Text style={styles?.errorText}>{errors?.phone}</Text>
+                  {touched.phone && errors.phone && (
+                    <Text style={styles.errorText}>{errors.phone}</Text>
                   )}
                 </View>
 
-                <View style={styles?.inputGroup}>
-                  <Text style={[styles?.label, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+                <View style={styles.inputGroup}>
+                  <Text style={[styles.label, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
                     Bio
                   </Text>
                   <TextInput
                     style={[
-                      styles?.input,
-                      styles?.bioInput,
+                      styles.input,
+                      styles.bioInput,
                       { 
                         backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5',
                         color: isDarkMode ? '#FFFFFF' : '#000000'
@@ -191,27 +191,27 @@ const EditProfileScreen: React?.FC = () => {
                     ]}
                     placeholder="Tell us about yourself"
                     placeholderTextColor={isDarkMode ? '#888888' : '#666666'}
-                    value={values?.bio}
+                    value={values.bio}
                     onChangeText={handleChange('bio')}
                     onBlur={handleBlur('bio')}
                     multiline
                     numberOfLines={4}
                     textAlignVertical="top"
                   />
-                  {touched?.bio && errors?.bio && (
-                    <Text style={styles?.errorText}>{errors?.bio}</Text>
+                  {touched.bio && errors.bio && (
+                    <Text style={styles.errorText}>{errors.bio}</Text>
                   )}
                 </View>
 
                 <TouchableOpacity
                   style={[
-                    styles?.saveButton,
-                    { opacity: saving ? 0?.7 : 1 }
+                    styles.saveButton,
+                    { opacity: saving ? 0.7 : 1 }
                   ]}
                   onPress={() => handleSubmit()}
                   disabled={saving}
                 >
-                  <Text style={styles?.saveButtonText}>
+                  <Text style={styles.saveButtonText}>
                     {saving ? 'Saving...' : 'Save Changes'}
                   </Text>
                 </TouchableOpacity>
@@ -224,7 +224,7 @@ const EditProfileScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
   },

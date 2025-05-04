@@ -10,8 +10,8 @@ export function VirtualTryOn() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleTryOn = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setIsLoading(true);
       // Simulate try-on process

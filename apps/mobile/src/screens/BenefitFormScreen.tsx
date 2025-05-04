@@ -5,44 +5,44 @@ import { benefitsApi } from '../services/benefitsService';
 import { BenefitClaim } from '../types/benefits';
 import { BenefitFormRouteProp, BenefitFormNavigationProp } from '../types/navigation';
 
-const BenefitFormScreen: React?.FC = () => {
+const BenefitFormScreen: React.FC = () => {
   const navigation = useNavigation<BenefitFormNavigationProp>();
   const route = useRoute<BenefitFormRouteProp>();
-  const { claim } = route?.params;
+  const { claim } = route.params;
   const isEdit = !!claim;
 
-  const [type, setType] = useState<string>(claim?.type || '');
-  const [status, setStatus] = useState<string>(claim?.status || 'pending');
-  const [amount, setAmount] = useState<string>(claim?.amount?.toString() || '');
+  const [type, setType] = useState<string>(claim.type || '');
+  const [status, setStatus] = useState<string>(claim.status || 'pending');
+  const [amount, setAmount] = useState<string>(claim.amount.toString() || '');
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-    if (!type?.trim()) {
-      Alert?.alert('Error', 'Type is required.');
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    if (!type.trim()) {
+      Alert.alert('Error', 'Type is required.');
       return;
     }
     setLoading(true);
     try {
       let result: BenefitClaim;
       if (isEdit && claim) {
-        result = await benefitsApi?.updateClaim(claim?.id, {
+        result = await benefitsApi.updateClaim(claim.id, {
           type,
           status,
           amount: amount ? parseFloat(amount) : undefined,
         });
       } else {
-        result = await benefitsApi?.createClaim({
+        result = await benefitsApi.createClaim({
           type,
           status,
           amount: amount ? parseFloat(amount) : undefined,
         });
       }
-      navigation?.navigate('BenefitDetail', { id: result?.id });
+      navigation.navigate('BenefitDetail', { id: result.id });
     } catch (err) {
-      console?.error(err);
-      Alert?.alert('Error', 'Failed to save benefit claim');
+      console.error(err);
+      Alert.alert('Error', 'Failed to save benefit claim');
     } finally {
       setLoading(false);
     }
@@ -51,27 +51,27 @@ const BenefitFormScreen: React?.FC = () => {
   if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
-    <View style={styles?.container}>
-      <Text style={styles?.label}>Type</Text>
+    <View style={styles.container}>
+      <Text style={styles.label}>Type</Text>
       <TextInput
-        style={styles?.input}
+        style={styles.input}
         value={type}
         onChangeText={setType}
-        placeholder="e?.g. Health reimbursement"
+        placeholder="e.g. Health reimbursement"
       />
-      <Text style={styles?.label}>Status</Text>
+      <Text style={styles.label}>Status</Text>
       <TextInput
-        style={styles?.input}
+        style={styles.input}
         value={status}
         onChangeText={setStatus}
         placeholder="pending, approved, denied"
       />
-      <Text style={styles?.label}>Amount</Text>
+      <Text style={styles.label}>Amount</Text>
       <TextInput
-        style={styles?.input}
+        style={styles.input}
         value={amount}
         onChangeText={setAmount}
-        placeholder="0?.00"
+        placeholder="0.00"
         keyboardType="numeric"
       />
       <Button
@@ -82,7 +82,7 @@ const BenefitFormScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   label: { fontSize: 14, marginTop: 12 },
   input: {

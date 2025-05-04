@@ -7,8 +7,8 @@ import type { Store } from '@reduxjs/toolkit';
  */
 export interface ContextProviderProps<T> {
   initialState: T;
-  children: React?.ReactNode;
-  stateContext: React?.Context<[T, React?.Dispatch<React?.SetStateAction<T>>] | undefined>;
+  children: React.ReactNode;
+  stateContext: React.Context<[T, React.Dispatch<React.SetStateAction<T>>] | undefined>;
   onStateChange?: (newState: T, prevState: T) => void;
 }
 
@@ -37,7 +37,7 @@ export function ContextProvider<T>({
   // Memoize context value
   const contextValue = useMemo(() => [state, dispatch] as const, [state]);
 
-  return <stateContext?.Provider value={contextValue}>{children}</stateContext?.Provider>;
+  return <stateContext.Provider value={contextValue}>{children}</stateContext.Provider>;
 }
 
 /**
@@ -45,7 +45,7 @@ export function ContextProvider<T>({
  */
 export interface ReduxProviderProps {
   store: Store;
-  children: React?.ReactNode;
+  children: React.ReactNode;
 }
 
 export function StateReduxProvider({ store, children }: ReduxProviderProps) {
@@ -57,7 +57,7 @@ export function StateReduxProvider({ store, children }: ReduxProviderProps) {
  */
 export interface AuthProviderProps {
   user?: any;
-  children: React?.ReactNode;
+  children: React.ReactNode;
 }
 
 export function MockAuthProvider({
@@ -65,7 +65,7 @@ export function MockAuthProvider({
   children,
 }: AuthProviderProps) {
   return (
-    <div data-testid="mock-auth-provider" data-user={JSON?.stringify(user)}>
+    <div data-testid="mock-auth-provider" data-user={JSON.stringify(user)}>
       {children}
     </div>
   );

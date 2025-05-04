@@ -67,7 +67,7 @@ const EnhancedAnalyticsDashboard = () => {
   const [error, setError] = useState<string | null>(null);
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
   const [dateRange, setDateRange] = useState({
-    from: new Date(Date?.now() - 30 * 24 * 60 * 60 * 1000),
+    from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
     to: new Date(),
   });
   const [timeFrame, setTimeFrame] = useState('daily');
@@ -75,47 +75,47 @@ const EnhancedAnalyticsDashboard = () => {
 
   useEffect(() => {
     const fetchAnalyticsData = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       setLoading(true);
       setError(null);
       try {
         // In a real implementation, this would call your API with the selected filters
-        // const response = await fetch(`/api/analytics?from=${dateRange?.from}&to=${dateRange?.to}&timeFrame=${timeFrame}&segment=${dataSegment}`);
-        // const data = await response?.json();
+        // const response = await fetch(`/api/analytics?from=${dateRange.from}&to=${dateRange.to}&timeFrame=${timeFrame}&segment=${dataSegment}`);
+        // const data = await response.json();
 
         // Mock data for demonstration
         const mockData: AnalyticsData = {
-          userEngagement: Array?.from({ length: 30 }, (_, i) => ({
-            date: new Date(Date?.now() - (29 - i) * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
-            value: Math?.floor(Math?.random() * 100) + 50,
+          userEngagement: Array.from({ length: 30 }, (_, i) => ({
+            date: new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+            value: Math.floor(Math.random() * 100) + 50,
           })),
-          conversionRates: Array?.from({ length: 30 }, (_, i) => ({
-            date: new Date(Date?.now() - (29 - i) * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
-            value: Math?.random() * 0?.2 + 0?.05,
+          conversionRates: Array.from({ length: 30 }, (_, i) => ({
+            date: new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+            value: Math.random() * 0.2 + 0.05,
           })),
-          userRetention: Array?.from({ length: 30 }, (_, i) => ({
-            date: new Date(Date?.now() - (29 - i) * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
-            value: Math?.random() * 0?.4 + 0?.4,
+          userRetention: Array.from({ length: 30 }, (_, i) => ({
+            date: new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+            value: Math.random() * 0.4 + 0.4,
           })),
           userActivity: {
             daily: [
-              { name: 'Posts', value: Math?.floor(Math?.random() * 200) + 100 },
-              { name: 'Comments', value: Math?.floor(Math?.random() * 500) + 200 },
-              { name: 'Likes', value: Math?.floor(Math?.random() * 1000) + 500 },
-              { name: 'Shares', value: Math?.floor(Math?.random() * 100) + 50 },
+              { name: 'Posts', value: Math.floor(Math.random() * 200) + 100 },
+              { name: 'Comments', value: Math.floor(Math.random() * 500) + 200 },
+              { name: 'Likes', value: Math.floor(Math.random() * 1000) + 500 },
+              { name: 'Shares', value: Math.floor(Math.random() * 100) + 50 },
             ],
             weekly: [
-              { name: 'Posts', value: Math?.floor(Math?.random() * 1000) + 500 },
-              { name: 'Comments', value: Math?.floor(Math?.random() * 2500) + 1000 },
-              { name: 'Likes', value: Math?.floor(Math?.random() * 5000) + 2500 },
-              { name: 'Shares', value: Math?.floor(Math?.random() * 500) + 250 },
+              { name: 'Posts', value: Math.floor(Math.random() * 1000) + 500 },
+              { name: 'Comments', value: Math.floor(Math.random() * 2500) + 1000 },
+              { name: 'Likes', value: Math.floor(Math.random() * 5000) + 2500 },
+              { name: 'Shares', value: Math.floor(Math.random() * 500) + 250 },
             ],
             monthly: [
-              { name: 'Posts', value: Math?.floor(Math?.random() * 4000) + 2000 },
-              { name: 'Comments', value: Math?.floor(Math?.random() * 10000) + 5000 },
-              { name: 'Likes', value: Math?.floor(Math?.random() * 20000) + 10000 },
-              { name: 'Shares', value: Math?.floor(Math?.random() * 2000) + 1000 },
+              { name: 'Posts', value: Math.floor(Math.random() * 4000) + 2000 },
+              { name: 'Comments', value: Math.floor(Math.random() * 10000) + 5000 },
+              { name: 'Likes', value: Math.floor(Math.random() * 20000) + 10000 },
+              { name: 'Shares', value: Math.floor(Math.random() * 2000) + 1000 },
             ],
           },
           demographics: [
@@ -172,7 +172,7 @@ const EnhancedAnalyticsDashboard = () => {
         setAnalyticsData(mockData);
       } catch (err) {
         setError('Failed to load analytics data. Please try again later.');
-        console?.error(err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -256,9 +256,9 @@ const EnhancedAnalyticsDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {analyticsData?.userActivity.daily?.reduce((acc, item) => acc + item?.value, 0)}
+                  {analyticsData.userActivity.daily.reduce((acc, item) => acc + item.value, 0)}
                 </div>
-                <p className="text-xs text-muted-foreground">+2?.5% from last period</p>
+                <p className="text-xs text-muted-foreground">+2.5% from last period</p>
               </CardContent>
             </Card>
             <Card>
@@ -268,12 +268,12 @@ const EnhancedAnalyticsDashboard = () => {
               <CardContent>
                 <div className="text-2xl font-bold">
                   {(
-                    analyticsData?.conversionRates[analyticsData?.conversionRates.length - 1]?.value *
+                    analyticsData.conversionRates[analyticsData.conversionRates.length - 1].value *
                     100
                   ).toFixed(1)}
                   %
                 </div>
-                <p className="text-xs text-muted-foreground">+0?.8% from last period</p>
+                <p className="text-xs text-muted-foreground">+0.8% from last period</p>
               </CardContent>
             </Card>
             <Card>
@@ -283,11 +283,11 @@ const EnhancedAnalyticsDashboard = () => {
               <CardContent>
                 <div className="text-2xl font-bold">
                   {(
-                    analyticsData?.userRetention[analyticsData?.userRetention.length - 1]?.value * 100
+                    analyticsData.userRetention[analyticsData.userRetention.length - 1].value * 100
                   ).toFixed(1)}
                   %
                 </div>
-                <p className="text-xs text-muted-foreground">-1?.2% from last period</p>
+                <p className="text-xs text-muted-foreground">-1.2% from last period</p>
               </CardContent>
             </Card>
             <Card>
@@ -296,9 +296,9 @@ const EnhancedAnalyticsDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {analyticsData?.userActivity.daily?.reduce((acc, item) => acc + item?.value, 0)}
+                  {analyticsData.userActivity.daily.reduce((acc, item) => acc + item.value, 0)}
                 </div>
-                <p className="text-xs text-muted-foreground">+5?.3% from last period</p>
+                <p className="text-xs text-muted-foreground">+5.3% from last period</p>
               </CardContent>
             </Card>
           </div>
@@ -313,7 +313,7 @@ const EnhancedAnalyticsDashboard = () => {
                 <div className="h-[300px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart
-                      data={analyticsData?.userEngagement}
+                      data={analyticsData.userEngagement}
                       margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
                     >
                       <CartesianGrid strokeDasharray="3 3" />
@@ -334,7 +334,7 @@ const EnhancedAnalyticsDashboard = () => {
               <CardContent>
                 <div className="h-[300px]">
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={analyticsData?.userActivity[timeFrame]}>
+                    <BarChart data={analyticsData.userActivity[timeFrame]}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="name" />
                       <YAxis />
@@ -359,7 +359,7 @@ const EnhancedAnalyticsDashboard = () => {
               <div className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart
-                    data={analyticsData?.userEngagement}
+                    data={analyticsData.userEngagement}
                     margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
@@ -390,7 +390,7 @@ const EnhancedAnalyticsDashboard = () => {
                 <div className="h-[300px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart
-                      data={analyticsData?.userRetention}
+                      data={analyticsData.userRetention}
                       margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
                     >
                       <CartesianGrid strokeDasharray="3 3" />
@@ -421,7 +421,7 @@ const EnhancedAnalyticsDashboard = () => {
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
-                        data={analyticsData?.userActivity[timeFrame]}
+                        data={analyticsData.userActivity[timeFrame]}
                         cx="50%"
                         cy="50%"
                         labelLine={false}
@@ -430,8 +430,8 @@ const EnhancedAnalyticsDashboard = () => {
                         dataKey="value"
                         label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                       >
-                        {analyticsData?.userActivity[timeFrame].map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS?.length]} />
+                        {analyticsData.userActivity[timeFrame].map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Pie>
                       <Tooltip />
@@ -454,7 +454,7 @@ const EnhancedAnalyticsDashboard = () => {
               <div className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
-                    data={analyticsData?.demographics}
+                    data={analyticsData.demographics}
                     margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
@@ -478,7 +478,7 @@ const EnhancedAnalyticsDashboard = () => {
               <div className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
-                    data={analyticsData?.demographics}
+                    data={analyticsData.demographics}
                     margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
@@ -511,7 +511,7 @@ const EnhancedAnalyticsDashboard = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
-                      data={analyticsData?.contentPerformance}
+                      data={analyticsData.contentPerformance}
                       cx="50%"
                       cy="50%"
                       labelLine={true}
@@ -522,8 +522,8 @@ const EnhancedAnalyticsDashboard = () => {
                         `${category}: ${(percent * 100).toFixed(0)}%`
                       }
                     >
-                      {analyticsData?.contentPerformance.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS?.length]} />
+                      {analyticsData.contentPerformance.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
                     <Tooltip />
@@ -543,7 +543,7 @@ const EnhancedAnalyticsDashboard = () => {
               <div className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
-                    data={analyticsData?.contentPerformance}
+                    data={analyticsData.contentPerformance}
                     margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
@@ -569,13 +569,13 @@ const EnhancedAnalyticsDashboard = () => {
               <div className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart
-                    data={analyticsData?.conversionRates}
+                    data={analyticsData.conversionRates}
                     margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="date" />
                     <YAxis
-                      domain={[0, 0?.3]}
+                      domain={[0, 0.3]}
                       tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
                     />
                     <Tooltip formatter={(value) => `${(Number(value) * 100).toFixed(1)}%`} />
@@ -595,13 +595,13 @@ const EnhancedAnalyticsDashboard = () => {
               <CardContent>
                 <div className="text-2xl font-bold">
                   {(
-                    (analyticsData?.conversionRates.reduce((acc, item) => acc + item?.value, 0) /
-                      analyticsData?.conversionRates.length) *
+                    (analyticsData.conversionRates.reduce((acc, item) => acc + item.value, 0) /
+                      analyticsData.conversionRates.length) *
                     100
                   ).toFixed(1)}
                   %
                 </div>
-                <p className="text-xs text-muted-foreground">+0?.5% from last period</p>
+                <p className="text-xs text-muted-foreground">+0.5% from last period</p>
               </CardContent>
             </Card>
             <Card>
@@ -611,16 +611,16 @@ const EnhancedAnalyticsDashboard = () => {
               <CardContent>
                 <div className="text-2xl font-bold">
                   {
-                    analyticsData?.conversionRates.reduce(
-                      (best, current) => (current?.value > best?.value ? current : best),
+                    analyticsData.conversionRates.reduce(
+                      (best, current) => (current.value > best.value ? current : best),
                       { date: '', value: 0 },
                     ).date
                   }
                 </div>
                 <p className="text-xs text-muted-foreground">
                   {(
-                    analyticsData?.conversionRates.reduce(
-                      (best, current) => (current?.value > best?.value ? current : best),
+                    analyticsData.conversionRates.reduce(
+                      (best, current) => (current.value > best.value ? current : best),
                       { date: '', value: 0 },
                     ).value * 100
                   ).toFixed(1)}
@@ -635,9 +635,9 @@ const EnhancedAnalyticsDashboard = () => {
               <CardContent>
                 <div className="text-2xl font-bold">
                   {(
-                    (analyticsData?.conversionRates[analyticsData?.conversionRates.length - 1]
-                      ?.value /
-                      analyticsData?.conversionRates[0]?.value -
+                    (analyticsData.conversionRates[analyticsData.conversionRates.length - 1]
+                      .value /
+                      analyticsData.conversionRates[0].value -
                       1) *
                     100
                   ).toFixed(1)}

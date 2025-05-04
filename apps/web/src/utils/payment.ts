@@ -44,15 +44,15 @@ export class PaymentUtils {
     const config = this.manager.getServiceConfig('payment') as PaymentConfig;
 
     try {
-      switch (config?.service) {
+      switch (config.service) {
         case 'stripe':
           return await payment.paymentIntents.create({
-            amount: intent?.amount,
-            currency: intent?.currency,
-            payment_method: intent?.paymentMethod.token,
-            description: intent?.description,
-            metadata: intent?.metadata,
-            customer: intent?.customerId,
+            amount: intent.amount,
+            currency: intent.currency,
+            payment_method: intent.paymentMethod.token,
+            description: intent.description,
+            metadata: intent.metadata,
+            customer: intent.customerId,
             confirm: true,
           });
 
@@ -64,10 +64,10 @@ export class PaymentUtils {
             purchase_units: [
               {
                 amount: {
-                  currency_code: intent?.currency,
-                  value: (intent?.amount / 100).toString(),
+                  currency_code: intent.currency,
+                  value: (intent.amount / 100).toString(),
                 },
-                description: intent?.description,
+                description: intent.description,
               },
             ],
           });
@@ -75,18 +75,18 @@ export class PaymentUtils {
 
         case 'square':
           return await payment.paymentsApi.createPayment({
-            sourceId: intent?.paymentMethod.token,
+            sourceId: intent.paymentMethod.token,
             amountMoney: {
-              amount: intent?.amount,
-              currency: intent?.currency,
+              amount: intent.amount,
+              currency: intent.currency,
             },
             idempotencyKey: Date.now().toString(),
-            note: intent?.description,
-            customerId: intent?.customerId,
+            note: intent.description,
+            customerId: intent.customerId,
           });
       }
     } catch (error) {
-      console?.error('Failed to create payment intent:', error);
+      console.error('Failed to create payment intent:', error);
       throw error;
     }
   }
@@ -98,31 +98,31 @@ export class PaymentUtils {
     const config = this.manager.getServiceConfig('payment') as PaymentConfig;
 
     try {
-      switch (config?.service) {
+      switch (config.service) {
         case 'stripe':
           return await payment.subscriptions.create({
-            customer: subscription?.customerId,
+            customer: subscription.customerId,
             items: [
               {
-                price: subscription?.planId,
-                quantity: subscription?.quantity,
+                price: subscription.planId,
+                quantity: subscription.quantity,
               },
             ],
-            metadata: subscription?.metadata,
-            trial_period_days: subscription?.trialDays,
+            metadata: subscription.metadata,
+            trial_period_days: subscription.trialDays,
           });
 
         case 'square':
           return await payment.subscriptionsApi.createSubscription({
-            locationId: config?.credentials.clientId,
-            planId: subscription?.planId,
-            customerId: subscription?.customerId,
+            locationId: config.credentials.clientId,
+            planId: subscription.planId,
+            customerId: subscription.customerId,
             startDate: new Date().toISOString(),
-            metadata: subscription?.metadata,
+            metadata: subscription.metadata,
           });
       }
     } catch (error) {
-      console?.error('Failed to create subscription:', error);
+      console.error('Failed to create subscription:', error);
       throw error;
     }
   }
@@ -134,39 +134,39 @@ export class PaymentUtils {
     const config = this.manager.getServiceConfig('payment') as PaymentConfig;
 
     try {
-      switch (config?.service) {
+      switch (config.service) {
         case 'stripe':
           return await payment.refunds.create({
-            payment_intent: refund?.paymentIntentId,
-            amount: refund?.amount,
-            reason: refund?.reason,
-            metadata: refund?.metadata,
+            payment_intent: refund.paymentIntentId,
+            amount: refund.amount,
+            reason: refund.reason,
+            metadata: refund.metadata,
           });
 
         case 'paypal':
-          const request = new payment.payments.CapturesRefundRequest(refund?.paymentIntentId);
+          const request = new payment.payments.CapturesRefundRequest(refund.paymentIntentId);
           request.requestBody({
             amount: {
               currency_code: 'USD',
-              value: (refund?.amount! / 100).toString(),
+              value: (refund.amount! / 100).toString(),
             },
-            note_to_payer: refund?.reason,
+            note_to_payer: refund.reason,
           });
           return await payment.execute(request);
 
         case 'square':
           return await payment.refundsApi.refundPayment({
-            paymentId: refund?.paymentIntentId,
+            paymentId: refund.paymentIntentId,
             amountMoney: {
-              amount: refund?.amount,
+              amount: refund.amount,
               currency: 'USD',
             },
             idempotencyKey: Date.now().toString(),
-            reason: refund?.reason,
+            reason: refund.reason,
           });
       }
     } catch (error) {
-      console?.error('Failed to process refund:', error);
+      console.error('Failed to process refund:', error);
       throw error;
     }
   }
@@ -178,37 +178,37 @@ export class PaymentUtils {
     const config = this.manager.getServiceConfig('payment') as PaymentConfig;
 
     try {
-      switch (config?.service) {
+      switch (config.service) {
         case 'stripe':
           const methods = await payment.paymentMethods.list({
             customer: customerId,
             type: 'card',
           });
-          return methods?.data.map((method) => ({
+          return methods.data.map((method) => ({
             type: 'card',
-            token: method?.id,
-            last4: method?.card.last4,
-            expMonth: method?.card.exp_month,
-            expYear: method?.card.exp_year,
-            brand: method?.card.brand,
+            token: method.id,
+            last4: method.card.last4,
+            expMonth: method.card.exp_month,
+            expYear: method.card.exp_year,
+            brand: method.card.brand,
           }));
 
         case 'square':
           const { result } = await payment.customersApi.listCards(customerId);
-          return result?.cards.map((card) => ({
+          return result.cards.map((card) => ({
             type: 'card',
-            token: card?.id,
-            last4: card?.last4,
-            expMonth: card?.expMonth,
-            expYear: card?.expYear,
-            brand: card?.cardBrand,
+            token: card.id,
+            last4: card.last4,
+            expMonth: card.expMonth,
+            expYear: card.expYear,
+            brand: card.cardBrand,
           }));
 
         default:
           return [];
       }
     } catch (error) {
-      console?.error('Failed to get customer payment methods:', error);
+      console.error('Failed to get customer payment methods:', error);
       return [];
     }
   }

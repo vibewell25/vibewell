@@ -13,17 +13,17 @@ export default function BeautyEducation() {
   }, [selectedCategory]);
 
   const loadContent = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
-      const [tutorialData, articleData] = await Promise?.all([
+      const [tutorialData, articleData] = await Promise.all([
         getBeautyTutorials(selectedCategory),
         getBeautyArticles(selectedCategory),
       ]);
       setTutorials(tutorialData);
       setArticles(articleData);
     } catch (error) {
-      console?.error('Error loading educational content:', error);
+      console.error('Error loading educational content:', error);
     }
   };
 
@@ -36,15 +36,15 @@ export default function BeautyEducation() {
   ];
 
   const filteredContent = {
-    tutorials: tutorials?.filter(
+    tutorials: tutorials.filter(
       (tutorial) =>
-        tutorial?.title.toLowerCase().includes(searchQuery?.toLowerCase()) ||
-        tutorial?.description.toLowerCase().includes(searchQuery?.toLowerCase()),
+        tutorial.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        tutorial.description.toLowerCase().includes(searchQuery.toLowerCase()),
     ),
-    articles: articles?.filter(
+    articles: articles.filter(
       (article) =>
-        article?.title.toLowerCase().includes(searchQuery?.toLowerCase()) ||
-        article?.summary.toLowerCase().includes(searchQuery?.toLowerCase()),
+        article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        article.summary.toLowerCase().includes(searchQuery.toLowerCase()),
     ),
   };
 
@@ -57,14 +57,14 @@ export default function BeautyEducation() {
       <div className="flex flex-col gap-4 md:flex-row">
         <Select
           value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e?.target.value)}
+          onChange={(e) => setSelectedCategory(e.target.value)}
           options={categories}
           className="md:w-48"
         />
         <Input
           placeholder="Search tutorials and articles..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e?.target.value)}
+          onChange={(e) => setSearchQuery(e.target.value)}
           className="flex-1"
         />
       </div>
@@ -73,27 +73,27 @@ export default function BeautyEducation() {
         <div>
           <h3 className="mb-4 text-xl font-semibold">Video Tutorials</h3>
           <div className="space-y-4">
-            {filteredContent?.tutorials.map((tutorial) => (
-              <Card key={tutorial?.id} className="p-4">
+            {filteredContent.tutorials.map((tutorial) => (
+              <Card key={tutorial.id} className="p-4">
                 <div className="mb-4 aspect-video">
                   <img
-                    src={tutorial?.thumbnail}
-                    alt={tutorial?.title}
+                    src={tutorial.thumbnail}
+                    alt={tutorial.title}
                     className="h-full w-full rounded object-cover"
                   />
                 </div>
-                <h4 className="font-medium">{tutorial?.title}</h4>
-                <p className="mt-1 text-sm text-gray-600">{tutorial?.description}</p>
+                <h4 className="font-medium">{tutorial.title}</h4>
+                <p className="mt-1 text-sm text-gray-600">{tutorial.description}</p>
                 <div className="mt-4 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <img
-                      src={tutorial?.instructor.avatar}
-                      alt={tutorial?.instructor.name}
+                      src={tutorial.instructor.avatar}
+                      alt={tutorial.instructor.name}
                       className="h-6 w-6 rounded-full"
                     />
-                    <span className="text-sm">{tutorial?.instructor.name}</span>
+                    <span className="text-sm">{tutorial.instructor.name}</span>
                   </div>
-                  <span className="text-sm text-gray-500">{tutorial?.duration} mins</span>
+                  <span className="text-sm text-gray-500">{tutorial.duration} mins</span>
                 </div>
                 <Button className="mt-4 w-full">Watch Tutorial</Button>
               </Card>
@@ -104,20 +104,20 @@ export default function BeautyEducation() {
         <div>
           <h3 className="mb-4 text-xl font-semibold">Articles & Guides</h3>
           <div className="space-y-4">
-            {filteredContent?.articles.map((article) => (
-              <Card key={article?.id} className="p-4">
+            {filteredContent.articles.map((article) => (
+              <Card key={article.id} className="p-4">
                 <div className="flex gap-4">
                   <img
-                    src={article?.image}
-                    alt={article?.title}
+                    src={article.image}
+                    alt={article.title}
                     className="h-24 w-24 rounded object-cover"
                   />
                   <div className="flex-1">
-                    <h4 className="font-medium">{article?.title}</h4>
-                    <p className="mt-1 text-sm text-gray-600">{article?.summary}</p>
+                    <h4 className="font-medium">{article.title}</h4>
+                    <p className="mt-1 text-sm text-gray-600">{article.summary}</p>
                     <div className="mt-2 flex items-center gap-4">
-                      <span className="text-sm text-gray-500">{article?.readTime} min read</span>
-                      <span className="text-sm text-gray-500">By {article?.author}</span>
+                      <span className="text-sm text-gray-500">{article.readTime} min read</span>
+                      <span className="text-sm text-gray-500">By {article.author}</span>
                     </div>
                   </div>
                 </div>
@@ -151,10 +151,10 @@ export default function BeautyEducation() {
               tips: ['Deep condition regularly', 'Avoid hot tools daily', 'Trim every 8-12 weeks'],
             },
           ].map((section) => (
-            <div key={section?.title} className="rounded-lg bg-gray-50 p-4">
-              <h4 className="mb-2 font-medium">{section?.title}</h4>
+            <div key={section.title} className="rounded-lg bg-gray-50 p-4">
+              <h4 className="mb-2 font-medium">{section.title}</h4>
               <ul className="space-y-2">
-                {section?.tips.map((tip) => (
+                {section.tips.map((tip) => (
                   <li key={tip} className="flex items-center gap-2 text-sm">
                     <span className="text-primary">•</span> {tip}
                   </li>

@@ -5,20 +5,20 @@ import { FormDefinition } from '../types/forms';
 import { formsApi } from '../services/formsService';
 import { FormListNavigationProp } from '../types/navigation';
 
-const FormListScreen: React?.FC = () => {
+const FormListScreen: React.FC = () => {
   const navigation = useNavigation<FormListNavigationProp>();
   const [forms, setForms] = useState<FormDefinition[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetch = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
-        const data = await formsApi?.getForms();
+        const data = await formsApi.getForms();
         setForms(data);
       } catch (err) {
-        console?.error(err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -29,16 +29,16 @@ const FormListScreen: React?.FC = () => {
   if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
-    <View style={styles?.container}>
+    <View style={styles.container}>
       <FlatList
         data={forms}
-        keyExtractor={item => item?.id}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity
-            style={styles?.item}
-            onPress={() => navigation?.navigate('FormDetail', { formId: item?.id })}
+            style={styles.item}
+            onPress={() => navigation.navigate('FormDetail', { formId: item.id })}
           >
-            <Text style={styles?.title}>{item?.name}</Text>
+            <Text style={styles.title}>{item.name}</Text>
           </TouchableOpacity>
         )}
       />
@@ -46,7 +46,7 @@ const FormListScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   item: { padding: 12, borderBottomWidth: 1, borderColor: '#ccc' },
   title: { fontSize: 16 }

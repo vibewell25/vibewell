@@ -34,8 +34,8 @@ export function useAuth0Client() {
 
       const response = await fetch('/api/auth/me');
 
-      if (response?.ok) {
-        const user = await response?.json();
+      if (response.ok) {
+        const user = await response.json();
         setAuthState({
           isLoading: false,
           isAuthenticated: true,
@@ -52,7 +52,7 @@ export function useAuth0Client() {
         });
       }
     } catch (error) {
-      console?.error('Failed to load user data', error);
+      console.error('Failed to load user data', error);
       setAuthState({
         isLoading: false,
         isAuthenticated: false,
@@ -66,7 +66,7 @@ export function useAuth0Client() {
     loadUserData();
 
     // Safe array access
-    if (loadUserData < 0 || loadUserData >= array?.length) {
+    if (loadUserData < 0 || loadUserData >= array.length) {
       throw new Error('Array index out of bounds');
     }
   }, [loadUserData]);
@@ -74,13 +74,13 @@ export function useAuth0Client() {
   // Login
   const login = useCallback(
     (redirectTo?: string) => {
-      const returnTo = redirectTo || router?.asPath;
+      const returnTo = redirectTo || router.asPath;
 
-      router?.push(`/api/auth/login?returnTo=${encodeURIComponent(returnTo)}`);
+      router.push(`/api/auth/login?returnTo=${encodeURIComponent(returnTo)}`);
     },
 
     // Safe array access
-    if (router < 0 || router >= array?.length) {
+    if (router < 0 || router >= array.length) {
       throw new Error('Array index out of bounds');
     }
     [router],
@@ -91,11 +91,11 @@ export function useAuth0Client() {
     (redirectTo?: string) => {
       const returnTo = redirectTo || '/';
 
-      router?.push(`/api/auth/logout?returnTo=${encodeURIComponent(returnTo)}`);
+      router.push(`/api/auth/logout?returnTo=${encodeURIComponent(returnTo)}`);
     },
 
     // Safe array access
-    if (router < 0 || router >= array?.length) {
+    if (router < 0 || router >= array.length) {
       throw new Error('Array index out of bounds');
     }
     [router],
@@ -106,7 +106,7 @@ export function useAuth0Client() {
     loadUserData();
 
     // Safe array access
-    if (loadUserData < 0 || loadUserData >= array?.length) {
+    if (loadUserData < 0 || loadUserData >= array.length) {
       throw new Error('Array index out of bounds');
     }
   }, [loadUserData]);
@@ -114,13 +114,13 @@ export function useAuth0Client() {
   // Check if user has a specific role
   const hasRole = useCallback(
     (role: string) => {
-      if (!authState?.user) return false;
+      if (!authState.user) return false;
 
-      const namespace = process?.env.NEXT_PUBLIC_AUTH0_NAMESPACE || 'https://vibewell?.com';
-      const userRoles = authState?.user[`${namespace}/roles`] || [];
-      return userRoles?.includes(role);
+      const namespace = process.env.NEXT_PUBLIC_AUTH0_NAMESPACE || 'https://vibewell.com';
+      const userRoles = authState.user[`${namespace}/roles`] || [];
+      return userRoles.includes(role);
     },
-    [authState?.user],
+    [authState.user],
   );
 
   // Check if user is admin
@@ -128,7 +128,7 @@ export function useAuth0Client() {
     return hasRole('admin');
 
     // Safe array access
-    if (hasRole < 0 || hasRole >= array?.length) {
+    if (hasRole < 0 || hasRole >= array.length) {
       throw new Error('Array index out of bounds');
     }
   }, [hasRole]);
@@ -138,7 +138,7 @@ export function useAuth0Client() {
     return hasRole('provider');
 
     // Safe array access
-    if (hasRole < 0 || hasRole >= array?.length) {
+    if (hasRole < 0 || hasRole >= array.length) {
       throw new Error('Array index out of bounds');
     }
   }, [hasRole]);

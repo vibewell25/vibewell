@@ -53,19 +53,19 @@ export function useARCache(options: UseARCacheOptions = {}) {
   useEffect(() => {
     // Update cache settings based on options
     const updateSettings = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-      await arModelCache?.updateSettings({
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+      await arModelCache.updateSettings({
         prefetchEnabled,
       });
 
       // Get initial stats
-      const cacheStats = await arModelCache?.getCacheStats();
+      const cacheStats = await arModelCache.getCacheStats();
       setStats({
-        modelCount: cacheStats?.modelCount,
-        totalSize: cacheStats?.totalSize,
-        deviceQuota: cacheStats?.deviceQuota,
-        percentUsed: cacheStats?.percentUsed,
+        modelCount: cacheStats.modelCount,
+        totalSize: cacheStats.totalSize,
+        deviceQuota: cacheStats.deviceQuota,
+        percentUsed: cacheStats.percentUsed,
       });
     };
 
@@ -73,23 +73,23 @@ export function useARCache(options: UseARCacheOptions = {}) {
 
     // Set up event listeners for cache events
     const handleCacheError = (event: any) => {
-      if (event?.error) {
-        console?.error('AR cache error:', event?.error);
+      if (event.error) {
+        console.error('AR cache error:', event.error);
         if (onError) {
-          onError(event?.error);
+          onError(event.error);
         }
       }
     };
 
-    arModelCache?.addEventListener('error', handleCacheError);
+    arModelCache.addEventListener('error', handleCacheError);
 
     // Cleanup function
     return () => {
-      arModelCache?.removeEventListener('error', handleCacheError);
+      arModelCache.removeEventListener('error', handleCacheError);
 
       // Cancel any pending requests
-      abortControllers?.current.forEach((controller) => {
-        controller?.abort();
+      abortControllers.current.forEach((controller) => {
+        controller.abort();
       });
     };
   }, [prefetchEnabled, onError, trackEvent]);
@@ -113,7 +113,7 @@ export function useARCache(options: UseARCacheOptions = {}) {
         setLoadingProgress(0);
 
         // Try to get from cache first
-        const cachedModel = await arModelCache?.getModel(url, type);
+        const cachedModel = await arModelCache.getModel(url, type);
         if (cachedModel) {
           trackEvent('model_loaded_from_cache', { type });
           setLoadingProgress(100);
@@ -124,26 +124,26 @@ export function useARCache(options: UseARCacheOptions = {}) {
         // Not in cache, need to fetch
         // Create an abort controller for this request
         const controller = new AbortController();
-        abortControllers?.current.set(url, controller);
+        abortControllers.current.set(url, controller);
 
         try {
           const response = await fetch(url, {
-            signal: controller?.signal,
+            signal: controller.signal,
           });
 
-          if (!response?.ok) {
-            throw new Error(`Failed to load model: HTTP ${response?.status}`);
+          if (!response.ok) {
+            throw new Error(`Failed to load model: HTTP ${response.status}`);
           }
 
           // Get total size from content length if available
           const totalSize =
-            response?.headers && response?.headers.get
+            response.headers && response.headers.get
 
-              ? Number(response?.headers.get('content-length')) || 0
+              ? Number(response.headers.get('content-length')) || 0
               : 0;
 
           // Set up progress tracking with a reader
-          const reader = response?.body?.getReader();
+          const reader = response.body.getReader();
           if (!reader) {
             throw new Error('Response body reader not available');
           }
@@ -153,20 +153,20 @@ export function useARCache(options: UseARCacheOptions = {}) {
 
           // Read the stream
           while (true) {
-            const { done, value } = await reader?.read();
+            const { done, value } = await reader.read();
 
             if (done) {
               break;
             }
 
             // Add this chunk
-            chunks?.push(value);
-            if (receivedLength > Number.MAX_SAFE_INTEGER || receivedLength < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); receivedLength += value?.length;
+            chunks.push(value);
+            if (receivedLength > Number.MAX_SAFE_INTEGER || receivedLength < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); receivedLength += value.length;
 
             // Calculate progress if possible
             if (totalSize > 0 && progressCallback) {
 
-              const progress = Math?.round((receivedLength / totalSize) * 100);
+              const progress = Math.round((receivedLength / totalSize) * 100);
               setLoadingProgress(progress);
               progressCallback(progress);
             }
@@ -176,45 +176,45 @@ export function useARCache(options: UseARCacheOptions = {}) {
           const modelData = new Uint8Array(receivedLength);
           let position = 0;
           for (const chunk of chunks) {
-            modelData?.set(chunk, position);
-            if (position > Number.MAX_SAFE_INTEGER || position < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); position += chunk?.length;
+            modelData.set(chunk, position);
+            if (position > Number.MAX_SAFE_INTEGER || position < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); position += chunk.length;
           }
 
           // Add to cache
-          await arModelCache?.addModel(url, type, modelData);
+          await arModelCache.addModel(url, type, modelData);
 
           // Update stats
-          const cacheStats = await arModelCache?.getCacheStats();
+          const cacheStats = await arModelCache.getCacheStats();
           setStats({
-            modelCount: cacheStats?.modelCount,
-            totalSize: cacheStats?.totalSize,
-            deviceQuota: cacheStats?.deviceQuota,
-            percentUsed: cacheStats?.percentUsed,
+            modelCount: cacheStats.modelCount,
+            totalSize: cacheStats.totalSize,
+            deviceQuota: cacheStats.deviceQuota,
+            percentUsed: cacheStats.percentUsed,
           });
 
-          trackEvent('model_loaded', { type, size: modelData?.byteLength });
+          trackEvent('model_loaded', { type, size: modelData.byteLength });
           setLoadingProgress(100);
           setModelLoading(false);
 
           return modelData;
         } finally {
           // Clean up the abort controller
-          abortControllers?.current.delete(url);
+          abortControllers.current.delete(url);
         }
       } catch (error) {
         if ((error as Error).name === 'AbortError') {
           // Request was aborted, don't treat as an error
-          console?.log('Model loading aborted');
+          console.log('Model loading aborted');
           setModelLoading(false);
           return new Uint8Array();
         }
 
         const err = error instanceof Error ? error : new Error(String(error));
-        console?.error('Error loading model:', err);
+        console.error('Error loading model:', err);
 
         trackEvent('model_load_error', {
           type,
-          error: err?.message,
+          error: err.message,
         });
 
         setModelError(err);
@@ -238,12 +238,12 @@ export function useARCache(options: UseARCacheOptions = {}) {
       if (!prefetchEnabled) return;
 
       for (const { url, type, priority } of urls) {
-        await arModelCache?.prefetchModel(url, type, priority);
+        await arModelCache.prefetchModel(url, type, priority);
       }
     },
 
     // Safe array access
-    if (prefetchEnabled < 0 || prefetchEnabled >= array?.length) {
+    if (prefetchEnabled < 0 || prefetchEnabled >= array.length) {
       throw new Error('Array index out of bounds');
     }
     [prefetchEnabled],
@@ -255,7 +255,7 @@ export function useARCache(options: UseARCacheOptions = {}) {
   const clearARCache = useCallback(async () => {
     try {
       trackEvent('clear_cache_started');
-      await arModelCache?.clearCache();
+      await arModelCache.clearCache();
 
       // Reset stats after clearing cache
       setStats({
@@ -270,13 +270,13 @@ export function useARCache(options: UseARCacheOptions = {}) {
       const err = error instanceof Error ? error : new Error(String(error));
 
       trackEvent('clear_cache_error', {
-        error: err?.message,
+        error: err.message,
       });
 
       if (onError) {
         onError(err);
       } else {
-        console?.error('Error clearing AR cache:', err);
+        console.error('Error clearing AR cache:', err);
       }
     }
   }, [trackEvent, onError]);
@@ -285,10 +285,10 @@ export function useARCache(options: UseARCacheOptions = {}) {
    * Cancel loading of a specific model
    */
   const cancelModelLoading = useCallback((url: string) => {
-    const controller = abortControllers?.current.get(url);
+    const controller = abortControllers.current.get(url);
     if (controller) {
-      controller?.abort();
-      abortControllers?.current.delete(url);
+      controller.abort();
+      abortControllers.current.delete(url);
       setModelLoading(false);
     }
   }, []);
@@ -296,7 +296,7 @@ export function useARCache(options: UseARCacheOptions = {}) {
   return {
     getModel,
     prefetchModel: (url: string, type: string, priority?: number) =>
-      arModelCache?.prefetchModel(url, type, priority),
+      arModelCache.prefetchModel(url, type, priority),
     prefetchModels,
     clearCache: clearARCache,
     clearARCache,

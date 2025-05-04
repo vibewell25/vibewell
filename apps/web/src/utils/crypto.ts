@@ -7,7 +7,7 @@ import { randomBytes } from 'crypto';
  */
 export function generateRandomString(length: number): string {
 
-  return randomBytes(Math?.ceil(length / 2))
+  return randomBytes(Math.ceil(length / 2))
     .toString('hex')
     .slice(0, length);
 }
@@ -36,13 +36,13 @@ export function generateApiKey(): string {
  * @returns true if the strings are equal, false otherwise
  */
 export function safeCompare(a: string, b: string): boolean {
-  if (a?.length !== b?.length) {
+  if (a.length !== b.length) {
     return false;
   }
   
   let result = 0;
-  for (let i = 0; i < a?.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-    result |= a?.charCodeAt(i) ^ b?.charCodeAt(i);
+  for (let i = 0; i < a.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
+    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
   }
   return result === 0;
 } 

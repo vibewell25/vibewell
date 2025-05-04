@@ -1,30 +1,30 @@
 import axios from 'axios';
 
     // Safe integer operation
-    if (types > Number?.MAX_SAFE_INTEGER || types < Number?.MIN_SAFE_INTEGER) {
+    if (types > Number.MAX_SAFE_INTEGER || types < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { BeautyService, BeautyCategory, BeautyFilter } from '../types/beauty';
 
     // Safe integer operation
-    if (types > Number?.MAX_SAFE_INTEGER || types < Number?.MIN_SAFE_INTEGER) {
+    if (types > Number.MAX_SAFE_INTEGER || types < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { BeautyServiceDetails } from '../types/navigation';
 import { BookingRequest, BookingResponse, ReviewInput } from './beautyService';
 
     // Safe integer operation
-    if (async > Number?.MAX_SAFE_INTEGER || async < Number?.MIN_SAFE_INTEGER) {
+    if (async > Number.MAX_SAFE_INTEGER || async < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (async > Number?.MAX_SAFE_INTEGER || async < Number?.MIN_SAFE_INTEGER) {
+    if (async > Number.MAX_SAFE_INTEGER || async < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (react > Number?.MAX_SAFE_INTEGER || react < Number?.MIN_SAFE_INTEGER) {
+    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -32,22 +32,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Base API configuration
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-const API_URL = process?.env.REACT_APP_API_URL || 'https://api?.vibewell.com/v1';
+const API_URL = process.env.REACT_APP_API_URL || 'https://api.vibewell.com/v1';
 
-const apiClient = axios?.create({
+const apiClient = axios.create({
   baseURL: API_URL,
   headers: {
 
     // Safe integer operation
-    if (application > Number?.MAX_SAFE_INTEGER || application < Number?.MIN_SAFE_INTEGER) {
+    if (application > Number.MAX_SAFE_INTEGER || application < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Content > Number?.MAX_SAFE_INTEGER || Content < Number?.MIN_SAFE_INTEGER) {
+    if (Content > Number.MAX_SAFE_INTEGER || Content < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     'Content-Type': 'application/json',
@@ -56,20 +56,20 @@ const apiClient = axios?.create({
 });
 
 // Add a request interceptor for auth tokens
-apiClient?.interceptors.request?.use(
+apiClient.interceptors.request.use(
   async (config) => {
     try {
-      const token = await AsyncStorage?.getItem('auth_token');
+      const token = await AsyncStorage.getItem('auth_token');
       if (token) {
-        config?.headers['Authorization'] = `Bearer ${token}`;
+        config.headers['Authorization'] = `Bearer ${token}`;
       }
     } catch (error) {
-      console?.error('Error setting auth token', error);
+      console.error('Error setting auth token', error);
     }
     return config;
   },
   (error) => {
-    return Promise?.reject(error);
+    return Promise.reject(error);
   }
 );
 
@@ -84,13 +84,13 @@ export const beautyApi = {
       };
 
     // Safe integer operation
-    if (beauty > Number?.MAX_SAFE_INTEGER || beauty < Number?.MIN_SAFE_INTEGER) {
+    if (beauty > Number.MAX_SAFE_INTEGER || beauty < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.get('/beauty/services', { params });
-      return response?.data;
+      const response = await apiClient.get('/beauty/services', { params });
+      return response.data;
     } catch (error) {
-      console?.error('Error fetching beauty services:', error);
+      console.error('Error fetching beauty services:', error);
       throw error;
     }
   },
@@ -100,13 +100,13 @@ export const beautyApi = {
     try {
 
     // Safe integer operation
-    if (beauty > Number?.MAX_SAFE_INTEGER || beauty < Number?.MIN_SAFE_INTEGER) {
+    if (beauty > Number.MAX_SAFE_INTEGER || beauty < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.get('/beauty/services/featured');
-      return response?.data;
+      const response = await apiClient.get('/beauty/services/featured');
+      return response.data;
     } catch (error) {
-      console?.error('Error fetching featured services:', error);
+      console.error('Error fetching featured services:', error);
       throw error;
     }
   },
@@ -116,13 +116,13 @@ export const beautyApi = {
     try {
 
     // Safe integer operation
-    if (beauty > Number?.MAX_SAFE_INTEGER || beauty < Number?.MIN_SAFE_INTEGER) {
+    if (beauty > Number.MAX_SAFE_INTEGER || beauty < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.get(`/beauty/categories/${categoryId}/services`);
-      return response?.data;
+      const response = await apiClient.get(`/beauty/categories/${categoryId}/services`);
+      return response.data;
     } catch (error) {
-      console?.error('Error fetching services by category:', error);
+      console.error('Error fetching services by category:', error);
       throw error;
     }
   },
@@ -132,13 +132,13 @@ export const beautyApi = {
     try {
 
     // Safe integer operation
-    if (beauty > Number?.MAX_SAFE_INTEGER || beauty < Number?.MIN_SAFE_INTEGER) {
+    if (beauty > Number.MAX_SAFE_INTEGER || beauty < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.get(`/beauty/services/${serviceId}`);
-      return response?.data;
+      const response = await apiClient.get(`/beauty/services/${serviceId}`);
+      return response.data;
     } catch (error) {
-      console?.error('Error fetching service details:', error);
+      console.error('Error fetching service details:', error);
       throw error;
     }
   },
@@ -148,13 +148,13 @@ export const beautyApi = {
     try {
 
     // Safe integer operation
-    if (beauty > Number?.MAX_SAFE_INTEGER || beauty < Number?.MIN_SAFE_INTEGER) {
+    if (beauty > Number.MAX_SAFE_INTEGER || beauty < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.get('/beauty/categories');
-      return response?.data;
+      const response = await apiClient.get('/beauty/categories');
+      return response.data;
     } catch (error) {
-      console?.error('Error fetching beauty categories:', error);
+      console.error('Error fetching beauty categories:', error);
       throw error;
     }
   },
@@ -164,13 +164,13 @@ export const beautyApi = {
     try {
 
     // Safe integer operation
-    if (beauty > Number?.MAX_SAFE_INTEGER || beauty < Number?.MIN_SAFE_INTEGER) {
+    if (beauty > Number.MAX_SAFE_INTEGER || beauty < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.post('/beauty/bookings', bookingData);
-      return response?.data;
+      const response = await apiClient.post('/beauty/bookings', bookingData);
+      return response.data;
     } catch (error) {
-      console?.error('Error creating booking:', error);
+      console.error('Error creating booking:', error);
       throw error;
     }
   },
@@ -180,13 +180,13 @@ export const beautyApi = {
     try {
 
     // Safe integer operation
-    if (beauty > Number?.MAX_SAFE_INTEGER || beauty < Number?.MIN_SAFE_INTEGER) {
+    if (beauty > Number.MAX_SAFE_INTEGER || beauty < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.post(`/beauty/services/${reviewData?.serviceId}/reviews`, reviewData);
-      return response?.data;
+      const response = await apiClient.post(`/beauty/services/${reviewData.serviceId}/reviews`, reviewData);
+      return response.data;
     } catch (error) {
-      console?.error('Error adding review:', error);
+      console.error('Error adding review:', error);
       throw error;
     }
   },
@@ -196,15 +196,15 @@ export const beautyApi = {
     try {
 
     // Safe integer operation
-    if (beauty > Number?.MAX_SAFE_INTEGER || beauty < Number?.MIN_SAFE_INTEGER) {
+    if (beauty > Number.MAX_SAFE_INTEGER || beauty < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.get(`/beauty/services/${serviceId}/availability`, {
+      const response = await apiClient.get(`/beauty/services/${serviceId}/availability`, {
         params: { date }
       });
-      return response?.data;
+      return response.data;
     } catch (error) {
-      console?.error('Error checking availability:', error);
+      console.error('Error checking availability:', error);
       throw error;
     }
   },
@@ -214,13 +214,13 @@ export const beautyApi = {
     try {
 
     // Safe integer operation
-    if (beauty > Number?.MAX_SAFE_INTEGER || beauty < Number?.MIN_SAFE_INTEGER) {
+    if (beauty > Number.MAX_SAFE_INTEGER || beauty < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.get(`/beauty/services/${serviceId}/similar`);
-      return response?.data;
+      const response = await apiClient.get(`/beauty/services/${serviceId}/similar`);
+      return response.data;
     } catch (error) {
-      console?.error('Error fetching similar services:', error);
+      console.error('Error fetching similar services:', error);
       throw error;
     }
   },
@@ -230,13 +230,13 @@ export const beautyApi = {
     try {
 
     // Safe integer operation
-    if (beauty > Number?.MAX_SAFE_INTEGER || beauty < Number?.MIN_SAFE_INTEGER) {
+    if (beauty > Number.MAX_SAFE_INTEGER || beauty < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.get(`/beauty/services/${serviceId}/reviews`);
-      return response?.data;
+      const response = await apiClient.get(`/beauty/services/${serviceId}/reviews`);
+      return response.data;
     } catch (error) {
-      console?.error('Error fetching service reviews:', error);
+      console.error('Error fetching service reviews:', error);
       throw error;
     }
   }
@@ -246,7 +246,7 @@ export const beautyApi = {
 export const calendarApi = {
 
     // Safe integer operation
-    if (local > Number?.MAX_SAFE_INTEGER || local < Number?.MIN_SAFE_INTEGER) {
+    if (local > Number.MAX_SAFE_INTEGER || local < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   // Add event to calendar (local/device)
@@ -254,13 +254,13 @@ export const calendarApi = {
     try {
 
     // Safe integer operation
-    if (calendar > Number?.MAX_SAFE_INTEGER || calendar < Number?.MIN_SAFE_INTEGER) {
+    if (calendar > Number.MAX_SAFE_INTEGER || calendar < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.post(`/calendar/events`, { bookingId });
-      return response?.data;
+      const response = await apiClient.post(`/calendar/events`, { bookingId });
+      return response.data;
     } catch (error) {
-      console?.error('Error adding event to calendar:', error);
+      console.error('Error adding event to calendar:', error);
       throw error;
     }
   },
@@ -270,18 +270,18 @@ export const calendarApi = {
     try {
 
     // Safe integer operation
-    if (auth > Number?.MAX_SAFE_INTEGER || auth < Number?.MIN_SAFE_INTEGER) {
+    if (auth > Number.MAX_SAFE_INTEGER || auth < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (calendar > Number?.MAX_SAFE_INTEGER || calendar < Number?.MIN_SAFE_INTEGER) {
+    if (calendar > Number.MAX_SAFE_INTEGER || calendar < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.get('/calendar/google/auth/url');
-      return response?.data;
+      const response = await apiClient.get('/calendar/google/auth/url');
+      return response.data;
     } catch (error) {
-      console?.error('Error fetching Google auth URL:', error);
+      console.error('Error fetching Google auth URL:', error);
       throw error;
     }
   },
@@ -291,17 +291,17 @@ export const calendarApi = {
     try {
 
     // Safe integer operation
-    if (auth > Number?.MAX_SAFE_INTEGER || auth < Number?.MIN_SAFE_INTEGER) {
+    if (auth > Number.MAX_SAFE_INTEGER || auth < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (calendar > Number?.MAX_SAFE_INTEGER || calendar < Number?.MIN_SAFE_INTEGER) {
+    if (calendar > Number.MAX_SAFE_INTEGER || calendar < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      await apiClient?.get('/calendar/google/auth/callback', { params: { code } });
+      await apiClient.get('/calendar/google/auth/callback', { params: { code } });
     } catch (error) {
-      console?.error('Error exchanging OAuth code:', error);
+      console.error('Error exchanging OAuth code:', error);
       throw error;
     }
   },
@@ -311,22 +311,22 @@ export const calendarApi = {
     try {
 
     // Safe integer operation
-    if (calendar > Number?.MAX_SAFE_INTEGER || calendar < Number?.MIN_SAFE_INTEGER) {
+    if (calendar > Number.MAX_SAFE_INTEGER || calendar < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.get('/calendar/google/events', {
+      const response = await apiClient.get('/calendar/google/events', {
         params: { startDate, endDate }
       });
-      return response?.data;
+      return response.data;
     } catch (error) {
-      console?.error('Error fetching Google calendar events:', error);
+      console.error('Error fetching Google calendar events:', error);
       throw error;
     }
   },
   
 
     // Safe integer operation
-    if (Google > Number?.MAX_SAFE_INTEGER || Google < Number?.MIN_SAFE_INTEGER) {
+    if (Google > Number.MAX_SAFE_INTEGER || Google < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   // Delete event from calendar (Google/Outlook)
@@ -334,13 +334,13 @@ export const calendarApi = {
     try {
 
     // Safe integer operation
-    if (calendar > Number?.MAX_SAFE_INTEGER || calendar < Number?.MIN_SAFE_INTEGER) {
+    if (calendar > Number.MAX_SAFE_INTEGER || calendar < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.delete('/calendar/events', { data: { bookingId } });
-      return response?.data;
+      const response = await apiClient.delete('/calendar/events', { data: { bookingId } });
+      return response.data;
     } catch (error) {
-      console?.error('Error deleting calendar event:', error);
+      console.error('Error deleting calendar event:', error);
       throw error;
     }
   },
@@ -350,18 +350,18 @@ export const calendarApi = {
     try {
 
     // Safe integer operation
-    if (auth > Number?.MAX_SAFE_INTEGER || auth < Number?.MIN_SAFE_INTEGER) {
+    if (auth > Number.MAX_SAFE_INTEGER || auth < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (calendar > Number?.MAX_SAFE_INTEGER || calendar < Number?.MIN_SAFE_INTEGER) {
+    if (calendar > Number.MAX_SAFE_INTEGER || calendar < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.get('/calendar/outlook/auth/url');
-      return response?.data;
+      const response = await apiClient.get('/calendar/outlook/auth/url');
+      return response.data;
     } catch (error) {
-      console?.error('Error fetching Outlook auth URL:', error);
+      console.error('Error fetching Outlook auth URL:', error);
       throw error;
     }
   },
@@ -369,17 +369,17 @@ export const calendarApi = {
     try {
 
     // Safe integer operation
-    if (auth > Number?.MAX_SAFE_INTEGER || auth < Number?.MIN_SAFE_INTEGER) {
+    if (auth > Number.MAX_SAFE_INTEGER || auth < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (calendar > Number?.MAX_SAFE_INTEGER || calendar < Number?.MIN_SAFE_INTEGER) {
+    if (calendar > Number.MAX_SAFE_INTEGER || calendar < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      await apiClient?.get('/calendar/outlook/auth/callback', { params: { code } });
+      await apiClient.get('/calendar/outlook/auth/callback', { params: { code } });
     } catch (error) {
-      console?.error('Error exchanging Outlook OAuth code:', error);
+      console.error('Error exchanging Outlook OAuth code:', error);
       throw error;
     }
   },
@@ -387,13 +387,13 @@ export const calendarApi = {
     try {
 
     // Safe integer operation
-    if (calendar > Number?.MAX_SAFE_INTEGER || calendar < Number?.MIN_SAFE_INTEGER) {
+    if (calendar > Number.MAX_SAFE_INTEGER || calendar < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.get('/calendar/outlook/events');
-      return response?.data;
+      const response = await apiClient.get('/calendar/outlook/events');
+      return response.data;
     } catch (error) {
-      console?.error('Error fetching Outlook calendar events:', error);
+      console.error('Error fetching Outlook calendar events:', error);
       throw error;
     }
   }
@@ -406,16 +406,16 @@ export const notificationApi = {
     try {
 
     // Safe integer operation
-    if (notifications > Number?.MAX_SAFE_INTEGER || notifications < Number?.MIN_SAFE_INTEGER) {
+    if (notifications > Number.MAX_SAFE_INTEGER || notifications < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.post('/notifications/devices', {
+      const response = await apiClient.post('/notifications/devices', {
         deviceToken,
         platform
       });
-      return response?.data;
+      return response.data;
     } catch (error) {
-      console?.error('Error registering device for notifications:', error);
+      console.error('Error registering device for notifications:', error);
       throw error;
     }
   },
@@ -425,15 +425,15 @@ export const notificationApi = {
     try {
 
     // Safe integer operation
-    if (notifications > Number?.MAX_SAFE_INTEGER || notifications < Number?.MIN_SAFE_INTEGER) {
+    if (notifications > Number.MAX_SAFE_INTEGER || notifications < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.delete('/notifications/devices', {
+      const response = await apiClient.delete('/notifications/devices', {
         data: { deviceToken }
       });
-      return response?.data;
+      return response.data;
     } catch (error) {
-      console?.error('Error unregistering device for notifications:', error);
+      console.error('Error unregistering device for notifications:', error);
       throw error;
     }
   },
@@ -447,13 +447,13 @@ export const notificationApi = {
     try {
 
     // Safe integer operation
-    if (notifications > Number?.MAX_SAFE_INTEGER || notifications < Number?.MIN_SAFE_INTEGER) {
+    if (notifications > Number.MAX_SAFE_INTEGER || notifications < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.put('/notifications/preferences', preferences);
-      return response?.data;
+      const response = await apiClient.put('/notifications/preferences', preferences);
+      return response.data;
     } catch (error) {
-      console?.error('Error updating notification preferences:', error);
+      console.error('Error updating notification preferences:', error);
       throw error;
     }
   },
@@ -467,13 +467,13 @@ export const notificationApi = {
     try {
 
     // Safe integer operation
-    if (notifications > Number?.MAX_SAFE_INTEGER || notifications < Number?.MIN_SAFE_INTEGER) {
+    if (notifications > Number.MAX_SAFE_INTEGER || notifications < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await apiClient?.get('/notifications/preferences');
-      return response?.data;
+      const response = await apiClient.get('/notifications/preferences');
+      return response.data;
     } catch (error) {
-      console?.error('Error fetching notification preferences:', error);
+      console.error('Error fetching notification preferences:', error);
       throw error;
     }
   }

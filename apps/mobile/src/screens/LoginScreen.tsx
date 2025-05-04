@@ -2,12 +2,12 @@ import React from 'react';
 import { View, Text, Button, ActivityIndicator, StyleSheet } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
 
-const LoginScreen: React?.FC = () => {
+const LoginScreen: React.FC = () => {
   const { isLoading, signIn } = useAuth(); // signIn from unified auth context
 
   return (
-    <View style={styles?.container}>
-      <Text style={styles?.title}>Welcome Back</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Welcome Back</Text>
       {isLoading ? (
         <ActivityIndicator size="large" color="#2A9D8F" />
       ) : (
@@ -17,7 +17,7 @@ const LoginScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',

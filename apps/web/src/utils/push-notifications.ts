@@ -29,7 +29,7 @@ export const requestNotificationPermission = async (): Promise<NotificationPermi
   }
 
   if (!('Notification' in window)) {
-    console?.warn('Notifications not supported in this browser');
+    console.warn('Notifications not supported in this browser');
     return null;
   }
 
@@ -37,7 +37,7 @@ export const requestNotificationPermission = async (): Promise<NotificationPermi
     const permission = await Notification.requestPermission();
     return permission;
   } catch (error) {
-    console?.error('Error requesting notification permission:', error);
+    console.error('Error requesting notification permission:', error);
     return null;
   }
 };
@@ -50,7 +50,7 @@ export const registerServiceWorker = async (): Promise<ServiceWorkerRegistration
   }
 
   if (!('serviceWorker' in navigator)) {
-    console?.warn('Service Workers not supported in this browser');
+    console.warn('Service Workers not supported in this browser');
     return null;
   }
 
@@ -58,7 +58,7 @@ export const registerServiceWorker = async (): Promise<ServiceWorkerRegistration
     const registration = await navigator.serviceWorker.register('/service-worker.js');
     return registration;
   } catch (error) {
-    console?.error('Service Worker registration failed:', error);
+    console.error('Service Worker registration failed:', error);
     return null;
   }
 };
@@ -93,7 +93,7 @@ export const getOrCreatePushSubscription = async (
 
     return subscription;
   } catch (error) {
-    console?.error('Error getting/creating push subscription:', error);
+    console.error('Error getting/creating push subscription:', error);
     return null;
   }
 };
@@ -134,13 +134,13 @@ export const saveSubscription = async (
       }),
     });
 
-    if (!response?.ok) {
+    if (!response.ok) {
       throw new Error('Failed to save subscription');
     }
 
     return true;
   } catch (error) {
-    console?.error('Error saving subscription:', error);
+    console.error('Error saving subscription:', error);
     return false;
   }
 };
@@ -165,13 +165,13 @@ export const removeSubscription = async (
       }),
     });
 
-    if (!response?.ok) {
+    if (!response.ok) {
       throw new Error('Failed to remove subscription');
     }
 
     return true;
   } catch (error) {
-    console?.error('Error removing subscription:', error);
+    console.error('Error removing subscription:', error);
     return false;
   }
 };
@@ -179,11 +179,11 @@ export const removeSubscription = async (
 // Show a notification
 export const showNotification = (title: string, options: NotificationOptions = {}): void => {
   if (!('Notification' in window)) {
-    console?.warn('Notifications not supported');
+    console.warn('Notifications not supported');
     return;
   }
 
-  if (Notification?.permission === 'granted') {
+  if (Notification.permission === 'granted') {
     navigator.serviceWorker.ready
       .then((registration) => {
         registration.showNotification(title, {
@@ -193,10 +193,10 @@ export const showNotification = (title: string, options: NotificationOptions = {
         });
       })
       .catch((error) => {
-        console?.error('Error showing notification:', error);
+        console.error('Error showing notification:', error);
       });
   } else {
-    console?.warn('Notification permission not granted');
+    console.warn('Notification permission not granted');
   }
 };
 
@@ -225,11 +225,11 @@ export interface PushNotificationPayload {
  *
 
  * // Initialize on app start
- * const publicVapidKey = process?.env.NEXT_PUBLIC_VAPID_KEY;
+ * const publicVapidKey = process.env.NEXT_PUBLIC_VAPID_KEY;
  * if (publicVapidKey) {
  *   initPushNotifications(publicVapidKey, userId).then(success => {
  *     if (success) {
- *       console?.log('Push notifications initialized successfully');
+ *       console.log('Push notifications initialized successfully');
  *     }
  *   });
  * }

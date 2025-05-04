@@ -29,7 +29,7 @@ export default function RatingBreakdown({
     <div className="rounded-lg bg-white p-6 shadow">
       <div className="mb-6 flex items-center">
         <div className="flex items-center">
-          <span className="mr-2 text-4xl font-bold">{averageRating?.toFixed(1)}</span>
+          <span className="mr-2 text-4xl font-bold">{averageRating.toFixed(1)}</span>
           <Star className="h-8 w-8 fill-yellow-400 text-yellow-400" fill="currentColor" />
         </div>
         <div className="ml-4 text-sm text-gray-500">
@@ -44,9 +44,9 @@ export default function RatingBreakdown({
             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" fill="currentColor" />
           </div>
           <div className="flex-1">
-            <div className="h-2?.5 w-full rounded-full bg-gray-200">
+            <div className="h-2.5 w-full rounded-full bg-gray-200">
               <div
-                className="h-2?.5 rounded-full bg-yellow-400"
+                className="h-2.5 rounded-full bg-yellow-400"
                 style={{ width: `${calculatePercentage(5)}%` }}
               ></div>
             </div>
@@ -62,9 +62,9 @@ export default function RatingBreakdown({
             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" fill="currentColor" />
           </div>
           <div className="flex-1">
-            <div className="h-2?.5 w-full rounded-full bg-gray-200">
+            <div className="h-2.5 w-full rounded-full bg-gray-200">
               <div
-                className="h-2?.5 rounded-full bg-yellow-400"
+                className="h-2.5 rounded-full bg-yellow-400"
                 style={{ width: `${calculatePercentage(4)}%` }}
               ></div>
             </div>
@@ -80,9 +80,9 @@ export default function RatingBreakdown({
             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" fill="currentColor" />
           </div>
           <div className="flex-1">
-            <div className="h-2?.5 w-full rounded-full bg-gray-200">
+            <div className="h-2.5 w-full rounded-full bg-gray-200">
               <div
-                className="h-2?.5 rounded-full bg-yellow-400"
+                className="h-2.5 rounded-full bg-yellow-400"
                 style={{ width: `${calculatePercentage(3)}%` }}
               ></div>
             </div>
@@ -98,9 +98,9 @@ export default function RatingBreakdown({
             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" fill="currentColor" />
           </div>
           <div className="flex-1">
-            <div className="h-2?.5 w-full rounded-full bg-gray-200">
+            <div className="h-2.5 w-full rounded-full bg-gray-200">
               <div
-                className="h-2?.5 rounded-full bg-yellow-400"
+                className="h-2.5 rounded-full bg-yellow-400"
                 style={{ width: `${calculatePercentage(2)}%` }}
               ></div>
             </div>
@@ -116,9 +116,9 @@ export default function RatingBreakdown({
             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" fill="currentColor" />
           </div>
           <div className="flex-1">
-            <div className="h-2?.5 w-full rounded-full bg-gray-200">
+            <div className="h-2.5 w-full rounded-full bg-gray-200">
               <div
-                className="h-2?.5 rounded-full bg-yellow-400"
+                className="h-2.5 rounded-full bg-yellow-400"
                 style={{ width: `${calculatePercentage(1)}%` }}
               ></div>
             </div>

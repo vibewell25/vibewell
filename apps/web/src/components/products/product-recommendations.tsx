@@ -35,15 +35,15 @@ export function ProductRecommendations({
   // Fetch recommendations on component mount
   useEffect(() => {
     const fetchRecommendations = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       setLoading(true);
       setError(null);
 
       try {
         // If product ID is provided, fetch related items
         if (productId) {
-          const relatedProducts = await recommendationService?.getRecommendations({
+          const relatedProducts = await recommendationService.getRecommendations({
             itemId: productId,
             limit,
           });
@@ -52,40 +52,40 @@ export function ProductRecommendations({
         }
 
         // Also fetch personalized recommendations if user is logged in
-        if (user?.id) {
-          const personalizedProducts = await recommendationService?.getRecommendations({
-            userId: user?.id,
+        if (user.id) {
+          const personalizedProducts = await recommendationService.getRecommendations({
+            userId: user.id,
             limit,
           });
           setRecommendations(personalizedProducts);
 
           // Fetch feedback-based recommendations if user is logged in and feedback tab is shown
           if (showFeedbackTab) {
-            const feedbackProducts = await recommendationService?.getFeedbackBasedRecommendations(
-              user?.id,
+            const feedbackProducts = await recommendationService.getFeedbackBasedRecommendations(
+              user.id,
               limit,
             );
             setFeedbackItems(feedbackProducts);
 
             // If feedback-based recommendations are available, make that the default tab
-            if (feedbackProducts?.length > 0 && !productId) {
+            if (feedbackProducts.length > 0 && !productId) {
               setActiveTab('feedback');
             }
           }
 
           // If no product ID and no feedback recommendations, set active tab to 'for-you'
-          if (!productId && (feedbackItems?.length === 0 || !showFeedbackTab)) {
+          if (!productId && (feedbackItems.length === 0 || !showFeedbackTab)) {
             setActiveTab('for-you');
           }
         } else {
           // For anonymous users, get trending/featured products
-          const trendingProducts = await recommendationService?.getRecommendations({
+          const trendingProducts = await recommendationService.getRecommendations({
             limit,
           });
           setRecommendations(trendingProducts);
         }
       } catch (err) {
-        console?.error('Error fetching recommendations:', err);
+        console.error('Error fetching recommendations:', err);
         setError('Failed to load recommendations.');
       } finally {
         setLoading(false);
@@ -93,17 +93,17 @@ export function ProductRecommendations({
     };
 
     fetchRecommendations();
-  }, [productId, user?.id, limit, showFeedbackTab]);
+  }, [productId, user.id, limit, showFeedbackTab]);
 
   // Track product view when it's displayed in recommendations
   const handleProductClick = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');product: Product) => {
-    if (user?.id) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');product: Product) => {
+    if (user.id) {
       try {
-        await recommendationService?.trackProductView(user?.id, product?.id);
+        await recommendationService.trackProductView(user.id, product.id);
       } catch (error) {
-        console?.error('Error tracking product view:', error);
+        console.error('Error tracking product view:', error);
       }
     }
   };
@@ -113,7 +113,7 @@ export function ProductRecommendations({
     if (loading) {
       return (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {Array?.from({ length: limit }).map((_, i) => (
+          {Array.from({ length: limit }).map((_, i) => (
             <div key={i} className="space-y-3">
               <Skeleton className="h-40 w-full rounded-lg" />
               <Skeleton className="h-4 w-2/3" />
@@ -133,7 +133,7 @@ export function ProductRecommendations({
       );
     }
 
-    if (products?.length === 0) {
+    if (products.length === 0) {
       return (
         <div className="py-4 text-center">
           <p className="text-sm text-muted-foreground">No recommendations available.</p>
@@ -143,8 +143,8 @@ export function ProductRecommendations({
 
     return (
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {products?.map((product) => (
-          <div key={product?.id} onClick={() => handleProductClick(product)}>
+        {products.map((product) => (
+          <div key={product.id} onClick={() => handleProductClick(product)}>
             <ProductCard product={product} />
           </div>
         ))}
@@ -152,8 +152,8 @@ export function ProductRecommendations({
     );
   };
 
-  // If no tabs needed (e?.g., just showing recommendations)
-  if (!showTabs || (!productId && recommendations?.length === 0 && feedbackItems?.length === 0)) {
+  // If no tabs needed (e.g., just showing recommendations)
+  if (!showTabs || (!productId && recommendations.length === 0 && feedbackItems.length === 0)) {
     return (
       <div className="space-y-4">
         <h2 className="text-2xl font-semibold">{title}</h2>
@@ -170,7 +170,7 @@ export function ProductRecommendations({
 
   // Helper to decide which tabs to show
   const shouldShowFeedbackTab = () => {
-    return showFeedbackTab && user?.id && feedbackItems?.length > 0;
+    return showFeedbackTab && user.id && feedbackItems.length > 0;
   };
 
   // With tabs (for both related items and personalized recommendations)

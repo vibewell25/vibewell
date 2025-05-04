@@ -4,28 +4,28 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { Business, BusinessFormRouteProp, BusinessFormNavigationProp } from '../types/navigation';
 import { createBusiness, updateBusiness } from '../services/businessService';
 
-const BusinessFormScreen: React?.FC = () => {
+const BusinessFormScreen: React.FC = () => {
   const route = useRoute<BusinessFormRouteProp>();
   const navigation = useNavigation<BusinessFormNavigationProp>();
-  const { business: existing, providerId: routeProviderId } = route?.params;
-  const [name, setName] = useState(existing?.name ?? '');
-  const [address, setAddress] = useState(existing?.address ?? '');
-  const [description, setDescription] = useState(existing?.description ?? '');
+  const { business: existing, providerId: routeProviderId } = route.params;
+  const [name, setName] = useState(existing.name ?? '');
+  const [address, setAddress] = useState(existing.address ?? '');
+  const [description, setDescription] = useState(existing.description ?? '');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
       if (existing) {
-        await updateBusiness(existing?.id, { name, address, description });
+        await updateBusiness(existing.id, { name, address, description });
       } else {
-        await createBusiness({ providerId: existing?.providerId ?? routeProviderId ?? '', name, address, description });
+        await createBusiness({ providerId: existing.providerId ?? routeProviderId ?? '', name, address, description });
       }
-      navigation?.goBack();
+      navigation.goBack();
     } catch {
-      Alert?.alert('Error', 'Failed to save business');
+      Alert.alert('Error', 'Failed to save business');
     } finally {
       setLoading(false);
     }
@@ -43,7 +43,7 @@ const BusinessFormScreen: React?.FC = () => {
         onChangeText={setDescription}
         style={{ borderWidth: 1, borderColor: '#ccc', marginBottom: 16, padding: 8 }}
       />
-      <Button title={existing ? 'Update Business' : 'Create Business'} onPress={handleSubmit} disabled={loading || !name?.trim()} />
+      <Button title={existing ? 'Update Business' : 'Create Business'} onPress={handleSubmit} disabled={loading || !name.trim()} />
     </View>
   );
 };

@@ -8,7 +8,7 @@ import { RootStackParamList } from '../types/navigation';
 
 type ServiceListNavigationProp = StackNavigationProp<RootStackParamList, 'ServiceList'>;
 
-const ServiceListScreen: React?.FC = () => {
+const ServiceListScreen: React.FC = () => {
   const navigation = useNavigation<ServiceListNavigationProp>();
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
@@ -16,7 +16,7 @@ const ServiceListScreen: React?.FC = () => {
   useEffect(() => {
     fetchServices()
       .then(setServices)
-      .catch(console?.error)
+      .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
 
@@ -26,19 +26,19 @@ const ServiceListScreen: React?.FC = () => {
     <View style={{ flex: 1, padding: 16 }}>
       <FlatList
         data={services}
-        keyExtractor={(item) => item?.id}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigation?.navigate('ServiceDetail', { service: item })}>
+          <TouchableOpacity onPress={() => navigation.navigate('ServiceDetail', { service: item })}>
             <View style={{ padding: 12, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
-              <Text style={{ fontSize: 18 }}>{item?.name}</Text>
-              <Text style={{ color: 'gray' }}>${item?.price.toFixed(2)}</Text>
+              <Text style={{ fontSize: 18 }}>{item.name}</Text>
+              <Text style={{ color: 'gray' }}>${item.price.toFixed(2)}</Text>
             </View>
           </TouchableOpacity>
         )}
       />
       <TouchableOpacity
         style={{ position: 'absolute', right: 16, bottom: 16, backgroundColor: '#2A9D8F', borderRadius: 24, padding: 16 }}
-        onPress={() => navigation?.navigate('ServiceForm', {})}
+        onPress={() => navigation.navigate('ServiceForm', {})}
       >
         <Text style={{ color: '#fff', fontSize: 24 }}>+</Text>
       </TouchableOpacity>

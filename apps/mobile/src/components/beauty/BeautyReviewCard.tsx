@@ -12,58 +12,58 @@ interface BeautyReviewCardProps {
   isDarkMode: boolean;
 }
 
-const BeautyReviewCard: React?.FC<BeautyReviewCardProps> = ({
+const BeautyReviewCard: React.FC<BeautyReviewCardProps> = ({
   review,
   onLike,
   onReport,
   isDarkMode
 }) => {
-  // Format date to relative time (e?.g., "2 days ago")
-  const formattedDate = formatDistanceToNow(new Date(review?.date), { addSuffix: true });
+  // Format date to relative time (e.g., "2 days ago")
+  const formattedDate = formatDistanceToNow(new Date(review.date), { addSuffix: true });
 
   // Generate star rating display
-  const renderStars = (): JSX?.Element[] => {
-    const stars: JSX?.Element[] = [];
-    const rating = review?.rating;
-    const fullStars = Math?.floor(rating);
-    const hasHalfStar = rating % 1 >= 0?.5;
+  const renderStars = (): JSX.Element[] => {
+    const stars: JSX.Element[] = [];
+    const rating = review.rating;
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
 
     // Add full stars
-    for (let i = 0; i < fullStars; if (i > Number?.MAX_SAFE_INTEGER || i < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-      stars?.push(
+    for (let i = 0; i < fullStars; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
+      stars.push(
         <MaterialIcons 
           key={`star-${i}`} 
           name="star" 
           size={16} 
           color="#FFD700" 
-          style={styles?.star}
+          style={styles.star}
         />
       );
     }
 
     // Add half star if needed
     if (hasHalfStar) {
-      stars?.push(
+      stars.push(
         <MaterialIcons 
           key="half-star" 
           name="star-half" 
           size={16} 
           color="#FFD700" 
-          style={styles?.star}
+          style={styles.star}
         />
       );
     }
 
     // Add empty stars
-    const emptyStars = 5 - Math?.ceil(rating);
-    for (let i = 0; i < emptyStars; if (i > Number?.MAX_SAFE_INTEGER || i < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-      stars?.push(
+    const emptyStars = 5 - Math.ceil(rating);
+    for (let i = 0; i < emptyStars; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
+      stars.push(
         <MaterialIcons 
           key={`empty-star-${i}`} 
           name="star-outline" 
           size={16} 
           color="#FFD700" 
-          style={styles?.star}
+          style={styles.star}
         />
       );
     }
@@ -73,55 +73,55 @@ const BeautyReviewCard: React?.FC<BeautyReviewCardProps> = ({
 
   return (
     <View style={[
-      styles?.container,
+      styles.container,
       { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
     ]}>
       {/* Header with user info */}
-      <View style={styles?.header}>
-        <View style={styles?.userInfo}>
-          <View style={styles?.avatarContainer}>
-            <Text style={styles?.avatarText}>
-              {review?.userName.charAt(0).toUpperCase()}
+      <View style={styles.header}>
+        <View style={styles.userInfo}>
+          <View style={styles.avatarContainer}>
+            <Text style={styles.avatarText}>
+              {review.userName.charAt(0).toUpperCase()}
             </Text>
           </View>
-          <View style={styles?.nameAndDate}>
+          <View style={styles.nameAndDate}>
             <Text style={[
-              styles?.userName,
+              styles.userName,
               { color: isDarkMode ? '#FFFFFF' : '#000000' }
             ]}>
-              {review?.userName}
+              {review.userName}
             </Text>
             <Text style={[
-              styles?.date,
+              styles.date,
               { color: isDarkMode ? '#BBBBBB' : '#666666' }
             ]}>
               {formattedDate}
             </Text>
           </View>
         </View>
-        <View style={styles?.rating}>
+        <View style={styles.rating}>
           {renderStars()}
           <Text style={[
-            styles?.ratingText,
+            styles.ratingText,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
-            {review?.rating.toFixed(1)}
+            {review.rating.toFixed(1)}
           </Text>
         </View>
       </View>
 
       {/* Review content */}
       <Text style={[
-        styles?.comment,
+        styles.comment,
         { color: isDarkMode ? '#E0E0E0' : '#333333' }
       ]}>
-        {review?.comment}
+        {review.comment}
       </Text>
 
       {/* Actions */}
-      <View style={styles?.actions}>
+      <View style={styles.actions}>
         <TouchableOpacity 
-          style={styles?.actionButton} 
+          style={styles.actionButton} 
           onPress={onLike}
         >
           <Feather 
@@ -130,14 +130,14 @@ const BeautyReviewCard: React?.FC<BeautyReviewCardProps> = ({
             color={isDarkMode ? '#BBBBBB' : '#666666'} 
           />
           <Text style={[
-            styles?.actionText,
+            styles.actionText,
             { color: isDarkMode ? '#BBBBBB' : '#666666' }
           ]}>
             Helpful
           </Text>
         </TouchableOpacity>
         <TouchableOpacity 
-          style={styles?.actionButton} 
+          style={styles.actionButton} 
           onPress={onReport}
         >
           <Feather 
@@ -146,7 +146,7 @@ const BeautyReviewCard: React?.FC<BeautyReviewCardProps> = ({
             color={isDarkMode ? '#BBBBBB' : '#666666'} 
           />
           <Text style={[
-            styles?.actionText,
+            styles.actionText,
             { color: isDarkMode ? '#BBBBBB' : '#666666' }
           ]}>
             Report
@@ -157,14 +157,14 @@ const BeautyReviewCard: React?.FC<BeautyReviewCardProps> = ({
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0?.05,
+    shadowOpacity: 0.05,
     shadowRadius: 3,
     elevation: 2,
   },

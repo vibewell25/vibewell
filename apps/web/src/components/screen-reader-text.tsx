@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface ScreenReaderTextProps {
-  children: React?.ReactNode;
+  children: React.ReactNode;
 }
 
-export const ScreenReaderText: React?.FC<ScreenReaderTextProps> = ({ children }) => {
+export const ScreenReaderText: React.FC<ScreenReaderTextProps> = ({ children }) => {
   return <span className="sr-only">{children}</span>;
 };
 

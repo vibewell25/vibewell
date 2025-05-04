@@ -24,16 +24,16 @@ export function VirtualTryOn({ serviceId, onComplete }: VirtualTryOnProps) {
   const { user } = useUser();
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    if (!acceptedFiles?.length) return;
+    if (!acceptedFiles.length) return;
 
     const file = acceptedFiles[0];
     const reader = new FileReader();
 
-    reader?.onloadend = () => {
-      setPreview(reader?.result as string);
+    reader.onloadend = () => {
+      setPreview(reader.result as string);
     };
 
-    reader?.readAsDataURL(file);
+    reader.readAsDataURL(file);
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -46,8 +46,8 @@ export function VirtualTryOn({ serviceId, onComplete }: VirtualTryOnProps) {
   });
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!preview || !user) return;
 
     setIsLoading(true);
@@ -58,21 +58,21 @@ export function VirtualTryOn({ serviceId, onComplete }: VirtualTryOnProps) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify({
+        body: JSON.stringify({
           image: preview,
           serviceId,
         }),
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to process image');
       }
 
-      const data = await response?.json();
-      setResult(data?.resultUrl);
+      const data = await response.json();
+      setResult(data.resultUrl);
 
       if (onComplete) {
-        onComplete(data?.resultUrl);
+        onComplete(data.resultUrl);
       }
 
       toast({
@@ -103,17 +103,17 @@ export function VirtualTryOn({ serviceId, onComplete }: VirtualTryOnProps) {
             {...getRootProps()}
             p={6}
             border="2px dashed"
-            borderColor={isDragActive ? 'blue?.400' : 'gray?.200'}
+            borderColor={isDragActive ? 'blue.400' : 'gray.200'}
             borderRadius="md"
             cursor="pointer"
-            transition="all 0?.2s"
-            _hover={{ borderColor: 'blue?.400' }}
+            transition="all 0.2s"
+            _hover={{ borderColor: 'blue.400' }}
           >
             <input {...getInputProps()} />
             {preview ? (
               <Image src={preview} alt="Preview" maxH="300px" mx="auto" objectFit="contain" />
             ) : (
-              <Text textAlign="center" color="gray?.500">
+              <Text textAlign="center" color="gray.500">
                 {isDragActive
                   ? 'Drop the image here'
                   : 'Drag and drop an image here, or click to select'}
@@ -126,7 +126,7 @@ export function VirtualTryOn({ serviceId, onComplete }: VirtualTryOnProps) {
           <Box
             p={6}
             border="2px solid"
-            borderColor="gray?.200"
+            borderColor="gray.200"
             borderRadius="md"
             h="full"
             display="flex"
@@ -138,7 +138,7 @@ export function VirtualTryOn({ serviceId, onComplete }: VirtualTryOnProps) {
             ) : result ? (
               <Image src={result} alt="Result" maxH="300px" mx="auto" objectFit="contain" />
             ) : (
-              <Text textAlign="center" color="gray?.500">
+              <Text textAlign="center" color="gray.500">
                 Processed image will appear here
               </Text>
             )}

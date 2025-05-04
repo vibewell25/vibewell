@@ -41,23 +41,23 @@ export class BackupService {
   private provider: any;
 
   constructor(config: BackupConfig) {
-    this?.config = config;
-    this?.provider = this?.initializeProvider();
+    this.config = config;
+    this.provider = this.initializeProvider();
   }
 
   /**
    * Initialize the appropriate cloud storage provider based on config
    */
   private initializeProvider() {
-    switch (this?.config.provider) {
+    switch (this.config.provider) {
       case 'aws':
-        return this?.initializeAWS();
+        return this.initializeAWS();
       case 'google':
-        return this?.initializeGCP();
+        return this.initializeGCP();
       case 'azure':
-        return this?.initializeAzure();
+        return this.initializeAzure();
       default:
-        throw new Error(`Unsupported provider: ${this?.config.provider}`);
+        throw new Error(`Unsupported provider: ${this.config.provider}`);
     }
   }
 
@@ -66,13 +66,13 @@ export class BackupService {
    */
   private initializeAWS() {
     // In a real implementation, this would use the AWS SDK
-    console?.log('Initializing AWS S3 client');
+    console.log('Initializing AWS S3 client');
     return {
       uploadBackup: async (data: any, key: string) => {
-        console?.log(`[MOCK] Uploading to AWS S3: ${this?.config.bucketName}/${key}`);
+        console.log(`[MOCK] Uploading to AWS S3: ${this.config.bucketName}/${key}`);
         return {
-          location: `s3://${this?.config.bucketName}/${key}`,
-          size: JSON?.stringify(data).length,
+          location: `s3://${this.config.bucketName}/${key}`,
+          size: JSON.stringify(data).length,
         };
       },
     };
@@ -83,13 +83,13 @@ export class BackupService {
    */
   private initializeGCP() {
     // In a real implementation, this would use the Google Cloud Storage SDK
-    console?.log('Initializing Google Cloud Storage client');
+    console.log('Initializing Google Cloud Storage client');
     return {
       uploadBackup: async (data: any, key: string) => {
-        console?.log(`[MOCK] Uploading to GCS: ${this?.config.bucketName}/${key}`);
+        console.log(`[MOCK] Uploading to GCS: ${this.config.bucketName}/${key}`);
         return {
-          location: `gs://${this?.config.bucketName}/${key}`,
-          size: JSON?.stringify(data).length,
+          location: `gs://${this.config.bucketName}/${key}`,
+          size: JSON.stringify(data).length,
         };
       },
     };
@@ -100,13 +100,13 @@ export class BackupService {
    */
   private initializeAzure() {
     // In a real implementation, this would use the Azure Storage SDK
-    console?.log('Initializing Azure Blob Storage client');
+    console.log('Initializing Azure Blob Storage client');
     return {
       uploadBackup: async (data: any, key: string) => {
-        console?.log(`[MOCK] Uploading to Azure: ${this?.config.bucketName}/${key}`);
+        console.log(`[MOCK] Uploading to Azure: ${this.config.bucketName}/${key}`);
         return {
-          location: `https://${this?.config.bucketName}.blob?.core.windows?.net/${key}`,
-          size: JSON?.stringify(data).length,
+          location: `https://${this.config.bucketName}.blob.core.windows.net/${key}`,
+          size: JSON.stringify(data).length,
         };
       },
     };
@@ -118,20 +118,20 @@ export class BackupService {
   public async backup(data: any, name: string): Promise<BackupResult> {
     try {
       const timestamp = new Date().toISOString();
-      const key = `${this?.config.prefix || 'backups'}/${name}-${timestamp}.json`;
+      const key = `${this.config.prefix || 'backups'}/${name}-${timestamp}.json`;
 
-      console?.log(`Starting backup: ${key}`);
+      console.log(`Starting backup: ${key}`);
 
-      const result = await this?.provider.uploadBackup(data, key);
+      const result = await this.provider.uploadBackup(data, key);
 
       return {
         success: true,
         timestamp,
-        location: result?.location,
-        size: result?.size,
+        location: result.location,
+        size: result.size,
       };
     } catch (error) {
-      console?.error('Backup failed:', error);
+      console.error('Backup failed:', error);
       return {
         success: false,
         timestamp: new Date().toISOString(),
@@ -145,7 +145,7 @@ export class BackupService {
    */
   public async listBackups(prefix?: string): Promise<string[]> {
     // This is a mock implementation
-    console?.log(`Listing backups with prefix: ${prefix || this?.config.prefix || 'backups'}`);
+    console.log(`Listing backups with prefix: ${prefix || this.config.prefix || 'backups'}`);
     return [`backup-${new Date().toISOString()}.json`];
   }
 
@@ -154,7 +154,7 @@ export class BackupService {
    */
   public async restore(backupPath: string): Promise<any> {
     // This is a mock implementation
-    console?.log(`Restoring from backup: ${backupPath}`);
+    console.log(`Restoring from backup: ${backupPath}`);
     return { data: 'Mock restored data' };
   }
 
@@ -162,14 +162,14 @@ export class BackupService {
    * Delete old backups beyond retention period
    */
   public async cleanupOldBackups(): Promise<string[]> {
-    if (!this?.config.retentionDays) {
-      console?.log('No retention period specified, skipping cleanup');
+    if (!this.config.retentionDays) {
+      console.log('No retention period specified, skipping cleanup');
       return [];
     }
 
     // This is a mock implementation
-    console?.log(`Cleaning up backups older than ${this?.config.retentionDays} days`);
-    return ['old-backup-deleted?.json'];
+    console.log(`Cleaning up backups older than ${this.config.retentionDays} days`);
+    return ['old-backup-deleted.json'];
   }
 
   /**
@@ -177,7 +177,7 @@ export class BackupService {
    */
   public async verifyBackup(backupPath: string): Promise<boolean> {
     // This is a mock implementation
-    console?.log(`Verifying backup integrity: ${backupPath}`);
+    console.log(`Verifying backup integrity: ${backupPath}`);
     return true;
   }
 }

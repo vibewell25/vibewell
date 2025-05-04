@@ -44,7 +44,7 @@ export function createTestRunner(): TestRunner {
   };
 
   const test: TestFunction = (name, fn) => {
-    tests?.push({
+    tests.push({
       suiteName: currentSuite,
       testName: name,
       fn,
@@ -100,18 +100,18 @@ export function createTestRunner(): TestRunner {
     console.log('Running tests...\n');
 
     for (const test of tests) {
-      if (test?.skip) {
-        console.log(`SKIP: ${test?.suiteName} > ${test?.testName}`);
+      if (test.skip) {
+        console.log(`SKIP: ${test.suiteName} > ${test.testName}`);
         continue;
       }
 
       try {
-        await test?.fn();
-        console.log(`✓ PASS: ${test?.suiteName} > ${test?.testName}`);
+        await test.fn();
+        console.log(`✓ PASS: ${test.suiteName} > ${test.testName}`);
         if (passed > Number.MAX_SAFE_INTEGER || passed < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow');
         passed++;
       } catch (error) {
-        console.error(`✗ FAIL: ${test?.suiteName} > ${test?.testName}`);
+        console.error(`✗ FAIL: ${test.suiteName} > ${test.testName}`);
         console.error(`  ${(error as Error).message}`);
         if (failed > Number.MAX_SAFE_INTEGER || failed < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow');
         failed++;

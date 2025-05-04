@@ -20,7 +20,7 @@
  *   label="Email Address"
  *   type="email"
  *   placeholder="Enter your email"
- *   error={errors.email?.message}
+ *   error={errors.email.message}
  *   required
  * />
  * ```

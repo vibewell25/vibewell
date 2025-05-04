@@ -48,7 +48,7 @@ const modalContentVariants = cva(
 );
 
 export interface BaseModalProps
-  extends Omit<React?.HTMLAttributes<HTMLDivElement>, 'title'>,
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'>,
     VariantProps<typeof modalVariants>,
     VariantProps<typeof modalContentVariants> {
   isOpen: boolean;
@@ -66,8 +66,8 @@ export interface BaseModalProps
   backdropClassName?: string;
   hideCloseButton?: boolean;
   preventScroll?: boolean;
-  initialFocusRef?: React?.RefObject<HTMLElement>;
-  finalFocusRef?: React?.RefObject<HTMLElement>;
+  initialFocusRef?: React.RefObject<HTMLElement>;
+  finalFocusRef?: React.RefObject<HTMLElement>;
   children: ReactNode;
 }
 
@@ -87,7 +87,7 @@ export interface BaseModalProps
  * - Focus management
  * - Custom styling via className props
  */
-export const BaseModal = React?.forwardRef<HTMLDivElement, BaseModalProps>(
+export const BaseModal = React.forwardRef<HTMLDivElement, BaseModalProps>(
   (
     {
       className,
@@ -119,11 +119,11 @@ export const BaseModal = React?.forwardRef<HTMLDivElement, BaseModalProps>(
     const modalRef = useRef<HTMLDivElement>(null);
     const combinedRef = useRef<HTMLDivElement>(null);
 
-    React?.useImperativeHandle(ref, () => combinedRef?.current as HTMLDivElement);
+    React.useImperativeHandle(ref, () => combinedRef.current as HTMLDivElement);
 
     // Handle outside click
-    const handleOutsideClick = (e: React?.MouseEvent<HTMLDivElement>) => {
-      if (closeOnOutsideClick && e?.target === e?.currentTarget) {
+    const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
+      if (closeOnOutsideClick && e.target === e.currentTarget) {
         onClose();
       }
     };
@@ -131,32 +131,32 @@ export const BaseModal = React?.forwardRef<HTMLDivElement, BaseModalProps>(
     // Handle ESC key
     useEffect(() => {
       const handleEsc = (e: KeyboardEvent) => {
-        if (closeOnEsc && e?.key === 'Escape') {
+        if (closeOnEsc && e.key === 'Escape') {
           onClose();
         }
       };
 
       if (isOpen) {
-        document?.addEventListener('keydown', handleEsc);
+        document.addEventListener('keydown', handleEsc);
       }
 
       return () => {
-        document?.removeEventListener('keydown', handleEsc);
+        document.removeEventListener('keydown', handleEsc);
       };
     }, [isOpen, closeOnEsc, onClose]);
 
     // Handle focus management
     useEffect(() => {
       if (isOpen) {
-        const focusElement = initialFocusRef?.current || modalRef?.current;
+        const focusElement = initialFocusRef.current || modalRef.current;
 
         if (focusElement) {
           setTimeout(() => {
-            focusElement?.focus();
+            focusElement.focus();
           }, 0);
         }
-      } else if (finalFocusRef?.current) {
-        finalFocusRef?.current.focus();
+      } else if (finalFocusRef.current) {
+        finalFocusRef.current.focus();
       }
     }, [isOpen, initialFocusRef, finalFocusRef]);
 
@@ -164,14 +164,14 @@ export const BaseModal = React?.forwardRef<HTMLDivElement, BaseModalProps>(
     useEffect(() => {
       if (preventScroll) {
         if (isOpen) {
-          document?.body.style?.overflow = 'hidden';
+          document.body.style.overflow = 'hidden';
         } else {
-          document?.body.style?.overflow = '';
+          document.body.style.overflow = '';
         }
       }
 
       return () => {
-        document?.body.style?.overflow = '';
+        document.body.style.overflow = '';
       };
     }, [isOpen, preventScroll]);
 
@@ -212,7 +212,7 @@ export const BaseModal = React?.forwardRef<HTMLDivElement, BaseModalProps>(
             >
               <svg
                 className="h-4 w-4"
-                xmlns="http://www?.w3.org/2000/svg"
+                xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -268,4 +268,4 @@ export const BaseModal = React?.forwardRef<HTMLDivElement, BaseModalProps>(
   },
 );
 
-BaseModal?.displayName = 'BaseModal';
+BaseModal.displayName = 'BaseModal';

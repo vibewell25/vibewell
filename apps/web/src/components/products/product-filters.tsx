@@ -33,25 +33,25 @@ export function ProductFilters({
   initialFilter = {},
 }: ProductFiltersProps) {
   // State for each filter type
-  const [selectedTypes, setSelectedTypes] = useState<string[]>(initialFilter?.types || []);
+  const [selectedTypes, setSelectedTypes] = useState<string[]>(initialFilter.types || []);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
-    initialFilter?.categories || [],
+    initialFilter.categories || [],
   );
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>(
-    initialFilter?.subcategories || [],
+    initialFilter.subcategories || [],
   );
-  const [selectedBrands, setSelectedBrands] = useState<string[]>(initialFilter?.brands || []);
-  const [selectedTags, setSelectedTags] = useState<string[]>(initialFilter?.tags || []);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>(initialFilter.brands || []);
+  const [selectedTags, setSelectedTags] = useState<string[]>(initialFilter.tags || []);
   const [priceRange, setPriceRange] = useState<[number, number]>([
-    initialFilter?.minPrice || 0,
-    initialFilter?.maxPrice || 200,
+    initialFilter.minPrice || 0,
+    initialFilter.maxPrice || 200,
   ]);
-  const [minRating, setMinRating] = useState<number>(initialFilter?.minRating || 0);
-  const [arCompatible, setArCompatible] = useState<boolean>(initialFilter?.arCompatible || false);
+  const [minRating, setMinRating] = useState<number>(initialFilter.minRating || 0);
+  const [arCompatible, setArCompatible] = useState<boolean>(initialFilter.arCompatible || false);
   const [activeFiltersCount, setActiveFiltersCount] = useState(0);
 
   // Get filtered tags based on current selection (optional feature, may be resource intensive)
-  const filteredTags = tags?.slice(0, 15); // Show top 15 tags for simplicity
+  const filteredTags = tags.slice(0, 15); // Show top 15 tags for simplicity
 
   // Types of products
   const productTypes = ['makeup', 'hairstyle', 'accessory', 'skincare', 'clothing', 'wellness'];
@@ -61,49 +61,49 @@ export function ProductFilters({
     // Build filter object
     const filter: ProductFilter = {};
 
-    if (selectedTypes?.length > 0) {
-      filter?.types = selectedTypes;
+    if (selectedTypes.length > 0) {
+      filter.types = selectedTypes;
     }
 
-    if (selectedCategories?.length > 0) {
-      filter?.categories = selectedCategories;
+    if (selectedCategories.length > 0) {
+      filter.categories = selectedCategories;
     }
 
-    if (selectedSubcategories?.length > 0) {
-      filter?.subcategories = selectedSubcategories;
+    if (selectedSubcategories.length > 0) {
+      filter.subcategories = selectedSubcategories;
     }
 
-    if (selectedBrands?.length > 0) {
-      filter?.brands = selectedBrands;
+    if (selectedBrands.length > 0) {
+      filter.brands = selectedBrands;
     }
 
-    if (selectedTags?.length > 0) {
-      filter?.tags = selectedTags;
+    if (selectedTags.length > 0) {
+      filter.tags = selectedTags;
     }
 
     if (priceRange[0] > 0) {
-      filter?.minPrice = priceRange[0];
+      filter.minPrice = priceRange[0];
     }
 
     if (priceRange[1] < 200) {
-      filter?.maxPrice = priceRange[1];
+      filter.maxPrice = priceRange[1];
     }
 
     if (minRating > 0) {
-      filter?.minRating = minRating;
+      filter.minRating = minRating;
     }
 
     if (arCompatible) {
-      filter?.arCompatible = true;
+      filter.arCompatible = true;
     }
 
     // Count active filters
     let count = 0;
-    if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += selectedTypes?.length > 0 ? 1 : 0;
-    if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += selectedCategories?.length > 0 ? 1 : 0;
-    if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += selectedSubcategories?.length > 0 ? 1 : 0;
-    if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += selectedBrands?.length > 0 ? 1 : 0;
-    if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += selectedTags?.length > 0 ? 1 : 0;
+    if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += selectedTypes.length > 0 ? 1 : 0;
+    if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += selectedCategories.length > 0 ? 1 : 0;
+    if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += selectedSubcategories.length > 0 ? 1 : 0;
+    if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += selectedBrands.length > 0 ? 1 : 0;
+    if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += selectedTags.length > 0 ? 1 : 0;
     if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += priceRange[0] > 0 || priceRange[1] < 200 ? 1 : 0;
     if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += minRating > 0 ? 1 : 0;
     if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += arCompatible ? 1 : 0;
@@ -141,7 +141,7 @@ export function ProductFilters({
     if (checked) {
       setSelectedTypes([...selectedTypes, type]);
     } else {
-      setSelectedTypes(selectedTypes?.filter((t) => t !== type));
+      setSelectedTypes(selectedTypes.filter((t) => t !== type));
     }
   };
 
@@ -149,11 +149,11 @@ export function ProductFilters({
     if (checked) {
       setSelectedCategories([...selectedCategories, category]);
     } else {
-      setSelectedCategories(selectedCategories?.filter((c) => c !== category));
+      setSelectedCategories(selectedCategories.filter((c) => c !== category));
       // Also remove any subcategories that belong to this category
       const catSubcategories = subcategories[category] || [];
       setSelectedSubcategories(
-        selectedSubcategories?.filter((sub) => !catSubcategories?.includes(sub)),
+        selectedSubcategories.filter((sub) => !catSubcategories.includes(sub)),
       );
     }
   };
@@ -162,7 +162,7 @@ export function ProductFilters({
     if (checked) {
       setSelectedSubcategories([...selectedSubcategories, subcategory]);
     } else {
-      setSelectedSubcategories(selectedSubcategories?.filter((s) => s !== subcategory));
+      setSelectedSubcategories(selectedSubcategories.filter((s) => s !== subcategory));
     }
   };
 
@@ -170,7 +170,7 @@ export function ProductFilters({
     if (checked) {
       setSelectedBrands([...selectedBrands, brand]);
     } else {
-      setSelectedBrands(selectedBrands?.filter((b) => b !== brand));
+      setSelectedBrands(selectedBrands.filter((b) => b !== brand));
     }
   };
 
@@ -178,7 +178,7 @@ export function ProductFilters({
     if (checked) {
       setSelectedTags([...selectedTags, tag]);
     } else {
-      setSelectedTags(selectedTags?.filter((t) => t !== tag));
+      setSelectedTags(selectedTags.filter((t) => t !== tag));
     }
   };
 
@@ -196,19 +196,19 @@ export function ProductFilters({
         </div>
         {activeFiltersCount > 0 && (
           <div className="flex flex-wrap gap-1 pt-2">
-            {selectedTypes?.length > 0 && (
+            {selectedTypes.length > 0 && (
               <Badge variant="secondary" className="text-xs">
-                {selectedTypes?.length} Types
+                {selectedTypes.length} Types
               </Badge>
             )}
-            {selectedCategories?.length > 0 && (
+            {selectedCategories.length > 0 && (
               <Badge variant="secondary" className="text-xs">
-                {selectedCategories?.length} Categories
+                {selectedCategories.length} Categories
               </Badge>
             )}
-            {selectedBrands?.length > 0 && (
+            {selectedBrands.length > 0 && (
               <Badge variant="secondary" className="text-xs">
-                {selectedBrands?.length} Brands
+                {selectedBrands.length} Brands
               </Badge>
             )}
             {/* Other active filter indicators */}
@@ -222,11 +222,11 @@ export function ProductFilters({
             <AccordionTrigger className="px-4 text-sm">Product Type</AccordionTrigger>
             <AccordionContent className="px-4 pb-3 pt-2">
               <div className="space-y-2">
-                {productTypes?.map((type) => (
+                {productTypes.map((type) => (
                   <div key={type} className="flex items-center space-x-2">
                     <Checkbox
                       id={`type-${type}`}
-                      checked={selectedTypes?.includes(type)}
+                      checked={selectedTypes.includes(type)}
                       onCheckedChange={(checked) => handleTypeChange(type, checked === true)}
                     />
                     <label
@@ -246,12 +246,12 @@ export function ProductFilters({
             <AccordionTrigger className="px-4 text-sm">Category</AccordionTrigger>
             <AccordionContent className="px-4 pb-3 pt-2">
               <div className="space-y-2">
-                {categories?.map((category) => (
+                {categories.map((category) => (
                   <div key={category} className="space-y-2">
                     <div className="flex items-center space-x-2">
                       <Checkbox
                         id={`category-${category}`}
-                        checked={selectedCategories?.includes(category)}
+                        checked={selectedCategories.includes(category)}
                         onCheckedChange={(checked) =>
                           handleCategoryChange(category, checked === true)
                         }
@@ -265,14 +265,14 @@ export function ProductFilters({
                     </div>
 
                     {/* Show subcategories if category is selected */}
-                    {selectedCategories?.includes(category) &&
-                      subcategories[category]?.length > 0 && (
+                    {selectedCategories.includes(category) &&
+                      subcategories[category].length > 0 && (
                         <div className="ml-6 space-y-1 border-l-2 border-muted-foreground/20 pl-2">
                           {subcategories[category].map((sub) => (
                             <div key={sub} className="flex items-center space-x-2">
                               <Checkbox
                                 id={`subcategory-${sub}`}
-                                checked={selectedSubcategories?.includes(sub)}
+                                checked={selectedSubcategories.includes(sub)}
                                 onCheckedChange={(checked) =>
                                   handleSubcategoryChange(sub, checked === true)
                                 }
@@ -298,11 +298,11 @@ export function ProductFilters({
             <AccordionTrigger className="px-4 text-sm">Brand</AccordionTrigger>
             <AccordionContent className="px-4 pb-3 pt-2">
               <div className="max-h-40 space-y-2 overflow-y-auto pr-2">
-                {brands?.map((brand) => (
+                {brands.map((brand) => (
                   <div key={brand} className="flex items-center space-x-2">
                     <Checkbox
                       id={`brand-${brand}`}
-                      checked={selectedBrands?.includes(brand)}
+                      checked={selectedBrands.includes(brand)}
                       onCheckedChange={(checked) => handleBrandChange(brand, checked === true)}
                     />
                     <label
@@ -345,7 +345,7 @@ export function ProductFilters({
                 defaultValue={[minRating]}
                 min={0}
                 max={5}
-                step={0?.5}
+                step={0.5}
                 value={[minRating]}
                 onValueChange={(value) => setMinRating(value[0])}
                 className="mb-4"
@@ -361,12 +361,12 @@ export function ProductFilters({
             <AccordionTrigger className="px-4 text-sm">Tags</AccordionTrigger>
             <AccordionContent className="px-4 pb-3 pt-2">
               <div className="flex flex-wrap gap-2">
-                {filteredTags?.map((tag) => (
+                {filteredTags.map((tag) => (
                   <div key={tag} className="inline-flex">
                     <Badge
-                      variant={selectedTags?.includes(tag) ? 'default' : 'outline'}
+                      variant={selectedTags.includes(tag) ? 'default' : 'outline'}
                       className="cursor-pointer text-xs"
-                      onClick={() => handleTagChange(tag, !selectedTags?.includes(tag))}
+                      onClick={() => handleTagChange(tag, !selectedTags.includes(tag))}
                     >
                       {tag}
                     </Badge>

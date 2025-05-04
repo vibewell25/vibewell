@@ -22,16 +22,16 @@ export const useWebXR = () => {
     if (typeof navigator === 'undefined') return;
 
     const checkSupport = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         if ('xr' in navigator) {
 
-          const isSupported = await navigator?.xr?.isSessionSupported('immersive-ar');
+          const isSupported = await navigator.xr.isSessionSupported('immersive-ar');
           setState(prev => ({ ...prev, isSupported }));
         }
       } catch (error) {
-        console?.error('Error checking WebXR support:', error);
+        console.error('Error checking WebXR support:', error);
         setState(prev => ({
           ...prev,
           error: 'WebXR support check failed'
@@ -44,12 +44,12 @@ export const useWebXR = () => {
 
   // Initialize WebXR session
   const initialize = useCallback(async () => {
-    if (!state?.isSupported || state?.isInitialized) return;
+    if (!state.isSupported || state.isInitialized) return;
 
     try {
       // Request AR session
 
-      const session = await navigator?.xr?.requestSession('immersive-ar', {
+      const session = await navigator.xr.requestSession('immersive-ar', {
 
 
         requiredFeatures: ['hit-test', 'local-floor'],
@@ -64,10 +64,10 @@ export const useWebXR = () => {
 
       // Setup XR reference space
 
-      const referenceSpace = await session?.requestReferenceSpace('local-floor');
+      const referenceSpace = await session.requestReferenceSpace('local-floor');
 
       // Setup session event handlers
-      session?.addEventListener('end', () => {
+      session.addEventListener('end', () => {
         setState(prev => ({
           ...prev,
           session: null,
@@ -85,33 +85,33 @@ export const useWebXR = () => {
         error: null
       }));
     } catch (error) {
-      console?.error('Error initializing WebXR:', error);
+      console.error('Error initializing WebXR:', error);
       setState(prev => ({
         ...prev,
         error: 'Failed to initialize WebXR'
       }));
     }
-  }, [state?.isSupported, state?.isInitialized]);
+  }, [state.isSupported, state.isInitialized]);
 
   // End WebXR session
   const end = useCallback(async () => {
-    if (state?.session) {
-      await state?.session.end();
+    if (state.session) {
+      await state.session.end();
     }
-  }, [state?.session]);
+  }, [state.session]);
 
   // Handle hit testing
   const performHitTest = useCallback(async (
     x: number,
     y: number
   ): Promise<XRHitTestResult[]> => {
-    if (!state?.session || !state?.referenceSpace) {
+    if (!state.session || !state.referenceSpace) {
       throw new Error('WebXR session not initialized');
     }
 
     try {
-      const hitTestSource = await state?.session.requestHitTestSource({
-        space: state?.referenceSpace
+      const hitTestSource = await state.session.requestHitTestSource({
+        space: state.referenceSpace
       });
 
       if (!hitTestSource) {
@@ -119,42 +119,42 @@ export const useWebXR = () => {
       }
 
       const frame = await new Promise<XRFrame>((resolve) => {
-        state?.session?.requestAnimationFrame((frame) => resolve(frame));
+        state.session.requestAnimationFrame((frame) => resolve(frame));
       });
 
-      const hitTestResults = frame?.getHitTestResults(hitTestSource);
-      hitTestSource?.cancel();
+      const hitTestResults = frame.getHitTestResults(hitTestSource);
+      hitTestSource.cancel();
 
       return hitTestResults;
     } catch (error) {
-      console?.error('Error performing hit test:', error);
+      console.error('Error performing hit test:', error);
       throw error;
     }
-  }, [state?.session, state?.referenceSpace]);
+  }, [state.session, state.referenceSpace]);
 
   // Handle light estimation
   const getLightEstimate = useCallback(async (): Promise<XRLightEstimate | null> => {
-    if (!state?.session) return null;
+    if (!state.session) return null;
 
     try {
       const frame = await new Promise<XRFrame>((resolve) => {
-        state?.session?.requestAnimationFrame((frame) => resolve(frame));
+        state.session.requestAnimationFrame((frame) => resolve(frame));
       });
 
-      const lightEstimate = frame?.getLightEstimate();
+      const lightEstimate = frame.getLightEstimate();
       return lightEstimate || null;
     } catch (error) {
-      console?.error('Error getting light estimate:', error);
+      console.error('Error getting light estimate:', error);
       return null;
     }
-  }, [state?.session]);
+  }, [state.session]);
 
   return {
-    isSupported: state?.isSupported,
-    isInitialized: state?.isInitialized,
-    session: state?.session,
-    referenceSpace: state?.referenceSpace,
-    error: state?.error,
+    isSupported: state.isSupported,
+    isInitialized: state.isInitialized,
+    session: state.session,
+    referenceSpace: state.referenceSpace,
+    error: state.error,
     initialize,
     end,
     performHitTest,

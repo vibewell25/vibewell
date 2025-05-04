@@ -10,7 +10,7 @@ interface AccessiblePaginationProps {
   maxVisiblePages?: number;
 }
 
-export const AccessiblePagination: React?.FC<AccessiblePaginationProps> = ({
+export const AccessiblePagination: React.FC<AccessiblePaginationProps> = ({
   currentPage,
   totalPages,
   onPageChange,
@@ -21,16 +21,16 @@ export const AccessiblePagination: React?.FC<AccessiblePaginationProps> = ({
 }) => {
   const getPageNumbers = () => {
     const pages = [];
-    const halfVisible = Math?.floor(maxVisiblePages / 2);
-    let startPage = Math?.max(1, currentPage - halfVisible);
-    const endPage = Math?.min(totalPages, startPage + maxVisiblePages - 1);
+    const halfVisible = Math.floor(maxVisiblePages / 2);
+    let startPage = Math.max(1, currentPage - halfVisible);
+    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
     if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math?.max(1, endPage - maxVisiblePages + 1);
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
     }
 
     for (let i = startPage; i <= endPage; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-      pages?.push(i);
+      pages.push(i);
     }
 
     return pages;

@@ -4,30 +4,30 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { BusinessHourFormRouteProp, BusinessHourFormNavigationProp } from '../types/navigation';
 import { createBusinessHour, updateBusinessHour } from '../services/businessHourService';
 
-const BusinessHourFormScreen: React?.FC = () => {
+const BusinessHourFormScreen: React.FC = () => {
   const route = useRoute<BusinessHourFormRouteProp>();
   const navigation = useNavigation<BusinessHourFormNavigationProp>();
-  const { business, hour } = route?.params;
+  const { business, hour } = route.params;
 
-  const [dayOfWeek, setDayOfWeek] = useState(hour?.dayOfWeek?.toString() ?? '0');
-  const [openTime, setOpenTime] = useState(hour?.openTime ?? '');
-  const [closeTime, setCloseTime] = useState(hour?.closeTime ?? '');
+  const [dayOfWeek, setDayOfWeek] = useState(hour.dayOfWeek.toString() ?? '0');
+  const [openTime, setOpenTime] = useState(hour.openTime ?? '');
+  const [closeTime, setCloseTime] = useState(hour.closeTime ?? '');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
       const dow = parseInt(dayOfWeek, 10);
       if (hour) {
-        await updateBusinessHour(hour?.id, { dayOfWeek: dow, openTime, closeTime });
+        await updateBusinessHour(hour.id, { dayOfWeek: dow, openTime, closeTime });
       } else {
-        await createBusinessHour({ businessId: business?.id, dayOfWeek: dow, openTime, closeTime });
+        await createBusinessHour({ businessId: business.id, dayOfWeek: dow, openTime, closeTime });
       }
-      navigation?.goBack();
+      navigation.goBack();
     } catch {
-      Alert?.alert('Error', 'Failed to save business hour');
+      Alert.alert('Error', 'Failed to save business hour');
     } finally {
       setLoading(false);
     }
@@ -57,7 +57,7 @@ const BusinessHourFormScreen: React?.FC = () => {
       <Button
         title={hour ? 'Update Hour' : 'Create Hour'}
         onPress={handleSubmit}
-        disabled={loading || !openTime?.trim() || !closeTime?.trim()}
+        disabled={loading || !openTime.trim() || !closeTime.trim()}
       />
     </View>
   );

@@ -20,7 +20,7 @@ interface Notification {
   message: string;
   timestamp: string;
   read: boolean;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
 }
 
 export function NotificationHistory() {
@@ -66,18 +66,18 @@ export function NotificationHistory() {
   const [filter, setFilter] = useState<string>('all');
   const [search, setSearch] = useState('');
 
-  const filteredNotifications = notifications?.filter((notification) => {
-    const matchesFilter = filter === 'all' || notification?.type === filter;
+  const filteredNotifications = notifications.filter((notification) => {
+    const matchesFilter = filter === 'all' || notification.type === filter;
     const matchesSearch =
-      notification?.title.toLowerCase().includes(search?.toLowerCase()) ||
-      notification?.message.toLowerCase().includes(search?.toLowerCase());
+      notification.title.toLowerCase().includes(search.toLowerCase()) ||
+      notification.message.toLowerCase().includes(search.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
   const handleMarkAsRead = (id: string) => {
     setNotifications((prev) =>
-      prev?.map((notification) => {
-        if (notification?.id === id) {
+      prev.map((notification) => {
+        if (notification.id === id) {
           return { ...notification, read: true };
         }
         return notification;
@@ -86,7 +86,7 @@ export function NotificationHistory() {
   };
 
   const handleDelete = (id: string) => {
-    setNotifications((prev) => prev?.filter((notification) => notification?.id !== id));
+    setNotifications((prev) => prev.filter((notification) => notification.id !== id));
   };
 
   return (
@@ -101,7 +101,7 @@ export function NotificationHistory() {
             <Input
               id="search"
               value={search}
-              onChange={(e) => setSearch(e?.target.value)}
+              onChange={(e) => setSearch(e.target.value)}
               placeholder="Search notifications..."
             />
           </div>
@@ -123,36 +123,36 @@ export function NotificationHistory() {
         </div>
 
         <div className="space-y-4">
-          {filteredNotifications?.map((notification) => (
+          {filteredNotifications.map((notification) => (
             <div
-              key={notification?.id}
+              key={notification.id}
               className={`flex items-start space-x-4 rounded-lg border p-4 ${
-                !notification?.read ? 'bg-muted' : ''
+                !notification.read ? 'bg-muted' : ''
               }`}
             >
-              <div className="mt-1">{notification?.icon}</div>
+              <div className="mt-1">{notification.icon}</div>
               <div className="flex-1 space-y-1">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-medium">{notification?.title}</h3>
+                  <h3 className="text-sm font-medium">{notification.title}</h3>
                   <p className="text-xs text-muted-foreground">
-                    {formatDistanceToNow(new Date(notification?.timestamp), {
+                    {formatDistanceToNow(new Date(notification.timestamp), {
                       addSuffix: true,
                     })}
                   </p>
                 </div>
-                <p className="text-sm text-muted-foreground">{notification?.message}</p>
+                <p className="text-sm text-muted-foreground">{notification.message}</p>
               </div>
               <div className="flex space-x-2">
-                {!notification?.read && (
+                {!notification.read && (
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleMarkAsRead(notification?.id)}
+                    onClick={() => handleMarkAsRead(notification.id)}
                   >
                     <CheckCircle2 className="h-4 w-4" />
                   </Button>
                 )}
-                <Button variant="outline" size="sm" onClick={() => handleDelete(notification?.id)}>
+                <Button variant="outline" size="sm" onClick={() => handleDelete(notification.id)}>
                   <XCircle className="h-4 w-4" />
                 </Button>
               </div>

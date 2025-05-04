@@ -28,28 +28,28 @@ const mockListData = [
 ];
 
 describe('Data Display Components', () => {
-  const user = userEvent?.setup();
+  const user = userEvent.setup();
 
   beforeEach(() => {
-    vi?.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('Table Component', () => {
     it('renders table with data', () => {
       render(<Table data={mockTableData} columns={['name', 'age', 'city']} />);
 
-      expect(screen?.getByText('John Doe')).toBeInTheDocument();
-      expect(screen?.getByText('Los Angeles')).toBeInTheDocument();
-      expect(screen?.getByText('35')).toBeInTheDocument();
+      expect(screen.getByText('John Doe')).toBeInTheDocument();
+      expect(screen.getByText('Los Angeles')).toBeInTheDocument();
+      expect(screen.getByText('35')).toBeInTheDocument();
     });
 
     it('supports sorting', async () => {
       render(<Table data={mockTableData} columns={['name', 'age', 'city']} sortable={true} />);
 
-      const nameHeader = screen?.getByText('Name');
-      await user?.click(nameHeader);
+      const nameHeader = screen.getByText('Name');
+      await user.click(nameHeader);
 
-      const cells = screen?.getAllByRole('cell');
+      const cells = screen.getAllByRole('cell');
       expect(cells[0]).toHaveTextContent('Bob Johnson');
     });
 
@@ -63,16 +63,16 @@ describe('Data Display Components', () => {
         />,
       );
 
-      expect(screen?.getByText('John Doe')).toBeInTheDocument();
-      expect(screen?.getByText('Jane Smith')).toBeInTheDocument();
-      expect(screen?.queryByText('Bob Johnson')).not?.toBeInTheDocument();
+      expect(screen.getByText('John Doe')).toBeInTheDocument();
+      expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+      expect(screen.queryByText('Bob Johnson')).not.toBeInTheDocument();
 
-      await user?.click(screen?.getByText('Next'));
-      expect(screen?.getByText('Bob Johnson')).toBeInTheDocument();
+      await user.click(screen.getByText('Next'));
+      expect(screen.getByText('Bob Johnson')).toBeInTheDocument();
     });
 
     it('supports row selection', async () => {
-      const onSelect = vi?.fn();
+      const onSelect = vi.fn();
       render(
         <Table
           data={mockTableData}
@@ -82,8 +82,8 @@ describe('Data Display Components', () => {
         />,
       );
 
-      const firstRow = screen?.getByText('John Doe').closest('tr');
-      await user?.click(firstRow);
+      const firstRow = screen.getByText('John Doe').closest('tr');
+      await user.click(firstRow);
       expect(onSelect).toHaveBeenCalledWith(mockTableData[0]);
     });
   });
@@ -92,8 +92,8 @@ describe('Data Display Components', () => {
     it('renders chart with data', () => {
       render(<Chart data={mockChartData} type="line" options={{ responsive: true }} />);
 
-      expect(screen?.getByTestId('chart-container')).toBeInTheDocument();
-      expect(screen?.getByText('Sales')).toBeInTheDocument();
+      expect(screen.getByTestId('chart-container')).toBeInTheDocument();
+      expect(screen.getByText('Sales')).toBeInTheDocument();
     });
 
     it('updates when data changes', async () => {
@@ -103,12 +103,12 @@ describe('Data Display Components', () => {
 
       const updatedData = {
         ...mockChartData,
-        datasets: [{ ...mockChartData?.datasets[0], data: [40, 55, 70] }],
+        datasets: [{ ...mockChartData.datasets[0], data: [40, 55, 70] }],
       };
 
       rerender(<Chart data={updatedData} type="line" options={{ responsive: true }} />);
 
-      const chart = screen?.getByTestId('chart-container');
+      const chart = screen.getByTestId('chart-container');
       expect(chart).toHaveAttribute('data-updated', 'true');
     });
 
@@ -117,23 +117,23 @@ describe('Data Display Components', () => {
         <Chart data={mockChartData} type="line" options={{ responsive: true }} />,
       );
 
-      expect(screen?.getByTestId('chart-container')).toHaveAttribute('data-type', 'line');
+      expect(screen.getByTestId('chart-container')).toHaveAttribute('data-type', 'line');
 
       rerender(<Chart data={mockChartData} type="bar" options={{ responsive: true }} />);
 
-      expect(screen?.getByTestId('chart-container')).toHaveAttribute('data-type', 'bar');
+      expect(screen.getByTestId('chart-container')).toHaveAttribute('data-type', 'bar');
     });
 
     it('handles loading and error states', async () => {
       render(<Chart data={mockChartData} type="line" isLoading={true} />);
 
-      expect(screen?.getByTestId('chart-loading')).toBeInTheDocument();
+      expect(screen.getByTestId('chart-loading')).toBeInTheDocument();
 
       const { rerender } = render(
         <Chart data={mockChartData} type="line" error="Failed to load chart data" />,
       );
 
-      expect(screen?.getByText('Failed to load chart data')).toBeInTheDocument();
+      expect(screen.getByText('Failed to load chart data')).toBeInTheDocument();
     });
   });
 
@@ -141,9 +141,9 @@ describe('Data Display Components', () => {
     it('renders list items', () => {
       render(<List items={mockListData} />);
 
-      expect(screen?.getByText('Item 1')).toBeInTheDocument();
-      expect(screen?.getByText('Description 2')).toBeInTheDocument();
-      expect(screen?.getByText('Item 3')).toBeInTheDocument();
+      expect(screen.getByText('Item 1')).toBeInTheDocument();
+      expect(screen.getByText('Description 2')).toBeInTheDocument();
+      expect(screen.getByText('Item 3')).toBeInTheDocument();
     });
 
     it('supports custom item rendering', () => {
@@ -151,31 +151,31 @@ describe('Data Display Components', () => {
         <List
           items={mockListData}
           renderItem={(item) => (
-            <div key={item?.id} data-testid="custom-item">
-              {item?.title.toUpperCase()}
+            <div key={item.id} data-testid="custom-item">
+              {item.title.toUpperCase()}
             </div>
           )}
         />,
       );
 
-      expect(screen?.getByText('ITEM 1')).toBeInTheDocument();
-      expect(screen?.getAllByTestId('custom-item')).toHaveLength(3);
+      expect(screen.getByText('ITEM 1')).toBeInTheDocument();
+      expect(screen.getAllByTestId('custom-item')).toHaveLength(3);
     });
 
     it('handles item selection', async () => {
-      const onSelect = vi?.fn();
+      const onSelect = vi.fn();
       render(<List items={mockListData} onItemSelect={onSelect} />);
 
-      await user?.click(screen?.getByText('Item 1'));
+      await user.click(screen.getByText('Item 1'));
       expect(onSelect).toHaveBeenCalledWith(mockListData[0]);
     });
 
     it('supports filtering', () => {
       render(<List items={mockListData} filter="2" filterKey="title" />);
 
-      expect(screen?.queryByText('Item 1')).not?.toBeInTheDocument();
-      expect(screen?.getByText('Item 2')).toBeInTheDocument();
-      expect(screen?.queryByText('Item 3')).not?.toBeInTheDocument();
+      expect(screen.queryByText('Item 1')).not.toBeInTheDocument();
+      expect(screen.getByText('Item 2')).toBeInTheDocument();
+      expect(screen.queryByText('Item 3')).not.toBeInTheDocument();
     });
   });
 
@@ -183,9 +183,9 @@ describe('Data Display Components', () => {
     it('renders card content', () => {
       render(<Card title="Test Card" subtitle="Subtitle" content="Card content" />);
 
-      expect(screen?.getByText('Test Card')).toBeInTheDocument();
-      expect(screen?.getByText('Subtitle')).toBeInTheDocument();
-      expect(screen?.getByText('Card content')).toBeInTheDocument();
+      expect(screen.getByText('Test Card')).toBeInTheDocument();
+      expect(screen.getByText('Subtitle')).toBeInTheDocument();
+      expect(screen.getByText('Card content')).toBeInTheDocument();
     });
 
     it('supports custom header and footer', () => {
@@ -198,22 +198,22 @@ describe('Data Display Components', () => {
         </Card>,
       );
 
-      expect(screen?.getByTestId('custom-header')).toBeInTheDocument();
-      expect(screen?.getByTestId('custom-footer')).toBeInTheDocument();
+      expect(screen.getByTestId('custom-header')).toBeInTheDocument();
+      expect(screen.getByTestId('custom-footer')).toBeInTheDocument();
     });
 
     it('handles click events', async () => {
-      const onClick = vi?.fn();
+      const onClick = vi.fn();
       render(<Card title="Clickable Card" onClick={onClick} />);
 
-      await user?.click(screen?.getByText('Clickable Card'));
+      await user.click(screen.getByText('Clickable Card'));
       expect(onClick).toHaveBeenCalled();
     });
 
     it('supports different variants', () => {
       render(<Card title="Card" variant="outlined" />);
 
-      expect(screen?.getByTestId('card')).toHaveClass('card-outlined');
+      expect(screen.getByTestId('card')).toHaveClass('card-outlined');
     });
   });
 
@@ -253,12 +253,12 @@ describe('Data Display Components', () => {
           aria-label="User Data Table"
         />,
       );
-      expect(screen?.getByRole('table')).toHaveAttribute('aria-label', 'User Data Table');
+      expect(screen.getByRole('table')).toHaveAttribute('aria-label', 'User Data Table');
     });
 
     it('Chart has proper ARIA descriptions', () => {
       render(<Chart data={mockChartData} type="line" aria-label="Sales Chart" />);
-      expect(screen?.getByTestId('chart-container')).toHaveAttribute('aria-label', 'Sales Chart');
+      expect(screen.getByTestId('chart-container')).toHaveAttribute('aria-label', 'Sales Chart');
     });
   });
 });

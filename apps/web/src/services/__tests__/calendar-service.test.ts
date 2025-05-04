@@ -31,44 +31,44 @@ import { Client } from '@microsoft/microsoft-graph-client';
 
 // Mock dependencies
 
-jest?.mock('@/lib/database/client', () => ({
+jest.mock('@/lib/database/client', () => ({
   prisma: {
     calendarConnection: {
-      create: jest?.fn(),
+      create: jest.fn(),
     },
     booking: {
-      findUnique: jest?.fn(),
+      findUnique: jest.fn(),
     },
     calendarEvent: {
-      create: jest?.fn(),
-      findMany: jest?.fn(),
-      deleteMany: jest?.fn(),
+      create: jest.fn(),
+      findMany: jest.fn(),
+      deleteMany: jest.fn(),
     },
   },
 }));
 
-jest?.mock('googleapis', () => ({
+jest.mock('googleapis', () => ({
   google: {
     auth: {
-      OAuth2: jest?.fn().mockImplementation(() => ({
-        getToken: jest?.fn().mockResolvedValue({
+      OAuth2: jest.fn().mockImplementation(() => ({
+        getToken: jest.fn().mockResolvedValue({
           tokens: {
 
             access_token: 'mock-access-token',
 
             refresh_token: 'mock-refresh-token',
-            expiry_date: Date?.now(),
+            expiry_date: Date.now(),
           },
         }),
-        setCredentials: jest?.fn(),
+        setCredentials: jest.fn(),
       })),
     },
-    calendar: jest?.fn().mockReturnValue({
+    calendar: jest.fn().mockReturnValue({
       events: {
 
-        insert: jest?.fn().mockResolvedValue({ data: { id: 'mock-event-id' } }),
-        update: jest?.fn().mockResolvedValue({}),
-        delete: jest?.fn().mockResolvedValue({}),
+        insert: jest.fn().mockResolvedValue({ data: { id: 'mock-event-id' } }),
+        update: jest.fn().mockResolvedValue({}),
+        delete: jest.fn().mockResolvedValue({}),
       },
     }),
   },
@@ -76,15 +76,15 @@ jest?.mock('googleapis', () => ({
 
 
 
-jest?.mock('@microsoft/microsoft-graph-client', () => ({
+jest.mock('@microsoft/microsoft-graph-client', () => ({
   Client: {
-    init: jest?.fn().mockReturnValue({
-      api: jest?.fn().mockReturnValue({
+    init: jest.fn().mockReturnValue({
+      api: jest.fn().mockReturnValue({
 
 
-        post: jest?.fn().mockResolvedValue({ id: 'mock-outlook-event-id' }),
-        update: jest?.fn().mockResolvedValue({}),
-        delete: jest?.fn().mockResolvedValue({}),
+        post: jest.fn().mockResolvedValue({ id: 'mock-outlook-event-id' }),
+        update: jest.fn().mockResolvedValue({}),
+        delete: jest.fn().mockResolvedValue({}),
       }),
     }),
   },
@@ -123,20 +123,20 @@ describe('CalendarService', () => {
 
   beforeEach(() => {
     calendarService = new CalendarService();
-    jest?.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   describe('Google Calendar Integration', () => {
     it('should connect to Google Calendar', async () => {
 
-      const userId = process?.env['USERID'];
+      const userId = process.env['USERID'];
 
-      const code = process?.env['CODE'];
+      const code = process.env['CODE'];
 
-      await calendarService?.connectGoogleCalendar(userId, code);
+      await calendarService.connectGoogleCalendar(userId, code);
 
-      expect(prisma?.calendarConnection.create).toHaveBeenCalledWith({
-        data: expect?.objectContaining({
+      expect(prisma.calendarConnection.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({
           userId,
           provider: 'google',
 
@@ -148,13 +148,13 @@ describe('CalendarService', () => {
     });
 
     it('should sync booking with Google Calendar', async () => {
-      (prisma?.booking.findUnique as jest?.Mock).mockResolvedValue(mockBooking);
+      (prisma.booking.findUnique as jest.Mock).mockResolvedValue(mockBooking);
 
 
-      await calendarService?.syncBooking('booking-id');
+      await calendarService.syncBooking('booking-id');
 
-      expect(prisma?.calendarEvent.create).toHaveBeenCalledWith({
-        data: expect?.objectContaining({
+      expect(prisma.calendarEvent.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({
 
           bookingId: 'booking-id',
           provider: 'google',
@@ -185,13 +185,13 @@ describe('CalendarService', () => {
     };
 
     it('should sync booking with Outlook Calendar', async () => {
-      (prisma?.booking.findUnique as jest?.Mock).mockResolvedValue(mockOutlookBooking);
+      (prisma.booking.findUnique as jest.Mock).mockResolvedValue(mockOutlookBooking);
 
 
-      await calendarService?.syncBooking('booking-id');
+      await calendarService.syncBooking('booking-id');
 
-      expect(prisma?.calendarEvent.create).toHaveBeenCalledWith({
-        data: expect?.objectContaining({
+      expect(prisma.calendarEvent.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({
 
           bookingId: 'booking-id',
           provider: 'outlook',
@@ -213,29 +213,29 @@ describe('CalendarService', () => {
 
       externalEventId: 'external-event-id',
       booking: mockBooking,
-      connection: mockBooking?.user.calendarConnections[0],
+      connection: mockBooking.user.calendarConnections[0],
     };
 
     beforeEach(() => {
 
     // Safe array access
-    if (mockCalendarEvent < 0 || mockCalendarEvent >= array?.length) {
+    if (mockCalendarEvent < 0 || mockCalendarEvent >= array.length) {
       throw new Error('Array index out of bounds');
     }
-      (prisma?.calendarEvent.findMany as jest?.Mock).mockResolvedValue([mockCalendarEvent]);
+      (prisma.calendarEvent.findMany as jest.Mock).mockResolvedValue([mockCalendarEvent]);
     });
 
     it('should update calendar events', async () => {
 
-      await calendarService?.updateCalendarEvent('booking-id');
-      expect(google?.calendar().events?.update).toHaveBeenCalled();
+      await calendarService.updateCalendarEvent('booking-id');
+      expect(google.calendar().events.update).toHaveBeenCalled();
     });
 
     it('should delete calendar events', async () => {
 
-      await calendarService?.deleteCalendarEvent('booking-id');
-      expect(google?.calendar().events?.delete).toHaveBeenCalled();
-      expect(prisma?.calendarEvent.deleteMany).toHaveBeenCalledWith({
+      await calendarService.deleteCalendarEvent('booking-id');
+      expect(google.calendar().events.delete).toHaveBeenCalled();
+      expect(prisma.calendarEvent.deleteMany).toHaveBeenCalledWith({
 
         where: { bookingId: 'booking-id' },
       });

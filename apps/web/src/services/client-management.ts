@@ -18,7 +18,7 @@ interface ClientAnalytics {
   riskOfChurn: number;
 }
 
-type ClientCard = Prisma?.ClientCardGetPayload<{
+type ClientCard = Prisma.ClientCardGetPayload<{
   include: {
     feedbacks: true;
     serviceHistory: {
@@ -30,13 +30,13 @@ type ClientCard = Prisma?.ClientCardGetPayload<{
   };
 }>;
 
-type Feedback = Prisma?.FeedbackGetPayload<{
+type Feedback = Prisma.FeedbackGetPayload<{
   include: {
     clientCard: true;
   };
 }>;
 
-type MarketingPreferences = Prisma?.MarketingPreferencesGetPayload<{
+type MarketingPreferences = Prisma.MarketingPreferencesGetPayload<{
   include: {
     clientCard: true;
   };
@@ -48,10 +48,10 @@ export class ClientManagementService {
    */
   public async upsertClientCard(
     userId: string,
-    data: Prisma?.ClientCardCreateInput,
+    data: Prisma.ClientCardCreateInput,
   ): Promise<ClientCard> {
     try {
-      return await prisma?.clientCard.upsert({
+      return await prisma.clientCard.upsert({
         where: { userId },
         create: {
           userId,
@@ -69,7 +69,7 @@ export class ClientManagementService {
         },
       });
     } catch (error) {
-      logger?.error('Failed to upsert client card', 'ClientManagement', { error, userId });
+      logger.error('Failed to upsert client card', 'ClientManagement', { error, userId });
       throw error;
     }
   }
@@ -81,8 +81,8 @@ export class ClientManagementService {
   public async processFeedback(feedback: Feedback): Promise<void> {
     try {
       // Update client retention score based on feedback
-      const clientCard = await prisma?.clientCard.findUnique({
-        where: { id: feedback?.clientCardId },
+      const clientCard = await prisma.clientCard.findUnique({
+        where: { id: feedback.clientCardId },
         include: { feedbacks: true },
       });
 
@@ -91,30 +91,30 @@ export class ClientManagementService {
       // Calculate new retention score
       const averageRating =
 
-        clientCard?.feedbacks.reduce((sum, f) => sum + f?.rating, 0) / clientCard?.feedbacks.length;
-      const retentionScore = this?.calculateRetentionScore(
+        clientCard.feedbacks.reduce((sum, f) => sum + f.rating, 0) / clientCard.feedbacks.length;
+      const retentionScore = this.calculateRetentionScore(
         averageRating,
-        clientCard?.feedbacks.length,
+        clientCard.feedbacks.length,
       );
 
       // Update client card
-      await prisma?.clientCard.update({
-        where: { id: feedback?.clientCardId },
+      await prisma.clientCard.update({
+        where: { id: feedback.clientCardId },
         data: {
           retentionScore,
-          nextFollowUp: feedback?.followUpRequired ? addDays(new Date(), 2) : null,
+          nextFollowUp: feedback.followUpRequired ? addDays(new Date(), 2) : null,
         },
       });
 
 
       // Generate personalized follow-up message if needed
-      if (feedback?.followUpRequired) {
-        await this?.generateFollowUpMessage(feedback);
+      if (feedback.followUpRequired) {
+        await this.generateFollowUpMessage(feedback);
       }
     } catch (error) {
-      logger?.error('Failed to process feedback', 'ClientManagement', {
+      logger.error('Failed to process feedback', 'ClientManagement', {
         error,
-        feedbackId: feedback?.id,
+        feedbackId: feedback.id,
       });
       throw error;
     }
@@ -125,8 +125,8 @@ export class ClientManagementService {
    */
   public async generateMarketingCampaign(preferences: MarketingPreferences): Promise<string> {
     try {
-      const clientCard = await prisma?.clientCard.findUnique({
-        where: { id: preferences?.clientCardId },
+      const clientCard = await prisma.clientCard.findUnique({
+        where: { id: preferences.clientCardId },
         include: {
           serviceHistory: {
             include: { service: true },
@@ -137,8 +137,8 @@ export class ClientManagementService {
       if (!clientCard) throw new Error('Client card not found');
 
       // Generate personalized campaign using OpenAI
-      const prompt = this?.buildMarketingPrompt(clientCard, preferences);
-      const completion = await openai?.chat.completions?.create({
+      const prompt = this.buildMarketingPrompt(clientCard, preferences);
+      const completion = await openai.chat.completions.create({
 
         model: 'gpt-4',
         messages: [
@@ -154,19 +154,19 @@ export class ClientManagementService {
         ],
       });
 
-      const campaign = completion?.choices[0].message?.content;
+      const campaign = completion.choices[0].message.content;
 
       // Update last campaign date
-      await prisma?.marketingPreferences.update({
-        where: { id: preferences?.id },
+      await prisma.marketingPreferences.update({
+        where: { id: preferences.id },
         data: { lastCampaign: new Date() },
       });
 
       return campaign || '';
     } catch (error) {
-      logger?.error('Failed to generate marketing campaign', 'ClientManagement', {
+      logger.error('Failed to generate marketing campaign', 'ClientManagement', {
         error,
-        preferencesId: preferences?.id,
+        preferencesId: preferences.id,
       });
       throw error;
     }
@@ -177,7 +177,7 @@ export class ClientManagementService {
    */
   public async analyzeClientRetention(clientCardId: string): Promise<ClientAnalytics> {
     try {
-      const clientCard = await prisma?.clientCard.findUnique({
+      const clientCard = await prisma.clientCard.findUnique({
         where: { id: clientCardId },
         include: {
           serviceHistory: {
@@ -192,17 +192,17 @@ export class ClientManagementService {
       if (!clientCard) throw new Error('Client card not found');
 
       const analytics: ClientAnalytics = {
-        retentionScore: clientCard?.retentionScore,
-        visitFrequency: this?.calculateVisitFrequency(clientCard?.serviceHistory),
-        averageRating: this?.calculateAverageRating(clientCard?.serviceHistory),
-        lifetimeValue: this?.calculateLifetimeValue(clientCard?.serviceHistory),
-        lastVisitDays: this?.calculateDaysSinceLastVisit(clientCard?.lastVisit),
-        riskOfChurn: this?.calculateChurnRisk(clientCard),
+        retentionScore: clientCard.retentionScore,
+        visitFrequency: this.calculateVisitFrequency(clientCard.serviceHistory),
+        averageRating: this.calculateAverageRating(clientCard.serviceHistory),
+        lifetimeValue: this.calculateLifetimeValue(clientCard.serviceHistory),
+        lastVisitDays: this.calculateDaysSinceLastVisit(clientCard.lastVisit),
+        riskOfChurn: this.calculateChurnRisk(clientCard),
       };
 
       return analytics;
     } catch (error) {
-      logger?.error('Failed to analyze client retention', 'ClientManagement', {
+      logger.error('Failed to analyze client retention', 'ClientManagement', {
         error,
         clientCardId,
       });
@@ -216,7 +216,7 @@ export class ClientManagementService {
    */
   public async processAutomatedFollowUps(): Promise<void> {
     try {
-      const clientsNeedingFollowUp = await prisma?.clientCard.findMany({
+      const clientsNeedingFollowUp = await prisma.clientCard.findMany({
         where: {
           nextFollowUp: {
             lte: new Date(),
@@ -229,11 +229,11 @@ export class ClientManagementService {
       });
 
       for (const client of clientsNeedingFollowUp) {
-        await this?.sendFollowUp(client);
+        await this.sendFollowUp(client);
       }
     } catch (error) {
 
-      logger?.error('Failed to process automated follow-ups', 'ClientManagement', { error });
+      logger.error('Failed to process automated follow-ups', 'ClientManagement', { error });
       throw error;
     }
   }
@@ -241,34 +241,34 @@ export class ClientManagementService {
   private calculateRetentionScore(averageRating: number, feedbackCount: number): number {
     // Weight the score based on number of feedbacks and average rating
 
-    const feedbackWeight = Math?.min(feedbackCount / 10, 1); // Max weight at 10 feedbacks
+    const feedbackWeight = Math.min(feedbackCount / 10, 1); // Max weight at 10 feedbacks
 
     return (averageRating / 5) * feedbackWeight;
   }
 
   private calculateVisitFrequency(serviceHistory: ClientCard['serviceHistory']): number {
-    if (serviceHistory?.length < 2) return 0;
+    if (serviceHistory.length < 2) return 0;
 
     const sortedVisits = serviceHistory
-      .map((h) => new Date(h?.date))
-      .sort((a, b) => b?.getTime() - a?.getTime());
+      .map((h) => new Date(h.date))
+      .sort((a, b) => b.getTime() - a.getTime());
 
 
-    const totalDays = differenceInDays(sortedVisits[0], sortedVisits[sortedVisits?.length - 1]);
+    const totalDays = differenceInDays(sortedVisits[0], sortedVisits[sortedVisits.length - 1]);
 
-    return serviceHistory?.length / (totalDays / 30); // Visits per month
+    return serviceHistory.length / (totalDays / 30); // Visits per month
   }
 
   private calculateAverageRating(serviceHistory: ClientCard['serviceHistory']): number {
-    const ratings = serviceHistory?.filter((h) => h?.feedback).map((h) => h?.feedback?.rating || 0);
+    const ratings = serviceHistory.filter((h) => h.feedback).map((h) => h.feedback.rating || 0);
 
-    if (ratings?.length === 0) return 0;
+    if (ratings.length === 0) return 0;
 
-    return ratings?.reduce((sum: number, rating: number) => sum + rating, 0) / ratings?.length;
+    return ratings.reduce((sum: number, rating: number) => sum + rating, 0) / ratings.length;
   }
 
   private calculateLifetimeValue(serviceHistory: ClientCard['serviceHistory']): number {
-    return serviceHistory?.reduce((sum: number, h) => sum + (h?.service?.price || 0), 0);
+    return serviceHistory.reduce((sum: number, h) => sum + (h.service.price || 0), 0);
   }
 
   private calculateDaysSinceLastVisit(lastVisit: Date | null): number {
@@ -278,27 +278,27 @@ export class ClientManagementService {
 
   private calculateChurnRisk(clientCard: any): number {
     const factors = {
-      daysSinceLastVisit: this?.calculateDaysSinceLastVisit(clientCard?.lastVisit) / 365, // Normalize to 0-1
-      retentionScore: 1 - clientCard?.retentionScore, // Invert so higher means more risk
-      averageRating: 1 - this?.calculateAverageRating(clientCard?.serviceHistory) / 5, // Normalize and invert
-      visitFrequency: Math?.min(1, 1 / this?.calculateVisitFrequency(clientCard?.serviceHistory)), // Invert and cap
+      daysSinceLastVisit: this.calculateDaysSinceLastVisit(clientCard.lastVisit) / 365, // Normalize to 0-1
+      retentionScore: 1 - clientCard.retentionScore, // Invert so higher means more risk
+      averageRating: 1 - this.calculateAverageRating(clientCard.serviceHistory) / 5, // Normalize and invert
+      visitFrequency: Math.min(1, 1 / this.calculateVisitFrequency(clientCard.serviceHistory)), // Invert and cap
     };
 
     // Weighted average of risk factors
     return (
 
-      factors?.daysSinceLastVisit * 0?.4 +
+      factors.daysSinceLastVisit * 0.4 +
 
-      factors?.retentionScore * 0?.3 +
+      factors.retentionScore * 0.3 +
 
-      factors?.averageRating * 0?.2 +
+      factors.averageRating * 0.2 +
 
-      factors?.visitFrequency * 0?.1
+      factors.visitFrequency * 0.1
     );
   }
 
   private async generateFollowUpMessage(feedback: Feedback): Promise<string> {
-    const completion = await openai?.chat.completions?.create({
+    const completion = await openai.chat.completions.create({
 
       model: 'gpt-4',
       messages: [
@@ -310,23 +310,23 @@ export class ClientManagementService {
         {
           role: 'user',
 
-          content: `Generate a follow-up message for a client who gave a rating of ${feedback?.rating}/5 and said: "${feedback?.comment}"`,
+          content: `Generate a follow-up message for a client who gave a rating of ${feedback.rating}/5 and said: "${feedback.comment}"`,
         },
       ],
     });
 
-    return completion?.choices[0].message?.content || '';
+    return completion.choices[0].message.content || '';
   }
 
   private buildMarketingPrompt(clientCard: any, preferences: MarketingPreferences): string {
-    const services = clientCard?.serviceHistory.map((h: any) => h?.service.name).join(', ');
-    const interests = preferences?.interests.join(', ');
+    const services = clientCard.serviceHistory.map((h: any) => h.service.name).join(', ');
+    const interests = preferences.interests.join(', ');
 
     return `Create a personalized marketing message for a salon client with the following profile:
       - Preferred services: ${services}
       - Interests: ${interests}
-      - Communication preferences: ${preferences?.email ? 'email' : ''} ${preferences?.sms ? 'SMS' : ''} ${preferences?.push ? 'push notifications' : ''}
-      - Last visit: ${clientCard?.lastVisit ? clientCard?.lastVisit.toLocaleDateString() : 'Never'}
+      - Communication preferences: ${preferences.email ? 'email' : ''} ${preferences.sms ? 'SMS' : ''} ${preferences.push ? 'push notifications' : ''}
+      - Last visit: ${clientCard.lastVisit ? clientCard.lastVisit.toLocaleDateString() : 'Never'}
       
       The message should be engaging, personalized, and encourage booking their next appointment.`;
   }
@@ -335,9 +335,9 @@ export class ClientManagementService {
     // Implementation would depend on your notification system
     // This is a placeholder for the actual implementation
 
-    logger?.info('Sending follow-up', 'ClientManagement', {
-      clientId: client?.id,
-      email: client?.user.email,
+    logger.info('Sending follow-up', 'ClientManagement', {
+      clientId: client.id,
+      email: client.user.email,
     });
   }
 }

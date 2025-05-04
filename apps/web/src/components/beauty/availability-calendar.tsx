@@ -15,22 +15,22 @@ export function AvailabilityCalendar({ providerId }: AvailabilityCalendarProps) 
   const [loading, setLoading] = useState(false);
 
   const handleDateSelect = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');selectedDate: Date | undefined) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');selectedDate: Date | undefined) => {
     if (!selectedDate) return;
 
     setDate(selectedDate);
     setLoading(true);
 
     try {
-      const availabilityService = AvailabilityService?.getInstance();
-      const slots = await availabilityService?.getAvailability(
+      const availabilityService = AvailabilityService.getInstance();
+      const slots = await availabilityService.getAvailability(
         providerId,
         format(selectedDate, 'yyyy-MM-dd'),
       );
       setTimeSlots(slots);
     } catch (error) {
-      console?.error('Error fetching availability:', error);
+      console.error('Error fetching availability:', error);
     } finally {
       setLoading(false);
     }

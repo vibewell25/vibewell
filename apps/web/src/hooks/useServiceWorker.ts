@@ -16,34 +16,34 @@ export function useServiceWorker() {
   });
 
   useEffect(() => {
-    if (!state?.isSupported) return;
+    if (!state.isSupported) return;
 
     const registerServiceWorker = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         setState((prev) => ({ ...prev, isUpdating: true }));
 
 
-        const registration = await navigator?.serviceWorker.register('/service-worker?.js', {
+        const registration = await navigator.serviceWorker.register('/service-worker.js', {
           scope: '/',
         });
 
         // Handle updates
-        registration?.addEventListener('updatefound', () => {
-          const newWorker = registration?.installing;
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing;
           if (!newWorker) return;
 
-          newWorker?.addEventListener('statechange', () => {
-            if (newWorker?.state === 'installed' && navigator?.serviceWorker.controller) {
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
               // New content is available, show update prompt
-              const shouldUpdate = window?.confirm(
+              const shouldUpdate = window.confirm(
                 'A new version of the app is available. Would you like to update now?',
               );
 
               if (shouldUpdate) {
-                newWorker?.postMessage({ type: 'SKIP_WAITING' });
-                window?.location.reload();
+                newWorker.postMessage({ type: 'SKIP_WAITING' });
+                window.location.reload();
               }
             }
           });
@@ -68,28 +68,28 @@ export function useServiceWorker() {
 
     // Handle service worker updates
     let refreshing = false;
-    navigator?.serviceWorker.addEventListener('controllerchange', () => {
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
       if (!refreshing) {
         refreshing = true;
-        window?.location.reload();
+        window.location.reload();
       }
     });
 
     return () => {
-      if (state?.registration) {
-        state?.registration.unregister().catch(console?.error);
+      if (state.registration) {
+        state.registration.unregister().catch(console.error);
       }
     };
-  }, [state?.isSupported]);
+  }, [state.isSupported]);
 
   const update = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-    if (!state?.registration) return;
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    if (!state.registration) return;
 
     try {
       setState((prev) => ({ ...prev, isUpdating: true }));
-      await state?.registration.update();
+      await state.registration.update();
       setState((prev) => ({ ...prev, isUpdating: false }));
     } catch (error) {
       setState((prev) => ({

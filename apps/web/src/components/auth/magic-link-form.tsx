@@ -8,8 +8,8 @@ import { Mail, Loader2 } from 'lucide-react';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { toast } from '../ui/use-toast';
 
-const formSchema = z?.object({
-  email: z?.string().email('Please enter a valid email address'),
+const formSchema = z.object({
+  email: z.string().email('Please enter a valid email address'),
 });
 
 interface MagicLinkFormProps {

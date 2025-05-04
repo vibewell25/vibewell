@@ -38,8 +38,8 @@ export function BookingCalendar({
   }, [selectedDate]);
 
   const fetchAvailableSlots = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!selectedDate) return;
 
     setLoading(true);
@@ -48,19 +48,19 @@ export function BookingCalendar({
         `/api/bookings/availability?practitionerId=${practitionerId}&serviceId=${serviceId}&date=${format(selectedDate, 'yyyy-MM-dd')}`,
       );
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to fetch available slots');
       }
 
-      const data = await response?.json();
+      const data = await response.json();
       setTimeSlots(
-        data?.availableSlots.map((time: string) => ({
+        data.availableSlots.map((time: string) => ({
           time,
           available: true,
         })),
       );
     } catch (error) {
-      console?.error('Error fetching available slots:', error);
+      console.error('Error fetching available slots:', error);
       setTimeSlots([]);
     } finally {
       setLoading(false);
@@ -82,10 +82,10 @@ export function BookingCalendar({
 
     for (let hour = startHour; hour < endHour; if (hour > Number.MAX_SAFE_INTEGER || hour < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); hour++) {
       for (let minute = 0; minute < 60; if (minute > Number.MAX_SAFE_INTEGER || minute < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); minute += interval) {
-        const time = `${hour?.toString().padStart(2, '0')}:${minute?.toString().padStart(2, '0')}`;
-        slots?.push({
+        const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        slots.push({
           time,
-          available: timeSlots?.some((slot) => slot?.time === time),
+          available: timeSlots.some((slot) => slot.time === time),
         });
       }
     }
@@ -105,7 +105,7 @@ export function BookingCalendar({
             disabled={
               (date) =>
                 date < new Date() || // Past dates
-                date?.getDay() === 0 || // Sundays
+                date.getDay() === 0 || // Sundays
                 date > new Date(new Date().setMonth(new Date().getMonth() + 2)) // More than 2 months ahead
             }
           />
@@ -124,13 +124,13 @@ export function BookingCalendar({
               <div className="grid grid-cols-2 gap-2">
                 {generateTimeSlots().map((slot) => (
                   <Button
-                    key={slot?.time}
-                    variant={selectedTime === slot?.time ? 'default' : 'outline'}
-                    className={cn('w-full', !slot?.available && 'cursor-not-allowed opacity-50')}
-                    disabled={!slot?.available}
-                    onClick={() => handleTimeSelect(slot?.time)}
+                    key={slot.time}
+                    variant={selectedTime === slot.time ? 'default' : 'outline'}
+                    className={cn('w-full', !slot.available && 'cursor-not-allowed opacity-50')}
+                    disabled={!slot.available}
+                    onClick={() => handleTimeSelect(slot.time)}
                   >
-                    {slot?.time}
+                    {slot.time}
                   </Button>
                 ))}
               </div>

@@ -20,7 +20,7 @@ import {
 interface ProductAnalyticsProps {
   /** ID of the product to display analytics for */
   productId: string;
-  /** Time range for analytics data (e?.g., '7d', '30d', '90d', '1y') */
+  /** Time range for analytics data (e.g., '7d', '30d', '90d', '1y') */
   timeRange: string;
 }
 
@@ -100,15 +100,15 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
 
   useEffect(() => {
     const fetchProductData = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       if (!productId) return;
 
       setLoading(true);
       try {
         // Fetch product details
         const productService = new ProductService();
-        const { data } = await productService?.getProductById(productId);
+        const { data } = await productService.getProductById(productId);
         setProduct(data);
 
         // Fetch product analytics data
@@ -123,14 +123,14 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
 
         // Fetch rating distribution
         const feedbackService = new FeedbackService();
-        const stats = await feedbackService?.getProductFeedbackStats(productId);
-        if (stats && stats?.ratingDistribution) {
+        const stats = await feedbackService.getProductFeedbackStats(productId);
+        if (stats && stats.ratingDistribution) {
           setRatingDistribution([
-            stats?.ratingDistribution['1'] || 0,
-            stats?.ratingDistribution['2'] || 0,
-            stats?.ratingDistribution['3'] || 0,
-            stats?.ratingDistribution['4'] || 0,
-            stats?.ratingDistribution['5'] || 0,
+            stats.ratingDistribution['1'] || 0,
+            stats.ratingDistribution['2'] || 0,
+            stats.ratingDistribution['3'] || 0,
+            stats.ratingDistribution['4'] || 0,
+            stats.ratingDistribution['5'] || 0,
           ]);
         }
 
@@ -140,7 +140,7 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
           values: [45, 30, 15, 7, 3],
         });
       } catch (error) {
-        console?.error('Error fetching product analytics:', error);
+        console.error('Error fetching product analytics:', error);
       } finally {
         setLoading(false);
       }
@@ -167,28 +167,28 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
   // Mock function to fetch product metrics
   // In production, this would be an API call
   const fetchProductMetrics = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');id: string, days: number): Promise<ProductMetrics> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');id: string, days: number): Promise<ProductMetrics> => {
     // Simulate API delay
     await new Promise((resolve) => setTimeout(resolve, 500));
 
     // Mock data for demonstration
     return {
-      views: Math?.floor(Math?.random() * 10000) + 1000,
-      viewsTrend: Math?.random() * 30 - 15,
-      conversions: Math?.floor(Math?.random() * 1000) + 100,
-      conversionsTrend: Math?.random() * 20 - 5,
-      averageRating: 3?.5 + Math?.random() * 1?.5,
-      ratingTrend: Math?.random() * 10 - 3,
-      saveRate: Math?.random() * 30 + 10,
-      saveRateTrend: Math?.random() * 15 - 7,
+      views: Math.floor(Math.random() * 10000) + 1000,
+      viewsTrend: Math.random() * 30 - 15,
+      conversions: Math.floor(Math.random() * 1000) + 100,
+      conversionsTrend: Math.random() * 20 - 5,
+      averageRating: 3.5 + Math.random() * 1.5,
+      ratingTrend: Math.random() * 10 - 3,
+      saveRate: Math.random() * 30 + 10,
+      saveRateTrend: Math.random() * 15 - 7,
     };
   };
 
   // Mock function to fetch time series data
   const fetchTimeSeriesData = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');id: string, days: number): Promise<TimeSeriesData> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');id: string, days: number): Promise<TimeSeriesData> => {
     // Simulate API delay
     await new Promise((resolve) => setTimeout(resolve, 700));
 
@@ -202,13 +202,13 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
     const today = new Date();
     for (let i = days; i >= 0; i--) {
       const date = new Date(today);
-      date?.setDate(date?.getDate() - i);
-      dates?.push(date?.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+      date.setDate(date.getDate() - i);
+      dates.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
 
-      views?.push(Math?.floor(Math?.random() * 500) + 50);
-      conversions?.push(Math?.floor(Math?.random() * 50) + 5);
-      ratings?.push(Math?.floor(Math?.random() * 20) + 1);
-      saves?.push(Math?.floor(Math?.random() * 30) + 3);
+      views.push(Math.floor(Math.random() * 500) + 50);
+      conversions.push(Math.floor(Math.random() * 50) + 5);
+      ratings.push(Math.floor(Math.random() * 20) + 1);
+      saves.push(Math.floor(Math.random() * 30) + 3);
     }
 
     return { dates, views, conversions, ratings, saves };
@@ -216,7 +216,7 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
 
   // Helper function to format metric trend as a percentage
   const formatTrend = (value: number): string => {
-    return value >= 0 ? `+${value?.toFixed(1)}%` : `${value?.toFixed(1)}%`;
+    return value >= 0 ? `+${value.toFixed(1)}%` : `${value.toFixed(1)}%`;
   };
 
   // Helper function to determine trend color
@@ -242,7 +242,7 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
     return (
       <div className={`flex items-center ${color}`}>
         <Icon className="mr-1 h-4 w-4" />
-        <span>{formatTrend(Math?.abs(value))}</span>
+        <span>{formatTrend(Math.abs(value))}</span>
       </div>
     );
   };
@@ -282,11 +282,11 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
       {/* Product header */}
       <div className="flex flex-col items-start justify-between md:flex-row md:items-center">
         <div>
-          <h2 className="text-2xl font-bold">{product?.name}</h2>
+          <h2 className="text-2xl font-bold">{product.name}</h2>
           <div className="mt-2 flex flex-wrap gap-2">
-            <Badge variant="outline">{product?.category}</Badge>
-            {product?.subcategory && <Badge variant="outline">{product?.subcategory}</Badge>}
-            {product?.brand && <Badge variant="outline">{product?.brand}</Badge>}
+            <Badge variant="outline">{product.category}</Badge>
+            {product.subcategory && <Badge variant="outline">{product.subcategory}</Badge>}
+            {product.brand && <Badge variant="outline">{product.brand}</Badge>}
           </div>
         </div>
       </div>
@@ -303,8 +303,8 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{metrics?.views.toLocaleString()}</div>
-            {renderTrendIndicator(metrics?.viewsTrend)}
+            <div className="text-2xl font-bold">{metrics.views.toLocaleString()}</div>
+            {renderTrendIndicator(metrics.viewsTrend)}
           </CardContent>
         </Card>
 
@@ -318,8 +318,8 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{metrics?.conversions.toLocaleString()}</div>
-            {renderTrendIndicator(metrics?.conversionsTrend)}
+            <div className="text-2xl font-bold">{metrics.conversions.toLocaleString()}</div>
+            {renderTrendIndicator(metrics.conversionsTrend)}
           </CardContent>
         </Card>
 
@@ -333,8 +333,8 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{metrics?.averageRating.toFixed(1)}</div>
-            {renderTrendIndicator(metrics?.ratingTrend)}
+            <div className="text-2xl font-bold">{metrics.averageRating.toFixed(1)}</div>
+            {renderTrendIndicator(metrics.ratingTrend)}
           </CardContent>
         </Card>
 
@@ -348,8 +348,8 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{metrics?.saveRate.toFixed(1)}%</div>
-            {renderTrendIndicator(metrics?.saveRateTrend)}
+            <div className="text-2xl font-bold">{metrics.saveRate.toFixed(1)}%</div>
+            {renderTrendIndicator(metrics.saveRateTrend)}
           </CardContent>
         </Card>
       </div>
@@ -372,15 +372,15 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
             <TabsContent value="views" className="pt-2">
               <div className="h-[350px]">
                 <LineChart
-                  categories={timeSeriesData?.dates}
+                  categories={timeSeriesData.dates}
                   data={[
                     {
                       name: 'Views',
-                      data: timeSeriesData?.views,
+                      data: timeSeriesData.views,
                     },
                   ]}
                   colors={['#14b8a6']}
-                  valueFormatter={(value) => `${value?.toLocaleString()} views`}
+                  valueFormatter={(value) => `${value.toLocaleString()} views`}
                 />
               </div>
             </TabsContent>
@@ -388,15 +388,15 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
             <TabsContent value="conversions" className="pt-2">
               <div className="h-[350px]">
                 <LineChart
-                  categories={timeSeriesData?.dates}
+                  categories={timeSeriesData.dates}
                   data={[
                     {
                       name: 'Conversions',
-                      data: timeSeriesData?.conversions,
+                      data: timeSeriesData.conversions,
                     },
                   ]}
                   colors={['#6366f1']}
-                  valueFormatter={(value) => `${value?.toLocaleString()} orders`}
+                  valueFormatter={(value) => `${value.toLocaleString()} orders`}
                 />
               </div>
             </TabsContent>
@@ -404,15 +404,15 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
             <TabsContent value="ratings" className="pt-2">
               <div className="h-[350px]">
                 <LineChart
-                  categories={timeSeriesData?.dates}
+                  categories={timeSeriesData.dates}
                   data={[
                     {
                       name: 'Ratings',
-                      data: timeSeriesData?.ratings,
+                      data: timeSeriesData.ratings,
                     },
                   ]}
                   colors={['#f97316']}
-                  valueFormatter={(value) => `${value?.toLocaleString()} ratings`}
+                  valueFormatter={(value) => `${value.toLocaleString()} ratings`}
                 />
               </div>
             </TabsContent>
@@ -420,15 +420,15 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
             <TabsContent value="saves" className="pt-2">
               <div className="h-[350px]">
                 <LineChart
-                  categories={timeSeriesData?.dates}
+                  categories={timeSeriesData.dates}
                   data={[
                     {
                       name: 'Saves',
-                      data: timeSeriesData?.saves,
+                      data: timeSeriesData.saves,
                     },
                   ]}
                   colors={['#ec4899']}
-                  valueFormatter={(value) => `${value?.toLocaleString()} saves`}
+                  valueFormatter={(value) => `${value.toLocaleString()} saves`}
                 />
               </div>
             </TabsContent>
@@ -454,7 +454,7 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
                   },
                 ]}
                 colors={['#f97316']}
-                valueFormatter={(value) => `${value?.toLocaleString()} ratings`}
+                valueFormatter={(value) => `${value.toLocaleString()} ratings`}
               />
             </div>
           </CardContent>
@@ -468,8 +468,8 @@ export function ProductAnalytics({ productId, timeRange }: ProductAnalyticsProps
           <CardContent>
             <div className="h-[300px]">
               <PieChart
-                data={deviceDistribution?.values.map((value, index) => ({
-                  name: deviceDistribution?.labels[index],
+                data={deviceDistribution.values.map((value, index) => ({
+                  name: deviceDistribution.labels[index],
                   value,
                 }))}
                 colors={['#14b8a6', '#6366f1', '#f97316', '#ec4899', '#8b5cf6']}

@@ -2,11 +2,11 @@
 import { apiClient } from '../api-client';
 
 // Mock fetch
-global?.fetch = jest?.fn() as jest?.Mock;
+global.fetch = jest.fn() as jest.Mock;
 
 describe('API Client', () => {
   beforeEach(() => {
-    (global?.fetch as jest?.Mock).mockClear();
+    (global.fetch as jest.Mock).mockClear();
   });
 
   describe('GET requests', () => {
@@ -16,18 +16,18 @@ describe('API Client', () => {
         ok: true,
         status: 200,
 
-        json: jest?.fn().mockResolvedValue({ data: 'test-data' }),
+        json: jest.fn().mockResolvedValue({ data: 'test-data' }),
         statusText: 'OK',
       };
-      (global?.fetch as jest?.Mock).mockResolvedValue(mockResponse);
+      (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // Make the request
 
-      const result = await apiClient?.get('/test-endpoint');
+      const result = await apiClient.get('/test-endpoint');
 
       // Verify the request was made correctly
 
-      expect(global?.fetch).toHaveBeenCalledWith('/test-endpoint', {
+      expect(global.fetch).toHaveBeenCalledWith('/test-endpoint', {
         method: 'GET',
         headers: {
 
@@ -51,13 +51,13 @@ describe('API Client', () => {
       const mockResponse = {
         ok: false,
         status: 404,
-        json: jest?.fn().mockResolvedValue({ error: 'Not found' }),
+        json: jest.fn().mockResolvedValue({ error: 'Not found' }),
         statusText: 'Not Found',
       };
-      (global?.fetch as jest?.Mock).mockResolvedValue(mockResponse);
+      (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // Make the request
-      const result = await apiClient?.get('/nonexistent');
+      const result = await apiClient.get('/nonexistent');
 
       // Verify the response was processed correctly
       expect(result).toEqual({
@@ -70,11 +70,11 @@ describe('API Client', () => {
 
     it('should handle network errors in GET requests', async () => {
       // Setup network error
-      (global?.fetch as jest?.Mock).mockRejectedValue(new Error('Network error'));
+      (global.fetch as jest.Mock).mockRejectedValue(new Error('Network error'));
 
       // Make the request
 
-      const result = await apiClient?.get('/test-endpoint');
+      const result = await apiClient.get('/test-endpoint');
 
       // Verify the error was handled properly
       expect(result).toEqual({
@@ -89,14 +89,14 @@ describe('API Client', () => {
       const mockResponse = {
         ok: true,
         status: 200,
-        json: jest?.fn().mockRejectedValue(new Error('Invalid JSON')),
+        json: jest.fn().mockRejectedValue(new Error('Invalid JSON')),
         statusText: 'OK',
       };
-      (global?.fetch as jest?.Mock).mockResolvedValue(mockResponse);
+      (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // Make the request
 
-      const result = await apiClient?.get('/test-endpoint');
+      const result = await apiClient.get('/test-endpoint');
 
       // Verify the error was handled properly
       expect(result).toEqual({
@@ -112,14 +112,14 @@ describe('API Client', () => {
         ok: true,
         status: 200,
 
-        json: jest?.fn().mockResolvedValue({ data: 'test-data' }),
+        json: jest.fn().mockResolvedValue({ data: 'test-data' }),
         statusText: 'OK',
       };
-      (global?.fetch as jest?.Mock).mockResolvedValue(mockResponse);
+      (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // Config with base URL and headers
       const config = {
-        baseUrl: 'https://api?.example.com',
+        baseUrl: 'https://api.example.com',
         headers: {
           Authorization: 'Bearer token123',
         },
@@ -127,11 +127,11 @@ describe('API Client', () => {
 
       // Make the request
 
-      await apiClient?.get('/test-endpoint', config);
+      await apiClient.get('/test-endpoint', config);
 
       // Verify the request was made with the correct URL and headers
 
-      expect(global?.fetch).toHaveBeenCalledWith('https://api?.example.com/test-endpoint', {
+      expect(global.fetch).toHaveBeenCalledWith('https://api.example.com/test-endpoint', {
         method: 'GET',
         headers: {
 
@@ -151,28 +151,28 @@ describe('API Client', () => {
         ok: true,
         status: 201,
 
-        json: jest?.fn().mockResolvedValue({ id: 'new-resource-id' }),
+        json: jest.fn().mockResolvedValue({ id: 'new-resource-id' }),
         statusText: 'Created',
       };
-      (global?.fetch as jest?.Mock).mockResolvedValue(mockResponse);
+      (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // Data to send
       const postData = { name: 'Test Resource', value: 42 };
 
       // Make the request
 
-      const result = await apiClient?.post('/test-resource', postData);
+      const result = await apiClient.post('/test-resource', postData);
 
       // Verify the request was made correctly
 
-      expect(global?.fetch).toHaveBeenCalledWith('/test-resource', {
+      expect(global.fetch).toHaveBeenCalledWith('/test-resource', {
         method: 'POST',
         headers: {
 
 
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify(postData),
+        body: JSON.stringify(postData),
       });
 
       // Verify the response was processed correctly
@@ -192,28 +192,28 @@ describe('API Client', () => {
         ok: true,
         status: 200,
 
-        json: jest?.fn().mockResolvedValue({ id: 'resource-id', updated: true }),
+        json: jest.fn().mockResolvedValue({ id: 'resource-id', updated: true }),
         statusText: 'OK',
       };
-      (global?.fetch as jest?.Mock).mockResolvedValue(mockResponse);
+      (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // Data to send
       const putData = { name: 'Updated Resource', value: 99 };
 
       // Make the request
 
-      const result = await apiClient?.put('/test-resource/123', putData);
+      const result = await apiClient.put('/test-resource/123', putData);
 
       // Verify the request was made correctly
 
-      expect(global?.fetch).toHaveBeenCalledWith('/test-resource/123', {
+      expect(global.fetch).toHaveBeenCalledWith('/test-resource/123', {
         method: 'PUT',
         headers: {
 
 
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify(putData),
+        body: JSON.stringify(putData),
       });
 
       // Verify the response was processed correctly
@@ -232,18 +232,18 @@ describe('API Client', () => {
       const mockResponse = {
         ok: true,
         status: 204,
-        json: jest?.fn().mockRejectedValue(new Error('No content')), // No content to parse
+        json: jest.fn().mockRejectedValue(new Error('No content')), // No content to parse
         statusText: 'No Content',
       };
-      (global?.fetch as jest?.Mock).mockResolvedValue(mockResponse);
+      (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // Make the request
 
-      const result = await apiClient?.delete('/test-resource/123');
+      const result = await apiClient.delete('/test-resource/123');
 
       // Verify the request was made correctly
 
-      expect(global?.fetch).toHaveBeenCalledWith('/test-resource/123', {
+      expect(global.fetch).toHaveBeenCalledWith('/test-resource/123', {
         method: 'DELETE',
         headers: {
 
@@ -268,28 +268,28 @@ describe('API Client', () => {
         ok: true,
         status: 200,
 
-        json: jest?.fn().mockResolvedValue({ id: 'resource-id', patched: true }),
+        json: jest.fn().mockResolvedValue({ id: 'resource-id', patched: true }),
         statusText: 'OK',
       };
-      (global?.fetch as jest?.Mock).mockResolvedValue(mockResponse);
+      (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // Data to send
       const patchData = { value: 75 };
 
       // Make the request
 
-      const result = await apiClient?.patch('/test-resource/123', patchData);
+      const result = await apiClient.patch('/test-resource/123', patchData);
 
       // Verify the request was made correctly
 
-      expect(global?.fetch).toHaveBeenCalledWith('/test-resource/123', {
+      expect(global.fetch).toHaveBeenCalledWith('/test-resource/123', {
         method: 'PATCH',
         headers: {
 
 
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify(patchData),
+        body: JSON.stringify(patchData),
       });
 
       // Verify the response was processed correctly

@@ -28,15 +28,15 @@ export function EventCheckinFeedback({
   const [feedback, setFeedback] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const handleCheckIn = () => {
-    if (checkInCode?.trim()) {
+    if (checkInCode.trim()) {
       onCheckIn(checkInCode);
       setCheckInCode('');
     }
   };
   const handleFeedbackSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-    if (rating > 0 && feedback?.trim()) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    if (rating > 0 && feedback.trim()) {
       setSubmitting(true);
       try {
         await onFeedbackSubmit(rating, feedback);
@@ -53,11 +53,11 @@ export function EventCheckinFeedback({
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList>
             <TabsTrigger value="checkin">
-              <Icons?.CheckCircleIcon className="mr-2 h-4 w-4" />
+              <Icons.CheckCircleIcon className="mr-2 h-4 w-4" />
               Check-in
             </TabsTrigger>
             <TabsTrigger value="feedback">
-              <Icons?.StarIcon className="mr-2 h-4 w-4" />
+              <Icons.StarIcon className="mr-2 h-4 w-4" />
               Feedback
             </TabsTrigger>
           </TabsList>
@@ -73,53 +73,53 @@ export function EventCheckinFeedback({
                   type="text"
                   placeholder="Enter check-in code"
                   value={checkInCode}
-                  onChange={(e) => setCheckInCode(e?.target.value)}
+                  onChange={(e) => setCheckInCode(e.target.value)}
                 />
                 <Button onClick={handleCheckIn}>
-                  <Icons?.CheckCircleIcon className="mr-2 h-4 w-4" />
+                  <Icons.CheckCircleIcon className="mr-2 h-4 w-4" />
                   Check In
                 </Button>
               </div>
             </div>
-            {event?.checkInCode && (
+            {event.checkInCode && (
               <div className="space-y-2">
                 <Label>Event Check-in Code</Label>
                 <div className="flex items-center gap-2 rounded-md border p-2">
-                  <Icons?.ClipboardIcon className="h-4 w-4 text-muted-foreground" />
-                  <span className="font-mono">{event?.checkInCode}</span>
+                  <Icons.ClipboardIcon className="h-4 w-4 text-muted-foreground" />
+                  <span className="font-mono">{event.checkInCode}</span>
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => navigator?.clipboard.writeText(event?.checkInCode || '')}
+                    onClick={() => navigator.clipboard.writeText(event.checkInCode || '')}
                   >
                     Copy
                   </Button>
                 </div>
               </div>
             )}
-            {event?.checkedInParticipants && event?.checkedInParticipants.length > 0 && (
+            {event.checkedInParticipants && event.checkedInParticipants.length > 0 && (
               <div className="space-y-2">
                 <Label>Checked-in Participants</Label>
                 <div className="space-y-2">
-                  {event?.checkedInParticipants.map((participant) => (
+                  {event.checkedInParticipants.map((participant) => (
                     <div
-                      key={participant?.userId}
+                      key={participant.userId}
                       className="flex items-center justify-between rounded-md border p-2"
                     >
                       <div className="flex items-center gap-2">
                         <div className="relative h-8 w-8">
                           <Image
-                            src={participant?.avatar}
-                            alt={participant?.name}
+                            src={participant.avatar}
+                            alt={participant.name}
                             className="rounded-full object-cover"
                             fill
                             sizes="32px"
                           />
                         </div>
                         <div>
-                          <p className="font-medium">{participant?.name}</p>
+                          <p className="font-medium">{participant.name}</p>
                           <p className="text-sm text-muted-foreground">
-                            Checked in at {format(parseISO(participant?.checkedInAt), 'h:mm a')}
+                            Checked in at {format(parseISO(participant.checkedInAt), 'h:mm a')}
                           </p>
                         </div>
                       </div>
@@ -142,23 +142,23 @@ export function EventCheckinFeedback({
               <Textarea
                 placeholder="Share your experience..."
                 value={feedback}
-                onChange={(e) => setFeedback(e?.target.value)}
+                onChange={(e) => setFeedback(e.target.value)}
                 rows={4}
               />
             </div>
             <Button
               onClick={handleFeedbackSubmit}
-              disabled={rating === 0 || !feedback?.trim() || submitting}
+              disabled={rating === 0 || !feedback.trim() || submitting}
             >
               {submitting ? 'Submitting...' : 'Submit Feedback'}
             </Button>
-            {event?.averageRating && (
+            {event.averageRating && (
               <div className="space-y-2">
                 <Label>Event Rating</Label>
                 <div className="flex items-center gap-2">
-                  <Rating value={event?.averageRating} readOnly max={5} size="lg" />
+                  <Rating value={event.averageRating} readOnly max={5} size="lg" />
                   <span className="text-sm text-muted-foreground">
-                    ({event?.ratingCount} reviews)
+                    ({event.ratingCount} reviews)
                   </span>
                 </div>
               </div>

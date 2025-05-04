@@ -5,20 +5,20 @@ import { InventoryItem } from '../types/inventory';
 import { inventoryApi } from '../services/inventoryService';
 import { InventoryListNavigationProp } from '../types/navigation';
 
-const InventoryListScreen: React?.FC = () => {
+const InventoryListScreen: React.FC = () => {
   const navigation = useNavigation<InventoryListNavigationProp>();
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchItems = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
-        const data = await inventoryApi?.getItems();
+        const data = await inventoryApi.getItems();
         setItems(data);
       } catch (err) {
-        console?.error(err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -29,18 +29,18 @@ const InventoryListScreen: React?.FC = () => {
   if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
-    <View style={styles?.container}>
-      <Button title="Add Item" onPress={() => navigation?.navigate('InventoryForm', {})} />
+    <View style={styles.container}>
+      <Button title="Add Item" onPress={() => navigation.navigate('InventoryForm', {})} />
       <FlatList
         data={items}
-        keyExtractor={item => item?.id}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity
-            style={styles?.item}
-            onPress={() => navigation?.navigate('InventoryDetail', { id: item?.id })}
+            style={styles.item}
+            onPress={() => navigation.navigate('InventoryDetail', { id: item.id })}
           >
-            <Text style={styles?.title}>{item?.name}</Text>
-            <Text>Qty: {item?.quantity}</Text>
+            <Text style={styles.title}>{item.name}</Text>
+            <Text>Qty: {item.quantity}</Text>
           </TouchableOpacity>
         )}
       />
@@ -48,7 +48,7 @@ const InventoryListScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   item: { padding: 12, borderBottomWidth: 1, borderColor: '#ccc' },
   title: { fontSize: 16, fontWeight: 'bold' },

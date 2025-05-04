@@ -2,12 +2,12 @@ import React from 'react';
 import { View, Text, Button, ActivityIndicator, StyleSheet } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
 
-const RegisterScreen: React?.FC = () => {
+const RegisterScreen: React.FC = () => {
   const { isLoading, signIn } = useAuth();
 
   return (
-    <View style={styles?.container}>
-      <Text style={styles?.title}>Create Account</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Create Account</Text>
       {isLoading ? (
         <ActivityIndicator size="large" color="#2A9D8F" />
       ) : (
@@ -17,7 +17,7 @@ const RegisterScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',

@@ -33,15 +33,15 @@ export function TopRatedResources({ limit = 5 }: TopRatedResourcesProps) {
       // We need to fetch item details for these items
       // In a real app, this would be an API call
       // For now, we'll use mock data
-      const items: TopResourceItem[] = highestRated?.map((rating) => ({
-        id: rating?.id,
-        type: rating?.type,
-        title: getMockTitle(rating?.id, rating?.type),
-        description: getMockDescription(rating?.id, rating?.type),
-        url: rating?.id.includes('/') ? rating?.id : `/${rating?.type}s/${rating?.id}`,
+      const items: TopResourceItem[] = highestRated.map((rating) => ({
+        id: rating.id,
+        type: rating.type,
+        title: getMockTitle(rating.id, rating.type),
+        description: getMockDescription(rating.id, rating.type),
+        url: rating.id.includes('/') ? rating.id : `/${rating.type}s/${rating.id}`,
         category: 'Financial',
-        average: rating?.average,
-        count: rating?.count,
+        average: rating.average,
+        count: rating.count,
       }));
       setResources(items);
       setLoading(false);
@@ -49,7 +49,7 @@ export function TopRatedResources({ limit = 5 }: TopRatedResourcesProps) {
   }, [limit]);
   // Mock data helpers - in a real app, these would be API calls
   const getMockTitle = (id: string, type: string): string => {
-    return `Top Rated ${type?.charAt(0).toUpperCase() + type?.slice(1)}`;
+    return `Top Rated ${type.charAt(0).toUpperCase() + type.slice(1)}`;
   };
   const getMockDescription = (id: string, type: string): string => {
     return `A highly rated ${type} with an ID of ${id}`;
@@ -58,13 +58,13 @@ export function TopRatedResources({ limit = 5 }: TopRatedResourcesProps) {
   const renderTypeIcon = (type: string) => {
     switch (type) {
       case 'resource':
-        return <Icons?.DocumentTextIcon className="h-5 w-5 text-blue-500" />;
+        return <Icons.DocumentTextIcon className="h-5 w-5 text-blue-500" />;
       case 'tool':
-        return <Icons?.CalculatorIcon className="h-5 w-5 text-green-500" />;
+        return <Icons.CalculatorIcon className="h-5 w-5 text-green-500" />;
       case 'article':
-        return <Icons?.NewspaperIcon className="h-5 w-5 text-purple-500" />;
+        return <Icons.NewspaperIcon className="h-5 w-5 text-purple-500" />;
       default:
-        return <Icons?.DocumentTextIcon className="h-5 w-5 text-gray-500" />;
+        return <Icons.DocumentTextIcon className="h-5 w-5 text-gray-500" />;
     }
   };
   if (loading) {
@@ -85,7 +85,7 @@ export function TopRatedResources({ limit = 5 }: TopRatedResourcesProps) {
       </div>
     );
   }
-  if (resources?.length === 0) {
+  if (resources.length === 0) {
     return (
       <div className="rounded-lg bg-white p-4 shadow-sm">
         <h3 className="mb-4 text-lg font-medium">Top Rated Resources</h3>
@@ -99,23 +99,23 @@ export function TopRatedResources({ limit = 5 }: TopRatedResourcesProps) {
     <div className="rounded-lg bg-white p-4 shadow-sm">
       <h3 className="mb-4 text-lg font-medium">Top Rated Resources</h3>
       <div className="space-y-4">
-        {resources?.map((resource) => (
-          <div key={`${resource?.type}-${resource?.id}`} className="flex items-start">
-            <div className="mr-3 mt-1">{renderTypeIcon(resource?.type)}</div>
+        {resources.map((resource) => (
+          <div key={`${resource.type}-${resource.id}`} className="flex items-start">
+            <div className="mr-3 mt-1">{renderTypeIcon(resource.type)}</div>
             <div className="flex-1">
               <Link
-                href={resource?.url}
+                href={resource.url}
                 className="text-base font-medium text-blue-600 hover:text-blue-800"
               >
-                {resource?.title}
+                {resource.title}
               </Link>
               <div className="mt-1">
                 <StarRating
-                  initialRating={resource?.average}
+                  initialRating={resource.average}
                   readonly={true}
                   size="sm"
                   showCount={true}
-                  count={resource?.count}
+                  count={resource.count}
                 />
               </div>
             </div>

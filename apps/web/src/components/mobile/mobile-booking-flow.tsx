@@ -47,18 +47,18 @@ export function MobileBookingFlow({
   useEffect(() => {
     // Store mobile device data
     const storeMobileData = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
-        await offlineService?.storeMobileData({
-          deviceType: navigator?.platform,
-          deviceModel: navigator?.userAgent,
-          osVersion: navigator?.appVersion,
-          appVersion: '1?.0.0', // Replace with actual app version
+        await offlineService.storeMobileData({
+          deviceType: navigator.platform,
+          deviceModel: navigator.userAgent,
+          osVersion: navigator.appVersion,
+          appVersion: '1.0.0', // Replace with actual app version
           locationData: null, // Add location data if available and permitted
         });
       } catch (error) {
-        console?.error('Failed to store mobile data:', error);
+        console.error('Failed to store mobile data:', error);
       }
     };
 
@@ -76,18 +76,18 @@ export function MobileBookingFlow({
   };
 
   const handleDetailsSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');details: typeof bookingDetails) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');details: typeof bookingDetails) => {
     setBookingDetails(details);
 
     if (!isOnline) {
       // Store booking for later sync
-      await offlineService?.storeOfflineBooking({
+      await offlineService.storeOfflineBooking({
         serviceId: selectedService!.id,
         practitionerId,
         date: selectedDateTime!.date,
         time: selectedDateTime!.time,
-        notes: details?.notes,
+        notes: details.notes,
         duration: selectedService!.duration,
         status: 'PENDING',
       });
@@ -106,23 +106,23 @@ export function MobileBookingFlow({
       const response = await fetch('/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify({
+        body: JSON.stringify({
           serviceId: selectedService!.id,
           practitionerId,
-          date: selectedDateTime!.date?.toISOString().split('T')[0],
+          date: selectedDateTime!.date.toISOString().split('T')[0],
           time: selectedDateTime!.time,
-          notes: details?.notes,
+          notes: details.notes,
           duration: selectedService!.duration,
         }),
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to create booking');
       }
 
       setCurrentStep('payment');
     } catch (error) {
-      console?.error('Error creating booking:', error);
+      console.error('Error creating booking:', error);
       toast({
         title: 'Error',
         description: 'Failed to create booking. Please try again.',
@@ -149,17 +149,17 @@ export function MobileBookingFlow({
 
       {currentStep === 'service' && (
         <div className="grid gap-3">
-          {services?.map((service) => (
+          {services.map((service) => (
             <Card
-              key={service?.id}
+              key={service.id}
               className="cursor-pointer p-4 transition-colors hover:bg-muted"
               onClick={() => handleServiceSelect(service)}
             >
-              <h3 className="font-semibold">{service?.name}</h3>
-              <p className="text-sm text-muted-foreground">{service?.description}</p>
+              <h3 className="font-semibold">{service.name}</h3>
+              <p className="text-sm text-muted-foreground">{service.description}</p>
               <div className="mt-2 flex items-center justify-between">
-                <span className="font-medium">${service?.price}</span>
-                <span className="text-sm text-muted-foreground">{service?.duration} min</span>
+                <span className="font-medium">${service.price}</span>
+                <span className="text-sm text-muted-foreground">{service.duration} min</span>
               </div>
             </Card>
           ))}
@@ -169,8 +169,8 @@ export function MobileBookingFlow({
       {currentStep === 'datetime' && selectedService && (
         <BookingCalendar
           practitionerId={practitionerId}
-          serviceId={selectedService?.id}
-          serviceDuration={selectedService?.duration}
+          serviceId={selectedService.id}
+          serviceDuration={selectedService.duration}
           onSelectSlot={handleDateTimeSelect}
         />
       )}
@@ -190,10 +190,10 @@ export function MobileBookingFlow({
           </h2>
           <p className="mb-6">
             {isOnline
-              ? `Your appointment has been scheduled for ${selectedDateTime?.date?.toLocaleDateString()} at ${selectedDateTime?.time}`
+              ? `Your appointment has been scheduled for ${selectedDateTime.date.toLocaleDateString()} at ${selectedDateTime.time}`
               : "Your booking will be synced when you're back online."}
           </p>
-          <Button onClick={() => router?.push('/bookings')} className="w-full">
+          <Button onClick={() => router.push('/bookings')} className="w-full">
             View My Bookings
           </Button>
         </div>

@@ -37,20 +37,20 @@ export const Sidebar = () => {
 
       {/* Navigation */}
       <nav className="flex-1 space-y-1 overflow-auto p-4">
-        {navItems?.map((item) => {
-          const isActive = pathname === item?.href || pathname?.startsWith(`${item?.href}/`);
+        {navItems.map((item) => {
+          const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
             <Link
-              key={item?.href}
-              href={item?.href}
+              key={item.href}
+              href={item.href}
               className={`flex items-center rounded-md px-4 py-3 text-sm transition-colors ${
                 isActive ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100'
               }`}
             >
               <span className={`mr-3 ${isActive ? 'text-blue-700' : 'text-gray-500'}`}>
-                {item?.icon}
+                {item.icon}
               </span>
-              {item?.title}
+              {item.title}
             </Link>
           );
         })}
@@ -64,7 +64,7 @@ export const Sidebar = () => {
           </div>
           <div className="ml-3">
             <p className="text-sm font-medium text-gray-800">Admin User</p>
-            <p className="text-xs text-gray-500">admin@vibewell?.com</p>
+            <p className="text-xs text-gray-500">admin@vibewell.com</p>
           </div>
         </div>
       </div>

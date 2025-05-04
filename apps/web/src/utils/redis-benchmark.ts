@@ -70,8 +70,8 @@ class RedisBenchmark {
           latencies.push(seconds * 1000 + nanoseconds / 1e6);
         } catch (error) {
           errors++;
-          const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-          logger?.error(`Error in benchmark operation ${name}:`, errorMessage);
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          logger.error(`Error in benchmark operation ${name}:`, errorMessage);
         }
       });
 
@@ -184,8 +184,8 @@ class RedisBenchmark {
       }
       await this.redis.quit();
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error('Error during benchmark cleanup:', errorMessage);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error('Error during benchmark cleanup:', errorMessage);
     }
   }
 
@@ -194,14 +194,14 @@ class RedisBenchmark {
     console.log('=======================');
 
     this.results.forEach((result) => {
-      console.log(`\nOperation: ${result?.operation}`);
-      console.log(`Total Time: ${result?.totalTime}ms`);
+      console.log(`\nOperation: ${result.operation}`);
+      console.log(`Total Time: ${result.totalTime}ms`);
 
-      console.log(`Operations/sec: ${result?.opsPerSecond.toFixed(2)}`);
-      console.log(`Average Latency: ${result?.avgLatency.toFixed(2)}ms`);
-      console.log(`P95 Latency: ${result?.p95Latency.toFixed(2)}ms`);
-      console.log(`P99 Latency: ${result?.p99Latency.toFixed(2)}ms`);
-      console.log(`Errors: ${result?.errors}`);
+      console.log(`Operations/sec: ${result.opsPerSecond.toFixed(2)}`);
+      console.log(`Average Latency: ${result.avgLatency.toFixed(2)}ms`);
+      console.log(`P95 Latency: ${result.p95Latency.toFixed(2)}ms`);
+      console.log(`P99 Latency: ${result.p99Latency.toFixed(2)}ms`);
+      console.log(`Errors: ${result.errors}`);
     });
   }
 }

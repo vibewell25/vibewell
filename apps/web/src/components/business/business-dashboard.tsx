@@ -29,15 +29,15 @@ export function BusinessDashboard({ className = '' }: BusinessDashboardProps) {
   }, []);
 
   const fetchBusinessStats = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const response = await fetch('/api/business/stats');
-      if (!response?.ok) throw new Error('Failed to fetch business stats');
-      const data = await response?.json();
+      if (!response.ok) throw new Error('Failed to fetch business stats');
+      const data = await response.json();
       setStats(data);
     } catch (error) {
-      console?.error('Error fetching business stats:', error);
+      console.error('Error fetching business stats:', error);
       toast({
         title: 'Error',
         description: 'Failed to load business statistics',
@@ -51,7 +51,7 @@ export function BusinessDashboard({ className = '' }: BusinessDashboardProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Icons?.Spinner className="h-8 w-8 animate-spin" />
+        <Icons.Spinner className="h-8 w-8 animate-spin" />
       </div>
     );
   }
@@ -67,7 +67,7 @@ export function BusinessDashboard({ className = '' }: BusinessDashboardProps) {
             <CardTitle className="text-sm font-medium text-gray-500">Total Bookings</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.totalBookings || 0}</div>
+            <div className="text-2xl font-bold">{stats.totalBookings || 0}</div>
           </CardContent>
         </Card>
 
@@ -76,7 +76,7 @@ export function BusinessDashboard({ className = '' }: BusinessDashboardProps) {
             <CardTitle className="text-sm font-medium text-gray-500">Total Revenue</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${stats?.totalRevenue?.toFixed(2) || '0?.00'}</div>
+            <div className="text-2xl font-bold">${stats.totalRevenue.toFixed(2) || '0.00'}</div>
           </CardContent>
         </Card>
 
@@ -85,7 +85,7 @@ export function BusinessDashboard({ className = '' }: BusinessDashboardProps) {
             <CardTitle className="text-sm font-medium text-gray-500">Active Customers</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.activeCustomers || 0}</div>
+            <div className="text-2xl font-bold">{stats.activeCustomers || 0}</div>
           </CardContent>
         </Card>
 
@@ -94,7 +94,7 @@ export function BusinessDashboard({ className = '' }: BusinessDashboardProps) {
             <CardTitle className="text-sm font-medium text-gray-500">Average Rating</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.averageRating?.toFixed(1) || '0?.0'} ⭐</div>
+            <div className="text-2xl font-bold">{stats.averageRating.toFixed(1) || '0.0'} ⭐</div>
           </CardContent>
         </Card>
       </div>

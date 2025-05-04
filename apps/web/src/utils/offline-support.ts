@@ -21,23 +21,23 @@ interface SyncTask {
 export class OfflineManager {
   private config: OfflineConfig;
   private syncQueue: SyncTask[] = [];
-  private isOnline: boolean = navigator?.onLine;
+  private isOnline: boolean = navigator.onLine;
   private sw: ServiceWorkerRegistration | null = null;
 
   constructor(config: OfflineConfig) {
-    this?.config = config;
-    this?.initializeEventListeners();
+    this.config = config;
+    this.initializeEventListeners();
   }
 
   private initializeEventListeners(): void {
-    window?.addEventListener('online', () => this?.handleOnlineStatus(true));
-    window?.addEventListener('offline', () => this?.handleOnlineStatus(false));
+    window.addEventListener('online', () => this.handleOnlineStatus(true));
+    window.addEventListener('offline', () => this.handleOnlineStatus(false));
   }
 
   private handleOnlineStatus(online: boolean): void {
-    this?.isOnline = online;
+    this.isOnline = online;
     if (online) {
-      this?.processSyncQueue().catch(console?.error);
+      this.processSyncQueue().catch(console.error);
     }
   }
 
@@ -45,16 +45,16 @@ export class OfflineManager {
     try {
       if ('serviceWorker' in navigator) {
 
-        const registration = await navigator?.serviceWorker.register('/service-worker?.js');
-        this?.sw = registration;
-        performanceMonitor?.track({
-          serviceWorkerRegistration: performance?.now(),
+        const registration = await navigator.serviceWorker.register('/service-worker.js');
+        this.sw = registration;
+        performanceMonitor.track({
+          serviceWorkerRegistration: performance.now(),
         });
       }
     } catch (error) {
-      console?.error('Service worker registration failed:', error);
-      performanceMonitor?.track({
-        serviceWorkerError: performance?.now(),
+      console.error('Service worker registration failed:', error);
+      performanceMonitor.track({
+        serviceWorkerError: performance.now(),
       });
     }
   }
@@ -62,37 +62,37 @@ export class OfflineManager {
   async initializeSyncSupport(): Promise<void> {
     try {
       // Load persisted sync queue
-      const storedQueue = localStorage?.getItem('syncQueue');
+      const storedQueue = localStorage.getItem('syncQueue');
       if (storedQueue) {
-        const parsedQueue = JSON?.parse(storedQueue) as SyncTask[];
-        this?.syncQueue = parsedQueue;
+        const parsedQueue = JSON.parse(storedQueue) as SyncTask[];
+        this.syncQueue = parsedQueue;
       }
 
-      performanceMonitor?.track({
-        offlineReady: performance?.now(),
+      performanceMonitor.track({
+        offlineReady: performance.now(),
       });
     } catch (error) {
-      console?.error('Failed to initialize sync support:', error);
+      console.error('Failed to initialize sync support:', error);
     }
   }
 
   private async cacheResponse(request: Request, response: Response): Promise<void> {
-    const cache = await caches?.open(this?.config.cacheName);
-    await cache?.put(request, response?.clone());
+    const cache = await caches.open(this.config.cacheName);
+    await cache.put(request, response.clone());
   }
 
   private async cleanupCache(): Promise<void> {
-    const cache = await caches?.open(this?.config.cacheName);
-    const keys = await cache?.keys();
-    const now = Date?.now();
+    const cache = await caches.open(this.config.cacheName);
+    const keys = await cache.keys();
+    const now = Date.now();
 
     for (const request of keys) {
-      const response = await cache?.match(request);
+      const response = await cache.match(request);
       if (response) {
-        const cacheTime = new Date(response?.headers.get('date') || '').getTime();
+        const cacheTime = new Date(response.headers.get('date') || '').getTime();
 
-        if (now - cacheTime > (this?.config.maxAgeSeconds || 86400) * 1000) {
-          await cache?.delete(request);
+        if (now - cacheTime > (this.config.maxAgeSeconds || 86400) * 1000) {
+          await cache.delete(request);
         }
       }
     }
@@ -108,7 +108,7 @@ export class OfflineManager {
     strategy: 'cache-first' | 'network-first' | 'stale-while-revalidate' = 'cache-first',
   ): Promise<Response> {
     const request = new Request(input, init);
-    const startTime = performance?.now();
+    const startTime = performance.now();
 
     try {
       let response: Response;
@@ -116,54 +116,54 @@ export class OfflineManager {
       switch (strategy) {
 
         case 'cache-first':
-          response = await this?.cacheFirstStrategy(request);
+          response = await this.cacheFirstStrategy(request);
           break;
 
         case 'network-first':
-          response = await this?.networkFirstStrategy(request);
+          response = await this.networkFirstStrategy(request);
           break;
 
         case 'stale-while-revalidate':
-          response = await this?.staleWhileRevalidateStrategy(request);
+          response = await this.staleWhileRevalidateStrategy(request);
           break;
         default:
-          response = await this?.cacheFirstStrategy(request);
+          response = await this.cacheFirstStrategy(request);
       }
 
-      performanceMonitor?.track({
-        fetchStrategyTime: performance?.now() - startTime,
+      performanceMonitor.track({
+        fetchStrategyTime: performance.now() - startTime,
       });
 
       return response;
     } catch (error) {
-      performanceMonitor?.track({
-        fetchError: performance?.now() - startTime,
+      performanceMonitor.track({
+        fetchError: performance.now() - startTime,
       });
       throw error;
     }
   }
 
   private async cacheFirstStrategy(request: Request): Promise<Response> {
-    const cache = await caches?.open(this?.config.cacheName);
-    const cached = await cache?.match(request);
+    const cache = await caches.open(this.config.cacheName);
+    const cached = await cache.match(request);
 
     if (cached) {
       return cached;
     }
 
     const response = await fetch(request);
-    await this?.cacheResponse(request, response);
+    await this.cacheResponse(request, response);
     return response;
   }
 
   private async networkFirstStrategy(request: Request): Promise<Response> {
     try {
       const response = await fetch(request);
-      await this?.cacheResponse(request, response);
+      await this.cacheResponse(request, response);
       return response;
     } catch (error) {
-      const cache = await caches?.open(this?.config.cacheName);
-      const cached = await cache?.match(request);
+      const cache = await caches.open(this.config.cacheName);
+      const cached = await cache.match(request);
       if (cached) {
         return cached;
       }
@@ -172,16 +172,16 @@ export class OfflineManager {
   }
 
   private async staleWhileRevalidateStrategy(request: Request): Promise<Response> {
-    const cache = await caches?.open(this?.config.cacheName);
-    const cached = await cache?.match(request);
+    const cache = await caches.open(this.config.cacheName);
+    const cached = await cache.match(request);
 
     const networkPromise = fetch(request)
       .then((response) => {
-        this?.cacheResponse(request, response?.clone());
+        this.cacheResponse(request, response.clone());
         return response;
       })
       .catch((error) => {
-        console?.error('Network request failed:', error);
+        console.error('Network request failed:', error);
         return null;
       });
 
@@ -191,62 +191,62 @@ export class OfflineManager {
   async addToSyncQueue(task: Omit<SyncTask, 'id' | 'timestamp'>): Promise<void> {
     const syncTask: SyncTask = {
       ...task,
-      id: crypto?.randomUUID(),
-      timestamp: Date?.now(),
+      id: crypto.randomUUID(),
+      timestamp: Date.now(),
       retries: 0,
     };
 
-    this?.syncQueue.push(syncTask);
-    await this?.persistSyncQueue();
+    this.syncQueue.push(syncTask);
+    await this.persistSyncQueue();
 
-    if (this?.isOnline) {
-      this?.processSyncQueue().catch(console?.error);
+    if (this.isOnline) {
+      this.processSyncQueue().catch(console.error);
     }
   }
 
   private async persistSyncQueue(): Promise<void> {
-    localStorage?.setItem('syncQueue', JSON?.stringify(this?.syncQueue));
+    localStorage.setItem('syncQueue', JSON.stringify(this.syncQueue));
   }
 
   private async processSyncQueue(): Promise<void> {
     const MAX_RETRIES = 3;
 
-    while (this?.syncQueue.length > 0 && this?.isOnline) {
-      const task = this?.syncQueue[0];
+    while (this.syncQueue.length > 0 && this.isOnline) {
+      const task = this.syncQueue[0];
 
       try {
-        const response = await fetch(task?.url, {
-          method: task?.method,
-          body: task?.body ? JSON?.stringify(task?.body) : undefined,
-          headers: task?.headers,
+        const response = await fetch(task.url, {
+          method: task.method,
+          body: task.body ? JSON.stringify(task.body) : undefined,
+          headers: task.headers,
         });
 
-        if (response?.ok) {
-          this?.syncQueue.shift();
-          await this?.persistSyncQueue();
-          performanceMonitor?.track({
-            syncSuccess: performance?.now(),
+        if (response.ok) {
+          this.syncQueue.shift();
+          await this.persistSyncQueue();
+          performanceMonitor.track({
+            syncSuccess: performance.now(),
           });
-        } else if ((task?.retries || 0) < MAX_RETRIES) {
-          task?.retries = (task?.retries || 0) + 1;
-          await this?.persistSyncQueue();
+        } else if ((task.retries || 0) < MAX_RETRIES) {
+          task.retries = (task.retries || 0) + 1;
+          await this.persistSyncQueue();
         } else {
-          this?.syncQueue.shift();
-          await this?.persistSyncQueue();
-          performanceMonitor?.track({
-            syncError: performance?.now(),
+          this.syncQueue.shift();
+          await this.persistSyncQueue();
+          performanceMonitor.track({
+            syncError: performance.now(),
           });
         }
       } catch (error) {
-        console?.error('Sync task failed:', error);
-        if ((task?.retries || 0) < MAX_RETRIES) {
-          task?.retries = (task?.retries || 0) + 1;
-          await this?.persistSyncQueue();
+        console.error('Sync task failed:', error);
+        if ((task.retries || 0) < MAX_RETRIES) {
+          task.retries = (task.retries || 0) + 1;
+          await this.persistSyncQueue();
         } else {
-          this?.syncQueue.shift();
-          await this?.persistSyncQueue();
-          performanceMonitor?.track({
-            syncError: performance?.now(),
+          this.syncQueue.shift();
+          await this.persistSyncQueue();
+          performanceMonitor.track({
+            syncError: performance.now(),
           });
         }
       }

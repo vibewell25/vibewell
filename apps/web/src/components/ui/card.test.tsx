@@ -11,52 +11,52 @@ describe('Card Components', () => {
   describe('Card', () => {
     it('renders with default props', () => {
       render(<Card>Card Content</Card>);
-      expect(screen?.getByText('Card Content')).toBeInTheDocument();
+      expect(screen.getByText('Card Content')).toBeInTheDocument();
     });
 
     it('applies custom className', () => {
       render(<Card className="custom-class">Card Content</Card>);
-      const card = screen?.getByText('Card Content').parentElement;
+      const card = screen.getByText('Card Content').parentElement;
       expect(card).toHaveClass('custom-class');
     });
 
     it('forwards ref correctly', () => {
-      const ref = React?.createRef<HTMLDivElement>();
+      const ref = React.createRef<HTMLDivElement>();
       render(<Card ref={ref}>Card Content</Card>);
-      expect(ref?.current).toBeInstanceOf(HTMLDivElement);
+      expect(ref.current).toBeInstanceOf(HTMLDivElement);
     });
 
     // Test different variants
-    it?.each([
+    it.each([
       ['default', 'border-border'],
       ['outline', 'border-border bg-transparent'],
       ['ghost', 'border-transparent bg-transparent'],
       ['elevated', 'border-transparent shadow-md'],
     ])('renders %s variant correctly', (variant, expectedClass) => {
       render(<Card variant={variant as any}>Card Content</Card>);
-      const card = screen?.getByText('Card Content').parentElement;
-      const classes = expectedClass?.split(' ');
-      classes?.forEach((className) => {
+      const card = screen.getByText('Card Content').parentElement;
+      const classes = expectedClass.split(' ');
+      classes.forEach((className) => {
         expect(card).toHaveClass(className);
       });
     });
 
     // Test different padding options
-    it?.each([
+    it.each([
       ['none', ''],
       ['sm', 'p-3'],
       ['md', 'p-4'],
       ['lg', 'p-6'],
     ])('applies correct padding: %s', (padding, expectedClass) => {
       render(<Card padding={padding as any}>Card Content</Card>);
-      const card = screen?.getByText('Card Content').parentElement;
+      const card = screen.getByText('Card Content').parentElement;
       if (expectedClass) {
         expect(card).toHaveClass(expectedClass);
       }
     });
 
     // Test different sizes
-    it?.each([
+    it.each([
       ['sm', 'max-w-sm'],
       ['md', 'max-w-md'],
       ['lg', 'max-w-lg'],
@@ -64,7 +64,7 @@ describe('Card Components', () => {
       ['full', 'w-full'],
     ])('renders correct size: %s', (size, expectedClass) => {
       render(<Card size={size as any}>Card Content</Card>);
-      const card = screen?.getByText('Card Content').parentElement;
+      const card = screen.getByText('Card Content').parentElement;
       expect(card).toHaveClass(expectedClass);
     });
   });
@@ -72,12 +72,12 @@ describe('Card Components', () => {
   describe('CardHeader', () => {
     it('renders correctly', () => {
       render(<CardHeader>Header Content</CardHeader>);
-      expect(screen?.getByText('Header Content')).toBeInTheDocument();
+      expect(screen.getByText('Header Content')).toBeInTheDocument();
     });
 
     it('applies custom className', () => {
       render(<CardHeader className="custom-header">Header Content</CardHeader>);
-      const header = screen?.getByText('Header Content').parentElement;
+      const header = screen.getByText('Header Content').parentElement;
       expect(header).toHaveClass('custom-header');
     });
   });
@@ -85,12 +85,12 @@ describe('Card Components', () => {
   describe('CardTitle', () => {
     it('renders correctly', () => {
       render(<CardTitle>Card Title</CardTitle>);
-      expect(screen?.getByText('Card Title')).toBeInTheDocument();
+      expect(screen.getByText('Card Title')).toBeInTheDocument();
     });
 
     it('applies custom className', () => {
       render(<CardTitle className="custom-title">Card Title</CardTitle>);
-      const title = screen?.getByText('Card Title');
+      const title = screen.getByText('Card Title');
       expect(title).toHaveClass('custom-title');
     });
   });
@@ -98,12 +98,12 @@ describe('Card Components', () => {
   describe('CardDescription', () => {
     it('renders correctly', () => {
       render(<CardDescription>Card Description</CardDescription>);
-      expect(screen?.getByText('Card Description')).toBeInTheDocument();
+      expect(screen.getByText('Card Description')).toBeInTheDocument();
     });
 
     it('applies custom className', () => {
       render(<CardDescription className="custom-desc">Card Description</CardDescription>);
-      const desc = screen?.getByText('Card Description');
+      const desc = screen.getByText('Card Description');
       expect(desc).toHaveClass('custom-desc');
     });
   });
@@ -111,12 +111,12 @@ describe('Card Components', () => {
   describe('CardContent', () => {
     it('renders correctly', () => {
       render(<CardContent>Content</CardContent>);
-      expect(screen?.getByText('Content')).toBeInTheDocument();
+      expect(screen.getByText('Content')).toBeInTheDocument();
     });
 
     it('applies custom className', () => {
       render(<CardContent className="custom-content">Content</CardContent>);
-      const content = screen?.getByText('Content').parentElement;
+      const content = screen.getByText('Content').parentElement;
       expect(content).toHaveClass('custom-content');
     });
   });
@@ -124,12 +124,12 @@ describe('Card Components', () => {
   describe('CardFooter', () => {
     it('renders correctly', () => {
       render(<CardFooter>Footer Content</CardFooter>);
-      expect(screen?.getByText('Footer Content')).toBeInTheDocument();
+      expect(screen.getByText('Footer Content')).toBeInTheDocument();
     });
 
     it('applies custom className', () => {
       render(<CardFooter className="custom-footer">Footer Content</CardFooter>);
-      const footer = screen?.getByText('Footer Content').parentElement;
+      const footer = screen.getByText('Footer Content').parentElement;
       expect(footer).toHaveClass('custom-footer');
     });
   });
@@ -147,28 +147,28 @@ describe('Card Components', () => {
         </Card>,
       );
 
-      expect(screen?.getByText('Card Title')).toBeInTheDocument();
-      expect(screen?.getByText('Card Description')).toBeInTheDocument();
-      expect(screen?.getByText('Main Content')).toBeInTheDocument();
-      expect(screen?.getByText('Footer Content')).toBeInTheDocument();
+      expect(screen.getByText('Card Title')).toBeInTheDocument();
+      expect(screen.getByText('Card Description')).toBeInTheDocument();
+      expect(screen.getByText('Main Content')).toBeInTheDocument();
+      expect(screen.getByText('Footer Content')).toBeInTheDocument();
     });
 
     it('handles interactive features', () => {
-      const handleClick = vi?.fn();
+      const handleClick = vi.fn();
       render(
         <Card onClick={handleClick} isClickable>
           <CardContent>Clickable Content</CardContent>
         </Card>,
       );
 
-      const card = screen?.getByText('Clickable Content').parentElement;
+      const card = screen.getByText('Clickable Content').parentElement;
       expect(card).toHaveClass('cursor-pointer');
-      fireEvent?.click(card!);
+      fireEvent.click(card!);
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
     it('handles collapsible functionality', () => {
-      const handleCollapse = vi?.fn();
+      const handleCollapse = vi.fn();
       render(
         <Card isCollapsible onCollapse={handleCollapse}>
           <CardHeader>Collapsible Header</CardHeader>
@@ -176,8 +176,8 @@ describe('Card Components', () => {
         </Card>,
       );
 
-      const collapseButton = screen?.getByLabelText('Collapse');
-      fireEvent?.click(collapseButton);
+      const collapseButton = screen.getByLabelText('Collapse');
+      fireEvent.click(collapseButton);
       expect(handleCollapse).toHaveBeenCalledTimes(1);
     });
   });
@@ -194,10 +194,10 @@ describe('Card Components', () => {
       </Card>,
     );
 
-    expect(screen?.getByText('Test Title')).toBeInTheDocument();
-    expect(screen?.getByText('Test Description')).toBeInTheDocument();
-    expect(screen?.getByText('Test Content')).toBeInTheDocument();
-    expect(screen?.getByText('Test Footer')).toBeInTheDocument();
+    expect(screen.getByText('Test Title')).toBeInTheDocument();
+    expect(screen.getByText('Test Description')).toBeInTheDocument();
+    expect(screen.getByText('Test Content')).toBeInTheDocument();
+    expect(screen.getByText('Test Footer')).toBeInTheDocument();
   });
 
   it('renders card header with custom className', () => {
@@ -208,7 +208,7 @@ describe('Card Components', () => {
         </CardHeader>
       </Card>,
     );
-    const header = screen?.getByText('Title').closest('div');
+    const header = screen.getByText('Title').closest('div');
     expect(header).toHaveClass('custom-header');
   });
 
@@ -218,7 +218,7 @@ describe('Card Components', () => {
         <CardContent className="custom-content">Content</CardContent>
       </Card>,
     );
-    const content = screen?.getByText('Content').closest('div');
+    const content = screen.getByText('Content').closest('div');
     expect(content).toHaveClass('custom-content');
   });
 
@@ -228,15 +228,15 @@ describe('Card Components', () => {
         <CardFooter className="custom-footer">Footer</CardFooter>
       </Card>,
     );
-    const footer = screen?.getByText('Footer').closest('div');
+    const footer = screen.getByText('Footer').closest('div');
     expect(footer).toHaveClass('custom-footer');
   });
 
   it('forwards ref correctly for all components', () => {
-    const cardRef = vi?.fn();
-    const headerRef = vi?.fn();
-    const contentRef = vi?.fn();
-    const footerRef = vi?.fn();
+    const cardRef = vi.fn();
+    const headerRef = vi.fn();
+    const contentRef = vi.fn();
+    const footerRef = vi.fn();
 
     render(
       <Card ref={cardRef}>
@@ -271,9 +271,9 @@ describe('Card Components', () => {
       </Card>,
     );
 
-    expect(screen?.getByText('Nested')).toBeInTheDocument();
-    expect(screen?.getByText('Title')).toBeInTheDocument();
-    expect(screen?.getByText('Nested content')).toBeInTheDocument();
+    expect(screen.getByText('Nested')).toBeInTheDocument();
+    expect(screen.getByText('Title')).toBeInTheDocument();
+    expect(screen.getByText('Nested content')).toBeInTheDocument();
   });
 
   it('has no accessibility violations', async () => {
@@ -306,7 +306,7 @@ describe('Card Components', () => {
       </Card>,
     );
 
-    const heading = screen?.getByRole('heading', { level: 2, name: 'Card Title' });
+    const heading = screen.getByRole('heading', { level: 2, name: 'Card Title' });
     expect(heading).toBeInTheDocument();
   });
 
@@ -321,11 +321,11 @@ describe('Card Components', () => {
       </Card>,
     );
 
-    const article = screen?.getByRole('article');
+    const article = screen.getByRole('article');
     expect(article).toHaveAttribute('aria-labelledby', 'card-title');
 
-    const content = screen?.getByText('Main content');
-    expect(content?.parentElement).toHaveAttribute('aria-describedby', 'card-desc');
+    const content = screen.getByText('Main content');
+    expect(content.parentElement).toHaveAttribute('aria-describedby', 'card-desc');
   });
 
   it('supports keyboard navigation', () => {
@@ -341,14 +341,14 @@ describe('Card Components', () => {
       </Card>,
     );
 
-    const card = screen?.getByRole('generic');
-    const buttons = screen?.getAllByRole('button');
+    const card = screen.getByRole('generic');
+    const buttons = screen.getAllByRole('button');
 
     expect(card).toHaveAttribute('tabindex', '0');
     expect(buttons).toHaveLength(2);
-    buttons?.forEach((button) => {
+    buttons.forEach((button) => {
       expect(button).toBeVisible();
-      expect(button).not?.toBeDisabled();
+      expect(button).not.toBeDisabled();
     });
   });
 });

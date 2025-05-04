@@ -29,37 +29,37 @@ interface TestResult {
 export class PerformanceTestSuite {
   private static instance: PerformanceTestSuite;
   private testResults: TestResult[] = [];
-  private regressionThreshold = 0?.2; // 20% degradation threshold
+  private regressionThreshold = 0.2; // 20% degradation threshold
 
   private constructor() {}
 
   public static getInstance(): PerformanceTestSuite {
-    if (!PerformanceTestSuite?.instance) {
-      PerformanceTestSuite?.instance = new PerformanceTestSuite();
+    if (!PerformanceTestSuite.instance) {
+      PerformanceTestSuite.instance = new PerformanceTestSuite();
     }
-    return PerformanceTestSuite?.instance;
+    return PerformanceTestSuite.instance;
   }
 
   public async runAllTests(): Promise<TestResult[]> {
-    const startTime = performance?.now();
+    const startTime = performance.now();
 
     try {
-      await Promise?.all([
-        this?.testBundlePerformance(),
-        this?.testImageOptimization(),
-        this?.testDatabasePerformance(),
-        this?.testMobilePerformance(),
-        this?.testSSRPerformance(),
-        this?.testCachePerformance(),
+      await Promise.all([
+        this.testBundlePerformance(),
+        this.testImageOptimization(),
+        this.testDatabasePerformance(),
+        this.testMobilePerformance(),
+        this.testSSRPerformance(),
+        this.testCachePerformance(),
       ]);
 
-      performanceMonitor?.track({
-        testSuiteDuration: performance?.now() - startTime,
+      performanceMonitor.track({
+        testSuiteDuration: performance.now() - startTime,
       });
 
-      return this?.testResults;
+      return this.testResults;
     } catch (error) {
-      console?.error('Performance test suite failed:', error);
+      console.error('Performance test suite failed:', error);
       throw error;
     }
   }
@@ -72,20 +72,20 @@ export class PerformanceTestSuite {
       retries: 3,
     };
 
-    const metrics = await this?.measureWithTimeout(async () => {
-      const chunks = bundleOptimizer?.getAllChunks();
+    const metrics = await this.measureWithTimeout(async () => {
+      const chunks = bundleOptimizer.getAllChunks();
 
-      const totalSize = chunks?.reduce((sum, chunk) => sum + chunk?.size, 0);
-      const loadTime = bundleOptimizer?.getMetrics().loadTime;
+      const totalSize = chunks.reduce((sum, chunk) => sum + chunk.size, 0);
+      const loadTime = bundleOptimizer.getMetrics().loadTime;
 
       return {
         totalBundleSize: totalSize,
         initialLoadTime: loadTime,
-        chunkCount: chunks?.length,
+        chunkCount: chunks.length,
       };
     }, config);
 
-    this?.recordTestResult(config?.name, metrics);
+    this.recordTestResult(config.name, metrics);
   }
 
   private async testImageOptimization(): Promise<void> {
@@ -96,18 +96,18 @@ export class PerformanceTestSuite {
       retries: 2,
     };
 
-    const metrics = await this?.measureWithTimeout(async () => {
-      const testImage = Buffer?.from(''); // Add test image data
-      const result = await imageOptimizer?.optimize(testImage);
+    const metrics = await this.measureWithTimeout(async () => {
+      const testImage = Buffer.from(''); // Add test image data
+      const result = await imageOptimizer.optimize(testImage);
 
       return {
-        optimizationTime: performance?.now(),
-        sizeReduction: result?.size,
-        quality: result?.quality,
+        optimizationTime: performance.now(),
+        sizeReduction: result.size,
+        quality: result.quality,
       };
     }, config);
 
-    this?.recordTestResult(config?.name, metrics);
+    this.recordTestResult(config.name, metrics);
   }
 
   private async testDatabasePerformance(): Promise<void> {
@@ -118,20 +118,20 @@ export class PerformanceTestSuite {
       retries: 3,
     };
 
-    const metrics = await this?.measureWithTimeout(async () => {
-      const queryMetrics = await dbOptimizer?.getQueryMetrics(5);
-      const poolStats = await dbOptimizer?.getPoolStats();
+    const metrics = await this.measureWithTimeout(async () => {
+      const queryMetrics = await dbOptimizer.getQueryMetrics(5);
+      const poolStats = await dbOptimizer.getPoolStats();
 
       return {
-        averageQueryTime: this?.calculateAverageQueryTime(queryMetrics),
+        averageQueryTime: this.calculateAverageQueryTime(queryMetrics),
 
-        connectionPoolUtilization: poolStats?.total / poolStats?.idle,
+        connectionPoolUtilization: poolStats.total / poolStats.idle,
 
-        activeConnections: poolStats?.total - poolStats?.idle,
+        activeConnections: poolStats.total - poolStats.idle,
       };
     }, config);
 
-    this?.recordTestResult(config?.name, metrics);
+    this.recordTestResult(config.name, metrics);
   }
 
   private async testMobilePerformance(): Promise<void> {
@@ -142,17 +142,17 @@ export class PerformanceTestSuite {
       retries: 2,
     };
 
-    const metrics = await this?.measureWithTimeout(async () => {
-      const perfMetrics = await mobileOptimizer?.getPerformanceMetrics();
+    const metrics = await this.measureWithTimeout(async () => {
+      const perfMetrics = await mobileOptimizer.getPerformanceMetrics();
 
       return {
-        fps: perfMetrics?.fps,
-        memoryUsage: perfMetrics?.memoryUsage?.usedJSHeapSize || 0,
-        batteryLevel: perfMetrics?.batteryLevel || 100,
+        fps: perfMetrics.fps,
+        memoryUsage: perfMetrics.memoryUsage.usedJSHeapSize || 0,
+        batteryLevel: perfMetrics.batteryLevel || 100,
       };
     }, config);
 
-    this?.recordTestResult(config?.name, metrics);
+    this.recordTestResult(config.name, metrics);
   }
 
   private async testSSRPerformance(): Promise<void> {
@@ -163,17 +163,17 @@ export class PerformanceTestSuite {
       retries: 2,
     };
 
-    const metrics = await this?.measureWithTimeout(async () => {
+    const metrics = await this.measureWithTimeout(async () => {
       // Add test component rendering here
 
       return {
-        renderTime: performance?.now(),
-        cacheHitRate: 0?.8, // Example value
+        renderTime: performance.now(),
+        cacheHitRate: 0.8, // Example value
         streamingLatency: 100, // Example value
       };
     }, config);
 
-    this?.recordTestResult(config?.name, metrics);
+    this.recordTestResult(config.name, metrics);
   }
 
   private async testCachePerformance(): Promise<void> {
@@ -184,16 +184,16 @@ export class PerformanceTestSuite {
       retries: 2,
     };
 
-    const metrics = await this?.measureWithTimeout(async () => {
+    const metrics = await this.measureWithTimeout(async () => {
       // Add cache performance testing here
       return {
         cacheLatency: 50, // Example value
-        hitRate: 0?.9, // Example value
-        missRate: 0?.1, // Example value
+        hitRate: 0.9, // Example value
+        missRate: 0.1, // Example value
       };
     }, config);
 
-    this?.recordTestResult(config?.name, metrics);
+    this.recordTestResult(config.name, metrics);
   }
 
   private async measureWithTimeout<T>(
@@ -201,18 +201,18 @@ export class PerformanceTestSuite {
     config: PerformanceTestConfig,
   ): Promise<T> {
     const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('Test timeout')), config?.timeout);
+      setTimeout(() => reject(new Error('Test timeout')), config.timeout);
     });
 
-    for (let i = 0; i < config?.retries; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
+    for (let i = 0; i < config.retries; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
       try {
-        const result = await Promise?.race([fn(), timeoutPromise]);
+        const result = await Promise.race([fn(), timeoutPromise]);
         return result as T;
       } catch (error) {
 
-        if (i === config?.retries - 1) throw error;
+        if (i === config.retries - 1) throw error;
 
-        console?.warn(`Retry ${i + 1}/${config?.retries} for ${config?.name}`);
+        console.warn(`Retry ${i + 1}/${config.retries} for ${config.name}`);
       }
     }
 
@@ -220,37 +220,37 @@ export class PerformanceTestSuite {
   }
 
   private recordTestResult(name: string, metrics: Record<string, number>): void {
-    const duration = performance?.now();
+    const duration = performance.now();
     const result: TestResult = {
       name,
       duration,
-      passed: this?.evaluateMetrics(metrics),
+      passed: this.evaluateMetrics(metrics),
       metrics,
-      timestamp: Date?.now(),
+      timestamp: Date.now(),
     };
 
-    this?.testResults.push(result);
-    this?.checkRegression(result);
+    this.testResults.push(result);
+    this.checkRegression(result);
   }
 
   private evaluateMetrics(metrics: Record<string, number>): boolean {
     // Add metric evaluation logic here
-    return Object?.values(metrics).every((value) => value !== undefined && value >= 0);
+    return Object.values(metrics).every((value) => value !== undefined && value >= 0);
   }
 
   private checkRegression(result: TestResult): void {
-    const previousResults = this?.testResults.filter((r) => r?.name === result?.name);
-    if (previousResults?.length < 2) return;
+    const previousResults = this.testResults.filter((r) => r.name === result.name);
+    if (previousResults.length < 2) return;
 
 
-    const previous = previousResults[previousResults?.length - 2];
+    const previous = previousResults[previousResults.length - 2];
 
-    const degradation = (result?.duration - previous?.duration) / previous?.duration;
+    const degradation = (result.duration - previous.duration) / previous.duration;
 
-    if (degradation > this?.regressionThreshold) {
-      console?.warn(`Performance regression detected in ${result?.name}:`, {
-        previous: previous?.duration,
-        current: result?.duration,
+    if (degradation > this.regressionThreshold) {
+      console.warn(`Performance regression detected in ${result.name}:`, {
+        previous: previous.duration,
+        current: result.duration,
 
         degradation: `${(degradation * 100).toFixed(2)}%`,
       });
@@ -258,11 +258,11 @@ export class PerformanceTestSuite {
   }
 
   public getTestResults(): TestResult[] {
-    return [...this?.testResults];
+    return [...this.testResults];
   }
 
   public clearResults(): void {
-    this?.testResults = [];
+    this.testResults = [];
   }
 }
 

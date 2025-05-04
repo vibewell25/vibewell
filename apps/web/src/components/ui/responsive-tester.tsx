@@ -41,7 +41,7 @@ export function ResponsiveTester({
   useEffect(() => {
     if (onlyInDevelopment) {
       // Only show in development, not in production
-      const isDevelopment = process?.env.NODE_ENV === 'development';
+      const isDevelopment = process.env.NODE_ENV === 'development';
       if (!isDevelopment) {
         return;
       }
@@ -68,33 +68,33 @@ export function ResponsiveTester({
     if (!showTouchInfo || !isVisible) return;
 
     const handleTouchEvent = (e: TouchEvent) => {
-      const newEvent = `${e?.type}: ${e?.touches.length} touch(es)`;
+      const newEvent = `${e.type}: ${e.touches.length} touch(es)`;
       setTouchEvents((prev) => {
         const updated = [newEvent, ...prev];
         // Keep only the last 5 events
-        return updated?.slice(0, 5);
+        return updated.slice(0, 5);
       });
     };
 
-    document?.addEventListener('touchstart', handleTouchEvent);
-    document?.addEventListener('touchmove', handleTouchEvent);
-    document?.addEventListener('touchend', handleTouchEvent);
+    document.addEventListener('touchstart', handleTouchEvent);
+    document.addEventListener('touchmove', handleTouchEvent);
+    document.addEventListener('touchend', handleTouchEvent);
 
     return () => {
-      document?.removeEventListener('touchstart', handleTouchEvent);
-      document?.removeEventListener('touchmove', handleTouchEvent);
-      document?.removeEventListener('touchend', handleTouchEvent);
+      document.removeEventListener('touchstart', handleTouchEvent);
+      document.removeEventListener('touchmove', handleTouchEvent);
+      document.removeEventListener('touchend', handleTouchEvent);
     };
   }, [showTouchInfo, isVisible]);
 
   // Find active breakpoint
   const getActiveBreakpoint = () => {
-    const width = dimensions?.width;
+    const width = dimensions.width;
     if (width >= breakpoints['2xl']) return '2xl';
-    if (width >= breakpoints?.xl) return 'xl';
-    if (width >= breakpoints?.lg) return 'lg';
-    if (width >= breakpoints?.md) return 'md';
-    if (width >= breakpoints?.sm) return 'sm';
+    if (width >= breakpoints.xl) return 'xl';
+    if (width >= breakpoints.lg) return 'lg';
+    if (width >= breakpoints.md) return 'md';
+    if (width >= breakpoints.sm) return 'sm';
     return 'xs';
   };
 
@@ -142,8 +142,8 @@ export function ResponsiveTester({
         {showDimensions && (
           <div className="space-y-1">
             <div className="border-b border-gray-700 pb-1 font-bold">Dimensions</div>
-            <div>Width: {dimensions?.width}px</div>
-            <div>Height: {dimensions?.height}px</div>
+            <div>Width: {dimensions.width}px</div>
+            <div>Height: {dimensions.height}px</div>
           </div>
         )}
 
@@ -164,7 +164,7 @@ export function ResponsiveTester({
           <div className="space-y-1">
             <div className="border-b border-gray-700 pb-1 font-bold">Breakpoints</div>
             <div className="grid grid-cols-6 gap-1">
-              {Object?.entries(breakpoints).map(([key, value]) => (
+              {Object.entries(breakpoints).map(([key, value]) => (
                 <div
                   key={key}
                   className={cn(
@@ -183,9 +183,9 @@ export function ResponsiveTester({
         {showTouchInfo && isTouch && (
           <div className="space-y-1">
             <div className="border-b border-gray-700 pb-1 font-bold">Touch Events</div>
-            {touchEvents?.length > 0 ? (
+            {touchEvents.length > 0 ? (
               <div className="space-y-1">
-                {touchEvents?.map((event, index) => (
+                {touchEvents.map((event, index) => (
                   <div key={index} className="text-xs">
                     {event}
                   </div>

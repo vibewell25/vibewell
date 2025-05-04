@@ -112,12 +112,12 @@ class Logger {
   }
 
   private initProductionLogger() {
-    if (process?.env['NODE_ENV'] !== 'production') {
+    if (process.env['NODE_ENV'] !== 'production') {
       return;
     }
 
     // Initialize Sentry if not already initialized
-    if (!this.sentryInitialized && process?.env['NEXT_PUBLIC_SENTRY_DSN']) {
+    if (!this.sentryInitialized && process.env['NEXT_PUBLIC_SENTRY_DSN']) {
       try {
         this.sentryInitialized = true;
       } catch (error) {
@@ -141,7 +141,7 @@ class Logger {
       });
 
       // Add file transport if file logging is enabled
-      if (process?.env['ENABLE_FILE_LOGGING'] === 'true') {
+      if (process.env['ENABLE_FILE_LOGGING'] === 'true') {
         this.winstonLogger.add(
           new winston.transports.File({
             filename: 'logs/error.log',
@@ -197,7 +197,7 @@ class Logger {
     }
 
     // Log to console in development
-    if (process?.env['NODE_ENV'] === 'development') {
+    if (process.env['NODE_ENV'] === 'development') {
       console.log(`[${entry.level.toUpperCase()}] ${entry.message}`, {
         userId: entry.userId,
         ...entry.metadata,
@@ -205,7 +205,7 @@ class Logger {
     }
 
     // In production, send logs to services
-    if (process?.env['NODE_ENV'] === 'production') {
+    if (process.env['NODE_ENV'] === 'production') {
       this.logToProductionServices(entry);
     }
   }
@@ -238,7 +238,7 @@ class Logger {
         scope.setLevel(this.mapLogLevelToSentry(entry.level));
 
         // Capture message or exception
-        if (entry.metadata?.error instanceof Error) {
+        if (entry.metadata.error instanceof Error) {
           Sentry.captureException(entry.metadata.error);
         } else {
           Sentry.captureMessage(entry.message);

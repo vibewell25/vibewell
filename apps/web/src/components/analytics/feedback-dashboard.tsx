@@ -31,38 +31,38 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
 
   useEffect(() => {
     const fetchProductNames = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         // In a real app, this would be a call to your product service
         // For now, we'll use placeholder names
         const { data, error } = await fetch('/api/products')
-          .then((res) => res?.json())
+          .then((res) => res.json())
           .catch(() => ({ data: null, error: 'Failed to fetch products' }));
 
         if (error) throw new Error(error);
 
         const names: Record<string, string> = {};
         (data || []).forEach((product: any) => {
-          names[product?.id] = product?.name;
+          names[product.id] = product.name;
         });
 
         setProductNames(names);
       } catch (err) {
-        console?.error('Error fetching product names:', err);
+        console.error('Error fetching product names:', err);
         // Fallback to generic product names
-        const productIds = Object?.keys(stats);
+        const productIds = Object.keys(stats);
         const fallbackNames: Record<string, string> = {};
-        productIds?.forEach((id) => {
-          fallbackNames[id] = `Product ${id?.substring(0, 6)}`;
+        productIds.forEach((id) => {
+          fallbackNames[id] = `Product ${id.substring(0, 6)}`;
         });
         setProductNames(fallbackNames);
       }
     };
 
     const fetchFeedbackData = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       setLoading(true);
       setError(null);
 
@@ -71,7 +71,7 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
 
         if (productId) {
           // Fetch stats for a specific product
-          const { data, error } = await feedbackService?.getProductFeedbackStats(productId);
+          const { data, error } = await feedbackService.getProductFeedbackStats(productId);
 
           if (error) throw new Error(String(error));
 
@@ -81,22 +81,22 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
           }
         } else {
           // Fetch stats for all products
-          const { data, error } = await feedbackService?.getAllFeedbackStats();
+          const { data, error } = await feedbackService.getAllFeedbackStats();
 
           if (error) throw new Error(String(error));
 
           if (data) {
             setStats(data);
             // Set the first product as selected if none is selected
-            if (!selectedProductId && Object?.keys(data).length > 0) {
-              setSelectedProductId(Object?.keys(data)[0]);
+            if (!selectedProductId && Object.keys(data).length > 0) {
+              setSelectedProductId(Object.keys(data)[0]);
             }
           }
         }
 
         await fetchProductNames();
       } catch (err) {
-        console?.error('Error fetching feedback stats:', err);
+        console.error('Error fetching feedback stats:', err);
         setError('Failed to load feedback data');
       } finally {
         setLoading(false);
@@ -135,7 +135,7 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
     );
   }
 
-  if (Object?.keys(stats).length === 0) {
+  if (Object.keys(stats).length === 0) {
     return (
       <Card className="w-full">
         <CardHeader>
@@ -152,7 +152,7 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
 
   // Prepare data for charts
   const ratingDistributionData = selectedStats
-    ? Object?.entries(selectedStats?.ratingDistribution).map(([rating, count]) => ({
+    ? Object.entries(selectedStats.ratingDistribution).map(([rating, count]) => ({
         rating: `${rating} Star${Number(rating) !== 1 ? 's' : ''}`,
         count,
       }))
@@ -160,25 +160,25 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
 
   const wouldTryData = selectedStats
     ? [
-        { name: 'Would Try', value: selectedStats?.percentWouldTryInRealLife },
-        { name: 'Would Not Try', value: 100 - selectedStats?.percentWouldTryInRealLife },
+        { name: 'Would Try', value: selectedStats.percentWouldTryInRealLife },
+        { name: 'Would Not Try', value: 100 - selectedStats.percentWouldTryInRealLife },
       ]
     : [];
 
   // Prepare comparative data for all products
-  const comparativeData = Object?.entries(stats).map(([id, productStats]) => ({
+  const comparativeData = Object.entries(stats).map(([id, productStats]) => ({
     id,
-    name: productNames[id] || `Product ${id?.substring(0, 6)}`,
-    rating: productStats?.averageRating,
-    count: productStats?.totalRatings,
-    wouldTry: productStats?.percentWouldTryInRealLife,
+    name: productNames[id] || `Product ${id.substring(0, 6)}`,
+    rating: productStats.averageRating,
+    count: productStats.totalRatings,
+    wouldTry: productStats.percentWouldTryInRealLife,
   }));
 
   return (
     <div className="w-full space-y-4">
-      {!productId && Object?.keys(stats).length > 1 && (
+      {!productId && Object.keys(stats).length > 1 && (
         <div className="mb-4 flex flex-wrap gap-2">
-          {Object?.keys(stats).map((id) => (
+          {Object.keys(stats).map((id) => (
             <button
               key={id}
               onClick={() => setSelectedProductId(id)}
@@ -188,7 +188,7 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
                   : 'bg-muted hover:bg-muted/80'
               }`}
             >
-              {productNames[id] || `Product ${id?.substring(0, 6)}`}
+              {productNames[id] || `Product ${id.substring(0, 6)}`}
             </button>
           ))}
         </div>
@@ -211,14 +211,14 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
                 <CardContent>
                   <div className="flex items-center">
                     <div className="text-2xl font-bold">
-                      {selectedStats?.averageRating.toFixed(1)}
+                      {selectedStats.averageRating.toFixed(1)}
                     </div>
                     <div className="ml-2 text-yellow-500">
-                      {'★'.repeat(Math?.round(selectedStats?.averageRating))}
+                      {'★'.repeat(Math.round(selectedStats.averageRating))}
                     </div>
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    From {selectedStats?.totalRatings} ratings
+                    From {selectedStats.totalRatings} ratings
                   </p>
                 </CardContent>
               </Card>
@@ -229,7 +229,7 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {selectedStats?.percentWouldTryInRealLife.toFixed(1)}%
+                    {selectedStats.percentWouldTryInRealLife.toFixed(1)}%
                   </div>
                 </CardContent>
               </Card>
@@ -241,8 +241,8 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
                 <CardContent>
                   <div className="text-2xl font-bold">
                     {
-                      Object?.entries(selectedStats?.ratingDistribution).reduce(
-                        (max, [rating, count]) => (count > max?.count ? { rating, count } : max),
+                      Object.entries(selectedStats.ratingDistribution).reduce(
+                        (max, [rating, count]) => (count > max.count ? { rating, count } : max),
                         { rating: '0', count: 0 },
                       ).rating
                     }{' '}
@@ -256,7 +256,7 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
                   <CardTitle className="text-sm font-medium">Comments</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{selectedStats?.recentComments.length}</div>
+                  <div className="text-2xl font-bold">{selectedStats.recentComments.length}</div>
                 </CardContent>
               </Card>
             </div>
@@ -303,8 +303,8 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
                           fill="#8884d8"
                           dataKey="value"
                         >
-                          {wouldTryData?.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS?.length]} />
+                          {wouldTryData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                           ))}
                         </Pie>
                         <Tooltip />
@@ -349,20 +349,20 @@ export default function FeedbackDashboard({ productId }: FeedbackDashboardProps)
                 <CardTitle>Recent Comments</CardTitle>
               </CardHeader>
               <CardContent>
-                {selectedStats?.recentComments.length > 0 ? (
+                {selectedStats.recentComments.length > 0 ? (
                   <div className="space-y-4">
-                    {selectedStats?.recentComments.map((comment, index) => (
+                    {selectedStats.recentComments.map((comment, index) => (
                       <div key={index} className="border-b pb-4 last:border-0">
                         <div className="mb-2 flex items-center justify-between">
                           <div className="text-yellow-500">
-                            {'★'.repeat(comment?.rating)}
-                            {'☆'.repeat(5 - comment?.rating)}
+                            {'★'.repeat(comment.rating)}
+                            {'☆'.repeat(5 - comment.rating)}
                           </div>
                           <div className="text-sm text-muted-foreground">
-                            {new Date(comment?.createdAt).toLocaleDateString()}
+                            {new Date(comment.createdAt).toLocaleDateString()}
                           </div>
                         </div>
-                        <p className="text-sm">{comment?.comment}</p>
+                        <p className="text-sm">{comment.comment}</p>
                       </div>
                     ))}
                   </div>

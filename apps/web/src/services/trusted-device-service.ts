@@ -19,24 +19,24 @@ export class TrustedDeviceService {
    * Generate a unique device ID based on device characteristics
    */
   private generateDeviceId(info: DeviceInfo): string {
-    const parser = new UAParser(info?.userAgent);
-    const ua = parser?.getResult();
+    const parser = new UAParser(info.userAgent);
+    const ua = parser.getResult();
 
     // Combine multiple factors to create a unique device fingerprint
     const factors = [
-      ua?.browser.name,
-      ua?.browser.version,
-      ua?.os.name,
-      ua?.os.version,
-      ua?.device.vendor,
-      ua?.device.model,
-      info?.ip,
+      ua.browser.name,
+      ua.browser.version,
+      ua.os.name,
+      ua.os.version,
+      ua.device.vendor,
+      ua.device.model,
+      info.ip,
       // Add any additional identifying data
-      ...Object?.values(info?.additionalData || {}),
+      ...Object.values(info.additionalData || {}),
     ].filter(Boolean);
 
     // Create a hash of the combined factors
-    return createHash('sha256').update(factors?.join('|')).digest('hex');
+    return createHash('sha256').update(factors.join('|')).digest('hex');
   }
 
   /**
@@ -44,26 +44,26 @@ export class TrustedDeviceService {
    */
   async registerDevice(userId: string, deviceInfo: DeviceInfo): Promise<string> {
     try {
-      const deviceId = this?.generateDeviceId(deviceInfo);
-      const parser = new UAParser(deviceInfo?.userAgent);
-      const ua = parser?.getResult();
+      const deviceId = this.generateDeviceId(deviceInfo);
+      const parser = new UAParser(deviceInfo.userAgent);
+      const ua = parser.getResult();
 
       const deviceName =
-        [ua?.browser.name, ua?.os.name, ua?.device.vendor, ua?.device.model]
+        [ua.browser.name, ua.os.name, ua.device.vendor, ua.device.model]
           .filter(Boolean)
           .join(' - ') || 'Unknown Device';
 
-      const expiresAt = new Date(Date?.now() + this?.DEVICE_TRUST_DURATION);
+      const expiresAt = new Date(Date.now() + this.DEVICE_TRUST_DURATION);
 
-      await prisma?.trustedDevice.upsert({
+      await prisma.trustedDevice.upsert({
         where: { deviceId },
         create: {
           userId,
           deviceId,
           deviceName,
-          browserInfo: `${ua?.browser.name} ${ua?.browser.version}`,
-          osInfo: `${ua?.os.name} ${ua?.os.version}`,
-          ipAddress: deviceInfo?.ip,
+          browserInfo: `${ua.browser.name} ${ua.browser.version}`,
+          osInfo: `${ua.os.name} ${ua.os.version}`,
+          ipAddress: deviceInfo.ip,
           expiresAt,
         },
         update: {
@@ -74,7 +74,7 @@ export class TrustedDeviceService {
         },
       });
 
-      logger?.info('Registered trusted device', 'security', {
+      logger.info('Registered trusted device', 'security', {
         userId,
         deviceId,
         deviceName,
@@ -82,7 +82,7 @@ export class TrustedDeviceService {
 
       return deviceId;
     } catch (error) {
-      logger?.error('Failed to register trusted device', 'security', {
+      logger.error('Failed to register trusted device', 'security', {
         error,
         userId,
       });
@@ -95,35 +95,35 @@ export class TrustedDeviceService {
    */
   async verifyDevice(userId: string, deviceInfo: DeviceInfo): Promise<boolean> {
     try {
-      const deviceId = this?.generateDeviceId(deviceInfo);
+      const deviceId = this.generateDeviceId(deviceInfo);
 
-      const device = await prisma?.trustedDevice.findUnique({
+      const device = await prisma.trustedDevice.findUnique({
         where: { deviceId },
       });
 
       if (!device) return false;
 
       // Check if device belongs to user
-      if (device?.userId !== userId) return false;
+      if (device.userId !== userId) return false;
 
       // Check if device is revoked
-      if (device?.isRevoked) return false;
+      if (device.isRevoked) return false;
 
       // Check if device trust has expired
-      if (device?.expiresAt && device?.expiresAt < new Date()) {
-        await this?.revokeDevice(deviceId);
+      if (device.expiresAt && device.expiresAt < new Date()) {
+        await this.revokeDevice(deviceId);
         return false;
       }
 
       // Update last used timestamp
-      await prisma?.trustedDevice.update({
+      await prisma.trustedDevice.update({
         where: { deviceId },
         data: { lastUsed: new Date() },
       });
 
       return true;
     } catch (error) {
-      logger?.error('Failed to verify trusted device', 'security', {
+      logger.error('Failed to verify trusted device', 'security', {
         error,
         userId,
       });
@@ -136,7 +136,7 @@ export class TrustedDeviceService {
    */
   async revokeDevice(deviceId: string): Promise<void> {
     try {
-      await prisma?.trustedDevice.update({
+      await prisma.trustedDevice.update({
         where: { deviceId },
         data: {
           isRevoked: true,
@@ -144,9 +144,9 @@ export class TrustedDeviceService {
         },
       });
 
-      logger?.info('Revoked trusted device', 'security', { deviceId });
+      logger.info('Revoked trusted device', 'security', { deviceId });
     } catch (error) {
-      logger?.error('Failed to revoke trusted device', 'security', {
+      logger.error('Failed to revoke trusted device', 'security', {
         error,
         deviceId,
       });
@@ -159,7 +159,7 @@ export class TrustedDeviceService {
    */
   async getUserDevices(userId: string): Promise<any[]> {
     try {
-      const devices = await prisma?.trustedDevice.findMany({
+      const devices = await prisma.trustedDevice.findMany({
         where: {
           userId,
           isRevoked: false,
@@ -172,16 +172,16 @@ export class TrustedDeviceService {
         },
       });
 
-      return devices?.map((device) => ({
-        id: device?.deviceId,
-        name: device?.deviceName,
-        browser: device?.browserInfo,
-        os: device?.osInfo,
-        lastUsed: device?.lastUsed,
-        createdAt: device?.createdAt,
+      return devices.map((device) => ({
+        id: device.deviceId,
+        name: device.deviceName,
+        browser: device.browserInfo,
+        os: device.osInfo,
+        lastUsed: device.lastUsed,
+        createdAt: device.createdAt,
       }));
     } catch (error) {
-      logger?.error('Failed to get user devices', 'security', {
+      logger.error('Failed to get user devices', 'security', {
         error,
         userId,
       });
@@ -194,9 +194,9 @@ export class TrustedDeviceService {
    */
   async cleanupDevices(): Promise<void> {
     try {
-      const thirtyDaysAgo = new Date(Date?.now() - 30 * 24 * 60 * 60 * 1000);
+      const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 
-      await prisma?.trustedDevice.deleteMany({
+      await prisma.trustedDevice.deleteMany({
         where: {
           OR: [
             { expiresAt: { lt: new Date() } },
@@ -207,9 +207,9 @@ export class TrustedDeviceService {
         },
       });
 
-      logger?.info('Cleaned up expired and revoked devices', 'security');
+      logger.info('Cleaned up expired and revoked devices', 'security');
     } catch (error) {
-      logger?.error('Failed to cleanup devices', 'security', { error });
+      logger.error('Failed to cleanup devices', 'security', { error });
       throw new Error('Failed to cleanup devices');
     }
   }

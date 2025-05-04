@@ -4,28 +4,28 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { ProviderFormRouteProp, ProviderFormNavigationProp } from '../types/navigation';
 import { createProvider, updateProvider } from '../services/providerService';
 
-const ProviderFormScreen: React?.FC = () => {
+const ProviderFormScreen: React.FC = () => {
   const route = useRoute<ProviderFormRouteProp>();
   const navigation = useNavigation<ProviderFormNavigationProp>();
-  const existing = route?.params?.provider;
-  const [name, setName] = useState(existing?.name ?? '');
-  const [businessName, setBusinessName] = useState(existing?.businessName ?? '');
-  const [description, setDescription] = useState(existing?.description ?? '');
+  const existing = route.params.provider;
+  const [name, setName] = useState(existing.name ?? '');
+  const [businessName, setBusinessName] = useState(existing.businessName ?? '');
+  const [description, setDescription] = useState(existing.description ?? '');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
       if (existing) {
-        await updateProvider(existing?.id, { name, businessName, description });
+        await updateProvider(existing.id, { name, businessName, description });
       } else {
         await createProvider({ name, businessName, description });
       }
-      navigation?.goBack();
+      navigation.goBack();
     } catch (e) {
-      Alert?.alert('Error', 'Failed to save provider');
+      Alert.alert('Error', 'Failed to save provider');
     } finally {
       setLoading(false);
     }
@@ -55,7 +55,7 @@ const ProviderFormScreen: React?.FC = () => {
       <Button
         title={existing ? 'Update Provider' : 'Create Provider'}
         onPress={handleSubmit}
-        disabled={loading || !name?.trim()}
+        disabled={loading || !name.trim()}
       />
     </View>
   );

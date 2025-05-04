@@ -23,15 +23,15 @@ const DraggableModule = ({ id, name, order, onMove }: DraggableModuleProps) => {
     type: 'module',
     item: { id, order },
     collect: (monitor) => ({
-      isDragging: monitor?.isDragging(),
+      isDragging: monitor.isDragging(),
     }),
   });
 
   const [, drop] = useDrop({
     accept: 'module',
     hover: (item: { id: string }) => {
-      if (item?.id !== id) {
-        onMove(item?.id, id);
+      if (item.id !== id) {
+        onMove(item.id, id);
       }
     },
   });
@@ -63,39 +63,39 @@ export default function TrainingPlanManager() {
   }, []);
 
   async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); loadPlans() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); loadPlans() {
     try {
       const data = await getAllTrainingPlans();
       setPlans(data);
     } catch (error) {
-      console?.error('Error loading training plans:', error);
+      console.error('Error loading training plans:', error);
     } finally {
       setLoading(false);
     }
   }
 
   const handleModuleMove = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');dragId: string, hoverId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');dragId: string, hoverId: string) => {
     if (!selectedPlan) return;
 
-    const dragModule = selectedPlan?.modules.find((m: any) => m?.id === dragId);
-    const hoverModule = selectedPlan?.modules.find((m: any) => m?.id === hoverId);
+    const dragModule = selectedPlan.modules.find((m: any) => m.id === dragId);
+    const hoverModule = selectedPlan.modules.find((m: any) => m.id === hoverId);
 
     if (!dragModule || !hoverModule) return;
 
-    const newModules = [...selectedPlan?.modules];
-    const dragIndex = newModules?.indexOf(dragModule);
-    const hoverIndex = newModules?.indexOf(hoverModule);
+    const newModules = [...selectedPlan.modules];
+    const dragIndex = newModules.indexOf(dragModule);
+    const hoverIndex = newModules.indexOf(hoverModule);
 
     // Swap modules
-    newModules?.splice(dragIndex, 1);
-    newModules?.splice(hoverIndex, 0, dragModule);
+    newModules.splice(dragIndex, 1);
+    newModules.splice(hoverIndex, 0, dragModule);
 
     // Update order numbers
-    const updates = newModules?.map((module, index) => ({
-      id: module?.id,
+    const updates = newModules.map((module, index) => ({
+      id: module.id,
       order: index + 1,
     }));
 
@@ -103,28 +103,28 @@ export default function TrainingPlanManager() {
       await bulkUpdateModuleOrder(updates);
       setSelectedPlan({
         ...selectedPlan,
-        modules: newModules?.map((module, index) => ({
+        modules: newModules.map((module, index) => ({
           ...module,
           order: index + 1,
         })),
       });
     } catch (error) {
-      console?.error('Error updating module order:', error);
+      console.error('Error updating module order:', error);
     }
   };
 
   const handleAssign = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-    if (!selectedPlan || !selectedStaff?.length) return;
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    if (!selectedPlan || !selectedStaff.length) return;
 
     try {
-      await assignTrainingPlan(selectedPlan?.id, selectedStaff);
+      await assignTrainingPlan(selectedPlan.id, selectedStaff);
       setIsAssignDialogOpen(false);
       setSelectedStaff([]);
       loadPlans();
     } catch (error) {
-      console?.error('Error assigning training plan:', error);
+      console.error('Error assigning training plan:', error);
     }
   };
 
@@ -145,18 +145,18 @@ export default function TrainingPlanManager() {
             </Button>
           </div>
           <div className="space-y-2">
-            {plans?.map((plan) => (
+            {plans.map((plan) => (
               <div
-                key={plan?.id}
+                key={plan.id}
                 className={`cursor-pointer rounded-lg p-3 ${
-                  selectedPlan?.id === plan?.id
+                  selectedPlan.id === plan.id
                     ? 'border-blue-200 bg-blue-50'
                     : 'bg-gray-50 hover:bg-gray-100'
                 }`}
                 onClick={() => setSelectedPlan(plan)}
               >
-                <h3 className="font-medium">{plan?.title}</h3>
-                <p className="text-sm text-gray-500">{plan?.modules.length} modules</p>
+                <h3 className="font-medium">{plan.title}</h3>
+                <p className="text-sm text-gray-500">{plan.modules.length} modules</p>
               </div>
             ))}
           </div>
@@ -168,8 +168,8 @@ export default function TrainingPlanManager() {
             <Card className="p-6">
               <div className="mb-6 flex items-start justify-between">
                 <div>
-                  <h2 className="text-xl font-bold">{selectedPlan?.title}</h2>
-                  <p className="text-gray-500">{selectedPlan?.description}</p>
+                  <h2 className="text-xl font-bold">{selectedPlan.title}</h2>
+                  <p className="text-gray-500">{selectedPlan.description}</p>
                 </div>
                 <div className="space-x-2">
                   <Button variant="outline" onClick={() => setIsAssignDialogOpen(true)}>
@@ -183,12 +183,12 @@ export default function TrainingPlanManager() {
 
               <h3 className="mb-4 text-lg font-semibold">Modules</h3>
               <div className="space-y-2">
-                {selectedPlan?.modules.map((module: any) => (
+                {selectedPlan.modules.map((module: any) => (
                   <DraggableModule
-                    key={module?.id}
-                    id={module?.id}
-                    name={module?.name}
-                    order={module?.order}
+                    key={module.id}
+                    id={module.id}
+                    name={module.name}
+                    order={module.order}
                     onMove={handleModuleMove}
                   />
                 ))}
@@ -201,19 +201,19 @@ export default function TrainingPlanManager() {
               <div className="grid grid-cols-3 gap-4">
                 <div className="rounded-lg bg-gray-50 p-4">
                   <h4 className="text-sm font-medium text-gray-500">Assigned Staff</h4>
-                  <p className="mt-1 text-2xl font-semibold">{selectedPlan?.staff?.length || 0}</p>
+                  <p className="mt-1 text-2xl font-semibold">{selectedPlan.staff.length || 0}</p>
                 </div>
                 <div className="rounded-lg bg-gray-50 p-4">
                   <h4 className="text-sm font-medium text-gray-500">Completion Rate</h4>
                   <p className="mt-1 text-2xl font-semibold">
-                    {selectedPlan?.progress?.toFixed(1)}%
+                    {selectedPlan.progress.toFixed(1)}%
                   </p>
                 </div>
                 <div className="rounded-lg bg-gray-50 p-4">
                   <h4 className="text-sm font-medium text-gray-500">Average Score</h4>
                   <p className="mt-1 text-2xl font-semibold">
-                    {selectedPlan?.modules
-                      .reduce((acc: number, m: any) => acc + (m?.progress?.[0]?.score || 0), 0)
+                    {selectedPlan.modules
+                      .reduce((acc: number, m: any) => acc + (m.progress.[0].score || 0), 0)
                       .toFixed(1)}
                   </p>
                 </div>

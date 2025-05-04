@@ -40,44 +40,44 @@ import {
 import { AlertTriangle, Save, RefreshCw } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 
-const backupSettingsSchema = z?.object({
-  frequency: z?.enum(['daily', 'weekly', 'monthly']),
-  retentionPeriod: z?.number().min(1).max(365),
-  backupTypes: z?.array(z?.enum(['full', 'incremental'])).min(1),
-  encryptionEnabled: z?.boolean(),
-  compressionEnabled: z?.boolean(),
-  storageLocation: z?.enum(['local', 's3', 'gcs']),
+const backupSettingsSchema = z.object({
+  frequency: z.enum(['daily', 'weekly', 'monthly']),
+  retentionPeriod: z.number().min(1).max(365),
+  backupTypes: z.array(z.enum(['full', 'incremental'])).min(1),
+  encryptionEnabled: z.boolean(),
+  compressionEnabled: z.boolean(),
+  storageLocation: z.enum(['local', 's3', 'gcs']),
   s3Config: z
     .object({
-      bucket: z?.string().min(1),
-      region: z?.string().min(1),
-      path: z?.string(),
+      bucket: z.string().min(1),
+      region: z.string().min(1),
+      path: z.string(),
     })
     .optional(),
   gcsConfig: z
     .object({
-      bucket: z?.string().min(1),
-      path: z?.string(),
+      bucket: z.string().min(1),
+      path: z.string(),
     })
     .optional(),
   localConfig: z
     .object({
-      path: z?.string().min(1),
+      path: z.string().min(1),
     })
     .optional(),
-  encryption: z?.object({
-    algorithm: z?.string(),
-    keySize: z?.number(),
-    ivSize: z?.number(),
-    tagSize: z?.number(),
+  encryption: z.object({
+    algorithm: z.string(),
+    keySize: z.number(),
+    ivSize: z.number(),
+    tagSize: z.number(),
   }),
-  compression: z?.object({
-    algorithm: z?.string(),
-    level: z?.number().min(1).max(9),
+  compression: z.object({
+    algorithm: z.string(),
+    level: z.number().min(1).max(9),
   }),
 });
 
-type BackupSettingsFormValues = z?.infer<typeof backupSettingsSchema>;
+type BackupSettingsFormValues = z.infer<typeof backupSettingsSchema>;
 
 export function BackupSettings() {
   const [loading, setLoading] = useState(false);
@@ -86,35 +86,35 @@ export function BackupSettings() {
   const form = useForm<BackupSettingsFormValues>({
     resolver: zodResolver(backupSettingsSchema),
     defaultValues: {
-      frequency: backupConfig?.frequency,
-      retentionPeriod: backupConfig?.retentionPeriod,
-      backupTypes: backupConfig?.backupTypes,
-      encryptionEnabled: backupConfig?.encryptionEnabled,
-      compressionEnabled: backupConfig?.compressionEnabled,
-      storageLocation: backupConfig?.storageLocation,
-      s3Config: storageConfig?.s3,
-      gcsConfig: storageConfig?.gcs,
-      localConfig: storageConfig?.local,
+      frequency: backupConfig.frequency,
+      retentionPeriod: backupConfig.retentionPeriod,
+      backupTypes: backupConfig.backupTypes,
+      encryptionEnabled: backupConfig.encryptionEnabled,
+      compressionEnabled: backupConfig.compressionEnabled,
+      storageLocation: backupConfig.storageLocation,
+      s3Config: storageConfig.s3,
+      gcsConfig: storageConfig.gcs,
+      localConfig: storageConfig.local,
       encryption: encryptionConfig,
       compression: compressionConfig,
     },
   });
 
   const onSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');values: BackupSettingsFormValues) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');values: BackupSettingsFormValues) => {
     try {
       setLoading(true);
       setError(null);
 
-      console?.log('Updating backup settings:', values);
+      console.log('Updating backup settings:', values);
 
       toast({
         title: 'Settings Updated',
         description: 'Backup settings have been updated successfully',
       });
     } catch (err) {
-      console?.error('Error updating backup settings:', err);
+      console.error('Error updating backup settings:', err);
       setError('Failed to update backup settings');
       toast({
         title: 'Error',
@@ -128,7 +128,7 @@ export function BackupSettings() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form?.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <Card>
           <CardHeader>
             <CardTitle>Backup Settings</CardTitle>
@@ -139,12 +139,12 @@ export function BackupSettings() {
           <CardContent className="space-y-6">
             <div className="grid gap-6 md:grid-cols-2">
               <FormField
-                control={form?.control}
+                control={form.control}
                 name="frequency"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Backup Frequency</FormLabel>
-                    <Select onValueChange={field?.onChange} defaultValue={field?.value}>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select backup frequency" />
@@ -163,7 +163,7 @@ export function BackupSettings() {
               />
 
               <FormField
-                control={form?.control}
+                control={form.control}
                 name="retentionPeriod"
                 render={({ field }) => (
                   <FormItem>
@@ -172,7 +172,7 @@ export function BackupSettings() {
                       <Input
                         type="number"
                         {...field}
-                        onChange={(e) => field?.onChange(parseInt(e?.target.value))}
+                        onChange={(e) => field.onChange(parseInt(e.target.value))}
                       />
                     </FormControl>
                     <FormDescription>
@@ -186,32 +186,32 @@ export function BackupSettings() {
 
             <div className="grid gap-6 md:grid-cols-2">
               <FormField
-                control={form?.control}
+                control={form.control}
                 name="encryptionEnabled"
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                    <div className="space-y-0?.5">
+                    <div className="space-y-0.5">
                       <FormLabel className="text-base">Encryption</FormLabel>
                       <FormDescription>Enable encryption for backup data</FormDescription>
                     </div>
                     <FormControl>
-                      <Switch checked={field?.value} onCheckedChange={field?.onChange} />
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                   </FormItem>
                 )}
               />
 
               <FormField
-                control={form?.control}
+                control={form.control}
                 name="compressionEnabled"
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                    <div className="space-y-0?.5">
+                    <div className="space-y-0.5">
                       <FormLabel className="text-base">Compression</FormLabel>
                       <FormDescription>Enable compression for backup data</FormDescription>
                     </div>
                     <FormControl>
-                      <Switch checked={field?.value} onCheckedChange={field?.onChange} />
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -219,12 +219,12 @@ export function BackupSettings() {
             </div>
 
             <FormField
-              control={form?.control}
+              control={form.control}
               name="storageLocation"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Storage Location</FormLabel>
-                  <Select onValueChange={field?.onChange} defaultValue={field?.value}>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select storage location" />
@@ -242,11 +242,11 @@ export function BackupSettings() {
               )}
             />
 
-            {form?.watch('storageLocation') === 's3' && (
+            {form.watch('storageLocation') === 's3' && (
               <div className="space-y-4">
                 <FormField
-                  control={form?.control}
-                  name="s3Config?.bucket"
+                  control={form.control}
+                  name="s3Config.bucket"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>S3 Bucket Name</FormLabel>
@@ -259,8 +259,8 @@ export function BackupSettings() {
                 />
 
                 <FormField
-                  control={form?.control}
-                  name="s3Config?.region"
+                  control={form.control}
+                  name="s3Config.region"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>AWS Region</FormLabel>
@@ -274,11 +274,11 @@ export function BackupSettings() {
               </div>
             )}
 
-            {form?.watch('storageLocation') === 'gcs' && (
+            {form.watch('storageLocation') === 'gcs' && (
               <div className="space-y-4">
                 <FormField
-                  control={form?.control}
-                  name="gcsConfig?.bucket"
+                  control={form.control}
+                  name="gcsConfig.bucket"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>GCS Bucket Name</FormLabel>
@@ -292,10 +292,10 @@ export function BackupSettings() {
               </div>
             )}
 
-            {form?.watch('storageLocation') === 'local' && (
+            {form.watch('storageLocation') === 'local' && (
               <FormField
-                control={form?.control}
-                name="localConfig?.path"
+                control={form.control}
+                name="localConfig.path"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Local Storage Path</FormLabel>

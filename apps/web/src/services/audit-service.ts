@@ -111,8 +111,8 @@ class AuditService extends EventEmitter {
 
   constructor() {
     super();
-    this?.notificationService = new NotificationService();
-    this?.thresholds = this?.getDefaultThresholds();
+    this.notificationService = new NotificationService();
+    this.thresholds = this.getDefaultThresholds();
   }
 
   /**
@@ -121,7 +121,7 @@ class AuditService extends EventEmitter {
   private getDefaultThresholds(): AuditThresholds {
     return {
       security: {
-        vulnerabilitySeverity: 7?.0, // CVSS >= 7?.0 (High)
+        vulnerabilitySeverity: 7.0, // CVSS >= 7.0 (High)
         maxCriticalIssues: 0,
         maxHighIssues: 5,
       },
@@ -131,7 +131,7 @@ class AuditService extends EventEmitter {
         ttfb: 100, // ms
         lcp: 2500, // ms
         fid: 100, // ms
-        cls: 0?.1,
+        cls: 0.1,
       },
       ux: {
         taskCompletionRate: 90, // percentage
@@ -152,8 +152,8 @@ class AuditService extends EventEmitter {
    * Update audit thresholds
    */
   public updateThresholds(newThresholds: Partial<AuditThresholds>): void {
-    this?.thresholds = {
-      ...this?.thresholds,
+    this.thresholds = {
+      ...this.thresholds,
       ...newThresholds,
     };
   }
@@ -172,8 +172,8 @@ class AuditService extends EventEmitter {
       metadata?: Record<string, any>;
     },
   ): Promise<AuditIssue> {
-    const timestamp = Date?.now();
-    const hashInput = `${category}:${title}:${description}:${options?.component || ''}`;
+    const timestamp = Date.now();
+    const hashInput = `${category}:${title}:${description}:${options.component || ''}`;
     const id = await hashData(new TextEncoder().encode(hashInput));
 
     const issue: AuditIssue = {
@@ -182,14 +182,14 @@ class AuditService extends EventEmitter {
       severity,
       title,
       description,
-      component: options?.component,
+      component: options.component,
       datestamp: timestamp,
-      remediation: options?.remediation,
+      remediation: options.remediation,
       status: 'open',
-      metadata: options?.metadata,
+      metadata: options.metadata,
     };
 
-    this?.issues.set(id, issue);
+    this.issues.set(id, issue);
 
     // Log the event
     logEvent('audit_issue_reported', {
@@ -197,21 +197,21 @@ class AuditService extends EventEmitter {
       category,
       severity,
       title,
-      component: options?.component,
+      component: options.component,
     });
 
     // Emit event
-    this?.emit('issue_reported', issue);
+    this.emit('issue_reported', issue);
 
     // Send notification for high severity issues
     if (
-      (severity === AuditSeverity?.CRITICAL || severity === AuditSeverity?.HIGH) &&
-      this?.canSendAlert(id)
+      (severity === AuditSeverity.CRITICAL || severity === AuditSeverity.HIGH) &&
+      this.canSendAlert(id)
     ) {
-      this?.alertCooldowns.set(id, Date?.now());
-      this?.notificationService.notifyAdmins({
+      this.alertCooldowns.set(id, Date.now());
+      this.notificationService.notifyAdmins({
         type: 'alert',
-        subject: `[${severity?.toUpperCase()}] ${title}`,
+        subject: `[${severity.toUpperCase()}] ${title}`,
         message: description,
         data: {
           category,
@@ -228,10 +228,10 @@ class AuditService extends EventEmitter {
    * Check if we can send an alert (avoid notification spam)
    */
   private canSendAlert(id: string): boolean {
-    const lastAlertTime = this?.alertCooldowns.get(id);
+    const lastAlertTime = this.alertCooldowns.get(id);
     if (!lastAlertTime) return true;
 
-    return Date?.now() - lastAlertTime > this?.alertCooldownPeriod;
+    return Date.now() - lastAlertTime > this.alertCooldownPeriod;
   }
 
   /**
@@ -242,25 +242,25 @@ class AuditService extends EventEmitter {
     status: 'open' | 'in_progress' | 'resolved' | 'wontfix',
     remediation?: string,
   ): boolean {
-    const issue = this?.issues.get(id);
+    const issue = this.issues.get(id);
     if (!issue) return false;
 
-    issue?.status = status;
+    issue.status = status;
     if (remediation) {
-      issue?.remediation = remediation;
+      issue.remediation = remediation;
     }
 
     // Log the event
     logEvent('audit_issue_updated', {
       id,
-      category: issue?.category,
-      severity: issue?.severity,
-      title: issue?.title,
+      category: issue.category,
+      severity: issue.severity,
+      title: issue.title,
       status,
     });
 
     // Emit event
-    this?.emit('issue_updated', issue);
+    this.emit('issue_updated', issue);
 
     return true;
   }
@@ -272,11 +272,11 @@ class AuditService extends EventEmitter {
     category?: AuditCategory,
     status?: 'open' | 'in_progress' | 'resolved' | 'wontfix',
   ): AuditIssue[] {
-    const issues = Array?.from(this?.issues.values());
+    const issues = Array.from(this.issues.values());
 
-    return issues?.filter((issue) => {
-      if (category && issue?.category !== category) return false;
-      if (status && issue?.status !== status) return false;
+    return issues.filter((issue) => {
+      if (category && issue.category !== category) return false;
+      if (status && issue.status !== status) return false;
       return true;
     });
   }
@@ -285,19 +285,19 @@ class AuditService extends EventEmitter {
    * Generate an audit report for a specific category
    */
   public generateReport(category: AuditCategory): AuditReport {
-    const timestamp = Date?.now();
+    const timestamp = Date.now();
     const id = `${category}_report_${timestamp}`;
 
-    const issues = this?.getIssues(category);
+    const issues = this.getIssues(category);
 
     // Calculate summary
     const summary = {
-      critical: issues?.filter((i) => i?.severity === AuditSeverity?.CRITICAL).length,
-      high: issues?.filter((i) => i?.severity === AuditSeverity?.HIGH).length,
-      medium: issues?.filter((i) => i?.severity === AuditSeverity?.MEDIUM).length,
-      low: issues?.filter((i) => i?.severity === AuditSeverity?.LOW).length,
-      info: issues?.filter((i) => i?.severity === AuditSeverity?.INFO).length,
-      total: issues?.length,
+      critical: issues.filter((i) => i.severity === AuditSeverity.CRITICAL).length,
+      high: issues.filter((i) => i.severity === AuditSeverity.HIGH).length,
+      medium: issues.filter((i) => i.severity === AuditSeverity.MEDIUM).length,
+      low: issues.filter((i) => i.severity === AuditSeverity.LOW).length,
+      info: issues.filter((i) => i.severity === AuditSeverity.INFO).length,
+      total: issues.length,
     };
 
     const report: AuditReport = {
@@ -308,18 +308,18 @@ class AuditService extends EventEmitter {
       summary,
     };
 
-    this?.reports.set(id, report);
+    this.reports.set(id, report);
 
     // Log the event
     logEvent('audit_report_generated', {
       id,
       category,
-      issueCount: issues?.length,
+      issueCount: issues.length,
       summary,
     });
 
     // Emit event
-    this?.emit('report_generated', report);
+    this.emit('report_generated', report);
 
     return report;
   }
@@ -328,31 +328,31 @@ class AuditService extends EventEmitter {
    * Get a specific report by ID
    */
   public getReport(id: string): AuditReport | null {
-    return this?.reports.get(id) || null;
+    return this.reports.get(id) || null;
   }
 
   /**
    * Get all reports
    */
   public getAllReports(): AuditReport[] {
-    return Array?.from(this?.reports.values());
+    return Array.from(this.reports.values());
   }
 
   /**
    * Check if the current state meets security thresholds
    */
   public checkSecurityThresholds(): boolean {
-    const securityIssues = this?.getIssues(AuditCategory?.SECURITY, 'open');
+    const securityIssues = this.getIssues(AuditCategory.SECURITY, 'open');
 
-    const criticalCount = securityIssues?.filter(
-      (i) => i?.severity === AuditSeverity?.CRITICAL,
+    const criticalCount = securityIssues.filter(
+      (i) => i.severity === AuditSeverity.CRITICAL,
     ).length;
 
-    const highCount = securityIssues?.filter((i) => i?.severity === AuditSeverity?.HIGH).length;
+    const highCount = securityIssues.filter((i) => i.severity === AuditSeverity.HIGH).length;
 
     return (
-      criticalCount <= this?.thresholds.security?.maxCriticalIssues &&
-      highCount <= this?.thresholds.security?.maxHighIssues
+      criticalCount <= this.thresholds.security.maxCriticalIssues &&
+      highCount <= this.thresholds.security.maxHighIssues
     );
   }
 
@@ -360,9 +360,9 @@ class AuditService extends EventEmitter {
    * Clear all issues and reports (for testing)
    */
   public clear(): void {
-    this?.issues.clear();
-    this?.reports.clear();
-    this?.alertCooldowns.clear();
+    this.issues.clear();
+    this.reports.clear();
+    this.alertCooldowns.clear();
   }
 }
 

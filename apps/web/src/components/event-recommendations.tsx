@@ -17,8 +17,8 @@ export function EventRecommendations({ onShare, onAttend }: EventRecommendations
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     const fetchRecommendedEvents = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         setLoading(true);
         setError(null);
@@ -29,35 +29,35 @@ export function EventRecommendations({ onShare, onAttend }: EventRecommendations
         // Filter events that are upcoming and match user interests
         const recommended = allEvents
           .filter((event) => {
-            const startDate = parseISO(event?.startDate);
+            const startDate = parseISO(event.startDate);
             return startDate > now;
           })
           .sort((a, b) => {
             // Sort by date and then by participants count
-            const dateA = parseISO(a?.startDate);
-            const dateB = parseISO(b?.startDate);
-            if (dateA?.getTime() === dateB?.getTime()) {
-              return b?.participantsCount - a?.participantsCount;
+            const dateA = parseISO(a.startDate);
+            const dateB = parseISO(b.startDate);
+            if (dateA.getTime() === dateB.getTime()) {
+              return b.participantsCount - a.participantsCount;
             }
-            return dateA?.getTime() - dateB?.getTime();
+            return dateA.getTime() - dateB.getTime();
           })
           .slice(0, 3); // Show top 3 recommendations
         setRecommendedEvents(recommended);
       } catch (err) {
-        console?.error('Error fetching recommended events:', err);
+        console.error('Error fetching recommended events:', err);
         setError('Failed to load event recommendations');
       } finally {
         setLoading(false);
       }
     };
     fetchRecommendedEvents();
-  }, [user?.id]);
+  }, [user.id]);
   if (loading) {
     return (
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
-            <Icons?.SparklesIcon className="text-primary h-5 w-5" />
+            <Icons.SparklesIcon className="text-primary h-5 w-5" />
             <h3 className="text-lg font-semibold">Recommended Events</h3>
           </div>
         </CardHeader>
@@ -74,7 +74,7 @@ export function EventRecommendations({ onShare, onAttend }: EventRecommendations
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
-            <Icons?.SparklesIcon className="text-primary h-5 w-5" />
+            <Icons.SparklesIcon className="text-primary h-5 w-5" />
             <h3 className="text-lg font-semibold">Recommended Events</h3>
           </div>
         </CardHeader>
@@ -84,12 +84,12 @@ export function EventRecommendations({ onShare, onAttend }: EventRecommendations
       </Card>
     );
   }
-  if (recommendedEvents?.length === 0) {
+  if (recommendedEvents.length === 0) {
     return (
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
-            <Icons?.SparklesIcon className="text-primary h-5 w-5" />
+            <Icons.SparklesIcon className="text-primary h-5 w-5" />
             <h3 className="text-lg font-semibold">Recommended Events</h3>
           </div>
         </CardHeader>
@@ -105,18 +105,18 @@ export function EventRecommendations({ onShare, onAttend }: EventRecommendations
     <Card>
       <CardHeader>
         <div className="flex items-center gap-2">
-          <Icons?.SparklesIcon className="text-primary h-5 w-5" />
+          <Icons.SparklesIcon className="text-primary h-5 w-5" />
           <h3 className="text-lg font-semibold">Recommended Events</h3>
         </div>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {recommendedEvents?.map((event) => (
+          {recommendedEvents.map((event) => (
             <EventShareCard
-              key={event?.id}
+              key={event.id}
               event={event}
-              onShare={() => onShare?.(event)}
-              onAttend={() => onAttend?.(event)}
+              onShare={() => onShare.(event)}
+              onAttend={() => onAttend.(event)}
             />
           ))}
         </div>

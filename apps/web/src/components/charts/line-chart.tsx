@@ -25,7 +25,7 @@ interface LineChartProps {
 }
 
 export default function LineChart({ data, lines, xAxisKey, grid = true }: LineChartProps) {
-  if (!data || data?.length === 0) {
+  if (!data || data.length === 0) {
     return (
       <div className="flex h-full items-center justify-center text-muted-foreground">
         No data available
@@ -48,19 +48,19 @@ export default function LineChart({ data, lines, xAxisKey, grid = true }: LineCh
           contentStyle={{
             backgroundColor: 'white',
             borderRadius: '8px',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0?.1)',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
             border: 'none',
           }}
         />
         <Legend verticalAlign="bottom" height={36} />
 
-        {lines?.map((line, index) => (
+        {lines.map((line, index) => (
           <Line
             key={index}
             type="monotone"
-            dataKey={line?.dataKey}
-            name={line?.name || line?.dataKey}
-            stroke={line?.color || `#${Math?.floor(Math?.random() * 16777215).toString(16)}`}
+            dataKey={line.dataKey}
+            name={line.name || line.dataKey}
+            stroke={line.color || `#${Math.floor(Math.random() * 16777215).toString(16)}`}
             strokeWidth={2}
             dot={{ r: 4 }}
             activeDot={{ r: 6 }}

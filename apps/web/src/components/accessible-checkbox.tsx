@@ -2,13 +2,13 @@ import React from 'react';
 import BaseCheckbox from './BaseCheckbox';
 
 export interface AccessibleCheckboxProps
-  extends Omit<React?.InputHTMLAttributes<HTMLInputElement>, 'type'> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string;
   error?: string;
   helperText?: string;
 }
 
-export const AccessibleCheckbox: React?.FC<AccessibleCheckboxProps> = ({
+export const AccessibleCheckbox: React.FC<AccessibleCheckboxProps> = ({
   label,
   error,
   helperText,

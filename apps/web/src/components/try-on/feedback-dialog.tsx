@@ -48,8 +48,8 @@ export function FeedbackDialog({
   };
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (rating === 0 || wouldTryRealLife === null) {
       setError('Please provide a rating and indicate if you would try this in real life');
       return;
@@ -59,11 +59,11 @@ export function FeedbackDialog({
     setError(null);
 
     try {
-      await tryOnService?.completeSession(sessionId, userId, {
+      await tryOnService.completeSession(sessionId, userId, {
         feedback: {
           rating,
           would_try_in_real_life: wouldTryRealLife,
-          comment: comment?.trim() || null,
+          comment: comment.trim() || null,
         },
       });
 
@@ -77,7 +77,7 @@ export function FeedbackDialog({
         setSubmitted(false);
       }, 1500);
     } catch (err) {
-      console?.error('Failed to submit feedback:', err);
+      console.error('Failed to submit feedback:', err);
       setError('Failed to submit feedback. Please try again.');
     } finally {
       setSubmitting(false);
@@ -164,7 +164,7 @@ export function FeedbackDialog({
                 id="comment"
                 placeholder={`What did you think about ${productName}?`}
                 value={comment}
-                onChange={(e) => setComment(e?.target.value)}
+                onChange={(e) => setComment(e.target.value)}
                 rows={3}
               />
             </div>

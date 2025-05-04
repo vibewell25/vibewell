@@ -8,7 +8,7 @@ import { ArrowUp } from 'lucide-react';
 import Link from 'next/link';
 
 interface NavigationLayoutProps {
-  children: React?.ReactNode;
+  children: React.ReactNode;
   isAuthenticated: boolean;
   isAdmin?: boolean;
   user?: {

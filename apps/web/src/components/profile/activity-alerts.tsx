@@ -10,12 +10,12 @@ interface AlertSetting {
   id: string;
   title: string;
   description: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
   enabled: boolean;
   channels: {
     id: string;
     name: string;
-    icon: React?.ReactNode;
+    icon: React.ReactNode;
     enabled: boolean;
   }[];
 }
@@ -74,9 +74,9 @@ export function ActivityAlerts() {
 
   const handleToggleSetting = (id: string) => {
     setSettings((prev) =>
-      prev?.map((setting) => {
-        if (setting?.id === id) {
-          return { ...setting, enabled: !setting?.enabled };
+      prev.map((setting) => {
+        if (setting.id === id) {
+          return { ...setting, enabled: !setting.enabled };
         }
         return setting;
       }),
@@ -85,13 +85,13 @@ export function ActivityAlerts() {
 
   const handleToggleChannel = (settingId: string, channelId: string) => {
     setSettings((prev) =>
-      prev?.map((setting) => {
-        if (setting?.id === settingId) {
+      prev.map((setting) => {
+        if (setting.id === settingId) {
           return {
             ...setting,
-            channels: setting?.channels.map((channel) => {
-              if (channel?.id === channelId) {
-                return { ...channel, enabled: !channel?.enabled };
+            channels: setting.channels.map((channel) => {
+              if (channel.id === channelId) {
+                return { ...channel, enabled: !channel.enabled };
               }
               return channel;
             }),
@@ -103,8 +103,8 @@ export function ActivityAlerts() {
   };
 
   const handleSave = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       // Simulate save process
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -131,34 +131,34 @@ export function ActivityAlerts() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {settings?.map((setting) => (
-          <div key={setting?.id} className="space-y-4">
+        {settings.map((setting) => (
+          <div key={setting.id} className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <div className="rounded-lg bg-muted p-2">{setting?.icon}</div>
+                <div className="rounded-lg bg-muted p-2">{setting.icon}</div>
                 <div>
-                  <h3 className="text-sm font-medium">{setting?.title}</h3>
-                  <p className="text-sm text-muted-foreground">{setting?.description}</p>
+                  <h3 className="text-sm font-medium">{setting.title}</h3>
+                  <p className="text-sm text-muted-foreground">{setting.description}</p>
                 </div>
               </div>
               <Switch
-                checked={setting?.enabled}
-                onCheckedChange={() => handleToggleSetting(setting?.id)}
+                checked={setting.enabled}
+                onCheckedChange={() => handleToggleSetting(setting.id)}
               />
             </div>
 
-            {setting?.enabled && (
+            {setting.enabled && (
               <div className="ml-8 space-y-4">
-                {setting?.channels.map((channel) => (
-                  <div key={channel?.id} className="flex items-center justify-between">
+                {setting.channels.map((channel) => (
+                  <div key={channel.id} className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      {channel?.icon}
-                      <Label htmlFor={channel?.id}>{channel?.name}</Label>
+                      {channel.icon}
+                      <Label htmlFor={channel.id}>{channel.name}</Label>
                     </div>
                     <Switch
-                      id={channel?.id}
-                      checked={channel?.enabled}
-                      onCheckedChange={() => handleToggleChannel(setting?.id, channel?.id)}
+                      id={channel.id}
+                      checked={channel.enabled}
+                      onCheckedChange={() => handleToggleChannel(setting.id, channel.id)}
                     />
                   </div>
                 ))}

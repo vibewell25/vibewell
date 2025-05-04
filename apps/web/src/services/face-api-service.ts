@@ -1,13 +1,13 @@
 
 
-import * as faceapi from 'face-api?.js';
+import * as faceapi from 'face-api.js';
 
 import { logger } from '@/lib/logger';
 import { Canvas, Image } from 'canvas';
 
 import { FaceMeshResults } from './mediapipe-service';
 
-faceapi?.env.monkeyPatch({ Canvas, Image });
+faceapi.env.monkeyPatch({ Canvas, Image });
 
 export interface FaceDetectionOptions {
   minConfidence?: number;
@@ -18,9 +18,9 @@ export interface FaceDetectionOptions {
 }
 
 export interface FaceAnalysisResult {
-  detection: faceapi?.FaceDetection;
-  landmarks?: faceapi?.FaceLandmarks68;
-  expressions?: faceapi?.FaceExpressions;
+  detection: faceapi.FaceDetection;
+  landmarks?: faceapi.FaceLandmarks68;
+  expressions?: faceapi.FaceExpressions;
   age?: number;
   gender?: string;
   descriptor?: Float32Array;
@@ -30,31 +30,31 @@ export class FaceApiService {
   private isInitialized: boolean = false;
 
   constructor() {
-    this?.initialize();
+    this.initialize();
   }
 
   private async initialize() {
     try {
       // Load models from public directory
-      await Promise?.all([
+      await Promise.all([
 
-        faceapi?.nets.ssdMobilenetv1?.loadFromUri('/models/face-api'),
+        faceapi.nets.ssdMobilenetv1.loadFromUri('/models/face-api'),
 
-        faceapi?.nets.faceLandmark68Net?.loadFromUri('/models/face-api'),
+        faceapi.nets.faceLandmark68Net.loadFromUri('/models/face-api'),
 
-        faceapi?.nets.faceExpressionNet?.loadFromUri('/models/face-api'),
+        faceapi.nets.faceExpressionNet.loadFromUri('/models/face-api'),
 
-        faceapi?.nets.ageGenderNet?.loadFromUri('/models/face-api'),
+        faceapi.nets.ageGenderNet.loadFromUri('/models/face-api'),
 
-        faceapi?.nets.faceRecognitionNet?.loadFromUri('/models/face-api'),
+        faceapi.nets.faceRecognitionNet.loadFromUri('/models/face-api'),
       ]);
 
-      this?.isInitialized = true;
+      this.isInitialized = true;
 
-      logger?.info('Face-api models loaded successfully', 'FaceApiService');
+      logger.info('Face-api models loaded successfully', 'FaceApiService');
     } catch (error) {
 
-      logger?.error('Failed to load face-api models', 'FaceApiService', { error });
+      logger.error('Failed to load face-api models', 'FaceApiService', { error });
       throw error;
     }
   }
@@ -64,12 +64,12 @@ export class FaceApiService {
     options: FaceDetectionOptions = {},
   ): Promise<FaceAnalysisResult[]> {
     try {
-      if (!this?.isInitialized) {
-        await this?.initialize();
+      if (!this.isInitialized) {
+        await this.initialize();
       }
 
       const {
-        minConfidence = 0?.9,
+        minConfidence = 0.9,
         withLandmarks = true,
         withExpressions = false,
         withAgeAndGender = false,
@@ -78,7 +78,7 @@ export class FaceApiService {
 
       // Create detection tasks array
       const tasks = [
-        faceapi?.detectAllFaces(image, new faceapi?.SsdMobilenetv1Options({ minConfidence })),
+        faceapi.detectAllFaces(image, new faceapi.SsdMobilenetv1Options({ minConfidence })),
       ];
 
       if (withLandmarks) {
@@ -98,38 +98,38 @@ export class FaceApiService {
       }
 
       // Run detection
-      const results = await Promise?.all(tasks);
-      return results?.map((result) => ({
-        detection: result?.detection,
-        landmarks: result?.landmarks,
-        expressions: result?.expressions,
-        age: result?.age,
-        gender: result?.gender,
-        descriptor: result?.descriptor,
+      const results = await Promise.all(tasks);
+      return results.map((result) => ({
+        detection: result.detection,
+        landmarks: result.landmarks,
+        expressions: result.expressions,
+        age: result.age,
+        gender: result.gender,
+        descriptor: result.descriptor,
       }));
     } catch (error) {
-      logger?.error('Face detection failed', 'FaceApiService', { error });
+      logger.error('Face detection failed', 'FaceApiService', { error });
       throw error;
     }
   }
 
   async convertToFaceMeshResults(detections: FaceAnalysisResult[]): Promise<FaceMeshResults> {
     try {
-      const multiFaceLandmarks = detections?.map((detection) => {
-        if (!detection?.landmarks) {
+      const multiFaceLandmarks = detections.map((detection) => {
+        if (!detection.landmarks) {
           throw new Error('Face landmarks not detected');
         }
 
 
         // Convert face-api landmarks to normalized landmarks
-        const points = detection?.landmarks.positions;
-        const imageSize = detection?.detection.imageDims;
+        const points = detection.landmarks.positions;
+        const imageSize = detection.detection.imageDims;
 
-        return points?.map((point) => ({
+        return points.map((point) => ({
 
-          x: point?.x / imageSize?.width,
+          x: point.x / imageSize.width,
 
-          y: point?.y / imageSize?.height,
+          y: point.y / imageSize.height,
 
 
           z: 0, // face-api doesn't provide z-coordinates
@@ -139,7 +139,7 @@ export class FaceApiService {
       return { multiFaceLandmarks };
     } catch (error) {
 
-      logger?.error('Failed to convert face-api results to FaceMesh format', 'FaceApiService', {
+      logger.error('Failed to convert face-api results to FaceMesh format', 'FaceApiService', {
         error,
       });
       throw error;
@@ -155,31 +155,31 @@ export class FaceApiService {
     try {
       const attributes: any = {};
 
-      if (detection?.age) {
-        attributes?.age = Math?.round(detection?.age);
+      if (detection.age) {
+        attributes.age = Math.round(detection.age);
       }
 
-      if (detection?.gender) {
-        attributes?.gender = detection?.gender;
+      if (detection.gender) {
+        attributes.gender = detection.gender;
       }
 
-      if (detection?.expressions) {
-        attributes?.expressions = Object?.fromEntries(
-          Object?.entries(detection?.expressions).map(([key, value]) => [
+      if (detection.expressions) {
+        attributes.expressions = Object.fromEntries(
+          Object.entries(detection.expressions).map(([key, value]) => [
             key,
-            parseFloat(value?.toFixed(2)),
+            parseFloat(value.toFixed(2)),
           ]),
         );
       }
 
       // Estimate skin tone if landmarks are available
-      if (detection?.landmarks) {
-        attributes?.skinTone = await this?.estimateSkinTone(detection);
+      if (detection.landmarks) {
+        attributes.skinTone = await this.estimateSkinTone(detection);
       }
 
       return attributes;
     } catch (error) {
-      logger?.error('Failed to analyze face attributes', 'FaceApiService', { error });
+      logger.error('Failed to analyze face attributes', 'FaceApiService', { error });
       throw error;
     }
   }
@@ -194,7 +194,7 @@ export class FaceApiService {
       // 4. Classify into skin tone categories
       return 'medium';
     } catch (error) {
-      logger?.error('Failed to estimate skin tone', 'FaceApiService', { error });
+      logger.error('Failed to estimate skin tone', 'FaceApiService', { error });
       throw error;
     }
   }

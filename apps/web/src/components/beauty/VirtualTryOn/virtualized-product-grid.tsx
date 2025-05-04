@@ -28,10 +28,10 @@ export default function VirtualizedProductGrid({
 
   // Adjust column count based on container width
   useEffect(() => {
-    if (!containerRef?.current) return;
+    if (!containerRef.current) return;
 
     const updateColumnCount = () => {
-      const width = containerRef?.current?.clientWidth || 0;
+      const width = containerRef.current.clientWidth || 0;
       if (width < 640) {
         setColumnCount(2);
       } else if (width < 1024) {
@@ -42,8 +42,8 @@ export default function VirtualizedProductGrid({
     };
 
     updateColumnCount();
-    window?.addEventListener('resize', updateColumnCount);
-    return () => window?.removeEventListener('resize', updateColumnCount);
+    window.addEventListener('resize', updateColumnCount);
+    return () => window.removeEventListener('resize', updateColumnCount);
   }, []);
 
   if (isLoading) {
@@ -54,7 +54,7 @@ export default function VirtualizedProductGrid({
     );
   }
 
-  if (products?.length === 0) {
+  if (products.length === 0) {
     return (
       <div className="py-4 text-center">
         <p className="text-gray-500">No products found</p>
@@ -63,16 +63,16 @@ export default function VirtualizedProductGrid({
   }
 
   // Calculate row count based on products length and column count
-  const rowCount = Math?.ceil(products?.length / columnCount);
+  const rowCount = Math.ceil(products.length / columnCount);
 
   // Cell renderer for the grid
   const ProductCell = ({ columnIndex, rowIndex, style }: any) => {
     const index = rowIndex * columnCount + columnIndex;
-    if (index >= products?.length) return null;
+    if (index >= products.length) return null;
 
     const product = products[index];
-    const isSelected = product?.id === selectedProductId;
-    const imageUrl = product?.images[0]?.url || '/placeholder-product?.jpg';
+    const isSelected = product.id === selectedProductId;
+    const imageUrl = product.images[0].url || '/placeholder-product.jpg';
 
     return (
       <div
@@ -87,20 +87,20 @@ export default function VirtualizedProductGrid({
           }`}
           onClick={() => onSelectProduct(product)}
           onKeyDown={(e) => {
-            if (e?.key === 'Enter' || e?.key === ' ') {
-              e?.preventDefault();
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
               onSelectProduct(product);
             }
           }}
           tabIndex={0}
           role="button"
-          aria-label={`Select ${product?.name}`}
+          aria-label={`Select ${product.name}`}
           aria-selected={isSelected}
         >
           <div className="relative aspect-square">
             <Image
               src={imageUrl}
-              alt={product?.name}
+              alt={product.name}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
               className="object-cover"
@@ -108,27 +108,27 @@ export default function VirtualizedProductGrid({
               placeholder="blur"
               blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFdwI2F3h7xgAAAABJRU5ErkJggg=="
             />
-            {product?.isNew && (
+            {product.isNew && (
               <div className="absolute right-2 top-2 rounded-full bg-pink-500 px-2 py-1 text-xs text-white">
                 New
               </div>
             )}
-            {product?.isBestSeller && (
+            {product.isBestSeller && (
               <div className="absolute left-2 top-2 rounded-full bg-yellow-500 px-2 py-1 text-xs text-white">
                 Best Seller
               </div>
             )}
           </div>
           <div className="p-3">
-            <h3 className="line-clamp-1 text-sm font-medium">{product?.name}</h3>
-            <p className="line-clamp-1 text-xs text-gray-500">{product?.brand}</p>
+            <h3 className="line-clamp-1 text-sm font-medium">{product.name}</h3>
+            <p className="line-clamp-1 text-xs text-gray-500">{product.brand}</p>
             <div className="mt-2 flex items-center justify-between">
               <span className="text-sm font-medium">
-                ${typeof product?.price === 'number' ? product?.price.toFixed(2) : product?.price}
+                ${typeof product.price === 'number' ? product.price.toFixed(2) : product.price}
               </span>
               <div className="flex items-center">
                 <span className="mr-1 text-xs text-yellow-500">★</span>
-                <span className="text-xs text-gray-500">{product?.ratingAverage}</span>
+                <span className="text-xs text-gray-500">{product.ratingAverage}</span>
               </div>
             </div>
           </div>

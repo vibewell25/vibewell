@@ -8,7 +8,7 @@
  * @component
  *
  * @typedef ButtonProps
- * @param {React?.ButtonHTMLAttributes<HTMLButtonElement>} props - Standard button attributes
+ * @param {React.ButtonHTMLAttributes<HTMLButtonElement>} props - Standard button attributes
  * @param {'default'|'destructive'|'outline'|'secondary'|'ghost'|'link'} variant - (optional) Visual style variant (default: 'default')
  * @param {'default'|'sm'|'lg'|'icon'} size - (optional) Button size (default: 'default')
  * @param {boolean} asChild - (optional) Whether to render as a child component using Radix Slot (default: false)
@@ -16,7 +16,7 @@
  *
  * @example
  * ```tsx
- * <Button variant="primary" size="lg" onClick={() => console?.log('Clicked!')}>
+ * <Button variant="primary" size="lg" onClick={() => console.log('Clicked!')}>
  *   Click Me
  * </Button>
  * ```
@@ -43,9 +43,9 @@ import { cn } from '@/lib/utils';
 
 export interface ButtonProps extends BaseButtonProps {}
 
-const Button = React?.forwardRef<HTMLButtonElement, ButtonProps>(({ className, ...props }, ref) => {
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({ className, ...props }, ref) => {
   return <BaseButton className={cn(className)} ref={ref} {...props} />;
 });
-Button?.displayName = 'Button';
+Button.displayName = 'Button';
 
 export { Button };

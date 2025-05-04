@@ -19,12 +19,12 @@ export function useLocalStorage<T>(
 
     try {
       // Get from local storage by key
-      const item = window?.localStorage.getItem(key);
+      const item = window.localStorage.getItem(key);
       // Parse stored json or if none return initialValue
-      return item ? JSON?.parse(item) : initialValue;
+      return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       // If error also return initialValue
-      console?.error('Error reading from localStorage:', error);
+      console.error('Error reading from localStorage:', error);
       return initialValue;
     }
   });
@@ -40,11 +40,11 @@ export function useLocalStorage<T>(
 
       // Save to local storage
       if (typeof window !== 'undefined') {
-        window?.localStorage.setItem(key, JSON?.stringify(valueToStore));
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
       }
     } catch (error) {
       // Log any errors for debugging
-      console?.error('Error writing to localStorage:', error);
+      console.error('Error writing to localStorage:', error);
     }
   };
 
@@ -55,25 +55,25 @@ export function useLocalStorage<T>(
 
     // Create event handler
     const handleStorageChange = (event: StorageEvent) => {
-      if (event?.key === key && event?.newValue) {
+      if (event.key === key && event.newValue) {
         try {
-          setStoredValue(JSON?.parse(event?.newValue));
+          setStoredValue(JSON.parse(event.newValue));
         } catch (error) {
-          console?.error('Error parsing localStorage value:', error);
+          console.error('Error parsing localStorage value:', error);
         }
       }
     };
 
     // Add event listener
-    window?.addEventListener('storage', handleStorageChange);
+    window.addEventListener('storage', handleStorageChange);
 
     // Remove event listener on cleanup
     return () => {
-      window?.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('storage', handleStorageChange);
     };
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
   }, [key]);

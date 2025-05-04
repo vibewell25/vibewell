@@ -8,8 +8,8 @@ interface TimeInputProps {
 }
 
 export function TimeInput({ value, onChange, className }: TimeInputProps) {
-  const handleChange = (e: React?.ChangeEvent<HTMLInputElement>) => {
-    const timeValue = e?.target.value;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const timeValue = e.target.value;
     // Validate time format (HH:mm)
     if (/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(timeValue) || timeValue === '') {
       onChange(timeValue);

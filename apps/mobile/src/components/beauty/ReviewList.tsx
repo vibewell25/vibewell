@@ -18,7 +18,7 @@ interface ReviewListProps {
   onReviewAdded: () => void;
 }
 
-const ReviewList: React?.FC<ReviewListProps> = ({
+const ReviewList: React.FC<ReviewListProps> = ({
   reviews,
   serviceId,
   isDarkMode,
@@ -27,28 +27,28 @@ const ReviewList: React?.FC<ReviewListProps> = ({
   const [showReviewForm, setShowReviewForm] = useState<boolean>(false);
 
   // Calculate average rating
-  const averageRating = reviews?.length > 0
-    ? (reviews?.reduce((sum, review) => sum + review?.rating, 0) / reviews?.length).toFixed(1)
-    : '0?.0';
+  const averageRating = reviews.length > 0
+    ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(1)
+    : '0.0';
 
   // Rating distribution
   const ratingDistribution = [0, 0, 0, 0, 0]; // 5, 4, 3, 2, 1 stars
-  reviews?.forEach(review => {
-    ratingDistribution[5 - review?.rating]++;
+  reviews.forEach(review => {
+    ratingDistribution[5 - review.rating]++;
   });
 
   // Get percentage for rating bar
   const getRatingPercentage = (count: number) => {
-    if (reviews?.length === 0) return 0;
-    return (count / reviews?.length) * 100;
+    if (reviews.length === 0) return 0;
+    return (count / reviews.length) * 100;
   };
 
   // Format date to be more readable
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
-    const diff = now?.getTime() - date?.getTime();
-    const diffDays = Math?.floor(diff / (1000 * 3600 * 24));
+    const diff = now.getTime() - date.getTime();
+    const diffDays = Math.floor(diff / (1000 * 3600 * 24));
 
     if (diffDays < 7) {
       if (diffDays === 0) return 'Today';
@@ -57,7 +57,7 @@ const ReviewList: React?.FC<ReviewListProps> = ({
     }
 
     if (diffDays < 30) {
-      const weeks = Math?.floor(diffDays / 7);
+      const weeks = Math.floor(diffDays / 7);
       return `${weeks} ${weeks === 1 ? 'week' : 'weeks'} ago`;
     }
 
@@ -69,52 +69,52 @@ const ReviewList: React?.FC<ReviewListProps> = ({
     return (
       <View
         style={[
-          styles?.reviewItem,
+          styles.reviewItem,
           { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
         ]}
       >
-        <View style={styles?.reviewHeader}>
-          <View style={styles?.userInfo}>
-            {item?.userAvatar ? (
-              <Image source={{ uri: item?.userAvatar }} style={styles?.userAvatar} />
+        <View style={styles.reviewHeader}>
+          <View style={styles.userInfo}>
+            {item.userAvatar ? (
+              <Image source={{ uri: item.userAvatar }} style={styles.userAvatar} />
             ) : (
               <View
                 style={[
-                  styles?.userAvatarPlaceholder,
+                  styles.userAvatarPlaceholder,
                   { backgroundColor: isDarkMode ? '#333333' : '#E0E0E0' }
                 ]}
               >
-                <Text style={styles?.userInitial}>
-                  {item?.userName.charAt(0).toUpperCase()}
+                <Text style={styles.userInitial}>
+                  {item.userName.charAt(0).toUpperCase()}
                 </Text>
               </View>
             )}
             <View>
               <Text
                 style={[
-                  styles?.userName,
+                  styles.userName,
                   { color: isDarkMode ? '#FFFFFF' : '#000000' }
                 ]}
               >
-                {item?.userName}
+                {item.userName}
               </Text>
               <Text
                 style={[
-                  styles?.reviewDate,
+                  styles.reviewDate,
                   { color: isDarkMode ? '#BBBBBB' : '#666666' }
                 ]}
               >
-                {formatDate(item?.date)}
+                {formatDate(item.date)}
               </Text>
             </View>
           </View>
-          <View style={styles?.ratingContainer}>
+          <View style={styles.ratingContainer}>
             {[...Array(5)].map((_, i) => (
               <Feather
                 key={i}
                 name="star"
                 size={14}
-                color={i < item?.rating ? '#FFD700' : isDarkMode ? '#333333' : '#E0E0E0'}
+                color={i < item.rating ? '#FFD700' : isDarkMode ? '#333333' : '#E0E0E0'}
                 style={{ marginLeft: 2 }}
               />
             ))}
@@ -122,22 +122,22 @@ const ReviewList: React?.FC<ReviewListProps> = ({
         </View>
         <Text
           style={[
-            styles?.reviewComment,
+            styles.reviewComment,
             { color: isDarkMode ? '#E0E0E0' : '#333333' }
           ]}
         >
-          {item?.comment}
+          {item.comment}
         </Text>
       </View>
     );
   };
 
   return (
-    <View style={styles?.container}>
-      <View style={styles?.header}>
+    <View style={styles.container}>
+      <View style={styles.header}>
         <Text
           style={[
-            styles?.title,
+            styles.title,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}
         >
@@ -145,7 +145,7 @@ const ReviewList: React?.FC<ReviewListProps> = ({
         </Text>
         <TouchableOpacity
           style={[
-            styles?.writeReviewButton,
+            styles.writeReviewButton,
             { backgroundColor: isDarkMode ? '#333333' : '#F0F0F0' }
           ]}
           onPress={() => setShowReviewForm(true)}
@@ -168,45 +168,45 @@ const ReviewList: React?.FC<ReviewListProps> = ({
         </TouchableOpacity>
       </View>
 
-      {reviews?.length > 0 ? (
+      {reviews.length > 0 ? (
         <>
-          <View style={styles?.summaryContainer}>
-            <View style={styles?.averageRatingContainer}>
+          <View style={styles.summaryContainer}>
+            <View style={styles.averageRatingContainer}>
               <Text
                 style={[
-                  styles?.averageRating,
+                  styles.averageRating,
                   { color: isDarkMode ? '#FFFFFF' : '#000000' }
                 ]}
               >
                 {averageRating}
               </Text>
-              <View style={styles?.starsRow}>
+              <View style={styles.starsRow}>
                 {[...Array(5)].map((_, i) => (
                   <Feather
                     key={i}
                     name="star"
                     size={16}
-                    color={i < Math?.round(parseFloat(averageRating)) ? '#FFD700' : isDarkMode ? '#333333' : '#E0E0E0'}
+                    color={i < Math.round(parseFloat(averageRating)) ? '#FFD700' : isDarkMode ? '#333333' : '#E0E0E0'}
                     style={{ marginHorizontal: 1 }}
                   />
                 ))}
               </View>
               <Text
                 style={[
-                  styles?.reviewCount,
+                  styles.reviewCount,
                   { color: isDarkMode ? '#BBBBBB' : '#666666' }
                 ]}
               >
-                {reviews?.length} {reviews?.length === 1 ? 'review' : 'reviews'}
+                {reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}
               </Text>
             </View>
 
-            <View style={styles?.ratingBarsContainer}>
+            <View style={styles.ratingBarsContainer}>
               {[5, 4, 3, 2, 1].map((rating) => (
-                <View key={rating} style={styles?.ratingBar}>
+                <View key={rating} style={styles.ratingBar}>
                   <Text
                     style={[
-                      styles?.ratingLabel,
+                      styles.ratingLabel,
                       { color: isDarkMode ? '#BBBBBB' : '#666666' }
                     ]}
                   >
@@ -214,13 +214,13 @@ const ReviewList: React?.FC<ReviewListProps> = ({
                   </Text>
                   <View
                     style={[
-                      styles?.ratingBarBackground,
+                      styles.ratingBarBackground,
                       { backgroundColor: isDarkMode ? '#333333' : '#E0E0E0' }
                     ]}
                   >
                     <View
                       style={[
-                        styles?.ratingBarFill,
+                        styles.ratingBarFill,
                         {
                           width: `${getRatingPercentage(ratingDistribution[5 - rating])}%`,
                           backgroundColor: '#FFD700'
@@ -230,7 +230,7 @@ const ReviewList: React?.FC<ReviewListProps> = ({
                   </View>
                   <Text
                     style={[
-                      styles?.ratingCount,
+                      styles.ratingCount,
                       { color: isDarkMode ? '#BBBBBB' : '#666666' }
                     ]}
                   >
@@ -244,13 +244,13 @@ const ReviewList: React?.FC<ReviewListProps> = ({
           <FlatList
             data={reviews}
             renderItem={renderReviewItem}
-            keyExtractor={(item) => item?.id}
+            keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
-            style={styles?.reviewList}
+            style={styles.reviewList}
           />
         </>
       ) : (
-        <View style={styles?.emptyContainer}>
+        <View style={styles.emptyContainer}>
           <Feather
             name="message-circle"
             size={50}
@@ -258,7 +258,7 @@ const ReviewList: React?.FC<ReviewListProps> = ({
           />
           <Text
             style={[
-              styles?.emptyText,
+              styles.emptyText,
               { color: isDarkMode ? '#BBBBBB' : '#666666' }
             ]}
           >
@@ -278,7 +278,7 @@ const ReviewList: React?.FC<ReviewListProps> = ({
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     marginTop: 20
   },

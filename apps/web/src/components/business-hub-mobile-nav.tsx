@@ -9,32 +9,32 @@ const businessHubLinks = [
   {
     title: 'Overview',
     href: '/business-hub',
-    icon: <Icons?.BriefcaseIcon className="h-5 w-5" />,
+    icon: <Icons.BriefcaseIcon className="h-5 w-5" />,
   },
   {
     title: 'Marketing',
     href: '/business-hub/marketing',
-    icon: <Icons?.MegaphoneIcon className="h-5 w-5" />,
+    icon: <Icons.MegaphoneIcon className="h-5 w-5" />,
   },
   {
     title: 'Client Acquisition',
     href: '/business-hub/client-acquisition',
-    icon: <Icons?.UsersIcon className="h-5 w-5" />,
+    icon: <Icons.UsersIcon className="h-5 w-5" />,
   },
   {
     title: 'Financial Management',
     href: '/business-hub/financial-management',
-    icon: <Icons?.CurrencyDollarIcon className="h-5 w-5" />,
+    icon: <Icons.CurrencyDollarIcon className="h-5 w-5" />,
   },
   {
     title: 'Staff Management',
     href: '/business-hub/staff-management',
-    icon: <Icons?.UserGroupIcon className="h-5 w-5" />,
+    icon: <Icons.UserGroupIcon className="h-5 w-5" />,
   },
   {
     title: 'Scheduling Optimization',
     href: '/business-hub/scheduling-optimization',
-    icon: <Icons?.CalendarIcon className="h-5 w-5" />,
+    icon: <Icons.CalendarIcon className="h-5 w-5" />,
   },
 ];
 export function BusinessHubMobileNav() {
@@ -50,9 +50,9 @@ export function BusinessHubMobileNav() {
           aria-label={isOpen ? 'Close navigation' : 'Open navigation'}
         >
           {isOpen ? (
-            <Icons?.XMarkIcon className="h-6 w-6" />
+            <Icons.XMarkIcon className="h-6 w-6" />
           ) : (
-            <Icons?.Bars3Icon className="h-6 w-6" />
+            <Icons.Bars3Icon className="h-6 w-6" />
           )}
         </button>
       </div>
@@ -60,19 +60,19 @@ export function BusinessHubMobileNav() {
         <div className="border-b border-border">
           <nav className="p-2">
             <ul className="space-y-1">
-              {businessHubLinks?.map((link) => {
-                const isActive = pathname === link?.href || pathname?.startsWith(`${link?.href}/`);
+              {businessHubLinks.map((link) => {
+                const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`);
                 return (
-                  <li key={link?.href}>
+                  <li key={link.href}>
                     <Link
-                      href={link?.href}
+                      href={link.href}
                       className={`flex items-center rounded-md px-3 py-2 transition-colors hover:bg-muted ${
                         isActive ? 'text-primary bg-muted font-medium' : 'text-muted-foreground'
                       }`}
                       onClick={() => setIsOpen(false)}
                     >
-                      <span className="mr-3">{link?.icon}</span>
-                      <span>{link?.title}</span>
+                      <span className="mr-3">{link.icon}</span>
+                      <span>{link.title}</span>
                     </Link>
                   </li>
                 );

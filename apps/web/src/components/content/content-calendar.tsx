@@ -64,9 +64,9 @@ export function ContentCalendar() {
   const [currentWeek, setCurrentWeek] = useState<Date>(startOfWeek(new Date()));
 
   const handleInputChange = (
-    e: React?.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
-    const { name, value } = e?.target;
+    const { name, value } = e.target;
     setNewItem((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -74,16 +74,16 @@ export function ContentCalendar() {
     setNewItem((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React?.FormEvent) => {
-    e?.preventDefault();
-    if (!scheduledDate || !newItem?.title) return;
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!scheduledDate || !newItem.title) return;
 
     const newContentItem: ContentItem = {
-      id: Date?.now().toString(),
-      title: newItem?.title || '',
-      description: newItem?.description || '',
-      contentType: (newItem?.contentType as ContentType) || 'post',
-      platform: (newItem?.platform as Platform) || 'instagram',
+      id: Date.now().toString(),
+      title: newItem.title || '',
+      description: newItem.description || '',
+      contentType: (newItem.contentType as ContentType) || 'post',
+      platform: (newItem.platform as Platform) || 'instagram',
       scheduledDate,
       attachments: selectedFiles,
       status: 'scheduled',
@@ -106,7 +106,7 @@ export function ContentCalendar() {
 
   // Get content items for a specific day
   const getItemsForDay = (day: Date) => {
-    return contentItems?.filter((item) => isSameDay(item?.scheduledDate, day));
+    return contentItems.filter((item) => isSameDay(item.scheduledDate, day));
   };
 
   // Navigate to previous or next week
@@ -158,28 +158,28 @@ export function ContentCalendar() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-7 gap-2">
-                {weekDays?.map((day) => (
-                  <div key={day?.toString()} className="min-h-[12rem] rounded-md border p-2">
+                {weekDays.map((day) => (
+                  <div key={day.toString()} className="min-h-[12rem] rounded-md border p-2">
                     <div className="sticky top-0 mb-2 bg-background text-sm font-medium">
                       {format(day, 'EEE, MMM d')}
                     </div>
                     <div className="space-y-2">
                       {getItemsForDay(day).map((item) => (
                         <div
-                          key={item?.id}
+                          key={item.id}
                           className="bg-primary/10 hover:bg-primary/20 cursor-pointer rounded-md p-2 text-xs"
                         >
-                          <div className="font-medium">{item?.title}</div>
+                          <div className="font-medium">{item.title}</div>
                           <div className="mt-1 flex items-center text-muted-foreground">
                             <Clock className="mr-1 h-3 w-3" />
-                            {format(item?.scheduledDate, 'h:mm a')}
+                            {format(item.scheduledDate, 'h:mm a')}
                           </div>
                           <div className="mt-1 flex items-center space-x-1">
-                            <span className="bg-primary/20 rounded-full px-1?.5 py-0?.5 text-[10px]">
-                              {item?.platform}
+                            <span className="bg-primary/20 rounded-full px-1.5 py-0.5 text-[10px]">
+                              {item.platform}
                             </span>
-                            <span className="bg-secondary/20 rounded-full px-1?.5 py-0?.5 text-[10px]">
-                              {item?.contentType}
+                            <span className="bg-secondary/20 rounded-full px-1.5 py-0.5 text-[10px]">
+                              {item.contentType}
                             </span>
                           </div>
                         </div>
@@ -210,22 +210,22 @@ export function ContentCalendar() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {contentItems?.length === 0 ? (
+                  {contentItems.length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={5} className="text-center">
                         No content items scheduled yet
                       </TableCell>
                     </TableRow>
                   ) : (
-                    contentItems?.map((item) => (
-                      <TableRow key={item?.id}>
-                        <TableCell>{item?.title}</TableCell>
-                        <TableCell>{item?.contentType}</TableCell>
-                        <TableCell>{item?.platform}</TableCell>
-                        <TableCell>{format(item?.scheduledDate, 'MMM d, yyyy h:mm a')}</TableCell>
+                    contentItems.map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell>{item.title}</TableCell>
+                        <TableCell>{item.contentType}</TableCell>
+                        <TableCell>{item.platform}</TableCell>
+                        <TableCell>{format(item.scheduledDate, 'MMM d, yyyy h:mm a')}</TableCell>
                         <TableCell>
                           <span className="bg-primary/20 rounded-full px-2 py-1 text-xs">
-                            {item?.status}
+                            {item.status}
                           </span>
                         </TableCell>
                       </TableRow>
@@ -252,7 +252,7 @@ export function ContentCalendar() {
                   <Input
                     id="title"
                     name="title"
-                    value={newItem?.title}
+                    value={newItem.title}
                     onChange={handleInputChange}
                     placeholder="Enter content title"
                     required
@@ -264,7 +264,7 @@ export function ContentCalendar() {
                   <Textarea
                     id="description"
                     name="description"
-                    value={newItem?.description}
+                    value={newItem.description}
                     onChange={handleInputChange}
                     placeholder="Enter content description"
                     rows={4}
@@ -275,7 +275,7 @@ export function ContentCalendar() {
                   <div className="space-y-2">
                     <Label htmlFor="contentType">Content Type</Label>
                     <Select
-                      value={newItem?.contentType}
+                      value={newItem.contentType}
                       onValueChange={(value) => handleSelectChange(value, 'contentType')}
                     >
                       <SelectTrigger id="contentType">
@@ -293,7 +293,7 @@ export function ContentCalendar() {
                   <div className="space-y-2">
                     <Label htmlFor="platform">Platform</Label>
                     <Select
-                      value={newItem?.platform}
+                      value={newItem.platform}
                       onValueChange={(value) => handleSelectChange(value, 'platform')}
                     >
                       <SelectTrigger id="platform">
@@ -330,7 +330,7 @@ export function ContentCalendar() {
               <CardFooter>
                 <Button
                   type="submit"
-                  disabled={!scheduledDate || !newItem?.title}
+                  disabled={!scheduledDate || !newItem.title}
                   className="w-full"
                 >
                   Schedule Content

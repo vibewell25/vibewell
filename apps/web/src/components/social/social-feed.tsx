@@ -37,15 +37,15 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
   }, []);
 
   const fetchPosts = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const response = await fetch('/api/social/posts');
-      if (!response?.ok) throw new Error('Failed to fetch posts');
-      const data = await response?.json();
+      if (!response.ok) throw new Error('Failed to fetch posts');
+      const data = await response.json();
       setPosts(data);
     } catch (error) {
-      console?.error('Error fetching posts:', error);
+      console.error('Error fetching posts:', error);
       toast({
         title: 'Error',
         description: 'Failed to load posts',
@@ -57,9 +57,9 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
   };
 
   const handleCreatePost = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-    if (!newPost?.trim()) return;
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    if (!newPost.trim()) return;
 
     try {
       const response = await fetch('/api/social/posts', {
@@ -67,12 +67,12 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify({ content: newPost }),
+        body: JSON.stringify({ content: newPost }),
       });
 
-      if (!response?.ok) throw new Error('Failed to create post');
+      if (!response.ok) throw new Error('Failed to create post');
 
-      const post = await response?.json();
+      const post = await response.json();
       setPosts([post, ...posts]);
       setNewPost('');
 
@@ -81,7 +81,7 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
         description: 'Post created successfully',
       });
     } catch (error) {
-      console?.error('Error creating post:', error);
+      console.error('Error creating post:', error);
       toast({
         title: 'Error',
         description: 'Failed to create post',
@@ -91,29 +91,29 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
   };
 
   const handleLikePost = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');postId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');postId: string) => {
     try {
       const response = await fetch(`/api/social/posts/${postId}/like`, {
         method: 'POST',
       });
 
-      if (!response?.ok) throw new Error('Failed to like post');
+      if (!response.ok) throw new Error('Failed to like post');
 
       setPosts(
-        posts?.map((post) => {
-          if (post?.id === postId) {
+        posts.map((post) => {
+          if (post.id === postId) {
             return {
               ...post,
-              likes: post?.hasLiked ? post?.likes - 1 : post?.likes + 1,
-              hasLiked: !post?.hasLiked,
+              likes: post.hasLiked ? post.likes - 1 : post.likes + 1,
+              hasLiked: !post.hasLiked,
             };
           }
           return post;
         }),
       );
     } catch (error) {
-      console?.error('Error liking post:', error);
+      console.error('Error liking post:', error);
       toast({
         title: 'Error',
         description: 'Failed to like post',
@@ -125,7 +125,7 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Icons?.Spinner className="h-8 w-8 animate-spin" />
+        <Icons.Spinner className="h-8 w-8 animate-spin" />
       </div>
     );
   }
@@ -137,16 +137,16 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
         <CardContent className="pt-6">
           <div className="flex items-start space-x-4">
             <Avatar>
-              <img src={user?.avatar || '/default-avatar?.png'} alt={user?.name || 'User'} />
+              <img src={user.avatar || '/default-avatar.png'} alt={user.name || 'User'} />
             </Avatar>
             <div className="flex-1">
               <Input
                 placeholder="Share something..."
                 value={newPost}
-                onChange={(e) => setNewPost(e?.target.value)}
+                onChange={(e) => setNewPost(e.target.value)}
                 className="mb-2"
               />
-              <Button onClick={handleCreatePost} disabled={!newPost?.trim()}>
+              <Button onClick={handleCreatePost} disabled={!newPost.trim()}>
                 Post
               </Button>
             </div>
@@ -156,26 +156,26 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
 
       {/* Posts Feed */}
       <div className="space-y-4">
-        {posts?.map((post) => (
-          <Card key={post?.id}>
+        {posts.map((post) => (
+          <Card key={post.id}>
             <CardHeader>
               <div className="flex items-center space-x-4">
                 <Avatar>
-                  <img src={post?.author.avatar || '/default-avatar?.png'} alt={post?.author.name} />
+                  <img src={post.author.avatar || '/default-avatar.png'} alt={post.author.name} />
                 </Avatar>
                 <div>
-                  <CardTitle className="text-base">{post?.author.name}</CardTitle>
+                  <CardTitle className="text-base">{post.author.name}</CardTitle>
                   <p className="text-sm text-gray-500">
-                    {new Date(post?.createdAt).toLocaleDateString()}
+                    {new Date(post.createdAt).toLocaleDateString()}
                   </p>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
-              <p className="mb-4">{post?.content}</p>
-              {post?.imageUrl && (
+              <p className="mb-4">{post.content}</p>
+              {post.imageUrl && (
                 <img
-                  src={post?.imageUrl}
+                  src={post.imageUrl}
                   alt="Post"
                   className="mb-4 max-h-96 w-full rounded-lg object-cover"
                 />
@@ -184,15 +184,15 @@ export function SocialFeed({ className = '' }: SocialFeedProps) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => handleLikePost(post?.id)}
-                  className={post?.hasLiked ? 'text-blue-600' : ''}
+                  onClick={() => handleLikePost(post.id)}
+                  className={post.hasLiked ? 'text-blue-600' : ''}
                 >
-                  <Icons?.Heart className="mr-1 h-5 w-5" />
-                  {post?.likes}
+                  <Icons.Heart className="mr-1 h-5 w-5" />
+                  {post.likes}
                 </Button>
                 <Button variant="ghost" size="sm">
-                  <Icons?.MessageCircle className="mr-1 h-5 w-5" />
-                  {post?.comments}
+                  <Icons.MessageCircle className="mr-1 h-5 w-5" />
+                  {post.comments}
                 </Button>
               </div>
             </CardContent>

@@ -40,18 +40,18 @@ const exportToCSV = (data: any[], filename: string) => {
   let csvContent = '';
 
   // Get all possible keys from all objects
-  const allKeys = Array?.from(new Set(data?.flatMap((item) => Object?.keys(item))));
+  const allKeys = Array.from(new Set(data.flatMap((item) => Object.keys(item))));
 
   // Create header row
-  if (csvContent > Number.MAX_SAFE_INTEGER || csvContent < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); csvContent += allKeys?.join(',') + '\n';
+  if (csvContent > Number.MAX_SAFE_INTEGER || csvContent < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); csvContent += allKeys.join(',') + '\n';
 
   // Add each data row
-  data?.forEach((item) => {
+  data.forEach((item) => {
     const row = allKeys
       .map((key) => {
         const value = item[key] === undefined ? '' : item[key];
         // Escape commas and quotes in values
-        const escapedValue = typeof value === 'string' ? `"${value?.replace(/"/g, '""')}"` : value;
+        const escapedValue = typeof value === 'string' ? `"${value.replace(/"/g, '""')}"` : value;
         return escapedValue;
       })
       .join(',');
@@ -60,14 +60,14 @@ const exportToCSV = (data: any[], filename: string) => {
 
   // Create download link
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  const url = URL?.createObjectURL(blob);
-  const link = document?.createElement('a');
-  link?.setAttribute('href', url);
-  link?.setAttribute('download', filename);
-  link?.style.visibility = 'hidden';
-  document?.body.appendChild(link);
-  link?.click();
-  document?.body.removeChild(link);
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };
 
 export default function DashboardOverview() {
@@ -88,8 +88,8 @@ export default function DashboardOverview() {
 
   useEffect(() => {
     async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); fetchData() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); fetchData() {
       try {
         setLoading(true);
         const analyticsService = new AnalyticsService();
@@ -101,17 +101,17 @@ export default function DashboardOverview() {
         const startDate = subWeeks(endDate, 4);
 
         // Fetch all products first
-        const result = await productService?.getProducts();
-        const productsData = result?.products;
+        const result = await productService.getProducts();
+        const productsData = result.products;
 
-        if (!productsData || productsData?.length === 0) {
+        if (!productsData || productsData.length === 0) {
           throw new Error('Failed to fetch products');
         }
 
-        const productsList = productsData?.map((product: any) => ({
-          id: product?.id,
-          name: product?.name,
-          category: product?.category,
+        const productsList = productsData.map((product: any) => ({
+          id: product.id,
+          name: product.name,
+          category: product.category,
         }));
 
         setProducts(productsList);
@@ -128,29 +128,29 @@ export default function DashboardOverview() {
 
         for (const product of productsList) {
           try {
-            const metrics = await analyticsService?.getProductMetrics(product?.id, {
-              start: startDate?.toISOString(),
-              end: endDate?.toISOString(),
+            const metrics = await analyticsService.getProductMetrics(product.id, {
+              start: startDate.toISOString(),
+              end: endDate.toISOString(),
             });
 
-            if (views > Number.MAX_SAFE_INTEGER || views < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); views += metrics?.totalViews;
-            if (uniqueViews > Number.MAX_SAFE_INTEGER || uniqueViews < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); uniqueViews += metrics?.uniqueViews;
-            if (tryOns > Number.MAX_SAFE_INTEGER || tryOns < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); tryOns += metrics?.tryOnCount;
+            if (views > Number.MAX_SAFE_INTEGER || views < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); views += metrics.totalViews;
+            if (uniqueViews > Number.MAX_SAFE_INTEGER || uniqueViews < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); uniqueViews += metrics.uniqueViews;
+            if (tryOns > Number.MAX_SAFE_INTEGER || tryOns < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); tryOns += metrics.tryOnCount;
 
-            if (metrics?.totalViews > 0) {
-              if (conversionRateSum > Number.MAX_SAFE_INTEGER || conversionRateSum < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); conversionRateSum += metrics?.conversionRate;
+            if (metrics.totalViews > 0) {
+              if (conversionRateSum > Number.MAX_SAFE_INTEGER || conversionRateSum < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); conversionRateSum += metrics.conversionRate;
               if (productsWithData > Number.MAX_SAFE_INTEGER || productsWithData < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); productsWithData++;
             }
 
-            productMetrics?.push({
-              id: product?.id,
-              name: product?.name,
-              views: metrics?.totalViews,
+            productMetrics.push({
+              id: product.id,
+              name: product.name,
+              views: metrics.totalViews,
             });
 
-            allProductMetrics[product?.id] = metrics;
+            allProductMetrics[product.id] = metrics;
           } catch (err) {
-            console?.error(`Error fetching metrics for ${product?.name}:`, err);
+            console.error(`Error fetching metrics for ${product.name}:`, err);
           }
         }
 
@@ -158,7 +158,7 @@ export default function DashboardOverview() {
         setProductMetricsData(allProductMetrics);
 
         // Sort products by views and get top 5
-        const sortedProducts = [...productMetrics].sort((a, b) => b?.views - a?.views).slice(0, 5);
+        const sortedProducts = [...productMetrics].sort((a, b) => b.views - a.views).slice(0, 5);
         setTopProducts(sortedProducts);
 
         // Set aggregated metrics
@@ -169,13 +169,13 @@ export default function DashboardOverview() {
 
         // Fetch feedback stats
         const { data: feedbackData, error: feedbackError } =
-          await feedbackService?.getAllFeedbackStats();
+          await feedbackService.getAllFeedbackStats();
 
         if (feedbackError) throw new Error('Failed to fetch feedback stats');
 
         setFeedbackStats(feedbackData);
       } catch (err) {
-        console?.error('Error fetching dashboard data:', err);
+        console.error('Error fetching dashboard data:', err);
         setError('Failed to load dashboard data');
       } finally {
         setLoading(false);
@@ -187,8 +187,8 @@ export default function DashboardOverview() {
 
   // Generate comprehensive product performance report
   const generateReport = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setGeneratingReport(true);
 
@@ -198,25 +198,25 @@ export default function DashboardOverview() {
           reportType: 'Summary',
           generatedAt: new Date().toISOString(),
           dateRange: `${format(subWeeks(new Date(), 4), 'yyyy-MM-dd')} to ${format(new Date(), 'yyyy-MM-dd')}`,
-          totalProducts: products?.length,
-          totalCategories: new Set(products?.map((p) => p?.category)).size,
+          totalProducts: products.length,
+          totalCategories: new Set(products.map((p) => p.category)).size,
           totalProductViews: totalViews,
           totalUniqueVisitors: totalUniqueViews,
           totalTryOns: totalTryOns,
-          averageConversionRate: avgConversionRate?.toFixed(2) + '%',
+          averageConversionRate: avgConversionRate.toFixed(2) + '%',
         },
       ];
 
       // Product metrics data
-      const productMetricsReport = products?.map((product) => {
-        const metrics = productMetricsData[product?.id] || {
+      const productMetricsReport = products.map((product) => {
+        const metrics = productMetricsData[product.id] || {
           totalViews: 0,
           uniqueViews: 0,
           tryOnCount: 0,
           conversionRate: 0,
           clickThroughRate: 0,
         };
-        const feedbackStat = feedbackStats[product?.id] || {
+        const feedbackStat = feedbackStats[product.id] || {
           averageRating: 0,
           totalRatings: 0,
           percentWouldTryInRealLife: 0,
@@ -224,25 +224,25 @@ export default function DashboardOverview() {
 
         return {
           reportSection: 'Product Metrics',
-          productId: product?.id,
-          productName: product?.name,
-          category: product?.category,
-          totalViews: metrics?.totalViews,
-          uniqueViews: metrics?.uniqueViews,
-          tryOns: metrics?.tryOnCount,
-          conversionRate: metrics?.conversionRate.toFixed(2) + '%',
-          clickThroughRate: metrics?.clickThroughRate.toFixed(2) + '%',
-          averageRating: feedbackStat?.averageRating.toFixed(1),
-          totalFeedbacks: feedbackStat?.totalRatings,
-          percentWouldTryInRealLife: feedbackStat?.percentWouldTryInRealLife.toFixed(1) + '%',
+          productId: product.id,
+          productName: product.name,
+          category: product.category,
+          totalViews: metrics.totalViews,
+          uniqueViews: metrics.uniqueViews,
+          tryOns: metrics.tryOnCount,
+          conversionRate: metrics.conversionRate.toFixed(2) + '%',
+          clickThroughRate: metrics.clickThroughRate.toFixed(2) + '%',
+          averageRating: feedbackStat.averageRating.toFixed(1),
+          totalFeedbacks: feedbackStat.totalRatings,
+          percentWouldTryInRealLife: feedbackStat.percentWouldTryInRealLife.toFixed(1) + '%',
         };
       });
 
       // Prepare rating distribution data
       const ratingDistribution = prepareRatingDistributionData().map((item) => ({
         reportSection: 'Rating Distribution',
-        rating: item?.rating,
-        count: item?.count,
+        rating: item.rating,
+        count: item.count,
       }));
 
       // Combine all data for the report
@@ -254,7 +254,7 @@ export default function DashboardOverview() {
         `vibewell-product-analytics-report-${format(new Date(), 'yyyy-MM-dd')}.csv`,
       );
     } catch (err) {
-      console?.error('Error generating report:', err);
+      console.error('Error generating report:', err);
     } finally {
       setGeneratingReport(false);
     }
@@ -262,14 +262,14 @@ export default function DashboardOverview() {
 
   // Calculate average rating across all products
   const calculateAverageRating = () => {
-    if (Object?.keys(feedbackStats).length === 0) return 0;
+    if (Object.keys(feedbackStats).length === 0) return 0;
 
     let totalRating = 0;
     let totalProducts = 0;
 
-    Object?.values(feedbackStats).forEach((stats) => {
-      if (stats?.totalRatings > 0) {
-        if (totalRating > Number.MAX_SAFE_INTEGER || totalRating < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); totalRating += stats?.averageRating;
+    Object.values(feedbackStats).forEach((stats) => {
+      if (stats.totalRatings > 0) {
+        if (totalRating > Number.MAX_SAFE_INTEGER || totalRating < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); totalRating += stats.averageRating;
         if (totalProducts > Number.MAX_SAFE_INTEGER || totalProducts < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); totalProducts++;
       }
     });
@@ -279,7 +279,7 @@ export default function DashboardOverview() {
 
   // Prepare data for rating distribution chart
   const prepareRatingDistributionData = () => {
-    if (Object?.keys(feedbackStats).length === 0) return [];
+    if (Object.keys(feedbackStats).length === 0) return [];
 
     const distribution: Record<string, number> = {
       '1': 0,
@@ -289,13 +289,13 @@ export default function DashboardOverview() {
       '5': 0,
     };
 
-    Object?.values(feedbackStats).forEach((stats) => {
-      Object?.entries(stats?.ratingDistribution).forEach(([rating, count]) => {
+    Object.values(feedbackStats).forEach((stats) => {
+      Object.entries(stats.ratingDistribution).forEach(([rating, count]) => {
         distribution[rating] += count;
       });
     });
 
-    return Object?.entries(distribution).map(([rating, count]) => ({
+    return Object.entries(distribution).map(([rating, count]) => ({
       rating: `${rating} Star${rating !== '1' ? 's' : ''}`,
       count,
     }));
@@ -305,7 +305,7 @@ export default function DashboardOverview() {
     return (
       <div className="space-y-6">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {Array?.from({ length: 4 }).map((_, i) => (
+          {Array.from({ length: 4 }).map((_, i) => (
             <Card key={i}>
               <CardHeader className="pb-2">
                 <Skeleton className="h-4 w-24" />
@@ -350,7 +350,7 @@ export default function DashboardOverview() {
           <p className="text-destructive">{error}</p>
         </CardContent>
         <CardFooter>
-          <Button onClick={() => window?.location.reload()}>Retry</Button>
+          <Button onClick={() => window.location.reload()}>Retry</Button>
         </CardFooter>
       </Card>
     );
@@ -390,9 +390,9 @@ export default function DashboardOverview() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalViews?.toLocaleString()}</div>
+            <div className="text-2xl font-bold">{totalViews.toLocaleString()}</div>
             <p className="text-xs text-muted-foreground">
-              {totalUniqueViews?.toLocaleString()} unique visitors
+              {totalUniqueViews.toLocaleString()} unique visitors
             </p>
           </CardContent>
         </Card>
@@ -405,9 +405,9 @@ export default function DashboardOverview() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalTryOns?.toLocaleString()}</div>
+            <div className="text-2xl font-bold">{totalTryOns.toLocaleString()}</div>
             <div className="flex items-center text-xs text-muted-foreground">
-              <span>Conversion Rate: {avgConversionRate?.toFixed(1)}%</span>
+              <span>Conversion Rate: {avgConversionRate.toFixed(1)}%</span>
             </div>
           </CardContent>
         </Card>
@@ -420,7 +420,7 @@ export default function DashboardOverview() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{averageRating?.toFixed(1)}/5?.0</div>
+            <div className="text-2xl font-bold">{averageRating.toFixed(1)}/5.0</div>
             <p className="text-xs text-muted-foreground">Based on customer feedback</p>
           </CardContent>
         </Card>
@@ -433,9 +433,9 @@ export default function DashboardOverview() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{products?.length}</div>
+            <div className="text-2xl font-bold">{products.length}</div>
             <p className="text-xs text-muted-foreground">
-              Across {new Set(products?.map((p) => p?.category)).size} categories
+              Across {new Set(products.map((p) => p.category)).size} categories
             </p>
           </CardContent>
         </Card>
@@ -479,7 +479,7 @@ export default function DashboardOverview() {
                   <XAxis
                     dataKey="name"
                     tickFormatter={(str) => {
-                      return str?.length > 10 ? `${str?.slice(0, 10)}...` : str;
+                      return str.length > 10 ? `${str.slice(0, 10)}...` : str;
                     }}
                   />
                   <YAxis />
@@ -529,8 +529,8 @@ export default function DashboardOverview() {
                     fill="#8884d8"
                     dataKey="count"
                   >
-                    {ratingDistributionData?.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS?.length]} />
+                    {ratingDistributionData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
                   <Tooltip

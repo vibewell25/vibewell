@@ -47,7 +47,7 @@ export class SocialService {
   private notificationService: NotificationService;
 
   constructor() {
-    this?.notificationService = new NotificationService();
+    this.notificationService = new NotificationService();
   }
 
   /**
@@ -57,7 +57,7 @@ export class SocialService {
     data: Omit<Event, 'id' | 'status' | 'attendees' | 'waitlist' | 'createdAt' | 'updatedAt'>,
   ) {
     try {
-      const event = await prisma?.event.create({
+      const event = await prisma.event.create({
         data: {
           ...data,
           status: 'upcoming',
@@ -70,7 +70,7 @@ export class SocialService {
 
       return event;
     } catch (error) {
-      logger?.error('Error creating event', 'social', { error });
+      logger.error('Error creating event', 'social', { error });
       throw error;
     }
   }
@@ -80,7 +80,7 @@ export class SocialService {
    */
   async registerForEvent(eventId: string, userId: string) {
     try {
-      const event = await prisma?.event.findUnique({
+      const event = await prisma.event.findUnique({
         where: { id: eventId },
       });
 
@@ -88,9 +88,9 @@ export class SocialService {
         throw new Error('Event not found');
       }
 
-      if (event?.attendees.length >= event?.capacity) {
+      if (event.attendees.length >= event.capacity) {
         // Add to waitlist
-        await prisma?.event.update({
+        await prisma.event.update({
           where: { id: eventId },
           data: {
             waitlist: {
@@ -99,17 +99,17 @@ export class SocialService {
           },
         });
 
-        await this?.notificationService.notifyUser(userId, {
+        await this.notificationService.notifyUser(userId, {
           type: 'system',
           subject: 'Added to Waitlist',
-          message: `You have been added to the waitlist for ${event?.title}`,
+          message: `You have been added to the waitlist for ${event.title}`,
         });
 
         return { status: 'waitlisted' };
       }
 
       // Add to attendees
-      await prisma?.event.update({
+      await prisma.event.update({
         where: { id: eventId },
         data: {
           attendees: {
@@ -118,15 +118,15 @@ export class SocialService {
         },
       });
 
-      await this?.notificationService.notifyUser(userId, {
+      await this.notificationService.notifyUser(userId, {
         type: 'system',
         subject: 'Event Registration Confirmed',
-        message: `Your registration for ${event?.title} has been confirmed`,
+        message: `Your registration for ${event.title} has been confirmed`,
       });
 
       return { status: 'registered' };
     } catch (error) {
-      logger?.error('Error registering for event', 'social', { error });
+      logger.error('Error registering for event', 'social', { error });
       throw error;
     }
   }
@@ -136,7 +136,7 @@ export class SocialService {
    */
   async createPost(data: Omit<Post, 'id' | 'likes' | 'comments' | 'createdAt' | 'updatedAt'>) {
     try {
-      const post = await prisma?.post.create({
+      const post = await prisma.post.create({
         data: {
           ...data,
           likes: 0,
@@ -148,7 +148,7 @@ export class SocialService {
 
       return post;
     } catch (error) {
-      logger?.error('Error creating post', 'social', { error });
+      logger.error('Error creating post', 'social', { error });
       throw error;
     }
   }
@@ -158,7 +158,7 @@ export class SocialService {
    */
   async likePost(postId: string, userId: string) {
     try {
-      const post = await prisma?.post.findUnique({
+      const post = await prisma.post.findUnique({
         where: { id: postId },
       });
 
@@ -166,7 +166,7 @@ export class SocialService {
         throw new Error('Post not found');
       }
 
-      await prisma?.post.update({
+      await prisma.post.update({
         where: { id: postId },
         data: {
           likes: {
@@ -177,7 +177,7 @@ export class SocialService {
 
       return { success: true };
     } catch (error) {
-      logger?.error('Error liking post', 'social', { error });
+      logger.error('Error liking post', 'social', { error });
       throw error;
     }
   }
@@ -187,7 +187,7 @@ export class SocialService {
    */
   async commentOnPost(postId: string, data: Omit<Comment, 'id' | 'createdAt' | 'updatedAt'>) {
     try {
-      const post = await prisma?.post.findUnique({
+      const post = await prisma.post.findUnique({
         where: { id: postId },
       });
 
@@ -197,12 +197,12 @@ export class SocialService {
 
       const comment = {
         ...data,
-        id: Math?.random().toString(36).substr(2, 9),
+        id: Math.random().toString(36).substr(2, 9),
         createdAt: new Date(),
         updatedAt: new Date(),
       };
 
-      await prisma?.post.update({
+      await prisma.post.update({
         where: { id: postId },
         data: {
           comments: {
@@ -213,7 +213,7 @@ export class SocialService {
 
       return comment;
     } catch (error) {
-      logger?.error('Error commenting on post', 'social', { error });
+      logger.error('Error commenting on post', 'social', { error });
       throw error;
     }
   }
@@ -223,7 +223,7 @@ export class SocialService {
    */
   async getUpcomingEvents(limit = 10) {
     try {
-      const events = await prisma?.event.findMany({
+      const events = await prisma.event.findMany({
         where: {
           status: 'upcoming',
           startDate: {
@@ -238,7 +238,7 @@ export class SocialService {
 
       return events;
     } catch (error) {
-      logger?.error('Error getting upcoming events', 'social', { error });
+      logger.error('Error getting upcoming events', 'social', { error });
       throw error;
     }
   }
@@ -248,7 +248,7 @@ export class SocialService {
    */
   async getUserFeed(userId: string, limit = 20) {
     try {
-      const posts = await prisma?.post.findMany({
+      const posts = await prisma.post.findMany({
         orderBy: {
           createdAt: 'desc',
         },
@@ -257,7 +257,7 @@ export class SocialService {
 
       return posts;
     } catch (error) {
-      logger?.error('Error getting user feed', 'social', { error });
+      logger.error('Error getting user feed', 'social', { error });
       throw error;
     }
   }

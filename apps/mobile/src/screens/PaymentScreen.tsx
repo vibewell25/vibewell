@@ -4,14 +4,14 @@ import { useRoute } from '@react-navigation/native';
 import { PaymentRouteProp } from '../types/navigation';
 import { createCheckoutSession } from '../services/paymentService';
 
-const PaymentScreen: React?.FC = () => {
+const PaymentScreen: React.FC = () => {
   const route = useRoute<PaymentRouteProp>();
-  const { priceId, mode = 'payment' } = route?.params;
+  const { priceId, mode = 'payment' } = route.params;
   const [loading, setLoading] = useState(false);
 
   const handlePayment = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setLoading(true);
     try {
       const url = await createCheckoutSession(
@@ -20,9 +20,9 @@ const PaymentScreen: React?.FC = () => {
         'https://your-cancel-url',
         mode
       );
-      await Linking?.openURL(url);
+      await Linking.openURL(url);
     } catch (err) {
-      Alert?.alert('Error', 'Failed to start checkout');
+      Alert.alert('Error', 'Failed to start checkout');
     } finally {
       setLoading(false);
     }

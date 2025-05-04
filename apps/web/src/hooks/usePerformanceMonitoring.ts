@@ -73,21 +73,21 @@ export function usePerformanceMonitoring(options: UsePerformanceMonitoringOption
 
   // Start measure function
   const startMeasure = (): string | null => {
-    if (exists(markRef?.current)) {
+    if (exists(markRef.current)) {
       // If we already have a mark, end it first to avoid leaks
       endMeasure();
     }
 
     const mark = startComponentRender(id);
-    markRef?.current = mark;
+    markRef.current = mark;
     return mark;
   };
 
   // End measure function
   const endMeasure = (): void => {
-    if (exists(markRef?.current)) {
-      endComponentRender(id, markRef?.current);
-      markRef?.current = null;
+    if (exists(markRef.current)) {
+      endComponentRender(id, markRef.current);
+      markRef.current = null;
     }
   };
 
@@ -99,7 +99,7 @@ export function usePerformanceMonitoring(options: UsePerformanceMonitoringOption
 
     // Automatically end measuring on unmount if autoEnd is true
     return () => {
-      if (autoEnd && exists(markRef?.current)) {
+      if (autoEnd && exists(markRef.current)) {
         endMeasure();
       }
     };
@@ -108,7 +108,7 @@ export function usePerformanceMonitoring(options: UsePerformanceMonitoringOption
   return {
     startMeasure,
     endMeasure,
-    isActive: markRef?.current !== null,
+    isActive: markRef.current !== null,
   };
 }
 

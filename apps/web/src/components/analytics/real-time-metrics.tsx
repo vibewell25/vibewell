@@ -34,27 +34,27 @@ export function RealTimeMetrics() {
     let ws: WebSocket;
 
     const connectWebSocket = () => {
-      ws = new WebSocket(process?.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:3001');
+      ws = new WebSocket(process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:3001');
 
-      ws?.onopen = () => {
+      ws.onopen = () => {
         setIsConnected(true);
-        console?.log('Connected to analytics websocket');
+        console.log('Connected to analytics websocket');
       };
 
-      ws?.onclose = () => {
+      ws.onclose = () => {
         setIsConnected(false);
         // Attempt to reconnect after 5 seconds
         setTimeout(connectWebSocket, 5000);
       };
 
-      ws?.onmessage = (event) => {
-        const data = JSON?.parse(event?.data);
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
         setMetricsHistory((prev) => {
           const newHistory = [
             ...prev,
             {
-              timestamp: format(new Date(data?.timestamp), 'HH:mm:ss'),
-              ...data?.metrics,
+              timestamp: format(new Date(data.timestamp), 'HH:mm:ss'),
+              ...data.metrics,
             },
           ].slice(-50); // Keep last 50 data points
           return newHistory;
@@ -67,7 +67,7 @@ export function RealTimeMetrics() {
 
     return () => {
       if (ws) {
-        ws?.close();
+        ws.close();
       }
     };
   }, []);
@@ -75,26 +75,26 @@ export function RealTimeMetrics() {
   const exportData = () => {
     const csv = [
       ['Timestamp', 'Views', 'Interactions', 'Conversions', 'Errors', 'Conversion Rate'],
-      ...metricsHistory?.map((data) => [
-        data?.timestamp,
-        data?.views,
-        data?.interactions,
-        data?.conversions,
-        data?.errors,
-        `${data?.conversionRate.toFixed(2)}%`,
+      ...metricsHistory.map((data) => [
+        data.timestamp,
+        data.views,
+        data.interactions,
+        data.conversions,
+        data.errors,
+        `${data.conversionRate.toFixed(2)}%`,
       ]),
     ]
-      .map((row) => row?.join(','))
+      .map((row) => row.join(','))
       .join('\n');
 
     const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL?.createObjectURL(blob);
-    const link = document?.createElement('a');
-    link?.href = url;
-    link?.download = `analytics-${format(new Date(), 'yyyy-MM-dd-HH-mm')}.csv`;
-    document?.body.appendChild(link);
-    link?.click();
-    document?.body.removeChild(link);
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `analytics-${format(new Date(), 'yyyy-MM-dd-HH-mm')}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (

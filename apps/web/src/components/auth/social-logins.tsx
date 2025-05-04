@@ -5,7 +5,7 @@ import SocialLogin from './SocialLogin';
 interface SocialProviderConfig {
   id: SocialProvider;
   label: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
 }
 
 const socialProviders: SocialProviderConfig[] = [
@@ -29,12 +29,12 @@ const socialProviders: SocialProviderConfig[] = [
 export default function SocialLogins() {
   return (
     <div className="flex flex-col gap-3 w-full">
-      {socialProviders?.map((provider) => (
+      {socialProviders.map((provider) => (
         <SocialLogin
-          key={provider?.id}
-          provider={provider?.id}
-          label={provider?.label}
-          icon={provider?.icon}
+          key={provider.id}
+          provider={provider.id}
+          label={provider.label}
+          icon={provider.icon}
         />
       ))}
     </div>

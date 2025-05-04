@@ -19,7 +19,7 @@ interface BeautySearchProps {
   autoFocus?: boolean;
 }
 
-const BeautySearch: React?.FC<BeautySearchProps> = ({
+const BeautySearch: React.FC<BeautySearchProps> = ({
   searchTerm,
   onChangeText,
   onClear,
@@ -28,10 +28,10 @@ const BeautySearch: React?.FC<BeautySearchProps> = ({
 }) => {
   const { isDarkMode } = useTheme();
   const [isFocused, setIsFocused] = useState(autoFocus);
-  const animatedWidth = new Animated?.Value(isFocused ? 1 : 0);
+  const animatedWidth = new Animated.Value(isFocused ? 1 : 0);
 
   useEffect(() => {
-    Animated?.timing(animatedWidth, {
+    Animated.timing(animatedWidth, {
       toValue: isFocused ? 1 : 0,
       duration: 200,
       useNativeDriver: false,
@@ -39,19 +39,19 @@ const BeautySearch: React?.FC<BeautySearchProps> = ({
   }, [isFocused, animatedWidth]);
 
   const handleSubmit = () => {
-    Keyboard?.dismiss();
+    Keyboard.dismiss();
   };
 
-  const width = animatedWidth?.interpolate({
+  const width = animatedWidth.interpolate({
     inputRange: [0, 1],
     outputRange: ['100%', '85%'],
   });
 
   return (
-    <View style={styles?.container}>
-      <Animated?.View
+    <View style={styles.container}>
+      <Animated.View
         style={[
-          styles?.searchContainer,
+          styles.searchContainer,
           {
             backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF',
             borderColor: isDarkMode ? '#333333' : '#E0E0E0',
@@ -63,11 +63,11 @@ const BeautySearch: React?.FC<BeautySearchProps> = ({
           name="search"
           size={20}
           color={isDarkMode ? '#BBBBBB' : '#666666'}
-          style={styles?.searchIcon}
+          style={styles.searchIcon}
         />
         <TextInput
           style={[
-            styles?.input,
+            styles.input,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}
           placeholder={placeholder}
@@ -80,8 +80,8 @@ const BeautySearch: React?.FC<BeautySearchProps> = ({
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
         />
-        {searchTerm?.length > 0 && (
-          <TouchableOpacity onPress={onClear} style={styles?.clearButton}>
+        {searchTerm.length > 0 && (
+          <TouchableOpacity onPress={onClear} style={styles.clearButton}>
             <Feather
               name="x"
               size={18}
@@ -89,18 +89,18 @@ const BeautySearch: React?.FC<BeautySearchProps> = ({
             />
           </TouchableOpacity>
         )}
-      </Animated?.View>
+      </Animated.View>
       {isFocused && (
         <TouchableOpacity
-          style={styles?.cancelButton}
+          style={styles.cancelButton}
           onPress={() => {
             setIsFocused(false);
-            Keyboard?.dismiss();
+            Keyboard.dismiss();
           }}
         >
           <Text
             style={[
-              styles?.cancelButtonText,
+              styles.cancelButtonText,
               { color: isDarkMode ? '#FFFFFF' : '#4F46E5' }
             ]}
           >
@@ -112,7 +112,7 @@ const BeautySearch: React?.FC<BeautySearchProps> = ({
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -4,7 +4,7 @@
 
 
  * This file contains utilities to optimize server-side rendering performance
- * for Next?.js applications.
+ * for Next.js applications.
  */
 
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -64,7 +64,7 @@ export function setCacheControl(
   }
 
 
-  res?.setHeader('Cache-Control', cacheControl);
+  res.setHeader('Cache-Control', cacheControl);
 }
 
 /**
@@ -128,7 +128,7 @@ export function withCaching(
 ) {
   return async (context: GetServerSidePropsContext) => {
     // Apply cache control headers
-    setCacheControl(context?.res, cacheOptions);
+    setCacheControl(context.res, cacheOptions);
 
     // Call the original getServerSideProps
     return await getServerSideProps(context);
@@ -167,8 +167,8 @@ export function setCoreWebVitalsHeaders(
   criticalAssets: { href: string; as: string; crossOrigin?: string }[] = [],
 ): void {
   // Set preload headers for critical assets
-  criticalAssets?.forEach(({ href, as, crossOrigin }) => {
-    res?.setHeader(
+  criticalAssets.forEach(({ href, as, crossOrigin }) => {
+    res.setHeader(
       'Link',
       `<${href}>; rel=preload; as=${as}${crossOrigin ? `; crossorigin=${crossOrigin}` : ''}`,
     );
@@ -177,7 +177,7 @@ export function setCoreWebVitalsHeaders(
 
   // Enable server push for HTTP/2 (if supported)
 
-  res?.setHeader('X-HTTP2-Push', criticalAssets?.map(({ href }) => href).join(', '));
+  res.setHeader('X-HTTP2-Push', criticalAssets.map(({ href }) => href).join(', '));
 }
 
 /**
@@ -198,7 +198,7 @@ export function setCoreWebVitalsHeaders(
  *   async (req, res) => {
 
  *     // Your original API route logic
- *     res?.json({ data });
+ *     res.json({ data });
  *   },
  *   { maxAge: 30, staleWhileRevalidate: 300, public: true }
  * );

@@ -26,7 +26,7 @@ export default function PieChart({
   nameKey,
   colors = ['#8884d8', '#82ca9d', '#ffc658'],
 }: PieChartProps) {
-  if (!data || data?.length === 0) {
+  if (!data || data.length === 0) {
     return (
       <div className="flex h-full items-center justify-center text-muted-foreground">
         No data available
@@ -43,12 +43,12 @@ export default function PieChart({
     percent,
     name,
   }: any) => {
-    const RADIAN = Math?.PI / 180;
-    const radius = innerRadius + (outerRadius - innerRadius) * 0?.6;
-    const x = cx + radius * Math?.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math?.sin(-midAngle * RADIAN);
+    const RADIAN = Math.PI / 180;
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.6;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-    return percent > 0?.05 ? (
+    return percent > 0.05 ? (
       <text
         x={x}
         y={y}
@@ -80,15 +80,15 @@ export default function PieChart({
           animationDuration={750}
           animationBegin={0}
         >
-          {data?.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={colors[index % colors?.length]} />
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
           ))}
         </Pie>
         <Tooltip
           formatter={(value) => [`${value}`, 'Value']}
           contentStyle={{
             borderRadius: '8px',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0?.1)',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
             border: 'none',
           }}
         />

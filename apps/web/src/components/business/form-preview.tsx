@@ -40,8 +40,8 @@ export function FormPreview({ name, description, fields, onSubmit }: FormPreview
     }
   };
 
-  const handleSubmit = (e: React?.FormEvent) => {
-    e?.preventDefault();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     if (onSubmit) {
       // Combine form data and files
       const submitData = {
@@ -53,32 +53,32 @@ export function FormPreview({ name, description, fields, onSubmit }: FormPreview
   };
 
   const renderField = (field: FormField) => {
-    switch (field?.type) {
+    switch (field.type) {
       case 'text':
         return (
           <Input
-            value={formData[field?.id] || ''}
-            onChange={(e) => handleChange(field?.id, e?.target.value)}
-            required={field?.required}
+            value={formData[field.id] || ''}
+            onChange={(e) => handleChange(field.id, e.target.value)}
+            required={field.required}
           />
         );
       case 'textarea':
         return (
           <Textarea
-            value={formData[field?.id] || ''}
-            onChange={(e) => handleChange(field?.id, e?.target.value)}
-            required={field?.required}
+            value={formData[field.id] || ''}
+            onChange={(e) => handleChange(field.id, e.target.value)}
+            required={field.required}
           />
         );
       case 'select':
         return (
           <Select
-            value={formData[field?.id] || ''}
-            onValueChange={(value) => handleChange(field?.id, value)}
-            required={field?.required}
+            value={formData[field.id] || ''}
+            onValueChange={(value) => handleChange(field.id, value)}
+            required={field.required}
           >
             <option value="">Select an option</option>
-            {field?.options?.map((option) => (
+            {field.options.map((option) => (
               <option key={option} value={option}>
                 {option}
               </option>
@@ -88,9 +88,9 @@ export function FormPreview({ name, description, fields, onSubmit }: FormPreview
       case 'checkbox':
         return (
           <Checkbox
-            checked={formData[field?.id] || false}
-            onCheckedChange={(checked) => handleChange(field?.id, checked)}
-            required={field?.required}
+            checked={formData[field.id] || false}
+            onCheckedChange={(checked) => handleChange(field.id, checked)}
+            required={field.required}
           />
         );
       case 'file':
@@ -98,10 +98,10 @@ export function FormPreview({ name, description, fields, onSubmit }: FormPreview
           <Input
             type="file"
             onChange={(e) => {
-              const file = e?.target.files?.[0] || null;
-              handleFileChange(field?.id, file);
+              const file = e.target.files.[0] || null;
+              handleFileChange(field.id, file);
             }}
-            required={field?.required}
+            required={field.required}
           />
         );
       default:
@@ -117,11 +117,11 @@ export function FormPreview({ name, description, fields, onSubmit }: FormPreview
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
-          {fields?.map((field) => (
-            <div key={field?.id} className="space-y-2">
+          {fields.map((field) => (
+            <div key={field.id} className="space-y-2">
               <Label>
-                {field?.label}
-                {field?.required && <span className="text-red-500">*</span>}
+                {field.label}
+                {field.required && <span className="text-red-500">*</span>}
               </Label>
               {renderField(field)}
             </div>

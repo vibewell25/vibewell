@@ -9,7 +9,7 @@ interface ExportOption {
   id: string;
   title: string;
   description: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
   selected: boolean;
 }
 
@@ -49,8 +49,8 @@ export function DataExport() {
   ];
 
   const handleExport = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setExporting(true);
       setProgress(0);
@@ -62,24 +62,24 @@ export function DataExport() {
       }
 
       // Generate and download the export file
-      const selectedOptions = exportOptions?.filter((option) => option?.selected);
+      const selectedOptions = exportOptions.filter((option) => option.selected);
       const exportData = {
         timestamp: new Date().toISOString(),
-        options: selectedOptions?.map((option) => option?.id),
+        options: selectedOptions.map((option) => option.id),
         // Add actual data export logic here
       };
 
-      const blob = new Blob([JSON?.stringify(exportData, null, 2)], {
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], {
         type: 'application/json',
       });
-      const url = URL?.createObjectURL(blob);
-      const a = document?.createElement('a');
-      a?.href = url;
-      a?.download = `vibewell-export-${new Date().toISOString()}.json`;
-      document?.body.appendChild(a);
-      a?.click();
-      document?.body.removeChild(a);
-      URL?.revokeObjectURL(url);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `vibewell-export-${new Date().toISOString()}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
 
       toast({
         title: 'Export Complete',
@@ -107,21 +107,21 @@ export function DataExport() {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">
-          {exportOptions?.map((option) => (
-            <div key={option?.id} className="flex items-start space-x-4 rounded-lg border p-4">
-              <div className="mt-1">{option?.icon}</div>
+          {exportOptions.map((option) => (
+            <div key={option.id} className="flex items-start space-x-4 rounded-lg border p-4">
+              <div className="mt-1">{option.icon}</div>
               <div className="flex-1 space-y-1">
-                <p className="text-sm font-medium leading-none">{option?.title}</p>
-                <p className="text-sm text-muted-foreground">{option?.description}</p>
+                <p className="text-sm font-medium leading-none">{option.title}</p>
+                <p className="text-sm text-muted-foreground">{option.description}</p>
               </div>
               <Button
-                variant={option?.selected ? 'default' : 'outline'}
+                variant={option.selected ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => {
-                  option?.selected = !option?.selected;
+                  option.selected = !option.selected;
                 }}
               >
-                {option?.selected ? 'Selected' : 'Select'}
+                {option.selected ? 'Selected' : 'Select'}
               </Button>
             </div>
           ))}

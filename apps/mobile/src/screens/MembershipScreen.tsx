@@ -8,23 +8,23 @@ import { RootStackParamList } from '../types/navigation';
 type MembershipNavigationProp = StackNavigationProp<RootStackParamList, 'Membership'>;
 
 const MEMBERSHIP_OPTIONS = [
-  { key: 'monthly', label: 'Monthly Membership', description: 'Unlimited access + 100 bonus points', price: '$9?.99/mo', priceId: 'price_monthly_123' },
-  { key: 'annual', label: 'Annual Membership', description: '2 months free + 200 bonus points', price: '$99?.99/yr', priceId: 'price_annual_123' },
+  { key: 'monthly', label: 'Monthly Membership', description: 'Unlimited access + 100 bonus points', price: '$9.99/mo', priceId: 'price_monthly_123' },
+  { key: 'annual', label: 'Annual Membership', description: '2 months free + 200 bonus points', price: '$99.99/yr', priceId: 'price_annual_123' },
 ];
 
-const MembershipScreen: React?.FC = () => {
+const MembershipScreen: React.FC = () => {
   const navigation = useNavigation<MembershipNavigationProp>();
   return (
-    <View style={styles?.container}>
-      <Text style={styles?.title}>Membership Plans</Text>
-      {MEMBERSHIP_OPTIONS?.map(opt => (
-        <View key={opt?.key} style={styles?.option}>
-          <Text style={styles?.optionTitle}>{opt?.label}</Text>
-          <Text style={styles?.description}>{opt?.description}</Text>
-          <Text style={styles?.price}>{opt?.price}</Text>
-          <TouchableOpacity style={styles?.button} onPress={() => navigation?.navigate('Payment', { priceId: opt?.priceId })}>
+    <View style={styles.container}>
+      <Text style={styles.title}>Membership Plans</Text>
+      {MEMBERSHIP_OPTIONS.map(opt => (
+        <View key={opt.key} style={styles.option}>
+          <Text style={styles.optionTitle}>{opt.label}</Text>
+          <Text style={styles.description}>{opt.description}</Text>
+          <Text style={styles.price}>{opt.price}</Text>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Payment', { priceId: opt.priceId })}>
             <Feather name="credit-card" size={16} color="#fff" style={{ marginRight: 8 }} />
-            <Text style={styles?.buttonText}>Subscribe</Text>
+            <Text style={styles.buttonText}>Subscribe</Text>
           </TouchableOpacity>
         </View>
       ))}
@@ -32,7 +32,7 @@ const MembershipScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, backgroundColor: '#fff' },
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 16 },
   option: { marginBottom: 24, padding: 16, borderRadius: 8, backgroundColor: '#f0f0f0' },

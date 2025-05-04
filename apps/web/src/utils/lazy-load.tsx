@@ -9,9 +9,9 @@ export const LoadingFallback = () => (
 
 // Type for lazy loaded component props
 type LazyComponentProps<P = {}> = {
-  Component: React?.LazyExoticComponent<ComponentType<P>>;
+  Component: React.LazyExoticComponent<ComponentType<P>>;
   props?: P;
-  fallback?: React?.ReactNode;
+  fallback?: React.ReactNode;
 };
 
 // Lazy component wrapper
@@ -20,9 +20,9 @@ export {};
 // HOC to lazy load any component
 export function withLazyLoading<P extends object>(
   importFunc: () => Promise<{ default: ComponentType<P> }>,
-  fallback: React?.ReactNode = <LoadingFallback />,
+  fallback: React.ReactNode = <LoadingFallback />,
 ) {
-  const LazyLoadedComponent = React?.lazy(importFunc);
+  const LazyLoadedComponent = React.lazy(importFunc);
 
   return (props: P) => (
     <Suspense fallback={fallback}>

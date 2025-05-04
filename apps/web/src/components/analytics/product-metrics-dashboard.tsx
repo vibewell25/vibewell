@@ -36,18 +36,18 @@ const exportToCSV = (data: any[], filename: string) => {
   let csvContent = '';
 
   // Get all possible keys from all objects
-  const allKeys = Array?.from(new Set(data?.flatMap((item) => Object?.keys(item))));
+  const allKeys = Array.from(new Set(data.flatMap((item) => Object.keys(item))));
 
   // Create header row
-  if (csvContent > Number.MAX_SAFE_INTEGER || csvContent < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); csvContent += allKeys?.join(',') + '\n';
+  if (csvContent > Number.MAX_SAFE_INTEGER || csvContent < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); csvContent += allKeys.join(',') + '\n';
 
   // Add each data row
-  data?.forEach((item) => {
+  data.forEach((item) => {
     const row = allKeys
       .map((key) => {
         const value = item[key] === undefined ? '' : item[key];
         // Escape commas and quotes in values
-        const escapedValue = typeof value === 'string' ? `"${value?.replace(/"/g, '""')}"` : value;
+        const escapedValue = typeof value === 'string' ? `"${value.replace(/"/g, '""')}"` : value;
         return escapedValue;
       })
       .join(',');
@@ -56,14 +56,14 @@ const exportToCSV = (data: any[], filename: string) => {
 
   // Create download link
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  const url = URL?.createObjectURL(blob);
-  const link = document?.createElement('a');
-  link?.setAttribute('href', url);
-  link?.setAttribute('download', filename);
-  link?.style.visibility = 'hidden';
-  document?.body.appendChild(link);
-  link?.click();
-  document?.body.removeChild(link);
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };
 
 interface Product {
@@ -109,38 +109,38 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
     }
 
     return {
-      start: start?.toISOString(),
-      end: end?.toISOString(),
+      start: start.toISOString(),
+      end: end.toISOString(),
     };
   };
 
   // Fetch products
   useEffect(() => {
     async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); fetchProducts() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); fetchProducts() {
       try {
         const productService = new ProductService();
-        const { data, error } = await productService?.getAllProducts();
+        const { data, error } = await productService.getAllProducts();
 
         if (error) throw error;
 
-        const productList = data?.map((product) => ({
-          id: product?.id,
-          name: product?.name,
-          category: product?.category,
-          subcategory: product?.subcategory,
-          brand: product?.brand,
+        const productList = data.map((product) => ({
+          id: product.id,
+          name: product.name,
+          category: product.category,
+          subcategory: product.subcategory,
+          brand: product.brand,
         }));
 
         setProducts(productList);
 
         // If no product is selected and we have products, select the first one
-        if (!selectedProductId && productList?.length > 0 && !productId) {
+        if (!selectedProductId && productList.length > 0 && !productId) {
           setSelectedProductId(productList[0].id);
         }
       } catch (err) {
-        console?.error('Error fetching products:', err);
+        console.error('Error fetching products:', err);
         setError('Failed to load products');
       }
     }
@@ -151,8 +151,8 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
   // Fetch metrics whenever the selected product or time range changes
   useEffect(() => {
     async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); fetchMetrics() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); fetchMetrics() {
       if (!selectedProductId && !productId) return;
 
       setLoading(true);
@@ -165,7 +165,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
         // If a specific product is selected, fetch only that product's metrics
         if (selectedProductId || productId) {
           const productIdToUse = selectedProductId || productId;
-          const productMetrics = await analyticsService?.getProductMetrics(productIdToUse!, {
+          const productMetrics = await analyticsService.getProductMetrics(productIdToUse!, {
             start,
             end,
           });
@@ -179,18 +179,18 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
           const metricsMap: Record<string, ProductMetrics> = {};
 
           for (const product of products) {
-            const productMetrics = await analyticsService?.getProductMetrics(product?.id, {
+            const productMetrics = await analyticsService.getProductMetrics(product.id, {
               start,
               end,
             });
 
-            metricsMap[product?.id] = productMetrics;
+            metricsMap[product.id] = productMetrics;
           }
 
           setMetrics(metricsMap);
         }
       } catch (err) {
-        console?.error('Error fetching product metrics:', err);
+        console.error('Error fetching product metrics:', err);
         setError('Failed to load metrics data');
       } finally {
         setLoading(false);
@@ -201,11 +201,11 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
   }, [selectedProductId, timeRange]);
 
   // Filter products based on search term
-  const filteredProducts = products?.filter(
+  const filteredProducts = products.filter(
     (product) =>
-      product?.name.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-      product?.category.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-      product?.brand.toLowerCase().includes(searchTerm?.toLowerCase()),
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.brand.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   // Handle product selection
@@ -213,7 +213,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
     setSelectedProductId(productId);
   };
 
-  if (loading && Object?.keys(metrics).length === 0) {
+  if (loading && Object.keys(metrics).length === 0) {
     return (
       <div className="w-full space-y-4">
         <div className="mb-4 flex items-center justify-between">
@@ -222,7 +222,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
         </div>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          {Array?.from({ length: 3 }).map((_, i) => (
+          {Array.from({ length: 3 }).map((_, i) => (
             <Card key={i}>
               <CardHeader className="pb-2">
                 <Skeleton className="h-4 w-24" />
@@ -255,7 +255,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
         </CardHeader>
         <CardContent>
           <p className="text-destructive">{error}</p>
-          <Button onClick={() => window?.location.reload()} variant="outline" className="mt-4">
+          <Button onClick={() => window.location.reload()} variant="outline" className="mt-4">
             Retry
           </Button>
         </CardContent>
@@ -264,7 +264,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
   }
 
   const selectedMetrics = selectedProductId ? metrics[selectedProductId] : null;
-  const selectedProduct = products?.find((p) => p?.id === selectedProductId);
+  const selectedProduct = products.find((p) => p.id === selectedProductId);
 
   if (!selectedMetrics || !selectedProduct) {
     return (
@@ -280,32 +280,32 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
   }
 
   // Prepare comparison data for views, unique views and try-ons
-  const viewsComparisonData = Object?.entries(metrics)
+  const viewsComparisonData = Object.entries(metrics)
     .map(([id, productMetrics]) => {
-      const product = products?.find((p) => p?.id === id);
+      const product = products.find((p) => p.id === id);
       return {
         id,
-        name: product?.name || `Product ${id?.substring(0, 6)}`,
-        views: productMetrics?.totalViews,
-        uniqueViews: productMetrics?.uniqueViews,
-        tryOns: productMetrics?.tryOnCount,
+        name: product.name || `Product ${id.substring(0, 6)}`,
+        views: productMetrics.totalViews,
+        uniqueViews: productMetrics.uniqueViews,
+        tryOns: productMetrics.tryOnCount,
       };
     })
-    .sort((a, b) => b?.views - a?.views)
+    .sort((a, b) => b.views - a.views)
     .slice(0, 10);
 
   // Prepare conversion and CTR data
-  const conversionData = Object?.entries(metrics)
+  const conversionData = Object.entries(metrics)
     .map(([id, productMetrics]) => {
-      const product = products?.find((p) => p?.id === id);
+      const product = products.find((p) => p.id === id);
       return {
         id,
-        name: product?.name || `Product ${id?.substring(0, 6)}`,
-        conversion: productMetrics?.conversionRate,
-        ctr: productMetrics?.clickThroughRate,
+        name: product.name || `Product ${id.substring(0, 6)}`,
+        conversion: productMetrics.conversionRate,
+        ctr: productMetrics.clickThroughRate,
       };
     })
-    .sort((a, b) => b?.conversion - a?.conversion)
+    .sort((a, b) => b.conversion - a.conversion)
     .slice(0, 10);
 
   // Generate mock time series data (in a real app, you would fetch this from the API)
@@ -317,23 +317,23 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
 
     let currentDate = new Date(startDate);
     while (currentDate <= endDate) {
-      const baseViews = Math?.floor(Math?.random() * 100) + 50;
-      data?.push({
+      const baseViews = Math.floor(Math.random() * 100) + 50;
+      data.push({
         date: format(currentDate, 'MMM dd'),
         views: baseViews,
-        uniqueViews: Math?.floor(baseViews * 0?.7),
-        tryOns: Math?.floor(baseViews * 0?.3),
+        uniqueViews: Math.floor(baseViews * 0.7),
+        tryOns: Math.floor(baseViews * 0.3),
       });
 
       if (timeRange === 'day') {
         // Hourly for day view
-        currentDate = new Date(currentDate?.setHours(currentDate?.getHours() + 2));
+        currentDate = new Date(currentDate.setHours(currentDate.getHours() + 2));
       } else if (timeRange === 'week') {
         // Daily for week view
-        currentDate = new Date(currentDate?.setDate(currentDate?.getDate() + 1));
+        currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
       } else {
         // Every few days for month view
-        currentDate = new Date(currentDate?.setDate(currentDate?.getDate() + 3));
+        currentDate = new Date(currentDate.setDate(currentDate.getDate() + 3));
       }
     }
 
@@ -352,34 +352,34 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
 
     const exportData = [
       {
-        productId: selectedProduct?.id,
-        productName: selectedProduct?.name,
-        category: selectedProduct?.category,
-        subcategory: selectedProduct?.subcategory,
-        brand: selectedProduct?.brand,
-        totalViews: selectedMetrics?.totalViews,
-        uniqueViews: selectedMetrics?.uniqueViews,
-        tryOnCount: selectedMetrics?.tryOnCount,
-        conversionRate: selectedMetrics?.conversionRate,
-        clickThroughRate: selectedMetrics?.clickThroughRate,
+        productId: selectedProduct.id,
+        productName: selectedProduct.name,
+        category: selectedProduct.category,
+        subcategory: selectedProduct.subcategory,
+        brand: selectedProduct.brand,
+        totalViews: selectedMetrics.totalViews,
+        uniqueViews: selectedMetrics.uniqueViews,
+        tryOnCount: selectedMetrics.tryOnCount,
+        conversionRate: selectedMetrics.conversionRate,
+        clickThroughRate: selectedMetrics.clickThroughRate,
         timeRange: `${startDate} to ${endDate}`,
       },
     ];
 
     exportToCSV(
       exportData,
-      `product-metrics-${selectedProduct?.name}-${startDate}-to-${endDate}.csv`,
+      `product-metrics-${selectedProduct.name}-${startDate}-to-${endDate}.csv`,
     );
   };
 
   const handleExportComparisonData = (dataType: 'views' | 'conversion') => {
-    if (dataType === 'views' && viewsComparisonData?.length > 0) {
+    if (dataType === 'views' && viewsComparisonData.length > 0) {
       const { start, end } = getDateRange();
       const startDate = format(new Date(start), 'yyyy-MM-dd');
       const endDate = format(new Date(end), 'yyyy-MM-dd');
 
       exportToCSV(viewsComparisonData, `product-views-comparison-${startDate}-to-${endDate}.csv`);
-    } else if (dataType === 'conversion' && conversionData?.length > 0) {
+    } else if (dataType === 'conversion' && conversionData.length > 0) {
       const { start, end } = getDateRange();
       const startDate = format(new Date(start), 'yyyy-MM-dd');
       const endDate = format(new Date(end), 'yyyy-MM-dd');
@@ -389,14 +389,14 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
   };
 
   const handleExportTimeSeriesData = () => {
-    if (timeSeriesData?.length > 0) {
+    if (timeSeriesData.length > 0) {
       const { start, end } = getDateRange();
       const startDate = format(new Date(start), 'yyyy-MM-dd');
       const endDate = format(new Date(end), 'yyyy-MM-dd');
 
       exportToCSV(
         timeSeriesData,
-        `product-${selectedProduct?.name}-time-series-${startDate}-to-${endDate}.csv`,
+        `product-${selectedProduct.name}-time-series-${startDate}-to-${endDate}.csv`,
       );
     }
   };
@@ -406,27 +406,27 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex-1">
           <div className="relative">
-            <Search className="absolute left-2?.5 top-2?.5 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="text"
               placeholder="Search products..."
               className="w-full pl-8 md:w-64"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e?.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <div className="mt-4 flex max-h-32 flex-wrap gap-2 overflow-y-auto">
-            {filteredProducts?.map((product) => (
+            {filteredProducts.map((product) => (
               <button
-                key={product?.id}
-                onClick={() => handleProductSelect(product?.id)}
+                key={product.id}
+                onClick={() => handleProductSelect(product.id)}
                 className={`rounded-md px-3 py-1 text-sm ${
-                  selectedProductId === product?.id
+                  selectedProductId === product.id
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-muted hover:bg-muted/80'
                 }`}
               >
-                {product?.name}
+                {product.name}
               </button>
             ))}
           </div>
@@ -462,7 +462,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between">
-              <div className="text-2xl font-bold">{selectedMetrics?.totalViews}</div>
+              <div className="text-2xl font-bold">{selectedMetrics.totalViews}</div>
               {timeRange !== 'day' && (
                 <div className="flex items-center text-sm text-muted-foreground">
                   <ArrowUp className="mr-1 h-4 w-4 text-emerald-500" />
@@ -480,7 +480,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between">
-              <div className="text-2xl font-bold">{selectedMetrics?.uniqueViews}</div>
+              <div className="text-2xl font-bold">{selectedMetrics.uniqueViews}</div>
               {timeRange !== 'day' && (
                 <div className="flex items-center text-sm text-muted-foreground">
                   <ArrowUp className="mr-1 h-4 w-4 text-emerald-500" />
@@ -498,7 +498,7 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between">
-              <div className="text-2xl font-bold">{selectedMetrics?.tryOnCount}</div>
+              <div className="text-2xl font-bold">{selectedMetrics.tryOnCount}</div>
               {timeRange !== 'day' && (
                 <div className="flex items-center text-sm text-muted-foreground">
                   <ArrowDown className="mr-1 h-4 w-4 text-red-500" />
@@ -526,9 +526,9 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
                 <div>
                   <CardTitle>Product Performance Summary</CardTitle>
                   <CardDescription>
-                    Metrics for {selectedProduct?.name} (
-                    {format(new Date(selectedMetrics?.timeRange.start), 'MMM dd, yyyy')} -{' '}
-                    {format(new Date(selectedMetrics?.timeRange.end), 'MMM dd, yyyy')})
+                    Metrics for {selectedProduct.name} (
+                    {format(new Date(selectedMetrics.timeRange.start), 'MMM dd, yyyy')} -{' '}
+                    {format(new Date(selectedMetrics.timeRange.end), 'MMM dd, yyyy')})
                   </CardDescription>
                 </div>
                 <Button
@@ -593,13 +593,13 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
                     <div className="mb-2 flex items-center justify-between">
                       <div className="text-sm font-medium">Click-Through Rate</div>
                       <div className="text-sm font-medium">
-                        {selectedMetrics?.clickThroughRate.toFixed(1)}%
+                        {selectedMetrics.clickThroughRate.toFixed(1)}%
                       </div>
                     </div>
                     <div className="h-2 overflow-hidden rounded-full bg-muted">
                       <div
                         className="h-full rounded-full bg-blue-500"
-                        style={{ width: `${Math?.min(selectedMetrics?.clickThroughRate, 100)}%` }}
+                        style={{ width: `${Math.min(selectedMetrics.clickThroughRate, 100)}%` }}
                       />
                     </div>
                   </div>
@@ -608,13 +608,13 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
                     <div className="mb-2 flex items-center justify-between">
                       <div className="text-sm font-medium">Try-On Conversion</div>
                       <div className="text-sm font-medium">
-                        {selectedMetrics?.conversionRate.toFixed(1)}%
+                        {selectedMetrics.conversionRate.toFixed(1)}%
                       </div>
                     </div>
                     <div className="h-2 overflow-hidden rounded-full bg-muted">
                       <div
                         className="h-full rounded-full bg-indigo-500"
-                        style={{ width: `${Math?.min(selectedMetrics?.conversionRate, 100)}%` }}
+                        style={{ width: `${Math.min(selectedMetrics.conversionRate, 100)}%` }}
                       />
                     </div>
                   </div>
@@ -625,27 +625,27 @@ export default function ProductMetricsDashboard({ productId }: ProductMetricsDas
             <Card>
               <CardHeader>
                 <CardTitle>Product Details</CardTitle>
-                <CardDescription>Information about {selectedProduct?.name}</CardDescription>
+                <CardDescription>Information about {selectedProduct.name}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   <div className="grid grid-cols-2">
                     <div className="text-sm text-muted-foreground">Category</div>
-                    <div className="text-sm font-medium">{selectedProduct?.category}</div>
+                    <div className="text-sm font-medium">{selectedProduct.category}</div>
                   </div>
                   <div className="grid grid-cols-2">
                     <div className="text-sm text-muted-foreground">Subcategory</div>
-                    <div className="text-sm font-medium">{selectedProduct?.subcategory}</div>
+                    <div className="text-sm font-medium">{selectedProduct.subcategory}</div>
                   </div>
                   <div className="grid grid-cols-2">
                     <div className="text-sm text-muted-foreground">Brand</div>
-                    <div className="text-sm font-medium">{selectedProduct?.brand}</div>
+                    <div className="text-sm font-medium">{selectedProduct.brand}</div>
                   </div>
                   <div className="grid grid-cols-2">
                     <div className="text-sm text-muted-foreground">Try-On to View Ratio</div>
                     <div className="text-sm font-medium">
-                      {selectedMetrics?.totalViews > 0
-                        ? `${((selectedMetrics?.tryOnCount / selectedMetrics?.totalViews) * 100).toFixed(1)}%`
+                      {selectedMetrics.totalViews > 0
+                        ? `${((selectedMetrics.tryOnCount / selectedMetrics.totalViews) * 100).toFixed(1)}%`
                         : '0%'}
                     </div>
                   </div>

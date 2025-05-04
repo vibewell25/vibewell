@@ -21,7 +21,7 @@ interface ActivityEvent {
   location?: string;
   device?: string;
   status: 'success' | 'warning' | 'error';
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
 }
 
 export function AccountActivity() {
@@ -82,11 +82,11 @@ export function AccountActivity() {
   const [filter, setFilter] = useState<string>('all');
   const [search, setSearch] = useState('');
 
-  const filteredEvents = events?.filter((event) => {
-    const matchesFilter = filter === 'all' || event?.type === filter;
+  const filteredEvents = events.filter((event) => {
+    const matchesFilter = filter === 'all' || event.type === filter;
     const matchesSearch =
-      event?.title.toLowerCase().includes(search?.toLowerCase()) ||
-      event?.description.toLowerCase().includes(search?.toLowerCase());
+      event.title.toLowerCase().includes(search.toLowerCase()) ||
+      event.description.toLowerCase().includes(search.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
@@ -115,7 +115,7 @@ export function AccountActivity() {
             <Input
               id="search"
               value={search}
-              onChange={(e) => setSearch(e?.target.value)}
+              onChange={(e) => setSearch(e.target.value)}
               placeholder="Search activity..."
             />
           </div>
@@ -138,31 +138,31 @@ export function AccountActivity() {
         </div>
 
         <div className="space-y-4">
-          {filteredEvents?.map((event) => (
-            <div key={event?.id} className="flex items-start space-x-4 rounded-lg border p-4">
-              <div className={`mt-1 ${getStatusColor(event?.status)}`}>{event?.icon}</div>
+          {filteredEvents.map((event) => (
+            <div key={event.id} className="flex items-start space-x-4 rounded-lg border p-4">
+              <div className={`mt-1 ${getStatusColor(event.status)}`}>{event.icon}</div>
               <div className="flex-1 space-y-1">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-medium">{event?.title}</h3>
+                  <h3 className="text-sm font-medium">{event.title}</h3>
                   <p className="text-xs text-muted-foreground">
-                    {formatDistanceToNow(new Date(event?.timestamp), {
+                    {formatDistanceToNow(new Date(event.timestamp), {
                       addSuffix: true,
                     })}
                   </p>
                 </div>
-                <p className="text-sm text-muted-foreground">{event?.description}</p>
-                {(event?.location || event?.device) && (
+                <p className="text-sm text-muted-foreground">{event.description}</p>
+                {(event.location || event.device) && (
                   <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-                    {event?.location && (
+                    {event.location && (
                       <span className="flex items-center">
                         <Globe className="mr-1 h-3 w-3" />
-                        {event?.location}
+                        {event.location}
                       </span>
                     )}
-                    {event?.device && (
+                    {event.device && (
                       <span className="flex items-center">
                         <CheckCircle2 className="mr-1 h-3 w-3" />
-                        {event?.device}
+                        {event.device}
                       </span>
                     )}
                   </div>

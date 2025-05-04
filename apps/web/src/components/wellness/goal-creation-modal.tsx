@@ -43,17 +43,17 @@ export function GoalCreationModal({
   useEffect(() => {
     if (editingGoal) {
       setFormData({
-        title: editingGoal?.title,
-        description: editingGoal?.description || '',
-        type: editingGoal?.type,
-        target: editingGoal?.target,
-        unit: editingGoal?.unit,
-        frequency: editingGoal?.frequency,
-        startDate: editingGoal?.startDate.split('T')[0],
-        endDate: editingGoal?.endDate ? editingGoal?.endDate.split('T')[0] : '',
-        color: editingGoal?.color || '#6366F1',
-        reminders: !!editingGoal?.reminderTime,
-        reminderTime: editingGoal?.reminderTime || '08:00',
+        title: editingGoal.title,
+        description: editingGoal.description || '',
+        type: editingGoal.type,
+        target: editingGoal.target,
+        unit: editingGoal.unit,
+        frequency: editingGoal.frequency,
+        startDate: editingGoal.startDate.split('T')[0],
+        endDate: editingGoal.endDate ? editingGoal.endDate.split('T')[0] : '',
+        color: editingGoal.color || '#6366F1',
+        reminders: !!editingGoal.reminderTime,
+        reminderTime: editingGoal.reminderTime || '08:00',
       });
     } else {
       // Reset form when not editing
@@ -74,17 +74,17 @@ export function GoalCreationModal({
   }, [editingGoal, isOpen]);
   // Handle input changes
   const handleChange = (
-    e: React?.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
-    const { name, value } = e?.target;
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
   // Handle checkbox changes
-  const handleCheckboxChange = (e: React?.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e?.target;
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: checked,
@@ -98,12 +98,12 @@ export function GoalCreationModal({
     }));
   };
   // Handle type selection and update unit accordingly
-  const handleTypeChange = (e: React?.ChangeEvent<HTMLSelectElement>) => {
-    const newType = e?.target.value as GoalType;
+  const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newType = e.target.value as GoalType;
     let newUnit: GoalUnit = 'minutes';
     let newTarget = 10;
     // Only update unit and target if not editing or if changing from the original type
-    if (!editingGoal || editingGoal?.type !== newType) {
+    if (!editingGoal || editingGoal.type !== newType) {
       // Set default unit based on type
       switch (newType) {
         case 'meditation':
@@ -153,20 +153,20 @@ export function GoalCreationModal({
     }
   };
   // Handle form submission
-  const handleSubmit = (e: React?.FormEvent) => {
-    e?.preventDefault();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     onSave({
-      title: formData?.title,
-      description: formData?.description,
-      type: formData?.type,
-      target: Number(formData?.target),
-      unit: formData?.unit,
-      frequency: formData?.frequency,
-      startDate: formData?.startDate,
-      endDate: formData?.endDate || undefined,
-      color: formData?.color,
-      reminders: formData?.reminders,
-      reminderTime: formData?.reminders ? formData?.reminderTime : undefined,
+      title: formData.title,
+      description: formData.description,
+      type: formData.type,
+      target: Number(formData.target),
+      unit: formData.unit,
+      frequency: formData.frequency,
+      startDate: formData.startDate,
+      endDate: formData.endDate || undefined,
+      color: formData.color,
+      reminders: formData.reminders,
+      reminderTime: formData.reminders ? formData.reminderTime : undefined,
     });
     onClose();
   };
@@ -198,7 +198,7 @@ export function GoalCreationModal({
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold">{editingGoal ? 'Edit Goal' : 'Create New Goal'}</h2>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
-            <Icons?.XMarkIcon className="h-6 w-6" />
+            <Icons.XMarkIcon className="h-6 w-6" />
           </button>
         </div>
         <form onSubmit={handleSubmit}>
@@ -212,9 +212,9 @@ export function GoalCreationModal({
               id="title"
               name="title"
               className="form-input w-full"
-              value={formData?.title}
+              value={formData.title}
               onChange={handleChange}
-              placeholder="e?.g., Daily Meditation"
+              placeholder="e.g., Daily Meditation"
               required
             />
           </div>
@@ -228,7 +228,7 @@ export function GoalCreationModal({
               name="description"
               rows={2}
               className="form-input w-full"
-              value={formData?.description}
+              value={formData.description}
               onChange={handleChange}
               placeholder="Why is this goal important to you?"
             />
@@ -242,7 +242,7 @@ export function GoalCreationModal({
               id="type"
               name="type"
               className="form-select w-full"
-              value={formData?.type}
+              value={formData.type}
               onChange={handleTypeChange}
               required
             >
@@ -256,21 +256,21 @@ export function GoalCreationModal({
               <option value="custom">Custom</option>
             </select>
             <div className="mt-2 flex items-center gap-2">
-              <span className="text-xl">{getGoalIcon(formData?.type)}</span>
+              <span className="text-xl">{getGoalIcon(formData.type)}</span>
               <span className="text-sm text-muted-foreground">
-                {formData?.type === 'meditation'
+                {formData.type === 'meditation'
                   ? 'Track meditation minutes'
-                  : formData?.type === 'workout'
+                  : formData.type === 'workout'
                     ? 'Track workout duration'
-                    : formData?.type === 'water'
+                    : formData.type === 'water'
                       ? 'Track water consumption'
-                      : formData?.type === 'sleep'
+                      : formData.type === 'sleep'
                         ? 'Track sleep hours'
-                        : formData?.type === 'nutrition'
+                        : formData.type === 'nutrition'
                           ? 'Track calorie intake'
-                          : formData?.type === 'steps'
+                          : formData.type === 'steps'
                             ? 'Track daily steps'
-                            : formData?.type === 'weight'
+                            : formData.type === 'weight'
                               ? 'Track body weight'
                               : 'Custom goal tracking'}
               </span>
@@ -287,10 +287,10 @@ export function GoalCreationModal({
                 id="target"
                 name="target"
                 className="form-input w-full"
-                value={formData?.target}
+                value={formData.target}
                 onChange={handleChange}
                 min={0}
-                step={formData?.type === 'sleep' ? 0?.5 : 1}
+                step={formData.type === 'sleep' ? 0.5 : 1}
                 required
               />
             </div>
@@ -302,7 +302,7 @@ export function GoalCreationModal({
                 id="unit"
                 name="unit"
                 className="form-select w-full"
-                value={formData?.unit}
+                value={formData.unit}
                 onChange={handleChange}
                 required
               >
@@ -327,7 +327,7 @@ export function GoalCreationModal({
               id="frequency"
               name="frequency"
               className="form-select w-full"
-              value={formData?.frequency}
+              value={formData.frequency}
               onChange={handleChange}
               required
             >
@@ -348,7 +348,7 @@ export function GoalCreationModal({
                 id="startDate"
                 name="startDate"
                 className="form-input w-full"
-                value={formData?.startDate}
+                value={formData.startDate}
                 onChange={handleChange}
                 required
               />
@@ -362,7 +362,7 @@ export function GoalCreationModal({
                 id="endDate"
                 name="endDate"
                 className="form-input w-full"
-                value={formData?.endDate}
+                value={formData.endDate}
                 onChange={handleChange}
               />
             </div>
@@ -371,12 +371,12 @@ export function GoalCreationModal({
           <div className="mb-4">
             <label className="mb-2 block text-sm font-medium">Color</label>
             <div className="flex flex-wrap gap-2">
-              {colorOptions?.map((color) => (
+              {colorOptions.map((color) => (
                 <button
                   key={color}
                   type="button"
                   className={`h-8 w-8 rounded-full border-2 ${
-                    formData?.color === color ? 'border-primary' : 'border-transparent'
+                    formData.color === color ? 'border-primary' : 'border-transparent'
                   }`}
                   style={{ backgroundColor: color }}
                   onClick={() => handleColorSelect(color)}
@@ -392,14 +392,14 @@ export function GoalCreationModal({
                 id="reminders"
                 name="reminders"
                 className="form-checkbox"
-                checked={formData?.reminders}
+                checked={formData.reminders}
                 onChange={handleCheckboxChange}
               />
               <label htmlFor="reminders" className="ml-2 text-sm font-medium">
                 Enable Reminders
               </label>
             </div>
-            {formData?.reminders && (
+            {formData.reminders && (
               <div>
                 <label htmlFor="reminderTime" className="mb-1 block text-sm font-medium">
                   Reminder Time
@@ -409,7 +409,7 @@ export function GoalCreationModal({
                   id="reminderTime"
                   name="reminderTime"
                   className="form-input w-full"
-                  value={formData?.reminderTime}
+                  value={formData.reminderTime}
                   onChange={handleChange}
                 />
               </div>

@@ -22,7 +22,7 @@ export class PerformanceMetricsImpl implements PerformanceMetrics {
 
   constructor(metrics?: Partial<PerformanceMetrics>) {
     if (metrics) {
-      Object?.assign(this, metrics);
+      Object.assign(this, metrics);
     }
   }
 
@@ -41,23 +41,23 @@ export class PerformanceMetricsImpl implements PerformanceMetrics {
   }
 
   isServiceWorkerRegistered(): boolean {
-    return this?.serviceWorkerRegistration === MetricStatus?.SUCCESS;
+    return this.serviceWorkerRegistration === MetricStatus.SUCCESS;
   }
 
   hasServiceWorkerError(): boolean {
-    return this?.serviceWorkerError !== undefined && this?.serviceWorkerError !== ErrorCodes?.NO_ERROR;
+    return this.serviceWorkerError !== undefined && this.serviceWorkerError !== ErrorCodes.NO_ERROR;
   }
 
   isOfflineReady(): boolean {
-    return this?.offlineReady === MetricStatus?.SUCCESS;
+    return this.offlineReady === MetricStatus.SUCCESS;
   }
 
   hasFetchSucceeded(): boolean {
-    return this?.fetchSuccess === MetricStatus?.SUCCESS;
+    return this.fetchSuccess === MetricStatus.SUCCESS;
   }
 
   hasSyncSucceeded(): boolean {
-    return this?.syncSuccess === MetricStatus?.SUCCESS;
+    return this.syncSuccess === MetricStatus.SUCCESS;
   }
 
   getSummary(): string {
@@ -66,15 +66,15 @@ export class PerformanceMetricsImpl implements PerformanceMetrics {
 
   toJSON(): Record<string, unknown> {
     return {
-      serviceWorkerRegistration: this?.serviceWorkerRegistration,
-      serviceWorkerError: this?.serviceWorkerError,
-      offlineReady: this?.offlineReady,
-      syncQueueSize: this?.syncQueueSize,
-      fetchStrategyTime: this?.fetchStrategyTime,
-      fetchSuccess: this?.fetchSuccess,
-      fetchError: this?.fetchError,
-      syncSuccess: this?.syncSuccess,
-      syncError: this?.syncError,
+      serviceWorkerRegistration: this.serviceWorkerRegistration,
+      serviceWorkerError: this.serviceWorkerError,
+      offlineReady: this.offlineReady,
+      syncQueueSize: this.syncQueueSize,
+      fetchStrategyTime: this.fetchStrategyTime,
+      fetchSuccess: this.fetchSuccess,
+      fetchError: this.fetchError,
+      syncSuccess: this.syncSuccess,
+      syncError: this.syncError,
     };
   }
 }

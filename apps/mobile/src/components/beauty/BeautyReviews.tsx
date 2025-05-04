@@ -28,10 +28,10 @@ const BeautyReviews = ({ reviews, serviceId, isDarkMode, onAddReview }: BeautyRe
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmitReview = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-    if (!comment?.trim()) {
-      Alert?.alert('Error', 'Please add a comment to your review');
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    if (!comment.trim()) {
+      Alert.alert('Error', 'Please add a comment to your review');
       return;
     }
 
@@ -44,16 +44,16 @@ const BeautyReviews = ({ reviews, serviceId, isDarkMode, onAddReview }: BeautyRe
           comment,
           userName: 'You',
           date: new Date().toISOString(),
-          userAvatar: 'https://ui-avatars?.com/api/?name=You&background=4F46E5&color=fff'
+          userAvatar: 'https://ui-avatars.com/api/?name=You&background=4F46E5&color=fff'
         });
       }
       
       setShowAddReview(false);
       setRating(5);
       setComment('');
-      Alert?.alert('Success', 'Your review has been submitted!');
+      Alert.alert('Success', 'Your review has been submitted!');
     } catch (error) {
-      Alert?.alert('Error', 'Failed to submit your review. Please try again.');
+      Alert.alert('Error', 'Failed to submit your review. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -61,14 +61,14 @@ const BeautyReviews = ({ reviews, serviceId, isDarkMode, onAddReview }: BeautyRe
 
   const renderStars = (rating: number) => {
     return (
-      <View style={styles?.starsContainer}>
+      <View style={styles.starsContainer}>
         {[1, 2, 3, 4, 5].map((star) => (
           <Feather
             key={star}
             name={star <= rating ? 'star' : 'star'}
             size={16}
             color={star <= rating ? '#FFD700' : isDarkMode ? '#555555' : '#DDDDDD'}
-            style={styles?.starIcon}
+            style={styles.starIcon}
           />
         ))}
       </View>
@@ -77,58 +77,58 @@ const BeautyReviews = ({ reviews, serviceId, isDarkMode, onAddReview }: BeautyRe
 
   const renderReviewItem = ({ item }: { item: Review }) => (
     <View style={[
-      styles?.reviewItem,
+      styles.reviewItem,
       { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
     ]}>
-      <View style={styles?.reviewHeader}>
+      <View style={styles.reviewHeader}>
         <Image
-          source={{ uri: item?.userAvatar || 'https://ui-avatars?.com/api/?name=User&background=4F46E5&color=fff' }}
-          style={styles?.avatar}
+          source={{ uri: item.userAvatar || 'https://ui-avatars.com/api/?name=User&background=4F46E5&color=fff' }}
+          style={styles.avatar}
         />
-        <View style={styles?.reviewHeaderText}>
+        <View style={styles.reviewHeaderText}>
           <Text style={[
-            styles?.userName, 
+            styles.userName, 
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
-            {item?.userName}
+            {item.userName}
           </Text>
           <Text style={[
-            styles?.reviewDate,
+            styles.reviewDate,
             { color: isDarkMode ? '#BBBBBB' : '#666666' }
           ]}>
-            {new Date(item?.date).toLocaleDateString()}
+            {new Date(item.date).toLocaleDateString()}
           </Text>
         </View>
-        {renderStars(item?.rating)}
+        {renderStars(item.rating)}
       </View>
       <Text style={[
-        styles?.reviewComment,
+        styles.reviewComment,
         { color: isDarkMode ? '#DDDDDD' : '#333333' }
       ]}>
-        {item?.comment}
+        {item.comment}
       </Text>
     </View>
   );
 
   return (
-    <View style={styles?.container}>
-      <View style={styles?.header}>
+    <View style={styles.container}>
+      <View style={styles.header}>
         <Text style={[
-          styles?.title,
+          styles.title,
           { color: isDarkMode ? '#FFFFFF' : '#000000' }
         ]}>
-          Reviews ({reviews?.length})
+          Reviews ({reviews.length})
         </Text>
         <TouchableOpacity
           style={[
-            styles?.addButton,
+            styles.addButton,
             { backgroundColor: isDarkMode ? '#333333' : '#EEEEEE' }
           ]}
           onPress={() => setShowAddReview(true)}
         >
           <Feather name="plus" size={16} color={isDarkMode ? '#FFFFFF' : '#000000'} />
           <Text style={[
-            styles?.addButtonText,
+            styles.addButtonText,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             Add Review
@@ -136,11 +136,11 @@ const BeautyReviews = ({ reviews, serviceId, isDarkMode, onAddReview }: BeautyRe
         </TouchableOpacity>
       </View>
 
-      {reviews?.length === 0 ? (
-        <View style={styles?.emptyContainer}>
+      {reviews.length === 0 ? (
+        <View style={styles.emptyContainer}>
           <Feather name="message-square" size={40} color={isDarkMode ? '#555555' : '#CCCCCC'} />
           <Text style={[
-            styles?.emptyText,
+            styles.emptyText,
             { color: isDarkMode ? '#BBBBBB' : '#666666' }
           ]}>
             No reviews yet. Be the first to review!
@@ -150,8 +150,8 @@ const BeautyReviews = ({ reviews, serviceId, isDarkMode, onAddReview }: BeautyRe
         <FlatList
           data={reviews}
           renderItem={renderReviewItem}
-          keyExtractor={(item) => item?.id}
-          contentContainerStyle={styles?.reviewsList}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.reviewsList}
         />
       )}
 
@@ -162,39 +162,39 @@ const BeautyReviews = ({ reviews, serviceId, isDarkMode, onAddReview }: BeautyRe
         transparent={true}
         onRequestClose={() => setShowAddReview(false)}
       >
-        <View style={styles?.modalContainer}>
+        <View style={styles.modalContainer}>
           <View style={[
-            styles?.modalContent,
+            styles.modalContent,
             { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
           ]}>
-            <View style={styles?.modalHeader}>
+            <View style={styles.modalHeader}>
               <Text style={[
-                styles?.modalTitle,
+                styles.modalTitle,
                 { color: isDarkMode ? '#FFFFFF' : '#000000' }
               ]}>
                 Add Your Review
               </Text>
               <TouchableOpacity
                 onPress={() => setShowAddReview(false)}
-                style={styles?.closeButton}
+                style={styles.closeButton}
               >
                 <Feather name="x" size={24} color={isDarkMode ? '#FFFFFF' : '#000000'} />
               </TouchableOpacity>
             </View>
 
-            <View style={styles?.ratingContainer}>
+            <View style={styles.ratingContainer}>
               <Text style={[
-                styles?.ratingLabel,
+                styles.ratingLabel,
                 { color: isDarkMode ? '#FFFFFF' : '#000000' }
               ]}>
                 Your Rating
               </Text>
-              <View style={styles?.starsRow}>
+              <View style={styles.starsRow}>
                 {[1, 2, 3, 4, 5].map((star) => (
                   <TouchableOpacity
                     key={star}
                     onPress={() => setRating(star)}
-                    style={styles?.starButton}
+                    style={styles.starButton}
                   >
                     <Feather
                       name="star"
@@ -206,16 +206,16 @@ const BeautyReviews = ({ reviews, serviceId, isDarkMode, onAddReview }: BeautyRe
               </View>
             </View>
 
-            <View style={styles?.commentContainer}>
+            <View style={styles.commentContainer}>
               <Text style={[
-                styles?.commentLabel,
+                styles.commentLabel,
                 { color: isDarkMode ? '#FFFFFF' : '#000000' }
               ]}>
                 Your Comment
               </Text>
               <TextInput
                 style={[
-                  styles?.commentInput,
+                  styles.commentInput,
                   {
                     backgroundColor: isDarkMode ? '#333333' : '#F5F5F5',
                     color: isDarkMode ? '#FFFFFF' : '#000000',
@@ -232,13 +232,13 @@ const BeautyReviews = ({ reviews, serviceId, isDarkMode, onAddReview }: BeautyRe
 
             <TouchableOpacity
               style={[
-                styles?.submitButton,
-                { opacity: isSubmitting ? 0?.7 : 1 }
+                styles.submitButton,
+                { opacity: isSubmitting ? 0.7 : 1 }
               ]}
               onPress={handleSubmitReview}
               disabled={isSubmitting}
             >
-              <Text style={styles?.submitButtonText}>
+              <Text style={styles.submitButtonText}>
                 {isSubmitting ? 'Submitting...' : 'Submit Review'}
               </Text>
             </TouchableOpacity>
@@ -249,7 +249,7 @@ const BeautyReviews = ({ reviews, serviceId, isDarkMode, onAddReview }: BeautyRe
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
   },
@@ -284,7 +284,7 @@ const styles = StyleSheet?.create({
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0?.1,
+    shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 2,
   },
@@ -331,13 +331,13 @@ const styles = StyleSheet?.create({
   modalContainer: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0, 0, 0, 0?.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-    ...Platform?.select({
+    ...Platform.select({
       ios: {
         paddingBottom: 40
       },

@@ -12,11 +12,11 @@ export function AnalyticsTest() {
   const analyticsService = new AnalyticsService();
 
   const testTryOnSession = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');type: 'makeup' | 'hairstyle' | 'accessory') => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');type: 'makeup' | 'hairstyle' | 'accessory') => {
     try {
       setLoading(true);
-      await analyticsService?.trackTryOnSession({
+      await analyticsService.trackTryOnSession({
         userId: 'test-user',
         type,
         productId: `test-${type}`,
@@ -35,18 +35,18 @@ export function AnalyticsTest() {
         description: `Failed to track ${type} try-on session`,
         variant: 'destructive',
       });
-      console?.error(`Error tracking ${type} try-on session:`, error);
+      console.error(`Error tracking ${type} try-on session:`, error);
     } finally {
       setLoading(false);
     }
   };
 
   const testFailedSession = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
-      await analyticsService?.trackTryOnSession({
+      await analyticsService.trackTryOnSession({
         userId: 'test-user',
         type: 'makeup',
         productId: 'test-error-product',
@@ -66,21 +66,21 @@ export function AnalyticsTest() {
         description: 'Failed to track error session',
         variant: 'destructive',
       });
-      console?.error('Error tracking failed session:', error);
+      console.error('Error tracking failed session:', error);
     } finally {
       setLoading(false);
     }
   };
 
   const testShareAnalytics = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');
     method: 'social' | 'email' | 'download',
     platform: string = 'facebook',
   ) => {
     try {
       setLoading(true);
-      await analyticsService?.trackShare({
+      await analyticsService.trackShare({
         userId: 'test-user',
         sessionId: `test-session-${method}`,
         platform,
@@ -97,7 +97,7 @@ export function AnalyticsTest() {
         description: `Failed to track ${method} share analytics`,
         variant: 'destructive',
       });
-      console?.error(`Error tracking ${method} share analytics:`, error);
+      console.error(`Error tracking ${method} share analytics:`, error);
     } finally {
       setLoading(false);
     }

@@ -3,7 +3,7 @@ import React from 'react';
 interface DashboardHeaderProps {
   heading: string;
   text?: string;
-  children?: React?.ReactNode;
+  children?: React.ReactNode;
 }
 
 const DashboardHeader = ({ heading, text, children }: DashboardHeaderProps) => {

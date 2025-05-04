@@ -5,7 +5,7 @@ interface ActivityPattern {
   id: string;
   title: string;
   description: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
   data: {
     label: string;
     value: number;
@@ -48,7 +48,7 @@ export function ActivityPatterns() {
   ];
 
   const getMaxValue = (data: ActivityPattern['data']) => {
-    return Math?.max(...data?.map((item) => item?.value));
+    return Math.max(...data.map((item) => item.value));
   };
 
   return (
@@ -58,28 +58,28 @@ export function ActivityPatterns() {
         <CardDescription>View your account activity patterns and trends over time.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-8">
-        {patterns?.map((pattern) => {
-          const maxValue = getMaxValue(pattern?.data);
+        {patterns.map((pattern) => {
+          const maxValue = getMaxValue(pattern.data);
           return (
-            <div key={pattern?.id} className="space-y-4">
+            <div key={pattern.id} className="space-y-4">
               <div className="flex items-center space-x-4">
-                <div className="rounded-lg bg-muted p-2">{pattern?.icon}</div>
+                <div className="rounded-lg bg-muted p-2">{pattern.icon}</div>
                 <div>
-                  <h3 className="text-sm font-medium">{pattern?.title}</h3>
-                  <p className="text-sm text-muted-foreground">{pattern?.description}</p>
+                  <h3 className="text-sm font-medium">{pattern.title}</h3>
+                  <p className="text-sm text-muted-foreground">{pattern.description}</p>
                 </div>
               </div>
 
               <div className="flex h-32 items-end space-x-2">
-                {pattern?.data.map((item) => (
-                  <div key={item?.label} className="flex-1 space-y-2 text-center">
+                {pattern.data.map((item) => (
+                  <div key={item.label} className="flex-1 space-y-2 text-center">
                     <div
                       className="bg-primary/20 w-full rounded-t"
                       style={{
-                        height: `${(item?.value / maxValue) * 100}%`,
+                        height: `${(item.value / maxValue) * 100}%`,
                       }}
                     />
-                    <span className="text-xs text-muted-foreground">{item?.label}</span>
+                    <span className="text-xs text-muted-foreground">{item.label}</span>
                   </div>
                 ))}
               </div>

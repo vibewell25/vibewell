@@ -32,7 +32,7 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
         ? {
             frequency: 'weekly',
             interval: 1,
-            daysOfWeek: [new Date(event?.startDate).getDay()],
+            daysOfWeek: [new Date(event.startDate).getDay()],
           }
         : undefined,
     });
@@ -40,7 +40,7 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
   const handleRecurrenceChange = (field: string, value: any) => {
     onUpdate({
       recurrencePattern: {
-        ...event?.recurrencePattern,
+        ...event.recurrencePattern,
         [field]: value,
       },
     });
@@ -65,11 +65,11 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList>
             <TabsTrigger value="recurring">
-              <Icons?.CalendarIcon className="mr-2 h-4 w-4" />
+              <Icons.CalendarIcon className="mr-2 h-4 w-4" />
               Recurring
             </TabsTrigger>
             <TabsTrigger value="waitlist">
-              <Icons?.UserGroupIcon className="mr-2 h-4 w-4" />
+              <Icons.UserGroupIcon className="mr-2 h-4 w-4" />
               Waitlist
             </TabsTrigger>
           </TabsList>
@@ -79,20 +79,20 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
         <TabsContent value="recurring">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <div className="space-y-0?.5">
+              <div className="space-y-0.5">
                 <Label>Recurring Event</Label>
                 <p className="text-sm text-muted-foreground">
                   Set up recurring schedule for this event
                 </p>
               </div>
-              <Switch checked={event?.isRecurring} onCheckedChange={handleRecurringToggle} />
+              <Switch checked={event.isRecurring} onCheckedChange={handleRecurringToggle} />
             </div>
-            {event?.isRecurring && (
+            {event.isRecurring && (
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label>Frequency</Label>
                   <Select
-                    value={event?.recurrencePattern?.frequency}
+                    value={event.recurrencePattern.frequency}
                     onValueChange={(value) => handleRecurrenceChange('frequency', value)}
                   >
                     <SelectTrigger>
@@ -111,11 +111,11 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                   <Input
                     type="number"
                     min="1"
-                    value={event?.recurrencePattern?.interval || 1}
-                    onChange={(e) => handleRecurrenceChange('interval', parseInt(e?.target.value))}
+                    value={event.recurrencePattern.interval || 1}
+                    onChange={(e) => handleRecurrenceChange('interval', parseInt(e.target.value))}
                   />
                 </div>
-                {event?.recurrencePattern?.frequency === 'weekly' && (
+                {event.recurrencePattern.frequency === 'weekly' && (
                   <div className="space-y-2">
                     <Label>Days of Week</Label>
                     <div className="flex gap-2">
@@ -123,15 +123,15 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                         <Button
                           key={day}
                           variant={
-                            event?.recurrencePattern?.daysOfWeek?.includes(index)
+                            event.recurrencePattern.daysOfWeek.includes(index)
                               ? 'default'
                               : 'outline'
                           }
                           size="sm"
                           onClick={() => {
-                            const days = event?.recurrencePattern?.daysOfWeek || [];
-                            const newDays = days?.includes(index)
-                              ? days?.filter((d) => d !== index)
+                            const days = event.recurrencePattern.daysOfWeek || [];
+                            const newDays = days.includes(index)
+                              ? days.filter((d) => d !== index)
                               : [...days, index];
                             handleRecurrenceChange('daysOfWeek', newDays);
                           }}
@@ -146,8 +146,8 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
                   <Label>End Date (Optional)</Label>
                   <Input
                     type="date"
-                    value={event?.recurrencePattern?.endDate?.split('T')[0] || ''}
-                    onChange={(e) => handleRecurrenceChange('endDate', e?.target.value)}
+                    value={event.recurrencePattern.endDate.split('T')[0] || ''}
+                    onChange={(e) => handleRecurrenceChange('endDate', e.target.value)}
                   />
                 </div>
               </div>
@@ -157,59 +157,59 @@ export function EventManagement({ event, onUpdate }: EventManagementProps) {
         <TabsContent value="waitlist">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <div className="space-y-0?.5">
+              <div className="space-y-0.5">
                 <Label>Waitlist</Label>
                 <p className="text-sm text-muted-foreground">Enable waitlist when event is full</p>
               </div>
-              <Switch checked={event?.waitlistEnabled} onCheckedChange={handleWaitlistToggle} />
+              <Switch checked={event.waitlistEnabled} onCheckedChange={handleWaitlistToggle} />
             </div>
-            {event?.waitlistEnabled && (
+            {event.waitlistEnabled && (
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label>Waitlist Capacity</Label>
                   <Input
                     type="number"
                     min="1"
-                    value={event?.waitlistCapacity || 20}
-                    onChange={(e) => handleWaitlistCapacityChange(parseInt(e?.target.value))}
+                    value={event.waitlistCapacity || 20}
+                    onChange={(e) => handleWaitlistCapacityChange(parseInt(e.target.value))}
                   />
                 </div>
-                {event?.waitlistParticipants && event?.waitlistParticipants.length > 0 && (
+                {event.waitlistParticipants && event.waitlistParticipants.length > 0 && (
                   <div className="space-y-2">
                     <Label>Waitlist Participants</Label>
                     <div className="space-y-2">
-                      {event?.waitlistParticipants.map((participant) => (
+                      {event.waitlistParticipants.map((participant) => (
                         <div
-                          key={participant?.userId}
+                          key={participant.userId}
                           className="flex items-center justify-between rounded-md border p-2"
                         >
                           <div className="flex items-center gap-2">
                             <div className="relative h-8 w-8">
                               <Image
-                                src={participant?.avatar}
-                                alt={participant?.name}
+                                src={participant.avatar}
+                                alt={participant.name}
                                 className="rounded-full object-cover"
                                 fill
                                 sizes="32px"
                               />
                             </div>
                             <div>
-                              <p className="font-medium">{participant?.name}</p>
+                              <p className="font-medium">{participant.name}</p>
                               <p className="text-sm text-muted-foreground">
-                                Joined {format(parseISO(participant?.joinedAt), 'MMM d, yyyy')}
+                                Joined {format(parseISO(participant.joinedAt), 'MMM d, yyyy')}
                               </p>
                             </div>
                           </div>
                           <Badge
                             variant={
-                              participant?.status === 'confirmed'
+                              participant.status === 'confirmed'
                                 ? 'default'
-                                : participant?.status === 'notified'
+                                : participant.status === 'notified'
                                   ? 'secondary'
                                   : 'outline'
                             }
                           >
-                            {participant?.status}
+                            {participant.status}
                           </Badge>
                         </div>
                       ))}

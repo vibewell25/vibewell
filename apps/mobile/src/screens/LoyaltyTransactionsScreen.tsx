@@ -18,7 +18,7 @@ interface Transaction {
   tier?: Tier;
 }
 
-const LoyaltyTransactionsScreen: React?.FC = () => {
+const LoyaltyTransactionsScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const { user } = useAuth();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -29,12 +29,12 @@ const LoyaltyTransactionsScreen: React?.FC = () => {
       if (!user) return;
       try {
         const res = await fetch(
-          `${serverBaseUrl}/api/loyalty/transactions?userId=${user?.id}`
+          `${serverBaseUrl}/api/loyalty/transactions?userId=${user.id}`
         );
-        const data = await res?.json();
-        setTransactions(data?.transactions || []);
+        const data = await res.json();
+        setTransactions(data.transactions || []);
       } catch (err) {
-        Alert?.alert('Error', 'Failed to load transactions');
+        Alert.alert('Error', 'Failed to load transactions');
       } finally {
         setLoading(false);
       }
@@ -43,8 +43,8 @@ const LoyaltyTransactionsScreen: React?.FC = () => {
 
   if (loading) return <ActivityIndicator size="large" />;
 
-  const balance = transactions?.reduce((sum, tx) =>
-    sum + (tx?.type === 'EARN' ? tx?.points : -tx?.points),
+  const balance = transactions.reduce((sum, tx) =>
+    sum + (tx.type === 'EARN' ? tx.points : -tx.points),
     0
   );
 
@@ -55,15 +55,15 @@ const LoyaltyTransactionsScreen: React?.FC = () => {
       </Text>
       <FlatList
         data={transactions}
-        keyExtractor={item => item?.id}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <View style={{ marginBottom: 12 }}>
             <Text style={{ color: isDarkMode ? '#FFFFFF' : '#000000' }}>
-              {new Date(item?.createdAt).toLocaleDateString()} - {item?.type}: {item?.points} pts
+              {new Date(item.createdAt).toLocaleDateString()} - {item.type}: {item.points} pts
             </Text>
-            {item?.tier && (
+            {item.tier && (
               <Text style={{ color: isDarkMode ? '#BBBBBB' : '#666666' }}>
-                Tier: {item?.tier.name}
+                Tier: {item.tier.name}
               </Text>
             )}
           </View>

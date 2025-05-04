@@ -5,13 +5,13 @@ interface AccessibleModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  children: React?.ReactNode;
+  children: React.ReactNode;
   className?: string;
   closeOnOverlayClick?: boolean;
   closeOnEsc?: boolean;
 }
 
-export const AccessibleModal: React?.FC<AccessibleModalProps> = ({
+export const AccessibleModal: React.FC<AccessibleModalProps> = ({
   isOpen,
   onClose,
   title,
@@ -26,36 +26,36 @@ export const AccessibleModal: React?.FC<AccessibleModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       // Store the element that had focus when modal was opened
-      lastFocusedElement?.current = document?.activeElement as HTMLElement;
+      lastFocusedElement.current = document.activeElement as HTMLElement;
 
       // Focus the modal when it opens
-      modalRef?.current?.focus();
+      modalRef.current.focus();
 
       // Add event listener for Escape key
       if (closeOnEsc) {
         const handleEsc = (e: KeyboardEvent) => {
-          if (e?.key === 'Escape') {
+          if (e.key === 'Escape') {
             onClose();
           }
         };
-        document?.addEventListener('keydown', handleEsc);
-        return () => document?.removeEventListener('keydown', handleEsc);
+        document.addEventListener('keydown', handleEsc);
+        return () => document.removeEventListener('keydown', handleEsc);
       }
-    } else if (lastFocusedElement?.current) {
+    } else if (lastFocusedElement.current) {
       // Return focus to the element that had focus before modal opened
-      lastFocusedElement?.current.focus();
+      lastFocusedElement.current.focus();
     }
   }, [isOpen, onClose, closeOnEsc]);
 
   useEffect(() => {
     // Prevent scrolling of the body when modal is open
     if (isOpen) {
-      document?.body.style?.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
     } else {
-      document?.body.style?.overflow = '';
+      document.body.style.overflow = '';
     }
     return () => {
-      document?.body.style?.overflow = '';
+      document.body.style.overflow = '';
     };
   }, [isOpen]);
 
@@ -102,7 +102,7 @@ export const AccessibleModal: React?.FC<AccessibleModalProps> = ({
         </div>
       </div>
     </div>,
-    document?.body,
+    document.body,
   );
 };
 

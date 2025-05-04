@@ -23,26 +23,26 @@ interface PasswordForm {
   confirmPassword: string;
 }
 
-const validationSchema = Yup?.object().shape({
-  currentPassword: Yup?.string()
+const validationSchema = Yup.object().shape({
+  currentPassword: Yup.string()
     .required('Current password is required'),
-  newPassword: Yup?.string()
+  newPassword: Yup.string()
     .min(8, 'Password must be at least 8 characters')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
       'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
     )
     .notOneOf(
-      [Yup?.ref('currentPassword')],
+      [Yup.ref('currentPassword')],
       'New password must be different from current password'
     )
     .required('New password is required'),
-  confirmPassword: Yup?.string()
-    .oneOf([Yup?.ref('newPassword')], 'Passwords must match')
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('newPassword')], 'Passwords must match')
     .required('Password confirmation is required'),
 });
 
-const ChangePasswordScreen: React?.FC = () => {
+const ChangePasswordScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const navigation = useNavigation();
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
@@ -51,19 +51,19 @@ const ChangePasswordScreen: React?.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const handleChangePassword = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');values: PasswordForm) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');values: PasswordForm) => {
     setLoading(true);
     try {
       // TODO: Implement actual password change logic with your backend
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated API call
-      Alert?.alert(
+      Alert.alert(
         'Success',
         'Your password has been changed successfully',
-        [{ text: 'OK', onPress: () => navigation?.goBack() }]
+        [{ text: 'OK', onPress: () => navigation.goBack() }]
       );
     } catch (error) {
-      Alert?.alert(
+      Alert.alert(
         'Error',
         'Failed to change password. Please try again.'
       );
@@ -80,34 +80,34 @@ const ChangePasswordScreen: React?.FC = () => {
     setShowPassword: (show: boolean) => void,
     formikProps: any
   ) => (
-    <View style={styles?.inputGroup}>
+    <View style={styles.inputGroup}>
       <Text style={[
-        styles?.label,
+        styles.label,
         { color: isDarkMode ? '#FFFFFF' : '#000000' }
       ]}>
         {label}
       </Text>
       <View style={[
-        styles?.inputContainer,
+        styles.inputContainer,
         { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }
       ]}>
         <TextInput
           style={[
-            styles?.input,
+            styles.input,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}
           placeholder={placeholder}
           placeholderTextColor={isDarkMode ? '#888888' : '#666666'}
           secureTextEntry={!showPassword}
-          value={formikProps?.values[field]}
-          onChangeText={formikProps?.handleChange(field)}
-          onBlur={formikProps?.handleBlur(field)}
+          value={formikProps.values[field]}
+          onChangeText={formikProps.handleChange(field)}
+          onBlur={formikProps.handleBlur(field)}
           autoCapitalize="none"
           autoCorrect={false}
         />
         <TouchableOpacity
           onPress={() => setShowPassword(!showPassword)}
-          style={styles?.visibilityToggle}
+          style={styles.visibilityToggle}
         >
           <Feather
             name={showPassword ? 'eye-off' : 'eye'}
@@ -116,9 +116,9 @@ const ChangePasswordScreen: React?.FC = () => {
           />
         </TouchableOpacity>
       </View>
-      {formikProps?.touched[field] && formikProps?.errors[field] && (
-        <Text style={styles?.errorText}>
-          {formikProps?.errors[field]}
+      {formikProps.touched[field] && formikProps.errors[field] && (
+        <Text style={styles.errorText}>
+          {formikProps.errors[field]}
         </Text>
       )}
     </View>
@@ -126,17 +126,17 @@ const ChangePasswordScreen: React?.FC = () => {
 
   return (
     <SafeAreaView style={[
-      styles?.container,
+      styles.container,
       { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }
     ]}>
       <KeyboardAvoidingView
-        behavior={Platform?.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
       >
-        <View style={styles?.header}>
+        <View style={styles.header}>
           <TouchableOpacity
-            onPress={() => navigation?.goBack()}
-            style={styles?.backButton}
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}
           >
             <Feather
               name="arrow-left"
@@ -145,16 +145,16 @@ const ChangePasswordScreen: React?.FC = () => {
             />
           </TouchableOpacity>
           <Text style={[
-            styles?.title,
+            styles.title,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             Change Password
           </Text>
         </View>
 
-        <ScrollView style={styles?.content}>
+        <ScrollView style={styles.content}>
           <Text style={[
-            styles?.description,
+            styles.description,
             { color: isDarkMode ? '#BBBBBB' : '#666666' }
           ]}>
             Choose a strong password that you haven't used before.
@@ -170,7 +170,7 @@ const ChangePasswordScreen: React?.FC = () => {
             onSubmit={handleChangePassword}
           >
             {(formikProps) => (
-              <View style={styles?.form}>
+              <View style={styles.form}>
                 {renderPasswordInput(
                   'currentPassword',
                   'Current Password',
@@ -200,13 +200,13 @@ const ChangePasswordScreen: React?.FC = () => {
 
                 <TouchableOpacity
                   style={[
-                    styles?.changeButton,
-                    { opacity: loading ? 0?.7 : 1 }
+                    styles.changeButton,
+                    { opacity: loading ? 0.7 : 1 }
                   ]}
-                  onPress={() => formikProps?.handleSubmit()}
+                  onPress={() => formikProps.handleSubmit()}
                   disabled={loading}
                 >
-                  <Text style={styles?.changeButtonText}>
+                  <Text style={styles.changeButtonText}>
                     {loading ? 'Changing Password...' : 'Change Password'}
                   </Text>
                 </TouchableOpacity>
@@ -214,39 +214,39 @@ const ChangePasswordScreen: React?.FC = () => {
             )}
           </Formik>
 
-          <View style={styles?.requirements}>
+          <View style={styles.requirements}>
             <Text style={[
-              styles?.requirementsTitle,
+              styles.requirementsTitle,
               { color: isDarkMode ? '#FFFFFF' : '#000000' }
             ]}>
               Password Requirements:
             </Text>
             <Text style={[
-              styles?.requirementItem,
+              styles.requirementItem,
               { color: isDarkMode ? '#BBBBBB' : '#666666' }
             ]}>
               • At least 8 characters long
             </Text>
             <Text style={[
-              styles?.requirementItem,
+              styles.requirementItem,
               { color: isDarkMode ? '#BBBBBB' : '#666666' }
             ]}>
               • Contains at least one uppercase letter
             </Text>
             <Text style={[
-              styles?.requirementItem,
+              styles.requirementItem,
               { color: isDarkMode ? '#BBBBBB' : '#666666' }
             ]}>
               • Contains at least one lowercase letter
             </Text>
             <Text style={[
-              styles?.requirementItem,
+              styles.requirementItem,
               { color: isDarkMode ? '#BBBBBB' : '#666666' }
             ]}>
               • Contains at least one number
             </Text>
             <Text style={[
-              styles?.requirementItem,
+              styles.requirementItem,
               { color: isDarkMode ? '#BBBBBB' : '#666666' }
             ]}>
               • Contains at least one special character
@@ -258,7 +258,7 @@ const ChangePasswordScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
   },

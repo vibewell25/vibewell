@@ -39,10 +39,10 @@ const CANCELLATION_POLICIES = [
 
 export function PoliciesForm({ form }: PoliciesFormProps) {
   const [cancellationPolicy, setCancellationPolicy] = useState<string>(
-    form?.getValues('cancellationPolicy') || 'flexible',
+    form.getValues('cancellationPolicy') || 'flexible',
   );
   const [hasLatePolicy, setHasLatePolicy] = useState<boolean>(
-    form?.getValues('hasLateArrivalPolicy') || false,
+    form.getValues('hasLateArrivalPolicy') || false,
   );
 
   // Handle cancellation policy selection
@@ -50,12 +50,12 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
     setCancellationPolicy(value);
 
     if (value !== 'custom') {
-      const selectedPolicy = CANCELLATION_POLICIES?.find((policy) => policy?.id === value);
+      const selectedPolicy = CANCELLATION_POLICIES.find((policy) => policy.id === value);
 
       if (selectedPolicy) {
-        form?.setValue(
+        form.setValue(
           'cancellationPolicy',
-          selectedPolicy?.description + '. ' + selectedPolicy?.penalty,
+          selectedPolicy.description + '. ' + selectedPolicy.penalty,
           {
             shouldValidate: true,
             shouldDirty: true,
@@ -86,19 +86,19 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
               onValueChange={handleCancellationPolicyChange}
               className="space-y-4"
             >
-              {CANCELLATION_POLICIES?.map((policy) => (
-                <div key={policy?.id} className="flex items-start space-x-2">
-                  <RadioGroupItem value={policy?.id} id={`policy-${policy?.id}`} className="mt-1" />
-                  <div className="grid gap-1?.5">
+              {CANCELLATION_POLICIES.map((policy) => (
+                <div key={policy.id} className="flex items-start space-x-2">
+                  <RadioGroupItem value={policy.id} id={`policy-${policy.id}`} className="mt-1" />
+                  <div className="grid gap-1.5">
                     <label
-                      htmlFor={`policy-${policy?.id}`}
+                      htmlFor={`policy-${policy.id}`}
                       className="cursor-pointer text-sm font-medium leading-none"
                     >
-                      {policy?.name}
+                      {policy.name}
                     </label>
                     <p className="text-xs text-muted-foreground">
-                      {policy?.description}
-                      {policy?.penalty ? `. ${policy?.penalty}.` : ''}
+                      {policy.description}
+                      {policy.penalty ? `. ${policy.penalty}.` : ''}
                     </p>
                   </div>
                 </div>
@@ -108,7 +108,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
 
           {cancellationPolicy === 'custom' && (
             <FormField
-              control={form?.control}
+              control={form.control}
               name="cancellationPolicy"
               render={({ field }) => (
                 <FormItem>
@@ -144,11 +144,11 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
               checked={hasLatePolicy}
               onCheckedChange={(checked) => {
                 setHasLatePolicy(checked);
-                form?.setValue('hasLateArrivalPolicy', checked, { shouldValidate: true });
+                form.setValue('hasLateArrivalPolicy', checked, { shouldValidate: true });
 
                 if (!checked) {
-                  form?.setValue('lateArrivalPolicy', '', { shouldValidate: true });
-                  form?.setValue('lateArrivalGracePeriod', 0, { shouldValidate: true });
+                  form.setValue('lateArrivalPolicy', '', { shouldValidate: true });
+                  form.setValue('lateArrivalGracePeriod', 0, { shouldValidate: true });
                 }
               }}
             />
@@ -158,7 +158,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
         {hasLatePolicy && (
           <CardContent className="space-y-6">
             <FormField
-              control={form?.control}
+              control={form.control}
               name="lateArrivalGracePeriod"
               render={({ field }) => (
                 <FormItem>
@@ -168,7 +168,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
                       <Input
                         type="number"
                         {...field}
-                        onChange={(e) => field?.onChange(parseInt(e?.target.value || '0', 10))}
+                        onChange={(e) => field.onChange(parseInt(e.target.value || '0', 10))}
                         min={0}
                         max={60}
                         className="w-20"
@@ -185,7 +185,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
             />
 
             <FormField
-              control={form?.control}
+              control={form.control}
               name="lateArrivalPolicy"
               render={({ field }) => (
                 <FormItem>
@@ -218,7 +218,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
         </CardHeader>
         <CardContent>
           <FormField
-            control={form?.control}
+            control={form.control}
             name="additionalPolicies"
             render={({ field }) => (
               <FormItem>
@@ -258,9 +258,9 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
               </p>
             </div>
             <Switch
-              checked={form?.watch('requirePolicyConfirmation') || false}
+              checked={form.watch('requirePolicyConfirmation') || false}
               onCheckedChange={(checked) => {
-                form?.setValue('requirePolicyConfirmation', checked, { shouldValidate: true });
+                form.setValue('requirePolicyConfirmation', checked, { shouldValidate: true });
               }}
             />
           </div>
@@ -275,9 +275,9 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
               </p>
             </div>
             <Switch
-              checked={form?.watch('includePoliciesInEmails') || false}
+              checked={form.watch('includePoliciesInEmails') || false}
               onCheckedChange={(checked) => {
-                form?.setValue('includePoliciesInEmails', checked, { shouldValidate: true });
+                form.setValue('includePoliciesInEmails', checked, { shouldValidate: true });
               }}
             />
           </div>
@@ -287,7 +287,7 @@ export function PoliciesForm({ form }: PoliciesFormProps) {
       {/* Help Text */}
       <div className="rounded-md border border-blue-200 bg-blue-50 p-4 text-blue-700">
         <div className="flex space-x-3">
-          <InfoIcon className="mt-0?.5 h-5 w-5 text-blue-500" />
+          <InfoIcon className="mt-0.5 h-5 w-5 text-blue-500" />
           <div>
             <h4 className="mb-1 text-sm font-medium text-blue-800">Why policies matter</h4>
             <p className="text-sm">

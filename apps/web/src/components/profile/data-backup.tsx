@@ -19,58 +19,58 @@ export function DataBackup() {
     {
       id: 'profile',
       name: 'Profile Information',
-      size: '2?.5 MB',
+      size: '2.5 MB',
       status: 'pending',
     },
     {
       id: 'activity',
       name: 'Activity History',
-      size: '15?.2 MB',
+      size: '15.2 MB',
       status: 'pending',
     },
     {
       id: 'preferences',
       name: 'Preferences & Settings',
-      size: '0?.8 MB',
+      size: '0.8 MB',
       status: 'pending',
     },
     {
       id: 'connections',
       name: 'Connected Accounts',
-      size: '1?.2 MB',
+      size: '1.2 MB',
       status: 'pending',
     },
   ]);
 
   const handleBackup = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setIsBackingUp(true);
       setProgress(0);
 
       // Simulate backup process
-      for (let i = 0; i < backupData?.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
+      for (let i = 0; i < backupData.length; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        setProgress(((i + 1) / backupData?.length) * 100);
+        setProgress(((i + 1) / backupData.length) * 100);
 
         setBackupData((prev) =>
-          prev?.map((item, index) => (index === i ? { ...item, status: 'downloaded' } : item)),
+          prev.map((item, index) => (index === i ? { ...item, status: 'downloaded' } : item)),
         );
       }
 
-      toast?.success('Backup completed successfully');
+      toast.success('Backup completed successfully');
     } catch (error) {
-      console?.error('Error during backup:', error);
-      toast?.error('Failed to complete backup');
-      setBackupData((prev) => prev?.map((item) => ({ ...item, status: 'error' })));
+      console.error('Error during backup:', error);
+      toast.error('Failed to complete backup');
+      setBackupData((prev) => prev.map((item) => ({ ...item, status: 'error' })));
     } finally {
       setIsBackingUp(false);
     }
   };
 
-  const allDownloaded = backupData?.every((item) => item?.status === 'downloaded');
-  const hasError = backupData?.some((item) => item?.status === 'error');
+  const allDownloaded = backupData.every((item) => item.status === 'downloaded');
+  const hasError = backupData.some((item) => item.status === 'error');
 
   return (
     <Card>
@@ -88,21 +88,21 @@ export function DataBackup() {
           </p>
 
           <div className="space-y-4">
-            {backupData?.map((item) => (
+            {backupData.map((item) => (
               <div
-                key={item?.id}
+                key={item.id}
                 className="flex items-center justify-between rounded-lg border p-4"
               >
                 <div className="space-y-1">
-                  <p className="font-medium">{item?.name}</p>
-                  <p className="text-sm text-muted-foreground">{item?.size}</p>
+                  <p className="font-medium">{item.name}</p>
+                  <p className="text-sm text-muted-foreground">{item.size}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  {item?.status === 'pending' && (
+                  {item.status === 'pending' && (
                     <AlertCircle className="h-4 w-4 text-muted-foreground" />
                   )}
-                  {item?.status === 'downloaded' && <Check className="h-4 w-4 text-green-500" />}
-                  {item?.status === 'error' && <AlertCircle className="h-4 w-4 text-destructive" />}
+                  {item.status === 'downloaded' && <Check className="h-4 w-4 text-green-500" />}
+                  {item.status === 'error' && <AlertCircle className="h-4 w-4 text-destructive" />}
                 </div>
               </div>
             ))}

@@ -33,19 +33,19 @@ export function ProgressCharts({
   const formattedData = useMemo(() => {
     // Sort days by date
     const sortedDays = [...wellnessDays].sort(
-      (a, b) => new Date(a?.date).getTime() - new Date(b?.date).getTime(),
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
     );
 
     // Map days to chart-friendly format
-    return sortedDays?.map((day) => ({
-      date: format(parseISO(day?.date), 'MMM dd'),
-      rawDate: day?.date,
-      meditation: day?.meditation,
-      workout: day?.workout,
-      water: day?.water,
-      sleep: day?.sleep,
-      steps: day?.steps,
-      mood: day?.mood,
+    return sortedDays.map((day) => ({
+      date: format(parseISO(day.date), 'MMM dd'),
+      rawDate: day.date,
+      meditation: day.meditation,
+      workout: day.workout,
+      water: day.water,
+      sleep: day.sleep,
+      steps: day.steps,
+      mood: day.mood,
     }));
   }, [wellnessDays]);
 
@@ -66,7 +66,7 @@ export function ProgressCharts({
     }
 
     const cutoffDate = subDays(new Date(), days).getTime();
-    return formattedData?.filter((day) => new Date(day?.rawDate).getTime() >= cutoffDate);
+    return formattedData.filter((day) => new Date(day.rawDate).getTime() >= cutoffDate);
   }, [formattedData, timeRange]);
 
   // Determine y-axis label based on selected type
@@ -110,7 +110,7 @@ export function ProgressCharts({
       <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={filteredData} margin={{ top: 10, right: 10, left: 10, bottom: 20 }}>
-            <CartesianGrid strokeDasharray="3 3" opacity={0?.1} />
+            <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
             <XAxis dataKey="date" tick={{ fontSize: 12 }} tickMargin={10} />
             <YAxis
               tick={{ fontSize: 12 }}
@@ -149,7 +149,7 @@ export function ProgressCharts({
       <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={filteredData} margin={{ top: 10, right: 10, left: 10, bottom: 20 }}>
-            <CartesianGrid strokeDasharray="3 3" opacity={0?.1} />
+            <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
             <XAxis dataKey="date" tick={{ fontSize: 12 }} tickMargin={10} />
             <YAxis
               tick={{ fontSize: 12 }}
@@ -183,13 +183,13 @@ export function ProgressCharts({
     const weeklyData = [
       {
         name: 'This Week',
-        meditation: filteredData?.reduce((sum, day) => sum + day?.meditation, 0),
-        workout: filteredData?.reduce((sum, day) => sum + day?.workout, 0),
-        water: filteredData?.reduce((sum, day) => sum + day?.water, 0),
+        meditation: filteredData.reduce((sum, day) => sum + day.meditation, 0),
+        workout: filteredData.reduce((sum, day) => sum + day.workout, 0),
+        water: filteredData.reduce((sum, day) => sum + day.water, 0),
         sleep: (
-          filteredData?.reduce((sum, day) => sum + day?.sleep, 0) / filteredData?.length
+          filteredData.reduce((sum, day) => sum + day.sleep, 0) / filteredData.length
         ).toFixed(1),
-        steps: filteredData?.reduce((sum, day) => sum + day?.steps, 0),
+        steps: filteredData.reduce((sum, day) => sum + day.steps, 0),
       },
     ];
 
@@ -201,7 +201,7 @@ export function ProgressCharts({
             layout="vertical"
             margin={{ top: 10, right: 30, left: 100, bottom: 20 }}
           >
-            <CartesianGrid strokeDasharray="3 3" opacity={0?.1} horizontal={true} vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" opacity={0.1} horizontal={true} vertical={false} />
             <XAxis type="number" />
             <YAxis dataKey="name" type="category" tick={{ fontSize: 12 }} width={80} />
             <Tooltip

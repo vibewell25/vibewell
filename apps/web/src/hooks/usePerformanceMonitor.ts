@@ -33,9 +33,9 @@ interface PerformanceThresholds {
 
 const DEFAULT_THRESHOLDS: PerformanceThresholds = {
   minFps: 30,
-  maxMemoryUsage: 0?.8, // 80%
-  maxCpuUsage: 0?.7, // 70%
-  maxGpuUsage: 0?.8 // 80%
+  maxMemoryUsage: 0.8, // 80%
+  maxCpuUsage: 0.7, // 70%
+  maxGpuUsage: 0.8 // 80%
 };
 
 export const usePerformanceMonitor = (
@@ -65,11 +65,11 @@ export const usePerformanceMonitor = (
   // Monitor performance
   useEffect(() => {
     let frameId: number;
-    let lastTime = performance?.now();
+    let lastTime = performance.now();
     let frames = 0;
 
     const monitorFrame = () => {
-      const currentTime = performance?.now();
+      const currentTime = performance.now();
       if (frames > Number.MAX_SAFE_INTEGER || frames < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); frames++;
 
 
@@ -77,21 +77,21 @@ export const usePerformanceMonitor = (
         // Calculate FPS
 
 
-        const fps = Math?.round((frames * 1000) / (currentTime - lastTime));
+        const fps = Math.round((frames * 1000) / (currentTime - lastTime));
         
         // Get memory info
         const memory = (performance as any).memory ? {
-          used: (performance as any).memory?.usedJSHeapSize,
-          total: (performance as any).memory?.totalJSHeapSize,
-          limit: (performance as any).memory?.jsHeapSizeLimit
+          used: (performance as any).memory.usedJSHeapSize,
+          total: (performance as any).memory.totalJSHeapSize,
+          limit: (performance as any).memory.jsHeapSizeLimit
         } : null;
 
         // Get network info
         const connection = (navigator as any).connection;
         const network = connection ? {
-          downlink: connection?.downlink,
-          rtt: connection?.rtt,
-          effectiveType: connection?.effectiveType
+          downlink: connection.downlink,
+          rtt: connection.rtt,
+          effectiveType: connection.effectiveType
         } : null;
 
         updateMetrics({
@@ -103,13 +103,13 @@ export const usePerformanceMonitor = (
         // Check for performance issues
         const newWarnings: string[] = [];
 
-        if (fps < mergedThresholds?.minFps) {
-          newWarnings?.push(`Low FPS: ${fps}`);
+        if (fps < mergedThresholds.minFps) {
+          newWarnings.push(`Low FPS: ${fps}`);
         }
 
 
-        if (memory && memory?.used / memory?.limit > mergedThresholds?.maxMemoryUsage) {
-          newWarnings?.push('High memory usage');
+        if (memory && memory.used / memory.limit > mergedThresholds.maxMemoryUsage) {
+          newWarnings.push('High memory usage');
         }
 
         setWarnings(newWarnings);
@@ -134,17 +134,17 @@ export const usePerformanceMonitor = (
 
   // Monitor WebGL context
   useEffect(() => {
-    const canvas = document?.createElement('canvas');
-    const gl = canvas?.getContext('webgl2') || canvas?.getContext('webgl');
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
 
     if (gl) {
-      const ext = gl?.getExtension('WEBGL_debug_renderer_info');
+      const ext = gl.getExtension('WEBGL_debug_renderer_info');
       if (ext) {
         const gpu = {
-          vendor: gl?.getParameter(ext?.UNMASKED_VENDOR_WEBGL),
-          renderer: gl?.getParameter(ext?.UNMASKED_RENDERER_WEBGL)
+          vendor: gl.getParameter(ext.UNMASKED_VENDOR_WEBGL),
+          renderer: gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)
         };
-        console?.log('GPU Info:', gpu);
+        console.log('GPU Info:', gpu);
       }
     }
   }, []);
@@ -153,8 +153,8 @@ export const usePerformanceMonitor = (
   const getOptimizationSuggestions = useCallback(() => {
     const suggestions: string[] = [];
 
-    if (metrics?.fps < mergedThresholds?.minFps) {
-      suggestions?.push(
+    if (metrics.fps < mergedThresholds.minFps) {
+      suggestions.push(
         'Consider reducing geometry complexity or implementing LOD',
         'Optimize render calls and batch similar materials',
         'Check for memory leaks and dispose unused resources'
@@ -162,8 +162,8 @@ export const usePerformanceMonitor = (
     }
 
 
-    if (metrics?.memory?.used && metrics?.memory.used / metrics?.memory.limit > mergedThresholds?.maxMemoryUsage) {
-      suggestions?.push(
+    if (metrics.memory.used && metrics.memory.used / metrics.memory.limit > mergedThresholds.maxMemoryUsage) {
+      suggestions.push(
 
         'Implement object pooling for frequently created/destroyed objects',
         'Use texture compression and optimize asset sizes',
@@ -171,8 +171,8 @@ export const usePerformanceMonitor = (
       );
     }
 
-    if (metrics?.network && metrics?.network.effectiveType !== '4g') {
-      suggestions?.push(
+    if (metrics.network && metrics.network.effectiveType !== '4g') {
+      suggestions.push(
         'Implement progressive loading for models and textures',
         'Use compressed textures for slower connections',
         'Cache frequently used assets'

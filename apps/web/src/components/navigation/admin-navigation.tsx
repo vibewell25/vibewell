@@ -16,14 +16,14 @@ export function AdminNavigation({ className = '' }: AdminNavigationProps) {
   useEffect(() => {
     // Check if user is admin
     const checkRole = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         const response = await fetch('/api/users/currentRole');
-        const data = await response?.json();
-        setIsAdmin(data?.role === 'admin');
+        const data = await response.json();
+        setIsAdmin(data.role === 'admin');
       } catch (error) {
-        console?.error('Error checking admin role:', error);
+        console.error('Error checking admin role:', error);
         setIsAdmin(false);
       }
     };
@@ -74,19 +74,19 @@ export function AdminNavigation({ className = '' }: AdminNavigationProps) {
       </div>
 
       <ul className="space-y-2">
-        {navigationItems?.map((item) => {
-          const isActive = pathname === item?.href;
+        {navigationItems.map((item) => {
+          const isActive = pathname === item.href;
 
           return (
-            <li key={item?.name}>
+            <li key={item.name}>
               <Link
-                href={item?.href}
+                href={item.href}
                 className={`flex items-center rounded-md px-3 py-2 transition-colors ${
                   isActive ? 'bg-primary/10 text-primary' : 'hover:bg-muted'
                 }`}
               >
-                {item?.icon}
-                <span className="ml-3">{item?.name}</span>
+                {item.icon}
+                <span className="ml-3">{item.name}</span>
               </Link>
             </li>
           );

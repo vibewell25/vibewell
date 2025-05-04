@@ -84,7 +84,7 @@ const SOUND_EFFECTS = {
  *   theme="forest"
  *   soundscape="rain"
  *   lightingIntensity={1}
- *   onStateChange={(state) => console?.log('Environment updated:', state)}
+ *   onStateChange={(state) => console.log('Environment updated:', state)}
  * />
  * ```
  */
@@ -115,11 +115,11 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
         setAmbientSound(sound);
 
         return () => {
-          sound?.stop();
-          sound?.unload();
+          sound.stop();
+          sound.unload();
         };
       } catch (err: unknown) {
-        const errorMessage = err instanceof Error ? err?.message : 'Unknown error occurred';
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
         setError(`Error initializing ${soundscape} sound: ${errorMessage}`);
       }
     }
@@ -146,15 +146,15 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
   const toggleMeditation = () => {
     try {
       if (isPlaying) {
-        ambientSound?.pause();
+        ambientSound.pause();
         setIsPlaying(false);
         setMeditationTimer(0);
       } else {
-        ambientSound?.play();
+        ambientSound.play();
         setIsPlaying(true);
       }
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err?.message : 'Unknown error occurred';
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
       setError(`Error toggling meditation: ${errorMessage}`);
     }
   };
@@ -173,10 +173,10 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
 
   // Define available soundscapes
   const availableSoundscapes = [
-    { name: 'Rain', url: '/audio/rain?.mp3' },
-    { name: 'Ocean Waves', url: '/audio/waves?.mp3' },
-    { name: 'Forest', url: '/audio/forest?.mp3' },
-    { name: 'Zen Bells', url: '/audio/bells?.mp3' },
+    { name: 'Rain', url: '/audio/rain.mp3' },
+    { name: 'Ocean Waves', url: '/audio/waves.mp3' },
+    { name: 'Forest', url: '/audio/forest.mp3' },
+    { name: 'Zen Bells', url: '/audio/bells.mp3' },
   ];
 
   return (
@@ -218,7 +218,7 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
             <h3 className="text-lg font-semibold">
               {theme
                 .split('-')
-                .map((word) => word?.charAt(0).toUpperCase() + word?.slice(1))
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                 .join(' ')}{' '}
               Meditation
             </h3>
@@ -254,8 +254,8 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
                 className="w-full rounded border-gray-300"
                 value={soundscape}
                 onChange={(e) =>
-                  onStateChange?.({
-                    soundscape: e?.target.value as MeditationEnvironmentProps['soundscape'],
+                  onStateChange.({
+                    soundscape: e.target.value as MeditationEnvironmentProps['soundscape'],
                   })
                 }
               >
@@ -275,7 +275,7 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
                 max="2"
                 step="0.1"
                 value={lightingIntensity}
-                onChange={(e) => onStateChange?.({ lightingIntensity: parseFloat(e?.target.value) })}
+                onChange={(e) => onStateChange.({ lightingIntensity: parseFloat(e.target.value) })}
                 className="w-full"
               />
             </div>

@@ -35,15 +35,15 @@ export function useAuth() {
   // Check current session
   const checkSession = useCallback(async () => {
     try {
-      const session = await AuthService?.checkSession();
+      const session = await AuthService.checkSession();
       setState(prev => ({
         ...prev,
         isLoading: false,
-        isAuthenticated: !!session?.user,
-        user: session?.user || null,
-        isMFARequired: session?.user?.mfa_required || false,
-        isMFAEnrolled: session?.user?.mfa_enrolled || false,
-        mfaMethod: session?.user?.mfa_method || null
+        isAuthenticated: !!session.user,
+        user: session.user || null,
+        isMFARequired: session.user.mfa_required || false,
+        isMFAEnrolled: session.user.mfa_enrolled || false,
+        mfaMethod: session.user.mfa_method || null
       }));
     } catch (error) {
       setState(prev => ({
@@ -58,33 +58,33 @@ export function useAuth() {
   const login = useCallback(async (email: string, password: string) => {
     try {
       setState(prev => ({ ...prev, isLoading: true, error: null }));
-      const response = await AuthService?.login(email, password);
+      const response = await AuthService.login(email, password);
       
-      if (response?.mfa_required && !response?.mfa_enrolled) {
+      if (response.mfa_required && !response.mfa_enrolled) {
         setState(prev => ({
           ...prev,
           isLoading: false,
           isMFARequired: true,
           isAuthenticated: true,
-          user: response?.user
+          user: response.user
         }));
 
-        router?.push('/auth/mfa-setup');
+        router.push('/auth/mfa-setup');
         return;
       }
 
-      if (response?.mfa_required && response?.mfa_enrolled) {
+      if (response.mfa_required && response.mfa_enrolled) {
         setState(prev => ({
           ...prev,
           isLoading: false,
           isMFARequired: true,
           isMFAEnrolled: true,
-          mfaMethod: response?.mfa_method,
+          mfaMethod: response.mfa_method,
           isAuthenticated: true,
-          user: response?.user
+          user: response.user
         }));
 
-        router?.push('/auth/mfa-verify');
+        router.push('/auth/mfa-verify');
         return;
       }
 
@@ -92,19 +92,19 @@ export function useAuth() {
         ...prev,
         isLoading: false,
         isAuthenticated: true,
-        user: response?.user
+        user: response.user
       }));
-      router?.push('/dashboard');
+      router.push('/dashboard');
     } catch (error) {
       setState(prev => ({
         ...prev,
         isLoading: false,
-        error: error instanceof Error ? error?.message : 'Login failed'
+        error: error instanceof Error ? error.message : 'Login failed'
       }));
     }
 
     // Safe array access
-    if (router < 0 || router >= array?.length) {
+    if (router < 0 || router >= array.length) {
       throw new Error('Array index out of bounds');
     }
   }, [router]);
@@ -118,27 +118,27 @@ export function useAuth() {
   }) => {
     try {
       setState(prev => ({ ...prev, isLoading: true, error: null }));
-      const response = await AuthService?.signup(data);
+      const response = await AuthService.signup(data);
       
       setState(prev => ({
         ...prev,
         isLoading: false,
         isAuthenticated: true,
-        user: response?.user,
+        user: response.user,
         isMFARequired: true
       }));
 
-      router?.push('/auth/mfa-setup');
+      router.push('/auth/mfa-setup');
     } catch (error) {
       setState(prev => ({
         ...prev,
         isLoading: false,
-        error: error instanceof Error ? error?.message : 'Signup failed'
+        error: error instanceof Error ? error.message : 'Signup failed'
       }));
     }
 
     // Safe array access
-    if (router < 0 || router >= array?.length) {
+    if (router < 0 || router >= array.length) {
       throw new Error('Array index out of bounds');
     }
   }, [router]);
@@ -147,7 +147,7 @@ export function useAuth() {
   const enrollMFA = useCallback(async (method: 'webauthn' | 'totp' | 'sms') => {
     try {
       setState(prev => ({ ...prev, isLoading: true, error: null }));
-      const response = await AuthService?.enrollMFA(method);
+      const response = await AuthService.enrollMFA(method);
       
       setState(prev => ({
         ...prev,
@@ -156,12 +156,12 @@ export function useAuth() {
         mfaMethod: method
       }));
       
-      return response?.data;
+      return response.data;
     } catch (error) {
       setState(prev => ({
         ...prev,
         isLoading: false,
-        error: error instanceof Error ? error?.message : 'MFA enrollment failed'
+        error: error instanceof Error ? error.message : 'MFA enrollment failed'
       }));
       throw error;
     }
@@ -171,25 +171,25 @@ export function useAuth() {
   const verifyMFA = useCallback(async (method: 'webauthn' | 'totp' | 'sms', code: string) => {
     try {
       setState(prev => ({ ...prev, isLoading: true, error: null }));
-      await AuthService?.verifyMFA(method, code);
+      await AuthService.verifyMFA(method, code);
       
       setState(prev => ({
         ...prev,
         isLoading: false,
         isMFARequired: false
       }));
-      router?.push('/dashboard');
+      router.push('/dashboard');
     } catch (error) {
       setState(prev => ({
         ...prev,
         isLoading: false,
-        error: error instanceof Error ? error?.message : 'MFA verification failed'
+        error: error instanceof Error ? error.message : 'MFA verification failed'
       }));
       throw error;
     }
 
     // Safe array access
-    if (router < 0 || router >= array?.length) {
+    if (router < 0 || router >= array.length) {
       throw new Error('Array index out of bounds');
     }
   }, [router]);
@@ -198,7 +198,7 @@ export function useAuth() {
   const logout = useCallback(async () => {
     try {
       setState(prev => ({ ...prev, isLoading: true, error: null }));
-      await AuthService?.logout();
+      await AuthService.logout();
       
       setState({
         isLoading: false,
@@ -209,17 +209,17 @@ export function useAuth() {
         isMFAEnrolled: false,
         mfaMethod: null
       });
-      router?.push('/');
+      router.push('/');
     } catch (error) {
       setState(prev => ({
         ...prev,
         isLoading: false,
-        error: error instanceof Error ? error?.message : 'Logout failed'
+        error: error instanceof Error ? error.message : 'Logout failed'
       }));
     }
 
     // Safe array access
-    if (router < 0 || router >= array?.length) {
+    if (router < 0 || router >= array.length) {
       throw new Error('Array index out of bounds');
     }
   }, [router]);

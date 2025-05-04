@@ -5,7 +5,7 @@ import { BeautyService, BeautyCategory, BeautyFilter } from '../types/beauty';
 import { useNavigation } from '@react-navigation/native';
 import { BeautyBookingNavigationProp } from '../types/navigation';
 
-const NewBookingScreen: React?.FC = () => {
+const NewBookingScreen: React.FC = () => {
   const navigation = useNavigation<BeautyBookingNavigationProp>();
   const [services, setServices] = useState<BeautyService[]>([]);
   const [loading, setLoading] = useState(true);
@@ -20,24 +20,24 @@ const NewBookingScreen: React?.FC = () => {
   const [featuredOnly, setFeaturedOnly] = useState<boolean>(false);
 
   useEffect(() => {
-    beautyApi?.getCategories()
+    beautyApi.getCategories()
       .then(setCategories)
-      .catch(console?.error);
+      .catch(console.error);
   }, []);
 
   useEffect(() => {
     setLoading(true);
     const filters: BeautyFilter = {};
-    if (selectedCategory) filters?.categoryId = selectedCategory;
-    if (minPrice) filters?.minPrice = parseFloat(minPrice);
-    if (maxPrice) filters?.maxPrice = parseFloat(maxPrice);
-    if (minDuration) filters?.minDuration = parseFloat(minDuration);
-    if (maxDuration) filters?.maxDuration = parseFloat(maxDuration);
-    if (minRating) filters?.minRating = parseFloat(minRating);
-    if (featuredOnly) filters?.featured = true;
-    beautyApi?.getServices(searchTerm, filters)
+    if (selectedCategory) filters.categoryId = selectedCategory;
+    if (minPrice) filters.minPrice = parseFloat(minPrice);
+    if (maxPrice) filters.maxPrice = parseFloat(maxPrice);
+    if (minDuration) filters.minDuration = parseFloat(minDuration);
+    if (maxDuration) filters.maxDuration = parseFloat(maxDuration);
+    if (minRating) filters.minRating = parseFloat(minRating);
+    if (featuredOnly) filters.featured = true;
+    beautyApi.getServices(searchTerm, filters)
       .then(setServices)
-      .catch(console?.error)
+      .catch(console.error)
       .finally(() => setLoading(false));
   }, [searchTerm, selectedCategory, minPrice, maxPrice, minDuration, maxDuration, minRating, featuredOnly]);
 
@@ -46,69 +46,69 @@ const NewBookingScreen: React?.FC = () => {
   }
 
   return (
-    <View style={styles?.container}>
+    <View style={styles.container}>
       <TextInput
         placeholder="Search services..."
         value={searchTerm}
         onChangeText={setSearchTerm}
-        style={styles?.searchInput}
+        style={styles.searchInput}
       />
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles?.filterContainer}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterContainer}>
         <TouchableOpacity
           onPress={() => setSelectedCategory(undefined)}
-          style={[styles?.filterButton, !selectedCategory && styles?.filterButtonSelected]}
+          style={[styles.filterButton, !selectedCategory && styles.filterButtonSelected]}
         >
-          <Text style={[styles?.filterButtonText, !selectedCategory && styles?.filterButtonTextSelected]}>All</Text>
+          <Text style={[styles.filterButtonText, !selectedCategory && styles.filterButtonTextSelected]}>All</Text>
         </TouchableOpacity>
-        {categories?.map(cat => (
+        {categories.map(cat => (
           <TouchableOpacity
-            key={cat?.id}
-            onPress={() => setSelectedCategory(cat?.id)}
-            style={[styles?.filterButton, selectedCategory === cat?.id && styles?.filterButtonSelected]}
+            key={cat.id}
+            onPress={() => setSelectedCategory(cat.id)}
+            style={[styles.filterButton, selectedCategory === cat.id && styles.filterButtonSelected]}
           >
-            <Text style={[styles?.filterButtonText, selectedCategory === cat?.id && styles?.filterButtonTextSelected]}>{cat?.name}</Text>
+            <Text style={[styles.filterButtonText, selectedCategory === cat.id && styles.filterButtonTextSelected]}>{cat.name}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
-      <View style={styles?.filterRow}>
+      <View style={styles.filterRow}>
         <TextInput
           placeholder="Min Price"
           value={minPrice}
           onChangeText={setMinPrice}
           keyboardType="numeric"
-          style={styles?.filterInput}
+          style={styles.filterInput}
         />
         <TextInput
           placeholder="Max Price"
           value={maxPrice}
           onChangeText={setMaxPrice}
           keyboardType="numeric"
-          style={styles?.filterInput}
+          style={styles.filterInput}
         />
       </View>
-      <View style={styles?.filterRow}>
+      <View style={styles.filterRow}>
         <TextInput
           placeholder="Min Duration"
           value={minDuration}
           onChangeText={setMinDuration}
           keyboardType="numeric"
-          style={styles?.filterInput}
+          style={styles.filterInput}
         />
         <TextInput
           placeholder="Max Duration"
           value={maxDuration}
           onChangeText={setMaxDuration}
           keyboardType="numeric"
-          style={styles?.filterInput}
+          style={styles.filterInput}
         />
       </View>
-      <View style={styles?.switchContainer}>
+      <View style={styles.switchContainer}>
         <TextInput
           placeholder="Min Rating"
           value={minRating}
           onChangeText={setMinRating}
           keyboardType="numeric"
-          style={styles?.filterInputSmall}
+          style={styles.filterInputSmall}
         />
         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 16 }}>
           <Switch value={featuredOnly} onValueChange={setFeaturedOnly} />
@@ -117,18 +117,18 @@ const NewBookingScreen: React?.FC = () => {
       </View>
       <FlatList
         data={services}
-        keyExtractor={item => item?.id}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity
-            style={styles?.item}
+            style={styles.item}
             onPress={async () => {
-              const details = await beautyApi?.getServiceDetails(item?.id);
-              navigation?.navigate('BeautyBooking', { service: details });
+              const details = await beautyApi.getServiceDetails(item.id);
+              navigation.navigate('BeautyBooking', { service: details });
             }}
           >
-            <Text style={styles?.title}>{item?.title}</Text>
-            <Text>Price: {item?.price}</Text>
-            <Text>Duration: {item?.duration} mins</Text>
+            <Text style={styles.title}>{item.title}</Text>
+            <Text>Price: {item.price}</Text>
+            <Text>Duration: {item.duration} mins</Text>
           </TouchableOpacity>
         )}
       />
@@ -136,7 +136,7 @@ const NewBookingScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   searchInput: { height: 40, borderColor: '#ccc', borderWidth: 1, borderRadius: 8, paddingHorizontal: 8, marginBottom: 8 },
   filterContainer: { marginBottom: 8 },

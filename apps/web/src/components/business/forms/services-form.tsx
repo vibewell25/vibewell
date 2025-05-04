@@ -46,12 +46,12 @@ export function ServicesForm({ form }: ServicesFormProps) {
   ];
 
   const handleAddService = () => {
-    if (!newService?.name || newService?.price <= 0 || newService?.duration <= 0) {
+    if (!newService.name || newService.price <= 0 || newService.duration <= 0) {
       return; // Don't add invalid services
     }
 
-    const updatedServices = [...form?.watch('services'), newService];
-    form?.setValue('services', updatedServices, { shouldValidate: true });
+    const updatedServices = [...form.watch('services'), newService];
+    form.setValue('services', updatedServices, { shouldValidate: true });
 
     // Reset the new service form
     setNewService({
@@ -63,24 +63,24 @@ export function ServicesForm({ form }: ServicesFormProps) {
   };
 
   const handleRemoveService = (index: number) => {
-    const services = [...form?.watch('services')];
-    services?.splice(index, 1);
-    form?.setValue('services', services, { shouldValidate: true });
+    const services = [...form.watch('services')];
+    services.splice(index, 1);
+    form.setValue('services', services, { shouldValidate: true });
   };
 
   const handleEditService = (index: number) => {
     setEditingServiceIndex(index);
-    const services = form?.watch('services');
+    const services = form.watch('services');
     setNewService({ ...services[index] });
   };
 
   const handleUpdateService = () => {
     if (editingServiceIndex === null) return;
 
-    const services = [...form?.watch('services')];
+    const services = [...form.watch('services')];
     services[editingServiceIndex] = newService;
 
-    form?.setValue('services', services, { shouldValidate: true });
+    form.setValue('services', services, { shouldValidate: true });
     setEditingServiceIndex(null);
 
     // Reset the form
@@ -103,20 +103,20 @@ export function ServicesForm({ form }: ServicesFormProps) {
   };
 
   const handleCategoryChange = (categoryId: string, checked: boolean) => {
-    const currentCategories = [...form?.watch('serviceCategories')];
+    const currentCategories = [...form.watch('serviceCategories')];
 
     if (checked) {
       // Add category if it doesn't exist
-      if (!currentCategories?.includes(categoryId)) {
-        form?.setValue('serviceCategories', [...currentCategories, categoryId], {
+      if (!currentCategories.includes(categoryId)) {
+        form.setValue('serviceCategories', [...currentCategories, categoryId], {
           shouldValidate: true,
         });
       }
     } else {
       // Remove category
-      form?.setValue(
+      form.setValue(
         'serviceCategories',
-        currentCategories?.filter((id) => id !== categoryId),
+        currentCategories.filter((id) => id !== categoryId),
         { shouldValidate: true },
       );
     }
@@ -136,24 +136,24 @@ export function ServicesForm({ form }: ServicesFormProps) {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {serviceCategories?.map((category) => (
-              <div key={category?.id} className="flex items-start space-x-2">
+            {serviceCategories.map((category) => (
+              <div key={category.id} className="flex items-start space-x-2">
                 <Checkbox
-                  id={`category-${category?.id}`}
-                  checked={form?.watch('serviceCategories')?.includes(category?.id)}
+                  id={`category-${category.id}`}
+                  checked={form.watch('serviceCategories').includes(category.id)}
                   onCheckedChange={(checked) =>
-                    handleCategoryChange(category?.id, checked as boolean)
+                    handleCategoryChange(category.id, checked as boolean)
                   }
                 />
-                <Label htmlFor={`category-${category?.id}`} className="cursor-pointer font-normal">
-                  {category?.label}
+                <Label htmlFor={`category-${category.id}`} className="cursor-pointer font-normal">
+                  {category.label}
                 </Label>
               </div>
             ))}
           </div>
-          {form?.formState.errors?.serviceCategories && (
+          {form.formState.errors.serviceCategories && (
             <p className="mt-2 text-sm text-red-500">
-              {form?.formState.errors?.serviceCategories.message}
+              {form.formState.errors.serviceCategories.message}
             </p>
           )}
         </CardContent>
@@ -168,23 +168,23 @@ export function ServicesForm({ form }: ServicesFormProps) {
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Current services list */}
-          {form?.watch('services').length > 0 ? (
+          {form.watch('services').length > 0 ? (
             <ScrollArea className="h-[200px] rounded-md border">
               <div className="space-y-2 p-4">
-                {form?.watch('services').map((service, index) => (
+                {form.watch('services').map((service, index) => (
                   <div
                     key={index}
                     className="flex items-center justify-between rounded-lg bg-muted/50 p-3"
                   >
                     <div>
-                      <h3 className="font-medium">{service?.name}</h3>
-                      {service?.description && (
-                        <p className="text-sm text-muted-foreground">{service?.description}</p>
+                      <h3 className="font-medium">{service.name}</h3>
+                      {service.description && (
+                        <p className="text-sm text-muted-foreground">{service.description}</p>
                       )}
                       <div className="mt-1 flex items-center gap-2 text-sm">
-                        <span>${service?.price}</span>
+                        <span>${service.price}</span>
                         <span className="text-muted-foreground">•</span>
-                        <span>{service?.duration} min</span>
+                        <span>{service.duration} min</span>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -214,8 +214,8 @@ export function ServicesForm({ form }: ServicesFormProps) {
             </div>
           )}
 
-          {form?.formState.errors?.services && (
-            <p className="text-sm text-red-500">{form?.formState.errors?.services.message}</p>
+          {form.formState.errors.services && (
+            <p className="text-sm text-red-500">{form.formState.errors.services.message}</p>
           )}
 
           {/* Add/Edit service form */}
@@ -230,8 +230,8 @@ export function ServicesForm({ form }: ServicesFormProps) {
                 <Label htmlFor="serviceName">Service Name</Label>
                 <Input
                   id="serviceName"
-                  value={newService?.name}
-                  onChange={(e) => setNewService({ ...newService, name: e?.target.value })}
+                  value={newService.name}
+                  onChange={(e) => setNewService({ ...newService, name: e.target.value })}
                   placeholder="Haircut, Massage, Facial, etc."
                 />
               </div>
@@ -240,8 +240,8 @@ export function ServicesForm({ form }: ServicesFormProps) {
                 <Label htmlFor="serviceDescription">Description (Optional)</Label>
                 <Textarea
                   id="serviceDescription"
-                  value={newService?.description}
-                  onChange={(e) => setNewService({ ...newService, description: e?.target.value })}
+                  value={newService.description}
+                  onChange={(e) => setNewService({ ...newService, description: e.target.value })}
                   placeholder="Briefly describe what this service includes..."
                   rows={2}
                 />
@@ -253,9 +253,9 @@ export function ServicesForm({ form }: ServicesFormProps) {
                   <Input
                     id="serviceDuration"
                     type="number"
-                    value={newService?.duration}
+                    value={newService.duration}
                     onChange={(e) =>
-                      setNewService({ ...newService, duration: parseInt(e?.target.value) || 0 })
+                      setNewService({ ...newService, duration: parseInt(e.target.value) || 0 })
                     }
                     placeholder="60"
                     min={5}
@@ -267,13 +267,13 @@ export function ServicesForm({ form }: ServicesFormProps) {
                   <Input
                     id="servicePrice"
                     type="number"
-                    value={newService?.price}
+                    value={newService.price}
                     onChange={(e) =>
-                      setNewService({ ...newService, price: parseFloat(e?.target.value) || 0 })
+                      setNewService({ ...newService, price: parseFloat(e.target.value) || 0 })
                     }
-                    placeholder="0?.00"
+                    placeholder="0.00"
                     min={0}
-                    step={0?.01}
+                    step={0.01}
                   />
                 </div>
               </div>
@@ -289,7 +289,7 @@ export function ServicesForm({ form }: ServicesFormProps) {
               {editingServiceIndex !== null ? (
                 <Button
                   onClick={handleUpdateService}
-                  disabled={!newService?.name || newService?.price <= 0 || newService?.duration <= 0}
+                  disabled={!newService.name || newService.price <= 0 || newService.duration <= 0}
                 >
                   <Check className="mr-2 h-4 w-4" />
                   Update Service
@@ -297,7 +297,7 @@ export function ServicesForm({ form }: ServicesFormProps) {
               ) : (
                 <Button
                   onClick={handleAddService}
-                  disabled={!newService?.name || newService?.price <= 0 || newService?.duration <= 0}
+                  disabled={!newService.name || newService.price <= 0 || newService.duration <= 0}
                 >
                   <Plus className="mr-2 h-4 w-4" />
                   Add Service

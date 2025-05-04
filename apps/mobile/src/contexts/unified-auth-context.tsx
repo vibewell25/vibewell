@@ -28,7 +28,7 @@ export interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React?.FC<{ children: React?.ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -36,19 +36,19 @@ export const AuthProvider: React?.FC<{ children: React?.ReactNode }> = ({ childr
   // Load token and user from storage
   useEffect(() => {
     const restore = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-      const token = await AsyncStorage?.getItem(storageKeys?.AUTH_TOKEN);
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+      const token = await AsyncStorage.getItem(storageKeys.AUTH_TOKEN);
       if (token) {
         setAccessToken(token);
         try {
           const resp = await fetch(`${serverBaseUrl}/api/auth/me`, {
             headers: { Authorization: `Bearer ${token}` },
           });
-          if (resp?.ok) {
-            const json = await resp?.json();
-            setUser(json?.user);
-            await AsyncStorage?.setItem(storageKeys?.USER_DATA, JSON?.stringify(json?.user));
+          if (resp.ok) {
+            const json = await resp.json();
+            setUser(json.user);
+            await AsyncStorage.setItem(storageKeys.USER_DATA, JSON.stringify(json.user));
           }
         } catch {
           // ignore
@@ -60,13 +60,13 @@ export const AuthProvider: React?.FC<{ children: React?.ReactNode }> = ({ childr
   }, []);
 
   const signIn = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');signup = false): Promise<boolean> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');signup = false): Promise<boolean> => {
     try {
       setIsLoading(true);
       // Construct Auth0 authorization URL
       const authUrl =
-        `${DISCOVERY?.authorizationEndpoint}` +
+        `${DISCOVERY.authorizationEndpoint}` +
         `?response_type=code` +
         `&client_id=${AUTH0_CLIENT_ID}` +
         `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
@@ -75,52 +75,52 @@ export const AuthProvider: React?.FC<{ children: React?.ReactNode }> = ({ childr
         (signup ? `&screen_hint=signup` : '');
 
       // @ts-ignore: startAsync missing in TS defs
-      const result = await AuthSession?.startAsync({ authUrl });
-      if (result?.type !== 'success' || !result?.params.code) {
+      const result = await AuthSession.startAsync({ authUrl });
+      if (result.type !== 'success' || !result.params.code) {
         setIsLoading(false);
         return false;
       }
 
       // Exchange code for tokens
       // @ts-ignore: exchangeCodeAsync missing in TS defs
-      const tokenResult = await AuthSession?.exchangeCodeAsync(
+      const tokenResult = await AuthSession.exchangeCodeAsync(
         {
           clientId: AUTH0_CLIENT_ID,
-          code: result?.params.code,
+          code: result.params.code,
           redirectUri: REDIRECT_URI,
         },
         DISCOVERY
       );
-      if (!tokenResult?.accessToken) {
+      if (!tokenResult.accessToken) {
         setIsLoading(false);
         return false;
       }
-      await AsyncStorage?.setItem(storageKeys?.AUTH_TOKEN, tokenResult?.accessToken);
-      setAccessToken(tokenResult?.accessToken);
+      await AsyncStorage.setItem(storageKeys.AUTH_TOKEN, tokenResult.accessToken);
+      setAccessToken(tokenResult.accessToken);
 
       // Fetch user profile
       const resp = await fetch(`${serverBaseUrl}/api/auth/me`, {
-        headers: { Authorization: `Bearer ${tokenResult?.accessToken}` },
+        headers: { Authorization: `Bearer ${tokenResult.accessToken}` },
       });
-      if (resp?.ok) {
-        const json = await resp?.json();
-        setUser(json?.user);
-        await AsyncStorage?.setItem(storageKeys?.USER_DATA, JSON?.stringify(json?.user));
+      if (resp.ok) {
+        const json = await resp.json();
+        setUser(json.user);
+        await AsyncStorage.setItem(storageKeys.USER_DATA, JSON.stringify(json.user));
       }
       setIsLoading(false);
       return true;
     } catch (error) {
-      console?.error('Auth signIn error:', error);
+      console.error('Auth signIn error:', error);
       setIsLoading(false);
       return false;
     }
   };
 
   const signOut = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');): Promise<void> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');): Promise<void> => {
     setIsLoading(true);
-    await AsyncStorage?.removeItem(storageKeys?.AUTH_TOKEN);
+    await AsyncStorage.removeItem(storageKeys.AUTH_TOKEN);
     setUser(null);
     setAccessToken(null);
     setIsLoading(false);
@@ -135,7 +135,7 @@ export const AuthProvider: React?.FC<{ children: React?.ReactNode }> = ({ childr
     signOut,
   };
 
-  return <AuthContext?.Provider value={value}>{children}</AuthContext?.Provider>;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = (): AuthContextType => {

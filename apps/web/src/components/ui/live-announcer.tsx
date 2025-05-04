@@ -12,7 +12,7 @@ interface LiveAnnouncerProps {
  *
  * Usage:
  * - Import and place this component once at the root of your app
- * - Use the global `window?.announcer.announce("Your message")` method
+ * - Use the global `window.announcer.announce("Your message")` method
  * to announce important updates to screen readers
  */
 export function LiveAnnouncer({ politeness = 'polite' }: LiveAnnouncerProps) {
@@ -33,12 +33,12 @@ export function LiveAnnouncer({ politeness = 'polite' }: LiveAnnouncerProps) {
   // Add the announcer to the window object for global access
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      window?.announcer = { announce };
+      window.announcer = { announce };
     }
 
     return () => {
       if (typeof window !== 'undefined') {
-        delete window?.announcer;
+        delete window.announcer;
       }
     };
   }, [announce]);

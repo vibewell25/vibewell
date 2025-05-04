@@ -43,7 +43,7 @@ interface ResourceDetailTemplateProps {
   sectionName: string;
   sectionPath: string;
   relatedResources?: BaseResource[];
-  navigationComponent?: React?.ReactNode;
+  navigationComponent?: React.ReactNode;
   fetchRelatedResource?: (id: string) => BaseResource | undefined;
   onDownload?: (resource: BaseResource) => void;
 }
@@ -53,16 +53,16 @@ const trackResourceView = (resourceId: string, resourceName: string) => {
   if (typeof window !== 'undefined') {
     const now = new Date().toISOString();
     try {
-      const viewData = JSON?.parse(localStorage?.getItem('resource_view_log') || '{}');
+      const viewData = JSON.parse(localStorage.getItem('resource_view_log') || '{}');
       viewData[resourceId] = {
         id: resourceId,
         name: resourceName,
         lastViewed: now,
-        views: (viewData[resourceId]?.views || 0) + 1,
+        views: (viewData[resourceId].views || 0) + 1,
       };
-      localStorage?.setItem('resource_view_log', JSON?.stringify(viewData));
+      localStorage.setItem('resource_view_log', JSON.stringify(viewData));
     } catch (e) {
-      console?.error('Failed to track resource view', e);
+      console.error('Failed to track resource view', e);
     }
   }
 };
@@ -86,39 +86,39 @@ export function ResourceDetailTemplate({
     setIsClient(true);
     if (resource) {
       // Track view
-      trackResourceView(resource?.id, resource?.title);
+      trackResourceView(resource.id, resource.title);
       // Add to recent views
       trackRecentView({
-        id: resource?.id,
+        id: resource.id,
         type: resourceType,
-        title: resource?.title,
-        description: `${resource?.category} - ${resource?.author}`,
-        category: resource?.category,
-        url: window?.location.pathname,
+        title: resource.title,
+        description: `${resource.category} - ${resource.author}`,
+        category: resource.category,
+        url: window.location.pathname,
       });
       // Check if bookmarked
-      setIsBookmarked(checkIsBookmarked(resource?.id, resourceType));
+      setIsBookmarked(checkIsBookmarked(resource.id, resourceType));
       // Get user rating if any
-      const rating = getUserRating(resource?.id, resourceType);
+      const rating = getUserRating(resource.id, resourceType);
       setUserRating(rating);
       // Get average rating
-      const avgRating = getAverageRating(resource?.id, resourceType);
+      const avgRating = getAverageRating(resource.id, resourceType);
       setAverageRating(avgRating);
     }
   }, [resource, resourceType]);
   // Handle bookmarking
   const toggleBookmark = () => {
     if (isBookmarked) {
-      removeBookmark(resource?.id, resourceType);
+      removeBookmark(resource.id, resourceType);
       setIsBookmarked(false);
     } else {
       addBookmark({
-        id: resource?.id,
+        id: resource.id,
         type: resourceType,
-        title: resource?.title,
-        description: `${resource?.category} - ${resource?.author}`,
-        url: window?.location.pathname,
-        category: resource?.category,
+        title: resource.title,
+        description: `${resource.category} - ${resource.author}`,
+        url: window.location.pathname,
+        category: resource.category,
       });
       setIsBookmarked(true);
     }
@@ -127,9 +127,9 @@ export function ResourceDetailTemplate({
   const handleRatingChange = (rating: number) => {
     setUserRating(rating);
     // Save the rating
-    saveRating(resource?.id, resourceType, rating);
+    saveRating(resource.id, resourceType, rating);
     // Update average rating
-    const newAverage = getAverageRating(resource?.id, resourceType);
+    const newAverage = getAverageRating(resource.id, resourceType);
     setAverageRating(newAverage);
   };
   // Handle download
@@ -138,7 +138,7 @@ export function ResourceDetailTemplate({
       onDownload(resource);
     } else {
       // Default download behavior
-      alert(`Downloading ${resource?.title}`);
+      alert(`Downloading ${resource.title}`);
       // In a real app, this would trigger a download
     }
   };
@@ -147,13 +147,13 @@ export function ResourceDetailTemplate({
   }
   // Get related resources if available
   const related =
-    resource?.relatedResources && Array?.isArray(resource?.relatedResources)
-      ? (resource?.relatedResources
+    resource.relatedResources && Array.isArray(resource.relatedResources)
+      ? (resource.relatedResources
           .map((id) => {
             if (fetchRelatedResource) {
               return fetchRelatedResource(id);
             } else if (relatedResources) {
-              return relatedResources?.find((r) => r?.id === id);
+              return relatedResources.find((r) => r.id === id);
             }
             return undefined;
           })
@@ -179,13 +179,13 @@ export function ResourceDetailTemplate({
                 Resources
               </Link>
               <span className="mx-2">/</span>
-              <span className="text-gray-700">{resource?.title}</span>
+              <span className="text-gray-700">{resource.title}</span>
             </div>
             <button
-              onClick={() => router?.back()}
+              onClick={() => router.back()}
               className="inline-flex items-center text-sm text-gray-600 hover:text-blue-600"
             >
-              <Icons?.ArrowLeftIcon className="mr-1 h-4 w-4" /> Back
+              <Icons.ArrowLeftIcon className="mr-1 h-4 w-4" /> Back
             </button>
           </div>
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
@@ -196,16 +196,16 @@ export function ResourceDetailTemplate({
               <div className="overflow-hidden rounded-lg bg-white shadow-md">
                 {/* Resource Header */}
                 <div className="relative">
-                  {resource?.imageUrl && (
+                  {resource.imageUrl && (
                     <div className="relative h-64">
                       <Image
-                        src={resource?.imageUrl}
-                        alt={resource?.title}
+                        src={resource.imageUrl}
+                        alt={resource.title}
                         className="object-cover"
                         fill
                       />
                       <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-                      {resource?.premium && (
+                      {resource.premium && (
                         <div className="absolute right-4 top-4 rounded-full bg-yellow-500 px-3 py-1 text-sm font-medium text-white">
                           Premium
                         </div>
@@ -216,24 +216,24 @@ export function ResourceDetailTemplate({
                     <div className="flex flex-wrap items-start justify-between gap-4">
                       <div>
                         <Badge variant="outline" className="mb-2">
-                          {resource?.category}
+                          {resource.category}
                         </Badge>
-                        <h1 className="mb-2 text-2xl font-bold md:text-3xl">{resource?.title}</h1>
+                        <h1 className="mb-2 text-2xl font-bold md:text-3xl">{resource.title}</h1>
                         <div className="mb-4 flex items-center text-sm text-gray-600">
-                          <Icons?.UserIcon className="mr-1 h-4 w-4" />
-                          <span className="mr-4">{resource?.author}</span>
-                          <Icons?.CalendarIcon className="mr-1 h-4 w-4" />
+                          <Icons.UserIcon className="mr-1 h-4 w-4" />
+                          <span className="mr-4">{resource.author}</span>
+                          <Icons.CalendarIcon className="mr-1 h-4 w-4" />
                           <span className="mr-4">
-                            {new Date(resource?.date).toLocaleDateString()}
+                            {new Date(resource.date).toLocaleDateString()}
                           </span>
-                          <Icons?.ClockIcon className="mr-1 h-4 w-4" />
-                          <span>{resource?.readTime}</span>
+                          <Icons.ClockIcon className="mr-1 h-4 w-4" />
+                          <span>{resource.readTime}</span>
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
-                        {resource?.downloadUrl && (
+                        {resource.downloadUrl && (
                           <Button onClick={handleDownload} className="flex items-center">
-                            <Icons?.ArrowDownTrayIcon className="mr-2 h-4 w-4" />
+                            <Icons.ArrowDownTrayIcon className="mr-2 h-4 w-4" />
                             Download
                           </Button>
                         )}
@@ -242,7 +242,7 @@ export function ResourceDetailTemplate({
                           className={`flex items-center ${isBookmarked ? 'text-yellow-500' : ''}`}
                           onClick={toggleBookmark}
                         >
-                          <Icons?.BookmarkIcon className="mr-2 h-4 w-4" />
+                          <Icons.BookmarkIcon className="mr-2 h-4 w-4" />
                           {isBookmarked ? 'Saved' : 'Save'}
                         </Button>
                       </div>
@@ -259,15 +259,15 @@ export function ResourceDetailTemplate({
                           )}
                         </div>
                         <span className="text-sm text-gray-600">
-                          {averageRating?.average.toFixed(1)} ({averageRating?.count}{' '}
-                          {averageRating?.count === 1 ? 'rating' : 'ratings'})
+                          {averageRating.average.toFixed(1)} ({averageRating.count}{' '}
+                          {averageRating.count === 1 ? 'rating' : 'ratings'})
                         </span>
                       </div>
                     </div>
                     {/* Resource Tags */}
-                    {resource?.tags && resource?.tags.length > 0 && (
+                    {resource.tags && resource.tags.length > 0 && (
                       <div className="mb-6 flex flex-wrap gap-2">
-                        {resource?.tags.map((tag) => (
+                        {resource.tags.map((tag) => (
                           <span
                             key={tag}
                             className="inline-block rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-700"
@@ -281,42 +281,42 @@ export function ResourceDetailTemplate({
                 </div>
                 {/* Resource Content */}
                 <div className="border-t border-gray-100 p-6">
-                  {resource?.premium ? (
+                  {resource.premium ? (
                     <PremiumContentLock>
                       <div
                         className="prose max-w-none"
-                        dangerouslySetInnerHTML={{ __html: resource?.content }}
+                        dangerouslySetInnerHTML={{ __html: resource.content }}
                       />
                     </PremiumContentLock>
                   ) : (
                     <div
                       className="prose max-w-none"
-                      dangerouslySetInnerHTML={{ __html: resource?.content }}
+                      dangerouslySetInnerHTML={{ __html: resource.content }}
                     />
                   )}
                 </div>
                 {/* Reviews Section */}
                 <div className="border-t border-gray-100 p-6">
-                  <ResourceReview resourceId={resource?.id} resourceType={resourceType} />
+                  <ResourceReview resourceId={resource.id} resourceType={resourceType} />
                 </div>
               </div>
               {/* Related Resources */}
-              {related?.length > 0 && (
+              {related.length > 0 && (
                 <div className="mt-8">
                   <h2 className="mb-4 text-xl font-semibold">Related Resources</h2>
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {related?.map((relatedResource) => (
+                    {related.map((relatedResource) => (
                       <Link
-                        href={`${sectionPath}/resources/${relatedResource?.id}`}
-                        key={relatedResource?.id}
+                        href={`${sectionPath}/resources/${relatedResource.id}`}
+                        key={relatedResource.id}
                         className="flex flex-col rounded-lg bg-white p-4 shadow transition-shadow hover:shadow-md"
                       >
                         <h3 className="mb-2 font-medium text-blue-600 hover:text-blue-800">
-                          {relatedResource?.title}
+                          {relatedResource.title}
                         </h3>
                         <div className="mt-auto flex items-center text-sm text-gray-500">
-                          <Icons?.DocumentTextIcon className="mr-1 h-4 w-4" />
-                          <span>{relatedResource?.category}</span>
+                          <Icons.DocumentTextIcon className="mr-1 h-4 w-4" />
+                          <span>{relatedResource.category}</span>
                         </div>
                       </Link>
                     ))}

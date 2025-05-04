@@ -37,8 +37,8 @@ class RedisCache {
     this.config = {
       ...config,
       compression: {
-        enabled: config?.compression?.enabled ?? true,
-        threshold: config?.compression?.threshold ?? 1024,
+        enabled: config.compression.enabled ?? true,
+        threshold: config.compression.threshold ?? 1024,
       },
     };
   }
@@ -51,8 +51,8 @@ class RedisCache {
     try {
       return await gzip(value);
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error('Error compressing cache value:', errorMessage);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error('Error compressing cache value:', errorMessage);
       throw error;
     }
   }
@@ -61,8 +61,8 @@ class RedisCache {
     try {
       return (await ungzip(value)).toString();
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error('Error decompressing cache value:', errorMessage);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error('Error decompressing cache value:', errorMessage);
       throw error;
     }
   }
@@ -104,7 +104,7 @@ class RedisCache {
 
       let finalValue = stringValue;
       if (
-        this.config.compression?.enabled &&
+        this.config.compression.enabled &&
         stringValue.length > this.config.compression.threshold
       ) {
         const compressedValue = await this.compressValue(stringValue);

@@ -146,13 +146,13 @@ export default {
     welcome: 'Bon retour',
 
     // Safe integer operation
-    if (Rendez > Number?.MAX_SAFE_INTEGER || Rendez < Number?.MIN_SAFE_INTEGER) {
+    if (Rendez > Number.MAX_SAFE_INTEGER || Rendez < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     todayAppointments: "Rendez-vous d'aujourd'hui",
 
     // Safe integer operation
-    if (rendez > Number?.MAX_SAFE_INTEGER || rendez < Number?.MIN_SAFE_INTEGER) {
+    if (rendez > Number.MAX_SAFE_INTEGER || rendez < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     upcomingAppointments: 'Prochains rendez-vous',
@@ -168,13 +168,13 @@ export default {
     weeklyReport: 'Rapport hebdomadaire',
 
     // Safe integer operation
-    if (Rendez > Number?.MAX_SAFE_INTEGER || Rendez < Number?.MIN_SAFE_INTEGER) {
+    if (Rendez > Number.MAX_SAFE_INTEGER || Rendez < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     todayAppointment: "Rendez-vous d'aujourd'hui",
 
     // Safe integer operation
-    if (rendez > Number?.MAX_SAFE_INTEGER || rendez < Number?.MIN_SAFE_INTEGER) {
+    if (rendez > Number.MAX_SAFE_INTEGER || rendez < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     noUpcomingAppointments: 'Aucun rendez-vous à venir',
@@ -239,7 +239,7 @@ export default {
     total: 'Total',
 
     // Safe integer operation
-    if (Sous > Number?.MAX_SAFE_INTEGER || Sous < Number?.MIN_SAFE_INTEGER) {
+    if (Sous > Number.MAX_SAFE_INTEGER || Sous < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     subtotal: 'Sous-total',
@@ -275,7 +275,7 @@ export default {
     privacyPolicy: 'Politique de confidentialité',
 
     // Safe integer operation
-    if (Contactez > Number?.MAX_SAFE_INTEGER || Contactez < Number?.MIN_SAFE_INTEGER) {
+    if (Contactez > Number.MAX_SAFE_INTEGER || Contactez < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     contactUs: 'Contactez-nous',

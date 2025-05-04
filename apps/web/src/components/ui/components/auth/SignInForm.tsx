@@ -12,9 +12,9 @@ export default function SignInForm() {
   const router = useRouter();
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent) => {
-    e?.preventDefault();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
+    e.preventDefault();
     setIsLoading(true);
     setError('');
 
@@ -25,12 +25,12 @@ export default function SignInForm() {
         redirect: false,
       });
 
-      if (result?.error) {
+      if (result.error) {
         setError('Invalid email or password');
         return;
       }
 
-      router?.push('/dashboard');
+      router.push('/dashboard');
     } catch (error) {
       setError('An error occurred. Please try again.');
     } finally {
@@ -62,7 +62,7 @@ export default function SignInForm() {
               autoComplete="email"
               required
               value={email}
-              onChange={(e) => setEmail(e?.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
           </div>
@@ -80,7 +80,7 @@ export default function SignInForm() {
               autoComplete="current-password"
               required
               value={password}
-              onChange={(e) => setPassword(e?.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
           </div>
@@ -114,7 +114,7 @@ export default function SignInForm() {
           >
             <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
               <path
-                d="M12?.545,10?.239v3.821h5?.445c-0?.712,2?.315-2?.647,3?.972-5?.445,3?.972c-3?.332,0-6?.033-2?.701-6?.033-6?.032 s2?.701-6?.032,6?.033-6?.032c1.498,0,2?.866,0?.549,3?.921,1?.453l2.814-2?.814C17.503,2?.988,15?.139,2,12?.545,2 C7?.021,2,2?.543,6?.477,2?.543,12s4?.478,10,10?.002,10c8?.396,0,10?.249-7?.85,9?.426-11?.748L12.545,10?.239z"
+                d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032 s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2 C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z"
                 fill="currentColor"
               />
             </svg>

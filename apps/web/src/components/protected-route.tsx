@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 
 type ProtectedRouteProps = {
-  children: React?.ReactNode;
+  children: React.ReactNode;
   requiredRole?: UserRole;
   redirectTo?: string;
 };
@@ -21,9 +21,9 @@ export function ProtectedRoute({
   useEffect(() => {
     if (!loading) {
       if (!isAuthenticated) {
-        router?.push(redirectTo);
+        router.push(redirectTo);
       } else if (requiredRole && !hasRole(requiredRole)) {
-        router?.push('/error/unauthorized');
+        router.push('/error/unauthorized');
       }
     }
   }, [user, loading, router, requiredRole, redirectTo, isAuthenticated, hasRole]);

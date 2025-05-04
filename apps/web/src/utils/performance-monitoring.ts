@@ -63,7 +63,7 @@ export class PerformanceMonitor {
 
   private async initializeMetrics() {
     const resource = new Resource({
-      [SemanticResourceAttributes?.SERVICE_NAME]: 'vibewell-app',
+      [SemanticResourceAttributes.SERVICE_NAME]: 'vibewell-app',
     });
 
     this.metricsClient = new MetricsClient({
@@ -94,10 +94,10 @@ export class PerformanceMonitor {
   }
 
   public static getInstance(): PerformanceMonitor {
-    if (!PerformanceMonitor?.instance) {
-      PerformanceMonitor?.instance = new PerformanceMonitor();
+    if (!PerformanceMonitor.instance) {
+      PerformanceMonitor.instance = new PerformanceMonitor();
     }
-    return PerformanceMonitor?.instance;
+    return PerformanceMonitor.instance;
   }
 
   public async trackMetrics(metrics: Partial<PerformanceMetrics>): Promise<void> {
@@ -201,11 +201,11 @@ export function initializePerformanceMonitoring(config: PerformanceMonitoringCon
   };
 
   // Time to First Byte
-  const navigationEntry = performance?.getEntriesByType(
+  const navigationEntry = performance.getEntriesByType(
     'navigation',
   )[0] as PerformanceNavigationTiming;
   if (navigationEntry) {
-    metrics?.ttfb = navigationEntry?.responseStart;
+    metrics.ttfb = navigationEntry.responseStart;
   }
 
   // Set up Performance Observer for Core Web Vitals
@@ -213,75 +213,75 @@ export function initializePerformanceMonitoring(config: PerformanceMonitoringCon
     // First Contentful Paint
     try {
       new PerformanceObserver((entryList) => {
-        const entries = entryList?.getEntries();
-        const fcp = entries[entries?.length - 1];
-        metrics?.fcp = fcp?.startTime;
+        const entries = entryList.getEntries();
+        const fcp = entries[entries.length - 1];
+        metrics.fcp = fcp.startTime;
 
-        if (mergedConfig?.logToConsole) {
+        if (mergedConfig.logToConsole) {
           const status =
-            metrics?.fcp < THRESHOLDS?.FCP.good
+            metrics.fcp < THRESHOLDS.FCP.good
               ? 'good'
-              : metrics?.fcp < THRESHOLDS?.FCP.poor
+              : metrics.fcp < THRESHOLDS.FCP.poor
                 ? 'needs improvement'
                 : 'poor';
-          console?.log(`FCP: ${Math?.round(metrics?.fcp)}ms (${status})`);
+          console.log(`FCP: ${Math.round(metrics.fcp)}ms (${status})`);
         }
 
-        if (mergedConfig?.reportToAnalytics) {
-          reportMetricToAnalytics('fcp', metrics?.fcp);
+        if (mergedConfig.reportToAnalytics) {
+          reportMetricToAnalytics('fcp', metrics.fcp);
         }
       }).observe({ type: 'paint', buffered: true });
     } catch (e) {
-      console?.error('Error measuring FCP:', e);
+      console.error('Error measuring FCP:', e);
     }
 
     // Largest Contentful Paint
     try {
       new PerformanceObserver((entryList) => {
-        const entries = entryList?.getEntries();
-        const lcp = entries[entries?.length - 1];
-        metrics?.lcp = lcp?.startTime;
+        const entries = entryList.getEntries();
+        const lcp = entries[entries.length - 1];
+        metrics.lcp = lcp.startTime;
 
-        if (mergedConfig?.logToConsole) {
+        if (mergedConfig.logToConsole) {
           const status =
-            metrics?.lcp < THRESHOLDS?.LCP.good
+            metrics.lcp < THRESHOLDS.LCP.good
               ? 'good'
-              : metrics?.lcp < THRESHOLDS?.LCP.poor
+              : metrics.lcp < THRESHOLDS.LCP.poor
                 ? 'needs improvement'
                 : 'poor';
-          console?.log(`LCP: ${Math?.round(metrics?.lcp)}ms (${status})`);
+          console.log(`LCP: ${Math.round(metrics.lcp)}ms (${status})`);
         }
 
-        if (mergedConfig?.reportToAnalytics) {
-          reportMetricToAnalytics('lcp', metrics?.lcp);
+        if (mergedConfig.reportToAnalytics) {
+          reportMetricToAnalytics('lcp', metrics.lcp);
         }
       }).observe({ type: 'largest-contentful-paint', buffered: true });
     } catch (e) {
-      console?.error('Error measuring LCP:', e);
+      console.error('Error measuring LCP:', e);
     }
 
     // First Input Delay
     try {
       new PerformanceObserver((entryList) => {
-        const entry = entryList?.getEntries()[0];
-        metrics?.fid = entry?.processingStart - entry?.startTime;
+        const entry = entryList.getEntries()[0];
+        metrics.fid = entry.processingStart - entry.startTime;
 
-        if (mergedConfig?.logToConsole) {
+        if (mergedConfig.logToConsole) {
           const status =
-            metrics?.fid < THRESHOLDS?.FID.good
+            metrics.fid < THRESHOLDS.FID.good
               ? 'good'
-              : metrics?.fid < THRESHOLDS?.FID.poor
+              : metrics.fid < THRESHOLDS.FID.poor
                 ? 'needs improvement'
                 : 'poor';
-          console?.log(`FID: ${Math?.round(metrics?.fid)}ms (${status})`);
+          console.log(`FID: ${Math.round(metrics.fid)}ms (${status})`);
         }
 
-        if (mergedConfig?.reportToAnalytics) {
-          reportMetricToAnalytics('fid', metrics?.fid);
+        if (mergedConfig.reportToAnalytics) {
+          reportMetricToAnalytics('fid', metrics.fid);
         }
       }).observe({ type: 'first-input', buffered: true });
     } catch (e) {
-      console?.error('Error measuring FID:', e);
+      console.error('Error measuring FID:', e);
     }
 
     // Cumulative Layout Shift
@@ -290,34 +290,34 @@ export function initializePerformanceMonitoring(config: PerformanceMonitoringCon
       const clsEntries = [];
 
       new PerformanceObserver((entryList) => {
-        const entries = entryList?.getEntries();
+        const entries = entryList.getEntries();
 
-        entries?.forEach((entry) => {
+        entries.forEach((entry) => {
           // Only count layout shifts without recent user input
-          if (!entry?.hadRecentInput) {
-            clsValue += entry?.value;
-            clsEntries?.push(entry);
+          if (!entry.hadRecentInput) {
+            clsValue += entry.value;
+            clsEntries.push(entry);
           }
         });
 
-        metrics?.cls = clsValue;
+        metrics.cls = clsValue;
 
-        if (mergedConfig?.logToConsole) {
+        if (mergedConfig.logToConsole) {
           const status =
-            metrics?.cls < THRESHOLDS?.CLS.good
+            metrics.cls < THRESHOLDS.CLS.good
               ? 'good'
-              : metrics?.cls < THRESHOLDS?.CLS.poor
+              : metrics.cls < THRESHOLDS.CLS.poor
                 ? 'needs improvement'
                 : 'poor';
-          console?.log(`CLS: ${metrics?.cls.toFixed(3)} (${status})`);
+          console.log(`CLS: ${metrics.cls.toFixed(3)} (${status})`);
         }
 
-        if (mergedConfig?.reportToAnalytics) {
-          reportMetricToAnalytics('cls', metrics?.cls);
+        if (mergedConfig.reportToAnalytics) {
+          reportMetricToAnalytics('cls', metrics.cls);
         }
       }).observe({ type: 'layout-shift', buffered: true });
     } catch (e) {
-      console?.error('Error measuring CLS:', e);
+      console.error('Error measuring CLS:', e);
     }
 
     // Interaction to Next Paint (experimental)
@@ -326,53 +326,53 @@ export function initializePerformanceMonitoring(config: PerformanceMonitoringCon
         const interactions = [];
 
         new PerformanceObserver((entryList) => {
-          interactions?.push(...entryList?.getEntries());
+          interactions.push(...entryList.getEntries());
 
-          if (interactions?.length >= 10) {
+          if (interactions.length >= 10) {
             // Sort by duration (INP is ~90th percentile usually)
-            interactions?.sort((a, b) => b?.duration - a?.duration);
+            interactions.sort((a, b) => b.duration - a.duration);
 
             // Get 90th percentile interaction (for INP estimate)
             const index = Math.floor(interactions.length * 0.9);
             metrics.inp = interactions[index].duration;
 
-            if (mergedConfig?.logToConsole) {
+            if (mergedConfig.logToConsole) {
               const status =
-                metrics?.inp < THRESHOLDS?.INP.good
+                metrics.inp < THRESHOLDS.INP.good
                   ? 'good'
-                  : metrics?.inp < THRESHOLDS?.INP.poor
+                  : metrics.inp < THRESHOLDS.INP.poor
                     ? 'needs improvement'
                     : 'poor';
-              console?.log(`INP (est): ${Math?.round(metrics?.inp)}ms (${status})`);
+              console.log(`INP (est): ${Math.round(metrics.inp)}ms (${status})`);
             }
 
-            if (mergedConfig?.reportToAnalytics) {
-              reportMetricToAnalytics('inp', metrics?.inp);
+            if (mergedConfig.reportToAnalytics) {
+              reportMetricToAnalytics('inp', metrics.inp);
             }
           }
         }).observe({ type: 'event', durationThreshold: 0, buffered: true });
       } catch (e) {
-        console?.error('Error measuring INP:', e);
+        console.error('Error measuring INP:', e);
       }
     }
   }
 
   // Report all metrics on page unload
-  window?.addEventListener('visibilitychange', () => {
-    if (document?.visibilityState === 'hidden') {
-      if (mergedConfig?.apiEndpoint) {
+  window.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+      if (mergedConfig.apiEndpoint) {
         // Use sendBeacon for more reliable delivery during page unload
-        navigator?.sendBeacon(
-          mergedConfig?.apiEndpoint,
-          JSON?.stringify({
-            url: window?.location.href,
+        navigator.sendBeacon(
+          mergedConfig.apiEndpoint,
+          JSON.stringify({
+            url: window.location.href,
             timestamp: new Date().toISOString(),
             metrics: metrics,
-            userAgent: navigator?.userAgent,
+            userAgent: navigator.userAgent,
             connection:
               'connection' in navigator
                 ? // @ts-ignore - Connection API not fully typed
-                  { effectiveType: navigator?.connection?.effectiveType }
+                  { effectiveType: navigator.connection.effectiveType }
                 : undefined,
           }),
         );
@@ -399,8 +399,8 @@ function reportMetricToAnalytics(metricName: string, value: number) {
   if (typeof window === 'undefined') return;
 
   // Report to Google Analytics if available
-  if (window?.gtag) {
-    window?.gtag('event', 'web_vitals', {
+  if (window.gtag) {
+    window.gtag('event', 'web_vitals', {
       event_category: 'Web Vitals',
       event_label: metricName,
       value: Math.round(metricName === 'CLS' ? value * 1000 : value),
@@ -409,12 +409,12 @@ function reportMetricToAnalytics(metricName: string, value: number) {
   }
 
   // Report to data layer for GTM if available
-  if (window?.dataLayer) {
-    window?.dataLayer.push({
+  if (window.dataLayer) {
+    window.dataLayer.push({
       event: 'web_vitals',
       web_vitals: {
         metric: metricName,
-        value: metricName === 'CLS' ? value : Math?.round(value),
+        value: metricName === 'CLS' ? value : Math.round(value),
       },
     });
   }
@@ -424,23 +424,23 @@ function reportMetricToAnalytics(metricName: string, value: number) {
  * Create a custom performance mark
  */
 export function markPerformance(markName: string) {
-  if (typeof window === 'undefined' || !performance?.mark) return;
+  if (typeof window === 'undefined' || !performance.mark) return;
 
-  performance?.mark(markName);
+  performance.mark(markName);
 }
 
 /**
  * Measure time between two performance marks
  */
 export function measurePerformance(measureName: string, startMark: string, endMark: string) {
-  if (typeof window === 'undefined' || !performance?.measure) return;
+  if (typeof window === 'undefined' || !performance.measure) return;
 
   try {
-    performance?.measure(measureName, startMark, endMark);
-    const measures = performance?.getEntriesByName(measureName, 'measure');
+    performance.measure(measureName, startMark, endMark);
+    const measures = performance.getEntriesByName(measureName, 'measure');
     return measures[0].duration;
   } catch (e) {
-    console?.error(`Error measuring performance for ${measureName}:`, e);
+    console.error(`Error measuring performance for ${measureName}:`, e);
     return null;
   }
 }
@@ -451,8 +451,8 @@ export function measurePerformance(measureName: string, startMark: string, endMa
 export function logPerformanceDuration(label: string, startTime: number) {
   if (typeof window === 'undefined') return;
 
-  const duration = performance?.now() - startTime;
-  console?.log(`${label}: ${duration?.toFixed(2)}ms`);
+  const duration = performance.now() - startTime;
+  console.log(`${label}: ${duration.toFixed(2)}ms`);
   return duration;
 }
 
@@ -462,7 +462,7 @@ export function logPerformanceDuration(label: string, startTime: number) {
 export function trackJsErrors() {
   if (typeof window === 'undefined') return;
 
-  window?.addEventListener('error', (event) => {
+  window.addEventListener('error', (event) => {
     reportMetricToAnalytics('js_error', 1);
 
     // You can add more detailed error reporting here

@@ -22,16 +22,16 @@ export class EmailVerificationService {
   static async sendVerificationEmail(userId: string, email: string): Promise<void> {
     try {
       // Delete any existing verification tokens for this user
-      await prisma?.emailVerification.deleteMany({
+      await prisma.emailVerification.deleteMany({
         where: { userId },
       });
 
       // Create new verification token
-      const token = this?.generateToken();
-      const expiresAt = addHours(new Date(), this?.TOKEN_EXPIRY_HOURS);
+      const token = this.generateToken();
+      const expiresAt = addHours(new Date(), this.TOKEN_EXPIRY_HOURS);
 
       // Save verification token
-      await prisma?.emailVerification.create({
+      await prisma.emailVerification.create({
         data: {
           token,
           userId,
@@ -42,10 +42,10 @@ export class EmailVerificationService {
 
       // Generate verification URL
 
-      const verificationUrl = `${process?.env.NEXT_PUBLIC_APP_URL}/verify-email?token=${token}`;
+      const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/verify-email?token=${token}`;
 
       // Send verification email
-      await EmailService?.send({
+      await EmailService.send({
         to: email,
 
         subject: 'Verify Your Email - VibeWell',
@@ -60,7 +60,7 @@ export class EmailVerificationService {
           <a href="${verificationUrl}" style="display: inline-block; padding: 12px 24px; background-color: #4F46E5; color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">Verify Email</a>
           <p>Or copy and paste this URL into your browser:</p>
           <p>${verificationUrl}</p>
-          <p>This link will expire in ${this?.TOKEN_EXPIRY_HOURS} hours.</p>
+          <p>This link will expire in ${this.TOKEN_EXPIRY_HOURS} hours.</p>
           <p>If you didn't create an account with VibeWell, please ignore this email.</p>
         `,
         text: `
@@ -69,13 +69,13 @@ export class EmailVerificationService {
           Please verify your email address by visiting this URL:
           ${verificationUrl}
           
-          This link will expire in ${this?.TOKEN_EXPIRY_HOURS} hours.
+          This link will expire in ${this.TOKEN_EXPIRY_HOURS} hours.
           
           If you didn't create an account with VibeWell, please ignore this email.
         `,
       });
     } catch (error) {
-      console?.error('Failed to send verification email:', error);
+      console.error('Failed to send verification email:', error);
       throw new Error('Failed to send verification email');
     }
   }
@@ -86,7 +86,7 @@ export class EmailVerificationService {
   static async verifyEmail(token: string): Promise<{ success: boolean; error?: string }> {
     try {
       // Find verification record
-      const verification = await prisma?.emailVerification.findUnique({
+      const verification = await prisma.emailVerification.findUnique({
         where: { token },
         include: { user: true },
       });
@@ -95,28 +95,28 @@ export class EmailVerificationService {
         return { success: false, error: 'Invalid verification token' };
       }
 
-      if (verification?.expiresAt < new Date()) {
+      if (verification.expiresAt < new Date()) {
         // Delete expired token
-        await prisma?.emailVerification.delete({
+        await prisma.emailVerification.delete({
           where: { token },
         });
         return { success: false, error: 'Verification token has expired' };
       }
 
       // Update user's email verification status
-      await prisma?.user.update({
-        where: { id: verification?.userId },
+      await prisma.user.update({
+        where: { id: verification.userId },
         data: { emailVerified: true },
       });
 
       // Delete used token
-      await prisma?.emailVerification.delete({
+      await prisma.emailVerification.delete({
         where: { token },
       });
 
       return { success: true };
     } catch (error) {
-      console?.error('Error verifying email:', error);
+      console.error('Error verifying email:', error);
       return { success: false, error: 'Failed to verify email' };
     }
   }
@@ -126,7 +126,7 @@ export class EmailVerificationService {
    */
   static async resendVerificationEmail(userId: string): Promise<{ success: boolean; error?: string }> {
     try {
-      const user = await prisma?.user.findUnique({
+      const user = await prisma.user.findUnique({
         where: { id: userId },
       });
 
@@ -134,14 +134,14 @@ export class EmailVerificationService {
         return { success: false, error: 'User not found' };
       }
 
-      if (user?.emailVerified) {
+      if (user.emailVerified) {
         return { success: false, error: 'Email is already verified' };
       }
 
-      await this?.sendVerificationEmail(user?.id, user?.email);
+      await this.sendVerificationEmail(user.id, user.email);
       return { success: true };
     } catch (error) {
-      console?.error('Error resending verification email:', error);
+      console.error('Error resending verification email:', error);
       return { success: false, error: 'Failed to resend verification email' };
     }
   }

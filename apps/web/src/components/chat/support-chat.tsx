@@ -2,23 +2,23 @@ import { useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useChat } from '@/contexts/ChatContext';
 
-export const SupportChat: React?.FC = () => {
+export const SupportChat: React.FC = () => {
   const { messages, isLoading, error, sendMessage } = useChat();
   const [input, setInput] = useState('');
 
   const handleSendMessage = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-    const trimmedInput = input?.trim();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    const trimmedInput = input.trim();
     if (!trimmedInput) return;
 
     setInput('');
     await sendMessage(trimmedInput);
   };
 
-  const handleKeyDown = (e: React?.KeyboardEvent<HTMLInputElement>) => {
-    if (e?.key === 'Enter' && !e?.shiftKey) {
-      e?.preventDefault();
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
       handleSendMessage();
     }
   };
@@ -30,19 +30,19 @@ export const SupportChat: React?.FC = () => {
       </div>
       
       <div className="p-3 h-64 overflow-y-auto text-sm space-y-2">
-        {messages?.map((msg, i) => (
+        {messages.map((msg, i) => (
           <div 
             key={i} 
-            className={`flex ${msg?.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
               className={`max-w-[80%] px-3 py-2 rounded-xl ${
-                msg?.role === 'user' 
+                msg.role === 'user' 
                   ? 'bg-pink-500 text-white' 
                   : 'bg-gray-100 text-gray-800'
               }`}
             >
-              {msg?.content}
+              {msg.content}
             </div>
           </div>
         ))}
@@ -63,7 +63,7 @@ export const SupportChat: React?.FC = () => {
       <div className="flex items-center border-t p-2 bg-white rounded-b-lg">
         <input
           value={input}
-          onChange={(e) => setInput(e?.target.value)}
+          onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Type your question..."
           className="flex-1 p-2 border rounded text-sm focus:outline-none focus:border-pink-500"
@@ -71,9 +71,9 @@ export const SupportChat: React?.FC = () => {
         />
         <button
           onClick={handleSendMessage}
-          disabled={isLoading || !input?.trim()}
+          disabled={isLoading || !input.trim()}
           className={`ml-2 px-3 py-1 text-white text-sm rounded transition-colors ${
-            isLoading || !input?.trim() 
+            isLoading || !input.trim() 
               ? 'bg-pink-300 cursor-not-allowed' 
               : 'bg-pink-500 hover:bg-pink-600'
           }`}

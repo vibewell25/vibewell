@@ -38,8 +38,8 @@ export function useDeviceCapabilities(): DeviceCapabilities {
 
     // Detect capabilities asynchronously
     const detectCapabilities = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         const detectedCapabilities = await detectDeviceCapabilities();
 
@@ -49,7 +49,7 @@ export function useDeviceCapabilities(): DeviceCapabilities {
           setIsLoading(false);
         }
       } catch (error) {
-        console?.error('Failed to detect device capabilities:', error);
+        console.error('Failed to detect device capabilities:', error);
         if (isMounted) {
           setIsLoading(false);
         }
@@ -119,18 +119,18 @@ export function useAdaptiveQuality(options: AdaptiveQualityOptions = {}): Adapti
     preferBattery = true,
     minQuality = 'low',
     maxQuality = 'high',
-    batteryThreshold = 0?.3,
+    batteryThreshold = 0.3,
   } = options;
 
   // Map performance level to quality
-  const qualityFromPerformance = capabilities?.performanceLevel;
+  const qualityFromPerformance = capabilities.performanceLevel;
 
   // Check if battery is low - ensure all values are properly checked to avoid undefined
   const isLowBattery = Boolean(
     preferBattery &&
-      capabilities?.batteryStatus &&
-      capabilities?.batteryStatus.charging === false &&
-      capabilities?.batteryStatus.level < batteryThreshold,
+      capabilities.batteryStatus &&
+      capabilities.batteryStatus.charging === false &&
+      capabilities.batteryStatus.level < batteryThreshold,
   );
 
   // Determine final quality level
@@ -145,9 +145,9 @@ export function useAdaptiveQuality(options: AdaptiveQualityOptions = {}): Adapti
 
     // Enforce min/max bounds
     const qualityLevels = ['low', 'medium', 'high'] as const;
-    const minIndex = qualityLevels?.indexOf(minQuality);
-    const maxIndex = qualityLevels?.indexOf(maxQuality);
-    const currentIndex = qualityLevels?.indexOf(quality);
+    const minIndex = qualityLevels.indexOf(minQuality);
+    const maxIndex = qualityLevels.indexOf(maxQuality);
+    const currentIndex = qualityLevels.indexOf(quality);
 
     if (currentIndex < minIndex) {
       quality = minQuality;
@@ -158,9 +158,9 @@ export function useAdaptiveQuality(options: AdaptiveQualityOptions = {}): Adapti
 
   return {
     quality,
-    isMobile: capabilities?.isMobileDevice,
+    isMobile: capabilities.isMobileDevice,
     isLowBattery,
-    isLimitedDevice: capabilities?.isLowEndDevice || capabilities?.hasLimitedMemory,
+    isLimitedDevice: capabilities.isLowEndDevice || capabilities.hasLimitedMemory,
     capabilities,
   };
 }

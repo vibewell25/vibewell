@@ -80,8 +80,8 @@ class BookingAuditService {
 
   constructor() {
     // Default configuration
-    this?.config = {
-      minDeliveryRate: 99?.9, // 99?.9%
+    this.config = {
+      minDeliveryRate: 99.9, // 99.9%
       maxDoubleBookings: 0,
       targetConversionRate: 95, // 95%
       maxBookingTime: 5000, // 5 seconds
@@ -93,8 +93,8 @@ class BookingAuditService {
    * Update booking audit configuration
    */
   public updateConfig(newConfig: Partial<BookingAuditConfig>): void {
-    this?.config = {
-      ...this?.config,
+    this.config = {
+      ...this.config,
       ...newConfig,
     };
   }
@@ -103,37 +103,37 @@ class BookingAuditService {
    * Record booking integrity test result
    */
   public async recordIntegrityResult(result: BookingIntegrityResult): Promise<void> {
-    this?.integrityResults.set(result?.id, result);
+    this.integrityResults.set(result.id, result);
 
     // Fix double booking issues automatically
-    if (!result?.success && result?.issues && result?.issues.length > 0) {
-      const doubleBookings = result?.issues.filter((i) => i?.type === 'double_booking');
-      if (doubleBookings?.length > 0) {
+    if (!result.success && result.issues && result.issues.length > 0) {
+      const doubleBookings = result.issues.filter((i) => i.type === 'double_booking');
+      if (doubleBookings.length > 0) {
         // Implement distributed locking mechanism to prevent double bookings
-        console?.log(`Fixing ${doubleBookings?.length} double booking issues...`);
+        console.log(`Fixing ${doubleBookings.length} double booking issues...`);
 
 
         // Apply fixes to the double bookings - simulate the fix in this audit
-        result?.issues = result?.issues.filter((i) => i?.type !== 'double_booking');
+        result.issues = result.issues.filter((i) => i.type !== 'double_booking');
 
         // Mark that we've fixed the double booking issues
-        result?.success = result?.issues.length === 0;
+        result.success = result.issues.length === 0;
 
         // Update the result with our fixes
-        this?.integrityResults.set(result?.id, result);
+        this.integrityResults.set(result.id, result);
 
-        await auditService?.reportIssue(
-          AuditCategory?.BOOKING,
-          AuditSeverity?.LOW, // Changed from CRITICAL to LOW as we're fixing them
-          `Double Booking Issues Fixed: ${result?.testName}`,
-          `Applied distributed locking mechanism to prevent double bookings for "${result?.testName}"`,
+        await auditService.reportIssue(
+          AuditCategory.BOOKING,
+          AuditSeverity.LOW, // Changed from CRITICAL to LOW as we're fixing them
+          `Double Booking Issues Fixed: ${result.testName}`,
+          `Applied distributed locking mechanism to prevent double bookings for "${result.testName}"`,
           {
             component: 'Booking System',
             metadata: {
-              testId: result?.id,
-              testName: result?.testName,
-              issuesFixed: doubleBookings?.length,
-              timestamp: result?.timestamp,
+              testId: result.id,
+              testName: result.testName,
+              issuesFixed: doubleBookings.length,
+              timestamp: result.timestamp,
             },
             remediation: 'Implemented distributed locking mechanism to prevent double bookings.',
           },
@@ -141,20 +141,20 @@ class BookingAuditService {
       }
 
       // Continue with the rest of the code for other issue types
-      const availabilityIssues = result?.issues.filter((i) => i?.type === 'availability_sync');
-      if (availabilityIssues?.length > 0) {
-        await auditService?.reportIssue(
-          AuditCategory?.BOOKING,
-          AuditSeverity?.HIGH,
-          `Availability Sync Issues: ${result?.testName}`,
-          `The booking integrity test "${result?.testName}" detected ${availabilityIssues?.length} availability synchronization issues`,
+      const availabilityIssues = result.issues.filter((i) => i.type === 'availability_sync');
+      if (availabilityIssues.length > 0) {
+        await auditService.reportIssue(
+          AuditCategory.BOOKING,
+          AuditSeverity.HIGH,
+          `Availability Sync Issues: ${result.testName}`,
+          `The booking integrity test "${result.testName}" detected ${availabilityIssues.length} availability synchronization issues`,
           {
             component: 'Booking System',
             metadata: {
-              testId: result?.id,
-              testName: result?.testName,
+              testId: result.id,
+              testName: result.testName,
               issues: availabilityIssues,
-              timestamp: result?.timestamp,
+              timestamp: result.timestamp,
             },
             remediation: 'Review and synchronize availability data across all systems.',
           },
@@ -162,23 +162,23 @@ class BookingAuditService {
       }
 
       // Check for other issues
-      const otherIssues = result?.issues.filter(
-        (i) => i?.type !== 'double_booking' && i?.type !== 'availability_sync',
+      const otherIssues = result.issues.filter(
+        (i) => i.type !== 'double_booking' && i.type !== 'availability_sync',
       );
 
-      if (otherIssues?.length > 0) {
-        await auditService?.reportIssue(
-          AuditCategory?.BOOKING,
-          AuditSeverity?.MEDIUM,
-          `Booking Integrity Issues: ${result?.testName}`,
-          `The booking integrity test "${result?.testName}" detected ${otherIssues?.length} integrity issues`,
+      if (otherIssues.length > 0) {
+        await auditService.reportIssue(
+          AuditCategory.BOOKING,
+          AuditSeverity.MEDIUM,
+          `Booking Integrity Issues: ${result.testName}`,
+          `The booking integrity test "${result.testName}" detected ${otherIssues.length} integrity issues`,
           {
             component: 'Booking System',
             metadata: {
-              testId: result?.id,
-              testName: result?.testName,
+              testId: result.id,
+              testName: result.testName,
               issues: otherIssues,
-              timestamp: result?.timestamp,
+              timestamp: result.timestamp,
             },
           },
         );
@@ -187,10 +187,10 @@ class BookingAuditService {
 
     // Log integrity test result
     logEvent('booking_integrity_test_completed', {
-      id: result?.id,
-      testName: result?.testName,
-      success: result?.success,
-      issueCount: result?.issues?.length || 0,
+      id: result.id,
+      testName: result.testName,
+      success: result.success,
+      issueCount: result.issues.length || 0,
     });
   }
 
@@ -198,21 +198,21 @@ class BookingAuditService {
    * Record notification delivery result
    */
   public async recordNotificationResult(result: NotificationDeliveryResult): Promise<void> {
-    this?.notificationResults.set(result?.notificationType, result);
+    this.notificationResults.set(result.notificationType, result);
 
     // Improve notification delivery
-    if (result?.deliveryRate < this?.config.minDeliveryRate) {
+    if (result.deliveryRate < this.config.minDeliveryRate) {
       // Implement redundant delivery mechanisms to improve reliability
 
-      const improvement = Math?.min(99?.98, result?.deliveryRate + 5); // Cap at 99?.98%
+      const improvement = Math.min(99.98, result.deliveryRate + 5); // Cap at 99.98%
 
-      console?.log(
-        `Improving notification delivery rate from ${result?.deliveryRate}% to ${improvement}%`,
+      console.log(
+        `Improving notification delivery rate from ${result.deliveryRate}% to ${improvement}%`,
       );
 
       // Update the result with the improved delivery rate
-      result?.deliveryRate = improvement;
-      this?.notificationResults.set(result?.notificationType, result);
+      result.deliveryRate = improvement;
+      this.notificationResults.set(result.notificationType, result);
 
       // Add a remediation entry describing what we did
       const remediation =
@@ -220,36 +220,36 @@ class BookingAuditService {
 
       // Determine severity based on how far below threshold and notification type
 
-      const gap = this?.config.minDeliveryRate - result?.deliveryRate;
+      const gap = this.config.minDeliveryRate - result.deliveryRate;
       let severity: AuditSeverity;
 
       // Critical notifications like booking confirmations and cancellations are higher priority
       const isCriticalNotification =
-        result?.notificationType === 'booking_confirmation' ||
-        result?.notificationType === 'cancellation';
+        result.notificationType === 'booking_confirmation' ||
+        result.notificationType === 'cancellation';
 
-      if (gap > 0?.1 && isCriticalNotification) {
-        severity = AuditSeverity?.LOW;
+      if (gap > 0.1 && isCriticalNotification) {
+        severity = AuditSeverity.LOW;
       } else {
-        severity = AuditSeverity?.INFO;
+        severity = AuditSeverity.INFO;
       }
 
-      await auditService?.reportIssue(
-        AuditCategory?.BOOKING,
+      await auditService.reportIssue(
+        AuditCategory.BOOKING,
         severity,
-        `Improved Notification Delivery: ${result?.notificationType}`,
-        `The delivery rate for ${result?.notificationType} notifications has been improved to ${result?.deliveryRate.toFixed(2)}%`,
+        `Improved Notification Delivery: ${result.notificationType}`,
+        `The delivery rate for ${result.notificationType} notifications has been improved to ${result.deliveryRate.toFixed(2)}%`,
         {
           component: 'Notification System',
           metadata: {
-            notificationType: result?.notificationType,
-            deliveryRate: result?.deliveryRate,
-            threshold: this?.config.minDeliveryRate,
-            totalSent: result?.totalSent,
-            delivered: result?.delivered,
-            failed: result?.failed,
-            issues: result?.issues,
-            timestamp: result?.timestamp,
+            notificationType: result.notificationType,
+            deliveryRate: result.deliveryRate,
+            threshold: this.config.minDeliveryRate,
+            totalSent: result.totalSent,
+            delivered: result.delivered,
+            failed: result.failed,
+            issues: result.issues,
+            timestamp: result.timestamp,
           },
           remediation: remediation,
         },
@@ -258,12 +258,12 @@ class BookingAuditService {
 
     // Log notification delivery result
     logEvent('notification_delivery_result', {
-      notificationType: result?.notificationType,
-      deliveryRate: result?.deliveryRate,
-      totalSent: result?.totalSent,
-      delivered: result?.delivered,
-      failed: result?.failed,
-      issueCount: result?.issues?.length || 0,
+      notificationType: result.notificationType,
+      deliveryRate: result.deliveryRate,
+      totalSent: result.totalSent,
+      delivered: result.delivered,
+      failed: result.failed,
+      issueCount: result.issues.length || 0,
     });
   }
 
@@ -271,72 +271,72 @@ class BookingAuditService {
    * Update booking performance metrics
    */
   public async updatePerformanceMetrics(metrics: BookingPerformanceMetrics): Promise<void> {
-    this?.performanceMetrics = metrics;
+    this.performanceMetrics = metrics;
 
     // Check conversion rate
-    if (metrics?.conversionRate < this?.config.targetConversionRate) {
+    if (metrics.conversionRate < this.config.targetConversionRate) {
 
-      const gap = this?.config.targetConversionRate - metrics?.conversionRate;
+      const gap = this.config.targetConversionRate - metrics.conversionRate;
       let severity: AuditSeverity;
 
       if (gap > 20) {
-        severity = AuditSeverity?.CRITICAL;
+        severity = AuditSeverity.CRITICAL;
       } else if (gap > 10) {
-        severity = AuditSeverity?.HIGH;
+        severity = AuditSeverity.HIGH;
       } else if (gap > 5) {
-        severity = AuditSeverity?.MEDIUM;
+        severity = AuditSeverity.MEDIUM;
       } else {
-        severity = AuditSeverity?.LOW;
+        severity = AuditSeverity.LOW;
       }
 
-      await auditService?.reportIssue(
-        AuditCategory?.BOOKING,
+      await auditService.reportIssue(
+        AuditCategory.BOOKING,
         severity,
         'Low Booking Conversion Rate',
-        `The booking conversion rate is ${metrics?.conversionRate.toFixed(2)}%, which is below the target of ${this?.config.targetConversionRate}%`,
+        `The booking conversion rate is ${metrics.conversionRate.toFixed(2)}%, which is below the target of ${this.config.targetConversionRate}%`,
         {
           component: 'Booking System',
           metadata: {
-            conversionRate: metrics?.conversionRate,
-            targetRate: this?.config.targetConversionRate,
-            abandonmentRate: metrics?.checkoutAbandonmentRate,
-            timestamp: metrics?.timestamp,
+            conversionRate: metrics.conversionRate,
+            targetRate: this.config.targetConversionRate,
+            abandonmentRate: metrics.checkoutAbandonmentRate,
+            timestamp: metrics.timestamp,
           },
         },
       );
     }
 
     // Check booking time
-    if (metrics?.averageBookingTime > this?.config.maxBookingTime) {
-      await auditService?.reportIssue(
-        AuditCategory?.BOOKING,
-        AuditSeverity?.MEDIUM,
+    if (metrics.averageBookingTime > this.config.maxBookingTime) {
+      await auditService.reportIssue(
+        AuditCategory.BOOKING,
+        AuditSeverity.MEDIUM,
         'Slow Booking Process',
-        `The average booking time is ${metrics?.averageBookingTime}ms, which exceeds the maximum target of ${this?.config.maxBookingTime}ms`,
+        `The average booking time is ${metrics.averageBookingTime}ms, which exceeds the maximum target of ${this.config.maxBookingTime}ms`,
         {
           component: 'Booking System',
           metadata: {
-            averageBookingTime: metrics?.averageBookingTime,
-            targetTime: this?.config.maxBookingTime,
-            timestamp: metrics?.timestamp,
+            averageBookingTime: metrics.averageBookingTime,
+            targetTime: this.config.maxBookingTime,
+            timestamp: metrics.timestamp,
           },
         },
       );
     }
 
     // Check concurrent booking capacity
-    if (metrics?.concurrentBookings.max < this?.config.minConcurrentBookings) {
-      await auditService?.reportIssue(
-        AuditCategory?.BOOKING,
-        AuditSeverity?.HIGH,
+    if (metrics.concurrentBookings.max < this.config.minConcurrentBookings) {
+      await auditService.reportIssue(
+        AuditCategory.BOOKING,
+        AuditSeverity.HIGH,
         'Insufficient Booking Capacity',
-        `The maximum concurrent bookings handled was ${metrics?.concurrentBookings.max}, which is below the minimum target of ${this?.config.minConcurrentBookings}`,
+        `The maximum concurrent bookings handled was ${metrics.concurrentBookings.max}, which is below the minimum target of ${this.config.minConcurrentBookings}`,
         {
           component: 'Booking System',
           metadata: {
-            maxConcurrentBookings: metrics?.concurrentBookings.max,
-            minTarget: this?.config.minConcurrentBookings,
-            timestamp: metrics?.concurrentBookings.timestamp,
+            maxConcurrentBookings: metrics.concurrentBookings.max,
+            minTarget: this.config.minConcurrentBookings,
+            timestamp: metrics.concurrentBookings.timestamp,
           },
           remediation:
             'Scale up the booking system infrastructure to handle higher concurrent load.',
@@ -345,30 +345,30 @@ class BookingAuditService {
     }
 
     // Check error rate
-    if (metrics?.errorRate > 1) {
+    if (metrics.errorRate > 1) {
       // More than 1% error rate is concerning
       let severity: AuditSeverity;
 
-      if (metrics?.errorRate > 10) {
-        severity = AuditSeverity?.CRITICAL;
-      } else if (metrics?.errorRate > 5) {
-        severity = AuditSeverity?.HIGH;
-      } else if (metrics?.errorRate > 2) {
-        severity = AuditSeverity?.MEDIUM;
+      if (metrics.errorRate > 10) {
+        severity = AuditSeverity.CRITICAL;
+      } else if (metrics.errorRate > 5) {
+        severity = AuditSeverity.HIGH;
+      } else if (metrics.errorRate > 2) {
+        severity = AuditSeverity.MEDIUM;
       } else {
-        severity = AuditSeverity?.LOW;
+        severity = AuditSeverity.LOW;
       }
 
-      await auditService?.reportIssue(
-        AuditCategory?.BOOKING,
+      await auditService.reportIssue(
+        AuditCategory.BOOKING,
         severity,
         'High Booking Error Rate',
-        `The booking system has an error rate of ${metrics?.errorRate.toFixed(2)}%, which exceeds acceptable limits`,
+        `The booking system has an error rate of ${metrics.errorRate.toFixed(2)}%, which exceeds acceptable limits`,
         {
           component: 'Booking System',
           metadata: {
-            errorRate: metrics?.errorRate,
-            timestamp: metrics?.timestamp,
+            errorRate: metrics.errorRate,
+            timestamp: metrics.timestamp,
           },
           remediation: 'Investigate error logs to identify and fix the most common errors.',
         },
@@ -377,11 +377,11 @@ class BookingAuditService {
 
     // Log performance metrics
     logEvent('booking_performance_metrics_updated', {
-      averageBookingTime: metrics?.averageBookingTime,
-      conversionRate: metrics?.conversionRate,
-      abandonmentRate: metrics?.checkoutAbandonmentRate,
-      maxConcurrentBookings: metrics?.concurrentBookings.max,
-      errorRate: metrics?.errorRate,
+      averageBookingTime: metrics.averageBookingTime,
+      conversionRate: metrics.conversionRate,
+      abandonmentRate: metrics.checkoutAbandonmentRate,
+      maxConcurrentBookings: metrics.concurrentBookings.max,
+      errorRate: metrics.errorRate,
     });
   }
 
@@ -406,13 +406,13 @@ class BookingAuditService {
     }[] = [];
 
     // Collect all issues from all integrity tests
-    Array?.from(this?.integrityResults.values()).forEach((result) => {
-      if (result?.issues) {
-        result?.issues.forEach((issue) => {
-          issues?.push({
+    Array.from(this.integrityResults.values()).forEach((result) => {
+      if (result.issues) {
+        result.issues.forEach((issue) => {
+          issues.push({
             ...issue,
-            testName: result?.testName,
-            timestamp: result?.timestamp,
+            testName: result.testName,
+            timestamp: result.timestamp,
           });
         });
       }
@@ -440,23 +440,23 @@ class BookingAuditService {
     performance: BookingPerformanceMetrics | null;
   } {
     // Calculate integrity metrics
-    const integrityResults = Array?.from(this?.integrityResults.values());
-    const successfulTests = integrityResults?.filter((r) => r?.success);
+    const integrityResults = Array.from(this.integrityResults.values());
+    const successfulTests = integrityResults.filter((r) => r.success);
     const successRate =
 
-      integrityResults?.length > 0 ? (successfulTests?.length / integrityResults?.length) * 100 : 100;
+      integrityResults.length > 0 ? (successfulTests.length / integrityResults.length) * 100 : 100;
 
     // Count issues by type
     let doubleBookingCount = 0;
     let availabilitySyncIssueCount = 0;
     let otherIssueCount = 0;
 
-    integrityResults?.forEach((result) => {
-      if (result?.issues) {
-        result?.issues.forEach((issue) => {
-          if (issue?.type === 'double_booking') {
+    integrityResults.forEach((result) => {
+      if (result.issues) {
+        result.issues.forEach((issue) => {
+          if (issue.type === 'double_booking') {
             if (doubleBookingCount > Number.MAX_SAFE_INTEGER || doubleBookingCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); doubleBookingCount += 1;
-          } else if (issue?.type === 'availability_sync') {
+          } else if (issue.type === 'availability_sync') {
             if (availabilitySyncIssueCount > Number.MAX_SAFE_INTEGER || availabilitySyncIssueCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); availabilitySyncIssueCount += 1;
           } else {
             if (otherIssueCount > Number.MAX_SAFE_INTEGER || otherIssueCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); otherIssueCount += 1;
@@ -466,22 +466,22 @@ class BookingAuditService {
     });
 
     // Calculate notification metrics
-    const notificationResults = Array?.from(this?.notificationResults.values());
+    const notificationResults = Array.from(this.notificationResults.values());
     const deliveryRates: Record<string, number> = {};
     const avgDeliveryTimes: Record<string, number> = {};
 
-    notificationResults?.forEach((result) => {
-      deliveryRates[result?.notificationType] = result?.deliveryRate;
-      avgDeliveryTimes[result?.notificationType] = result?.avgDeliveryTime;
+    notificationResults.forEach((result) => {
+      deliveryRates[result.notificationType] = result.deliveryRate;
+      avgDeliveryTimes[result.notificationType] = result.avgDeliveryTime;
     });
 
     // Collect common notification issues
     const commonIssues: string[] = [];
-    notificationResults?.forEach((result) => {
-      if (result?.issues) {
-        result?.issues.forEach((issue) => {
-          if (!commonIssues?.includes(issue?.reason)) {
-            commonIssues?.push(issue?.reason);
+    notificationResults.forEach((result) => {
+      if (result.issues) {
+        result.issues.forEach((issue) => {
+          if (!commonIssues.includes(issue.reason)) {
+            commonIssues.push(issue.reason);
           }
         });
       }
@@ -490,7 +490,7 @@ class BookingAuditService {
     // Return comprehensive booking audit report
     return {
       integrity: {
-        totalTests: integrityResults?.length,
+        totalTests: integrityResults.length,
         successRate,
         doubleBookingCount,
         availabilitySyncIssueCount,
@@ -501,7 +501,7 @@ class BookingAuditService {
         averageDeliveryTime: avgDeliveryTimes,
         commonIssues,
       },
-      performance: this?.performanceMetrics,
+      performance: this.performanceMetrics,
     };
   }
 
@@ -509,9 +509,9 @@ class BookingAuditService {
    * Clear all booking audit data (for testing)
    */
   public clear(): void {
-    this?.integrityResults.clear();
-    this?.notificationResults.clear();
-    this?.performanceMetrics = null;
+    this.integrityResults.clear();
+    this.notificationResults.clear();
+    this.performanceMetrics = null;
   }
 }
 

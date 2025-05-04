@@ -7,7 +7,7 @@ interface ModalProps extends Omit<BaseModalProps, 'position' | 'variant'> {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
-  children: React?.ReactNode;
+  children: React.ReactNode;
   className?: string;
 }
 

@@ -5,7 +5,7 @@ import { payrollApi } from '../services/payrollService';
 import { PayrollRecord } from '../types/payroll';
 import { PayrollListNavigationProp } from '../types/navigation';
 
-const PayrollListScreen: React?.FC = () => {
+const PayrollListScreen: React.FC = () => {
   const navigation = useNavigation<PayrollListNavigationProp>();
   const [records, setRecords] = useState<PayrollRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -13,10 +13,10 @@ const PayrollListScreen: React?.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        const data = await payrollApi?.getRecords();
+        const data = await payrollApi.getRecords();
         setRecords(data);
       } catch (err) {
-        console?.error(err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -26,19 +26,19 @@ const PayrollListScreen: React?.FC = () => {
   if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
-    <View style={styles?.container}>
-      <Button title="New Record" onPress={() => navigation?.navigate('PayrollForm', {})} />
+    <View style={styles.container}>
+      <Button title="New Record" onPress={() => navigation.navigate('PayrollForm', {})} />
       <FlatList
         data={records}
-        keyExtractor={item => item?.id}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity
-            style={styles?.item}
-            onPress={() => navigation?.navigate('PayrollDetail', { id: item?.id })}
+            style={styles.item}
+            onPress={() => navigation.navigate('PayrollDetail', { id: item.id })}
           >
-            <Text style={styles?.title}>{item?.userId}</Text>
-            <Text>{`${item?.periodStart.split('T')[0]} - ${item?.periodEnd.split('T')[0]}`}</Text>
-            <Text style={styles?.subtitle}>${item?.salary.toFixed(2)}</Text>
+            <Text style={styles.title}>{item.userId}</Text>
+            <Text>{`${item.periodStart.split('T')[0]} - ${item.periodEnd.split('T')[0]}`}</Text>
+            <Text style={styles.subtitle}>${item.salary.toFixed(2)}</Text>
           </TouchableOpacity>
         )}
       />
@@ -46,7 +46,7 @@ const PayrollListScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   item: { marginBottom: 12, padding: 12, borderBottomWidth: 1, borderColor: '#ccc' },
   title: { fontSize: 16, fontWeight: 'bold' },

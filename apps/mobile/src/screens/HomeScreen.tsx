@@ -3,44 +3,44 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { useTheme } from '../contexts/ThemeContext';
 import { Feather } from '@expo/vector-icons';
 
-const HomeScreen: React?.FC = () => {
+const HomeScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   
   return (
     <ScrollView
       style={[
-        styles?.container,
+        styles.container,
         { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }
       ]}
     >
-      <View style={styles?.header}>
+      <View style={styles.header}>
         <Text style={[
-          styles?.title,
+          styles.title,
           { color: isDarkMode ? '#FFFFFF' : '#000000' }
         ]}>
           Welcome to VibeWell
         </Text>
         <Text style={[
-          styles?.subtitle,
+          styles.subtitle,
           { color: isDarkMode ? '#E0E0E0' : '#666666' }
         ]}>
           Your wellness & beauty journey starts here
         </Text>
       </View>
       
-      <View style={styles?.content}>
+      <View style={styles.content}>
         <View style={[
-          styles?.card,
+          styles.card,
           { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }
         ]}>
           <Text style={[
-            styles?.cardTitle,
+            styles.cardTitle,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             Today's Wellness Tip
           </Text>
           <Text style={[
-            styles?.cardText,
+            styles.cardText,
             { color: isDarkMode ? '#E0E0E0' : '#444444' }
           ]}>
             Take 5 minutes to practice mindful breathing. It can reduce stress and improve focus.
@@ -48,12 +48,12 @@ const HomeScreen: React?.FC = () => {
         </View>
         
         <View style={[
-          styles?.card,
+          styles.card,
           { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }
         ]}>
-          <View style={styles?.cardHeader}>
+          <View style={styles.cardHeader}>
             <Text style={[
-              styles?.cardTitle,
+              styles.cardTitle,
               { color: isDarkMode ? '#FFFFFF' : '#000000' }
             ]}>
               Featured Beauty Service
@@ -61,28 +61,28 @@ const HomeScreen: React?.FC = () => {
             <Feather name="star" size={16} color="#FFD700" />
           </View>
           <Text style={[
-            styles?.cardText,
+            styles.cardText,
             { color: isDarkMode ? '#E0E0E0' : '#444444' }
           ]}>
             Spring Glow Facial: Revitalize your skin with our signature treatment using organic ingredients.
           </Text>
-          <TouchableOpacity style={styles?.cardButton}>
-            <Text style={styles?.cardButtonText}>Book Now</Text>
+          <TouchableOpacity style={styles.cardButton}>
+            <Text style={styles.cardButtonText}>Book Now</Text>
           </TouchableOpacity>
         </View>
         
         <View style={[
-          styles?.card,
+          styles.card,
           { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }
         ]}>
           <Text style={[
-            styles?.cardTitle,
+            styles.cardTitle,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             Upcoming Sessions
           </Text>
           <Text style={[
-            styles?.cardText,
+            styles.cardText,
             { color: isDarkMode ? '#E0E0E0' : '#444444' }
           ]}>
             You have no upcoming sessions. Book a new session to start your wellness journey.
@@ -90,71 +90,71 @@ const HomeScreen: React?.FC = () => {
         </View>
         
         <View style={[
-          styles?.card,
+          styles.card,
           { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }
         ]}>
           <Text style={[
-            styles?.cardTitle,
+            styles.cardTitle,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             Community Events
           </Text>
           <Text style={[
-            styles?.cardText,
+            styles.cardText,
             { color: isDarkMode ? '#E0E0E0' : '#444444' }
           ]}>
             Join our weekend meditation group this Saturday at 10 AM.
           </Text>
         </View>
         
-        <View style={styles?.quickAccess}>
+        <View style={styles.quickAccess}>
           <Text style={[
-            styles?.quickAccessTitle,
+            styles.quickAccessTitle,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             Quick Access
           </Text>
-          <View style={styles?.quickAccessGrid}>
+          <View style={styles.quickAccessGrid}>
             <TouchableOpacity style={[
-              styles?.quickAccessButton,
+              styles.quickAccessButton,
               { backgroundColor: isDarkMode ? '#2D3748' : '#E6F7FF' }
             ]}>
               <Feather name="activity" size={24} color={isDarkMode ? '#FFFFFF' : '#4F46E5'} />
               <Text style={[
-                styles?.quickAccessText,
+                styles.quickAccessText,
                 { color: isDarkMode ? '#FFFFFF' : '#000000' }
               ]}>Wellness</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={[
-              styles?.quickAccessButton,
+              styles.quickAccessButton,
               { backgroundColor: isDarkMode ? '#2D3748' : '#FCE7F3' }
             ]}>
               <Feather name="scissors" size={24} color={isDarkMode ? '#FFFFFF' : '#DB2777'} />
               <Text style={[
-                styles?.quickAccessText,
+                styles.quickAccessText,
                 { color: isDarkMode ? '#FFFFFF' : '#000000' }
               ]}>Beauty</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={[
-              styles?.quickAccessButton,
+              styles.quickAccessButton,
               { backgroundColor: isDarkMode ? '#2D3748' : '#F0FDF4' }
             ]}>
               <Feather name="calendar" size={24} color={isDarkMode ? '#FFFFFF' : '#16A34A'} />
               <Text style={[
-                styles?.quickAccessText,
+                styles.quickAccessText,
                 { color: isDarkMode ? '#FFFFFF' : '#000000' }
               ]}>Book</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={[
-              styles?.quickAccessButton,
+              styles.quickAccessButton,
               { backgroundColor: isDarkMode ? '#2D3748' : '#FEF3C7' }
             ]}>
               <Feather name="users" size={24} color={isDarkMode ? '#FFFFFF' : '#D97706'} />
               <Text style={[
-                styles?.quickAccessText,
+                styles.quickAccessText,
                 { color: isDarkMode ? '#FFFFFF' : '#000000' }
               ]}>Community</Text>
             </TouchableOpacity>
@@ -165,7 +165,7 @@ const HomeScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -191,7 +191,7 @@ const styles = StyleSheet?.create({
     marginBottom: 15,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0?.1,
+    shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 2,
   },

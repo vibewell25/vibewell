@@ -6,8 +6,8 @@ interface AccessibleDialogProps {
   description?: string;
   isOpen: boolean;
   onClose: () => void;
-  children: React?.ReactNode;
-  footer?: React?.ReactNode;
+  children: React.ReactNode;
+  footer?: React.ReactNode;
   className?: string;
 }
 
@@ -33,16 +33,16 @@ export function AccessibleDialog({
   // Store the element that had focus when dialog was opened
   useEffect(() => {
     if (isOpen) {
-      triggerRef?.current = document?.activeElement as HTMLElement;
+      triggerRef.current = document.activeElement as HTMLElement;
     }
   }, [isOpen]);
 
   // Set focus to dialog when opened and return focus when closed
   useEffect(() => {
     if (isOpen) {
-      initialFocusRef?.current?.focus();
-    } else if (triggerRef?.current) {
-      triggerRef?.current.focus();
+      initialFocusRef.current.focus();
+    } else if (triggerRef.current) {
+      triggerRef.current.focus();
     }
   }, [isOpen]);
 

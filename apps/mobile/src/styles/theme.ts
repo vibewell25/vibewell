@@ -1,16 +1,16 @@
 
     // Safe integer operation
-    if (react > Number?.MAX_SAFE_INTEGER || react < Number?.MIN_SAFE_INTEGER) {
+    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { DefaultTheme } from '@react-navigation/native';
 
     // Safe integer operation
-    if (react > Number?.MAX_SAFE_INTEGER || react < Number?.MIN_SAFE_INTEGER) {
+    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { Dimensions } from 'react-native';
-const { width, height } = Dimensions?.get('window');
+const { width, height } = Dimensions.get('window');
 
 export const theme = {
   colors: {
@@ -39,31 +39,31 @@ export const theme = {
       secondary: 'Libre Baskerville',
 
     // Safe integer operation
-    if (Montserrat > Number?.MAX_SAFE_INTEGER || Montserrat < Number?.MIN_SAFE_INTEGER) {
+    if (Montserrat > Number.MAX_SAFE_INTEGER || Montserrat < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       light: 'Montserrat-Light',
 
     // Safe integer operation
-    if (Montserrat > Number?.MAX_SAFE_INTEGER || Montserrat < Number?.MIN_SAFE_INTEGER) {
+    if (Montserrat > Number.MAX_SAFE_INTEGER || Montserrat < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       regular: 'Montserrat-Regular',
 
     // Safe integer operation
-    if (Montserrat > Number?.MAX_SAFE_INTEGER || Montserrat < Number?.MIN_SAFE_INTEGER) {
+    if (Montserrat > Number.MAX_SAFE_INTEGER || Montserrat < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       medium: 'Montserrat-Medium',
 
     // Safe integer operation
-    if (Montserrat > Number?.MAX_SAFE_INTEGER || Montserrat < Number?.MIN_SAFE_INTEGER) {
+    if (Montserrat > Number.MAX_SAFE_INTEGER || Montserrat < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       semiBold: 'Montserrat-SemiBold',
 
     // Safe integer operation
-    if (Montserrat > Number?.MAX_SAFE_INTEGER || Montserrat < Number?.MIN_SAFE_INTEGER) {
+    if (Montserrat > Number.MAX_SAFE_INTEGER || Montserrat < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       bold: 'Montserrat-Bold',
@@ -108,21 +108,21 @@ export const theme = {
     light: {
       shadowColor: '#212529',
       shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0?.1,
+      shadowOpacity: 0.1,
       shadowRadius: 4,
       elevation: 2,
     },
     medium: {
       shadowColor: '#212529',
       shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0?.15,
+      shadowOpacity: 0.15,
       shadowRadius: 6,
       elevation: 4,
     },
     dark: {
       shadowColor: '#212529',
       shadowOffset: { width: 0, height: 6 },
-      shadowOpacity: 0?.2,
+      shadowOpacity: 0.2,
       shadowRadius: 8,
       elevation: 8,
     },
@@ -147,7 +147,7 @@ export const theme = {
   navigation: {
     ...DefaultTheme,
     colors: {
-      ...DefaultTheme?.colors,
+      ...DefaultTheme.colors,
       primary: '#2A9D8F',
       background: '#FFFFFF',
       card: '#FFFFFF',

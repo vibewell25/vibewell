@@ -28,7 +28,7 @@ interface EngagementMetrics {
   interactions: number;
 }
 
-export function EngagementProvider({ children }: { children: React?.ReactNode }) {
+export function EngagementProvider({ children }: { children: React.ReactNode }) {
   const { user, isLoading: authLoading } = useUser();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
@@ -51,23 +51,23 @@ export function EngagementProvider({ children }: { children: React?.ReactNode })
     if (!user) return;
 
     const loadEngagementData = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       setLoading(true);
       try {
         // Load badges
-        const userBadges = await engagementService?.getUserBadges(user?.sub);
+        const userBadges = await engagementService.getUserBadges(user.sub);
         setBadges(userBadges);
 
         // Load points
-        const userPoints = await engagementService?.getUserPoints(user?.sub);
+        const userPoints = await engagementService.getUserPoints(user.sub);
         setPoints(userPoints);
 
         // Get recommendations
-        const recs = await engagementService?.getPersonalizedRecommendations(user?.sub, 5);
+        const recs = await engagementService.getPersonalizedRecommendations(user.sub, 5);
         setRecommendations(recs);
       } catch (error) {
-        console?.error('Error loading engagement data:', error);
+        console.error('Error loading engagement data:', error);
       } finally {
         setLoading(false);
       }
@@ -101,7 +101,7 @@ export function EngagementProvider({ children }: { children: React?.ReactNode })
     // Update metrics state
     const updateMetrics = () => {
       const currentTime = new Date();
-      const sessionDuration = Math?.floor((currentTime?.getTime() - sessionStart?.getTime()) / 1000);
+      const sessionDuration = Math.floor((currentTime.getTime() - sessionStart.getTime()) / 1000);
 
       setMetrics({
         lastActive: lastActivityTime,
@@ -112,17 +112,17 @@ export function EngagementProvider({ children }: { children: React?.ReactNode })
     };
 
     // Set up event listeners
-    window?.addEventListener('click', handleUserInteraction);
-    window?.addEventListener('keypress', handleUserInteraction);
-    window?.addEventListener('scroll', handleUserInteraction);
-    window?.addEventListener('mousemove', handleUserInteraction);
+    window.addEventListener('click', handleUserInteraction);
+    window.addEventListener('keypress', handleUserInteraction);
+    window.addEventListener('scroll', handleUserInteraction);
+    window.addEventListener('mousemove', handleUserInteraction);
 
     // Clean up
     return () => {
-      window?.removeEventListener('click', handleUserInteraction);
-      window?.removeEventListener('keypress', handleUserInteraction);
-      window?.removeEventListener('scroll', handleUserInteraction);
-      window?.removeEventListener('mousemove', handleUserInteraction);
+      window.removeEventListener('click', handleUserInteraction);
+      window.removeEventListener('keypress', handleUserInteraction);
+      window.removeEventListener('scroll', handleUserInteraction);
+      window.removeEventListener('mousemove', handleUserInteraction);
     };
   }, [user]);
 
@@ -130,70 +130,70 @@ export function EngagementProvider({ children }: { children: React?.ReactNode })
     if (!badge) return;
     
     toast({
-      title: `🏆 New Badge: ${badge?.name}`,
-      description: badge?.description,
+      title: `🏆 New Badge: ${badge.name}`,
+      description: badge.description,
       duration: 5000,
     });
   };
 
   const closeNewBadgeNotification = (badgeId: string) => {
-    setNewBadges((prev) => prev?.filter((badge) => badge?.id !== badgeId));
+    setNewBadges((prev) => prev.filter((badge) => badge.id !== badgeId));
   };
 
   const checkForNewAchievements = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!user || isChecking) return;
 
     setIsChecking(true);
     try {
       // Check for new badges
-      const newBadgeIds = await engagementService?.checkBadgeEligibility(user?.sub);
+      const newBadgeIds = await engagementService.checkBadgeEligibility(user.sub);
 
-      if (newBadgeIds?.length > 0) {
+      if (newBadgeIds.length > 0) {
         // Get badge details
         const earnedBadges = newBadgeIds
-          .map((id) => BADGES?.find((badge) => badge?.id === id))
+          .map((id) => BADGES.find((badge) => badge.id === id))
           .filter((badge): badge is Badge => badge !== undefined);
 
         // Update state
         setNewBadges((prev) => [...prev, ...earnedBadges]);
 
         // Refresh user badges
-        const updatedBadges = await engagementService?.getUserBadges(user?.sub);
+        const updatedBadges = await engagementService.getUserBadges(user.sub);
         setBadges(updatedBadges);
 
         // Refresh points
-        const updatedPoints = await engagementService?.getUserPoints(user?.sub);
+        const updatedPoints = await engagementService.getUserPoints(user.sub);
         setPoints(updatedPoints);
 
         // Show notification for the first badge
-        if (earnedBadges?.length > 0) {
+        if (earnedBadges.length > 0) {
           showBadgeNotification(earnedBadges[0]);
         }
       }
     } catch (error) {
-      console?.error('Error checking achievements:', error);
+      console.error('Error checking achievements:', error);
     } finally {
       setIsChecking(false);
     }
   };
 
   const trackAchievement = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');type: string, count: number = 1) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');type: string, count: number = 1) => {
     if (!user) return;
 
     try {
-      await engagementService?.trackAchievement(user?.sub, type, count);
+      await engagementService.trackAchievement(user.sub, type, count);
       await checkForNewAchievements();
     } catch (error) {
-      console?.error(`Error tracking achievement ${type}:`, error);
+      console.error(`Error tracking achievement ${type}:`, error);
     }
   };
 
   return (
-    <EngagementContext?.Provider
+    <EngagementContext.Provider
       value={{
         badges,
         points,
@@ -208,7 +208,7 @@ export function EngagementProvider({ children }: { children: React?.ReactNode })
       }}
     >
       {children}
-    </EngagementContext?.Provider>
+    </EngagementContext.Provider>
   );
 }
 

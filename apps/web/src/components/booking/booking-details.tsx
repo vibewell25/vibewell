@@ -64,12 +64,12 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
   }, [bookingId]);
 
   const loadBooking = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
       const bookingService = new BookingService();
-      const data = await bookingService?.getBookingById(bookingId);
+      const data = await bookingService.getBookingById(bookingId);
       setBooking(data);
     } catch (err) {
       setError('Failed to load booking details');
@@ -84,13 +84,13 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
   };
 
   const handleStatusUpdate = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');newStatus: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');newStatus: string) => {
     if (!booking) return;
 
     try {
       const bookingService = new BookingService();
-      await bookingService?.updateBookingStatus(bookingId, newStatus);
+      await bookingService.updateBookingStatus(bookingId, newStatus);
       setBooking({ ...booking, status: newStatus });
       toast({
         title: 'Success',
@@ -106,13 +106,13 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
   };
 
   const handleCancel = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!booking) return;
 
     try {
       const bookingService = new BookingService();
-      await bookingService?.cancelBooking(bookingId);
+      await bookingService.cancelBooking(bookingId);
       setBooking({
         ...booking,
         status: role === 'customer' ? 'cancelled_by_customer' : 'cancelled_by_provider',
@@ -144,7 +144,7 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
     };
 
     const statusInfo = statusMap[status] || { label: status, variant: 'secondary' };
-    return <Badge variant={statusInfo?.variant}>{statusInfo?.label}</Badge>;
+    return <Badge variant={statusInfo.variant}>{statusInfo.label}</Badge>;
   };
 
   if (loading) {
@@ -163,17 +163,17 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <Button variant="outline" onClick={() => router?.back()}>
+        <Button variant="outline" onClick={() => router.back()}>
           Back
         </Button>
-        {getStatusBadge(booking?.status)}
+        {getStatusBadge(booking.status)}
       </div>
 
       <Card className="p-6">
         <div className="grid gap-6">
           <div>
-            <h2 className="mb-2 text-2xl font-bold">{booking?.service.name}</h2>
-            <p className="text-gray-500">{booking?.service.description}</p>
+            <h2 className="mb-2 text-2xl font-bold">{booking.service.name}</h2>
+            <p className="text-gray-500">{booking.service.description}</p>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
@@ -182,19 +182,19 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
               <div className="space-y-2">
                 <p>
                   <span className="text-gray-500">Date:</span>{' '}
-                  {format(new Date(booking?.start_time), 'PPP')}
+                  {format(new Date(booking.start_time), 'PPP')}
                 </p>
                 <p>
                   <span className="text-gray-500">Time:</span>{' '}
-                  {format(new Date(booking?.start_time), 'p')} -{' '}
-                  {format(new Date(booking?.end_time), 'p')}
+                  {format(new Date(booking.start_time), 'p')} -{' '}
+                  {format(new Date(booking.end_time), 'p')}
                 </p>
                 <p>
-                  <span className="text-gray-500">Duration:</span> {booking?.service.duration}{' '}
+                  <span className="text-gray-500">Duration:</span> {booking.service.duration}{' '}
                   minutes
                 </p>
                 <p>
-                  <span className="text-gray-500">Price:</span> ${booking?.service.price}
+                  <span className="text-gray-500">Price:</span> ${booking.service.price}
                 </p>
               </div>
             </div>
@@ -206,41 +206,41 @@ export function BookingDetails({ bookingId, userId, role }: BookingDetailsProps)
               <div className="space-y-2">
                 <p>
                   <span className="text-gray-500">Name:</span>{' '}
-                  {role === 'customer' ? booking?.provider.name : booking?.customer.name}
+                  {role === 'customer' ? booking.provider.name : booking.customer.name}
                 </p>
                 <p>
                   <span className="text-gray-500">Email:</span>{' '}
-                  {role === 'customer' ? booking?.provider.email : booking?.customer.email}
+                  {role === 'customer' ? booking.provider.email : booking.customer.email}
                 </p>
-                {role === 'customer' && booking?.provider.phone && (
+                {role === 'customer' && booking.provider.phone && (
                   <p>
-                    <span className="text-gray-500">Phone:</span> {booking?.provider.phone}
+                    <span className="text-gray-500">Phone:</span> {booking.provider.phone}
                   </p>
                 )}
-                {role === 'provider' && booking?.customer.phone && (
+                {role === 'provider' && booking.customer.phone && (
                   <p>
-                    <span className="text-gray-500">Phone:</span> {booking?.customer.phone}
+                    <span className="text-gray-500">Phone:</span> {booking.customer.phone}
                   </p>
                 )}
               </div>
             </div>
           </div>
 
-          {booking?.notes && (
+          {booking.notes && (
             <div>
               <h3 className="mb-2 font-semibold">Notes</h3>
-              <p className="text-gray-500">{booking?.notes}</p>
+              <p className="text-gray-500">{booking.notes}</p>
             </div>
           )}
 
           <div className="flex gap-4">
-            {booking?.status === 'pending' && role === 'provider' && (
+            {booking.status === 'pending' && role === 'provider' && (
               <Button onClick={() => setShowConfirmDialog(true)}>Confirm Booking</Button>
             )}
-            {booking?.status === 'confirmed' && role === 'provider' && (
+            {booking.status === 'confirmed' && role === 'provider' && (
               <Button onClick={() => setShowCompleteDialog(true)}>Mark as Completed</Button>
             )}
-            {['pending', 'confirmed'].includes(booking?.status) && (
+            {['pending', 'confirmed'].includes(booking.status) && (
               <Button variant="destructive" onClick={() => setShowCancelDialog(true)}>
                 Cancel Booking
               </Button>

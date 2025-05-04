@@ -1,11 +1,11 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-export interface BaseInputProps extends Omit<React?.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface BaseInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string;
   error?: string;
-  leftIcon?: React?.ReactNode;
-  rightIcon?: React?.ReactNode;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
   wrapperClassName?: string;
   containerClassName?: string;
   labelClassName?: string;
@@ -32,7 +32,7 @@ export interface BaseInputProps extends Omit<React?.InputHTMLAttributes<HTMLInpu
  * - Customizable styling via className props
  * - All standard input attributes
  */
-export const BaseInput = React?.forwardRef<HTMLInputElement, BaseInputProps>(
+export const BaseInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
   (
     {
       label,
@@ -58,7 +58,7 @@ export const BaseInput = React?.forwardRef<HTMLInputElement, BaseInputProps>(
     ref,
   ) => {
     // Generate a unique ID if none is provided
-    const inputId = id || `input-${Math?.random().toString(36).substr(2, 9)}`;
+    const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
 
     // Size-based classes
     const sizeClasses = {
@@ -163,6 +163,6 @@ export const BaseInput = React?.forwardRef<HTMLInputElement, BaseInputProps>(
   },
 );
 
-BaseInput?.displayName = 'BaseInput';
+BaseInput.displayName = 'BaseInput';
 
 export default BaseInput;

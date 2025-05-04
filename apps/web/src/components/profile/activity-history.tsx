@@ -13,7 +13,7 @@ interface ActivityEvent {
   location?: string;
   device?: string;
   status: 'success' | 'warning' | 'error';
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
 }
 
 export function ActivityHistory() {
@@ -84,37 +84,37 @@ export function ActivityHistory() {
         <CardDescription>View your recent account activity and events.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {events?.map((event) => (
-          <div key={event?.id} className="flex items-start space-x-4 rounded-lg border p-4">
-            <div className="mt-1">{event?.icon}</div>
+        {events.map((event) => (
+          <div key={event.id} className="flex items-start space-x-4 rounded-lg border p-4">
+            <div className="mt-1">{event.icon}</div>
             <div className="flex-1 space-y-2">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-medium">{event?.title}</h3>
-                <Badge variant="outline" className={getStatusColor(event?.status)}>
+                <h3 className="text-sm font-medium">{event.title}</h3>
+                <Badge variant="outline" className={getStatusColor(event.status)}>
                   <div className="flex items-center space-x-1">
-                    {getStatusIcon(event?.status)}
-                    <span className="capitalize">{event?.status}</span>
+                    {getStatusIcon(event.status)}
+                    <span className="capitalize">{event.status}</span>
                   </div>
                 </Badge>
               </div>
-              <p className="text-sm text-muted-foreground">{event?.description}</p>
+              <p className="text-sm text-muted-foreground">{event.description}</p>
               <div className="flex items-center space-x-4 text-xs text-muted-foreground">
                 <div className="flex items-center">
                   <Clock className="mr-1 h-3 w-3" />
-                  {formatDistanceToNow(new Date(event?.timestamp), {
+                  {formatDistanceToNow(new Date(event.timestamp), {
                     addSuffix: true,
                   })}
                 </div>
-                {event?.location && (
+                {event.location && (
                   <div className="flex items-center">
                     <Globe className="mr-1 h-3 w-3" />
-                    {event?.location}
+                    {event.location}
                   </div>
                 )}
-                {event?.device && (
+                {event.device && (
                   <div className="flex items-center">
                     <Activity className="mr-1 h-3 w-3" />
-                    {event?.device}
+                    {event.device}
                   </div>
                 )}
               </div>

@@ -14,10 +14,10 @@ interface ARTryOnProps {
   onComplete?: () => void;
 }
 
-export const ARTryOn: React?.FC<ARTryOnProps> = ({ productId, onComplete }) => {
-  const sceneRef = useRef<THREE?.Scene>(null);
+export const ARTryOn: React.FC<ARTryOnProps> = ({ productId, onComplete }) => {
+  const sceneRef = useRef<THREE.Scene>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [intensity, setIntensity] = useState(0?.5);
+  const [intensity, setIntensity] = useState(0.5);
   const { isSupported, initialize } = useWebXR();
   const { hasCamera, hasGyroscope } = useDeviceCapabilities();
   const { currentProduct, loadProduct } = useProductStore();
@@ -25,16 +25,16 @@ export const ARTryOn: React?.FC<ARTryOnProps> = ({ productId, onComplete }) => {
 
   useEffect(() => {
     const setupAR = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         setIsLoading(true);
-        await Promise?.all([
+        await Promise.all([
           initialize(),
           loadProduct(productId)
         ]);
       } catch (error) {
-        console?.error('Error setting up AR:', error);
+        console.error('Error setting up AR:', error);
       } finally {
         setIsLoading(false);
       }
@@ -48,22 +48,22 @@ export const ARTryOn: React?.FC<ARTryOnProps> = ({ productId, onComplete }) => {
   };
 
   const handleCapture = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-    if (!sceneRef?.current) return;
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    if (!sceneRef.current) return;
 
     try {
-      const screenshot = await captureARScene(sceneRef?.current);
+      const screenshot = await captureARScene(sceneRef.current);
       updateARSession({
         productId,
         screenshot,
         intensity,
-        timestamp: Date?.now()
+        timestamp: Date.now()
       });
       
-      onComplete?.();
+      onComplete.();
     } catch (error) {
-      console?.error('Error capturing AR scene:', error);
+      console.error('Error capturing AR scene:', error);
     }
   };
 
@@ -113,7 +113,7 @@ export const ARTryOn: React?.FC<ARTryOnProps> = ({ productId, onComplete }) => {
                 height: '60vh',
                 borderRadius: 2,
                 overflow: 'hidden',
-                bgcolor: 'background?.paper'
+                bgcolor: 'background.paper'
               }}
             >
               <ARScene ref={sceneRef}>
@@ -135,7 +135,7 @@ export const ARTryOn: React?.FC<ARTryOnProps> = ({ productId, onComplete }) => {
                 value={intensity}
                 onChange={handleIntensityChange}
                 aria-labelledby="intensity-slider"
-                step={0?.1}
+                step={0.1}
                 marks
                 min={0}
                 max={1}
@@ -161,22 +161,22 @@ export const ARTryOn: React?.FC<ARTryOnProps> = ({ productId, onComplete }) => {
 };
 
 const captureARScene = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');scene: THREE?.Scene): Promise<string> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');scene: THREE.Scene): Promise<string> => {
   return new Promise((resolve, reject) => {
     try {
-      const renderer = new THREE?.WebGLRenderer({ antialias: true });
-      const camera = scene?.children.find(child => child instanceof THREE?.Camera);
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      const camera = scene.children.find(child => child instanceof THREE.Camera);
       
       if (!camera) {
         throw new Error('Camera not found in scene');
       }
 
-      renderer?.render(scene, camera as THREE?.Camera);
-      const dataUrl = renderer?.domElement.toDataURL('image/png');
+      renderer.render(scene, camera as THREE.Camera);
+      const dataUrl = renderer.domElement.toDataURL('image/png');
       
       // Clean up
-      renderer?.dispose();
+      renderer.dispose();
       
       resolve(dataUrl);
     } catch (error) {

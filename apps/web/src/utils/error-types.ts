@@ -71,8 +71,8 @@ export class AppError extends Error {
 
   constructor(message: string, info: ErrorInfo) {
     super(message);
-    this?.name = 'AppError';
-    this?.info = {
+    this.name = 'AppError';
+    this.info = {
       ...info,
       timestamp: new Date().toISOString(),
       errorId: generateErrorId(),
@@ -84,5 +84,5 @@ export class AppError extends Error {
  * Generate a unique error ID for tracking purposes
  */
 function generateErrorId(): string {
-  return Math?.random().toString(36).substring(2, 12);
+  return Math.random().toString(36).substring(2, 12);
 }

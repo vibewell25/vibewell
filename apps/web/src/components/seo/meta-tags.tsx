@@ -17,7 +17,7 @@ export default function MetaTags({
   title = 'Vibewell - Connect with wellness and beauty service providers',
   description = 'Find and book wellness and beauty services, connect with providers, and manage your appointments all in one place.',
   keywords = 'wellness, beauty, services, appointments, booking, health, self-care',
-  ogImage = '/images/og-image?.jpg',
+  ogImage = '/images/og-image.jpg',
   ogUrl,
   ogType = 'website',
   twitterCard = 'summary_large_image',

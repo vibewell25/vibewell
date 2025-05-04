@@ -26,7 +26,7 @@ interface UserAvatarProps {
  * 3. A default user icon if neither src nor fallbackInitials are provided
  *
  * @param {UserAvatarProps} props - Component properties
- * @returns {JSX?.Element} Rendered avatar component
+ * @returns {JSX.Element} Rendered avatar component
  */
 export function UserAvatar({
   src,

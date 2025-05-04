@@ -25,7 +25,7 @@ interface SystemMetrics {
   networkHealth: number;
 }
 
-const SystemMonitorDashboard: React?.FC = () => {
+const SystemMonitorDashboard: React.FC = () => {
   const [metrics, setMetrics] = useState<SystemMetrics>({
     cpuUsage: 0,
     memoryUsage: 0,
@@ -44,13 +44,13 @@ const SystemMonitorDashboard: React?.FC = () => {
 
   useEffect(() => {
     const fetchMetrics = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
-        const cpuUsage = await performanceMonitor?.getCPUUsage();
-        const memoryUsage = await performanceMonitor?.getMemoryUsage();
-        const diskUsage = await performanceMonitor?.getDiskUsage();
-        const networkHealth = await performanceMonitor?.getNetworkHealth();
+        const cpuUsage = await performanceMonitor.getCPUUsage();
+        const memoryUsage = await performanceMonitor.getMemoryUsage();
+        const diskUsage = await performanceMonitor.getDiskUsage();
+        const networkHealth = await performanceMonitor.getNetworkHealth();
 
         const currentMetrics = {
           cpuUsage,
@@ -64,7 +64,7 @@ const SystemMonitorDashboard: React?.FC = () => {
         // Update historical data
         setHistoricalData((prevData) => {
           const newDataPoint: MetricDataPoint = {
-            timestamp: Date?.now(),
+            timestamp: Date.now(),
             ...currentMetrics,
           };
 
@@ -72,14 +72,14 @@ const SystemMonitorDashboard: React?.FC = () => {
           const maxDataPoints =
             selectedTimeRange === '1h' ? 60 : selectedTimeRange === '24h' ? 1440 : 168;
           const newData = [...prevData, newDataPoint];
-          return newData?.slice(-maxDataPoints);
+          return newData.slice(-maxDataPoints);
         });
 
         // Get active alerts
-        const activeAlerts = performanceMonitor?.getActiveAlerts();
+        const activeAlerts = performanceMonitor.getActiveAlerts();
         setAlerts(activeAlerts);
       } catch (error) {
-        console?.error('Error fetching system metrics:', error);
+        console.error('Error fetching system metrics:', error);
       }
     };
 
@@ -90,18 +90,18 @@ const SystemMonitorDashboard: React?.FC = () => {
   }, [selectedTimeRange]);
 
   const getAlertSeverity = (value: number, threshold: number): 'low' | 'medium' | 'high' => {
-    if (value >= threshold * 0?.9) return 'high';
-    if (value >= threshold * 0?.7) return 'medium';
+    if (value >= threshold * 0.9) return 'high';
+    if (value >= threshold * 0.7) return 'medium';
     return 'low';
   };
 
   const handleDismissAlert = (alertId: string) => {
-    setAlerts((prevAlerts) => prevAlerts?.filter((alert) => alert?.id !== alertId));
+    setAlerts((prevAlerts) => prevAlerts.filter((alert) => alert.id !== alertId));
   };
 
   const handleMetricToggle = (metric: keyof SystemMetrics) => {
     setSelectedMetrics((prev) =>
-      prev?.includes(metric) ? prev?.filter((m) => m !== metric) : [...prev, metric],
+      prev.includes(metric) ? prev.filter((m) => m !== metric) : [...prev, metric],
     );
   };
 
@@ -112,7 +112,7 @@ const SystemMonitorDashboard: React?.FC = () => {
         <div className="time-range-selector">
           <select
             value={selectedTimeRange}
-            onChange={(e) => setSelectedTimeRange(e?.target.value as '1h' | '24h' | '7d')}
+            onChange={(e) => setSelectedTimeRange(e.target.value as '1h' | '24h' | '7d')}
           >
             <option value="1h">Last Hour</option>
             <option value="24h">Last 24 Hours</option>
@@ -121,14 +121,14 @@ const SystemMonitorDashboard: React?.FC = () => {
         </div>
 
         <div className="metric-toggles">
-          {Object?.keys(metrics).map((metric) => (
+          {Object.keys(metrics).map((metric) => (
             <label key={metric} className="metric-toggle">
               <input
                 type="checkbox"
-                checked={selectedMetrics?.includes(metric as keyof SystemMetrics)}
+                checked={selectedMetrics.includes(metric as keyof SystemMetrics)}
                 onChange={() => handleMetricToggle(metric as keyof SystemMetrics)}
               />
-              {metric?.replace(/([A-Z])/g, ' $1').trim()}
+              {metric.replace(/([A-Z])/g, ' $1').trim()}
             </label>
           ))}
         </div>
@@ -137,40 +137,40 @@ const SystemMonitorDashboard: React?.FC = () => {
         <div className="metric-card">
           <h3>CPU Usage</h3>
           <DynamicGaugeChart
-            value={metrics?.cpuUsage}
+            value={metrics.cpuUsage}
             maxValue={100}
             label="CPU"
-            severity={getAlertSeverity(metrics?.cpuUsage, 80)}
+            severity={getAlertSeverity(metrics.cpuUsage, 80)}
           />
         </div>
 
         <div className="metric-card">
           <h3>Memory Usage</h3>
           <DynamicGaugeChart
-            value={metrics?.memoryUsage}
+            value={metrics.memoryUsage}
             maxValue={100}
             label="Memory"
-            severity={getAlertSeverity(metrics?.memoryUsage, 80)}
+            severity={getAlertSeverity(metrics.memoryUsage, 80)}
           />
         </div>
 
         <div className="metric-card">
           <h3>Disk Usage</h3>
           <DynamicGaugeChart
-            value={metrics?.diskUsage}
+            value={metrics.diskUsage}
             maxValue={100}
             label="Disk"
-            severity={getAlertSeverity(metrics?.diskUsage, 80)}
+            severity={getAlertSeverity(metrics.diskUsage, 80)}
           />
         </div>
 
         <div className="metric-card">
           <h3>Network Health</h3>
           <DynamicGaugeChart
-            value={metrics?.networkHealth}
+            value={metrics.networkHealth}
             maxValue={100}
             label="Network"
-            severity={getAlertSeverity(100 - metrics?.networkHealth, 50)}
+            severity={getAlertSeverity(100 - metrics.networkHealth, 50)}
           />
         </div>
       </div>
@@ -207,7 +207,7 @@ const SystemMonitorDashboard: React?.FC = () => {
         .metric-toggle {
           display: flex;
           align-items: center;
-          gap: 0?.5rem;
+          gap: 0.5rem;
           color: var(--text-primary);
           cursor: pointer;
         }
@@ -219,33 +219,33 @@ const SystemMonitorDashboard: React?.FC = () => {
         .metrics-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 1?.5rem;
+          gap: 1.5rem;
           margin-bottom: 2rem;
         }
 
         .metric-card {
           background: var(--background-secondary);
           border-radius: 8px;
-          padding: 1?.5rem;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0?.1);
+          padding: 1.5rem;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .metrics-chart-section {
           background: var(--background-secondary);
           border-radius: 8px;
-          padding: 1?.5rem;
+          padding: 1.5rem;
           margin: 2rem 0;
         }
 
         .alerts-section {
           background: var(--background-secondary);
           border-radius: 8px;
-          padding: 1?.5rem;
+          padding: 1.5rem;
           margin-top: 2rem;
         }
 
         select {
-          padding: 0?.5rem;
+          padding: 0.5rem;
           border-radius: 4px;
           border: 1px solid var(--border-color);
           background: var(--background-secondary);

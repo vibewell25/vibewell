@@ -17,10 +17,10 @@ describe('Layout Components', () => {
         </PageLayout>,
       );
 
-      expect(screen?.getByText('Header')).toBeInTheDocument();
-      expect(screen?.getByText('Footer')).toBeInTheDocument();
-      expect(screen?.getByText('Sidebar')).toBeInTheDocument();
-      expect(screen?.getByText('Main Content')).toBeInTheDocument();
+      expect(screen.getByText('Header')).toBeInTheDocument();
+      expect(screen.getByText('Footer')).toBeInTheDocument();
+      expect(screen.getByText('Sidebar')).toBeInTheDocument();
+      expect(screen.getByText('Main Content')).toBeInTheDocument();
     });
 
     it('renders without optional sections', () => {
@@ -30,10 +30,10 @@ describe('Layout Components', () => {
         </PageLayout>,
       );
 
-      expect(screen?.queryByText('Header')).not?.toBeInTheDocument();
-      expect(screen?.queryByText('Footer')).not?.toBeInTheDocument();
-      expect(screen?.queryByText('Sidebar')).not?.toBeInTheDocument();
-      expect(screen?.getByText('Main Content')).toBeInTheDocument();
+      expect(screen.queryByText('Header')).not.toBeInTheDocument();
+      expect(screen.queryByText('Footer')).not.toBeInTheDocument();
+      expect(screen.queryByText('Sidebar')).not.toBeInTheDocument();
+      expect(screen.getByText('Main Content')).toBeInTheDocument();
     });
 
     it('applies custom classes to sections', () => {
@@ -49,10 +49,10 @@ describe('Layout Components', () => {
         </PageLayout>,
       );
 
-      expect(screen?.getByTestId('page-layout')).toHaveClass('custom-layout');
-      expect(screen?.getByText('Header').parentElement).toHaveClass('custom-header');
-      expect(screen?.getByText('Footer').parentElement).toHaveClass('custom-footer');
-      expect(screen?.getByText('Sidebar').parentElement).toHaveClass('custom-sidebar');
+      expect(screen.getByTestId('page-layout')).toHaveClass('custom-layout');
+      expect(screen.getByText('Header').parentElement).toHaveClass('custom-header');
+      expect(screen.getByText('Footer').parentElement).toHaveClass('custom-footer');
+      expect(screen.getByText('Sidebar').parentElement).toHaveClass('custom-sidebar');
     });
   });
 
@@ -64,7 +64,7 @@ describe('Layout Components', () => {
         </Container>,
       );
 
-      expect(screen?.getByText('Container Content')).toBeInTheDocument();
+      expect(screen.getByText('Container Content')).toBeInTheDocument();
     });
 
     it('applies size variants correctly', () => {
@@ -73,21 +73,21 @@ describe('Layout Components', () => {
           <div>Content</div>
         </Container>,
       );
-      expect(screen?.getByTestId('container')).toHaveClass('container-sm');
+      expect(screen.getByTestId('container')).toHaveClass('container-sm');
 
       rerender(
         <Container size="md">
           <div>Content</div>
         </Container>,
       );
-      expect(screen?.getByTestId('container')).toHaveClass('container-md');
+      expect(screen.getByTestId('container')).toHaveClass('container-md');
 
       rerender(
         <Container size="lg">
           <div>Content</div>
         </Container>,
       );
-      expect(screen?.getByTestId('container')).toHaveClass('container-lg');
+      expect(screen.getByTestId('container')).toHaveClass('container-lg');
     });
 
     it('supports fluid layout', () => {
@@ -97,7 +97,7 @@ describe('Layout Components', () => {
         </Container>,
       );
 
-      expect(screen?.getByTestId('container')).toHaveClass('container-fluid');
+      expect(screen.getByTestId('container')).toHaveClass('container-fluid');
     });
 
     it('applies custom padding', () => {
@@ -107,7 +107,7 @@ describe('Layout Components', () => {
         </Container>,
       );
 
-      expect(screen?.getByTestId('container')).toHaveClass('p-8');
+      expect(screen.getByTestId('container')).toHaveClass('p-8');
     });
   });
 
@@ -121,9 +121,9 @@ describe('Layout Components', () => {
         </Grid>,
       );
 
-      expect(screen?.getByText('Item 1')).toBeInTheDocument();
-      expect(screen?.getByText('Item 2')).toBeInTheDocument();
-      expect(screen?.getByText('Item 3')).toBeInTheDocument();
+      expect(screen.getByText('Item 1')).toBeInTheDocument();
+      expect(screen.getByText('Item 2')).toBeInTheDocument();
+      expect(screen.getByText('Item 3')).toBeInTheDocument();
     });
 
     it('applies column configuration correctly', () => {
@@ -135,7 +135,7 @@ describe('Layout Components', () => {
         </Grid>,
       );
 
-      expect(screen?.getByTestId('grid')).toHaveClass('grid-cols-3');
+      expect(screen.getByTestId('grid')).toHaveClass('grid-cols-3');
     });
 
     it('applies responsive column configuration', () => {
@@ -145,7 +145,7 @@ describe('Layout Components', () => {
         </Grid>,
       );
 
-      const grid = screen?.getByTestId('grid');
+      const grid = screen.getByTestId('grid');
       expect(grid).toHaveClass('sm:grid-cols-1');
       expect(grid).toHaveClass('md:grid-cols-2');
       expect(grid).toHaveClass('lg:grid-cols-3');
@@ -159,7 +159,7 @@ describe('Layout Components', () => {
         </Grid>,
       );
 
-      expect(screen?.getByTestId('grid')).toHaveClass('gap-4');
+      expect(screen.getByTestId('grid')).toHaveClass('gap-4');
     });
   });
 
@@ -173,9 +173,9 @@ describe('Layout Components', () => {
         </Stack>,
       );
 
-      expect(screen?.getByText('Item 1')).toBeInTheDocument();
-      expect(screen?.getByText('Item 2')).toBeInTheDocument();
-      expect(screen?.getByText('Item 3')).toBeInTheDocument();
+      expect(screen.getByText('Item 1')).toBeInTheDocument();
+      expect(screen.getByText('Item 2')).toBeInTheDocument();
+      expect(screen.getByText('Item 3')).toBeInTheDocument();
     });
 
     it('applies vertical spacing correctly', () => {
@@ -186,7 +186,7 @@ describe('Layout Components', () => {
         </Stack>,
       );
 
-      expect(screen?.getByTestId('stack')).toHaveClass('space-y-4');
+      expect(screen.getByTestId('stack')).toHaveClass('space-y-4');
     });
 
     it('supports horizontal orientation', () => {
@@ -197,8 +197,8 @@ describe('Layout Components', () => {
         </Stack>,
       );
 
-      expect(screen?.getByTestId('stack')).toHaveClass('flex-row');
-      expect(screen?.getByTestId('stack')).toHaveClass('space-x-4');
+      expect(screen.getByTestId('stack')).toHaveClass('flex-row');
+      expect(screen.getByTestId('stack')).toHaveClass('space-x-4');
     });
 
     it('applies alignment classes', () => {
@@ -209,7 +209,7 @@ describe('Layout Components', () => {
         </Stack>,
       );
 
-      const stack = screen?.getByTestId('stack');
+      const stack = screen.getByTestId('stack');
       expect(stack).toHaveClass('items-center');
       expect(stack).toHaveClass('justify-between');
     });

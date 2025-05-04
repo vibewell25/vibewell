@@ -33,7 +33,7 @@ interface PerformanceMonitorProps {
  * PerformanceMonitor component
  *
  * A diagnostic component that monitors and displays real-time performance metrics
- * for a Three?.js scene. Can apply automatic optimizations when performance drops.
+ * for a Three.js scene. Can apply automatic optimizations when performance drops.
  *
  * @param props - Component props
  * @returns React component for monitoring WebGL performance
@@ -46,7 +46,7 @@ export function PerformanceMonitor({
   const { gl } = useThree();
   const frameRate = useRef<number>(0);
   const frameCount = useRef<number>(0);
-  const lastUpdate = useRef<number>(Date?.now());
+  const lastUpdate = useRef<number>(Date.now());
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
     fps: 0,
     triangles: 0,
@@ -54,55 +54,55 @@ export function PerformanceMonitor({
     memoryUsage: 0,
     isPerformanceIssue: false,
   });
-  const adaptiveQualityTimer = useRef<NodeJS?.Timeout | null>(null);
+  const adaptiveQualityTimer = useRef<NodeJS.Timeout | null>(null);
 
   // Update metrics each frame
   useFrame(() => {
-    frameCount?.if (current > Number.MAX_SAFE_INTEGER || current < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); current += 1;
-    const now = Date?.now();
-    const delta = now - lastUpdate?.current;
+    frameCount.if (current > Number.MAX_SAFE_INTEGER || current < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); current += 1;
+    const now = Date.now();
+    const delta = now - lastUpdate.current;
 
     if (delta > 1000) {
-      frameRate?.current = (frameCount?.current * 1000) / delta;
+      frameRate.current = (frameCount.current * 1000) / delta;
 
       // Update metrics
-      const fpsValue = Math?.round(frameRate?.current);
+      const fpsValue = Math.round(frameRate.current);
       const isPerformanceIssue = fpsValue < performanceThreshold;
 
       // Get renderer info
-      const info = gl?.info;
+      const info = gl.info;
 
       setMetrics({
         fps: fpsValue,
-        triangles: info?.render?.triangles || 0,
-        drawCalls: info?.render?.calls || 0,
-        memoryUsage: (info?.memory?.geometries || 0) * 0?.25 + (info?.memory?.textures || 0) * 2,
+        triangles: info.render.triangles || 0,
+        drawCalls: info.render.calls || 0,
+        memoryUsage: (info.memory.geometries || 0) * 0.25 + (info.memory.textures || 0) * 2,
         isPerformanceIssue,
       });
 
-      frameCount?.current = 0;
-      lastUpdate?.current = now;
+      frameCount.current = 0;
+      lastUpdate.current = now;
 
       // Apply adaptive optimizations for sustained low performance
       if (enableAdaptiveQuality && isPerformanceIssue) {
-        if (!adaptiveQualityTimer?.current) {
-          adaptiveQualityTimer?.current = setTimeout(() => {
+        if (!adaptiveQualityTimer.current) {
+          adaptiveQualityTimer.current = setTimeout(() => {
             // Apply progressive optimizations
-            const pixelRatio = Math?.max(1, window?.devicePixelRatio * 0?.75);
-            gl?.setPixelRatio(pixelRatio);
+            const pixelRatio = Math.max(1, window.devicePixelRatio * 0.75);
+            gl.setPixelRatio(pixelRatio);
 
             // Reduce shadow map size
-            if (gl?.shadowMap.enabled) {
-              gl?.shadowMap.autoUpdate = false;
-              gl?.shadowMap.needsUpdate = true;
+            if (gl.shadowMap.enabled) {
+              gl.shadowMap.autoUpdate = false;
+              gl.shadowMap.needsUpdate = true;
             }
 
-            adaptiveQualityTimer?.current = null;
+            adaptiveQualityTimer.current = null;
           }, 2000); // Apply after 2 seconds of poor performance
         }
-      } else if (adaptiveQualityTimer?.current) {
-        clearTimeout(adaptiveQualityTimer?.current);
-        adaptiveQualityTimer?.current = null;
+      } else if (adaptiveQualityTimer.current) {
+        clearTimeout(adaptiveQualityTimer.current);
+        adaptiveQualityTimer.current = null;
       }
     }
   });
@@ -110,25 +110,25 @@ export function PerformanceMonitor({
   // Clean up timers on unmount
   useEffect(() => {
     return () => {
-      if (adaptiveQualityTimer?.current) {
-        clearTimeout(adaptiveQualityTimer?.current);
+      if (adaptiveQualityTimer.current) {
+        clearTimeout(adaptiveQualityTimer.current);
       }
     };
   }, []);
 
   // Only render in development mode if devModeOnly is true
-  if (devModeOnly && process?.env.NODE_ENV !== 'development') {
+  if (devModeOnly && process.env.NODE_ENV !== 'development') {
     return null;
   }
 
   return (
     <div className="absolute left-0 top-0 rounded bg-black bg-opacity-50 p-1 text-xs text-white">
       <div>
-        FPS: {metrics?.fps} {metrics?.isPerformanceIssue && '⚠️'}
+        FPS: {metrics.fps} {metrics.isPerformanceIssue && '⚠️'}
       </div>
-      <div>Triangles: {metrics?.triangles.toLocaleString()}</div>
-      <div>Draw calls: {metrics?.drawCalls}</div>
-      <div>Memory: {Math?.round(metrics?.memoryUsage)}MB</div>
+      <div>Triangles: {metrics.triangles.toLocaleString()}</div>
+      <div>Draw calls: {metrics.drawCalls}</div>
+      <div>Memory: {Math.round(metrics.memoryUsage)}MB</div>
     </div>
   );
 }

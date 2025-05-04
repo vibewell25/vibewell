@@ -34,24 +34,24 @@ export function BookingSystem({ providerId, services }: BookingSystemProps) {
   const [loading, setLoading] = useState(false);
 
   const handleBooking = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!selectedService || !selectedDate || !selectedTime) {
-      toast?.error('Please fill in all fields');
+      toast.error('Please fill in all fields');
       return;
     }
 
     setLoading(true);
 
     try {
-      const availabilityService = AvailabilityService?.getInstance();
-      const service = services?.find((s) => s?.id === selectedService);
+      const availabilityService = AvailabilityService.getInstance();
+      const service = services.find((s) => s.id === selectedService);
 
       if (!service) {
         throw new Error('Selected service not found');
       }
 
-      const isAvailable = await availabilityService?.checkSlotAvailability(
+      const isAvailable = await availabilityService.checkSlotAvailability(
         providerId,
         format(selectedDate, 'yyyy-MM-dd'),
         selectedTime,
@@ -59,21 +59,21 @@ export function BookingSystem({ providerId, services }: BookingSystemProps) {
       );
 
       if (!isAvailable) {
-        toast?.error('Selected time slot is no longer available');
+        toast.error('Selected time slot is no longer available');
         return;
       }
 
-      await availabilityService?.bookSlot(
+      await availabilityService.bookSlot(
         providerId,
         format(selectedDate, 'yyyy-MM-dd'),
         selectedTime,
         service,
       );
 
-      toast?.success('Booking confirmed!');
+      toast.success('Booking confirmed!');
     } catch (error) {
-      console?.error('Error processing booking:', error);
-      toast?.error('Failed to process booking. Please try again.');
+      console.error('Error processing booking:', error);
+      toast.error('Failed to process booking. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -92,9 +92,9 @@ export function BookingSystem({ providerId, services }: BookingSystemProps) {
               <SelectValue placeholder="Choose a service" />
             </SelectTrigger>
             <SelectContent>
-              {services?.map((service) => (
-                <SelectItem key={service?.id} value={service?.id}>
-                  {service?.name} - {service?.price} ({service?.duration})
+              {services.map((service) => (
+                <SelectItem key={service.id} value={service.id}>
+                  {service.name} - {service.price} ({service.duration})
                 </SelectItem>
               ))}
             </SelectContent>
@@ -117,7 +117,7 @@ export function BookingSystem({ providerId, services }: BookingSystemProps) {
             id="time"
             type="time"
             value={selectedTime}
-            onChange={(e) => setSelectedTime(e?.target.value)}
+            onChange={(e) => setSelectedTime(e.target.value)}
           />
         </div>
 

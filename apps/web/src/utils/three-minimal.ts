@@ -1,14 +1,14 @@
 /**
 
- * Three?.js Tree-Shaking Utility
+ * Three.js Tree-Shaking Utility
  *
 
- * This file provides a tree-shakeable interface to Three?.js components.
+ * This file provides a tree-shakeable interface to Three.js components.
  * Instead of importing directly from 'three', import from this file to reduce bundle size.
  * Only the specific modules that are used in the application are included.
  */
 
-// Core Three?.js components (essential)
+// Core Three.js components (essential)
 import {
   Scene,
   PerspectiveCamera,
@@ -104,7 +104,7 @@ export {
 
 /**
 
- * Re-exports only the specific Three?.js components that are used in the application.
+ * Re-exports only the specific Three.js components that are used in the application.
 
  * This approach allows webpack tree-shaking to work effectively, reducing bundle size.
  *

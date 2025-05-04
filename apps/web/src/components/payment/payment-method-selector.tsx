@@ -13,7 +13,7 @@ import { processEventPayment } from '@/lib/api/events';
 interface PaymentMethod {
   id: string;
   label: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
   description: string;
 }
 
@@ -65,19 +65,19 @@ export function PaymentMethodSelector({
   ];
 
   // Filter methods based on available methods
-  const filteredMethods = PAYMENT_METHODS?.filter((method) => availableMethods?.includes(method?.id));
+  const filteredMethods = PAYMENT_METHODS.filter((method) => availableMethods.includes(method.id));
 
   // Handle direct payment without Stripe integration
   const handleDirectPayment = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent) => {
-    e?.preventDefault();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
+    e.preventDefault();
     setIsProcessing(true);
     setError(null);
 
     try {
       // For simulation, we create a fake payment method ID
-      const fakePaymentMethodId = `pm_${Date?.now()}_${Math?.random().toString(36).substring(2, 10)}`;
+      const fakePaymentMethodId = `pm_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
 
       // Process the payment using our API
       const result = await processEventPayment(eventId, userId, {
@@ -90,7 +90,7 @@ export function PaymentMethodSelector({
         },
       });
 
-      if (result?.success) {
+      if (result.success) {
         toast({
           title: 'Payment successful',
           description: 'Your payment has been processed successfully.',
@@ -99,23 +99,23 @@ export function PaymentMethodSelector({
         });
 
         if (onSuccess) {
-          onSuccess(result?.paymentIntentId || 'unknown', selectedMethod);
+          onSuccess(result.paymentIntentId || 'unknown', selectedMethod);
         }
       } else {
-        setError(result?.message || 'Payment failed. Please try again.');
+        setError(result.message || 'Payment failed. Please try again.');
         toast({
           title: 'Payment failed',
-          description: result?.message || 'There was an error processing your payment.',
+          description: result.message || 'There was an error processing your payment.',
           type: 'error',
           duration: 5000,
         });
 
         if (onError) {
-          onError(new Error(result?.message));
+          onError(new Error(result.message));
         }
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err?.message : 'An unknown error occurred';
+      const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
       setError(errorMessage);
 
       toast({
@@ -144,7 +144,7 @@ export function PaymentMethodSelector({
               <Input
                 id="card-name"
                 value={cardName}
-                onChange={(e) => setCardName(e?.target.value)}
+                onChange={(e) => setCardName(e.target.value)}
                 placeholder="John Doe"
                 required
               />
@@ -154,7 +154,7 @@ export function PaymentMethodSelector({
               <Input
                 id="card-number"
                 value={cardNumber}
-                onChange={(e) => setCardNumber(e?.target.value?.replace(/\D/g, '').slice(0, 16))}
+                onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, '').slice(0, 16))}
                 placeholder="1234 5678 9012 3456"
                 required
                 pattern="\d{16}"
@@ -167,7 +167,7 @@ export function PaymentMethodSelector({
                 <Input
                   id="card-expiry"
                   value={cardExpiry}
-                  onChange={(e) => setCardExpiry(e?.target.value?.replace(/\D/g, '').slice(0, 4))}
+                  onChange={(e) => setCardExpiry(e.target.value.replace(/\D/g, '').slice(0, 4))}
                   placeholder="MM/YY"
                   required
                   pattern="\d{4}"
@@ -180,7 +180,7 @@ export function PaymentMethodSelector({
                 <Input
                   id="card-cvc"
                   value={cardCvc}
-                  onChange={(e) => setCardCvc(e?.target.value?.replace(/\D/g, '').slice(0, 3))}
+                  onChange={(e) => setCardCvc(e.target.value.replace(/\D/g, '').slice(0, 3))}
                   placeholder="123"
                   required
                   pattern="\d{3}"
@@ -199,7 +199,7 @@ export function PaymentMethodSelector({
           <div className="rounded-lg bg-muted p-6 text-center">
             <h3 className="mb-2 font-medium">Bank Transfer Details</h3>
             <p className="mb-4 text-sm text-muted-foreground">
-              Please transfer {currency} {amount?.toFixed(2)} to the following account:
+              Please transfer {currency} {amount.toFixed(2)} to the following account:
             </p>
             <div className="space-y-2 rounded-md bg-background p-4 text-left">
               <div className="grid grid-cols-2 gap-1">
@@ -235,7 +235,7 @@ export function PaymentMethodSelector({
                 });
 
                 if (onSuccess) {
-                  onSuccess('bank_transfer_' + Date?.now(), 'bank');
+                  onSuccess('bank_transfer_' + Date.now(), 'bank');
                 }
               }}
             >
@@ -267,19 +267,19 @@ export function PaymentMethodSelector({
         <h2 className="text-xl font-semibold">Payment Method</h2>
 
         <RadioGroup value={selectedMethod} onValueChange={setSelectedMethod} className="space-y-3">
-          {filteredMethods?.map((method) => (
-            <div key={method?.id} className="flex items-center space-x-2">
-              <RadioGroupItem value={method?.id} id={method?.id} className="peer" />
+          {filteredMethods.map((method) => (
+            <div key={method.id} className="flex items-center space-x-2">
+              <RadioGroupItem value={method.id} id={method.id} className="peer" />
               <Label
-                htmlFor={method?.id}
+                htmlFor={method.id}
                 className="peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5 flex flex-1 cursor-pointer items-center space-x-3 rounded-md border border-transparent p-3"
               >
                 <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
-                  {method?.icon}
+                  {method.icon}
                 </div>
                 <div className="space-y-1">
-                  <p className="font-medium">{method?.label}</p>
-                  <p className="text-sm text-muted-foreground">{method?.description}</p>
+                  <p className="font-medium">{method.label}</p>
+                  <p className="text-sm text-muted-foreground">{method.description}</p>
                 </div>
               </Label>
             </div>

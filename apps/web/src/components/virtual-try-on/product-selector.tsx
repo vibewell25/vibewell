@@ -42,8 +42,8 @@ export function ProductSelector({
   // Simulate fetching products
   useEffect(() => {
     const fetchProducts = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         setIsLoading(true);
 
@@ -56,106 +56,106 @@ export function ProductSelector({
               name: 'Classic Aviator Sunglasses',
               category: 'glasses',
               productType: 'glasses',
-              imageUrl: '/assets/products/glasses/aviator?.jpg',
-              rating: 4?.8,
+              imageUrl: '/assets/products/glasses/aviator.jpg',
+              rating: 4.8,
               reviewCount: 120,
               isTrending: true,
-              price: 129?.99,
+              price: 129.99,
             },
             {
               id: 'g2',
               name: 'Wayfarer Blue Light Glasses',
               category: 'glasses',
               productType: 'glasses',
-              imageUrl: '/assets/products/glasses/wayfarer?.jpg',
-              rating: 4?.6,
+              imageUrl: '/assets/products/glasses/wayfarer.jpg',
+              rating: 4.6,
               reviewCount: 85,
-              price: 99?.99,
+              price: 99.99,
             },
             {
               id: 'g3',
               name: 'Round Vintage Frames',
               category: 'glasses',
               productType: 'glasses',
-              imageUrl: '/assets/products/glasses/round?.jpg',
-              rating: 4?.5,
+              imageUrl: '/assets/products/glasses/round.jpg',
+              rating: 4.5,
               reviewCount: 64,
-              price: 119?.99,
+              price: 119.99,
             },
             {
               id: 'g4',
               name: 'Cat Eye Prescription Glasses',
               category: 'glasses',
               productType: 'glasses',
-              imageUrl: '/assets/products/glasses/cateye?.jpg',
-              rating: 4?.7,
+              imageUrl: '/assets/products/glasses/cateye.jpg',
+              rating: 4.7,
               reviewCount: 92,
               isNew: true,
-              price: 149?.99,
+              price: 149.99,
             },
             {
               id: 'j1',
               name: 'Sterling Silver Necklace',
               category: 'jewelry',
               productType: 'jewelry',
-              imageUrl: '/assets/products/jewelry/necklace?.jpg',
-              rating: 4?.9,
+              imageUrl: '/assets/products/jewelry/necklace.jpg',
+              rating: 4.9,
               reviewCount: 156,
               isNew: true,
-              price: 199?.99,
+              price: 199.99,
             },
             {
               id: 'j2',
               name: 'Diamond Stud Earrings',
               category: 'jewelry',
               productType: 'jewelry',
-              imageUrl: '/assets/products/jewelry/earrings?.jpg',
-              rating: 4?.8,
+              imageUrl: '/assets/products/jewelry/earrings.jpg',
+              rating: 4.8,
               reviewCount: 204,
               isTrending: true,
-              price: 349?.99,
+              price: 349.99,
             },
             {
               id: 'm1',
               name: 'Matte Lipstick Collection',
               category: 'makeup',
               productType: 'makeup',
-              imageUrl: '/assets/products/makeup/lipstick?.jpg',
-              rating: 4?.5,
+              imageUrl: '/assets/products/makeup/lipstick.jpg',
+              rating: 4.5,
               reviewCount: 187,
-              price: 34?.99,
+              price: 34.99,
             },
             {
               id: 'm2',
               name: 'Eyeshadow Palette',
               category: 'makeup',
               productType: 'makeup',
-              imageUrl: '/assets/products/makeup/eyeshadow?.jpg',
-              rating: 4?.7,
+              imageUrl: '/assets/products/makeup/eyeshadow.jpg',
+              rating: 4.7,
               reviewCount: 231,
               isNew: true,
-              price: 49?.99,
+              price: 49.99,
             },
             {
               id: 'c1',
               name: 'Classic Fit T-Shirt',
               category: 'clothing',
               productType: 'clothing',
-              imageUrl: '/assets/products/clothing/tshirt?.jpg',
-              rating: 4?.4,
+              imageUrl: '/assets/products/clothing/tshirt.jpg',
+              rating: 4.4,
               reviewCount: 312,
-              price: 29?.99,
+              price: 29.99,
             },
             {
               id: 'c2',
               name: 'Slim Fit Jeans',
               category: 'clothing',
               productType: 'clothing',
-              imageUrl: '/assets/products/clothing/jeans?.jpg',
-              rating: 4?.6,
+              imageUrl: '/assets/products/clothing/jeans.jpg',
+              rating: 4.6,
               reviewCount: 273,
               isTrending: true,
-              price: 79?.99,
+              price: 79.99,
             },
           ];
 
@@ -164,7 +164,7 @@ export function ProductSelector({
           setIsLoading(false);
         }, 1000);
       } catch (err) {
-        console?.error('Error fetching products:', err);
+        console.error('Error fetching products:', err);
         setError('Failed to load products. Please try again.');
         setIsLoading(false);
       }
@@ -179,16 +179,16 @@ export function ProductSelector({
 
     // Filter by category
     if (category !== 'all') {
-      filtered = filtered?.filter((product) => product?.category === category);
+      filtered = filtered.filter((product) => product.category === category);
     }
 
     // Filter by search query
-    if (query?.trim() !== '') {
-      const searchLower = query?.toLowerCase();
-      filtered = filtered?.filter(
+    if (query.trim() !== '') {
+      const searchLower = query.toLowerCase();
+      filtered = filtered.filter(
         (product) =>
-          product?.name.toLowerCase().includes(searchLower) ||
-          product?.category.toLowerCase().includes(searchLower),
+          product.name.toLowerCase().includes(searchLower) ||
+          product.category.toLowerCase().includes(searchLower),
       );
     }
 
@@ -202,8 +202,8 @@ export function ProductSelector({
   };
 
   // Handle search
-  const handleSearch = (e: React?.ChangeEvent<HTMLInputElement>) => {
-    const query = e?.target.value;
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
     setSearchQuery(query);
     filterProducts(products, activeCategory, query);
   };
@@ -258,9 +258,9 @@ export function ProductSelector({
             ) : error ? (
               <div className="py-8 text-center">
                 <p className="mb-4 text-red-500">{error}</p>
-                <Button onClick={() => window?.location.reload()}>Try Again</Button>
+                <Button onClick={() => window.location.reload()}>Try Again</Button>
               </div>
-            ) : filteredProducts?.length === 0 ? (
+            ) : filteredProducts.length === 0 ? (
               <div className="py-8 text-center">
                 <p className="text-gray-500">No products found matching your criteria.</p>
                 <Button
@@ -276,9 +276,9 @@ export function ProductSelector({
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-                {filteredProducts?.map((product) => (
+                {filteredProducts.map((product) => (
                   <div
-                    key={product?.id}
+                    key={product.id}
                     className="group cursor-pointer overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md"
                   >
                     <div className="relative h-48 overflow-hidden bg-gray-100">
@@ -286,22 +286,22 @@ export function ProductSelector({
                       <div
                         className="flex h-full w-full items-center justify-center bg-gray-200"
                         style={{
-                          backgroundImage: `url(https://placehold?.co/600x400/e0e0e0/7d7d7d?text=${encodeURIComponent(product?.name)})`,
+                          backgroundImage: `url(https://placehold.co/600x400/e0e0e0/7d7d7d?text=${encodeURIComponent(product.name)})`,
                           backgroundSize: 'cover',
                           backgroundPosition: 'center',
                         }}
                       />
                       {/*<Image
-                        src={product?.imageUrl}
-                        alt={product?.name}
+                        src={product.imageUrl}
+                        alt={product.name}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                       />*/}
 
                       {/* Badges */}
                       <div className="absolute left-2 top-2 flex flex-col gap-1">
-                        {product?.isNew && <Badge className="bg-blue-500">New</Badge>}
-                        {product?.isTrending && <Badge className="bg-orange-500">Trending</Badge>}
+                        {product.isNew && <Badge className="bg-blue-500">New</Badge>}
+                        {product.isTrending && <Badge className="bg-orange-500">Trending</Badge>}
                       </div>
 
                       <Button
@@ -314,21 +314,21 @@ export function ProductSelector({
 
                     <div className="p-4">
                       <div className="flex items-start justify-between">
-                        <h3 className="mb-1 font-medium text-gray-900">{product?.name}</h3>
+                        <h3 className="mb-1 font-medium text-gray-900">{product.name}</h3>
                         <span className="font-semibold text-green-600">
-                          ${product?.price.toFixed(2)}
+                          ${product.price.toFixed(2)}
                         </span>
                       </div>
 
-                      <p className="mb-2 text-sm capitalize text-gray-500">{product?.category}</p>
+                      <p className="mb-2 text-sm capitalize text-gray-500">{product.category}</p>
 
                       <div className="mt-2 flex items-center">
                         <div className="flex items-center">
                           <Star className="h-4 w-4 fill-current text-yellow-400" />
-                          <span className="ml-1 text-sm font-medium">{product?.rating}</span>
+                          <span className="ml-1 text-sm font-medium">{product.rating}</span>
                         </div>
                         <span className="mx-2 text-gray-300">|</span>
-                        <span className="text-sm text-gray-500">{product?.reviewCount} reviews</span>
+                        <span className="text-sm text-gray-500">{product.reviewCount} reviews</span>
                       </div>
 
                       <Button className="mt-4 w-full" onClick={() => handleSelectProduct(product)}>

@@ -76,7 +76,7 @@ let cachedCapabilities: DeviceCapabilities | null = null;
 const isBrowser = typeof window !== 'undefined';
 
 /**
- * Get connection type from navigator?.connection if available
+ * Get connection type from navigator.connection if available
  */
 const getConnectionType = (): ConnectionType => {
   if (!isBrowser || !('connection' in navigator)) {
@@ -87,8 +87,8 @@ const getConnectionType = (): ConnectionType => {
   if (!connection) return 'unknown';
 
   // Handle effectiveType for Network Information API
-  if (connection?.effectiveType) {
-    switch (connection?.effectiveType) {
+  if (connection.effectiveType) {
+    switch (connection.effectiveType) {
 
       case 'slow-2g':
 
@@ -105,8 +105,8 @@ const getConnectionType = (): ConnectionType => {
   }
 
   // Fallback for older APIs
-  if (connection?.type) {
-    switch (connection?.type) {
+  if (connection.type) {
+    switch (connection.type) {
       case 'cellular':
         return '3g'; // Assume 3G for any cellular connection
       case 'wifi':
@@ -125,8 +125,8 @@ const getConnectionType = (): ConnectionType => {
  * Get the device's battery status if available
  */
 const getBatteryStatus = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');): Promise<BatteryStatus | undefined> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');): Promise<BatteryStatus | undefined> => {
   if (!isBrowser || !('getBattery' in navigator)) {
     return undefined;
   }
@@ -135,13 +135,13 @@ const getBatteryStatus = async ( {
     const battery = await (navigator as any).getBattery();
 
     return {
-      level: battery?.level,
-      charging: battery?.charging,
-      chargingTime: battery?.chargingTime !== Infinity ? battery?.chargingTime : undefined,
-      dischargingTime: battery?.dischargingTime !== Infinity ? battery?.dischargingTime : undefined,
+      level: battery.level,
+      charging: battery.charging,
+      chargingTime: battery.chargingTime !== Infinity ? battery.chargingTime : undefined,
+      dischargingTime: battery.dischargingTime !== Infinity ? battery.dischargingTime : undefined,
     };
   } catch (error) {
-    console?.warn('Battery API not available:', error);
+    console.warn('Battery API not available:', error);
     return undefined;
   }
 };
@@ -154,19 +154,19 @@ const estimateGPUTier = (): number => {
 
   // Try to get WebGL renderer info
   try {
-    const canvas = document?.createElement('canvas');
-    const gl = canvas?.getContext('webgl2') || canvas?.getContext('webgl');
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
 
     if (!gl) return 1;
 
-    const debugInfo = gl?.getExtension('WEBGL_debug_renderer_info');
+    const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
     if (!debugInfo) return 1;
 
-    const renderer = gl?.getParameter(debugInfo?.UNMASKED_RENDERER_WEBGL);
+    const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
 
 
     // Check for known high-end GPU identifiers
-    if (/nvidia|rtx|gtx|radeon|adreno( *)?([6-9]\d0)/i?.test(renderer)) {
+    if (/nvidia|rtx|gtx|radeon|adreno( *)?([6-9]\d0)/i.test(renderer)) {
 
       return 3; // High-end GPU
     }
@@ -174,7 +174,7 @@ const estimateGPUTier = (): number => {
 
     // Check for known mid-range GPU identifiers
 
-    if (/intel( *)?iris|adreno( *)?([5]\d0)|mali-g/i?.test(renderer)) {
+    if (/intel( *)?iris|adreno( *)?([5]\d0)|mali-g/i.test(renderer)) {
 
       return 2; // Mid-range GPU
     }
@@ -194,12 +194,12 @@ const getMaxTextureSize = (): number => {
   if (!isBrowser) return 2048;
 
   try {
-    const canvas = document?.createElement('canvas');
-    const gl = canvas?.getContext('webgl2') || canvas?.getContext('webgl');
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
 
     if (!gl) return 2048;
 
-    return gl?.getParameter(gl?.MAX_TEXTURE_SIZE);
+    return gl.getParameter(gl.MAX_TEXTURE_SIZE);
   } catch (error) {
     return 2048; // Default value
   }
@@ -212,8 +212,8 @@ const supportsWebGL2 = (): boolean => {
   if (!isBrowser) return false;
 
   try {
-    const canvas = document?.createElement('canvas');
-    return !!canvas?.getContext('webgl2');
+    const canvas = document.createElement('canvas');
+    return !!canvas.getContext('webgl2');
   } catch (error) {
     return false;
   }
@@ -244,7 +244,7 @@ const getDeviceMemory = (): number | undefined => {
 const getScreenSizeCategory = (): 'small' | 'medium' | 'large' => {
   if (!isBrowser) return 'medium';
 
-  const width = window?.innerWidth;
+  const width = window.innerWidth;
 
   if (width < 768) return 'small';
   if (width < 1280) return 'medium';
@@ -258,7 +258,7 @@ const supportsDynamicImports = (): boolean => {
   try {
     // This is a simple check for basic syntax support
     // It doesn't actually execute an import
-    new Function('return import("./test?.js")');
+    new Function('return import("./test.js")');
     return true;
   } catch (err) {
     return false;
@@ -288,8 +288,8 @@ const isFastConnection = (connectionType: ConnectionType): boolean => {
  * appropriate performance settings for adaptive rendering.
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); detectDeviceCapabilities(): Promise<DeviceCapabilities> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); detectDeviceCapabilities(): Promise<DeviceCapabilities> {
   // Return cached result if available
   if (cachedCapabilities) return cachedCapabilities;
 
@@ -313,9 +313,9 @@ export async function {
   }
 
   // Device type detection
-  const userAgent = navigator?.userAgent.toLowerCase();
+  const userAgent = navigator.userAgent.toLowerCase();
 
-  const isMobileDevice = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i?.test(
+  const isMobileDevice = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
     userAgent,
   );
 
@@ -335,11 +335,11 @@ export async function {
   const webXRSupport = supportsWebXR();
 
   // Get device pixel ratio
-  const pixelRatio = window?.devicePixelRatio || 1;
+  const pixelRatio = window.devicePixelRatio || 1;
 
   // Check for reduced motion preference
 
-  const preferReducedMotion = window?.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const preferReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Get connection type
   const connectionType = getConnectionType();
@@ -348,13 +348,13 @@ export async function {
   const deviceMemory = getDeviceMemory();
 
   // Check for touch support
-  const supportsTouch = process?.env['SUPPORTSTOUCH'] in window || navigator?.maxTouchPoints > 0;
+  const supportsTouch = process.env['SUPPORTSTOUCH'] in window || navigator.maxTouchPoints > 0;
 
   // Get max texture size
   const maxTextureSize = getMaxTextureSize();
 
   // CPU core count (if available)
-  const cpuCores = navigator?.hardwareConcurrency;
+  const cpuCores = navigator.hardwareConcurrency;
 
   // Get screen size category
   const screenSizeCategory = getScreenSizeCategory();
@@ -365,7 +365,7 @@ export async function {
     (isMobileDevice && gpuTier === 1) ||
     (deviceMemory !== undefined && deviceMemory < 4) ||
     isSlowConnection(connectionType) ||
-    (batteryStatus && !batteryStatus?.charging && batteryStatus?.level < 0?.2) ||
+    (batteryStatus && !batteryStatus.charging && batteryStatus.level < 0.2) ||
     pixelRatio < 2;
 
   // Determine if the device has limited memory

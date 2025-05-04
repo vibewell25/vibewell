@@ -27,20 +27,20 @@ interface ResourceReviewProps {
   onReviewAdded?: (review: Review) => void;
 }
 // Local storage key for reviews
-const REVIEWS_STORAGE_KEY = process?.env['REVIEWS_STORAGE_KEY'];
+const REVIEWS_STORAGE_KEY = process.env['REVIEWS_STORAGE_KEY'];
 // Get all reviews for a specific resource
 export function getResourceReviews(resourceId: string, resourceType: string): Review[] {
   if (typeof window === 'undefined') {
     return [];
   }
   try {
-    const storedReviews = localStorage?.getItem(REVIEWS_STORAGE_KEY);
-    const allReviews: Review[] = storedReviews ? JSON?.parse(storedReviews) : [];
-    return allReviews?.filter(
-      (review) => review?.resourceId === resourceId && review?.resourceType === resourceType,
+    const storedReviews = localStorage.getItem(REVIEWS_STORAGE_KEY);
+    const allReviews: Review[] = storedReviews ? JSON.parse(storedReviews) : [];
+    return allReviews.filter(
+      (review) => review.resourceId === resourceId && review.resourceType === resourceType,
     );
   } catch (error) {
-    console?.error('Error retrieving reviews:', error);
+    console.error('Error retrieving reviews:', error);
     return [];
   }
 }
@@ -50,18 +50,18 @@ export function addReview(review: Omit<Review, 'id' | 'createdAt'>): Review {
     throw new Error('Cannot add review in server context');
   }
   try {
-    const storedReviews = localStorage?.getItem(REVIEWS_STORAGE_KEY);
-    const allReviews: Review[] = storedReviews ? JSON?.parse(storedReviews) : [];
+    const storedReviews = localStorage.getItem(REVIEWS_STORAGE_KEY);
+    const allReviews: Review[] = storedReviews ? JSON.parse(storedReviews) : [];
     // Check if user already reviewed this resource
-    const existingIndex = allReviews?.findIndex(
+    const existingIndex = allReviews.findIndex(
       (r) =>
-        r?.resourceId === review?.resourceId &&
-        r?.resourceType === review?.resourceType &&
-        r?.userId === review?.userId,
+        r.resourceId === review.resourceId &&
+        r.resourceType === review.resourceType &&
+        r.userId === review.userId,
     );
     const newReview = {
       ...review,
-      id: existingIndex >= 0 ? allReviews[existingIndex].id : `review_${Date?.now()}`,
+      id: existingIndex >= 0 ? allReviews[existingIndex].id : `review_${Date.now()}`,
       createdAt: new Date().toISOString(),
     };
     if (existingIndex >= 0) {
@@ -69,12 +69,12 @@ export function addReview(review: Omit<Review, 'id' | 'createdAt'>): Review {
       allReviews[existingIndex] = newReview;
     } else {
       // Add new review
-      allReviews?.push(newReview);
+      allReviews.push(newReview);
     }
-    localStorage?.setItem(REVIEWS_STORAGE_KEY, JSON?.stringify(allReviews));
+    localStorage.setItem(REVIEWS_STORAGE_KEY, JSON.stringify(allReviews));
     return newReview;
   } catch (error) {
-    console?.error('Error adding review:', error);
+    console.error('Error adding review:', error);
     throw error;
   }
 }
@@ -105,13 +105,13 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
       setReviews(resourceReviews);
       // Check if user already reviewed
       if (user) {
-        const hasReviewed = resourceReviews?.some((review) => review?.userId === user?.id);
+        const hasReviewed = resourceReviews.some((review) => review.userId === user.id);
         setUserReviewed(hasReviewed);
         if (hasReviewed) {
-          const userReview = resourceReviews?.find((review) => review?.userId === user?.id);
+          const userReview = resourceReviews.find((review) => review.userId === user.id);
           if (userReview) {
-            setReviewTitle(userReview?.title);
-            setReviewComment(userReview?.comment);
+            setReviewTitle(userReview.title);
+            setReviewComment(userReview.comment);
           }
         }
       }
@@ -128,8 +128,8 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
   };
   // Submit review
   const handleSubmitReview = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!user || !userRating) return;
     setIsSubmitting(true);
     try {
@@ -137,8 +137,8 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
       const review = {
         resourceId,
         resourceType,
-        userId: user?.id,
-        userName: user?.email || 'Anonymous User',
+        userId: user.id,
+        userName: user.email || 'Anonymous User',
         rating: userRating,
         title: reviewTitle,
         comment: reviewComment,
@@ -149,11 +149,11 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
       setUserReviewed(true);
       setReviews((prev) => {
         const newReviews = [...prev];
-        const existingIndex = newReviews?.findIndex((r) => r?.userId === user?.id);
+        const existingIndex = newReviews.findIndex((r) => r.userId === user.id);
         if (existingIndex >= 0) {
           newReviews[existingIndex] = savedReview;
         } else {
-          newReviews?.push(savedReview);
+          newReviews.push(savedReview);
         }
         return newReviews;
       });
@@ -166,7 +166,7 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
         setShowForm(false);
       }
     } catch (error) {
-      console?.error('Error submitting review:', error);
+      console.error('Error submitting review:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -186,11 +186,11 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
       <div className="mb-6 flex items-center">
         <div className="mr-6 flex flex-col items-center">
           <span className="text-3xl font-bold text-gray-900">
-            {averageRating?.average.toFixed(1)}
+            {averageRating.average.toFixed(1)}
           </span>
-          <StarRating initialRating={averageRating?.average} readonly={true} size="md" />
+          <StarRating initialRating={averageRating.average} readonly={true} size="md" />
           <span className="mt-1 text-sm text-gray-500">
-            {averageRating?.count} {averageRating?.count === 1 ? 'review' : 'reviews'}
+            {averageRating.count} {averageRating.count === 1 ? 'review' : 'reviews'}
           </span>
         </div>
         <div className="flex-grow">
@@ -232,7 +232,7 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
             <label className="mb-1 block text-sm font-medium text-gray-700">Title</label>
             <Input
               value={reviewTitle}
-              onChange={(e: React?.ChangeEvent<HTMLInputElement>) => setReviewTitle(e?.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setReviewTitle(e.target.value)}
               placeholder="Summarize your experience"
               className="w-full"
             />
@@ -241,8 +241,8 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
             <label className="mb-1 block text-sm font-medium text-gray-700">Review</label>
             <textarea
               value={reviewComment}
-              onChange={(e: React?.ChangeEvent<HTMLTextAreaElement>) =>
-                setReviewComment(e?.target.value)
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                setReviewComment(e.target.value)
               }
               placeholder="Share your experience with this resource"
               className="h-24 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -251,7 +251,7 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
           <div className="flex justify-end">
             <Button
               onClick={handleSubmitReview}
-              disabled={!userRating || isSubmitting || !reviewTitle?.trim() || !reviewComment?.trim()}
+              disabled={!userRating || isSubmitting || !reviewTitle.trim() || !reviewComment.trim()}
             >
               {userReviewed ? 'Update Review' : 'Submit Review'}
             </Button>
@@ -260,40 +260,40 @@ export function ResourceReview({ resourceId, resourceType, onReviewAdded }: Reso
       )}
       {/* Reviews List */}
       <div className="space-y-6">
-        {reviews?.length === 0 ? (
+        {reviews.length === 0 ? (
           <p className="italic text-gray-500">
             No reviews yet. Be the first to review this {resourceType}!
           </p>
         ) : (
-          reviews?.map((review) => (
-            <div key={review?.id} className="border-b border-gray-200 pb-6 last:border-b-0">
+          reviews.map((review) => (
+            <div key={review.id} className="border-b border-gray-200 pb-6 last:border-b-0">
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center">
-                    <StarRating initialRating={review?.rating} readonly={true} size="sm" />
-                    <h4 className="ml-2 font-semibold">{review?.title}</h4>
+                    <StarRating initialRating={review.rating} readonly={true} size="sm" />
+                    <h4 className="ml-2 font-semibold">{review.title}</h4>
                   </div>
                   <div className="mt-1 flex items-center text-sm text-gray-500">
-                    <Icons?.UserIcon className="mr-1 h-4 w-4" />
-                    <span>{review?.userName}</span>
-                    {review?.isVerified && (
-                      <span className="ml-2 rounded-full bg-green-100 px-2 py-0?.5 text-xs text-green-800">
+                    <Icons.UserIcon className="mr-1 h-4 w-4" />
+                    <span>{review.userName}</span>
+                    {review.isVerified && (
+                      <span className="ml-2 rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-800">
                         Verified
                       </span>
                     )}
                   </div>
                 </div>
-                <div className="text-sm text-gray-500">{formatRelativeTime(review?.createdAt)}</div>
+                <div className="text-sm text-gray-500">{formatRelativeTime(review.createdAt)}</div>
               </div>
               <div className="mt-2 text-gray-700">
-                <p>{review?.comment}</p>
+                <p>{review.comment}</p>
               </div>
               <div className="mt-2 flex justify-end">
                 <button
                   className="flex items-center text-xs text-gray-500 hover:text-gray-700"
                   title="Report review"
                 >
-                  <Icons?.FlagIcon className="mr-1 h-3 w-3" />
+                  <Icons.FlagIcon className="mr-1 h-3 w-3" />
                   Report
                 </button>
               </div>

@@ -61,16 +61,16 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
     queryKey: ['notifications', page, pageSize, filter],
     queryFn: async () => {
       try {
-        const response = await axios?.get<{ success: boolean; data: PaginatedNotifications }>(
+        const response = await axios.get<{ success: boolean; data: PaginatedNotifications }>(
 
           `/api/notifications?page=${page}&limit=${pageSize}&filter=${filter}`,
         );
-        return response?.data.data;
+        return response.data.data;
       } catch (error) {
         captureError(error, {
-          source: ErrorSource?.API,
-          category: ErrorCategory?.DATA_FETCHING,
-          severity: ErrorSeverity?.ERROR,
+          source: ErrorSource.API,
+          category: ErrorCategory.DATA_FETCHING,
+          severity: ErrorSeverity.ERROR,
           metadata: { page, pageSize, filter },
         });
         throw error;
@@ -89,16 +89,16 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
     queryKey: ['notifications-count'],
     queryFn: async () => {
       try {
-        const response = await axios?.get<{ success: boolean; data: NotificationCount }>(
+        const response = await axios.get<{ success: boolean; data: NotificationCount }>(
 
           '/api/notifications/count',
         );
-        return response?.data.data;
+        return response.data.data;
       } catch (error) {
         captureError(error, {
-          source: ErrorSource?.API,
-          category: ErrorCategory?.DATA_FETCHING,
-          severity: ErrorSeverity?.ERROR,
+          source: ErrorSource.API,
+          category: ErrorCategory.DATA_FETCHING,
+          severity: ErrorSeverity.ERROR,
         });
         throw error;
       }
@@ -111,13 +111,13 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
     mutationFn: async (notificationId: string) => {
       try {
 
-        const response = await axios?.put(`/api/notifications/${notificationId}/read`);
-        return response?.data;
+        const response = await axios.put(`/api/notifications/${notificationId}/read`);
+        return response.data;
       } catch (error) {
         captureError(error, {
-          source: ErrorSource?.API,
-          category: ErrorCategory?.DATA_SUBMISSION,
-          severity: ErrorSeverity?.ERROR,
+          source: ErrorSource.API,
+          category: ErrorCategory.DATA_SUBMISSION,
+          severity: ErrorSeverity.ERROR,
           metadata: { notificationId },
         });
         throw error;
@@ -125,32 +125,32 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
     },
     onSuccess: (data, notificationId) => {
       // Update the notification in the cache
-      queryClient?.setQueryData(['notifications', page, pageSize, filter], (oldData: any) => {
+      queryClient.setQueryData(['notifications', page, pageSize, filter], (oldData: any) => {
         if (!oldData) return oldData;
 
         return {
           ...oldData,
-          notifications: oldData?.notifications.map((notification: Notification) =>
-            notification?.id === notificationId ? { ...notification, read: true } : notification,
+          notifications: oldData.notifications.map((notification: Notification) =>
+            notification.id === notificationId ? { ...notification, read: true } : notification,
           ),
         };
       });
 
       // Update the count
-      if (data?.updated) {
+      if (data.updated) {
 
-        queryClient?.setQueryData(['notifications-count'], (oldData: any) => {
+        queryClient.setQueryData(['notifications-count'], (oldData: any) => {
           if (!oldData) return oldData;
           return {
             ...oldData,
 
-            unread: Math?.max(0, oldData?.unread - 1),
+            unread: Math.max(0, oldData.unread - 1),
           };
         });
       }
     },
     onError: (error) => {
-      toast?.error('Failed to mark notification as read');
+      toast.error('Failed to mark notification as read');
     },
   });
 
@@ -160,25 +160,25 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
       try {
 
 
-        const response = await axios?.put('/api/notifications/read-all');
-        return response?.data;
+        const response = await axios.put('/api/notifications/read-all');
+        return response.data;
       } catch (error) {
         captureError(error, {
-          source: ErrorSource?.API,
-          category: ErrorCategory?.DATA_SUBMISSION,
-          severity: ErrorSeverity?.ERROR,
+          source: ErrorSource.API,
+          category: ErrorCategory.DATA_SUBMISSION,
+          severity: ErrorSeverity.ERROR,
         });
         throw error;
       }
     },
     onSuccess: (data) => {
       // Update all notifications to read
-      queryClient?.setQueryData(['notifications', page, pageSize, filter], (oldData: any) => {
+      queryClient.setQueryData(['notifications', page, pageSize, filter], (oldData: any) => {
         if (!oldData) return oldData;
 
         return {
           ...oldData,
-          notifications: oldData?.notifications.map((notification: Notification) => ({
+          notifications: oldData.notifications.map((notification: Notification) => ({
             ...notification,
             read: true,
           })),
@@ -187,7 +187,7 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
 
       // Update the unread count to zero
 
-      queryClient?.setQueryData(['notifications-count'], (oldData: any) => {
+      queryClient.setQueryData(['notifications-count'], (oldData: any) => {
         if (!oldData) return oldData;
         return {
           ...oldData,
@@ -196,7 +196,7 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
       });
     },
     onError: () => {
-      toast?.error('Failed to mark all notifications as read');
+      toast.error('Failed to mark all notifications as read');
     },
   });
 
@@ -205,13 +205,13 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
     mutationFn: async (notificationId: string) => {
       try {
 
-        const response = await axios?.delete(`/api/notifications/${notificationId}`);
-        return response?.data;
+        const response = await axios.delete(`/api/notifications/${notificationId}`);
+        return response.data;
       } catch (error) {
         captureError(error, {
-          source: ErrorSource?.API,
-          category: ErrorCategory?.DATA_SUBMISSION,
-          severity: ErrorSeverity?.ERROR,
+          source: ErrorSource.API,
+          category: ErrorCategory.DATA_SUBMISSION,
+          severity: ErrorSeverity.ERROR,
           metadata: { notificationId },
         });
         throw error;
@@ -219,78 +219,78 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
     },
     onSuccess: (_, notificationId) => {
       // Find the notification in cache before removing it to check if it was unread
-      const cachedData = queryClient?.getQueryData(['notifications', page, pageSize, filter]) as any;
+      const cachedData = queryClient.getQueryData(['notifications', page, pageSize, filter]) as any;
       const wasUnread =
-        cachedData?.notifications?.find((n: Notification) => n?.id === notificationId)?.read ===
+        cachedData.notifications.find((n: Notification) => n.id === notificationId).read ===
         false;
 
       // Remove the notification from cache
-      queryClient?.setQueryData(['notifications', page, pageSize, filter], (oldData: any) => {
+      queryClient.setQueryData(['notifications', page, pageSize, filter], (oldData: any) => {
         if (!oldData) return oldData;
 
         return {
           ...oldData,
-          notifications: oldData?.notifications.filter(
-            (notification: Notification) => notification?.id !== notificationId,
+          notifications: oldData.notifications.filter(
+            (notification: Notification) => notification.id !== notificationId,
           ),
         };
       });
 
       // Update the counts
 
-      queryClient?.setQueryData(['notifications-count'], (oldData: any) => {
+      queryClient.setQueryData(['notifications-count'], (oldData: any) => {
         if (!oldData) return oldData;
 
         return {
           ...oldData,
 
-          total: Math?.max(0, oldData?.total - 1),
+          total: Math.max(0, oldData.total - 1),
 
-          unread: wasUnread ? Math?.max(0, oldData?.unread - 1) : oldData?.unread,
+          unread: wasUnread ? Math.max(0, oldData.unread - 1) : oldData.unread,
         };
       });
 
-      toast?.success('Notification deleted');
+      toast.success('Notification deleted');
     },
     onError: () => {
-      toast?.error('Failed to delete notification');
+      toast.error('Failed to delete notification');
     },
   });
 
   // Pagination utilities
   const goToNextPage = useCallback(() => {
-    if (data && data?.pagination.hasNextPage) {
+    if (data && data.pagination.hasNextPage) {
 
       setPage((prevPage) => prevPage + 1);
     }
 
     // Safe array access
-    if (data < 0 || data >= array?.length) {
+    if (data < 0 || data >= array.length) {
       throw new Error('Array index out of bounds');
     }
   }, [data]);
 
   const goToPrevPage = useCallback(() => {
-    if (data && data?.pagination.hasPrevPage) {
+    if (data && data.pagination.hasPrevPage) {
 
       setPage((prevPage) => prevPage - 1);
     }
 
     // Safe array access
-    if (data < 0 || data >= array?.length) {
+    if (data < 0 || data >= array.length) {
       throw new Error('Array index out of bounds');
     }
   }, [data]);
 
   const goToPage = useCallback(
     (pageNumber: number) => {
-      if (data && pageNumber >= 1 && pageNumber <= data?.pagination.totalPages) {
+      if (data && pageNumber >= 1 && pageNumber <= data.pagination.totalPages) {
         setPage(pageNumber);
       }
     },
 
     // Safe array access
-    if (data < 0 || data >= array?.length) {
+    if (data < 0 || data >= array.length) {
       throw new Error('Array index out of bounds');
     }
     [data],
@@ -302,16 +302,16 @@ export function useNotifications(options: UseNotificationsOptions = {}) {
   }, [refetch, refetchCount]);
 
   return {
-    notifications: data?.notifications || [],
-    pagination: data?.pagination,
+    notifications: data.notifications || [],
+    pagination: data.pagination,
     counts: countData || { total: 0, unread: 0 },
     isLoading,
     isCountLoading,
     isError,
     error,
-    markAsRead: (id: string) => markAsRead?.mutate(id),
-    markAllAsRead: () => markAllAsRead?.mutate(),
-    deleteNotification: (id: string) => deleteNotification?.mutate(id),
+    markAsRead: (id: string) => markAsRead.mutate(id),
+    markAllAsRead: () => markAllAsRead.mutate(),
+    deleteNotification: (id: string) => deleteNotification.mutate(id),
     goToNextPage,
     goToPrevPage,
     goToPage,

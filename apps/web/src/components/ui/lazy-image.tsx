@@ -17,7 +17,7 @@ export interface LazyImageProps {
   blurDataURL?: string;
   onLoad?: () => void;
   loading?: 'lazy' | 'eager';
-  style?: React?.CSSProperties;
+  style?: React.CSSProperties;
   objectFit?: 'contain' | 'cover' | 'fill' | 'none' | 'scale-down';
   fallbackSrc?: string;
   fetchPriority?: 'high' | 'low' | 'auto';
@@ -55,9 +55,9 @@ const LazyImage = ({
   loading = 'lazy',
   style,
   objectFit = 'cover',
-  fallbackSrc = '/images/image-placeholder?.jpg',
+  fallbackSrc = '/images/image-placeholder.jpg',
   fetchPriority = 'auto',
-  threshold = 0?.1,
+  threshold = 0.1,
   rootMargin = '200px 0px',
   delayLoadingMs = 0,
 }: LazyImageProps) => {
@@ -69,7 +69,7 @@ const LazyImage = ({
   const imgRef = useRef<HTMLDivElement>(null);
 
   // Calculate appropriate quality based on device pixel ratio
-  const devicePixelRatio = typeof window !== 'undefined' ? window?.devicePixelRatio || 1 : 1;
+  const devicePixelRatio = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
   const calculatedQuality = quality || (devicePixelRatio > 1 ? 75 : 85);
 
   // Generate a blur placeholder if not provided
@@ -87,17 +87,17 @@ const LazyImage = ({
     if (priority) return; // Skip for priority images that should load immediately
 
     let observer: IntersectionObserver;
-    let timeout: NodeJS?.Timeout;
+    let timeout: NodeJS.Timeout;
 
-    const currentRef = imgRef?.current;
+    const currentRef = imgRef.current;
 
     if (currentRef && typeof IntersectionObserver !== 'undefined') {
       observer = new IntersectionObserver(
         (entries) => {
           // Ensure entries array is not empty
-          if (entries && entries?.length > 0) {
+          if (entries && entries.length > 0) {
             const entry = entries[0];
-            if (entry?.isIntersecting) {
+            if (entry.isIntersecting) {
               setIsVisible(true);
 
               // Optional delay for non-critical images to prioritize more important content
@@ -110,7 +110,7 @@ const LazyImage = ({
               }
 
               // Unobserve once visible
-              observer?.unobserve(currentRef);
+              observer.unobserve(currentRef);
             }
           }
         },
@@ -121,7 +121,7 @@ const LazyImage = ({
         },
       );
 
-      observer?.observe(currentRef);
+      observer.observe(currentRef);
     } else {
       // Fallback for browsers without IntersectionObserver
       setIsVisible(true);
@@ -130,7 +130,7 @@ const LazyImage = ({
 
     return () => {
       if (observer && currentRef) {
-        observer?.unobserve(currentRef);
+        observer.unobserve(currentRef);
       }
       if (timeout) {
         clearTimeout(timeout);

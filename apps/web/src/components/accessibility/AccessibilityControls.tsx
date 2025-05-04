@@ -32,21 +32,21 @@ export const AccessibilityControls = () => {
           <Label htmlFor="high-contrast">High Contrast</Label>
           <Switch
             id="high-contrast"
-            checked={preferences?.highContrast}
+            checked={preferences.highContrast}
             onCheckedChange={setHighContrast}
           />
         </div>
 
         <div className="flex items-center justify-between">
           <Label htmlFor="large-text">Large Text</Label>
-          <Switch id="large-text" checked={preferences?.largeText} onCheckedChange={setLargeText} />
+          <Switch id="large-text" checked={preferences.largeText} onCheckedChange={setLargeText} />
         </div>
 
         <div className="flex items-center justify-between">
           <Label htmlFor="reduce-motion">Reduce Motion</Label>
           <Switch
             id="reduce-motion"
-            checked={preferences?.reduceMotion}
+            checked={preferences.reduceMotion}
             onCheckedChange={setReduceMotion}
           />
         </div>
@@ -55,21 +55,21 @@ export const AccessibilityControls = () => {
           <Label htmlFor="keyboard-focus">Show Keyboard Focus</Label>
           <Switch
             id="keyboard-focus"
-            checked={preferences?.keyboardFocusVisible}
+            checked={preferences.keyboardFocusVisible}
             onCheckedChange={setKeyboardFocusVisible}
           />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="language-select">Language</Label>
-          <Select value={preferences?.language} onValueChange={setLanguage}>
+          <Select value={preferences.language} onValueChange={setLanguage}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select Language" />
             </SelectTrigger>
             <SelectContent>
-              {supportedLanguages?.map((lang) => (
-                <SelectItem key={lang?.code} value={lang?.code}>
-                  {lang?.name} {lang?.isRTL ? '(RTL)' : ''}
+              {supportedLanguages.map((lang) => (
+                <SelectItem key={lang.code} value={lang.code}>
+                  {lang.name} {lang.isRTL ? '(RTL)' : ''}
                 </SelectItem>
               ))}
             </SelectContent>

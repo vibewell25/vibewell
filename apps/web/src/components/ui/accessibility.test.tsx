@@ -3,7 +3,7 @@ import { axe, toHaveNoViolations } from 'jest-axe';
 import { Button } from '../base/Button/Button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './card';
 
-expect?.extend({ toHaveNoViolations });
+expect.extend({ toHaveNoViolations });
 
 describe('Accessibility Tests', () => {
   describe('Button Component', () => {

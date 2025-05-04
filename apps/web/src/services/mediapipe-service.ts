@@ -23,7 +23,7 @@ export class MediaPipeService {
   private isInitialized: boolean = false;
 
   constructor() {
-    this?.initializeFaceMesh();
+    this.initializeFaceMesh();
   }
 
   private async initializeFaceMesh() {
@@ -32,46 +32,46 @@ export class MediaPipeService {
 
       const { FaceMesh } = await import('@mediapipe/face_mesh');
 
-      this?.faceMesh = new FaceMesh({
+      this.faceMesh = new FaceMesh({
         locateFile: (file: string) => {
 
 
-          return `https://cdn?.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
+          return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
         },
       });
 
       // Set default options
-      this?.faceMesh.setOptions({
+      this.faceMesh.setOptions({
         maxNumFaces: 1,
         refineLandmarks: true,
-        minDetectionConfidence: 0?.5,
-        minTrackingConfidence: 0?.5,
+        minDetectionConfidence: 0.5,
+        minTrackingConfidence: 0.5,
       });
 
-      this?.isInitialized = true;
-      logger?.info('MediaPipe FaceMesh initialized successfully', 'MediaPipeService');
+      this.isInitialized = true;
+      logger.info('MediaPipe FaceMesh initialized successfully', 'MediaPipeService');
     } catch (error) {
-      logger?.error('Failed to initialize MediaPipe FaceMesh', 'MediaPipeService', { error });
+      logger.error('Failed to initialize MediaPipe FaceMesh', 'MediaPipeService', { error });
       throw error;
     }
   }
 
   async detectFace(imageData: ImageData, options?: FaceMeshOptions): Promise<FaceMeshResults> {
     try {
-      if (!this?.isInitialized) {
-        await this?.initializeFaceMesh();
+      if (!this.isInitialized) {
+        await this.initializeFaceMesh();
       }
 
       // Update options if provided
       if (options) {
-        this?.faceMesh.setOptions(options);
+        this.faceMesh.setOptions(options);
       }
 
       // Process the image
-      const results = await this?.faceMesh.send({ image: imageData });
+      const results = await this.faceMesh.send({ image: imageData });
       return results;
     } catch (error) {
-      logger?.error('Face detection failed', 'MediaPipeService', { error });
+      logger.error('Face detection failed', 'MediaPipeService', { error });
       throw error;
     }
   }
@@ -92,38 +92,38 @@ export class MediaPipeService {
       // Calculate rotation
       const eyeVector = {
 
-        x: rightEye?.x - leftEye?.x,
+        x: rightEye.x - leftEye.x,
 
-        y: rightEye?.y - leftEye?.y,
+        y: rightEye.y - leftEye.y,
 
-        z: rightEye?.z - leftEye?.z,
+        z: rightEye.z - leftEye.z,
       };
 
       const mouthVector = {
 
-        x: rightMouth?.x - leftMouth?.x,
+        x: rightMouth.x - leftMouth.x,
 
-        y: rightMouth?.y - leftMouth?.y,
+        y: rightMouth.y - leftMouth.y,
 
-        z: rightMouth?.z - leftMouth?.z,
+        z: rightMouth.z - leftMouth.z,
       };
 
       const rotation = {
-        x: Math?.atan2(eyeVector?.y, eyeVector?.z),
-        y: Math?.atan2(eyeVector?.x, eyeVector?.z),
-        z: Math?.atan2(mouthVector?.y, mouthVector?.x),
+        x: Math.atan2(eyeVector.y, eyeVector.z),
+        y: Math.atan2(eyeVector.x, eyeVector.z),
+        z: Math.atan2(mouthVector.y, mouthVector.x),
       };
 
       // Use nose point as translation
       const translation = {
-        x: nose?.x,
-        y: nose?.y,
-        z: nose?.z,
+        x: nose.x,
+        y: nose.y,
+        z: nose.z,
       };
 
       return { rotation, translation };
     } catch (error) {
-      logger?.error('Head pose estimation failed', 'MediaPipeService', { error });
+      logger.error('Head pose estimation failed', 'MediaPipeService', { error });
       throw error;
     }
   }
@@ -137,15 +137,15 @@ export class MediaPipeService {
     try {
       return {
         eyes: [
-          landmarks?.slice(133, 144), // Left eye
-          landmarks?.slice(362, 373), // Right eye
+          landmarks.slice(133, 144), // Left eye
+          landmarks.slice(362, 373), // Right eye
         ],
-        lips: landmarks?.slice(61, 69),
-        jawline: landmarks?.slice(0, 17),
-        nose: landmarks?.slice(168, 174),
+        lips: landmarks.slice(61, 69),
+        jawline: landmarks.slice(0, 17),
+        nose: landmarks.slice(168, 174),
       };
     } catch (error) {
-      logger?.error('Failed to extract facial features', 'MediaPipeService', { error });
+      logger.error('Failed to extract facial features', 'MediaPipeService', { error });
       throw error;
     }
   }

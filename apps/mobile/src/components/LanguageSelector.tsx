@@ -21,7 +21,7 @@ interface LanguageSelectorProps {
   onLanguageChange?: (locale: string) => void;
 }
 
-const LanguageSelector: React?.FC<LanguageSelectorProps> = ({
+const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   isVisible,
   onClose,
   showFlags = true,
@@ -29,7 +29,7 @@ const LanguageSelector: React?.FC<LanguageSelectorProps> = ({
   onLanguageChange,
 }) => {
   const [languages, setLanguages] = useState<LanguageOption[]>([]);
-  const [selectedLanguage, setSelectedLanguage] = useState<string>(i18n?.getCurrentLocale());
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(i18n.getCurrentLocale());
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -38,8 +38,8 @@ const LanguageSelector: React?.FC<LanguageSelectorProps> = ({
   }, []);
 
   const handleLanguageSelect = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');languageCode: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');languageCode: string) => {
     if (languageCode === selectedLanguage) {
       return;
     }
@@ -49,7 +49,7 @@ const LanguageSelector: React?.FC<LanguageSelectorProps> = ({
       const success = await setLanguage(languageCode);
       if (success) {
         setSelectedLanguage(languageCode);
-        onLanguageChange?.(languageCode);
+        onLanguageChange.(languageCode);
         // Wait a moment to show the loading indicator before closing
         setTimeout(() => {
           setIsLoading(false);
@@ -59,34 +59,34 @@ const LanguageSelector: React?.FC<LanguageSelectorProps> = ({
         setIsLoading(false);
       }
     } catch (error) {
-      console?.error('Error changing language:', error);
+      console.error('Error changing language:', error);
       setIsLoading(false);
     }
   };
 
   const renderLanguageItem = ({ item }: { item: LanguageOption }) => {
-    const isSelected = item?.code === selectedLanguage;
+    const isSelected = item.code === selectedLanguage;
 
     return (
       <TouchableOpacity
-        style={[styles?.languageItem, isSelected && styles?.selectedLanguageItem]}
-        onPress={() => handleLanguageSelect(item?.code)}
+        style={[styles.languageItem, isSelected && styles.selectedLanguageItem]}
+        onPress={() => handleLanguageSelect(item.code)}
         disabled={isLoading}
       >
-        {showFlags && <Text style={styles?.flag}>{item?.flag}</Text>}
-        <View style={styles?.languageTextContainer}>
-          <Text style={[styles?.languageName, isSelected && styles?.selectedText]}>
-            {item?.name}
+        {showFlags && <Text style={styles.flag}>{item.flag}</Text>}
+        <View style={styles.languageTextContainer}>
+          <Text style={[styles.languageName, isSelected && styles.selectedText]}>
+            {item.name}
           </Text>
-          {showLocalNames && item?.localName !== item?.name && (
-            <Text style={[styles?.localName, isSelected && styles?.selectedText]}>
-              {item?.localName}
+          {showLocalNames && item.localName !== item.name && (
+            <Text style={[styles.localName, isSelected && styles.selectedText]}>
+              {item.localName}
             </Text>
           )}
         </View>
         {isSelected && (
-          <View style={styles?.checkmark}>
-            <Text style={styles?.checkmarkText}>✓</Text>
+          <View style={styles.checkmark}>
+            <Text style={styles.checkmarkText}>✓</Text>
           </View>
         )}
       </TouchableOpacity>
@@ -100,28 +100,28 @@ const LanguageSelector: React?.FC<LanguageSelectorProps> = ({
       transparent={true}
       onRequestClose={onClose}
     >
-      <SafeAreaView style={styles?.container}>
-        <View style={styles?.content}>
-          <View style={styles?.header}>
-            <Text style={styles?.title}>{i18n?.t('settings?.language')}</Text>
-            <TouchableOpacity style={styles?.closeButton} onPress={onClose} disabled={isLoading}>
-              <Text style={styles?.closeButtonText}>✕</Text>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.content}>
+          <View style={styles.header}>
+            <Text style={styles.title}>{i18n.t('settings.language')}</Text>
+            <TouchableOpacity style={styles.closeButton} onPress={onClose} disabled={isLoading}>
+              <Text style={styles.closeButtonText}>✕</Text>
             </TouchableOpacity>
           </View>
 
-          <Text style={styles?.subtitle}>{i18n?.t('settings?.selectLanguage')}</Text>
+          <Text style={styles.subtitle}>{i18n.t('settings.selectLanguage')}</Text>
 
           {isLoading ? (
-            <View style={styles?.loadingContainer}>
+            <View style={styles.loadingContainer}>
               <ActivityIndicator size="large" color="#0066CC" />
-              <Text style={styles?.loadingText}>{i18n?.t('common?.loading')}</Text>
+              <Text style={styles.loadingText}>{i18n.t('common.loading')}</Text>
             </View>
           ) : (
             <FlatList
               data={languages}
               renderItem={renderLanguageItem}
-              keyExtractor={(item) => item?.code}
-              contentContainerStyle={styles?.listContent}
+              keyExtractor={(item) => item.code}
+              contentContainerStyle={styles.listContent}
             />
           )}
         </View>
@@ -130,10 +130,10 @@ const LanguageSelector: React?.FC<LanguageSelectorProps> = ({
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0?.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   content: {
     marginTop: 'auto',
@@ -141,7 +141,7 @@ const styles = StyleSheet?.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     height: '60%',
-    paddingBottom: Platform?.OS === 'ios' ? 0 : 20,
+    paddingBottom: Platform.OS === 'ios' ? 0 : 20,
   },
   header: {
     flexDirection: 'row',
@@ -186,7 +186,7 @@ const styles = StyleSheet?.create({
     borderBottomColor: '#F0F0F0',
   },
   selectedLanguageItem: {
-    backgroundColor: 'rgba(0, 102, 204, 0?.05)',
+    backgroundColor: 'rgba(0, 102, 204, 0.05)',
   },
   flag: {
     fontSize: 24,

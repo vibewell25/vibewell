@@ -20,7 +20,7 @@ export class IAMService {
   private readonly keyPrefix = 'iam';
 
   constructor() {
-    this?.redis = new Redis(process?.env.REDIS_URL || '');
+    this.redis = new Redis(process.env.REDIS_URL || '');
   }
 
   /**
@@ -28,15 +28,15 @@ export class IAMService {
    */
   async upsertRole(role: Role): Promise<void> {
     try {
-      await this?.redis.hset(`${this?.keyPrefix}:role:${role?.id}`, {
-        name: role?.name,
-        permissions: JSON?.stringify(role?.permissions),
-        metadata: JSON?.stringify(role?.metadata || {}),
+      await this.redis.hset(`${this.keyPrefix}:role:${role.id}`, {
+        name: role.name,
+        permissions: JSON.stringify(role.permissions),
+        metadata: JSON.stringify(role.metadata || {}),
       });
 
-      logger?.info('Role updated', 'iam', { roleId: role?.id });
+      logger.info('Role updated', 'iam', { roleId: role.id });
     } catch (error) {
-      logger?.error('Failed to update role', 'iam', { error, role });
+      logger.error('Failed to update role', 'iam', { error, role });
       throw error;
     }
   }
@@ -46,17 +46,17 @@ export class IAMService {
    */
   async getRole(roleId: string): Promise<Role | null> {
     try {
-      const roleData = await this?.redis.hgetall(`${this?.keyPrefix}:role:${roleId}`);
-      if (!roleData?.name) return null;
+      const roleData = await this.redis.hgetall(`${this.keyPrefix}:role:${roleId}`);
+      if (!roleData.name) return null;
 
       return {
         id: roleId,
-        name: roleData?.name,
-        permissions: JSON?.parse(roleData?.permissions),
-        metadata: JSON?.parse(roleData?.metadata),
+        name: roleData.name,
+        permissions: JSON.parse(roleData.permissions),
+        metadata: JSON.parse(roleData.metadata),
       };
     } catch (error) {
-      logger?.error('Failed to get role', 'iam', { error, roleId });
+      logger.error('Failed to get role', 'iam', { error, roleId });
       return null;
     }
   }
@@ -66,10 +66,10 @@ export class IAMService {
    */
   async assignUserRoles(userId: string, roleIds: string[]): Promise<void> {
     try {
-      await this?.redis.sadd(`${this?.keyPrefix}:user:${userId}:roles`, ...roleIds);
-      logger?.info('Roles assigned to user', 'iam', { userId, roleIds });
+      await this.redis.sadd(`${this.keyPrefix}:user:${userId}:roles`, ...roleIds);
+      logger.info('Roles assigned to user', 'iam', { userId, roleIds });
     } catch (error) {
-      logger?.error('Failed to assign roles', 'iam', { error, userId, roleIds });
+      logger.error('Failed to assign roles', 'iam', { error, userId, roleIds });
       throw error;
     }
   }
@@ -79,17 +79,17 @@ export class IAMService {
    */
   async getUserRoles(userId: string): Promise<Role[]> {
     try {
-      const roleIds = await this?.redis.smembers(`${this?.keyPrefix}:user:${userId}:roles`);
+      const roleIds = await this.redis.smembers(`${this.keyPrefix}:user:${userId}:roles`);
       const roles: Role[] = [];
 
       for (const roleId of roleIds) {
-        const role = await this?.getRole(roleId);
-        if (role) roles?.push(role);
+        const role = await this.getRole(roleId);
+        if (role) roles.push(role);
       }
 
       return roles;
     } catch (error) {
-      logger?.error('Failed to get user roles', 'iam', { error, userId });
+      logger.error('Failed to get user roles', 'iam', { error, userId });
       return [];
     }
   }
@@ -99,14 +99,14 @@ export class IAMService {
    */
   async hasPermission(userId: string, permission: Permission): Promise<boolean> {
     try {
-      const roles = await this?.getUserRoles(userId);
+      const roles = await this.getUserRoles(userId);
 
       for (const role of roles) {
-        const hasPermission = role?.permissions.some((p) => {
-          const [resource, action] = p?.split(':');
+        const hasPermission = role.permissions.some((p) => {
+          const [resource, action] = p.split(':');
           return (
-            (resource === '*' || resource === permission?.resource) &&
-            (action === '*' || action === permission?.action)
+            (resource === '*' || resource === permission.resource) &&
+            (action === '*' || action === permission.action)
           );
         });
 
@@ -115,7 +115,7 @@ export class IAMService {
 
       return false;
     } catch (error) {
-      logger?.error('Failed to check permission', 'iam', { error, userId, permission });
+      logger.error('Failed to check permission', 'iam', { error, userId, permission });
       return false;
     }
   }
@@ -153,7 +153,7 @@ export class IAMService {
     ];
 
     for (const role of defaultRoles) {
-      await this?.upsertRole(role);
+      await this.upsertRole(role);
     }
   }
 }

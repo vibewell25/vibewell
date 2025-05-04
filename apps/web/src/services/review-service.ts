@@ -37,50 +37,50 @@ export class ReviewService {
   private sentimentAnalysis: SentimentAnalysisService;
 
   constructor() {
-    this?.sentimentAnalysis = new SentimentAnalysisService();
+    this.sentimentAnalysis = new SentimentAnalysisService();
   }
 
   async createReview(input: CreateReviewInput) {
     try {
       // Create the review
-      const review = await prisma?.serviceReview.create({
+      const review = await prisma.serviceReview.create({
         data: {
-          userId: input?.userId,
-          serviceId: input?.serviceId,
-          businessId: input?.businessId,
-          rating: input?.rating,
-          comment: input?.comment,
-          bookingId: input?.bookingId,
+          userId: input.userId,
+          serviceId: input.serviceId,
+          businessId: input.businessId,
+          rating: input.rating,
+          comment: input.comment,
+          bookingId: input.bookingId,
         },
       });
 
       // If there's a comment, analyze its sentiment
-      if (input?.comment) {
-        const sentiment = await this?.sentimentAnalysis.analyzeSentiment(input?.comment);
+      if (input.comment) {
+        const sentiment = await this.sentimentAnalysis.analyzeSentiment(input.comment);
 
         // Store sentiment analysis results
-        await prisma?.reviewSentiment.create({
+        await prisma.reviewSentiment.create({
           data: {
-            reviewId: review?.id,
-            sentiment: sentiment?.sentiment,
-            score: sentiment?.score,
-            aspects: sentiment?.aspects,
+            reviewId: review.id,
+            sentiment: sentiment.sentiment,
+            score: sentiment.score,
+            aspects: sentiment.aspects,
           },
         });
       }
 
-      logger?.info('Review created successfully', 'ReviewService', { reviewId: review?.id });
+      logger.info('Review created successfully', 'ReviewService', { reviewId: review.id });
       return review;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error('Error creating review', 'ReviewService', { error: errorMessage });
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error('Error creating review', 'ReviewService', { error: errorMessage });
       throw error;
     }
   }
 
   async getServiceReviews(serviceId: string) {
     try {
-      const reviews = await prisma?.serviceReview.findMany({
+      const reviews = await prisma.serviceReview.findMany({
         where: { serviceId },
         include: {
           user: {
@@ -97,15 +97,15 @@ export class ReviewService {
 
       return reviews;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error('Error fetching service reviews', 'ReviewService', { error: errorMessage });
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error('Error fetching service reviews', 'ReviewService', { error: errorMessage });
       throw error;
     }
   }
 
   async getBusinessReviews(businessId: string) {
     try {
-      const reviews = await prisma?.serviceReview.findMany({
+      const reviews = await prisma.serviceReview.findMany({
         where: { businessId },
         include: {
           user: {
@@ -123,8 +123,8 @@ export class ReviewService {
 
       return reviews;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error('Error fetching business reviews', 'ReviewService', { error: errorMessage });
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error('Error fetching business reviews', 'ReviewService', { error: errorMessage });
       throw error;
     }
   }
@@ -132,7 +132,7 @@ export class ReviewService {
   async getReviewAnalytics(businessId: string): Promise<ReviewAnalytics> {
     try {
       // Get all reviews with their sentiment analysis
-      const reviews = await prisma?.serviceReview.findMany({
+      const reviews = await prisma.serviceReview.findMany({
         where: { businessId },
         include: {
           sentiment: true,
@@ -141,9 +141,9 @@ export class ReviewService {
 
       // Calculate average rating
 
-      const totalRating = reviews?.reduce((sum, review) => sum + review?.rating, 0);
+      const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
 
-      const averageRating = reviews?.length > 0 ? totalRating / reviews?.length : 0;
+      const averageRating = reviews.length > 0 ? totalRating / reviews.length : 0;
 
       // Calculate sentiment breakdown
       const sentimentBreakdown = {
@@ -160,22 +160,22 @@ export class ReviewService {
         };
       } = {};
 
-      reviews?.forEach((review) => {
-        if (review?.sentiment) {
+      reviews.forEach((review) => {
+        if (review.sentiment) {
           // Update sentiment breakdown
-          sentimentBreakdown[review?.sentiment.sentiment]++;
+          sentimentBreakdown[review.sentiment.sentiment]++;
 
           // Aggregate aspects
-          Object?.entries(review?.sentiment.aspects).forEach(([aspect, data]) => {
+          Object.entries(review.sentiment.aspects).forEach(([aspect, data]) => {
 
     // Safe array access
-    if (aspect < 0 || aspect >= array?.length) {
+    if (aspect < 0 || aspect >= array.length) {
       throw new Error('Array index out of bounds');
     }
             if (!aspectsMap[aspect]) {
 
     // Safe array access
-    if (aspect < 0 || aspect >= array?.length) {
+    if (aspect < 0 || aspect >= array.length) {
       throw new Error('Array index out of bounds');
     }
               aspectsMap[aspect] = {
@@ -186,51 +186,51 @@ export class ReviewService {
             }
 
     // Safe array access
-    if (aspect < 0 || aspect >= array?.length) {
+    if (aspect < 0 || aspect >= array.length) {
       throw new Error('Array index out of bounds');
     }
             aspectsMap[aspect].if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
 
     // Safe array access
-    if (aspect < 0 || aspect >= array?.length) {
+    if (aspect < 0 || aspect >= array.length) {
       throw new Error('Array index out of bounds');
     }
-            aspectsMap[aspect].if (totalScore > Number.MAX_SAFE_INTEGER || totalScore < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); totalScore += data?.score;
+            aspectsMap[aspect].if (totalScore > Number.MAX_SAFE_INTEGER || totalScore < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); totalScore += data.score;
 
     // Safe array access
-    if (aspect < 0 || aspect >= array?.length) {
+    if (aspect < 0 || aspect >= array.length) {
       throw new Error('Array index out of bounds');
     }
-            data?.keywords.forEach((keyword) => aspectsMap[aspect].keywords?.add(keyword));
+            data.keywords.forEach((keyword) => aspectsMap[aspect].keywords.add(keyword));
           });
         }
       });
 
       // Convert aspects map to final format
       const commonAspects: ReviewAnalytics['commonAspects'] = {};
-      Object?.entries(aspectsMap).forEach(([aspect, data]) => {
+      Object.entries(aspectsMap).forEach(([aspect, data]) => {
 
     // Safe array access
-    if (aspect < 0 || aspect >= array?.length) {
+    if (aspect < 0 || aspect >= array.length) {
       throw new Error('Array index out of bounds');
     }
         commonAspects[aspect] = {
-          count: data?.count,
+          count: data.count,
 
-          averageScore: data?.totalScore / data?.count,
-          keywords: Array?.from(data?.keywords),
+          averageScore: data.totalScore / data.count,
+          keywords: Array.from(data.keywords),
         };
       });
 
       return {
         averageRating,
-        totalReviews: reviews?.length,
+        totalReviews: reviews.length,
         sentimentBreakdown,
         commonAspects,
       };
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error('Error getting review analytics', 'ReviewService', { error: errorMessage });
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error('Error getting review analytics', 'ReviewService', { error: errorMessage });
       throw error;
     }
   }

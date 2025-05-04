@@ -22,16 +22,16 @@ export function AvatarEditorDialog({ image, onSave, onCancel, isOpen }: AvatarEd
   const editorRef = useRef<AvatarEditor>(null);
 
   const handleSave = () => {
-    if (editorRef?.current) {
-      const canvas = editorRef?.current.getImageScaledToCanvas();
-      canvas?.toBlob(
+    if (editorRef.current) {
+      const canvas = editorRef.current.getImageScaledToCanvas();
+      canvas.toBlob(
         (blob: Blob | null) => {
           if (blob) {
             onSave(blob);
           }
         },
         'image/jpeg',
-        0?.95,
+        0.95,
       );
     }
   };
@@ -50,7 +50,7 @@ export function AvatarEditorDialog({ image, onSave, onCancel, isOpen }: AvatarEd
             height={250}
             border={50}
             borderRadius={125}
-            color={[255, 255, 255, 0?.6]}
+            color={[255, 255, 255, 0.6]}
             scale={scale}
             rotate={0}
           />
@@ -62,7 +62,7 @@ export function AvatarEditorDialog({ image, onSave, onCancel, isOpen }: AvatarEd
                 onValueChange={([value]) => setScale(value)}
                 min={1}
                 max={3}
-                step={0?.1}
+                step={0.1}
                 className="w-full"
               />
             </div>

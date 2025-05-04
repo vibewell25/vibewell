@@ -42,7 +42,7 @@ interface ActiveSession {
   isCurrentDevice: boolean;
 }
 
-const SecuritySettingsScreen: React?.FC = () => {
+const SecuritySettingsScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [preferences, setPreferences] = useState<SecurityPreferences>({
@@ -66,36 +66,36 @@ const SecuritySettingsScreen: React?.FC = () => {
   }, []);
 
   const checkBiometricSupport = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
-      const supported = await LocalAuthentication?.hasHardwareAsync();
-      const enrolled = await LocalAuthentication?.isEnrolledAsync();
+      const supported = await LocalAuthentication.hasHardwareAsync();
+      const enrolled = await LocalAuthentication.isEnrolledAsync();
       setBiometricSupported(supported && enrolled);
     } catch (error) {
-      console?.error('Error checking biometric support:', error);
+      console.error('Error checking biometric support:', error);
     }
   };
 
   const loadPreferences = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
-      const saved = await AsyncStorage?.getItem('@vibewell/security_preferences');
+      const saved = await AsyncStorage.getItem('@vibewell/security_preferences');
       if (saved) {
-        setPreferences(JSON?.parse(saved));
+        setPreferences(JSON.parse(saved));
       }
     } catch (error) {
-      console?.error('Error loading security preferences:', error);
-      Alert?.alert('Error', 'Failed to load security preferences');
+      console.error('Error loading security preferences:', error);
+      Alert.alert('Error', 'Failed to load security preferences');
     } finally {
       setLoading(false);
     }
   };
 
   const loadActiveSessions = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     // Mock data for demonstration
     const mockSessions: ActiveSession[] = [
       {
@@ -124,33 +124,33 @@ const SecuritySettingsScreen: React?.FC = () => {
   };
 
   const savePreferences = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');newPreferences: SecurityPreferences) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');newPreferences: SecurityPreferences) => {
     try {
-      await AsyncStorage?.setItem(
+      await AsyncStorage.setItem(
         '@vibewell/security_preferences',
-        JSON?.stringify(newPreferences)
+        JSON.stringify(newPreferences)
       );
       setPreferences(newPreferences);
     } catch (error) {
-      console?.error('Error saving security preferences:', error);
-      Alert?.alert('Error', 'Failed to save security preferences');
+      console.error('Error saving security preferences:', error);
+      Alert.alert('Error', 'Failed to save security preferences');
     }
   };
 
   const handleToggle = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');key: keyof SecurityPreferences) => {
-    if (key === 'biometricEnabled' && !preferences?.biometricEnabled) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');key: keyof SecurityPreferences) => {
+    if (key === 'biometricEnabled' && !preferences.biometricEnabled) {
       try {
-        const result = await LocalAuthentication?.authenticateAsync({
+        const result = await LocalAuthentication.authenticateAsync({
           promptMessage: 'Authenticate to enable biometric login'
         });
-        if (!result?.success) {
+        if (!result.success) {
           return;
         }
       } catch (error) {
-        console?.error('Biometric authentication error:', error);
+        console.error('Biometric authentication error:', error);
         return;
       }
     }
@@ -166,16 +166,16 @@ const SecuritySettingsScreen: React?.FC = () => {
 
   const handleChangePassword = () => {
     // Navigate to change password screen
-    navigation?.navigate('ChangePassword');
+    navigation.navigate('ChangePassword');
   };
 
   const handleSetupTwoFactor = () => {
     // Navigate to 2FA setup screen
-    navigation?.navigate('TwoFactorSetup');
+    navigation.navigate('TwoFactorSetup');
   };
 
   const handleRevokeSession = (sessionId: string) => {
-    Alert?.alert(
+    Alert.alert(
       'Revoke Session',
       'Are you sure you want to end this session?',
       [
@@ -185,7 +185,7 @@ const SecuritySettingsScreen: React?.FC = () => {
           style: 'destructive',
           onPress: () => {
             setActiveSessions(prev => 
-              prev?.filter(session => session?.id !== sessionId)
+              prev.filter(session => session.id !== sessionId)
             );
           }
         }
@@ -200,22 +200,22 @@ const SecuritySettingsScreen: React?.FC = () => {
     disabled?: boolean
   ) => (
     <View style={[
-      styles?.settingItem,
+      styles.settingItem,
       { borderBottomColor: isDarkMode ? '#333333' : '#E0E0E0' }
     ]}>
-      <View style={styles?.settingContent}>
+      <View style={styles.settingContent}>
         <Text style={[
-          styles?.settingLabel,
+          styles.settingLabel,
           { color: isDarkMode ? '#FFFFFF' : '#000000' },
-          disabled && styles?.disabledText
+          disabled && styles.disabledText
         ]}>
           {label}
         </Text>
         {description && (
           <Text style={[
-            styles?.settingDescription,
+            styles.settingDescription,
             { color: isDarkMode ? '#BBBBBB' : '#666666' },
-            disabled && styles?.disabledText
+            disabled && styles.disabledText
           ]}>
             {description}
           </Text>
@@ -239,51 +239,51 @@ const SecuritySettingsScreen: React?.FC = () => {
     <TouchableOpacity
       onPress={onPress}
       style={[
-        styles?.actionButton,
+        styles.actionButton,
         {
           backgroundColor: type === 'destructive' ? '#DC2626' : '#4F46E5',
-          opacity: loading ? 0?.5 : 1
+          opacity: loading ? 0.5 : 1
         }
       ]}
       disabled={loading}
     >
-      <Text style={styles?.actionButtonText}>{label}</Text>
+      <Text style={styles.actionButtonText}>{label}</Text>
     </TouchableOpacity>
   );
 
   const renderSessionItem = (session: ActiveSession) => (
     <View
-      key={session?.id}
+      key={session.id}
       style={[
-        styles?.sessionItem,
+        styles.sessionItem,
         { backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5' }
       ]}
     >
-      <View style={styles?.sessionInfo}>
-        <View style={styles?.sessionHeader}>
+      <View style={styles.sessionInfo}>
+        <View style={styles.sessionHeader}>
           <Text style={[
-            styles?.deviceName,
+            styles.deviceName,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
-            {session?.deviceName}
-            {session?.isCurrentDevice && (
-              <Text style={styles?.currentDevice}> (Current Device)</Text>
+            {session.deviceName}
+            {session.isCurrentDevice && (
+              <Text style={styles.currentDevice}> (Current Device)</Text>
             )}
           </Text>
         </View>
         <Text style={[
-          styles?.sessionDetails,
+          styles.sessionDetails,
           { color: isDarkMode ? '#BBBBBB' : '#666666' }
         ]}>
-          {session?.location} • {session?.lastActive}
+          {session.location} • {session.lastActive}
         </Text>
       </View>
-      {!session?.isCurrentDevice && (
+      {!session.isCurrentDevice && (
         <TouchableOpacity
-          onPress={() => handleRevokeSession(session?.id)}
-          style={styles?.revokeButton}
+          onPress={() => handleRevokeSession(session.id)}
+          style={styles.revokeButton}
         >
-          <Text style={styles?.revokeButtonText}>Revoke</Text>
+          <Text style={styles.revokeButtonText}>Revoke</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -291,13 +291,13 @@ const SecuritySettingsScreen: React?.FC = () => {
 
   return (
     <SafeAreaView style={[
-      styles?.container,
+      styles.container,
       { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }
     ]}>
-      <View style={styles?.header}>
+      <View style={styles.header}>
         <TouchableOpacity
-          onPress={() => navigation?.goBack()}
-          style={styles?.backButton}
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
         >
           <Feather
             name="arrow-left"
@@ -306,17 +306,17 @@ const SecuritySettingsScreen: React?.FC = () => {
           />
         </TouchableOpacity>
         <Text style={[
-          styles?.title,
+          styles.title,
           { color: isDarkMode ? '#FFFFFF' : '#000000' }
         ]}>
           Security Settings
         </Text>
       </View>
 
-      <ScrollView style={styles?.content}>
-        <View style={styles?.section}>
+      <ScrollView style={styles.content}>
+        <View style={styles.section}>
           <Text style={[
-            styles?.sectionTitle,
+            styles.sectionTitle,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             Authentication
@@ -325,7 +325,7 @@ const SecuritySettingsScreen: React?.FC = () => {
           {renderSettingItem(
             'biometricEnabled',
             'Biometric Login',
-            `Use ${Platform?.OS === 'ios' ? 'Face ID/Touch ID' : 'fingerprint'} to log in`,
+            `Use ${Platform.OS === 'ios' ? 'Face ID/Touch ID' : 'fingerprint'} to log in`,
             !biometricSupported
           )}
           {renderSettingItem(
@@ -333,12 +333,12 @@ const SecuritySettingsScreen: React?.FC = () => {
             'Two-Factor Authentication',
             'Add an extra layer of security to your account'
           )}
-          {preferences?.twoFactorEnabled && renderActionButton('Setup 2FA', handleSetupTwoFactor)}
+          {preferences.twoFactorEnabled && renderActionButton('Setup 2FA', handleSetupTwoFactor)}
         </View>
 
-        <View style={styles?.section}>
+        <View style={styles.section}>
           <Text style={[
-            styles?.sectionTitle,
+            styles.sectionTitle,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             Security Options
@@ -370,21 +370,21 @@ const SecuritySettingsScreen: React?.FC = () => {
           )}
         </View>
 
-        <View style={styles?.section}>
+        <View style={styles.section}>
           <Text style={[
-            styles?.sectionTitle,
+            styles.sectionTitle,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             Active Sessions
           </Text>
-          {activeSessions?.map(renderSessionItem)}
+          {activeSessions.map(renderSessionItem)}
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -434,7 +434,7 @@ const styles = StyleSheet?.create({
     fontSize: 14,
   },
   disabledText: {
-    opacity: 0?.5,
+    opacity: 0.5,
   },
   actionButton: {
     margin: 16,

@@ -159,35 +159,35 @@ export function ServiceForm({ form }: ServiceFormProps) {
   const [showCustomDuration, setShowCustomDuration] = useState(false);
 
   // Get existing services from form or initialize an empty array
-  const services = form?.watch('services') || [];
+  const services = form.watch('services') || [];
 
   // Add a new service
   const addService = () => {
     // Form validation
-    if (!newServiceName?.trim()) {
+    if (!newServiceName.trim()) {
       alert('Please enter a service name');
       return;
     }
 
-    if (!newServicePrice?.trim() || isNaN(parseFloat(newServicePrice))) {
+    if (!newServicePrice.trim() || isNaN(parseFloat(newServicePrice))) {
       alert('Please enter a valid price');
       return;
     }
 
     // Create new service object
     const newService = {
-      id: Date?.now().toString(), // Generate a unique ID
-      name: newServiceName?.trim(),
+      id: Date.now().toString(), // Generate a unique ID
+      name: newServiceName.trim(),
       category: selectedCategory,
       price: parseFloat(newServicePrice),
       duration:
         newServiceDuration === 'custom' ? parseInt(customDuration) : parseInt(newServiceDuration),
-      description: newServiceDescription?.trim(),
+      description: newServiceDescription.trim(),
     };
 
     // Add to existing services
     const updatedServices = [...services, newService];
-    form?.setValue('services', updatedServices, { shouldValidate: true });
+    form.setValue('services', updatedServices, { shouldValidate: true });
 
     // Reset form fields
     setNewServiceName('');
@@ -200,8 +200,8 @@ export function ServiceForm({ form }: ServiceFormProps) {
 
   // Delete a service
   const deleteService = (serviceId: string) => {
-    const updatedServices = services?.filter((service) => service?.id !== serviceId);
-    form?.setValue('services', updatedServices, { shouldValidate: true });
+    const updatedServices = services.filter((service) => service.id !== serviceId);
+    form.setValue('services', updatedServices, { shouldValidate: true });
   };
 
   // Handle duration selection
@@ -229,9 +229,9 @@ export function ServiceForm({ form }: ServiceFormProps) {
                 <FormLabel>Service Name</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="e?.g. Haircut & Style"
+                    placeholder="e.g. Haircut & Style"
                     value={newServiceName}
-                    onChange={(e) => setNewServiceName(e?.target.value)}
+                    onChange={(e) => setNewServiceName(e.target.value)}
                   />
                 </FormControl>
               </FormItem>
@@ -245,9 +245,9 @@ export function ServiceForm({ form }: ServiceFormProps) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {SERVICE_CATEGORIES?.map((category) => (
-                      <SelectItem key={category?.value} value={category?.value}>
-                        {category?.label}
+                    {SERVICE_CATEGORIES.map((category) => (
+                      <SelectItem key={category.value} value={category.value}>
+                        {category.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -264,9 +264,9 @@ export function ServiceForm({ form }: ServiceFormProps) {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56">
-                      {SERVICE_CATEGORIES?.find(
-                        (c) => c?.value === selectedCategory,
-                      )?.subcategories?.map((sub) => (
+                      {SERVICE_CATEGORIES.find(
+                        (c) => c.value === selectedCategory,
+                      ).subcategories.map((sub) => (
                         <DropdownMenuItem key={sub}>{sub}</DropdownMenuItem>
                       ))}
                     </DropdownMenuContent>
@@ -283,12 +283,12 @@ export function ServiceForm({ form }: ServiceFormProps) {
                     <DollarSign className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
                     <Input
                       type="number"
-                      placeholder="e?.g. 75"
+                      placeholder="e.g. 75"
                       className="pl-10"
                       value={newServicePrice}
-                      onChange={(e) => setNewServicePrice(e?.target.value)}
+                      onChange={(e) => setNewServicePrice(e.target.value)}
                       min={0}
-                      step="0?.01"
+                      step="0.01"
                     />
                   </div>
                 </FormControl>
@@ -303,9 +303,9 @@ export function ServiceForm({ form }: ServiceFormProps) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {SERVICE_DURATIONS?.map((duration) => (
-                      <SelectItem key={duration?.value} value={duration?.value}>
-                        {duration?.label}
+                    {SERVICE_DURATIONS.map((duration) => (
+                      <SelectItem key={duration.value} value={duration.value}>
+                        {duration.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -320,7 +320,7 @@ export function ServiceForm({ form }: ServiceFormProps) {
                       type="number"
                       placeholder="Enter minutes"
                       value={customDuration}
-                      onChange={(e) => setCustomDuration(e?.target.value)}
+                      onChange={(e) => setCustomDuration(e.target.value)}
                       min={1}
                     />
                   </FormControl>
@@ -335,7 +335,7 @@ export function ServiceForm({ form }: ServiceFormProps) {
               <Textarea
                 placeholder="Describe what this service includes..."
                 value={newServiceDescription}
-                onChange={(e) => setNewServiceDescription(e?.target.value)}
+                onChange={(e) => setNewServiceDescription(e.target.value)}
                 rows={3}
               />
             </FormControl>
@@ -346,40 +346,40 @@ export function ServiceForm({ form }: ServiceFormProps) {
             <Plus className="mr-2 h-4 w-4" /> Add Service
           </Button>
 
-          {services?.length > 0 && (
+          {services.length > 0 && (
             <div className="mt-6">
               <h3 className="mb-3 font-medium">Your Services</h3>
               <ScrollArea className="h-[300px] rounded-md border">
                 <div className="space-y-4 p-4">
-                  {services?.map((service) => (
+                  {services.map((service) => (
                     <div
-                      key={service?.id}
+                      key={service.id}
                       className="flex items-start justify-between rounded-lg bg-muted/50 p-4"
                     >
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <h4 className="font-medium">{service?.name}</h4>
-                          {service?.category && (
+                          <h4 className="font-medium">{service.name}</h4>
+                          {service.category && (
                             <Badge variant="outline" className="text-xs">
-                              {SERVICE_CATEGORIES?.find((c) => c?.value === service?.category)
-                                ?.label || service?.category}
+                              {SERVICE_CATEGORIES.find((c) => c.value === service.category)
+                                .label || service.category}
                             </Badge>
                           )}
                         </div>
                         <div className="text-sm text-muted-foreground">
-                          <span className="font-medium">${service?.price.toFixed(2)}</span> •{' '}
-                          {service?.duration} minutes
+                          <span className="font-medium">${service.price.toFixed(2)}</span> •{' '}
+                          {service.duration} minutes
                         </div>
-                        {service?.description && (
+                        {service.description && (
                           <p className="mt-1 text-sm text-muted-foreground">
-                            {service?.description}
+                            {service.description}
                           </p>
                         )}
                       </div>
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => deleteService(service?.id)}
+                        onClick={() => deleteService(service.id)}
                         className="h-8 w-8 text-destructive"
                       >
                         <Trash className="h-4 w-4" />
@@ -401,12 +401,12 @@ export function ServiceForm({ form }: ServiceFormProps) {
         <CardContent>
           <div className="space-y-4">
             <FormField
-              control={form?.control}
+              control={form.control}
               name="offersPackages"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                   <FormControl>
-                    <Checkbox checked={field?.value} onCheckedChange={field?.onChange} />
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                   <div className="space-y-1 leading-none">
                     <FormLabel>Offer Service Packages</FormLabel>
@@ -419,12 +419,12 @@ export function ServiceForm({ form }: ServiceFormProps) {
             />
 
             <FormField
-              control={form?.control}
+              control={form.control}
               name="offersSpecialDiscounts"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                   <FormControl>
-                    <Checkbox checked={field?.value} onCheckedChange={field?.onChange} />
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                   <div className="space-y-1 leading-none">
                     <FormLabel>Offer Special Discounts</FormLabel>
@@ -437,12 +437,12 @@ export function ServiceForm({ form }: ServiceFormProps) {
             />
 
             <FormField
-              control={form?.control}
+              control={form.control}
               name="offersGiftCards"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                   <FormControl>
-                    <Checkbox checked={field?.value} onCheckedChange={field?.onChange} />
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>
                   <div className="space-y-1 leading-none">
                     <FormLabel>Offer Gift Cards</FormLabel>
@@ -456,7 +456,7 @@ export function ServiceForm({ form }: ServiceFormProps) {
           </div>
 
           <FormField
-            control={form?.control}
+            control={form.control}
             name="specialOffersDescription"
             render={({ field }) => (
               <FormItem className="mt-6">

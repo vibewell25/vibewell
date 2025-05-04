@@ -17,7 +17,7 @@ interface MetricsData {
   trend: Array<{ timestamp: number; duration: number }>;
 }
 
-const PerformanceDashboard: React?.FC = () => {
+const PerformanceDashboard: React.FC = () => {
   const [metricsData, setMetricsData] = useState<MetricsData[]>([]);
   const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
   const [timeRange, setTimeRange] = useState<'hour' | 'day' | 'week'>('day');
@@ -25,28 +25,28 @@ const PerformanceDashboard: React?.FC = () => {
 
   useEffect(() => {
     try {
-      const allMetrics = performanceMonitor?.getAllMetrics();
+      const allMetrics = performanceMonitor.getAllMetrics();
 
-      const processedData: MetricsData[] = Array?.from(allMetrics?.entries()).map(
+      const processedData: MetricsData[] = Array.from(allMetrics.entries()).map(
         ([name, metrics]: [string, LoadMetrics[]]) => {
           const filteredMetrics = getTimeRangeData(metrics, timeRange);
-          const loadTimes = filteredMetrics?.map((m) => m?.loadDuration);
+          const loadTimes = filteredMetrics.map((m) => m.loadDuration);
           const avgLoadTime =
-            loadTimes?.length > 0
-              ? loadTimes?.reduce((sum, time) => sum + time, 0) / loadTimes?.length
+            loadTimes.length > 0
+              ? loadTimes.reduce((sum, time) => sum + time, 0) / loadTimes.length
               : 0;
-          const lastLoadTime = filteredMetrics[filteredMetrics?.length - 1]?.loadDuration || 0;
+          const lastLoadTime = filteredMetrics[filteredMetrics.length - 1].loadDuration || 0;
 
           // Create trend data
-          const trend = filteredMetrics?.map((m) => ({
-            timestamp: m?.loadStartTime,
-            duration: m?.loadDuration,
+          const trend = filteredMetrics.map((m) => ({
+            timestamp: m.loadStartTime,
+            duration: m.loadDuration,
           }));
 
           return {
             name,
             avgLoadTime,
-            totalLoads: filteredMetrics?.length,
+            totalLoads: filteredMetrics.length,
             lastLoadTime,
             trend,
           };
@@ -57,7 +57,7 @@ const PerformanceDashboard: React?.FC = () => {
       setError(null);
     } catch (err) {
       setError('Failed to load performance metrics');
-      console?.error('Error loading metrics:', err);
+      console.error('Error loading metrics:', err);
     }
   }, [timeRange]);
 
@@ -65,21 +65,21 @@ const PerformanceDashboard: React?.FC = () => {
     metrics: LoadMetrics[],
     range: 'hour' | 'day' | 'week',
   ): LoadMetrics[] => {
-    const now = Date?.now();
+    const now = Date.now();
     const ranges = {
       hour: 60 * 60 * 1000,
       day: 24 * 60 * 60 * 1000,
       week: 7 * 24 * 60 * 60 * 1000,
     };
 
-    return metrics?.filter((metric) => now - metric?.loadStartTime <= ranges[range]);
+    return metrics.filter((metric) => now - metric.loadStartTime <= ranges[range]);
   };
 
   if (error) {
     return (
       <div className="error-container">
         <p className="error-message">{error}</p>
-        <button onClick={() => window?.location.reload()}>Retry</button>
+        <button onClick={() => window.location.reload()}>Retry</button>
       </div>
     );
   }
@@ -91,7 +91,7 @@ const PerformanceDashboard: React?.FC = () => {
       <div className="controls">
         <select
           value={timeRange}
-          onChange={(e) => setTimeRange(e?.target.value as 'hour' | 'day' | 'week')}
+          onChange={(e) => setTimeRange(e.target.value as 'hour' | 'day' | 'week')}
         >
           <option value="hour">Last Hour</option>
           <option value="day">Last 24 Hours</option>
@@ -100,25 +100,25 @@ const PerformanceDashboard: React?.FC = () => {
       </div>
 
       <div className="metrics-grid">
-        {metricsData?.map((metric) => (
+        {metricsData.map((metric) => (
           <div
-            key={metric?.name}
-            className={`metric-card ${selectedMetric === metric?.name ? 'selected' : ''}`}
-            onClick={() => setSelectedMetric(metric?.name)}
+            key={metric.name}
+            className={`metric-card ${selectedMetric === metric.name ? 'selected' : ''}`}
+            onClick={() => setSelectedMetric(metric.name)}
           >
-            <h3>{metric?.name}</h3>
+            <h3>{metric.name}</h3>
             <div className="metric-details">
               <div>
                 <span>Avg Load Time:</span>
-                <span>{metric?.avgLoadTime.toFixed(2)}ms</span>
+                <span>{metric.avgLoadTime.toFixed(2)}ms</span>
               </div>
               <div>
                 <span>Total Loads:</span>
-                <span>{metric?.totalLoads}</span>
+                <span>{metric.totalLoads}</span>
               </div>
               <div>
                 <span>Last Load:</span>
-                <span>{metric?.lastLoadTime.toFixed(2)}ms</span>
+                <span>{metric.lastLoadTime.toFixed(2)}ms</span>
               </div>
             </div>
           </div>
@@ -129,7 +129,7 @@ const PerformanceDashboard: React?.FC = () => {
         <div className="chart-container">
           <h3>Load Time Trend - {selectedMetric}</h3>
           <DynamicCharts
-            data={metricsData?.find((m) => m?.name === selectedMetric)?.trend || []}
+            data={metricsData.find((m) => m.name === selectedMetric).trend || []}
             timeRange={timeRange}
           />
         </div>
@@ -158,30 +158,30 @@ const PerformanceDashboard: React?.FC = () => {
         .metrics-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 1?.5rem;
+          gap: 1.5rem;
           margin-bottom: 2rem;
         }
 
         .metric-card {
           background: var(--background-secondary);
           border-radius: 8px;
-          padding: 1?.5rem;
+          padding: 1.5rem;
           cursor: pointer;
-          transition: all 0?.2s ease;
+          transition: all 0.2s ease;
         }
 
         .metric-card:hover {
           transform: translateY(-2px);
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0?.1);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .metric-card?.selected {
+        .metric-card.selected {
           border: 2px solid var(--primary);
         }
 
         .metric-details {
           display: grid;
-          gap: 0?.5rem;
+          gap: 0.5rem;
           margin-top: 1rem;
         }
 
@@ -193,7 +193,7 @@ const PerformanceDashboard: React?.FC = () => {
 
         .chart-container {
           margin-top: 2rem;
-          padding: 1?.5rem;
+          padding: 1.5rem;
           background: var(--background-secondary);
           border-radius: 8px;
         }
@@ -209,7 +209,7 @@ const PerformanceDashboard: React?.FC = () => {
         }
 
         select {
-          padding: 0?.5rem;
+          padding: 0.5rem;
           border-radius: 4px;
           border: 1px solid var(--border-color);
           background: var(--background-secondary);
@@ -217,7 +217,7 @@ const PerformanceDashboard: React?.FC = () => {
         }
 
         button {
-          padding: 0?.5rem 1rem;
+          padding: 0.5rem 1rem;
           border-radius: 4px;
           border: none;
           background: var(--primary);
@@ -226,7 +226,7 @@ const PerformanceDashboard: React?.FC = () => {
         }
 
         button:hover {
-          opacity: 0?.9;
+          opacity: 0.9;
         }
       `}</style>
     </div>

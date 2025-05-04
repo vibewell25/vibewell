@@ -7,7 +7,7 @@ interface TableColumn {
 }
 
 interface TableRow {
-  [key: string]: React?.ReactNode;
+  [key: string]: React.ReactNode;
 }
 
 interface AccessibleTableProps {
@@ -19,7 +19,7 @@ interface AccessibleTableProps {
   onSort?: (columnKey: string, direction: 'asc' | 'desc') => void;
 }
 
-export const AccessibleTable: React?.FC<AccessibleTableProps> = ({
+export const AccessibleTable: React.FC<AccessibleTableProps> = ({
   columns,
   data,
   className = '',
@@ -37,52 +37,52 @@ export const AccessibleTable: React?.FC<AccessibleTableProps> = ({
     const newDirection = sortedColumn === columnKey && sortDirection === 'asc' ? 'desc' : 'asc';
     setSortedColumn(columnKey);
     setSortDirection(newDirection);
-    onSort?.(columnKey, newDirection);
+    onSort.(columnKey, newDirection);
   };
 
-  const handleKeyDown = (e: React?.KeyboardEvent, rowIndex: number, columnIndex: number) => {
-    if (!tableRef?.current) return;
+  const handleKeyDown = (e: React.KeyboardEvent, rowIndex: number, columnIndex: number) => {
+    if (!tableRef.current) return;
 
-    const rows = tableRef?.current.querySelectorAll('tbody tr');
+    const rows = tableRef.current.querySelectorAll('tbody tr');
     const cells = rows[rowIndex].querySelectorAll('td, th');
-    const totalRows = rows?.length;
-    const totalCells = cells?.length;
+    const totalRows = rows.length;
+    const totalCells = cells.length;
 
-    switch (e?.key) {
+    switch (e.key) {
       case 'ArrowUp':
-        e?.preventDefault();
+        e.preventDefault();
         if (rowIndex > 0) {
           const prevRow = rows[rowIndex - 1];
-          const prevCell = prevRow?.querySelectorAll('td, th')[columnIndex];
+          const prevCell = prevRow.querySelectorAll('td, th')[columnIndex];
           (prevCell as HTMLElement).focus();
         }
         break;
       case 'ArrowDown':
-        e?.preventDefault();
+        e.preventDefault();
         if (rowIndex < totalRows - 1) {
           const nextRow = rows[rowIndex + 1];
-          const nextCell = nextRow?.querySelectorAll('td, th')[columnIndex];
+          const nextCell = nextRow.querySelectorAll('td, th')[columnIndex];
           (nextCell as HTMLElement).focus();
         }
         break;
       case 'ArrowLeft':
-        e?.preventDefault();
+        e.preventDefault();
         if (columnIndex > 0) {
           (cells[columnIndex - 1] as HTMLElement).focus();
         }
         break;
       case 'ArrowRight':
-        e?.preventDefault();
+        e.preventDefault();
         if (columnIndex < totalCells - 1) {
           (cells[columnIndex + 1] as HTMLElement).focus();
         }
         break;
       case 'Home':
-        e?.preventDefault();
+        e.preventDefault();
         (cells[0] as HTMLElement).focus();
         break;
       case 'End':
-        e?.preventDefault();
+        e.preventDefault();
         (cells[totalCells - 1] as HTMLElement).focus();
         break;
     }
@@ -98,17 +98,17 @@ export const AccessibleTable: React?.FC<AccessibleTableProps> = ({
         {caption && <caption className="sr-only">{caption}</caption>}
         <thead className="bg-gray-50">
           <tr>
-            {columns?.map((column, columnIndex) => (
+            {columns.map((column, columnIndex) => (
               <th
-                key={column?.key}
+                key={column.key}
                 scope="col"
-                className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 ${column?.sortable ? 'cursor-pointer' : ''} `}
-                onClick={() => column?.sortable && handleSort(column?.key)}
+                className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 ${column.sortable ? 'cursor-pointer' : ''} `}
+                onClick={() => column.sortable && handleSort(column.key)}
                 onKeyDown={(e) => handleKeyDown(e, 0, columnIndex)}
                 tabIndex={0}
                 aria-sort={
-                  column?.sortable
-                    ? sortedColumn === column?.key
+                  column.sortable
+                    ? sortedColumn === column.key
                       ? sortDirection === 'asc'
                         ? 'ascending'
                         : 'descending'
@@ -117,10 +117,10 @@ export const AccessibleTable: React?.FC<AccessibleTableProps> = ({
                 }
               >
                 <div className="flex items-center">
-                  {column?.header}
-                  {column?.sortable && (
+                  {column.header}
+                  {column.sortable && (
                     <span className="ml-2">
-                      {sortedColumn === column?.key ? (sortDirection === 'asc' ? '↑' : '↓') : '↕'}
+                      {sortedColumn === column.key ? (sortDirection === 'asc' ? '↑' : '↓') : '↕'}
                     </span>
                   )}
                 </div>
@@ -129,16 +129,16 @@ export const AccessibleTable: React?.FC<AccessibleTableProps> = ({
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
-          {data?.map((row, rowIndex) => (
+          {data.map((row, rowIndex) => (
             <tr key={rowIndex} className="hover:bg-gray-50">
-              {columns?.map((column, columnIndex) => (
+              {columns.map((column, columnIndex) => (
                 <td
-                  key={column?.key}
+                  key={column.key}
                   className="whitespace-nowrap px-6 py-4 text-sm text-gray-900"
                   tabIndex={0}
                   onKeyDown={(e) => handleKeyDown(e, rowIndex, columnIndex)}
                 >
-                  {row[column?.key]}
+                  {row[column.key]}
                 </td>
               ))}
             </tr>

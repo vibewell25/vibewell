@@ -4,7 +4,7 @@ export function Loading({ error, isLoading, pastDelay }: DynamicOptionsLoadingPr
   if (error) {
     return (
       <div className="flex items-center justify-center p-4 text-red-500">
-        Error loading component: {error?.message}
+        Error loading component: {error.message}
       </div>
     );
   }

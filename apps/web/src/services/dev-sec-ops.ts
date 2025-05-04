@@ -35,7 +35,7 @@ export class DevSecOpsService {
   private securityMonitoring: SecurityMonitoringService;
 
   constructor() {
-    this?.securityMonitoring = new SecurityMonitoringService();
+    this.securityMonitoring = new SecurityMonitoringService();
   }
 
   /**
@@ -46,23 +46,23 @@ export class DevSecOpsService {
 
     try {
       // Run npm audit
-      const npmAudit = await this?.runNpmAudit();
-      if (npmAudit) results?.push(npmAudit);
+      const npmAudit = await this.runNpmAudit();
+      if (npmAudit) results.push(npmAudit);
 
       // Run SonarQube scan
-      const sonarScan = await this?.runSonarQubeScan();
-      if (sonarScan) results?.push(sonarScan);
+      const sonarScan = await this.runSonarQubeScan();
+      if (sonarScan) results.push(sonarScan);
 
       // Run OWASP ZAP scan
-      const zapScan = await this?.runZAPScan();
-      if (zapScan) results?.push(zapScan);
+      const zapScan = await this.runZAPScan();
+      if (zapScan) results.push(zapScan);
 
       // Log scan results
-      await this?.logScanResults(results);
+      await this.logScanResults(results);
 
       return results;
     } catch (error) {
-      logger?.error('Security scan failed', 'devsecops', { error });
+      logger.error('Security scan failed', 'devsecops', { error });
       throw error;
     }
   }
@@ -73,24 +73,24 @@ export class DevSecOpsService {
   private async runNpmAudit(): Promise<SecurityScanResult | null> {
     try {
       const { stdout } = await execAsync('npm audit --json');
-      const auditData = JSON?.parse(stdout);
+      const auditData = JSON.parse(stdout);
 
-      const findings = Object?.values(auditData?.advisories).map((adv: any) => ({
+      const findings = Object.values(auditData.advisories).map((adv: any) => ({
         type: 'dependency_vulnerability',
-        description: adv?.overview,
-        severity: adv?.severity,
-        cwe: adv?.cwe,
-        fix: adv?.recommendation,
+        description: adv.overview,
+        severity: adv.severity,
+        cwe: adv.cwe,
+        fix: adv.recommendation,
       }));
 
       return {
         tool: 'npm_audit',
-        severity: this?.calculateOverallSeverity(findings),
+        severity: this.calculateOverallSeverity(findings),
         findings,
         timestamp: new Date(),
       };
     } catch (error) {
-      logger?.error('npm audit failed', 'devsecops', { error });
+      logger.error('npm audit failed', 'devsecops', { error });
       return null;
     }
   }
@@ -105,8 +105,8 @@ export class DevSecOpsService {
       await execAsync('sonar-scanner');
 
       // Get results from SonarQube API
-      const sonarUrl = process?.env.SONAR_URL;
-      const projectKey = process?.env.SONAR_PROJECT_KEY;
+      const sonarUrl = process.env.SONAR_URL;
+      const projectKey = process.env.SONAR_PROJECT_KEY;
 
       if (!sonarUrl || !projectKey) {
         throw new Error('SonarQube configuration missing');
@@ -116,24 +116,24 @@ export class DevSecOpsService {
 
         `${sonarUrl}/api/issues/search?projectKeys=${projectKey}&types=VULNERABILITY`,
       );
-      const data = await response?.json();
+      const data = await response.json();
 
-      const findings = data?.issues.map((issue: any) => ({
+      const findings = data.issues.map((issue: any) => ({
         type: 'code_vulnerability',
-        description: issue?.message,
-        location: `${issue?.component}:${issue?.line}`,
-        severity: issue?.severity.toLowerCase(),
-        fix: issue?.debt,
+        description: issue.message,
+        location: `${issue.component}:${issue.line}`,
+        severity: issue.severity.toLowerCase(),
+        fix: issue.debt,
       }));
 
       return {
         tool: 'sonarqube',
-        severity: this?.calculateOverallSeverity(findings),
+        severity: this.calculateOverallSeverity(findings),
         findings,
         timestamp: new Date(),
       };
     } catch (error) {
-      logger?.error('SonarQube scan failed', 'devsecops', { error });
+      logger.error('SonarQube scan failed', 'devsecops', { error });
       return null;
     }
   }
@@ -143,8 +143,8 @@ export class DevSecOpsService {
    */
   private async runZAPScan(): Promise<SecurityScanResult | null> {
     try {
-      const zapUrl = process?.env.ZAP_API_URL;
-      const targetUrl = process?.env.APP_URL;
+      const zapUrl = process.env.ZAP_API_URL;
+      const targetUrl = process.env.APP_URL;
 
       if (!zapUrl || !targetUrl) {
         throw new Error('ZAP configuration missing');
@@ -156,7 +156,7 @@ export class DevSecOpsService {
       await fetch(`${zapUrl}/JSON/spider/action/scan/?url=${targetUrl}`);
 
       // Wait for spider to complete
-      await this?.waitForZAPSpider(zapUrl);
+      await this.waitForZAPSpider(zapUrl);
 
       // Start active scan
 
@@ -164,31 +164,31 @@ export class DevSecOpsService {
       await fetch(`${zapUrl}/JSON/ascan/action/scan/?url=${targetUrl}`);
 
       // Wait for scan to complete
-      await this?.waitForZAPScan(zapUrl);
+      await this.waitForZAPScan(zapUrl);
 
       // Get results
 
 
       const response = await fetch(`${zapUrl}/JSON/core/view/alerts/`);
-      const data = await response?.json();
+      const data = await response.json();
 
-      const findings = data?.alerts.map((alert: any) => ({
+      const findings = data.alerts.map((alert: any) => ({
         type: 'web_vulnerability',
-        description: alert?.description,
-        location: alert?.url,
-        severity: alert?.risk.toLowerCase(),
-        cwe: alert?.cweid,
-        fix: alert?.solution,
+        description: alert.description,
+        location: alert.url,
+        severity: alert.risk.toLowerCase(),
+        cwe: alert.cweid,
+        fix: alert.solution,
       }));
 
       return {
         tool: 'owasp_zap',
-        severity: this?.calculateOverallSeverity(findings),
+        severity: this.calculateOverallSeverity(findings),
         findings,
         timestamp: new Date(),
       };
     } catch (error) {
-      logger?.error('ZAP scan failed', 'devsecops', { error });
+      logger.error('ZAP scan failed', 'devsecops', { error });
       return null;
     }
   }
@@ -201,8 +201,8 @@ export class DevSecOpsService {
 
 
       const response = await fetch(`${zapUrl}/JSON/spider/view/status/`);
-      const data = await response?.json();
-      if (data?.status === '100') break;
+      const data = await response.json();
+      if (data.status === '100') break;
       await new Promise((resolve) => setTimeout(resolve, 5000));
     }
   }
@@ -215,8 +215,8 @@ export class DevSecOpsService {
 
 
       const response = await fetch(`${zapUrl}/JSON/ascan/view/status/`);
-      const data = await response?.json();
-      if (data?.status === '100') break;
+      const data = await response.json();
+      if (data.status === '100') break;
       await new Promise((resolve) => setTimeout(resolve, 5000));
     }
   }
@@ -227,9 +227,9 @@ export class DevSecOpsService {
   private calculateOverallSeverity(
     findings: Array<{ severity: string }>,
   ): SecurityScanResult['severity'] {
-    if (findings?.some((f) => f?.severity === 'critical')) return 'critical';
-    if (findings?.some((f) => f?.severity === 'high')) return 'high';
-    if (findings?.some((f) => f?.severity === 'medium')) return 'medium';
+    if (findings.some((f) => f.severity === 'critical')) return 'critical';
+    if (findings.some((f) => f.severity === 'high')) return 'high';
+    if (findings.some((f) => f.severity === 'medium')) return 'medium';
     return 'low';
   }
 
@@ -238,18 +238,18 @@ export class DevSecOpsService {
    */
   private async logScanResults(results: SecurityScanResult[]): Promise<void> {
     for (const result of results) {
-      const criticalFindings = result?.findings.filter(
-        (f) => f?.severity === 'critical' || f?.severity === 'high',
+      const criticalFindings = result.findings.filter(
+        (f) => f.severity === 'critical' || f.severity === 'high',
       );
 
-      if (criticalFindings?.length > 0) {
-        await this?.securityMonitoring.logEvent({
+      if (criticalFindings.length > 0) {
+        await this.securityMonitoring.logEvent({
           type: 'security_scan',
-          severity: result?.severity,
+          severity: result.severity,
           details: {
-            tool: result?.tool,
+            tool: result.tool,
             findings: criticalFindings,
-            totalFindings: result?.findings.length,
+            totalFindings: result.findings.length,
           },
         });
       }
@@ -263,8 +263,8 @@ export class DevSecOpsService {
     blocked: boolean;
     reason?: string;
   }> {
-    const criticalIssues = results?.some(
-      (r) => r?.severity === 'critical' || (r?.severity === 'high' && r?.findings.length > 5),
+    const criticalIssues = results.some(
+      (r) => r.severity === 'critical' || (r.severity === 'high' && r.findings.length > 5),
     );
 
     if (criticalIssues) {

@@ -5,10 +5,10 @@ import communityApi from '../services/communityService';
 import { Thread, ThreadPost } from '../types/community';
 import { ThreadDetailRouteProp, ThreadDetailNavigationProp } from '../types/navigation';
 
-const ThreadDetailScreen: React?.FC = () => {
+const ThreadDetailScreen: React.FC = () => {
   const route = useRoute<ThreadDetailRouteProp>();
   const navigation = useNavigation<ThreadDetailNavigationProp>();
-  const { id } = route?.params;
+  const { id } = route.params;
 
   const [thread, setThread] = useState<Thread | null>(null);
   const [posts, setPosts] = useState<ThreadPost[]>([]);
@@ -16,17 +16,17 @@ const ThreadDetailScreen: React?.FC = () => {
   const [loading, setLoading] = useState(true);
 
   const loadData = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setLoading(true);
     try {
-      const data = await communityApi?.getThreadById(id);
+      const data = await communityApi.getThreadById(id);
       setThread(data);
-      const comms = await communityApi?.getThreadPosts(id);
+      const comms = await communityApi.getThreadPosts(id);
       setPosts(comms);
     } catch (err) {
-      console?.error(err);
-      Alert?.alert('Error', 'Failed to load thread');
+      console.error(err);
+      Alert.alert('Error', 'Failed to load thread');
     } finally {
       setLoading(false);
     }
@@ -35,53 +35,53 @@ const ThreadDetailScreen: React?.FC = () => {
   useEffect(() => { loadData(); }, [id]);
 
   const handleAddPost = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-    if (!newContent?.trim()) return;
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    if (!newContent.trim()) return;
     try {
-      await communityApi?.addThreadPost(id, newContent?.trim());
+      await communityApi.addThreadPost(id, newContent.trim());
       setNewContent('');
       loadData();
     } catch (err) {
-      console?.error(err);
-      Alert?.alert('Error', 'Failed to add post');
+      console.error(err);
+      Alert.alert('Error', 'Failed to add post');
     }
   };
 
   const handleDeleteThread = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
-      await communityApi?.deleteThread(id);
-      navigation?.goBack();
+      await communityApi.deleteThread(id);
+      navigation.goBack();
     } catch (err) {
-      console?.error(err);
-      Alert?.alert('Error', 'Failed to delete thread');
+      console.error(err);
+      Alert.alert('Error', 'Failed to delete thread');
     }
   };
 
   if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
-    <View style={styles?.container}>
-      <Text style={styles?.title}>{thread?.title}</Text>
-      <View style={styles?.buttonRow}>
-        <Button title="Edit" onPress={() => navigation?.navigate('ThreadForm', { thread })} />
+    <View style={styles.container}>
+      <Text style={styles.title}>{thread.title}</Text>
+      <View style={styles.buttonRow}>
+        <Button title="Edit" onPress={() => navigation.navigate('ThreadForm', { thread })} />
         <Button title="Delete" onPress={handleDeleteThread} color="red" />
       </View>
-      <Text style={styles?.sectionTitle}>Posts</Text>
+      <Text style={styles.sectionTitle}>Posts</Text>
       <FlatList
         data={posts}
-        keyExtractor={c => c?.id}
+        keyExtractor={c => c.id}
         renderItem={({ item }) => (
-          <View style={styles?.post}>
-            <Text>{item?.content}</Text>
-            <Text style={styles?.postMeta}>{item?.authorId} at {new Date(item?.createdAt).toLocaleString()}</Text>
+          <View style={styles.post}>
+            <Text>{item.content}</Text>
+            <Text style={styles.postMeta}>{item.authorId} at {new Date(item.createdAt).toLocaleString()}</Text>
           </View>
         )}
       />
       <TextInput
-        style={styles?.input}
+        style={styles.input}
         placeholder="Add a post"
         value={newContent}
         onChangeText={setNewContent}
@@ -91,7 +91,7 @@ const ThreadDetailScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   title: { fontSize: 20, fontWeight: 'bold', marginBottom: 8 },
   buttonRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 },

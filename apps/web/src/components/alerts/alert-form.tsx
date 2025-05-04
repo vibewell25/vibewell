@@ -47,13 +47,13 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
 
   useEffect(() => {
     const fetchProducts = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
-        const { data } = await productService?.getAllProducts({ limit: 100 });
-        setProducts(data?.products.map((p: any) => ({ id: p?.id, name: p?.name })));
+        const { data } = await productService.getAllProducts({ limit: 100 });
+        setProducts(data.products.map((p: any) => ({ id: p.id, name: p.name })));
       } catch (error) {
-        console?.error('Error fetching products:', error);
+        console.error('Error fetching products:', error);
         toast({
           title: 'Error',
           description: 'Failed to load products. Please try again.',
@@ -63,18 +63,18 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
     };
 
     const fetchAlert = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       if (!alertId) return;
 
       setLoading(true);
       try {
-        const alertData = await alertService?.getAlertById(alertId);
+        const alertData = await alertService.getAlertById(alertId);
         if (alertData) {
           setAlert(alertData);
         }
       } catch (error) {
-        console?.error('Error fetching alert:', error);
+        console.error('Error fetching alert:', error);
         toast({
           title: 'Error',
           description: 'Failed to load alert details. Please try again.',
@@ -91,8 +91,8 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
     }
   }, [alertId, productService, alertService]);
 
-  const handleInputChange = (e: React?.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e?.target;
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
     setAlert((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -106,37 +106,37 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
 
   const handleNotificationMethodChange = (method: string, checked: boolean) => {
     setAlert((prev) => {
-      const methods = [...prev?.notification_methods];
+      const methods = [...prev.notification_methods];
 
-      if (checked && !methods?.includes(method)) {
-        methods?.push(method);
-      } else if (!checked && methods?.includes(method)) {
-        const index = methods?.indexOf(method);
-        methods?.splice(index, 1);
+      if (checked && !methods.includes(method)) {
+        methods.push(method);
+      } else if (!checked && methods.includes(method)) {
+        const index = methods.indexOf(method);
+        methods.splice(index, 1);
       }
 
       return { ...prev, notification_methods: methods };
     });
   };
 
-  const handleThresholdChange = (e: React?.ChangeEvent<HTMLInputElement>) => {
-    const value = parseFloat(e?.target.value);
+  const handleThresholdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value);
     if (!isNaN(value)) {
       setAlert((prev) => ({ ...prev, threshold: value }));
     }
   };
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent) => {
-    e?.preventDefault();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
+    e.preventDefault();
 
     if (
-      !alert?.name ||
-      !alert?.product_id ||
-      !alert?.metric ||
-      !alert?.condition ||
-      !alert?.notification_methods.length
+      !alert.name ||
+      !alert.product_id ||
+      !alert.metric ||
+      !alert.condition ||
+      !alert.notification_methods.length
     ) {
       toast({
         title: 'Validation Error',
@@ -150,13 +150,13 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
 
     try {
       if (alertId) {
-        await alertService?.updateAlert(alertId, alert);
+        await alertService.updateAlert(alertId, alert);
         toast({
           title: 'Success',
           description: 'Alert has been updated successfully.',
         });
       } else {
-        await alertService?.createAlert(alert);
+        await alertService.createAlert(alert);
         toast({
           title: 'Success',
           description: 'New alert has been created successfully.',
@@ -166,10 +166,10 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
       if (onSuccess) {
         onSuccess();
       } else {
-        router?.push('/admin/alerts');
+        router.push('/admin/alerts');
       }
     } catch (error) {
-      console?.error('Error saving alert:', error);
+      console.error('Error saving alert:', error);
       toast({
         title: 'Error',
         description: 'Failed to save alert. Please try again.',
@@ -193,7 +193,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
               <Input
                 id="name"
                 name="name"
-                value={alert?.name}
+                value={alert.name}
                 onChange={handleInputChange}
                 placeholder="Low Rating Alert"
                 required
@@ -205,7 +205,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
               <Textarea
                 id="description"
                 name="description"
-                value={alert?.description || ''}
+                value={alert.description || ''}
                 onChange={handleInputChange}
                 placeholder="Alert triggered when product rating falls below threshold"
                 rows={3}
@@ -215,7 +215,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
             <div>
               <Label htmlFor="product_id">Product*</Label>
               <Select
-                value={alert?.product_id}
+                value={alert.product_id}
                 onValueChange={(value) => handleSelectChange('product_id', value)}
                 disabled={!!productId}
               >
@@ -223,9 +223,9 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
                   <SelectValue placeholder="Select a product" />
                 </SelectTrigger>
                 <SelectContent>
-                  {products?.map((product) => (
-                    <SelectItem key={product?.id} value={product?.id}>
-                      {product?.name}
+                  {products.map((product) => (
+                    <SelectItem key={product.id} value={product.id}>
+                      {product.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -236,7 +236,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
               <div>
                 <Label htmlFor="metric">Metric*</Label>
                 <Select
-                  value={alert?.metric}
+                  value={alert.metric}
                   onValueChange={(value) => handleSelectChange('metric', value)}
                 >
                   <SelectTrigger>
@@ -254,7 +254,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
               <div>
                 <Label htmlFor="condition">Condition*</Label>
                 <Select
-                  value={alert?.condition}
+                  value={alert.condition}
                   onValueChange={(value) => handleSelectChange('condition', value)}
                 >
                   <SelectTrigger>
@@ -273,10 +273,10 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
                   id="threshold"
                   name="threshold"
                   type="number"
-                  value={alert?.threshold}
+                  value={alert.threshold}
                   onChange={handleThresholdChange}
                   min={0}
-                  step={alert?.metric === 'rating' ? 0?.1 : 1}
+                  step={alert.metric === 'rating' ? 0.1 : 1}
                   required
                 />
               </div>
@@ -285,7 +285,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
             <div className="flex items-center space-x-2 pt-2">
               <Switch
                 id="is_active"
-                checked={alert?.is_active}
+                checked={alert.is_active}
                 onCheckedChange={handleSwitchChange}
               />
               <Label htmlFor="is_active">Active</Label>
@@ -297,7 +297,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="email"
-                    checked={alert?.notification_methods.includes('email')}
+                    checked={alert.notification_methods.includes('email')}
                     onCheckedChange={(checked) =>
                       handleNotificationMethodChange('email', checked as boolean)
                     }
@@ -307,7 +307,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="dashboard"
-                    checked={alert?.notification_methods.includes('dashboard')}
+                    checked={alert.notification_methods.includes('dashboard')}
                     onCheckedChange={(checked) =>
                       handleNotificationMethodChange('dashboard', checked as boolean)
                     }
@@ -317,7 +317,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="sms"
-                    checked={alert?.notification_methods.includes('sms')}
+                    checked={alert.notification_methods.includes('sms')}
                     onCheckedChange={(checked) =>
                       handleNotificationMethodChange('sms', checked as boolean)
                     }
@@ -332,7 +332,7 @@ export default function AlertForm({ alertId, productId, onSuccess }: AlertFormPr
             <Button
               type="button"
               variant="outline"
-              onClick={() => router?.back()}
+              onClick={() => router.back()}
               disabled={loading}
             >
               Cancel

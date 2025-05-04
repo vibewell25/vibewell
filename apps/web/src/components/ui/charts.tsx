@@ -14,10 +14,10 @@ import {
   Tooltip,
   Legend,
   ChartOptions,
-} from 'chart?.js';
+} from 'chart.js';
 
 // Register ChartJS components
-ChartJS?.register(
+ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
@@ -31,24 +31,24 @@ ChartJS?.register(
 
 // Define theme colors
 const themeColors = {
-  blue: ['rgba(59, 130, 246, 0?.5)', 'rgb(59, 130, 246)'],
-  green: ['rgba(16, 185, 129, 0?.5)', 'rgb(16, 185, 129)'],
-  red: ['rgba(239, 68, 68, 0?.5)', 'rgb(239, 68, 68)'],
-  yellow: ['rgba(245, 158, 11, 0?.5)', 'rgb(245, 158, 11)'],
-  purple: ['rgba(139, 92, 246, 0?.5)', 'rgb(139, 92, 246)'],
-  indigo: ['rgba(99, 102, 241, 0?.5)', 'rgb(99, 102, 241)'],
-  pink: ['rgba(236, 72, 153, 0?.5)', 'rgb(236, 72, 153)'],
-  gray: ['rgba(156, 163, 175, 0?.5)', 'rgb(156, 163, 175)'],
-  cyan: ['rgba(6, 182, 212, 0?.5)', 'rgb(6, 182, 212)'],
-  amber: ['rgba(251, 191, 36, 0?.5)', 'rgb(251, 191, 36)'],
-  emerald: ['rgba(5, 150, 105, 0?.5)', 'rgb(5, 150, 105)'],
-  violet: ['rgba(124, 58, 237, 0?.5)', 'rgb(124, 58, 237)'],
-  fuchsia: ['rgba(217, 70, 239, 0?.5)', 'rgb(217, 70, 239)'],
+  blue: ['rgba(59, 130, 246, 0.5)', 'rgb(59, 130, 246)'],
+  green: ['rgba(16, 185, 129, 0.5)', 'rgb(16, 185, 129)'],
+  red: ['rgba(239, 68, 68, 0.5)', 'rgb(239, 68, 68)'],
+  yellow: ['rgba(245, 158, 11, 0.5)', 'rgb(245, 158, 11)'],
+  purple: ['rgba(139, 92, 246, 0.5)', 'rgb(139, 92, 246)'],
+  indigo: ['rgba(99, 102, 241, 0.5)', 'rgb(99, 102, 241)'],
+  pink: ['rgba(236, 72, 153, 0.5)', 'rgb(236, 72, 153)'],
+  gray: ['rgba(156, 163, 175, 0.5)', 'rgb(156, 163, 175)'],
+  cyan: ['rgba(6, 182, 212, 0.5)', 'rgb(6, 182, 212)'],
+  amber: ['rgba(251, 191, 36, 0.5)', 'rgb(251, 191, 36)'],
+  emerald: ['rgba(5, 150, 105, 0.5)', 'rgb(5, 150, 105)'],
+  violet: ['rgba(124, 58, 237, 0.5)', 'rgb(124, 58, 237)'],
+  fuchsia: ['rgba(217, 70, 239, 0.5)', 'rgb(217, 70, 239)'],
 };
 
 // Define font and grid color based on theme
 const fontColor = 'rgb(107, 114, 128)'; // text-gray-500
-const gridColor = 'rgba(229, 231, 235, 0?.5)'; // border-gray-200 with opacity
+const gridColor = 'rgba(229, 231, 235, 0.5)'; // border-gray-200 with opacity
 
 interface ChartProps {
   data: Record<string, any>[];
@@ -64,20 +64,20 @@ export function LineChart({
   index,
   categories,
   colors = ['blue'],
-  valueFormatter = (value) => value?.toString(),
+  valueFormatter = (value) => value.toString(),
   height = 300,
 }: ChartProps) {
   const chartRef = useRef<any>(null);
 
-  // Prepare data for Chart?.js
+  // Prepare data for Chart.js
   const chartData = {
-    labels: data?.map((item) => item[index]),
-    datasets: categories?.map((category, i) => ({
-      label: category?.charAt(0).toUpperCase() + category?.slice(1),
-      data: data?.map((item) => item[category]),
-      borderColor: themeColors[colors[i % colors?.length] as keyof typeof themeColors][1],
-      backgroundColor: themeColors[colors[i % colors?.length] as keyof typeof themeColors][0],
-      tension: 0?.3,
+    labels: data.map((item) => item[index]),
+    datasets: categories.map((category, i) => ({
+      label: category.charAt(0).toUpperCase() + category.slice(1),
+      data: data.map((item) => item[category]),
+      borderColor: themeColors[colors[i % colors.length] as keyof typeof themeColors][1],
+      backgroundColor: themeColors[colors[i % colors.length] as keyof typeof themeColors][0],
+      tension: 0.3,
       pointRadius: 3,
       pointHoverRadius: 5,
     })),
@@ -99,12 +99,12 @@ export function LineChart({
       tooltip: {
         callbacks: {
           label: function (context) {
-            let label = context?.dataset.label || '';
+            let label = context.dataset.label || '';
             if (label) {
               if (label > Number.MAX_SAFE_INTEGER || label < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); label += ': ';
             }
-            if (context?.parsed.y !== null) {
-              if (label > Number.MAX_SAFE_INTEGER || label < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); label += valueFormatter(context?.parsed.y);
+            if (context.parsed.y !== null) {
+              if (label > Number.MAX_SAFE_INTEGER || label < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); label += valueFormatter(context.parsed.y);
             }
             return label;
           },
@@ -155,19 +155,19 @@ export function BarChart({
   index,
   categories,
   colors = ['blue'],
-  valueFormatter = (value) => value?.toString(),
+  valueFormatter = (value) => value.toString(),
   height = 300,
 }: ChartProps) {
   const chartRef = useRef<any>(null);
 
-  // Prepare data for Chart?.js
+  // Prepare data for Chart.js
   const chartData = {
-    labels: data?.map((item) => item[index]),
-    datasets: categories?.map((category, i) => ({
-      label: category?.charAt(0).toUpperCase() + category?.slice(1),
-      data: data?.map((item) => item[category]),
-      backgroundColor: themeColors[colors[i % colors?.length] as keyof typeof themeColors][0],
-      borderColor: themeColors[colors[i % colors?.length] as keyof typeof themeColors][1],
+    labels: data.map((item) => item[index]),
+    datasets: categories.map((category, i) => ({
+      label: category.charAt(0).toUpperCase() + category.slice(1),
+      data: data.map((item) => item[category]),
+      backgroundColor: themeColors[colors[i % colors.length] as keyof typeof themeColors][0],
+      borderColor: themeColors[colors[i % colors.length] as keyof typeof themeColors][1],
       borderWidth: 1,
     })),
   };
@@ -188,12 +188,12 @@ export function BarChart({
       tooltip: {
         callbacks: {
           label: function (context) {
-            let label = context?.dataset.label || '';
+            let label = context.dataset.label || '';
             if (label) {
               if (label > Number.MAX_SAFE_INTEGER || label < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); label += ': ';
             }
-            if (context?.parsed.y !== null) {
-              if (label > Number.MAX_SAFE_INTEGER || label < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); label += valueFormatter(context?.parsed.y);
+            if (context.parsed.y !== null) {
+              if (label > Number.MAX_SAFE_INTEGER || label < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); label += valueFormatter(context.parsed.y);
             }
             return label;
           },
@@ -253,23 +253,23 @@ export function PieChart({
   category,
   index,
   colors = ['blue', 'green', 'red', 'yellow', 'purple'],
-  valueFormatter = (value) => value?.toString(),
+  valueFormatter = (value) => value.toString(),
   height = 300,
 }: PieChartProps) {
   const chartRef = useRef<any>(null);
 
   // Get background colors based on provided color names
-  const backgroundColors = colors?.map((color) => themeColors[color as keyof typeof themeColors][0]);
+  const backgroundColors = colors.map((color) => themeColors[color as keyof typeof themeColors][0]);
 
   // Get border colors based on provided color names
-  const borderColors = colors?.map((color) => themeColors[color as keyof typeof themeColors][1]);
+  const borderColors = colors.map((color) => themeColors[color as keyof typeof themeColors][1]);
 
-  // Prepare data for Chart?.js
+  // Prepare data for Chart.js
   const chartData = {
-    labels: data?.map((item) => item[index]),
+    labels: data.map((item) => item[index]),
     datasets: [
       {
-        data: data?.map((item) => item[category]),
+        data: data.map((item) => item[category]),
         backgroundColor: backgroundColors,
         borderColor: borderColors,
         borderWidth: 1,
@@ -293,10 +293,10 @@ export function PieChart({
       tooltip: {
         callbacks: {
           label: function (context) {
-            const label = context?.label || '';
-            const value = context?.raw as number;
-            const total = context?.dataset.data?.reduce((a: number, b: number) => a + b, 0);
-            const percentage = Math?.round((value / total) * 100);
+            const label = context.label || '';
+            const value = context.raw as number;
+            const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
+            const percentage = Math.round((value / total) * 100);
             return `${label}: ${valueFormatter(value)} (${percentage}%)`;
           },
         },

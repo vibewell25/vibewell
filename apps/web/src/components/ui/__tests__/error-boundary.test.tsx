@@ -2,14 +2,14 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { ErrorBoundary, withErrorBoundary } from '../error-boundary';
 import { axe } from 'jest-axe';
 
-// Mock console?.error to prevent error logging during tests
-const originalConsoleError = console?.error;
+// Mock console.error to prevent error logging during tests
+const originalConsoleError = console.error;
 beforeAll(() => {
-  console?.error = jest?.fn();
+  console.error = jest.fn();
 });
 
 afterAll(() => {
-  console?.error = originalConsoleError;
+  console.error = originalConsoleError;
 });
 
 // Test components
@@ -36,7 +36,7 @@ describe('ErrorBoundary Component', () => {
         <SafeComponent />
       </ErrorBoundary>,
     );
-    expect(screen?.getByText('Safe Component')).toBeInTheDocument();
+    expect(screen.getByText('Safe Component')).toBeInTheDocument();
   });
 
   it('renders fallback UI when there is an error', () => {
@@ -45,8 +45,8 @@ describe('ErrorBoundary Component', () => {
         <ThrowError />
       </ErrorBoundary>,
     );
-    expect(screen?.getByText(/something went wrong/i)).toBeInTheDocument();
-    expect(screen?.getByRole('button', { name: /try again/i })).toBeInTheDocument();
+    expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /try again/i })).toBeInTheDocument();
   });
 
   it('has no accessibility violations', async () => {
@@ -66,31 +66,31 @@ describe('ErrorBoundary Component', () => {
       </ErrorBoundary>,
     );
 
-    fireEvent?.click(screen?.getByText('Trigger Error'));
-    expect(screen?.getByText(/something went wrong/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Trigger Error'));
+    expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
   });
 
   it('resets error state when try again is clicked', () => {
-    const onReset = jest?.fn();
+    const onReset = jest.fn();
     render(
       <ErrorBoundary onReset={onReset}>
         <ThrowError />
       </ErrorBoundary>,
     );
 
-    fireEvent?.click(screen?.getByText(/try again/i));
+    fireEvent.click(screen.getByText(/try again/i));
     expect(onReset).toHaveBeenCalled();
   });
 
   it('calls onError when an error occurs', () => {
-    const onError = jest?.fn();
+    const onError = jest.fn();
     render(
       <ErrorBoundary onError={onError}>
         <ThrowError />
       </ErrorBoundary>,
     );
 
-    expect(onError).toHaveBeenCalledWith(expect?.any(Error), expect?.any(Object));
+    expect(onError).toHaveBeenCalledWith(expect.any(Error), expect.any(Object));
   });
 
   it('renders custom fallback when provided', () => {
@@ -101,7 +101,7 @@ describe('ErrorBoundary Component', () => {
       </ErrorBoundary>,
     );
 
-    expect(screen?.getByText('Custom Error UI')).toBeInTheDocument();
+    expect(screen.getByText('Custom Error UI')).toBeInTheDocument();
   });
 });
 
@@ -109,13 +109,13 @@ describe('withErrorBoundary HOC', () => {
   it('wraps component with error boundary', () => {
     const WrappedComponent = withErrorBoundary(SafeComponent);
     render(<WrappedComponent />);
-    expect(screen?.getByText('Safe Component')).toBeInTheDocument();
+    expect(screen.getByText('Safe Component')).toBeInTheDocument();
   });
 
   it('handles errors in wrapped component', () => {
     const WrappedComponent = withErrorBoundary(ThrowError);
     render(<WrappedComponent />);
-    expect(screen?.getByText(/something went wrong/i)).toBeInTheDocument();
+    expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
   });
 
   it('passes error boundary props through HOC', () => {
@@ -125,22 +125,22 @@ describe('withErrorBoundary HOC', () => {
     });
 
     render(<WrappedComponent />);
-    expect(screen?.getByText('Custom HOC Error')).toBeInTheDocument();
+    expect(screen.getByText('Custom HOC Error')).toBeInTheDocument();
   });
 
   it('preserves component display name', () => {
     const NamedComponent = () => null;
-    NamedComponent?.displayName = 'TestComponent';
+    NamedComponent.displayName = 'TestComponent';
 
     const WrappedComponent = withErrorBoundary(NamedComponent);
-    expect(WrappedComponent?.displayName).toBe('withErrorBoundary(TestComponent)');
+    expect(WrappedComponent.displayName).toBe('withErrorBoundary(TestComponent)');
   });
 
   it('handles runtime errors in wrapped component', () => {
     const WrappedComponent = withErrorBoundary(Button);
     render(<WrappedComponent />);
 
-    fireEvent?.click(screen?.getByText('Trigger Error'));
-    expect(screen?.getByText(/something went wrong/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Trigger Error'));
+    expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
   });
 });

@@ -27,16 +27,16 @@ export function useSubscriptions(): UseSubscriptionsReturn {
   const [error, setError] = useState<Error | null>(null);
 
   const fetchSubscriptions = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setIsLoading(true);
 
       const response = await fetch('/api/subscriptions');
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to fetch subscriptions');
       }
-      const data = await response?.json();
+      const data = await response.json();
       setSubscriptions(data);
       setError(null);
     } catch (err) {

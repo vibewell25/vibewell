@@ -18,7 +18,7 @@ export default function ProtectedRoute({ children, requiredRoles = [] }: Protect
   const { user, isLoading, error } = useUser();
 
   // Extract Auth0 namespace from env or use default
-  const namespace = process?.env.NEXT_PUBLIC_AUTH0_NAMESPACE || 'https://vibewell?.com';
+  const namespace = process.env.NEXT_PUBLIC_AUTH0_NAMESPACE || 'https://vibewell.com';
 
   useEffect(() => {
     // Wait for the auth state to load
@@ -26,24 +26,24 @@ export default function ProtectedRoute({ children, requiredRoles = [] }: Protect
 
     // If there's an auth error, redirect to login
     if (error) {
-      console?.error('Auth error:', error);
-      router?.push(`/api/auth/login?returnTo=${encodeURIComponent(router?.asPath)}`);
+      console.error('Auth error:', error);
+      router.push(`/api/auth/login?returnTo=${encodeURIComponent(router.asPath)}`);
       return;
     }
 
     // If not authenticated, redirect to login
     if (!user) {
-      router?.push(`/api/auth/login?returnTo=${encodeURIComponent(router?.asPath)}`);
+      router.push(`/api/auth/login?returnTo=${encodeURIComponent(router.asPath)}`);
       return;
     }
 
     // If roles are required, check if the user has at least one of them
-    if (requiredRoles?.length > 0) {
+    if (requiredRoles.length > 0) {
       const userRoles = user[`${namespace}/roles`] || [];
-      const hasRequiredRole = requiredRoles?.some((role) => userRoles?.includes(role));
+      const hasRequiredRole = requiredRoles.some((role) => userRoles.includes(role));
 
       if (!hasRequiredRole) {
-        router?.push('/unauthorized');
+        router.push('/unauthorized');
       }
     }
   }, [isLoading, error, user, router, requiredRoles, namespace]);
@@ -69,8 +69,8 @@ export default function ProtectedRoute({ children, requiredRoles = [] }: Protect
   // Show unauthorized state
   if (
     !user ||
-    (requiredRoles?.length > 0 &&
-      !requiredRoles?.some((role) => (user[`${namespace}/roles`] || []).includes(role)))
+    (requiredRoles.length > 0 &&
+      !requiredRoles.some((role) => (user[`${namespace}/roles`] || []).includes(role)))
   ) {
     return null; // The useEffect will handle the redirect
   }

@@ -11,7 +11,7 @@ interface ProfileSection {
   description: string;
   completed: boolean;
   required: boolean;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
 }
 
 export function ProfileCompletion() {
@@ -58,30 +58,30 @@ export function ProfileCompletion() {
     },
   ]);
 
-  const totalSections = sections?.length;
-  const completedSections = sections?.filter((section) => section?.completed).length;
+  const totalSections = sections.length;
+  const completedSections = sections.filter((section) => section.completed).length;
   const completionPercentage = (completedSections / totalSections) * 100;
   const requiredCompleted = sections
-    .filter((section) => section?.required)
-    .every((section) => section?.completed);
+    .filter((section) => section.required)
+    .every((section) => section.completed);
 
   const handleCompleteSection = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');sectionId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');sectionId: string) => {
     try {
       // Simulate API call to update section completion
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       setSections((prev) =>
-        prev?.map((section) =>
-          section?.id === sectionId ? { ...section, completed: true } : section,
+        prev.map((section) =>
+          section.id === sectionId ? { ...section, completed: true } : section,
         ),
       );
 
-      toast?.success('Section completed successfully');
+      toast.success('Section completed successfully');
     } catch (error) {
-      console?.error('Error completing section:', error);
-      toast?.error('Failed to complete section');
+      console.error('Error completing section:', error);
+      toast.error('Failed to complete section');
     }
   };
 
@@ -98,7 +98,7 @@ export function ProfileCompletion() {
       <CardContent className="space-y-6">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">{completionPercentage?.toFixed(0)}% Complete</span>
+            <span className="text-sm font-medium">{completionPercentage.toFixed(0)}% Complete</span>
             {requiredCompleted && (
               <span className="text-sm text-green-500">All required sections completed</span>
             )}
@@ -107,26 +107,26 @@ export function ProfileCompletion() {
         </div>
 
         <div className="space-y-4">
-          {sections?.map((section) => (
-            <div key={section?.id} className="flex items-start space-x-4 rounded-lg border p-4">
+          {sections.map((section) => (
+            <div key={section.id} className="flex items-start space-x-4 rounded-lg border p-4">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
-                {section?.icon}
+                {section.icon}
               </div>
               <div className="flex-1 space-y-1">
                 <div className="flex items-center justify-between">
-                  <h4 className="font-medium">{section?.title}</h4>
-                  {section?.completed ? (
+                  <h4 className="font-medium">{section.title}</h4>
+                  {section.completed ? (
                     <Check className="h-4 w-4 text-green-500" />
                   ) : (
                     <AlertCircle className="h-4 w-4 text-yellow-500" />
                   )}
                 </div>
-                <p className="text-sm text-muted-foreground">{section?.description}</p>
-                {!section?.completed && (
+                <p className="text-sm text-muted-foreground">{section.description}</p>
+                {!section.completed && (
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleCompleteSection(section?.id)}
+                    onClick={() => handleCompleteSection(section.id)}
                   >
                     Complete Section
                   </Button>

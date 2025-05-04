@@ -50,21 +50,21 @@ const providers: Record<SocialProvider, SocialLoginProviderConfig> = {
 export interface SocialLoginProps {
   provider: SocialProvider;
   label: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
 }
 
 export default function SocialLogin({ provider, label, icon }: SocialLoginProps) {
   const router = useRouter();
   
   const handleLogin = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     const searchParams = new URLSearchParams({
       connection: provider,
-      returnTo: window?.location.origin + (router?.query['returnTo'] || '/'),
+      returnTo: window.location.origin + (router.query['returnTo'] || '/'),
     });
     
-    window?.location.href = `/api/auth/login?${searchParams?.toString()}`;
+    window.location.href = `/api/auth/login?${searchParams.toString()}`;
   };
 
   return (

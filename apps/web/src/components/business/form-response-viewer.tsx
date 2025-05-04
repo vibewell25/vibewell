@@ -32,24 +32,24 @@ interface FormResponseViewerProps {
 
 export function FormResponseViewer({ response, fields, onDownload }: FormResponseViewerProps) {
   const formatValue = (field: FormField, value: any) => {
-    switch (field?.type) {
+    switch (field.type) {
       case 'checkbox':
         return value ? 'Yes' : 'No';
       case 'select':
         return value;
       case 'file':
-        const attachment = response?.attachments.find((a) => a?.id === value);
+        const attachment = response.attachments.find((a) => a.id === value);
         if (!attachment) return 'No file';
         return (
           <div className="flex items-center space-x-2">
-            <span>{attachment?.filename}</span>
-            <Button variant="outline" size="icon" onClick={() => onDownload?.(attachment?.id)}>
+            <span>{attachment.filename}</span>
+            <Button variant="outline" size="icon" onClick={() => onDownload.(attachment.id)}>
               <Download size={16} />
             </Button>
             <Button
               variant="outline"
               size="icon"
-              onClick={() => window?.open(attachment?.url, '_blank')}
+              onClick={() => window.open(attachment.url, '_blank')}
             >
               <ExternalLink size={16} />
             </Button>
@@ -65,16 +65,16 @@ export function FormResponseViewer({ response, fields, onDownload }: FormRespons
       <CardHeader>
         <CardTitle>Form Response</CardTitle>
         <div className="text-sm text-gray-500">
-          Submitted on {new Date(response?.createdAt).toLocaleString()}
+          Submitted on {new Date(response.createdAt).toLocaleString()}
         </div>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {fields?.map((field) => (
-            <div key={field?.id} className="space-y-1">
-              <div className="font-medium">{field?.label}</div>
+          {fields.map((field) => (
+            <div key={field.id} className="space-y-1">
+              <div className="font-medium">{field.label}</div>
               <div className="text-gray-700">
-                {formatValue(field, response?.responses[field?.id])}
+                {formatValue(field, response.responses[field.id])}
               </div>
             </div>
           ))}

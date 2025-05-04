@@ -5,10 +5,10 @@ import communityApi from '../services/communityService';
 import { Post, Comment } from '../types/community';
 import { PostDetailRouteProp, PostDetailNavigationProp } from '../types/navigation';
 
-const PostDetailScreen: React?.FC = () => {
+const PostDetailScreen: React.FC = () => {
   const route = useRoute<PostDetailRouteProp>();
   const navigation = useNavigation<PostDetailNavigationProp>();
-  const { id } = route?.params;
+  const { id } = route.params;
 
   const [post, setPost] = useState<Post | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
@@ -16,17 +16,17 @@ const PostDetailScreen: React?.FC = () => {
   const [loading, setLoading] = useState(true);
 
   const loadData = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setLoading(true);
     try {
-      const data = await communityApi?.getPostById(id);
+      const data = await communityApi.getPostById(id);
       setPost(data);
-      const comms = await communityApi?.getComments(id);
+      const comms = await communityApi.getComments(id);
       setComments(comms);
     } catch (err) {
-      console?.error(err);
-      Alert?.alert('Error', 'Failed to load post');
+      console.error(err);
+      Alert.alert('Error', 'Failed to load post');
     } finally {
       setLoading(false);
     }
@@ -35,54 +35,54 @@ const PostDetailScreen: React?.FC = () => {
   useEffect(() => { loadData(); }, [id]);
 
   const handleAddComment = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-    if (!newComment?.trim()) return;
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    if (!newComment.trim()) return;
     try {
-      await communityApi?.addComment(id, newComment?.trim());
+      await communityApi.addComment(id, newComment.trim());
       setNewComment('');
       loadData();
     } catch (err) {
-      console?.error(err);
-      Alert?.alert('Error', 'Failed to add comment');
+      console.error(err);
+      Alert.alert('Error', 'Failed to add comment');
     }
   };
 
   const handleDelete = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
-      await communityApi?.deletePost(id);
-      navigation?.goBack();
+      await communityApi.deletePost(id);
+      navigation.goBack();
     } catch (err) {
-      console?.error(err);
-      Alert?.alert('Error', 'Failed to delete post');
+      console.error(err);
+      Alert.alert('Error', 'Failed to delete post');
     }
   };
 
   if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
-    <View style={styles?.container}>
-      <Text style={styles?.title}>{post?.content}</Text>
-      <Text style={styles?.meta}>By {post?.authorId} on {new Date(post?.createdAt).toLocaleString()}</Text>
-      <View style={styles?.buttonRow}>
-        <Button title="Edit" onPress={() => navigation?.navigate('PostForm', { post: post! })} />
+    <View style={styles.container}>
+      <Text style={styles.title}>{post.content}</Text>
+      <Text style={styles.meta}>By {post.authorId} on {new Date(post.createdAt).toLocaleString()}</Text>
+      <View style={styles.buttonRow}>
+        <Button title="Edit" onPress={() => navigation.navigate('PostForm', { post: post! })} />
         <Button title="Delete" onPress={handleDelete} color="red" />
       </View>
-      <Text style={styles?.sectionTitle}>Comments</Text>
+      <Text style={styles.sectionTitle}>Comments</Text>
       <FlatList
         data={comments}
-        keyExtractor={c => c?.id}
+        keyExtractor={c => c.id}
         renderItem={({ item }) => (
-          <View style={styles?.comment}>
-            <Text>{item?.content}</Text>
-            <Text style={styles?.commentMeta}>{item?.authorId} at {new Date(item?.createdAt).toLocaleString()}</Text>
+          <View style={styles.comment}>
+            <Text>{item.content}</Text>
+            <Text style={styles.commentMeta}>{item.authorId} at {new Date(item.createdAt).toLocaleString()}</Text>
           </View>
         )}
       />
       <TextInput
-        style={styles?.input}
+        style={styles.input}
         placeholder="Add a comment"
         value={newComment}
         onChangeText={setNewComment}
@@ -92,7 +92,7 @@ const PostDetailScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   title: { fontSize: 20, fontWeight: 'bold', marginBottom: 8 },
   meta: { fontSize: 12, color: 'gray', marginBottom: 16 },

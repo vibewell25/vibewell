@@ -5,19 +5,19 @@ interface MenuItem {
   label: string;
   onClick?: () => void;
   disabled?: boolean;
-  icon?: React?.ReactNode;
+  icon?: React.ReactNode;
 }
 
 interface AccessibleMenuProps {
   items: MenuItem[];
-  trigger: React?.ReactNode;
+  trigger: React.ReactNode;
   className?: string;
   align?: 'left' | 'right';
   onOpen?: () => void;
   onClose?: () => void;
 }
 
-export const AccessibleMenu: React?.FC<AccessibleMenuProps> = ({
+export const AccessibleMenu: React.FC<AccessibleMenuProps> = ({
   items,
   trigger,
   className = '',
@@ -32,82 +32,82 @@ export const AccessibleMenu: React?.FC<AccessibleMenuProps> = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef?.current && !menuRef?.current.contains(event?.target as Node)) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         closeMenu();
       }
     };
 
     const handleEscape = (event: KeyboardEvent) => {
-      if (event?.key === 'Escape') {
+      if (event.key === 'Escape') {
         closeMenu();
       }
     };
 
     if (isOpen) {
-      document?.addEventListener('mousedown', handleClickOutside);
-      document?.addEventListener('keydown', handleEscape);
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEscape);
     }
 
     return () => {
-      document?.removeEventListener('mousedown', handleClickOutside);
-      document?.removeEventListener('keydown', handleEscape);
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
     };
   }, [isOpen]);
 
   const openMenu = () => {
     setIsOpen(true);
     setFocusedIndex(0);
-    onOpen?.();
+    onOpen.();
   };
 
   const closeMenu = () => {
     setIsOpen(false);
     setFocusedIndex(null);
-    triggerRef?.current?.focus();
-    onClose?.();
+    triggerRef.current.focus();
+    onClose.();
   };
 
-  const handleKeyDown = (e: React?.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isOpen) return;
 
-    switch (e?.key) {
+    switch (e.key) {
       case 'ArrowDown':
-        e?.preventDefault();
+        e.preventDefault();
         setFocusedIndex((prev) => {
           if (prev === null) return 0;
           const nextIndex = prev + 1;
-          return nextIndex < items?.length ? nextIndex : 0;
+          return nextIndex < items.length ? nextIndex : 0;
         });
         break;
       case 'ArrowUp':
-        e?.preventDefault();
+        e.preventDefault();
         setFocusedIndex((prev) => {
-          if (prev === null) return items?.length - 1;
+          if (prev === null) return items.length - 1;
           const nextIndex = prev - 1;
-          return nextIndex >= 0 ? nextIndex : items?.length - 1;
+          return nextIndex >= 0 ? nextIndex : items.length - 1;
         });
         break;
       case 'Home':
-        e?.preventDefault();
+        e.preventDefault();
         setFocusedIndex(0);
         break;
       case 'End':
-        e?.preventDefault();
-        setFocusedIndex(items?.length - 1);
+        e.preventDefault();
+        setFocusedIndex(items.length - 1);
         break;
       case 'Enter':
       case ' ':
-        e?.preventDefault();
+        e.preventDefault();
         if (focusedIndex !== null) {
           const item = items[focusedIndex];
-          if (!item?.disabled) {
-            item?.onClick?.();
+          if (!item.disabled) {
+            item.onClick.();
             closeMenu();
           }
         }
         break;
       case 'Escape':
-        e?.preventDefault();
+        e.preventDefault();
         closeMenu();
         break;
     }
@@ -134,27 +134,27 @@ export const AccessibleMenu: React?.FC<AccessibleMenuProps> = ({
           tabIndex={-1}
         >
           <div className="py-1">
-            {items?.map((item, index) => (
+            {items.map((item, index) => (
               <button
-                key={item?.id}
+                key={item.id}
                 role="menuitem"
                 onClick={() => {
-                  if (!item?.disabled) {
-                    item?.onClick?.();
+                  if (!item.disabled) {
+                    item.onClick.();
                     closeMenu();
                   }
                 }}
-                disabled={item?.disabled}
+                disabled={item.disabled}
                 className={`w-full px-4 py-2 text-left text-sm ${
-                  item?.disabled
+                  item.disabled
                     ? 'cursor-not-allowed text-gray-400'
                     : 'text-gray-700 hover:bg-gray-100'
                 } ${focusedIndex === index ? 'bg-gray-100' : ''} focus:bg-gray-100 focus:outline-none`}
                 tabIndex={-1}
               >
                 <div className="flex items-center">
-                  {item?.icon && <span className="mr-2">{item?.icon}</span>}
-                  {item?.label}
+                  {item.icon && <span className="mr-2">{item.icon}</span>}
+                  {item.label}
                 </div>
               </button>
             ))}

@@ -160,7 +160,7 @@ export default function OptimizedImage({
         blurDataURL={blurDataURL}
         onLoadingComplete={() => {
           setIsLoading(false);
-          onLoad?.();
+          onLoad.();
         }}
         onError={handleError}
       />

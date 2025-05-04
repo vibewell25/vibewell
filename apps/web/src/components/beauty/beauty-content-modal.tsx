@@ -15,8 +15,8 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
   const [duration, setDuration] = useState('');
   const [level, setLevel] = useState('beginner');
   const [contentType, setContentType] = useState('article');
-  const handleSubmit = (e: React?.FormEvent) => {
-    e?.preventDefault();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     onSave({
       title,
       description,
@@ -30,11 +30,11 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog?.Panel className="mx-auto w-full max-w-2xl rounded-lg bg-white shadow-xl">
+        <Dialog.Panel className="mx-auto w-full max-w-2xl rounded-lg bg-white shadow-xl">
           <div className="flex items-center justify-between border-b p-6">
-            <Dialog?.Title className="text-xl font-semibold">Create Beauty Content</Dialog?.Title>
+            <Dialog.Title className="text-xl font-semibold">Create Beauty Content</Dialog.Title>
             <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
-              <Icons?.XMarkIcon className="h-6 w-6" />
+              <Icons.XMarkIcon className="h-6 w-6" />
             </button>
           </div>
           <form onSubmit={handleSubmit} className="p-6">
@@ -47,7 +47,7 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                   type="text"
                   id="title"
                   value={title}
-                  onChange={(e) => setTitle(e?.target.value)}
+                  onChange={(e) => setTitle(e.target.value)}
                   className="form-input w-full"
                   required
                 />
@@ -59,7 +59,7 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                 <textarea
                   id="description"
                   value={description}
-                  onChange={(e) => setDescription(e?.target.value)}
+                  onChange={(e) => setDescription(e.target.value)}
                   className="form-textarea w-full"
                   rows={4}
                   required
@@ -72,7 +72,7 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                 <select
                   id="category"
                   value={category}
-                  onChange={(e) => setCategory(e?.target.value)}
+                  onChange={(e) => setCategory(e.target.value)}
                   className="form-select w-full"
                   required
                 >
@@ -93,9 +93,9 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                   type="text"
                   id="duration"
                   value={duration}
-                  onChange={(e) => setDuration(e?.target.value)}
+                  onChange={(e) => setDuration(e.target.value)}
                   className="form-input w-full"
-                  placeholder="e?.g., 30 mins"
+                  placeholder="e.g., 30 mins"
                   required
                 />
               </div>
@@ -106,7 +106,7 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
                 <select
                   id="level"
                   value={level}
-                  onChange={(e) => setLevel(e?.target.value)}
+                  onChange={(e) => setLevel(e.target.value)}
                   className="form-select w-full"
                   required
                 >
@@ -129,7 +129,7 @@ export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentMod
               </button>
             </div>
           </form>
-        </Dialog?.Panel>
+        </Dialog.Panel>
       </div>
     </Dialog>
   );

@@ -6,11 +6,11 @@ import { NotificationProvider, NotificationList, NotificationBadge, useNotificat
 
 // Mock notification service
 const mockNotificationService = {
-  subscribe: vi?.fn(),
-  unsubscribe: vi?.fn(),
-  markAsRead: vi?.fn(),
-  clearAll: vi?.fn(),
-  getNotifications: vi?.fn(),
+  subscribe: vi.fn(),
+  unsubscribe: vi.fn(),
+  markAsRead: vi.fn(),
+  clearAll: vi.fn(),
+  getNotifications: vi.fn(),
 };
 
 // Mock notifications
@@ -34,18 +34,18 @@ const mockNotifications = [
 ];
 
 describe('Notification Components', () => {
-  const user = userEvent?.setup();
+  const user = userEvent.setup();
 
   beforeEach(() => {
-    vi?.clearAllMocks();
-    mockNotificationService?.getNotifications.mockResolvedValue(mockNotifications);
+    vi.clearAllMocks();
+    mockNotificationService.getNotifications.mockResolvedValue(mockNotifications);
   });
 
   describe('NotificationProvider', () => {
     it('provides notification context to children', () => {
       const TestComponent = () => {
         const { notifications } = useNotifications();
-        return <div>Notification Count: {notifications?.length}</div>;
+        return <div>Notification Count: {notifications.length}</div>;
       };
 
       render(
@@ -54,7 +54,7 @@ describe('Notification Components', () => {
         </NotificationProvider>,
       );
 
-      expect(screen?.getByText('Notification Count: 2')).toBeInTheDocument();
+      expect(screen.getByText('Notification Count: 2')).toBeInTheDocument();
     });
 
     it('subscribes to notifications on mount', () => {
@@ -64,7 +64,7 @@ describe('Notification Components', () => {
         </NotificationProvider>,
       );
 
-      expect(mockNotificationService?.subscribe).toHaveBeenCalled();
+      expect(mockNotificationService.subscribe).toHaveBeenCalled();
     });
 
     it('unsubscribes on unmount', () => {
@@ -75,7 +75,7 @@ describe('Notification Components', () => {
       );
 
       unmount();
-      expect(mockNotificationService?.unsubscribe).toHaveBeenCalled();
+      expect(mockNotificationService.unsubscribe).toHaveBeenCalled();
     });
 
     it('handles notification updates', async () => {
@@ -83,7 +83,7 @@ describe('Notification Components', () => {
         const { notifications, markAsRead } = useNotifications();
         return (
           <div>
-            <span>Unread: {notifications?.filter((n) => !n?.read).length}</span>
+            <span>Unread: {notifications.filter((n) => !n.read).length}</span>
             <button onClick={() => markAsRead('1')}>Mark as Read</button>
           </div>
         );
@@ -95,9 +95,9 @@ describe('Notification Components', () => {
         </NotificationProvider>,
       );
 
-      expect(screen?.getByText('Unread: 1')).toBeInTheDocument();
-      await user?.click(screen?.getByText('Mark as Read'));
-      expect(mockNotificationService?.markAsRead).toHaveBeenCalledWith('1');
+      expect(screen.getByText('Unread: 1')).toBeInTheDocument();
+      await user.click(screen.getByText('Mark as Read'));
+      expect(mockNotificationService.markAsRead).toHaveBeenCalledWith('1');
     });
   });
 
@@ -110,13 +110,13 @@ describe('Notification Components', () => {
       );
 
       await waitFor(() => {
-        expect(screen?.getByText('New Message')).toBeInTheDocument();
-        expect(screen?.getByText('Booking Confirmed')).toBeInTheDocument();
+        expect(screen.getByText('New Message')).toBeInTheDocument();
+        expect(screen.getByText('Booking Confirmed')).toBeInTheDocument();
       });
     });
 
     it('handles empty state', async () => {
-      mockNotificationService?.getNotifications.mockResolvedValue([]);
+      mockNotificationService.getNotifications.mockResolvedValue([]);
 
       render(
         <NotificationProvider>
@@ -125,7 +125,7 @@ describe('Notification Components', () => {
       );
 
       await waitFor(() => {
-        expect(screen?.getByText('No notifications')).toBeInTheDocument();
+        expect(screen.getByText('No notifications')).toBeInTheDocument();
       });
     });
 
@@ -137,11 +137,11 @@ describe('Notification Components', () => {
       );
 
       await waitFor(() => {
-        expect(screen?.getByText('New Message')).toBeInTheDocument();
+        expect(screen.getByText('New Message')).toBeInTheDocument();
       });
 
-      await user?.click(screen?.getByText('New Message'));
-      expect(mockNotificationService?.markAsRead).toHaveBeenCalledWith('1');
+      await user.click(screen.getByText('New Message'));
+      expect(mockNotificationService.markAsRead).toHaveBeenCalledWith('1');
     });
 
     it('supports notification filtering', async () => {
@@ -152,8 +152,8 @@ describe('Notification Components', () => {
       );
 
       await waitFor(() => {
-        expect(screen?.getByText('New Message')).toBeInTheDocument();
-        expect(screen?.queryByText('Booking Confirmed')).not?.toBeInTheDocument();
+        expect(screen.getByText('New Message')).toBeInTheDocument();
+        expect(screen.queryByText('Booking Confirmed')).not.toBeInTheDocument();
       });
     });
 
@@ -164,7 +164,7 @@ describe('Notification Components', () => {
         </NotificationProvider>,
       );
 
-      const notifications = screen?.getAllByTestId('notification-item');
+      const notifications = screen.getAllByTestId('notification-item');
       expect(notifications[0]).toHaveTextContent('New Message');
       expect(notifications[1]).toHaveTextContent('Booking Confirmed');
     });
@@ -179,12 +179,12 @@ describe('Notification Components', () => {
       );
 
       await waitFor(() => {
-        expect(screen?.getByText('1')).toBeInTheDocument();
+        expect(screen.getByText('1')).toBeInTheDocument();
       });
     });
 
     it('hides when no unread notifications', async () => {
-      mockNotificationService?.getNotifications.mockResolvedValue([
+      mockNotificationService.getNotifications.mockResolvedValue([
         { ...mockNotifications[0], read: true },
         { ...mockNotifications[1], read: true },
       ]);
@@ -196,12 +196,12 @@ describe('Notification Components', () => {
       );
 
       await waitFor(() => {
-        expect(screen?.queryByTestId('notification-badge')).not?.toBeInTheDocument();
+        expect(screen.queryByTestId('notification-badge')).not.toBeInTheDocument();
       });
     });
 
     it('supports custom max count display', async () => {
-      mockNotificationService?.getNotifications.mockResolvedValue([
+      mockNotificationService.getNotifications.mockResolvedValue([
         ...mockNotifications,
         {
           id: '3',
@@ -220,12 +220,12 @@ describe('Notification Components', () => {
       );
 
       await waitFor(() => {
-        expect(screen?.getByText('2+')).toBeInTheDocument();
+        expect(screen.getByText('2+')).toBeInTheDocument();
       });
     });
 
     it('handles click events', async () => {
-      const onClickSpy = vi?.fn();
+      const onClickSpy = vi.fn();
 
       render(
         <NotificationProvider>
@@ -234,10 +234,10 @@ describe('Notification Components', () => {
       );
 
       await waitFor(() => {
-        expect(screen?.getByTestId('notification-badge')).toBeInTheDocument();
+        expect(screen.getByTestId('notification-badge')).toBeInTheDocument();
       });
 
-      await user?.click(screen?.getByTestId('notification-badge'));
+      await user.click(screen.getByTestId('notification-badge'));
       expect(onClickSpy).toHaveBeenCalled();
     });
   });
@@ -272,7 +272,7 @@ describe('Notification Components', () => {
       );
 
       await waitFor(() => {
-        const notifications = screen?.getAllByRole('alert');
+        const notifications = screen.getAllByRole('alert');
         expect(notifications).toHaveLength(2);
         expect(notifications[0]).toHaveAttribute('aria-live', 'polite');
       });
@@ -286,7 +286,7 @@ describe('Notification Components', () => {
       );
 
       await waitFor(() => {
-        const badge = screen?.getByTestId('notification-badge');
+        const badge = screen.getByTestId('notification-badge');
         expect(badge).toHaveAttribute('aria-label', 'Unread notifications');
         expect(badge).toHaveAttribute('role', 'status');
       });

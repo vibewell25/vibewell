@@ -27,13 +27,13 @@ export function DateRangePicker({ className, date, setDate }: DateRangePickerPro
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {date?.from ? (
-              date?.to ? (
+            {date.from ? (
+              date.to ? (
                 <>
-                  {format(date?.from, 'LLL dd, y')} - {format(date?.to, 'LLL dd, y')}
+                  {format(date.from, 'LLL dd, y')} - {format(date.to, 'LLL dd, y')}
                 </>
               ) : (
-                format(date?.from, 'LLL dd, y')
+                format(date.from, 'LLL dd, y')
               )
             ) : (
               <span>Pick a date range</span>
@@ -44,7 +44,7 @@ export function DateRangePicker({ className, date, setDate }: DateRangePickerPro
           <Calendar
             initialFocus
             mode="range"
-            defaultMonth={date?.from}
+            defaultMonth={date.from}
             selected={date}
             onSelect={setDate}
             numberOfMonths={2}

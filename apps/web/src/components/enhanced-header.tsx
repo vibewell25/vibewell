@@ -36,15 +36,15 @@ export function EnhancedHeader() {
   // Handle scroll effect for sticky header
   useEffect(() => {
     const handleScroll = () => {
-      if (window?.scrollY > 10) {
+      if (window.scrollY > 10) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
     };
-    window?.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll);
     return () => {
-      window?.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
   // Handle swipe gesture to open/close mobile menu
@@ -62,21 +62,21 @@ export function EnhancedHeader() {
     const handleClickOutside = (event: MouseEvent) => {
       // Close user menu when clicking outside
       if (isUserMenuOpen) {
-        const userMenuElement = document?.getElementById('user-menu');
-        const userMenuButton = document?.getElementById('user-menu-button');
+        const userMenuElement = document.getElementById('user-menu');
+        const userMenuButton = document.getElementById('user-menu-button');
         if (
           userMenuElement &&
-          !userMenuElement?.contains(event?.target as Node) &&
+          !userMenuElement.contains(event.target as Node) &&
           userMenuButton &&
-          !userMenuButton?.contains(event?.target as Node)
+          !userMenuButton.contains(event.target as Node)
         ) {
           setIsUserMenuOpen(false);
         }
       }
     };
-    document?.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document?.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isUserMenuOpen]);
   // Determine header classes based on scroll state
@@ -97,13 +97,13 @@ export function EnhancedHeader() {
             </div>
             {/* Desktop navigation */}
             <nav className="hidden items-center space-x-4 md:flex lg:space-x-8">
-              {navItems?.map((item) => (
+              {navItems.map((item) => (
                 <Link
-                  key={item?.name}
-                  href={item?.href}
+                  key={item.name}
+                  href={item.href}
                   className="hover:text-primary text-sm text-foreground transition-colors lg:text-base"
                 >
-                  {item?.name}
+                  {item.name}
                 </Link>
               ))}
             </nav>
@@ -116,13 +116,13 @@ export function EnhancedHeader() {
                       {/* Mobile action buttons */}
                       <div className="flex space-x-2 md:hidden">
                         <Link href="/messages" className="rounded-full p-2 hover:bg-muted">
-                          <Icons?.ChatBubbleLeftIcon className="h-5 w-5 text-muted-foreground" />
+                          <Icons.ChatBubbleLeftIcon className="h-5 w-5 text-muted-foreground" />
                         </Link>
                         <Link
                           href="/notifications"
                           className="relative rounded-full p-2 hover:bg-muted"
                         >
-                          <Icons?.BellIcon className="h-5 w-5 text-muted-foreground" />
+                          <Icons.BellIcon className="h-5 w-5 text-muted-foreground" />
                           {unreadCount > 0 && (
                             <span className="bg-secondary absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-bold text-white">
                               {unreadCount > 9 ? '9+' : unreadCount}
@@ -140,7 +140,7 @@ export function EnhancedHeader() {
                             onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                           >
                             <span className="sr-only">Open user menu</span>
-                            <Icons?.UserCircleIcon className="h-8 w-8 text-muted-foreground hover:text-foreground" />
+                            <Icons.UserCircleIcon className="h-8 w-8 text-muted-foreground hover:text-foreground" />
                           </button>
                           {isUserMenuOpen && (
                             <div
@@ -149,10 +149,10 @@ export function EnhancedHeader() {
                             >
                               <div className="border-b border-border px-4 py-2">
                                 <p className="text-sm font-medium">
-                                  {user?.user_metadata?.full_name}
+                                  {user.user_metadata.full_name}
                                 </p>
                                 <p className="truncate text-xs text-muted-foreground">
-                                  {user?.email}
+                                  {user.email}
                                 </p>
                               </div>
                               <Link
@@ -190,7 +190,7 @@ export function EnhancedHeader() {
                               >
                                 Notifications
                                 {unreadCount > 0 && (
-                                  <span className="bg-secondary ml-2 inline-flex items-center justify-center rounded-full px-1?.5 py-0?.5 text-xs font-bold text-white">
+                                  <span className="bg-secondary ml-2 inline-flex items-center justify-center rounded-full px-1.5 py-0.5 text-xs font-bold text-white">
                                     {unreadCount}
                                   </span>
                                 )}
@@ -217,7 +217,7 @@ export function EnhancedHeader() {
                       </div>
                     </>
                   ) : (
-                    <Link href={ROUTES?.AUTH.LOGIN} className="btn-primary hidden md:block">
+                    <Link href={ROUTES.AUTH.LOGIN} className="btn-primary hidden md:block">
                       Sign In
                     </Link>
                   )}
@@ -231,9 +231,9 @@ export function EnhancedHeader() {
                 aria-expanded={isMenuOpen}
               >
                 {isMenuOpen ? (
-                  <Icons?.XMarkIcon className="h-6 w-6" />
+                  <Icons.XMarkIcon className="h-6 w-6" />
                 ) : (
-                  <Icons?.Bars3Icon className="h-6 w-6" />
+                  <Icons.Bars3Icon className="h-6 w-6" />
                 )}
               </button>
             </div>
@@ -248,14 +248,14 @@ export function EnhancedHeader() {
           >
             <div className="flex h-full flex-col overflow-y-auto pb-20">
               <div className="flex flex-col space-y-1 p-4">
-                {navItems?.map((item) => (
+                {navItems.map((item) => (
                   <Link
-                    key={item?.name}
-                    href={item?.href}
+                    key={item.name}
+                    href={item.href}
                     className="hover:text-primary rounded-md px-4 py-3 text-foreground transition-colors hover:bg-muted"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    {item?.name}
+                    {item.name}
                   </Link>
                 ))}
                 {!loading && (
@@ -284,7 +284,7 @@ export function EnhancedHeader() {
                         >
                           <span>Notifications</span>
                           {unreadCount > 0 && (
-                            <span className="bg-secondary inline-flex items-center justify-center rounded-full px-1?.5 py-0?.5 text-xs font-bold text-white">
+                            <span className="bg-secondary inline-flex items-center justify-center rounded-full px-1.5 py-0.5 text-xs font-bold text-white">
                               {unreadCount}
                             </span>
                           )}
@@ -309,7 +309,7 @@ export function EnhancedHeader() {
                       </>
                     ) : (
                       <Link
-                        href={ROUTES?.AUTH.LOGIN}
+                        href={ROUTES.AUTH.LOGIN}
                         className="btn-primary mt-4 text-center"
                         onClick={() => setIsMenuOpen(false)}
                       >

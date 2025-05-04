@@ -21,15 +21,15 @@ export function BackupStatistics() {
 
   useEffect(() => {
     async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); fetchBackupStats() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); fetchBackupStats() {
       try {
         const response = await fetch('/api/admin/backup/stats');
-        if (!response?.ok) throw new Error('Failed to fetch backup stats');
-        const data = await response?.json();
+        if (!response.ok) throw new Error('Failed to fetch backup stats');
+        const data = await response.json();
         setStats(data);
       } catch (error) {
-        console?.error('Error fetching backup stats:', error);
+        console.error('Error fetching backup stats:', error);
       }
     }
 
@@ -39,7 +39,7 @@ export function BackupStatistics() {
   }, []);
 
   const progress =
-    stats?.totalRecords > 0 ? Math?.round((stats?.backedUpRecords / stats?.totalRecords) * 100) : 0;
+    stats.totalRecords > 0 ? Math.round((stats.backedUpRecords / stats.totalRecords) * 100) : 0;
 
   return (
     <Card>
@@ -59,24 +59,24 @@ export function BackupStatistics() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-sm text-muted-foreground">Total Records</p>
-              <p className="text-2xl font-bold">{stats?.totalRecords}</p>
+              <p className="text-2xl font-bold">{stats.totalRecords}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Backed Up</p>
-              <p className="text-2xl font-bold">{stats?.backedUpRecords}</p>
+              <p className="text-2xl font-bold">{stats.backedUpRecords}</p>
             </div>
           </div>
 
           <div>
             <p className="text-sm text-muted-foreground">Last Backup</p>
             <p className="text-lg">
-              {stats?.lastBackupDate ? new Date(stats?.lastBackupDate).toLocaleString() : 'Never'}
+              {stats.lastBackupDate ? new Date(stats.lastBackupDate).toLocaleString() : 'Never'}
             </p>
           </div>
 
           <div>
             <p className="text-sm text-muted-foreground">Status</p>
-            <p className="text-lg capitalize">{stats?.status.replace('_', ' ')}</p>
+            <p className="text-lg capitalize">{stats.status.replace('_', ' ')}</p>
           </div>
         </div>
       </CardContent>

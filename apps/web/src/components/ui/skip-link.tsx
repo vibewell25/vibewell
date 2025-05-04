@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 interface SkipLinkProps {
   href: string;
   className?: string;
-  children?: React?.ReactNode;
+  children?: React.ReactNode;
 }
 
 /**
@@ -42,9 +42,9 @@ export function SkipLink({ href, className, children = 'Skip to content' }: Skip
       )}
       onKeyDown={(e) => {
         // When user presses Enter, focus the element with the target ID
-        if (e?.key === 'Enter') {
-          e?.preventDefault();
-          const targetElement = document?.querySelector(href);
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const targetElement = document.querySelector(href);
           if (targetElement) {
             (targetElement as HTMLElement).focus();
             // Add tabindex=-1 if not present to make it focusable

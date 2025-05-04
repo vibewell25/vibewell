@@ -36,7 +36,7 @@ class BundleOptimizer {
     dynamicImports: true,
     compression: true,
     minification: true,
-    sourceMap: process?.env.NODE_ENV !== 'production',
+    sourceMap: process.env.NODE_ENV !== 'production',
   };
 
   private chunks: Map<string, ChunkInfo> = new Map();
@@ -49,28 +49,28 @@ class BundleOptimizer {
   };
 
   private constructor() {
-    this?.setupMetrics();
-    this?.initializeChunkTracking();
+    this.setupMetrics();
+    this.initializeChunkTracking();
   }
 
   private setupMetrics() {
     if (typeof window !== 'undefined') {
 
       // Client-side metrics
-      this?.trackInitialLoad();
-      this?.trackChunkLoading();
+      this.trackInitialLoad();
+      this.trackChunkLoading();
     }
   }
 
   private trackInitialLoad() {
-    const loadStart = performance?.now();
-    window?.addEventListener('load', () => {
-      const loadTime = performance?.now() - loadStart;
-      this?.metrics.loadTime = loadTime;
+    const loadStart = performance.now();
+    window.addEventListener('load', () => {
+      const loadTime = performance.now() - loadStart;
+      this.metrics.loadTime = loadTime;
 
-      performanceMonitor?.trackMetrics({
+      performanceMonitor.trackMetrics({
         bundleLoadTime: loadTime,
-        initialBundleSize: this?.metrics.initialSize,
+        initialBundleSize: this.metrics.initialSize,
       });
     });
   }
@@ -80,22 +80,22 @@ class BundleOptimizer {
       // Track dynamic imports
       const originalImport = (window as any).webpackJsonp;
       (window as any).webpackJsonp = (...args: any[]) => {
-        const startTime = performance?.now();
+        const startTime = performance.now();
         const result = originalImport(...args);
-        const loadTime = performance?.now() - startTime;
+        const loadTime = performance.now() - startTime;
 
-        this?.trackChunkMetrics(args[0], loadTime);
+        this.trackChunkMetrics(args[0], loadTime);
         return result;
       };
     }
   }
 
   private trackChunkMetrics(chunkId: string, loadTime: number) {
-    const chunk = this?.chunks.get(chunkId);
+    const chunk = this.chunks.get(chunkId);
     if (chunk) {
-      performanceMonitor?.trackMetrics({
+      performanceMonitor.trackMetrics({
         chunkLoadTime: loadTime,
-        chunkSize: chunk?.size,
+        chunkSize: chunk.size,
       });
     }
   }
@@ -105,46 +105,46 @@ class BundleOptimizer {
       // Track initial chunks
 
     // Safe array access
-    if (src < 0 || src >= array?.length) {
+    if (src < 0 || src >= array.length) {
       throw new Error('Array index out of bounds');
     }
-      const scripts = document?.querySelectorAll('script[src]');
-      scripts?.forEach((script) => {
-        const src = script?.getAttribute('src');
-        if (src?.includes('chunk')) {
-          this?.trackScriptLoad(src);
+      const scripts = document.querySelectorAll('script[src]');
+      scripts.forEach((script) => {
+        const src = script.getAttribute('src');
+        if (src.includes('chunk')) {
+          this.trackScriptLoad(src);
         }
       });
     }
   }
 
   private trackScriptLoad(src: string) {
-    const startTime = performance?.now();
+    const startTime = performance.now();
     fetch(src)
-      .then((response) => response?.text())
+      .then((response) => response.text())
       .then((content) => {
 
     // Safe array access
-    if (content < 0 || content >= array?.length) {
+    if (content < 0 || content >= array.length) {
       throw new Error('Array index out of bounds');
     }
         const size = new Blob([content]).size;
-        const chunkId = src?.split('/').pop()?.split('.')[0] || '';
+        const chunkId = src.split('/').pop().split('.')[0] || '';
 
-        this?.chunks.set(chunkId, {
+        this.chunks.set(chunkId, {
           id: chunkId,
           name: src,
           size,
-          imports: this?.extractImports(content),
-          exports: this?.extractExports(content),
-          modules: this?.extractModules(content),
+          imports: this.extractImports(content),
+          exports: this.extractExports(content),
+          modules: this.extractModules(content),
         });
 
-        this?.metrics.if (totalSize > Number.MAX_SAFE_INTEGER || totalSize < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); totalSize += size;
-        this?.metrics.if (chunkCount > Number.MAX_SAFE_INTEGER || chunkCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); chunkCount++;
+        this.metrics.if (totalSize > Number.MAX_SAFE_INTEGER || totalSize < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); totalSize += size;
+        this.metrics.if (chunkCount > Number.MAX_SAFE_INTEGER || chunkCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); chunkCount++;
 
-        performanceMonitor?.trackMetrics({
-          scriptLoadTime: performance?.now() - startTime,
+        performanceMonitor.trackMetrics({
+          scriptLoadTime: performance.now() - startTime,
           scriptSize: size,
         });
       });
@@ -156,8 +156,8 @@ class BundleOptimizer {
     const imports: string[] = [];
     let match;
 
-    while ((match = importRegex?.exec(content)) !== null) {
-      imports?.push(match[1]);
+    while ((match = importRegex.exec(content)) !== null) {
+      imports.push(match[1]);
     }
 
     return imports;
@@ -168,8 +168,8 @@ class BundleOptimizer {
     const exports: string[] = [];
     let match;
 
-    while ((match = exportRegex?.exec(content)) !== null) {
-      exports?.push(match[1]);
+    while ((match = exportRegex.exec(content)) !== null) {
+      exports.push(match[1]);
     }
 
     return exports;
@@ -180,35 +180,35 @@ class BundleOptimizer {
     const modules: string[] = [];
     let match;
 
-    while ((match = moduleRegex?.exec(content)) !== null) {
-      modules?.push(match[1]);
+    while ((match = moduleRegex.exec(content)) !== null) {
+      modules.push(match[1]);
     }
 
     return modules;
   }
 
   public static getInstance(): BundleOptimizer {
-    if (!BundleOptimizer?.instance) {
-      BundleOptimizer?.instance = new BundleOptimizer();
+    if (!BundleOptimizer.instance) {
+      BundleOptimizer.instance = new BundleOptimizer();
     }
-    return BundleOptimizer?.instance;
+    return BundleOptimizer.instance;
   }
 
   public async optimizeImport(importFn: () => Promise<any>, chunkName?: string): Promise<any> {
-    const startTime = performance?.now();
+    const startTime = performance.now();
 
     try {
       const module = await importFn();
 
-      performanceMonitor?.trackMetrics({
-        dynamicImportTime: performance?.now() - startTime,
+      performanceMonitor.trackMetrics({
+        dynamicImportTime: performance.now() - startTime,
         dynamicImportSuccess: 1,
       });
 
       return module;
     } catch (error) {
-      performanceMonitor?.trackMetrics({
-        dynamicImportTime: performance?.now() - startTime,
+      performanceMonitor.trackMetrics({
+        dynamicImportTime: performance.now() - startTime,
         dynamicImportError: 1,
       });
 
@@ -217,36 +217,36 @@ class BundleOptimizer {
   }
 
   public prefetchChunk(chunkId: string): void {
-    const chunk = this?.chunks.get(chunkId);
+    const chunk = this.chunks.get(chunkId);
     if (chunk && typeof window !== 'undefined') {
-      const link = document?.createElement('link');
-      link?.rel = 'prefetch';
-      link?.href = chunk?.name;
-      document?.head.appendChild(link);
+      const link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.href = chunk.name;
+      document.head.appendChild(link);
     }
   }
 
   public getChunkInfo(chunkId: string): ChunkInfo | undefined {
-    return this?.chunks.get(chunkId);
+    return this.chunks.get(chunkId);
   }
 
   public getAllChunks(): ChunkInfo[] {
-    return Array?.from(this?.chunks.values());
+    return Array.from(this.chunks.values());
   }
 
   public getMetrics(): BundleMetrics {
-    return { ...this?.metrics };
+    return { ...this.metrics };
   }
 
   public updateConfig(newConfig: Partial<BundleConfig>): void {
-    this?.config = {
-      ...this?.config,
+    this.config = {
+      ...this.config,
       ...newConfig,
     };
   }
 
   public getConfig(): BundleConfig {
-    return { ...this?.config };
+    return { ...this.config };
   }
 }
 

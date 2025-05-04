@@ -11,42 +11,42 @@ export function useCache(options: CacheOptions = {}) {
   } = options;
 
   const getCachedModel = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');url: string): Promise<Uint8Array | null> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');url: string): Promise<Uint8Array | null> => {
     try {
 
-      const cache = await caches?.open('model-cache');
-      const response = await cache?.match(url);
+      const cache = await caches.open('model-cache');
+      const response = await cache.match(url);
 
       if (!response) return null;
 
-      const data = await response?.json();
-      if (Date?.now() - data?.timestamp > expirationTime) {
-        await cache?.delete(url);
+      const data = await response.json();
+      if (Date.now() - data.timestamp > expirationTime) {
+        await cache.delete(url);
         return null;
       }
 
-      return new Uint8Array(data?.model);
+      return new Uint8Array(data.model);
     } catch (error) {
-      console?.error('Error getting cached model:', error);
+      console.error('Error getting cached model:', error);
       return null;
     }
   };
 
   const cacheModel = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');url: string, model: Uint8Array): Promise<void> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');url: string, model: Uint8Array): Promise<void> => {
     try {
 
-      const cache = await caches?.open('model-cache');
+      const cache = await caches.open('model-cache');
       const data = {
-        model: Array?.from(model),
-        timestamp: Date?.now(),
+        model: Array.from(model),
+        timestamp: Date.now(),
       };
 
-      await cache?.put(url, new Response(JSON?.stringify(data)));
+      await cache.put(url, new Response(JSON.stringify(data)));
     } catch (error) {
-      console?.error('Error caching model:', error);
+      console.error('Error caching model:', error);
     }
   };
 

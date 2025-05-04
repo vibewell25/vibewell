@@ -27,7 +27,7 @@ import { Calendar } from 'react-native-calendars';
 // Get current date and format it to YYYY-MM-DD
 const getCurrentDate = (): string => {
   const date = new Date();
-  return `${date?.getFullYear()}-${String(date?.getMonth() + 1).padStart(2, '0')}-${String(date?.getDate()).padStart(2, '0')}`;
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 };
 
 // Available date type
@@ -46,61 +46,61 @@ const getAvailableDates = (): AvailableDate[] => {
   const dates: AvailableDate[] = [];
   const today = new Date();
   
-  for (let i = 0; i < 7; if (i > Number?.MAX_SAFE_INTEGER || i < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
+  for (let i = 0; i < 7; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
     const date = new Date(today);
-    date?.setDate(today?.getDate() + i);
+    date.setDate(today.getDate() + i);
     
-    dates?.push({
-      id: i?.toString(),
+    dates.push({
+      id: i.toString(),
       date: date,
-      formattedDate: `${date?.getFullYear()}-${String(date?.getMonth() + 1).padStart(2, '0')}-${String(date?.getDate()).padStart(2, '0')}`,
-      day: date?.toLocaleDateString('en-US', { weekday: 'short' }),
-      dateNum: date?.getDate(),
-      month: date?.toLocaleDateString('en-US', { month: 'short' }),
-      fullDate: date?.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
+      formattedDate: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`,
+      day: date.toLocaleDateString('en-US', { weekday: 'short' }),
+      dateNum: date.getDate(),
+      month: date.toLocaleDateString('en-US', { month: 'short' }),
+      fullDate: date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
     });
   }
   
   return dates;
 };
 
-const BeautyBookingScreen: React?.FC = () => {
+const BeautyBookingScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const { user, isLoggedIn } = useAuth();
   const navigation = useNavigation<BeautyBookingNavigationProp>();
   const route = useRoute<BeautyBookingRouteProp>();
-  const { service } = route?.params;
+  const { service } = route.params;
   
   // State variables for booking form
   const [selectedDate, setSelectedDate] = useState<string>(getAvailableDates()[0].id);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>('');
   const [specialRequests, setSpecialRequests] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [timeSlots, setTimeSlots] = useState<{id:string;time:string;available:boolean}[]>(service?.availability?.timeSlots || []);
+  const [timeSlots, setTimeSlots] = useState<{id:string;time:string;available:boolean}[]>(service.availability.timeSlots || []);
   const [availabilityLoading, setAvailabilityLoading] = useState<boolean>(false);
   
   // Customer info (if not logged in)
-  const [name, setName] = useState<string>(user?.name || '');
-  const [email, setEmail] = useState<string>(user?.email || '');
+  const [name, setName] = useState<string>(user.name || '');
+  const [email, setEmail] = useState<string>(user.email || '');
   const [phone, setPhone] = useState<string>('');
   
   // Get the selected date object
   const getSelectedDateObj = () => {
-    return getAvailableDates().find(date => date?.id === selectedDate);
+    return getAvailableDates().find(date => date.id === selectedDate);
   };
   
   // Handle booking submission
   const handleBookingSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     // Validate form
     if (!selectedTimeSlot) {
-      Alert?.alert('Error', 'Please select a time slot');
+      Alert.alert('Error', 'Please select a time slot');
       return;
     }
     
     if (!isLoggedIn && (!name || !email || !phone)) {
-      Alert?.alert('Error', 'Please fill in all customer information fields');
+      Alert.alert('Error', 'Please fill in all customer information fields');
       return;
     }
     
@@ -109,9 +109,9 @@ const BeautyBookingScreen: React?.FC = () => {
     
     try {
       // Get the selected time slot
-      const timeSlot = timeSlots?.find(slot => slot?.id === selectedTimeSlot);
+      const timeSlot = timeSlots.find(slot => slot.id === selectedTimeSlot);
       if (!timeSlot) {
-        Alert?.alert('Error', 'Selected time slot not available');
+        Alert.alert('Error', 'Selected time slot not available');
         setIsSubmitting(false);
         return;
       }
@@ -119,42 +119,42 @@ const BeautyBookingScreen: React?.FC = () => {
       // Get the selected date in YYYY-MM-DD format
       const selectedDateObj = getSelectedDateObj();
       if (!selectedDateObj) {
-        Alert?.alert('Error', 'Selected date not available');
+        Alert.alert('Error', 'Selected date not available');
         setIsSubmitting(false);
         return;
       }
       
       // Build booking request
       const bookingRequest: BookingRequest = {
-        serviceId: service?.id,
-        date: selectedDateObj?.formattedDate,
-        timeSlot: { id: timeSlot?.id, time: timeSlot?.time },
+        serviceId: service.id,
+        date: selectedDateObj.formattedDate,
+        timeSlot: { id: timeSlot.id, time: timeSlot.time },
         userInfo: isLoggedIn
-          ? { name: user?.name || '', email: user?.email || '', phone }
+          ? { name: user.name || '', email: user.email || '', phone }
           : { name, email, phone },
         specialRequests,
       };
       // Execute booking
       const bookingResponse = await createBooking(bookingRequest);
       // Auto-add booking to device calendar
-      try { await addBookingToCalendar(bookingResponse); } catch (err) { console?.error('Calendar add failed', err); }
+      try { await addBookingToCalendar(bookingResponse); } catch (err) { console.error('Calendar add failed', err); }
       // Navigate to confirmation
-      navigation?.navigate('BookingConfirmation', {
-        bookingId: bookingResponse?.bookingId,
-        serviceId: bookingResponse?.serviceId,
-        serviceTitle: service?.title,
-        date: bookingRequest?.date,
-        time: bookingRequest?.timeSlot.time,
-        status: bookingResponse?.status,
-        amount: bookingResponse?.price,
-        duration: bookingResponse?.duration,
-        location: bookingResponse?.location,
-        providerName: bookingResponse?.providerName,
-        userInfo: bookingRequest?.userInfo,
+      navigation.navigate('BookingConfirmation', {
+        bookingId: bookingResponse.bookingId,
+        serviceId: bookingResponse.serviceId,
+        serviceTitle: service.title,
+        date: bookingRequest.date,
+        time: bookingRequest.timeSlot.time,
+        status: bookingResponse.status,
+        amount: bookingResponse.price,
+        duration: bookingResponse.duration,
+        location: bookingResponse.location,
+        providerName: bookingResponse.providerName,
+        userInfo: bookingRequest.userInfo,
       });
     } catch (error) {
-      console?.error('Error creating booking:', error);
-      Alert?.alert('Error', 'Something went wrong. Please try again.');
+      console.error('Error creating booking:', error);
+      Alert.alert('Error', 'Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -162,24 +162,24 @@ const BeautyBookingScreen: React?.FC = () => {
   
   // Get formatted price
   const getFormattedPrice = (price: number) => {
-    const strPrice = price?.toString();
-    return strPrice?.includes('+') ? `From ${strPrice}` : strPrice;
+    const strPrice = price.toString();
+    return strPrice.includes('+') ? `From ${strPrice}` : strPrice;
   };
   
   // Fetch real-time availability when date changes
   useEffect(() => {
     const fetchAvailability = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       setAvailabilityLoading(true);
       try {
-        const formatted = getSelectedDateObj()?.formattedDate;
+        const formatted = getSelectedDateObj().formattedDate;
         if (formatted) {
-          const slots = await beautyApi?.checkAvailability(service?.id, formatted);
+          const slots = await beautyApi.checkAvailability(service.id, formatted);
           setTimeSlots(slots);
         }
       } catch (err) {
-        console?.error('Error fetching availability:', err);
+        console.error('Error fetching availability:', err);
       } finally {
         setAvailabilityLoading(false);
       }
@@ -190,8 +190,8 @@ const BeautyBookingScreen: React?.FC = () => {
   }, [selectedDate]);
   
   // Build markedDates for calendar
-  const availableDates = service?.availability?.dates || [];
-  const markedDates = availableDates?.reduce<Record<string, any>>((acc, date) => {
+  const availableDates = service.availability.dates || [];
+  const markedDates = availableDates.reduce<Record<string, any>>((acc, date) => {
     acc[date] = {
       disabled: false,
       selected: date === selectedDate,
@@ -203,22 +203,22 @@ const BeautyBookingScreen: React?.FC = () => {
   return (
     <ScrollView
       style={[
-        styles?.container,
+        styles.container,
         { backgroundColor: isDarkMode ? '#121212' : '#F8F8F8' }
       ]}
     >
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       
       {/* Header */}
-      <View style={styles?.header}>
+      <View style={styles.header}>
         <TouchableOpacity
-          style={styles?.backButton}
-          onPress={() => navigation?.goBack()}
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
         >
           <Feather name="arrow-left" size={24} color={isDarkMode ? '#FFFFFF' : '#000000'} />
         </TouchableOpacity>
         <Text style={[
-          styles?.headerTitle,
+          styles.headerTitle,
           { color: isDarkMode ? '#FFFFFF' : '#000000' }
         ]}>
           Book Appointment
@@ -228,55 +228,55 @@ const BeautyBookingScreen: React?.FC = () => {
       
       {/* Service Summary */}
       <View style={[
-        styles?.serviceSummary,
+        styles.serviceSummary,
         { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
       ]}>
         <Text style={[
-          styles?.serviceName,
+          styles.serviceName,
           { color: isDarkMode ? '#FFFFFF' : '#000000' }
         ]}>
-          {service?.title}
+          {service.title}
         </Text>
-        <View style={styles?.serviceDetails}>
+        <View style={styles.serviceDetails}>
           <Text style={[
-            styles?.serviceDetail,
+            styles.serviceDetail,
             { color: isDarkMode ? '#E0E0E0' : '#666666' }
           ]}>
-            <Feather name="clock" size={14} color={isDarkMode ? '#BBBBBB' : '#666666'} /> {service?.duration}
+            <Feather name="clock" size={14} color={isDarkMode ? '#BBBBBB' : '#666666'} /> {service.duration}
           </Text>
           <Text style={[
-            styles?.serviceDetail,
+            styles.serviceDetail,
             { color: isDarkMode ? '#E0E0E0' : '#666666' }
           ]}>
-            <Feather name="tag" size={14} color={isDarkMode ? '#BBBBBB' : '#666666'} /> {getFormattedPrice(service?.price)}
+            <Feather name="tag" size={14} color={isDarkMode ? '#BBBBBB' : '#666666'} /> {getFormattedPrice(service.price)}
           </Text>
         </View>
-        <View style={styles?.providerRow}>
+        <View style={styles.providerRow}>
           <Text style={[
-            styles?.serviceProvider,
+            styles.serviceProvider,
             { color: isDarkMode ? '#BBBBBB' : '#666666' }
           ]}>
-            Provider ID: {service?.providerId}
+            Provider ID: {service.providerId}
           </Text>
-          <View style={styles?.ratingContainer}>
+          <View style={styles.ratingContainer}>
             <Feather name="star" size={12} color="#FFD700" />
             <Text style={[
-              styles?.ratingText,
+              styles.ratingText,
               { color: isDarkMode ? '#FFFFFF' : '#000000' }
             ]}>
-              {service?.rating?.toFixed(1)} ({service?.reviews.length})
+              {service.rating.toFixed(1)} ({service.reviews.length})
             </Text>
           </View>
         </View>
       </View>
       
       {/* Date Selection (Calendar) */}
-      <View style={styles?.section}>
-        <Text style={[styles?.sectionTitle, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>Select Date</Text>
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>Select Date</Text>
         <Calendar
           current={selectedDate}
           minDate={getCurrentDate()}
-          onDayPress={(day) => setSelectedDate(day?.dateString)}
+          onDayPress={(day) => setSelectedDate(day.dateString)}
           markedDates={markedDates}
           theme={{
             dayTextColor: isDarkMode ? '#FFFFFF' : '#000000',
@@ -288,48 +288,48 @@ const BeautyBookingScreen: React?.FC = () => {
       </View>
       
       {/* Time Selection */}
-      <View style={styles?.section}>
+      <View style={styles.section}>
         <Text style={[
-          styles?.sectionTitle,
+          styles.sectionTitle,
           { color: isDarkMode ? '#FFFFFF' : '#000000' }
         ]}>
           Select Time
         </Text>
         {availabilityLoading ? (
           <ActivityIndicator size="large" style={{ marginVertical: 20 }} />
-        ) : timeSlots?.length === 0 ? (
+        ) : timeSlots.length === 0 ? (
           <Text style={{ textAlign: 'center', marginVertical: 16, color: isDarkMode ? '#FFFFFF' : '#000000' }}>
             No available time slots for this date.
           </Text>
         ) : (
-          <View style={styles?.timeGrid}>
-            {timeSlots?.map((slot) => (
+          <View style={styles.timeGrid}>
+            {timeSlots.map((slot) => (
               <TouchableOpacity
-                key={slot?.id}
+                key={slot.id}
                 style={[
-                  styles?.timeSlot,
+                  styles.timeSlot,
                   {
-                    backgroundColor: !slot?.available
+                    backgroundColor: !slot.available
                       ? (isDarkMode ? '#2A2A2A' : '#F0F0F0')
-                      : selectedTimeSlot === slot?.id
+                      : selectedTimeSlot === slot.id
                         ? (isDarkMode ? '#4F46E5' : '#4F46E5')
                         : (isDarkMode ? '#1E1E1E' : '#FFFFFF')
                   }
                 ]}
-                disabled={!slot?.available}
-                onPress={() => setSelectedTimeSlot(slot?.id)}
+                disabled={!slot.available}
+                onPress={() => setSelectedTimeSlot(slot.id)}
               >
                 <Text style={[
-                  styles?.timeText,
+                  styles.timeText,
                   {
-                    color: !slot?.available
+                    color: !slot.available
                       ? (isDarkMode ? '#555555' : '#AAAAAA')
-                      : selectedTimeSlot === slot?.id
+                      : selectedTimeSlot === slot.id
                         ? '#FFFFFF'
                         : (isDarkMode ? '#FFFFFF' : '#000000')
                   }
                 ]}>
-                  {slot?.time}
+                  {slot.time}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -339,23 +339,23 @@ const BeautyBookingScreen: React?.FC = () => {
       
       {/* Customer Information (if not logged in) */}
       {!isLoggedIn && (
-        <View style={styles?.section}>
+        <View style={styles.section}>
           <Text style={[
-            styles?.sectionTitle,
+            styles.sectionTitle,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             Your Information
           </Text>
-          <View style={styles?.formGroup}>
+          <View style={styles.formGroup}>
             <Text style={[
-              styles?.label,
+              styles.label,
               { color: isDarkMode ? '#BBBBBB' : '#666666' }
             ]}>
               Full Name
             </Text>
             <TextInput
               style={[
-                styles?.input,
+                styles.input,
                 {
                   backgroundColor: isDarkMode ? '#2A2A2A' : '#FFFFFF',
                   color: isDarkMode ? '#FFFFFF' : '#000000',
@@ -368,16 +368,16 @@ const BeautyBookingScreen: React?.FC = () => {
               placeholderTextColor={isDarkMode ? '#777777' : '#AAAAAA'}
             />
           </View>
-          <View style={styles?.formGroup}>
+          <View style={styles.formGroup}>
             <Text style={[
-              styles?.label,
+              styles.label,
               { color: isDarkMode ? '#BBBBBB' : '#666666' }
             ]}>
               Email
             </Text>
             <TextInput
               style={[
-                styles?.input,
+                styles.input,
                 {
                   backgroundColor: isDarkMode ? '#2A2A2A' : '#FFFFFF',
                   color: isDarkMode ? '#FFFFFF' : '#000000',
@@ -392,16 +392,16 @@ const BeautyBookingScreen: React?.FC = () => {
               autoCapitalize="none"
             />
           </View>
-          <View style={styles?.formGroup}>
+          <View style={styles.formGroup}>
             <Text style={[
-              styles?.label,
+              styles.label,
               { color: isDarkMode ? '#BBBBBB' : '#666666' }
             ]}>
               Phone Number
             </Text>
             <TextInput
               style={[
-                styles?.input,
+                styles.input,
                 {
                   backgroundColor: isDarkMode ? '#2A2A2A' : '#FFFFFF',
                   color: isDarkMode ? '#FFFFFF' : '#000000',
@@ -419,16 +419,16 @@ const BeautyBookingScreen: React?.FC = () => {
       )}
       
       {/* Special Requests */}
-      <View style={styles?.section}>
+      <View style={styles.section}>
         <Text style={[
-          styles?.sectionTitle,
+          styles.sectionTitle,
           { color: isDarkMode ? '#FFFFFF' : '#000000' }
         ]}>
           Special Requests (Optional)
         </Text>
         <TextInput
           style={[
-            styles?.textarea,
+            styles.textarea,
             {
               backgroundColor: isDarkMode ? '#2A2A2A' : '#FFFFFF',
               color: isDarkMode ? '#FFFFFF' : '#000000',
@@ -447,63 +447,63 @@ const BeautyBookingScreen: React?.FC = () => {
       
       {/* Booking Summary */}
       <View style={[
-        styles?.bookingSummary,
+        styles.bookingSummary,
         { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
       ]}>
-        <View style={styles?.summaryRow}>
+        <View style={styles.summaryRow}>
           <Text style={[
-            styles?.summaryLabel,
+            styles.summaryLabel,
             { color: isDarkMode ? '#BBBBBB' : '#666666' }
           ]}>
             Service
           </Text>
           <Text style={[
-            styles?.summaryValue,
+            styles.summaryValue,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
-            {service?.title}
+            {service.title}
           </Text>
         </View>
-        <View style={styles?.summaryRow}>
+        <View style={styles.summaryRow}>
           <Text style={[
-            styles?.summaryLabel,
+            styles.summaryLabel,
             { color: isDarkMode ? '#BBBBBB' : '#666666' }
           ]}>
             Date
           </Text>
           <Text style={[
-            styles?.summaryValue,
+            styles.summaryValue,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             {selectedDate}
           </Text>
         </View>
-        <View style={styles?.summaryRow}>
+        <View style={styles.summaryRow}>
           <Text style={[
-            styles?.summaryLabel,
+            styles.summaryLabel,
             { color: isDarkMode ? '#BBBBBB' : '#666666' }
           ]}>
             Time
           </Text>
           <Text style={[
-            styles?.summaryValue,
+            styles.summaryValue,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
-            {selectedTimeSlot ? timeSlots?.find(slot => slot?.id === selectedTimeSlot)?.time : 'Not selected'}
+            {selectedTimeSlot ? timeSlots.find(slot => slot.id === selectedTimeSlot).time : 'Not selected'}
           </Text>
         </View>
-        <View style={styles?.summaryRow}>
+        <View style={styles.summaryRow}>
           <Text style={[
-            styles?.summaryLabel,
+            styles.summaryLabel,
             { color: isDarkMode ? '#BBBBBB' : '#666666' }
           ]}>
             Price
           </Text>
           <Text style={[
-            styles?.summaryValue,
+            styles.summaryValue,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
-            {getFormattedPrice(service?.price)}
+            {getFormattedPrice(service.price)}
           </Text>
         </View>
       </View>
@@ -511,8 +511,8 @@ const BeautyBookingScreen: React?.FC = () => {
       {/* Book Now Button */}
       <TouchableOpacity
         style={[
-          styles?.bookButton,
-          { opacity: isSubmitting ? 0?.7 : 1 }
+          styles.bookButton,
+          { opacity: isSubmitting ? 0.7 : 1 }
         ]}
         onPress={handleBookingSubmit}
         disabled={isSubmitting}
@@ -520,13 +520,13 @@ const BeautyBookingScreen: React?.FC = () => {
         {isSubmitting ? (
           <ActivityIndicator color="#FFFFFF" size="small" />
         ) : (
-          <Text style={styles?.bookButtonText}>Book Now</Text>
+          <Text style={styles.bookButtonText}>Book Now</Text>
         )}
       </TouchableOpacity>
       
       {/* Terms and Privacy */}
       <Text style={[
-        styles?.termsText,
+        styles.termsText,
         { color: isDarkMode ? '#BBBBBB' : '#666666' }
       ]}>
         By booking this service, you agree to our {' '}
@@ -541,7 +541,7 @@ const BeautyBookingScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingBottom: 30,

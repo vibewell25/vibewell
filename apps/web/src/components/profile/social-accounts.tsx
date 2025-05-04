@@ -18,7 +18,7 @@ interface SocialAccount {
   platform: string;
   username: string;
   connected: boolean;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
 }
 
 export function SocialAccounts() {
@@ -65,7 +65,7 @@ export function SocialAccounts() {
     {
       id: 'website',
       platform: 'Website',
-      username: 'johndoe?.com',
+      username: 'johndoe.com',
       connected: true,
       icon: <Globe className="h-5 w-5" />,
     },
@@ -78,12 +78,12 @@ export function SocialAccounts() {
 
   const handleDisconnect = (platform: string) => {
     // Implement disconnect logic
-    console?.log(`Disconnecting ${platform}`);
+    console.log(`Disconnecting ${platform}`);
   };
 
   const handleSubmit = () => {
     // Implement connection logic
-    console?.log(`Connecting ${selectedPlatform} with username ${username}`);
+    console.log(`Connecting ${selectedPlatform} with username ${username}`);
     setShowDialog(false);
     setUsername('');
     setSelectedPlatform(null);
@@ -95,25 +95,25 @@ export function SocialAccounts() {
         <CardTitle>Social Accounts</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {socialAccounts?.map((account) => (
-          <div key={account?.id} className="flex items-center justify-between">
+        {socialAccounts.map((account) => (
+          <div key={account.id} className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              {account?.icon}
-              <span>{account?.platform}</span>
+              {account.icon}
+              <span>{account.platform}</span>
             </div>
-            {account?.connected ? (
+            {account.connected ? (
               <div className="flex items-center space-x-2">
-                <span className="text-sm text-muted-foreground">{account?.username}</span>
+                <span className="text-sm text-muted-foreground">{account.username}</span>
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handleDisconnect(account?.platform)}
+                  onClick={() => handleDisconnect(account.platform)}
                 >
                   Disconnect
                 </Button>
               </div>
             ) : (
-              <Button variant="outline" size="sm" onClick={() => handleConnect(account?.platform)}>
+              <Button variant="outline" size="sm" onClick={() => handleConnect(account.platform)}>
                 Connect
               </Button>
             )}
@@ -135,7 +135,7 @@ export function SocialAccounts() {
               <Input
                 id="username"
                 value={username}
-                onChange={(e) => setUsername(e?.target.value)}
+                onChange={(e) => setUsername(e.target.value)}
                 placeholder={`Enter your ${selectedPlatform} username`}
               />
             </div>

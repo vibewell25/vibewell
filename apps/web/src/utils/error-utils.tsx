@@ -2,7 +2,7 @@
  * Error Handling Utilities
  *
  * This file provides type-safe error handling functions that work alongside
- * the main error-handler?.ts system. These utilities help ensure proper type checking
+ * the main error-handler.ts system. These utilities help ensure proper type checking
  * and guard against undefined/null errors.
  */
 
@@ -16,7 +16,7 @@ import { ErrorCategory, ErrorSource, ErrorSeverity } from './error-handler';
  */
 export function getErrorMessage(error: unknown): string {
   if (isError(error)) {
-    return error?.message;
+    return error.message;
   } else if (isString(error)) {
     return error;
   } else if (error === null) {
@@ -39,7 +39,7 @@ export function getErrorMessage(error: unknown): string {
  */
 export function getErrorName(error: unknown): string {
   if (isError(error)) {
-    return error?.name;
+    return error.name;
   }
   return 'Error';
 }
@@ -54,11 +54,11 @@ export function isNetworkError(error: unknown): boolean {
 
   // Check for common network error patterns
   return (
-    error?.name === 'TypeError' ||
-    error?.name === 'NetworkError' ||
-    error?.message.includes('network') ||
-    error?.message.includes('fetch') ||
-    error?.message.includes('connection')
+    error.name === 'TypeError' ||
+    error.name === 'NetworkError' ||
+    error.message.includes('network') ||
+    error.message.includes('fetch') ||
+    error.message.includes('connection')
   );
 }
 
@@ -71,9 +71,9 @@ export function isTimeoutError(error: unknown): boolean {
   if (!isError(error)) return false;
 
   return (
-    error?.name === 'TimeoutError' ||
-    error?.message.includes('timeout') ||
-    error?.message.includes('timed out')
+    error.name === 'TimeoutError' ||
+    error.message.includes('timeout') ||
+    error.message.includes('timed out')
   );
 }
 
@@ -85,7 +85,7 @@ export function isTimeoutError(error: unknown): boolean {
 export function isNotFoundError(error: unknown): boolean {
   if (!isError(error)) return false;
 
-  return error?.message.includes('not found') || error?.message.includes('404');
+  return error.message.includes('not found') || error.message.includes('404');
 }
 
 /**
@@ -97,9 +97,9 @@ export function isServerError(error: unknown): boolean {
   if (!isError(error)) return false;
 
   return (
-    error?.message.includes('server error') ||
-    error?.message.includes('500') ||
-    error?.message.includes('internal')
+    error.message.includes('server error') ||
+    error.message.includes('500') ||
+    error.message.includes('internal')
   );
 }
 
@@ -112,11 +112,11 @@ export function isAuthenticationError(error: unknown): boolean {
   if (!isError(error)) return false;
 
   return (
-    error?.message.includes('authentication') ||
-    error?.message.includes('unauthenticated') ||
-    error?.message.includes('unauthorized') ||
-    error?.message.includes('401') ||
-    error?.message.includes('login')
+    error.message.includes('authentication') ||
+    error.message.includes('unauthenticated') ||
+    error.message.includes('unauthorized') ||
+    error.message.includes('401') ||
+    error.message.includes('login')
   );
 }
 
@@ -127,17 +127,17 @@ export function isAuthenticationError(error: unknown): boolean {
  */
 export function getErrorCategory(error: unknown): ErrorCategory {
   if (isAuthenticationError(error)) {
-    return ErrorCategory?.AUTHENTICATION;
+    return ErrorCategory.AUTHENTICATION;
   } else if (isNotFoundError(error)) {
-    return ErrorCategory?.RESOURCE_NOT_FOUND;
+    return ErrorCategory.RESOURCE_NOT_FOUND;
   } else if (isTimeoutError(error)) {
-    return ErrorCategory?.TIMEOUT;
+    return ErrorCategory.TIMEOUT;
   } else if (isNetworkError(error)) {
-    return ErrorCategory?.API;
+    return ErrorCategory.API;
   } else if (isServerError(error)) {
-    return ErrorCategory?.SERVER;
+    return ErrorCategory.SERVER;
   } else {
-    return ErrorCategory?.UNKNOWN;
+    return ErrorCategory.UNKNOWN;
   }
 }
 
@@ -148,11 +148,11 @@ export function getErrorCategory(error: unknown): ErrorCategory {
  */
 export function getErrorSource(error: unknown): ErrorSource {
   if (isNetworkError(error)) {
-    return ErrorSource?.NETWORK;
+    return ErrorSource.NETWORK;
   } else if (isServerError(error)) {
-    return ErrorSource?.SERVER;
+    return ErrorSource.SERVER;
   } else {
-    return ErrorSource?.CLIENT;
+    return ErrorSource.CLIENT;
   }
 }
 
@@ -163,13 +163,13 @@ export function getErrorSource(error: unknown): ErrorSource {
  */
 export function getErrorSeverity(error: unknown): ErrorSeverity {
   if (isServerError(error) || isAuthenticationError(error)) {
-    return ErrorSeverity?.ERROR;
+    return ErrorSeverity.ERROR;
   } else if (isNetworkError(error) || isTimeoutError(error)) {
-    return ErrorSeverity?.WARNING;
+    return ErrorSeverity.WARNING;
   } else if (isNotFoundError(error)) {
-    return ErrorSeverity?.INFO;
+    return ErrorSeverity.INFO;
   } else {
-    return ErrorSeverity?.ERROR;
+    return ErrorSeverity.ERROR;
   }
 }
 
@@ -203,10 +203,10 @@ export function enhanceError(
   return {
     errorMessage,
     originalError,
-    category: options?.category || getErrorCategory(error),
-    source: options?.source || getErrorSource(error),
-    severity: options?.severity || getErrorSeverity(error),
-    metadata: options?.metadata || {},
-    code: options?.code,
+    category: options.category || getErrorCategory(error),
+    source: options.source || getErrorSource(error),
+    severity: options.severity || getErrorSeverity(error),
+    metadata: options.metadata || {},
+    code: options.code,
   };
 }

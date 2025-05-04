@@ -68,14 +68,14 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
   const fetchAlerts = useCallback(async () => {
     try {
       setLoading(true);
-      const { data, error } = await alertService?.getAlertsByUser(userId);
+      const { data, error } = await alertService.getAlertsByUser(userId);
 
       if (error) throw error;
 
       setAlerts(data || []);
       setFilteredAlerts(data || []);
     } catch (err) {
-      console?.error('Error fetching alerts:', err);
+      console.error('Error fetching alerts:', err);
       setError('Failed to load alerts. Please try again.');
     } finally {
       setLoading(false);
@@ -92,41 +92,41 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
 
     // Apply status filter
     if (filterStatus !== 'all') {
-      result = result?.filter((alert) =>
-        filterStatus === 'active' ? alert?.isActive : !alert?.isActive,
+      result = result.filter((alert) =>
+        filterStatus === 'active' ? alert.isActive : !alert.isActive,
       );
     }
 
     // Apply search filter
     if (searchQuery) {
-      const query = searchQuery?.toLowerCase();
-      result = result?.filter(
+      const query = searchQuery.toLowerCase();
+      result = result.filter(
         (alert) =>
-          alert?.name.toLowerCase().includes(query) ||
-          (alert?.description && alert?.description.toLowerCase().includes(query)),
+          alert.name.toLowerCase().includes(query) ||
+          (alert.description && alert.description.toLowerCase().includes(query)),
       );
     }
 
     // Apply sorting
-    result?.sort((a, b) => {
+    result.sort((a, b) => {
       let valueA, valueB;
 
       switch (sortField) {
         case 'name':
-          valueA = a?.name.toLowerCase();
-          valueB = b?.name.toLowerCase();
+          valueA = a.name.toLowerCase();
+          valueB = b.name.toLowerCase();
           break;
         case 'lastTriggered':
-          valueA = a?.lastTriggered ? new Date(a?.lastTriggered).getTime() : 0;
-          valueB = b?.lastTriggered ? new Date(b?.lastTriggered).getTime() : 0;
+          valueA = a.lastTriggered ? new Date(a.lastTriggered).getTime() : 0;
+          valueB = b.lastTriggered ? new Date(b.lastTriggered).getTime() : 0;
           break;
         case 'metricType':
-          valueA = a?.threshold.metricType;
-          valueB = b?.threshold.metricType;
+          valueA = a.threshold.metricType;
+          valueB = b.threshold.metricType;
           break;
         default:
-          valueA = a?.name.toLowerCase();
-          valueB = b?.name.toLowerCase();
+          valueA = a.name.toLowerCase();
+          valueB = b.name.toLowerCase();
       }
 
       if (valueA < valueB) return sortOrder === 'asc' ? -1 : 1;
@@ -147,40 +147,40 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
   };
 
   const handleToggleActive = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');alert: Alert) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');alert: Alert) => {
     try {
       const updatedAlert = {
         ...alert,
-        isActive: !alert?.isActive,
+        isActive: !alert.isActive,
       };
 
-      const { error } = await alertService?.updateAlert(alert?.id as string, updatedAlert);
+      const { error } = await alertService.updateAlert(alert.id as string, updatedAlert);
 
       if (error) throw error;
 
       // Update local state
-      setAlerts((prev) => prev?.map((a) => (a?.id === alert?.id ? updatedAlert : a)));
+      setAlerts((prev) => prev.map((a) => (a.id === alert.id ? updatedAlert : a)));
     } catch (err) {
-      console?.error('Error toggling alert status:', err);
+      console.error('Error toggling alert status:', err);
       // Show error notification
     }
   };
 
   const handleDeleteAlert = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');alertId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');alertId: string) => {
     if (!confirm('Are you sure you want to delete this alert?')) return;
 
     try {
-      const { error } = await alertService?.deleteAlert(alertId);
+      const { error } = await alertService.deleteAlert(alertId);
 
       if (error) throw error;
 
       // Update local state
-      setAlerts((prev) => prev?.filter((a) => a?.id !== alertId));
+      setAlerts((prev) => prev.filter((a) => a.id !== alertId));
     } catch (err) {
-      console?.error('Error deleting alert:', err);
+      console.error('Error deleting alert:', err);
       // Show error notification
     }
   };
@@ -230,12 +230,12 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
 
         <div className="mb-6 flex flex-col gap-4 sm:flex-row">
           <div className="relative flex-1">
-            <Search className="absolute left-2?.5 top-2?.5 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search alerts..."
               className="pl-8"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e?.target.value)}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
@@ -264,7 +264,7 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
           </div>
         </div>
 
-        {filteredAlerts?.length === 0 ? (
+        {filteredAlerts.length === 0 ? (
           <div className="py-8 text-center text-muted-foreground">
             {searchQuery || filterStatus !== 'all' ? (
               <p>No alerts match your filters.</p>
@@ -307,28 +307,28 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredAlerts?.map((alert) => (
-                  <TableRow key={alert?.id}>
-                    <TableCell className="font-medium">{alert?.name}</TableCell>
-                    <TableCell>{formatMetricType(alert?.threshold.metricType)}</TableCell>
+                {filteredAlerts.map((alert) => (
+                  <TableRow key={alert.id}>
+                    <TableCell className="font-medium">{alert.name}</TableCell>
+                    <TableCell>{formatMetricType(alert.threshold.metricType)}</TableCell>
                     <TableCell>
-                      {alert?.threshold.condition === 'above' ? '>' : '<'} {alert?.threshold.value}
-                      {alert?.threshold.metricType === 'conversion' ? '%' : ''}
-                      {alert?.threshold.metricType === 'rating' ? ' stars' : ''}
+                      {alert.threshold.condition === 'above' ? '>' : '<'} {alert.threshold.value}
+                      {alert.threshold.metricType === 'conversion' ? '%' : ''}
+                      {alert.threshold.metricType === 'rating' ? ' stars' : ''}
                       <div className="mt-1 text-xs text-muted-foreground">
-                        in {alert?.threshold.timeframeHours}h window
+                        in {alert.threshold.timeframeHours}h window
                       </div>
                     </TableCell>
                     <TableCell>
-                      {alert?.lastTriggered ? (
-                        formatDistanceToNow(new Date(alert?.lastTriggered), { addSuffix: true })
+                      {alert.lastTriggered ? (
+                        formatDistanceToNow(new Date(alert.lastTriggered), { addSuffix: true })
                       ) : (
                         <span className="text-muted-foreground">Never</span>
                       )}
                     </TableCell>
                     <TableCell>
-                      <Badge variant={alert?.isActive ? 'default' : 'outline'}>
-                        {alert?.isActive ? 'Active' : 'Inactive'}
+                      <Badge variant={alert.isActive ? 'default' : 'outline'}>
+                        {alert.isActive ? 'Active' : 'Inactive'}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
@@ -340,12 +340,12 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => onEditAlert(alert?.id as string)}>
+                          <DropdownMenuItem onClick={() => onEditAlert(alert.id as string)}>
                             <Edit className="mr-2 h-4 w-4" />
                             Edit
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleToggleActive(alert)}>
-                            {alert?.isActive ? (
+                            {alert.isActive ? (
                               <>
                                 <BellOff className="mr-2 h-4 w-4" />
                                 Deactivate
@@ -359,7 +359,7 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             className="text-destructive focus:text-destructive"
-                            onClick={() => handleDeleteAlert(alert?.id as string)}
+                            onClick={() => handleDeleteAlert(alert.id as string)}
                           >
                             <Trash2 className="mr-2 h-4 w-4" />
                             Delete
@@ -376,7 +376,7 @@ export default function AlertsList({ userId, onCreateAlert, onEditAlert }: Alert
       </CardContent>
       <CardFooter className="flex justify-between">
         <div className="text-sm text-muted-foreground">
-          {filteredAlerts?.length} {filteredAlerts?.length === 1 ? 'alert' : 'alerts'} found
+          {filteredAlerts.length} {filteredAlerts.length === 1 ? 'alert' : 'alerts'} found
         </div>
       </CardFooter>
     </Card>

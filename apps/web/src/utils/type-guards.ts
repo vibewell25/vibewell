@@ -104,7 +104,7 @@ export function hasProperty<T extends object, K extends PropertyKey>(
   obj: T,
   prop: K,
 ): obj is T & Record<K, unknown> {
-  return Object?.prototype.hasOwnProperty?.call(obj, prop);
+  return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
 /**
@@ -114,7 +114,7 @@ export function hasProperty<T extends object, K extends PropertyKey>(
  * @returns True if the value is an array
  */
 export function isArray<T>(value: unknown): value is Array<T> {
-  return Array?.isArray(value);
+  return Array.isArray(value);
 }
 
 /**
@@ -124,7 +124,7 @@ export function isArray<T>(value: unknown): value is Array<T> {
  * @returns True if the array exists and has at least one element
  */
 export function isNonEmptyArray<T>(arr: T[] | null | undefined): arr is T[] {
-  return exists(arr) && arr?.length > 0;
+  return exists(arr) && arr.length > 0;
 }
 
 /**
@@ -134,7 +134,7 @@ export function isNonEmptyArray<T>(arr: T[] | null | undefined): arr is T[] {
  * @returns True if the value is an object
  */
 export function isObject(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array?.isArray(value);
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 /**

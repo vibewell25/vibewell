@@ -24,36 +24,36 @@ export function GoalProgressCard({
   const [showLogForm, setShowLogForm] = useState(false);
   const [showActions, setShowActions] = useState(false);
   const [logValue, setLogValue] = useState<number>(
-    goal?.type === 'water'
+    goal.type === 'water'
       ? 1
-      : goal?.type === 'workout'
+      : goal.type === 'workout'
         ? 30
-        : goal?.type === 'meditation'
+        : goal.type === 'meditation'
           ? 10
-          : goal?.type === 'sleep'
+          : goal.type === 'sleep'
             ? 8
             : 0,
   );
   // Calculate progress percentage
-  const progressPercentage = Math?.min((goal?.current / goal?.target) * 100, 100);
+  const progressPercentage = Math.min((goal.current / goal.target) * 100, 100);
   // Handle form submission
-  const handleSubmit = (e: React?.FormEvent) => {
-    e?.preventDefault();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     onLogProgress(logValue);
     setShowLogForm(false);
   };
   // Format unit for display
   const formatUnit = (value: number, unit: string) => {
     if (unit === 'minutes' && value >= 60) {
-      const hours = Math?.floor(value / 60);
+      const hours = Math.floor(value / 60);
       const mins = value % 60;
       return `${hours}h ${mins > 0 ? `${mins}m` : ''}`;
     }
-    return `${value} ${value === 1 ? unit?.replace(/s$/, '') : unit}`;
+    return `${value} ${value === 1 ? unit.replace(/s$/, '') : unit}`;
   };
   // Get goal icon
   const getGoalIcon = () => {
-    switch (goal?.type) {
+    switch (goal.type) {
       case 'meditation':
         return '🧘‍♂️';
       case 'workout':
@@ -78,36 +78,36 @@ export function GoalProgressCard({
   };
   // Add event listener for clicks outside the menu
   if (typeof window !== 'undefined' && showActions) {
-    window?.addEventListener('click', handleClickOutside);
+    window.addEventListener('click', handleClickOutside);
   }
   return (
     <div className="card relative overflow-hidden">
-      <div className="mb-4 h-2" style={{ backgroundColor: goal?.color || '#6366F1' }} />
+      <div className="mb-4 h-2" style={{ backgroundColor: goal.color || '#6366F1' }} />
       <div className="mb-4 flex items-start justify-between">
         <div>
           <div className="flex items-center gap-2">
             <span className="text-xl">{getGoalIcon()}</span>
-            <h3 className="text-lg font-semibold">{goal?.title}</h3>
+            <h3 className="text-lg font-semibold">{goal.title}</h3>
           </div>
-          <p className="mt-1 text-sm text-muted-foreground">{goal?.description}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{goal.description}</p>
         </div>
         <div className="flex gap-2">
           {/* More Actions Button */}
           <button
             className="text-muted-foreground hover:text-foreground"
             onClick={(e) => {
-              e?.stopPropagation();
+              e.stopPropagation();
               setShowActions(!showActions);
             }}
           >
-            <Icons?.EllipsisHorizontalIcon className="h-5 w-5" />
+            <Icons.EllipsisHorizontalIcon className="h-5 w-5" />
           </button>
           {/* Log Progress Button */}
           <button
             className="btn-primary-outline flex items-center gap-1 px-3 py-1 text-sm"
             onClick={() => setShowLogForm(!showLogForm)}
           >
-            <Icons?.PlusIcon className="h-4 w-4" />
+            <Icons.PlusIcon className="h-4 w-4" />
             Log
           </button>
         </div>
@@ -119,12 +119,12 @@ export function GoalProgressCard({
             <button
               className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm hover:bg-muted"
               onClick={(e) => {
-                e?.stopPropagation();
+                e.stopPropagation();
                 setShowActions(false);
                 onEdit(goal);
               }}
             >
-              <Icons?.PencilIcon className="h-4 w-4" />
+              <Icons.PencilIcon className="h-4 w-4" />
               Edit Goal
             </button>
           )}
@@ -132,12 +132,12 @@ export function GoalProgressCard({
             <button
               className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-red-500 hover:bg-muted"
               onClick={(e) => {
-                e?.stopPropagation();
+                e.stopPropagation();
                 setShowActions(false);
-                onDelete(goal?.id);
+                onDelete(goal.id);
               }}
             >
-              <Icons?.TrashIcon className="h-4 w-4" />
+              <Icons.TrashIcon className="h-4 w-4" />
               Delete Goal
             </button>
           )}
@@ -147,16 +147,16 @@ export function GoalProgressCard({
       <div className="mb-4">
         <div className="mb-1 flex items-center justify-between">
           <span className="text-sm font-medium">
-            {formatUnit(goal?.current, goal?.unit)} of {formatUnit(goal?.target, goal?.unit)}
+            {formatUnit(goal.current, goal.unit)} of {formatUnit(goal.target, goal.unit)}
           </span>
-          <span className="text-sm font-medium">{Math?.round(progressPercentage)}%</span>
+          <span className="text-sm font-medium">{Math.round(progressPercentage)}%</span>
         </div>
         <div className="h-2 overflow-hidden rounded-full bg-muted">
           <div
             className="h-full transition-all duration-500 ease-in-out"
             style={{
               width: `${progressPercentage}%`,
-              backgroundColor: goal?.color || '#6366F1',
+              backgroundColor: goal.color || '#6366F1',
             }}
           />
         </div>
@@ -165,7 +165,7 @@ export function GoalProgressCard({
       <div className="flex gap-4 text-sm">
         {streak > 0 && (
           <div className="flex items-center gap-1 text-orange-500">
-            <Icons?.FireIcon className="h-4 w-4" />
+            <Icons.FireIcon className="h-4 w-4" />
             <span>{streak} day streak</span>
           </div>
         )}
@@ -174,16 +174,16 @@ export function GoalProgressCard({
             className={`flex items-center gap-1 ${improvement > 0 ? 'text-green-500' : 'text-red-500'}`}
           >
             {improvement > 0 ? (
-              <Icons?.ArrowUpIcon className="h-4 w-4" />
+              <Icons.ArrowUpIcon className="h-4 w-4" />
             ) : (
-              <Icons?.ArrowDownIcon className="h-4 w-4" />
+              <Icons.ArrowDownIcon className="h-4 w-4" />
             )}
-            <span>{Math?.abs(improvement)}% vs last week</span>
+            <span>{Math.abs(improvement)}% vs last week</span>
           </div>
         )}
-        {goal?.frequency && (
+        {goal.frequency && (
           <div className="text-muted-foreground">
-            {goal?.frequency.charAt(0).toUpperCase() + goal?.frequency.slice(1)}
+            {goal.frequency.charAt(0).toUpperCase() + goal.frequency.slice(1)}
           </div>
         )}
       </div>
@@ -200,12 +200,12 @@ export function GoalProgressCard({
                 id="logValue"
                 className="form-input w-full"
                 value={logValue}
-                onChange={(e) => setLogValue(Number(e?.target.value))}
+                onChange={(e) => setLogValue(Number(e.target.value))}
                 min={0}
-                step={goal?.type === 'sleep' ? 0?.5 : 1}
+                step={goal.type === 'sleep' ? 0.5 : 1}
                 required
               />
-              <span className="flex items-center text-sm text-muted-foreground">{goal?.unit}</span>
+              <span className="flex items-center text-sm text-muted-foreground">{goal.unit}</span>
             </div>
           </div>
           <div className="flex justify-end gap-2">
@@ -217,7 +217,7 @@ export function GoalProgressCard({
               Cancel
             </button>
             <button type="submit" className="btn-primary flex items-center gap-1 py-1 text-sm">
-              <Icons?.CheckIcon className="h-4 w-4" />
+              <Icons.CheckIcon className="h-4 w-4" />
               Save
             </button>
           </div>

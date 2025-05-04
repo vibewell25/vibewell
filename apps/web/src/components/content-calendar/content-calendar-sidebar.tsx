@@ -30,9 +30,9 @@ export function ContentCalendarSidebar({
   const [teamExpanded, setTeamExpanded] = useState(true);
 
   const handleAddPlatform = () => {
-    if (!newPlatformName?.trim()) return;
+    if (!newPlatformName.trim()) return;
     onAddPlatform({
-      id: (platforms?.length + 1).toString(),
+      id: (platforms.length + 1).toString(),
       name: newPlatformName,
       color: newPlatformColor,
     });
@@ -61,13 +61,13 @@ export function ContentCalendarSidebar({
           <CardContent className="p-3 pt-0">
             <ScrollArea className="h-40 pr-3">
               <ul className="space-y-2">
-                {platforms?.map((platform) => (
-                  <li key={platform?.id} className="flex items-center">
+                {platforms.map((platform) => (
+                  <li key={platform.id} className="flex items-center">
                     <div
                       className="mr-2 h-3 w-3 rounded-full"
-                      style={{ backgroundColor: platform?.color }}
+                      style={{ backgroundColor: platform.color }}
                     ></div>
-                    <span className="text-sm">{platform?.name}</span>
+                    <span className="text-sm">{platform.name}</span>
                   </li>
                 ))}
               </ul>
@@ -78,7 +78,7 @@ export function ContentCalendarSidebar({
                   <Input
                     placeholder="New platform"
                     value={newPlatformName}
-                    onChange={(e) => setNewPlatformName(e?.target.value)}
+                    onChange={(e) => setNewPlatformName(e.target.value)}
                     className="h-8 text-sm"
                   />
                 </div>
@@ -88,9 +88,9 @@ export function ContentCalendarSidebar({
                 size="sm"
                 className="h-8 w-full"
                 onClick={handleAddPlatform}
-                disabled={!newPlatformName?.trim()}
+                disabled={!newPlatformName.trim()}
               >
-                <Icons?.PlusIcon className="mr-1 h-4 w-4" />
+                <Icons.PlusIcon className="mr-1 h-4 w-4" />
                 Add Platform
               </Button>
             </div>
@@ -116,15 +116,15 @@ export function ContentCalendarSidebar({
           <CardContent className="p-3 pt-0">
             <ScrollArea className="h-40 pr-3">
               <ul className="space-y-2">
-                {teamMembers?.map((member) => (
-                  <li key={member?.id} className="flex items-center">
+                {teamMembers.map((member) => (
+                  <li key={member.id} className="flex items-center">
                     <Avatar className="mr-2 h-6 w-6">
-                      <AvatarImage src={member?.avatar} alt={member?.name} />
-                      <AvatarFallback>{member?.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+                      <AvatarImage src={member.avatar} alt={member.name} />
+                      <AvatarFallback>{member.name.slice(0, 2).toUpperCase()}</AvatarFallback>
                     </Avatar>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm">{member?.name}</p>
-                      <p className="truncate text-xs text-muted-foreground">{member?.role}</p>
+                      <p className="truncate text-sm">{member.name}</p>
+                      <p className="truncate text-xs text-muted-foreground">{member.role}</p>
                     </div>
                   </li>
                 ))}
@@ -139,7 +139,7 @@ export function ContentCalendarSidebar({
                 alert('Team member management will be implemented in the next phase');
               }}
             >
-              <Icons?.PlusIcon className="mr-1 h-4 w-4" />
+              <Icons.PlusIcon className="mr-1 h-4 w-4" />
               Add Team Member
             </Button>
           </CardContent>

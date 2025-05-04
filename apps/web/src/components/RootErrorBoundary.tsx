@@ -35,8 +35,8 @@ export class RootErrorBoundary extends Component<RootErrorBoundaryProps, RootErr
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     // You could log the error to an error reporting service here
-    console?.error('Application error caught by RootErrorBoundary:', error);
-    console?.error('Component stack:', errorInfo?.componentStack);
+    console.error('Application error caught by RootErrorBoundary:', error);
+    console.error('Component stack:', errorInfo.componentStack);
 
     this.setState({ errorInfo });
 
@@ -47,11 +47,11 @@ export class RootErrorBoundary extends Component<RootErrorBoundaryProps, RootErr
   handleReload = (): void => {
     // Reset the error state and refresh the page
     this.setState({ hasError: false, error: null, errorInfo: null });
-    window?.location.reload();
+    window.location.reload();
   };
 
   handleGoHome = (): void => {
-    // Reset the error state (navigation will happen via Next?.js)
+    // Reset the error state (navigation will happen via Next.js)
     this.setState({ hasError: false, error: null, errorInfo: null });
   };
 
@@ -87,17 +87,17 @@ export class RootErrorBoundary extends Component<RootErrorBoundaryProps, RootErr
               </Link>
             </div>
 
-            {process?.env.NODE_ENV === 'development' && (
+            {process.env.NODE_ENV === 'development' && (
               <details className="mt-6 rounded-md border border-border bg-muted p-3">
                 <summary className="cursor-pointer text-sm font-medium">
                   Error details (development only)
                 </summary>
                 <div className="mt-2">
                   <p className="mb-2 font-mono text-sm text-red-600">
-                    {this.state.error?.toString()}
+                    {this.state.error.toString()}
                   </p>
                   <pre className="max-h-60 overflow-auto whitespace-pre-wrap rounded bg-card p-2 text-xs text-muted-foreground">
-                    {this.state.errorInfo?.componentStack}
+                    {this.state.errorInfo.componentStack}
                   </pre>
                 </div>
               </details>

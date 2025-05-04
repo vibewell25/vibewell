@@ -24,13 +24,13 @@ interface TwoFactorForm {
   verificationCode: string;
 }
 
-const validationSchema = Yup?.object().shape({
-  verificationCode: Yup?.string()
+const validationSchema = Yup.object().shape({
+  verificationCode: Yup.string()
     .matches(/^\d{6}$/, 'Code must be exactly 6 digits')
     .required('Verification code is required'),
 });
 
-const TwoFactorSetupScreen: React?.FC = () => {
+const TwoFactorSetupScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
@@ -38,133 +38,133 @@ const TwoFactorSetupScreen: React?.FC = () => {
   const [secretKey, setSecretKey] = useState('');
   const [qrCodeUrl, setQrCodeUrl] = useState('');
   const [backupCodes, setBackupCodes] = useState<string[]>([]);
-  const twoFactorService = TwoFactorService?.getInstance();
+  const twoFactorService = TwoFactorService.getInstance();
 
   useEffect(() => {
     generateSecretKey();
   }, []);
 
   const generateSecretKey = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
-      const response = await twoFactorService?.generateSecretKey();
+      const response = await twoFactorService.generateSecretKey();
       
-      if (response?.success && response?.data) {
-        setSecretKey(response?.data.secretKey);
-        setQrCodeUrl(response?.data.qrCodeUrl);
+      if (response.success && response.data) {
+        setSecretKey(response.data.secretKey);
+        setQrCodeUrl(response.data.qrCodeUrl);
       } else {
-        Alert?.alert('Error', response?.message || 'Failed to generate 2FA secret key');
+        Alert.alert('Error', response.message || 'Failed to generate 2FA secret key');
       }
     } catch (error) {
-      Alert?.alert('Error', 'Failed to generate 2FA secret key');
+      Alert.alert('Error', 'Failed to generate 2FA secret key');
     } finally {
       setLoading(false);
     }
   };
 
   const generateBackupCodes = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
-      const response = await twoFactorService?.generateBackupCodes();
+      const response = await twoFactorService.generateBackupCodes();
       
-      if (response?.success && response?.data) {
-        setBackupCodes(response?.data.backupCodes);
+      if (response.success && response.data) {
+        setBackupCodes(response.data.backupCodes);
       } else {
-        Alert?.alert('Error', response?.message || 'Failed to generate backup codes');
+        Alert.alert('Error', response.message || 'Failed to generate backup codes');
       }
     } catch (error) {
-      Alert?.alert('Error', 'Failed to generate backup codes');
+      Alert.alert('Error', 'Failed to generate backup codes');
     }
   };
 
   const handleCopySecretKey = () => {
-    Clipboard?.setString(secretKey?.replace(/\s/g, ''));
-    Alert?.alert('Copied', 'Secret key copied to clipboard');
+    Clipboard.setString(secretKey.replace(/\s/g, ''));
+    Alert.alert('Copied', 'Secret key copied to clipboard');
   };
 
   const handleShareBackupCodes = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const message = 'Your 2FA Backup Codes:\n\n' + 
-        backupCodes?.join('\n') + 
+        backupCodes.join('\n') + 
         '\n\nKeep these codes safe and secure. You\'ll need them if you lose access to your authenticator app.';
       
-      await Share?.share({
+      await Share.share({
         message,
         title: 'Vibewell 2FA Backup Codes'
       });
     } catch (error) {
-      Alert?.alert('Error', 'Failed to share backup codes');
+      Alert.alert('Error', 'Failed to share backup codes');
     }
   };
 
   const handleVerifyCode = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');values: TwoFactorForm) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');values: TwoFactorForm) => {
     setLoading(true);
     try {
-      const verifyResponse = await twoFactorService?.verifyCode(values?.verificationCode);
+      const verifyResponse = await twoFactorService.verifyCode(values.verificationCode);
       
-      if (verifyResponse?.success) {
+      if (verifyResponse.success) {
         await generateBackupCodes();
         setStep('backup');
       } else {
-        Alert?.alert('Error', verifyResponse?.message || 'Invalid verification code');
+        Alert.alert('Error', verifyResponse.message || 'Invalid verification code');
       }
     } catch (error) {
-      Alert?.alert('Error', 'Failed to verify code');
+      Alert.alert('Error', 'Failed to verify code');
     } finally {
       setLoading(false);
     }
   };
 
   const handleFinish = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setLoading(true);
     try {
-      const response = await twoFactorService?.enable2FA();
+      const response = await twoFactorService.enable2FA();
       
-      if (response?.success) {
-        Alert?.alert(
+      if (response.success) {
+        Alert.alert(
           'Setup Complete',
           'Two-factor authentication has been enabled for your account.',
-          [{ text: 'OK', onPress: () => navigation?.goBack() }]
+          [{ text: 'OK', onPress: () => navigation.goBack() }]
         );
       } else {
-        Alert?.alert('Error', response?.message || 'Failed to enable 2FA');
+        Alert.alert('Error', response.message || 'Failed to enable 2FA');
       }
     } catch (error) {
-      Alert?.alert('Error', 'Failed to enable 2FA');
+      Alert.alert('Error', 'Failed to enable 2FA');
     } finally {
       setLoading(false);
     }
   };
 
   const renderQRStep = () => (
-    <View style={styles?.stepContainer}>
-      <Text style={[styles?.description, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
+    <View style={styles.stepContainer}>
+      <Text style={[styles.description, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
         Scan this QR code with your authenticator app (Google Authenticator, Authy, etc.).
       </Text>
 
-      <View style={[styles?.qrContainer, { backgroundColor: '#FFFFFF' }]}>
+      <View style={[styles.qrContainer, { backgroundColor: '#FFFFFF' }]}>
         <Image
           source={{ uri: qrCodeUrl }}
-          style={styles?.qrCode}
+          style={styles.qrCode}
           resizeMode="contain"
         />
       </View>
 
-      <Text style={[styles?.orText, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
+      <Text style={[styles.orText, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
         Or enter this code manually:
       </Text>
 
-      <View style={styles?.secretKeyContainer}>
-        <Text style={[styles?.secretKey, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+      <View style={styles.secretKeyContainer}>
+        <Text style={[styles.secretKey, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
           {secretKey}
         </Text>
         <TouchableOpacity onPress={handleCopySecretKey}>
@@ -173,17 +173,17 @@ const TwoFactorSetupScreen: React?.FC = () => {
       </View>
 
       <TouchableOpacity
-        style={styles?.button}
+        style={styles.button}
         onPress={() => setStep('verify')}
       >
-        <Text style={styles?.buttonText}>Next</Text>
+        <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
     </View>
   );
 
   const renderVerifyStep = () => (
-    <View style={styles?.stepContainer}>
-      <Text style={[styles?.description, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
+    <View style={styles.stepContainer}>
+      <Text style={[styles.description, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
         Enter the 6-digit code from your authenticator app to verify the setup.
       </Text>
 
@@ -194,15 +194,15 @@ const TwoFactorSetupScreen: React?.FC = () => {
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
           <View>
-            <View style={styles?.codeInputContainer}>
+            <View style={styles.codeInputContainer}>
               <TextInput
                 style={[
-                  styles?.codeInput,
+                  styles.codeInput,
                   { color: isDarkMode ? '#FFFFFF' : '#000000' }
                 ]}
                 placeholder="Enter 6-digit code"
                 placeholderTextColor={isDarkMode ? '#888888' : '#666666'}
-                value={values?.verificationCode}
+                value={values.verificationCode}
                 onChangeText={handleChange('verificationCode')}
                 onBlur={handleBlur('verificationCode')}
                 keyboardType="number-pad"
@@ -211,16 +211,16 @@ const TwoFactorSetupScreen: React?.FC = () => {
               />
             </View>
 
-            {touched?.verificationCode && errors?.verificationCode && (
-              <Text style={styles?.errorText}>{errors?.verificationCode}</Text>
+            {touched.verificationCode && errors.verificationCode && (
+              <Text style={styles.errorText}>{errors.verificationCode}</Text>
             )}
 
             <TouchableOpacity
-              style={[styles?.button, { opacity: loading ? 0?.7 : 1 }]}
+              style={[styles.button, { opacity: loading ? 0.7 : 1 }]}
               onPress={() => handleSubmit()}
               disabled={loading}
             >
-              <Text style={styles?.buttonText}>
+              <Text style={styles.buttonText}>
                 {loading ? 'Verifying...' : 'Verify'}
               </Text>
             </TouchableOpacity>
@@ -231,16 +231,16 @@ const TwoFactorSetupScreen: React?.FC = () => {
   );
 
   const renderBackupStep = () => (
-    <View style={styles?.stepContainer}>
-      <Text style={[styles?.description, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
+    <View style={styles.stepContainer}>
+      <Text style={[styles.description, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
         Save these backup codes in a secure place. You can use them to access your account if you lose your authenticator device.
       </Text>
 
-      <View style={styles?.backupCodesContainer}>
-        {backupCodes?.map((code, index) => (
+      <View style={styles.backupCodesContainer}>
+        {backupCodes.map((code, index) => (
           <Text
             key={index}
-            style={[styles?.backupCode, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}
+            style={[styles.backupCode, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}
           >
             {code}
           </Text>
@@ -248,39 +248,39 @@ const TwoFactorSetupScreen: React?.FC = () => {
       </View>
 
       <TouchableOpacity
-        style={styles?.shareButton}
+        style={styles.shareButton}
         onPress={handleShareBackupCodes}
       >
         <Feather name="share-2" size={20} color="#4F46E5" />
-        <Text style={styles?.shareButtonText}>Share Backup Codes</Text>
+        <Text style={styles.shareButtonText}>Share Backup Codes</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={styles?.button}
+        style={styles.button}
         onPress={handleFinish}
       >
-        <Text style={styles?.buttonText}>Finish Setup</Text>
+        <Text style={styles.buttonText}>Finish Setup</Text>
       </TouchableOpacity>
     </View>
   );
 
   return (
     <SafeAreaView style={[
-      styles?.container,
+      styles.container,
       { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }
     ]}>
       {loading && step === 'qr' && (
-        <View style={styles?.loadingContainer}>
-          <Text style={[styles?.loadingText, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+        <View style={styles.loadingContainer}>
+          <Text style={[styles.loadingText, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
             Generating 2FA Secret Key...
           </Text>
         </View>
       )}
       
-      <View style={styles?.header}>
+      <View style={styles.header}>
         <TouchableOpacity
-          onPress={() => navigation?.goBack()}
-          style={styles?.backButton}
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
         >
           <Feather
             name="arrow-left"
@@ -289,33 +289,33 @@ const TwoFactorSetupScreen: React?.FC = () => {
           />
         </TouchableOpacity>
         <Text style={[
-          styles?.title,
+          styles.title,
           { color: isDarkMode ? '#FFFFFF' : '#000000' }
         ]}>
           Set Up Two-Factor Auth
         </Text>
       </View>
 
-      <ScrollView style={styles?.content}>
-        <View style={styles?.stepsIndicator}>
+      <ScrollView style={styles.content}>
+        <View style={styles.stepsIndicator}>
           <View style={[
-            styles?.stepDot,
+            styles.stepDot,
             { backgroundColor: step === 'qr' ? '#4F46E5' : '#4F46E5' }
           ]} />
           <View style={[
-            styles?.stepLine,
+            styles.stepLine,
             { backgroundColor: step !== 'qr' ? '#4F46E5' : '#666666' }
           ]} />
           <View style={[
-            styles?.stepDot,
+            styles.stepDot,
             { backgroundColor: step === 'verify' ? '#4F46E5' : step === 'backup' ? '#4F46E5' : '#666666' }
           ]} />
           <View style={[
-            styles?.stepLine,
+            styles.stepLine,
             { backgroundColor: step === 'backup' ? '#4F46E5' : '#666666' }
           ]} />
           <View style={[
-            styles?.stepDot,
+            styles.stepDot,
             { backgroundColor: step === 'backup' ? '#4F46E5' : '#666666' }
           ]} />
         </View>
@@ -328,7 +328,7 @@ const TwoFactorSetupScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -397,7 +397,7 @@ const styles = StyleSheet?.create({
   },
   secretKey: {
     fontSize: 20,
-    fontFamily: Platform?.OS === 'ios' ? 'Courier' : 'monospace',
+    fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
     marginRight: 12,
   },
   button: {
@@ -422,7 +422,7 @@ const styles = StyleSheet?.create({
     paddingHorizontal: 16,
     fontSize: 20,
     textAlign: 'center',
-    fontFamily: Platform?.OS === 'ios' ? 'Courier' : 'monospace',
+    fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
   },
   errorText: {
     color: '#FF4444',
@@ -438,7 +438,7 @@ const styles = StyleSheet?.create({
   },
   backupCode: {
     fontSize: 18,
-    fontFamily: Platform?.OS === 'ios' ? 'Courier' : 'monospace',
+    fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
     textAlign: 'center',
     marginBottom: 8,
   },
@@ -462,7 +462,7 @@ const styles = StyleSheet?.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0?.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     zIndex: 999,
   },
   loadingText: {

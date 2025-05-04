@@ -20,23 +20,23 @@ interface SubscriptionManagementProps {
 
 export function SubscriptionManagement({ subscription }: SubscriptionManagementProps) {
   const router = useRouter();
-  const [status, setStatus] = useState(subscription?.status);
+  const [status, setStatus] = useState(subscription.status);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleStatusChange = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');newStatus: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');newStatus: string) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/subscriptions/${subscription?.id}`, {
+      const response = await fetch(`/api/subscriptions/${subscription.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify({ status: newStatus }),
+        body: JSON.stringify({ status: newStatus }),
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to update subscription status');
       }
 
@@ -45,9 +45,9 @@ export function SubscriptionManagement({ subscription }: SubscriptionManagementP
         title: 'Success',
         description: 'Subscription status updated successfully',
       });
-      router?.refresh();
+      router.refresh();
     } catch (error) {
-      console?.error('Error updating subscription:', error);
+      console.error('Error updating subscription:', error);
       toast({
         title: 'Error',
         description: 'Failed to update subscription status',
@@ -59,19 +59,19 @@ export function SubscriptionManagement({ subscription }: SubscriptionManagementP
   };
 
   const handleCancelSubscription = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!confirm('Are you sure you want to cancel this subscription?')) {
       return;
     }
 
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/subscriptions/${subscription?.id}`, {
+      const response = await fetch(`/api/subscriptions/${subscription.id}`, {
         method: 'DELETE',
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to cancel subscription');
       }
 
@@ -79,9 +79,9 @@ export function SubscriptionManagement({ subscription }: SubscriptionManagementP
         title: 'Success',
         description: 'Subscription cancelled successfully',
       });
-      router?.refresh();
+      router.refresh();
     } catch (error) {
-      console?.error('Error cancelling subscription:', error);
+      console.error('Error cancelling subscription:', error);
       toast({
         title: 'Error',
         description: 'Failed to cancel subscription',
@@ -96,7 +96,7 @@ export function SubscriptionManagement({ subscription }: SubscriptionManagementP
     <Card>
       <CardHeader>
         <CardTitle>Subscription Details</CardTitle>
-        <CardDescription>Manage subscription for {subscription?.user.name}</CardDescription>
+        <CardDescription>Manage subscription for {subscription.user.name}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -116,19 +116,19 @@ export function SubscriptionManagement({ subscription }: SubscriptionManagementP
             </div>
             <div>
               <p className="text-sm font-medium">Plan</p>
-              <p className="text-sm">{subscription?.plan}</p>
+              <p className="text-sm">{subscription.plan}</p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-sm font-medium">Start Date</p>
-              <p className="text-sm">{new Date(subscription?.startDate).toLocaleDateString()}</p>
+              <p className="text-sm">{new Date(subscription.startDate).toLocaleDateString()}</p>
             </div>
             <div>
               <p className="text-sm font-medium">Next Billing Date</p>
               <p className="text-sm">
-                {new Date(subscription?.nextBillingDate).toLocaleDateString()}
+                {new Date(subscription.nextBillingDate).toLocaleDateString()}
               </p>
             </div>
           </div>

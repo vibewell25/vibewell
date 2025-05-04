@@ -98,31 +98,31 @@ export function SecurityAudit() {
         <CardTitle>Security Audit Log</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {securityEvents?.map((event) => (
-          <div key={event?.id} className="flex items-start space-x-4 rounded-lg border p-4">
-            <div className={`mt-1 ${getStatusColor(event?.status)}`}>{getEventIcon(event?.type)}</div>
+        {securityEvents.map((event) => (
+          <div key={event.id} className="flex items-start space-x-4 rounded-lg border p-4">
+            <div className={`mt-1 ${getStatusColor(event.status)}`}>{getEventIcon(event.type)}</div>
             <div className="flex-1 space-y-1">
               <div className="flex items-center justify-between">
-                <p className="text-sm font-medium">{event?.title}</p>
+                <p className="text-sm font-medium">{event.title}</p>
                 <p className="text-xs text-muted-foreground">
-                  {formatDistanceToNow(new Date(event?.timestamp), {
+                  {formatDistanceToNow(new Date(event.timestamp), {
                     addSuffix: true,
                   })}
                 </p>
               </div>
-              <p className="text-sm text-muted-foreground">{event?.description}</p>
-              {(event?.location || event?.device) && (
+              <p className="text-sm text-muted-foreground">{event.description}</p>
+              {(event.location || event.device) && (
                 <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-                  {event?.location && (
+                  {event.location && (
                     <span className="flex items-center">
                       <Globe className="mr-1 h-3 w-3" />
-                      {event?.location}
+                      {event.location}
                     </span>
                   )}
-                  {event?.device && (
+                  {event.device && (
                     <span className="flex items-center">
                       <CheckCircle2 className="mr-1 h-3 w-3" />
-                      {event?.device}
+                      {event.device}
                     </span>
                   )}
                 </div>

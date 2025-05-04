@@ -21,7 +21,7 @@ const DUMMY_GOALS: Goal[] = [
     current: 7,
     unit: 'minutes',
     frequency: 'daily',
-    startDate: '2023-08-01T00:00:00?.000Z',
+    startDate: '2023-08-01T00:00:00.000Z',
     status: 'in_progress',
     color: '#8B5CF6',
     reminders: true,
@@ -36,7 +36,7 @@ const DUMMY_GOALS: Goal[] = [
     current: 2,
     unit: 'sessions',
     frequency: 'weekly',
-    startDate: '2023-08-01T00:00:00?.000Z',
+    startDate: '2023-08-01T00:00:00.000Z',
     status: 'in_progress',
     color: '#EC4899',
   },
@@ -49,7 +49,7 @@ const DUMMY_GOALS: Goal[] = [
     current: 5,
     unit: 'glasses',
     frequency: 'daily',
-    startDate: '2023-08-01T00:00:00?.000Z',
+    startDate: '2023-08-01T00:00:00.000Z',
     status: 'in_progress',
     color: '#0EA5E9',
   },
@@ -59,10 +59,10 @@ const DUMMY_GOALS: Goal[] = [
     description: 'Get 8 hours of sleep per night',
     type: 'sleep',
     target: 8,
-    current: 6?.5,
+    current: 6.5,
     unit: 'hours',
     frequency: 'daily',
-    startDate: '2023-08-01T00:00:00?.000Z',
+    startDate: '2023-08-01T00:00:00.000Z',
     status: 'in_progress',
     color: '#6366F1',
   },
@@ -75,7 +75,7 @@ const DUMMY_GOALS: Goal[] = [
     current: 8543,
     unit: 'steps',
     frequency: 'daily',
-    startDate: '2023-08-01T00:00:00?.000Z',
+    startDate: '2023-08-01T00:00:00.000Z',
     status: 'in_progress',
     color: '#84CC16',
   },
@@ -84,61 +84,61 @@ const DUMMY_GOALS: Goal[] = [
 // Dummy data for habit logs
 const DUMMY_HABIT_LOGS: HabitLog[] = [
   // Meditation logs for the past week
-  { id: 'm1', goalId: '1', date: '2023-08-01T00:00:00?.000Z', value: 10 },
-  { id: 'm2', goalId: '1', date: '2023-08-02T00:00:00?.000Z', value: 5 },
-  { id: 'm3', goalId: '1', date: '2023-08-03T00:00:00?.000Z', value: 12 },
-  { id: 'm4', goalId: '1', date: '2023-08-04T00:00:00?.000Z', value: 8 },
-  { id: 'm5', goalId: '1', date: '2023-08-05T00:00:00?.000Z', value: 15 },
-  { id: 'm6', goalId: '1', date: '2023-08-06T00:00:00?.000Z', value: 10 },
-  { id: 'm7', goalId: '1', date: '2023-08-07T00:00:00?.000Z', value: 7 },
+  { id: 'm1', goalId: '1', date: '2023-08-01T00:00:00.000Z', value: 10 },
+  { id: 'm2', goalId: '1', date: '2023-08-02T00:00:00.000Z', value: 5 },
+  { id: 'm3', goalId: '1', date: '2023-08-03T00:00:00.000Z', value: 12 },
+  { id: 'm4', goalId: '1', date: '2023-08-04T00:00:00.000Z', value: 8 },
+  { id: 'm5', goalId: '1', date: '2023-08-05T00:00:00.000Z', value: 15 },
+  { id: 'm6', goalId: '1', date: '2023-08-06T00:00:00.000Z', value: 10 },
+  { id: 'm7', goalId: '1', date: '2023-08-07T00:00:00.000Z', value: 7 },
 
   // Workout logs for the past week
-  { id: 'w1', goalId: '2', date: '2023-08-01T00:00:00?.000Z', value: 1 },
-  { id: 'w2', goalId: '2', date: '2023-08-03T00:00:00?.000Z', value: 1 },
-  { id: 'w3', goalId: '2', date: '2023-08-05T00:00:00?.000Z', value: 0 },
-  { id: 'w4', goalId: '2', date: '2023-08-07T00:00:00?.000Z', value: 1 },
+  { id: 'w1', goalId: '2', date: '2023-08-01T00:00:00.000Z', value: 1 },
+  { id: 'w2', goalId: '2', date: '2023-08-03T00:00:00.000Z', value: 1 },
+  { id: 'w3', goalId: '2', date: '2023-08-05T00:00:00.000Z', value: 0 },
+  { id: 'w4', goalId: '2', date: '2023-08-07T00:00:00.000Z', value: 1 },
 
   // Water logs for the past week
-  { id: 'h1', goalId: '3', date: '2023-08-01T00:00:00?.000Z', value: 6 },
-  { id: 'h2', goalId: '3', date: '2023-08-02T00:00:00?.000Z', value: 7 },
-  { id: 'h3', goalId: '3', date: '2023-08-03T00:00:00?.000Z', value: 8 },
-  { id: 'h4', goalId: '3', date: '2023-08-04T00:00:00?.000Z', value: 5 },
-  { id: 'h5', goalId: '3', date: '2023-08-05T00:00:00?.000Z', value: 7 },
-  { id: 'h6', goalId: '3', date: '2023-08-06T00:00:00?.000Z', value: 6 },
-  { id: 'h7', goalId: '3', date: '2023-08-07T00:00:00?.000Z', value: 5 },
+  { id: 'h1', goalId: '3', date: '2023-08-01T00:00:00.000Z', value: 6 },
+  { id: 'h2', goalId: '3', date: '2023-08-02T00:00:00.000Z', value: 7 },
+  { id: 'h3', goalId: '3', date: '2023-08-03T00:00:00.000Z', value: 8 },
+  { id: 'h4', goalId: '3', date: '2023-08-04T00:00:00.000Z', value: 5 },
+  { id: 'h5', goalId: '3', date: '2023-08-05T00:00:00.000Z', value: 7 },
+  { id: 'h6', goalId: '3', date: '2023-08-06T00:00:00.000Z', value: 6 },
+  { id: 'h7', goalId: '3', date: '2023-08-07T00:00:00.000Z', value: 5 },
 
   // Sleep logs for the past week
-  { id: 's1', goalId: '4', date: '2023-08-01T00:00:00?.000Z', value: 7?.5 },
-  { id: 's2', goalId: '4', date: '2023-08-02T00:00:00?.000Z', value: 6 },
-  { id: 's3', goalId: '4', date: '2023-08-03T00:00:00?.000Z', value: 8 },
-  { id: 's4', goalId: '4', date: '2023-08-04T00:00:00?.000Z', value: 7 },
-  { id: 's5', goalId: '4', date: '2023-08-05T00:00:00?.000Z', value: 6?.5 },
-  { id: 's6', goalId: '4', date: '2023-08-06T00:00:00?.000Z', value: 7?.5 },
-  { id: 's7', goalId: '4', date: '2023-08-07T00:00:00?.000Z', value: 6?.5 },
+  { id: 's1', goalId: '4', date: '2023-08-01T00:00:00.000Z', value: 7.5 },
+  { id: 's2', goalId: '4', date: '2023-08-02T00:00:00.000Z', value: 6 },
+  { id: 's3', goalId: '4', date: '2023-08-03T00:00:00.000Z', value: 8 },
+  { id: 's4', goalId: '4', date: '2023-08-04T00:00:00.000Z', value: 7 },
+  { id: 's5', goalId: '4', date: '2023-08-05T00:00:00.000Z', value: 6.5 },
+  { id: 's6', goalId: '4', date: '2023-08-06T00:00:00.000Z', value: 7.5 },
+  { id: 's7', goalId: '4', date: '2023-08-07T00:00:00.000Z', value: 6.5 },
 
   // Steps logs for the past week
-  { id: 'st1', goalId: '5', date: '2023-08-01T00:00:00?.000Z', value: 9200 },
-  { id: 'st2', goalId: '5', date: '2023-08-02T00:00:00?.000Z', value: 8500 },
-  { id: 'st3', goalId: '5', date: '2023-08-03T00:00:00?.000Z', value: 12000 },
-  { id: 'st4', goalId: '5', date: '2023-08-04T00:00:00?.000Z', value: 7800 },
-  { id: 'st5', goalId: '5', date: '2023-08-05T00:00:00?.000Z', value: 10500 },
-  { id: 'st6', goalId: '5', date: '2023-08-06T00:00:00?.000Z', value: 6300 },
-  { id: 'st7', goalId: '5', date: '2023-08-07T00:00:00?.000Z', value: 8543 },
+  { id: 'st1', goalId: '5', date: '2023-08-01T00:00:00.000Z', value: 9200 },
+  { id: 'st2', goalId: '5', date: '2023-08-02T00:00:00.000Z', value: 8500 },
+  { id: 'st3', goalId: '5', date: '2023-08-03T00:00:00.000Z', value: 12000 },
+  { id: 'st4', goalId: '5', date: '2023-08-04T00:00:00.000Z', value: 7800 },
+  { id: 'st5', goalId: '5', date: '2023-08-05T00:00:00.000Z', value: 10500 },
+  { id: 'st6', goalId: '5', date: '2023-08-06T00:00:00.000Z', value: 6300 },
+  { id: 'st7', goalId: '5', date: '2023-08-07T00:00:00.000Z', value: 8543 },
 ];
 
 // Dummy wellness days data
 const DUMMY_WELLNESS_DAYS: WellnessDay[] = [
   {
-    date: '2023-08-01T00:00:00?.000Z',
+    date: '2023-08-01T00:00:00.000Z',
     meditation: 10,
     workout: 30,
     water: 6,
-    sleep: 7?.5,
+    sleep: 7.5,
     steps: 9200,
     mood: 4,
   },
   {
-    date: '2023-08-02T00:00:00?.000Z',
+    date: '2023-08-02T00:00:00.000Z',
     meditation: 5,
     workout: 0,
     water: 7,
@@ -147,7 +147,7 @@ const DUMMY_WELLNESS_DAYS: WellnessDay[] = [
     mood: 3,
   },
   {
-    date: '2023-08-03T00:00:00?.000Z',
+    date: '2023-08-03T00:00:00.000Z',
     meditation: 12,
     workout: 45,
     water: 8,
@@ -156,7 +156,7 @@ const DUMMY_WELLNESS_DAYS: WellnessDay[] = [
     mood: 5,
   },
   {
-    date: '2023-08-04T00:00:00?.000Z',
+    date: '2023-08-04T00:00:00.000Z',
     meditation: 8,
     workout: 0,
     water: 5,
@@ -165,29 +165,29 @@ const DUMMY_WELLNESS_DAYS: WellnessDay[] = [
     mood: 4,
   },
   {
-    date: '2023-08-05T00:00:00?.000Z',
+    date: '2023-08-05T00:00:00.000Z',
     meditation: 15,
     workout: 0,
     water: 7,
-    sleep: 6?.5,
+    sleep: 6.5,
     steps: 10500,
     mood: 4,
   },
   {
-    date: '2023-08-06T00:00:00?.000Z',
+    date: '2023-08-06T00:00:00.000Z',
     meditation: 10,
     workout: 60,
     water: 6,
-    sleep: 7?.5,
+    sleep: 7.5,
     steps: 6300,
     mood: 3,
   },
   {
-    date: '2023-08-07T00:00:00?.000Z',
+    date: '2023-08-07T00:00:00.000Z',
     meditation: 7,
     workout: 30,
     water: 5,
-    sleep: 6?.5,
+    sleep: 6.5,
     steps: 8543,
     mood: 4,
   },
@@ -206,39 +206,39 @@ export function useWellnessData() {
 
   // Fetch all data
   const fetchData = useCallback(async () => {
-    if (!user?.id) return;
+    if (!user.id) return;
 
     setIsLoading(true);
     setError(null);
 
     try {
       // Fetch goals
-      const fetchedGoals = await wellnessAPI?.getGoals(user?.id);
-      setGoals(fetchedGoals?.length > 0 ? fetchedGoals : DUMMY_GOALS);
+      const fetchedGoals = await wellnessAPI.getGoals(user.id);
+      setGoals(fetchedGoals.length > 0 ? fetchedGoals : DUMMY_GOALS);
 
       // Fetch habit logs for the last 30 days
       const today = new Date();
       const thirtyDaysAgo = new Date(today);
-      thirtyDaysAgo?.setDate(today?.getDate() - 30);
-      const startDate = thirtyDaysAgo?.toISOString().split('T')[0];
+      thirtyDaysAgo.setDate(today.getDate() - 30);
+      const startDate = thirtyDaysAgo.toISOString().split('T')[0];
 
-      const fetchedLogs = await wellnessAPI?.getHabitLogs(user?.id, undefined, startDate);
-      setHabitLogs(fetchedLogs?.length > 0 ? fetchedLogs : DUMMY_HABIT_LOGS);
+      const fetchedLogs = await wellnessAPI.getHabitLogs(user.id, undefined, startDate);
+      setHabitLogs(fetchedLogs.length > 0 ? fetchedLogs : DUMMY_HABIT_LOGS);
 
       // Fetch wellness days for the last 7 days
-      const fetchedDays = await wellnessAPI?.getWellnessDays(user?.id);
-      setWellnessDays(fetchedDays?.length > 0 ? fetchedDays : DUMMY_WELLNESS_DAYS);
+      const fetchedDays = await wellnessAPI.getWellnessDays(user.id);
+      setWellnessDays(fetchedDays.length > 0 ? fetchedDays : DUMMY_WELLNESS_DAYS);
 
       // Fetch summary
-      const fetchedSummary = await wellnessAPI?.getProgressSummary(user?.id);
+      const fetchedSummary = await wellnessAPI.getProgressSummary(user.id);
       if (fetchedSummary) {
         setSummary(fetchedSummary);
       } else {
         // Generate fallback summary if API fails
-        generateFallbackSummary(fetchedGoals?.length > 0 ? fetchedGoals : DUMMY_GOALS);
+        generateFallbackSummary(fetchedGoals.length > 0 ? fetchedGoals : DUMMY_GOALS);
       }
     } catch (err) {
-      console?.error('Error fetching wellness data:', err);
+      console.error('Error fetching wellness data:', err);
       setError('Failed to load wellness data');
 
       // Use dummy data as fallback
@@ -249,12 +249,12 @@ export function useWellnessData() {
     } finally {
       setIsLoading(false);
     }
-  }, [user?.id]);
+  }, [user.id]);
 
   // Generate fallback summary from goal data
   const generateFallbackSummary = (goalsData: Goal[]) => {
-    const activeGoals = goalsData?.filter((g) => g?.status === 'in_progress').length;
-    const completedGoals = goalsData?.filter((g) => g?.status === 'completed').length;
+    const activeGoals = goalsData.filter((g) => g.status === 'in_progress').length;
+    const completedGoals = goalsData.filter((g) => g.status === 'completed').length;
     const dailyStreak = 0;
 
     const thisWeekProgress = {
@@ -287,20 +287,20 @@ export function useWellnessData() {
     fetchData();
 
     // Safe array access
-    if (fetchData < 0 || fetchData >= array?.length) {
+    if (fetchData < 0 || fetchData >= array.length) {
       throw new Error('Array index out of bounds');
     }
   }, [fetchData]);
 
   // Create a new goal
   const createGoal = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');newGoal: Omit<Goal, 'id' | 'current' | 'status'>) => {
-    if (!user?.id) return;
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');newGoal: Omit<Goal, 'id' | 'current' | 'status'>) => {
+    if (!user.id) return;
 
     try {
       setIsLoading(true);
-      const createdGoal = await wellnessAPI?.createGoal(user?.id, newGoal);
+      const createdGoal = await wellnessAPI.createGoal(user.id, newGoal);
 
       if (createdGoal) {
         setGoals((prevGoals) => [createdGoal, ...prevGoals]);
@@ -308,12 +308,12 @@ export function useWellnessData() {
         throw new Error('Failed to create goal');
       }
     } catch (err) {
-      console?.error('Error creating goal:', err);
+      console.error('Error creating goal:', err);
       setError('Failed to create goal');
 
       // Optimistic update with a temp ID
       const tempGoal: Goal = {
-        id: `temp-${Date?.now()}`,
+        id: `temp-${Date.now()}`,
         ...newGoal,
         current: 0,
         status: 'not_started',
@@ -327,24 +327,24 @@ export function useWellnessData() {
 
   // Update an existing goal
   const updateGoal = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');goalId: string, updatedData: Partial<Omit<Goal, 'id'>>) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');goalId: string, updatedData: Partial<Omit<Goal, 'id'>>) => {
     try {
       setIsLoading(true);
-      const updatedGoal = await wellnessAPI?.updateGoal(goalId, updatedData);
+      const updatedGoal = await wellnessAPI.updateGoal(goalId, updatedData);
 
       if (updatedGoal) {
-        setGoals((prevGoals) => prevGoals?.map((goal) => (goal?.id === goalId ? updatedGoal : goal)));
+        setGoals((prevGoals) => prevGoals.map((goal) => (goal.id === goalId ? updatedGoal : goal)));
       } else {
         throw new Error('Failed to update goal');
       }
     } catch (err) {
-      console?.error('Error updating goal:', err);
+      console.error('Error updating goal:', err);
       setError('Failed to update goal');
 
       // Optimistic update
       setGoals((prevGoals) =>
-        prevGoals?.map((goal) => (goal?.id === goalId ? { ...goal, ...updatedData } : goal)),
+        prevGoals.map((goal) => (goal.id === goalId ? { ...goal, ...updatedData } : goal)),
       );
     } finally {
       setIsLoading(false);
@@ -353,19 +353,19 @@ export function useWellnessData() {
 
   // Delete a goal
   const deleteGoal = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');goalId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');goalId: string) => {
     try {
       setIsLoading(true);
-      const success = await wellnessAPI?.deleteGoal(goalId);
+      const success = await wellnessAPI.deleteGoal(goalId);
 
       if (success) {
-        setGoals((prevGoals) => prevGoals?.filter((goal) => goal?.id !== goalId));
+        setGoals((prevGoals) => prevGoals.filter((goal) => goal.id !== goalId));
       } else {
         throw new Error('Failed to delete goal');
       }
     } catch (err) {
-      console?.error('Error deleting goal:', err);
+      console.error('Error deleting goal:', err);
       setError('Failed to delete goal');
     } finally {
       setIsLoading(false);
@@ -374,13 +374,13 @@ export function useWellnessData() {
 
   // Log progress for a goal
   const logHabit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');goalId: string, value: number) => {
-    if (!user?.id) return;
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');goalId: string, value: number) => {
+    if (!user.id) return;
 
     try {
       setIsLoading(true);
-      const newLog = await wellnessAPI?.logHabit(user?.id, goalId, value);
+      const newLog = await wellnessAPI.logHabit(user.id, goalId, value);
 
       if (newLog) {
         // Add the new log
@@ -388,13 +388,13 @@ export function useWellnessData() {
 
         // Update the goal's current value optimistically
         setGoals((prevGoals) =>
-          prevGoals?.map((goal) => {
-            if (goal?.id === goalId) {
+          prevGoals.map((goal) => {
+            if (goal.id === goalId) {
               return {
                 ...goal,
 
-                current: goal?.current + value,
-                status: goal?.status === 'not_started' ? 'in_progress' : goal?.status,
+                current: goal.current + value,
+                status: goal.status === 'not_started' ? 'in_progress' : goal.status,
               };
             }
             return goal;
@@ -407,12 +407,12 @@ export function useWellnessData() {
         throw new Error('Failed to log habit');
       }
     } catch (err) {
-      console?.error('Error logging habit:', err);
+      console.error('Error logging habit:', err);
       setError('Failed to log habit progress');
 
       // Optimistic update with a temp ID
       const tempLog: HabitLog = {
-        id: `temp-${Date?.now()}`,
+        id: `temp-${Date.now()}`,
         goalId,
         date: new Date().toISOString(),
         value,
@@ -422,13 +422,13 @@ export function useWellnessData() {
 
       // Update the goal's current value optimistically
       setGoals((prevGoals) =>
-        prevGoals?.map((goal) => {
-          if (goal?.id === goalId) {
+        prevGoals.map((goal) => {
+          if (goal.id === goalId) {
             return {
               ...goal,
 
-              current: goal?.current + value,
-              status: goal?.status === 'not_started' ? 'in_progress' : goal?.status,
+              current: goal.current + value,
+              status: goal.status === 'not_started' ? 'in_progress' : goal.status,
             };
           }
           return goal;

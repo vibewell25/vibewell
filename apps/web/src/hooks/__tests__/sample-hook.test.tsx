@@ -22,12 +22,12 @@ function useCounter(initialValue = 0): CounterHook {
 describe('useCounter', () => {
   it('should initialize with the default value', () => {
     const { result } = renderHookWithProviders<void, CounterHook>(() => useCounter());
-    expect(result?.current.count).toBe(0);
+    expect(result.current.count).toBe(0);
   });
 
   it('should initialize with the provided value', () => {
     const { result } = renderHookWithProviders<void, CounterHook>(() => useCounter(10));
-    expect(result?.current.count).toBe(10);
+    expect(result.current.count).toBe(10);
   });
 
   it('should increment count', async () => {
@@ -35,9 +35,9 @@ describe('useCounter', () => {
       () => useCounter(),
       [
         {
-          act: (result) => result?.result.current?.increment(),
+          act: (result) => result.result.current.increment(),
           assert: (result) => {
-            expect(result?.result.current?.count).toBe(1);
+            expect(result.result.current.count).toBe(1);
           },
         },
       ],
@@ -49,9 +49,9 @@ describe('useCounter', () => {
       () => useCounter(5),
       [
         {
-          act: (result) => result?.result.current?.decrement(),
+          act: (result) => result.result.current.decrement(),
           assert: (result) => {
-            expect(result?.result.current?.count).toBe(4);
+            expect(result.result.current.count).toBe(4);
           },
         },
       ],
@@ -63,21 +63,21 @@ describe('useCounter', () => {
       () => useCounter(),
       [
         {
-          act: (result) => result?.result.current?.increment(),
+          act: (result) => result.result.current.increment(),
           assert: (result) => {
-            expect(result?.result.current?.count).toBe(1);
+            expect(result.result.current.count).toBe(1);
           },
         },
         {
-          act: (result) => result?.result.current?.increment(),
+          act: (result) => result.result.current.increment(),
           assert: (result) => {
-            expect(result?.result.current?.count).toBe(2);
+            expect(result.result.current.count).toBe(2);
           },
         },
         {
-          act: (result) => result?.result.current?.decrement(),
+          act: (result) => result.result.current.decrement(),
           assert: (result) => {
-            expect(result?.result.current?.count).toBe(1);
+            expect(result.result.current.count).toBe(1);
           },
         },
       ],

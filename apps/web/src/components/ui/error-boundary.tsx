@@ -1,1 +1,2 @@
-export { ErrorBoundary, withErrorBoundary } from './error-boundary';
+export { ErrorBoundary } from '@/components/ErrorBoundary';
+export { withErrorBoundary } from '@/hooks/useErrorBoundary';

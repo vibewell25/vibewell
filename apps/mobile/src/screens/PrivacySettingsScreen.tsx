@@ -26,7 +26,7 @@ interface PrivacyPreferences {
   biometricAuth: boolean;
 }
 
-const PrivacySettingsScreen: React?.FC = () => {
+const PrivacySettingsScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const navigation = useNavigation();
   const [preferences, setPreferences] = useState<PrivacyPreferences>({
@@ -46,33 +46,33 @@ const PrivacySettingsScreen: React?.FC = () => {
   }, []);
 
   const loadPreferences = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
-      const saved = await AsyncStorage?.getItem('@vibewell/privacy_preferences');
+      const saved = await AsyncStorage.getItem('@vibewell/privacy_preferences');
       if (saved) {
-        setPreferences(JSON?.parse(saved));
+        setPreferences(JSON.parse(saved));
       }
     } catch (error) {
-      console?.error('Error loading privacy preferences:', error);
-      Alert?.alert('Error', 'Failed to load privacy preferences');
+      console.error('Error loading privacy preferences:', error);
+      Alert.alert('Error', 'Failed to load privacy preferences');
     } finally {
       setLoading(false);
     }
   };
 
   const savePreferences = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');newPreferences: PrivacyPreferences) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');newPreferences: PrivacyPreferences) => {
     try {
-      await AsyncStorage?.setItem(
+      await AsyncStorage.setItem(
         '@vibewell/privacy_preferences',
-        JSON?.stringify(newPreferences)
+        JSON.stringify(newPreferences)
       );
       setPreferences(newPreferences);
     } catch (error) {
-      console?.error('Error saving privacy preferences:', error);
-      Alert?.alert('Error', 'Failed to save privacy preferences');
+      console.error('Error saving privacy preferences:', error);
+      Alert.alert('Error', 'Failed to save privacy preferences');
     }
   };
 
@@ -83,22 +83,22 @@ const PrivacySettingsScreen: React?.FC = () => {
     };
 
     // If data sharing is disabled, disable related features
-    if (key === 'dataSharing' && !newPreferences?.dataSharing) {
-      newPreferences?.analytics = false;
-      newPreferences?.personalization = false;
-      newPreferences?.marketing = false;
-      newPreferences?.thirdPartyIntegrations = false;
+    if (key === 'dataSharing' && !newPreferences.dataSharing) {
+      newPreferences.analytics = false;
+      newPreferences.personalization = false;
+      newPreferences.marketing = false;
+      newPreferences.thirdPartyIntegrations = false;
     }
 
     savePreferences(newPreferences);
   };
 
   const handleViewPrivacyPolicy = () => {
-    Linking?.openURL('https://vibewell?.com/privacy-policy');
+    Linking.openURL('https://vibewell.com/privacy-policy');
   };
 
   const handleDeleteData = () => {
-    Alert?.alert(
+    Alert.alert(
       'Delete All Data',
       'Are you sure you want to delete all your data? This action cannot be undone.',
       [
@@ -111,7 +111,7 @@ const PrivacySettingsScreen: React?.FC = () => {
           style: 'destructive',
           onPress: () => {
             // TODO: Implement data deletion
-            Alert?.alert('Success', 'Your data has been deleted');
+            Alert.alert('Success', 'Your data has been deleted');
           }
         }
       ]
@@ -125,22 +125,22 @@ const PrivacySettingsScreen: React?.FC = () => {
     disabled?: boolean
   ) => (
     <View style={[
-      styles?.settingItem,
+      styles.settingItem,
       { borderBottomColor: isDarkMode ? '#333333' : '#E0E0E0' }
     ]}>
-      <View style={styles?.settingContent}>
+      <View style={styles.settingContent}>
         <Text style={[
-          styles?.settingLabel,
+          styles.settingLabel,
           { color: isDarkMode ? '#FFFFFF' : '#000000' },
-          disabled && styles?.disabledText
+          disabled && styles.disabledText
         ]}>
           {label}
         </Text>
         {description && (
           <Text style={[
-            styles?.settingDescription,
+            styles.settingDescription,
             { color: isDarkMode ? '#BBBBBB' : '#666666' },
-            disabled && styles?.disabledText
+            disabled && styles.disabledText
           ]}>
             {description}
           </Text>
@@ -164,27 +164,27 @@ const PrivacySettingsScreen: React?.FC = () => {
     <TouchableOpacity
       onPress={onPress}
       style={[
-        styles?.actionButton,
+        styles.actionButton,
         {
           backgroundColor: type === 'destructive' ? '#DC2626' : '#4F46E5',
-          opacity: loading ? 0?.5 : 1
+          opacity: loading ? 0.5 : 1
         }
       ]}
       disabled={loading}
     >
-      <Text style={styles?.actionButtonText}>{label}</Text>
+      <Text style={styles.actionButtonText}>{label}</Text>
     </TouchableOpacity>
   );
 
   return (
     <SafeAreaView style={[
-      styles?.container,
+      styles.container,
       { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }
     ]}>
-      <View style={styles?.header}>
+      <View style={styles.header}>
         <TouchableOpacity
-          onPress={() => navigation?.goBack()}
-          style={styles?.backButton}
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
         >
           <Feather
             name="arrow-left"
@@ -193,17 +193,17 @@ const PrivacySettingsScreen: React?.FC = () => {
           />
         </TouchableOpacity>
         <Text style={[
-          styles?.title,
+          styles.title,
           { color: isDarkMode ? '#FFFFFF' : '#000000' }
         ]}>
           Privacy Settings
         </Text>
       </View>
 
-      <ScrollView style={styles?.content}>
-        <View style={styles?.section}>
+      <ScrollView style={styles.content}>
+        <View style={styles.section}>
           <Text style={[
-            styles?.sectionTitle,
+            styles.sectionTitle,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             Data Collection
@@ -225,9 +225,9 @@ const PrivacySettingsScreen: React?.FC = () => {
           )}
         </View>
 
-        <View style={styles?.section}>
+        <View style={styles.section}>
           <Text style={[
-            styles?.sectionTitle,
+            styles.sectionTitle,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             Data Usage
@@ -241,31 +241,31 @@ const PrivacySettingsScreen: React?.FC = () => {
             'analytics',
             'Analytics',
             'Help us improve with usage data',
-            !preferences?.dataSharing
+            !preferences.dataSharing
           )}
           {renderSettingItem(
             'personalization',
             'Personalization',
             'Customize your experience',
-            !preferences?.dataSharing
+            !preferences.dataSharing
           )}
           {renderSettingItem(
             'marketing',
             'Marketing',
             'Receive personalized offers',
-            !preferences?.dataSharing
+            !preferences.dataSharing
           )}
           {renderSettingItem(
             'thirdPartyIntegrations',
             'Third-party Integrations',
             'Allow data sharing with partners',
-            !preferences?.dataSharing
+            !preferences.dataSharing
           )}
         </View>
 
-        <View style={styles?.section}>
+        <View style={styles.section}>
           <Text style={[
-            styles?.sectionTitle,
+            styles.sectionTitle,
             { color: isDarkMode ? '#FFFFFF' : '#000000' }
           ]}>
             Privacy Information
@@ -285,7 +285,7 @@ const PrivacySettingsScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -335,7 +335,7 @@ const styles = StyleSheet?.create({
     fontSize: 14,
   },
   disabledText: {
-    opacity: 0?.5,
+    opacity: 0.5,
   },
   actionButton: {
     margin: 16,

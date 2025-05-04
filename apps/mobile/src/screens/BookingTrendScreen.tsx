@@ -7,34 +7,34 @@ import { Dimensions } from 'react-native';
 
 interface DataItem { month: string; count: number; }
 
-const BookingTrendScreen: React?.FC = () => {
+const BookingTrendScreen: React.FC = () => {
   const { token } = useAuth();
   const [data, setData] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => { fetchData(); }, []);
   const fetchData = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setLoading(true);
     try {
       const res = await fetch(`${serverBaseUrl}/api/analytics/bookings/monthly`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const json: DataItem[] = await res?.json();
+      const json: DataItem[] = await res.json();
       setData(json);
     } catch (e) {
-      console?.error(e);
+      console.error(e);
     }
     setLoading(false);
   };
 
-  if (loading) return <ActivityIndicator style={styles?.loader} size="large" />;
+  if (loading) return <ActivityIndicator style={styles.loader} size="large" />;
   return (
-    <View style={styles?.container}>
+    <View style={styles.container}>
       <LineChart
-        data={{ labels: data?.map(d => d?.month), datasets: [{ data: data?.map(d => d?.count) }] }}
-        width={Dimensions?.get('window').width - 32}
+        data={{ labels: data.map(d => d.month), datasets: [{ data: data.map(d => d.count) }] }}
+        width={Dimensions.get('window').width - 32}
         height={220}
         chartConfig={{
           backgroundColor: '#fff',
@@ -50,7 +50,7 @@ const BookingTrendScreen: React?.FC = () => {
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   loader: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });

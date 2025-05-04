@@ -9,10 +9,10 @@ interface ARModelViewerProps {
 
 // Map model IDs to their file paths
 const MODEL_PATHS: Record<string, string> = {
-  'lipstick-red': '/models/lipstick-red?.glb',
-  'foundation-medium': '/models/foundation-medium?.glb',
-  'eyeshadow-palette': '/models/eyeshadow-palette?.glb',
-  'blush-pink': '/models/blush-pink?.glb',
+  'lipstick-red': '/models/lipstick-red.glb',
+  'foundation-medium': '/models/foundation-medium.glb',
+  'eyeshadow-palette': '/models/eyeshadow-palette.glb',
+  'blush-pink': '/models/blush-pink.glb',
 };
 
 // Component to render the 3D model
@@ -21,7 +21,7 @@ function Model({ modelPath, onLoaded }: { modelPath: string; onLoaded: () => voi
 
   // Auto-rotate the model
   useFrame(({ clock }) => {
-    scene?.rotation.y = clock?.getElapsedTime() * 0?.15;
+    scene.rotation.y = clock.getElapsedTime() * 0.15;
   });
 
   // Call onLoaded after the model is rendered
@@ -29,7 +29,7 @@ function Model({ modelPath, onLoaded }: { modelPath: string; onLoaded: () => voi
     onLoaded();
   }, [onLoaded]);
 
-  return <primitive object={scene} scale={1?.5} position={[0, 0, 0]} />;
+  return <primitive object={scene} scale={1.5} position={[0, 0, 0]} />;
 }
 
 /**
@@ -62,8 +62,8 @@ export function ARModelViewer({ modelId }: ARModelViewerProps) {
       )}
 
       <Canvas shadows camera={{ position: [0, 0, 4], fov: 50 }}>
-        <ambientLight intensity={0?.5} />
-        <spotLight position={[10, 10, 10]} angle={0?.15} penumbra={1} />
+        <ambientLight intensity={0.5} />
+        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
         <pointLight position={[-10, -10, -10]} />
 
         <Suspense fallback={null}>

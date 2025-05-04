@@ -18,8 +18,8 @@ export function ARControls({ modelId }: ARControlsProps) {
   const [inARMode, setInARMode] = useState(false);
 
   const startARSession = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setInARMode(true);
       // In a real implementation, this would initialize WebXR
@@ -27,7 +27,7 @@ export function ARControls({ modelId }: ARControlsProps) {
       // For demonstration purposes
       alert('AR mode activated! In a real app, this would launch the AR experience.');
     } catch (err) {
-      console?.error('Error starting AR session:', err);
+      console.error('Error starting AR session:', err);
       setInARMode(false);
     }
   };
@@ -38,20 +38,20 @@ export function ARControls({ modelId }: ARControlsProps) {
   };
 
   const shareModel = () => {
-    if (navigator?.share) {
+    if (navigator.share) {
       navigator
         .share({
           title: 'Check out this product in AR',
           text: 'Try this product virtually with Vibewell AR!',
-          url: `https://vibewell?.com/virtual-try-on/${modelId}`,
+          url: `https://vibewell.com/virtual-try-on/${modelId}`,
         })
         .catch((err) => {
-          console?.error('Error sharing:', err);
+          console.error('Error sharing:', err);
         });
     } else {
       // Fallback for browsers that don't support the Web Share API
-      const shareUrl = `https://vibewell?.com/virtual-try-on/${modelId}`;
-      navigator?.clipboard.writeText(shareUrl);
+      const shareUrl = `https://vibewell.com/virtual-try-on/${modelId}`;
+      navigator.clipboard.writeText(shareUrl);
       alert('Link copied to clipboard!');
     }
   };
@@ -66,7 +66,7 @@ export function ARControls({ modelId }: ARControlsProps) {
         >
           <span className="mr-2">Try in AR</span>
           <svg
-            xmlns="http://www?.w3.org/2000/svg"
+            xmlns="http://www.w3.org/2000/svg"
             width="20"
             height="20"
             viewBox="0 0 24 24"
@@ -76,7 +76,7 @@ export function ARControls({ modelId }: ARControlsProps) {
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            <path d="M12?.22 2h-.44a2 2 0 0 0-2 2v?.18a2 2 0 0 1-1 1?.73l-.43?.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2?.73.73l-.22?.38a2 2 0 0 0 .73 2?.73l.15?.1a2 2 0 0 1 1 1?.72v.51a2 2 0 0 1-1 1?.74l-.15?.09a2 2 0 0 0-.73 2?.73l.22?.38a2 2 0 0 0 2?.73.73l?.15-.08a2 2 0 0 1 2 0l?.43.25a2 2 0 0 1 1 1?.73V20a2 2 0 0 0 2 2h?.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1?.73l.43-.25a2 2 0 0 1 2 0l?.15.08a2 2 0 0 0 2?.73-.73l?.22-.39a2 2 0 0 0-.73-2?.73l-.15-.08a2 2 0 0 1-1-1?.74v-.5a2 2 0 0 1 1-1?.74l.15-.09a2 2 0 0 0 .73-2?.73l-.22-.38a2 2 0 0 0-2?.73-.73l-.15?.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1?.73V4a2 2 0 0 0-2-2z"></path>
+            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
             <circle cx="12" cy="12" r="3"></circle>
           </svg>
         </button>

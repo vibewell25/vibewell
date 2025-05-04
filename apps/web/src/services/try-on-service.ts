@@ -24,7 +24,7 @@ export class TryOnService {
   private recommendationService: RecommendationService;
 
   constructor() {
-    this?.recommendationService = new RecommendationService();
+    this.recommendationService = new RecommendationService();
   }
 
   /**
@@ -33,7 +33,7 @@ export class TryOnService {
    */
   async startSession(userId: string, productId: string): Promise<string> {
     try {
-      const data = await prisma?.tryOnSession.create({
+      const data = await prisma.tryOnSession.create({
         data: {
           userId,
           productId,
@@ -46,16 +46,16 @@ export class TryOnService {
 
       // Increment product view count via recommendation service
       try {
-        await this?.recommendationService.trackProductView(userId, productId);
+        await this.recommendationService.trackProductView(userId, productId);
       } catch (viewError) {
-        console?.error('Failed to track product view:', viewError);
+        console.error('Failed to track product view:', viewError);
         // Continue with session creation even if view tracking fails
       }
 
-      return data?.id;
+      return data.id;
     } catch (err) {
 
-      console?.error('Error starting try-on session:', err);
+      console.error('Error starting try-on session:', err);
       throw err;
     }
   }
@@ -74,21 +74,21 @@ export class TryOnService {
     },
   ): Promise<void> {
     try {
-      await prisma?.tryOnSession.updateMany({
+      await prisma.tryOnSession.updateMany({
         where: {
           id: sessionId,
           userId: userId,
         },
         data: {
           completed: true,
-          durationSeconds: data?.duration_seconds,
-          screenshots: data?.screenshots,
-          feedback: data?.feedback as any,
+          durationSeconds: data.duration_seconds,
+          screenshots: data.screenshots,
+          feedback: data.feedback as any,
         },
       });
     } catch (err) {
 
-      console?.error('Error completing try-on session:', err);
+      console.error('Error completing try-on session:', err);
       throw err;
     }
   }
@@ -99,7 +99,7 @@ export class TryOnService {
    */
   async addFeedback(sessionId: string, userId: string, feedback: TryOnFeedback): Promise<void> {
     try {
-      await prisma?.tryOnSession.updateMany({
+      await prisma.tryOnSession.updateMany({
         where: {
           id: sessionId,
           userId: userId,
@@ -110,7 +110,7 @@ export class TryOnService {
       });
     } catch (err) {
 
-      console?.error('Error adding try-on feedback:', err);
+      console.error('Error adding try-on feedback:', err);
       throw err;
     }
   }
@@ -121,7 +121,7 @@ export class TryOnService {
    */
   async getUserSessions(userId: string): Promise<TryOnSession[]> {
     try {
-      const sessions = await prisma?.tryOnSession.findMany({
+      const sessions = await prisma.tryOnSession.findMany({
         where: {
           userId: userId,
         },
@@ -130,19 +130,19 @@ export class TryOnService {
         },
       });
 
-      return sessions?.map((session) => ({
-        id: session?.id,
-        user_id: session?.userId,
-        product_id: session?.productId,
-        duration_seconds: session?.durationSeconds || undefined,
-        completed: session?.completed || undefined,
-        feedback: session?.feedback as TryOnFeedback | undefined,
-        screenshots: session?.screenshots,
-        created_at: session?.createdAt.toISOString(),
+      return sessions.map((session) => ({
+        id: session.id,
+        user_id: session.userId,
+        product_id: session.productId,
+        duration_seconds: session.durationSeconds || undefined,
+        completed: session.completed || undefined,
+        feedback: session.feedback as TryOnFeedback | undefined,
+        screenshots: session.screenshots,
+        created_at: session.createdAt.toISOString(),
       }));
     } catch (err) {
 
-      console?.error('Error getting user try-on sessions:', err);
+      console.error('Error getting user try-on sessions:', err);
       return [];
     }
   }
@@ -153,7 +153,7 @@ export class TryOnService {
    */
   async getProductSession(userId: string, productId: string): Promise<TryOnSession | null> {
     try {
-      const session = await prisma?.tryOnSession.findFirst({
+      const session = await prisma.tryOnSession.findFirst({
         where: {
           userId: userId,
           productId: productId,
@@ -168,18 +168,18 @@ export class TryOnService {
       }
 
       return {
-        id: session?.id,
-        user_id: session?.userId,
-        product_id: session?.productId,
-        duration_seconds: session?.durationSeconds || undefined,
-        completed: session?.completed || undefined,
-        feedback: session?.feedback as TryOnFeedback | undefined,
-        screenshots: session?.screenshots,
-        created_at: session?.createdAt.toISOString(),
+        id: session.id,
+        user_id: session.userId,
+        product_id: session.productId,
+        duration_seconds: session.durationSeconds || undefined,
+        completed: session.completed || undefined,
+        feedback: session.feedback as TryOnFeedback | undefined,
+        screenshots: session.screenshots,
+        created_at: session.createdAt.toISOString(),
       };
     } catch (err) {
 
-      console?.error('Error getting product try-on session:', err);
+      console.error('Error getting product try-on session:', err);
       return null;
     }
   }
@@ -192,7 +192,7 @@ export class TryOnService {
    */
   async getAllSessions(startDate: Date, endDate: Date): Promise<TryOnSession[]> {
     try {
-      const sessions = await prisma?.tryOnSession.findMany({
+      const sessions = await prisma.tryOnSession.findMany({
         where: {
           createdAt: {
             gte: startDate,
@@ -204,19 +204,19 @@ export class TryOnService {
         },
       });
 
-      return sessions?.map((session) => ({
-        id: session?.id,
-        user_id: session?.userId,
-        product_id: session?.productId,
-        duration_seconds: session?.durationSeconds || undefined,
-        completed: session?.completed || undefined,
-        feedback: session?.feedback as TryOnFeedback | undefined,
-        screenshots: session?.screenshots,
-        created_at: session?.createdAt.toISOString(),
+      return sessions.map((session) => ({
+        id: session.id,
+        user_id: session.userId,
+        product_id: session.productId,
+        duration_seconds: session.durationSeconds || undefined,
+        completed: session.completed || undefined,
+        feedback: session.feedback as TryOnFeedback | undefined,
+        screenshots: session.screenshots,
+        created_at: session.createdAt.toISOString(),
       }));
     } catch (err) {
 
-      console?.error('Error getting all try-on sessions:', err);
+      console.error('Error getting all try-on sessions:', err);
       return [];
     }
   }
@@ -235,7 +235,7 @@ export class TryOnService {
     productBreakdown: Record<string, number>;
   }> {
     try {
-      const sessions = await prisma?.tryOnSession.findMany({
+      const sessions = await prisma.tryOnSession.findMany({
         where: {
           createdAt: {
             gte: startDate,
@@ -244,30 +244,30 @@ export class TryOnService {
         },
       });
 
-      const completedSessions = sessions?.filter((s) => s?.completed);
+      const completedSessions = sessions.filter((s) => s.completed);
 
-      const totalDuration = completedSessions?.reduce((sum, session) => {
-        return sum + (session?.durationSeconds || 0);
+      const totalDuration = completedSessions.reduce((sum, session) => {
+        return sum + (session.durationSeconds || 0);
       }, 0);
 
       const averageDuration =
 
-        completedSessions?.length > 0 ? totalDuration / completedSessions?.length : 0;
+        completedSessions.length > 0 ? totalDuration / completedSessions.length : 0;
 
       const productBreakdown: Record<string, number> = {};
-      sessions?.forEach((session) => {
-        productBreakdown[session?.productId] = (productBreakdown[session?.productId] || 0) + 1;
+      sessions.forEach((session) => {
+        productBreakdown[session.productId] = (productBreakdown[session.productId] || 0) + 1;
       });
 
       return {
-        totalSessions: sessions?.length,
-        completedSessions: completedSessions?.length,
+        totalSessions: sessions.length,
+        completedSessions: completedSessions.length,
         averageDuration,
         productBreakdown,
       };
     } catch (err) {
 
-      console?.error('Error getting try-on analytics:', err);
+      console.error('Error getting try-on analytics:', err);
       return {
         totalSessions: 0,
         completedSessions: 0,

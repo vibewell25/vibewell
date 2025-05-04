@@ -21,16 +21,16 @@ export interface UpdatePractitionerParams extends Partial<CreatePractitionerPara
 
 export class PractitionerService {
   async createPractitioner(data: CreatePractitionerParams) {
-    return prisma?.practitioner.create({
+    return prisma.practitioner.create({
       data: {
-        userId: data?.userId,
-        businessId: data?.businessId,
-        specialization: data?.specialization,
-        experience: data?.experience,
-        bio: data?.bio,
-        certifications: data?.certifications || [],
-        education: data?.education || [],
-        languages: data?.languages || [],
+        userId: data.userId,
+        businessId: data.businessId,
+        specialization: data.specialization,
+        experience: data.experience,
+        bio: data.bio,
+        certifications: data.certifications || [],
+        education: data.education || [],
+        languages: data.languages || [],
       },
       include: {
         user: {
@@ -67,7 +67,7 @@ export class PractitionerService {
   }
 
   async getPractitionerById(id: string) {
-    return prisma?.practitioner.findUnique({
+    return prisma.practitioner.findUnique({
       where: { id },
       include: {
         user: {
@@ -105,7 +105,7 @@ export class PractitionerService {
   }
 
   async getPractitionerByUserId(userId: string) {
-    return prisma?.practitioner.findUnique({
+    return prisma.practitioner.findUnique({
       where: { userId },
       include: {
         user: {
@@ -143,7 +143,7 @@ export class PractitionerService {
   }
 
   async getPractitionersByBusiness(businessId: string) {
-    return prisma?.practitioner.findMany({
+    return prisma.practitioner.findMany({
       where: { businessId },
       include: {
         user: {
@@ -181,17 +181,17 @@ export class PractitionerService {
   }
 
   async updatePractitioner(id: string, data: UpdatePractitionerParams) {
-    return prisma?.practitioner.update({
+    return prisma.practitioner.update({
       where: { id },
       data: {
-        specialization: data?.specialization,
-        experience: data?.experience,
-        bio: data?.bio,
-        rating: data?.rating,
-        availability: data?.availability,
-        certifications: data?.certifications,
-        education: data?.education,
-        languages: data?.languages,
+        specialization: data.specialization,
+        experience: data.experience,
+        bio: data.bio,
+        rating: data.rating,
+        availability: data.availability,
+        certifications: data.certifications,
+        education: data.education,
+        languages: data.languages,
       },
       include: {
         user: {
@@ -229,13 +229,13 @@ export class PractitionerService {
   }
 
   async deletePractitioner(id: string) {
-    return prisma?.practitioner.delete({
+    return prisma.practitioner.delete({
       where: { id },
     });
   }
 
   async addServiceToPractitioner(practitionerId: string, serviceId: string) {
-    return prisma?.practitioner.update({
+    return prisma.practitioner.update({
       where: { id: practitionerId },
       data: {
         services: {
@@ -246,7 +246,7 @@ export class PractitionerService {
   }
 
   async removeServiceFromPractitioner(practitionerId: string, serviceId: string) {
-    return prisma?.practitioner.update({
+    return prisma.practitioner.update({
       where: { id: practitionerId },
       data: {
         services: {
@@ -257,7 +257,7 @@ export class PractitionerService {
   }
 
   async addSpecialtyToPractitioner(practitionerId: string, specialtyId: string) {
-    return prisma?.practitioner.update({
+    return prisma.practitioner.update({
       where: { id: practitionerId },
       data: {
         specialties: {
@@ -268,7 +268,7 @@ export class PractitionerService {
   }
 
   async removeSpecialtyFromPractitioner(practitionerId: string, specialtyId: string) {
-    return prisma?.practitioner.update({
+    return prisma.practitioner.update({
       where: { id: practitionerId },
       data: {
         specialties: {

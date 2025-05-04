@@ -38,7 +38,7 @@ export function ColorPicker({ color, onChange, className }: ColorPickerProps) {
       </PopoverTrigger>
       <PopoverContent className="w-auto p-3">
         <div className="grid grid-cols-5 gap-2">
-          {predefinedColors?.map((presetColor) => (
+          {predefinedColors.map((presetColor) => (
             <button
               key={presetColor}
               className={cn(
@@ -57,7 +57,7 @@ export function ColorPicker({ color, onChange, className }: ColorPickerProps) {
           <input
             type="color"
             value={color}
-            onChange={(e) => onChange(e?.target.value)}
+            onChange={(e) => onChange(e.target.value)}
             className="h-8 w-8 cursor-pointer appearance-none border-0 bg-transparent"
             id="custom-color-picker"
           />

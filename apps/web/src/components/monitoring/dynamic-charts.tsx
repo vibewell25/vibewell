@@ -24,27 +24,27 @@ const formatTimestamp = (timestamp: number, range: 'hour' | 'day' | 'week'): str
   const date = new Date(timestamp);
   switch (range) {
     case 'hour':
-      return date?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     case 'day':
-      return date?.toLocaleString([], { hour: '2-digit', minute: '2-digit' });
+      return date.toLocaleString([], { hour: '2-digit', minute: '2-digit' });
     case 'week':
-      return date?.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
+      return date.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
     default:
-      return date?.toLocaleString();
+      return date.toLocaleString();
   }
 };
 
-const DynamicCharts: React?.FC<DynamicChartsProps> = ({ data, timeRange }) => {
-  const sortedData = [...data].sort((a, b) => a?.timestamp - b?.timestamp);
+const DynamicCharts: React.FC<DynamicChartsProps> = ({ data, timeRange }) => {
+  const sortedData = [...data].sort((a, b) => a.timestamp - b.timestamp);
 
   // Calculate moving average
   const windowSize = 5;
-  const movingAverage = sortedData?.map((point, index) => {
-    const window = sortedData?.slice(Math?.max(0, index - windowSize + 1), index + 1);
-    const average = window?.reduce((sum, p) => sum + p?.duration, 0) / window?.length;
+  const movingAverage = sortedData.map((point, index) => {
+    const window = sortedData.slice(Math.max(0, index - windowSize + 1), index + 1);
+    const average = window.reduce((sum, p) => sum + p.duration, 0) / window.length;
     return {
-      timestamp: point?.timestamp,
-      duration: point?.duration,
+      timestamp: point.timestamp,
+      duration: point.duration,
       average,
     };
   });
@@ -61,7 +61,7 @@ const DynamicCharts: React?.FC<DynamicChartsProps> = ({ data, timeRange }) => {
         <YAxis label={{ value: 'Load Time (ms)', angle: -90, position: 'insideLeft' }} />
         <Tooltip
           labelFormatter={(value) => formatTimestamp(Number(value), timeRange)}
-          formatter={(value: number) => [`${value?.toFixed(2)} ms`, '']}
+          formatter={(value: number) => [`${value.toFixed(2)} ms`, '']}
         />
         <Legend />
         <Line type="monotone" dataKey="duration" stroke="#8884d8" name="Load Time" dot={false} />

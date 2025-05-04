@@ -36,15 +36,15 @@ export class InventoryPredictionService {
   ): Promise<DemandPrediction> {
     try {
       // Gather historical data
-      const [usage, seasonality, events, trends] = await Promise?.all([
-        this?.getProductUsageHistory(productId),
-        this?.getSeasonalityData(productId),
-        this?.getUpcomingEvents(),
-        this?.getMarketTrends(),
+      const [usage, seasonality, events, trends] = await Promise.all([
+        this.getProductUsageHistory(productId),
+        this.getSeasonalityData(productId),
+        this.getUpcomingEvents(),
+        this.getMarketTrends(),
       ]);
 
       // Prepare data for ML model
-      const features = this?.prepareFeatures({
+      const features = this.prepareFeatures({
         usage,
         seasonality,
         events,
@@ -52,14 +52,14 @@ export class InventoryPredictionService {
       });
 
       // Generate prediction using OpenAI
-      const prediction = await this?.generateDemandPrediction(features, timeframe);
+      const prediction = await this.generateDemandPrediction(features, timeframe);
 
       // Store prediction for tracking
-      await this?.storePrediction(productId, prediction);
+      await this.storePrediction(productId, prediction);
 
       return prediction;
     } catch (error) {
-      logger?.error('Failed to predict demand', 'InventoryPrediction', { error });
+      logger.error('Failed to predict demand', 'InventoryPrediction', { error });
       throw error;
     }
   }
@@ -73,36 +73,36 @@ export class InventoryPredictionService {
   ): Promise<ReorderSuggestion> {
     try {
       // Get product data
-      const [product, demand, supplier, costs] = await Promise?.all([
-        this?.getProductDetails(productId),
-        this?.predictDemand(productId),
-        this?.getSupplierData(productId),
-        this?.getInventoryCosts(productId),
+      const [product, demand, supplier, costs] = await Promise.all([
+        this.getProductDetails(productId),
+        this.predictDemand(productId),
+        this.getSupplierData(productId),
+        this.getInventoryCosts(productId),
       ]);
 
       // Calculate optimal order quantity
-      const eoq = this?.calculateEconomicOrderQuantity({
-        annualDemand: demand?.predictedDemand * (365 / demand?.timeframe),
-        orderingCost: costs?.orderingCost,
-        holdingCost: costs?.holdingCost,
-        unitCost: product?.cost,
+      const eoq = this.calculateEconomicOrderQuantity({
+        annualDemand: demand.predictedDemand * (365 / demand.timeframe),
+        orderingCost: costs.orderingCost,
+        holdingCost: costs.holdingCost,
+        unitCost: product.cost,
       });
 
       // Calculate reorder point
-      const reorderPoint = this?.calculateReorderPoint({
-        leadTime: supplier?.leadTime,
+      const reorderPoint = this.calculateReorderPoint({
+        leadTime: supplier.leadTime,
 
-        dailyDemand: demand?.predictedDemand / demand?.timeframe,
-        serviceLevel: 0?.95, // 95% service level
+        dailyDemand: demand.predictedDemand / demand.timeframe,
+        serviceLevel: 0.95, // 95% service level
       });
 
       // Generate suggestion
       const suggestion: ReorderSuggestion = {
         productId,
 
-        quantity: Math?.max(eoq, reorderPoint - currentStock),
-        urgency: this?.calculateUrgency(currentStock, reorderPoint),
-        reasoning: this?.generateReorderReasoning({
+        quantity: Math.max(eoq, reorderPoint - currentStock),
+        urgency: this.calculateUrgency(currentStock, reorderPoint),
+        reasoning: this.generateReorderReasoning({
           currentStock,
           eoq,
           reorderPoint,
@@ -110,14 +110,14 @@ export class InventoryPredictionService {
         }),
         costOptimization: {
           batchSize: eoq,
-          timing: this?.suggestOrderTiming(currentStock, reorderPoint, demand),
-          potentialSavings: this?.calculatePotentialSavings(eoq, costs),
+          timing: this.suggestOrderTiming(currentStock, reorderPoint, demand),
+          potentialSavings: this.calculatePotentialSavings(eoq, costs),
         },
       };
 
       return suggestion;
     } catch (error) {
-      logger?.error('Failed to generate reorder suggestion', 'InventoryPrediction', { error });
+      logger.error('Failed to generate reorder suggestion', 'InventoryPrediction', { error });
       throw error;
     }
   }
@@ -128,37 +128,37 @@ export class InventoryPredictionService {
   async analyzeSupplierPerformance(productId: string): Promise<Record<string, any>> {
     try {
       // Gather supplier data
-      const [orders, deliveries, quality, costs] = await Promise?.all([
-        this?.getSupplierOrders(productId),
-        this?.getDeliveryHistory(productId),
-        this?.getQualityMetrics(productId),
-        this?.getSupplierCosts(productId),
+      const [orders, deliveries, quality, costs] = await Promise.all([
+        this.getSupplierOrders(productId),
+        this.getDeliveryHistory(productId),
+        this.getQualityMetrics(productId),
+        this.getSupplierCosts(productId),
       ]);
 
       // Calculate performance metrics
       const metrics = {
-        reliability: this?.calculateReliability(orders, deliveries),
-        qualityScore: this?.calculateQualityScore(quality),
-        costEfficiency: this?.calculateCostEfficiency(costs),
-        leadTimeConsistency: this?.calculateLeadTimeConsistency(deliveries),
+        reliability: this.calculateReliability(orders, deliveries),
+        qualityScore: this.calculateQualityScore(quality),
+        costEfficiency: this.calculateCostEfficiency(costs),
+        leadTimeConsistency: this.calculateLeadTimeConsistency(deliveries),
       };
 
       // Generate recommendations
-      const recommendations = await this?.generateSupplierRecommendations(metrics);
+      const recommendations = await this.generateSupplierRecommendations(metrics);
 
       return {
         metrics,
         recommendations,
-        trends: this?.analyzePerformanceTrends(metrics),
+        trends: this.analyzePerformanceTrends(metrics),
       };
     } catch (error) {
-      logger?.error('Failed to analyze supplier performance', 'InventoryPrediction', { error });
+      logger.error('Failed to analyze supplier performance', 'InventoryPrediction', { error });
       throw error;
     }
   }
 
   private async getProductUsageHistory(productId: string) {
-    return prisma?.productUsage.findMany({
+    return prisma.productUsage.findMany({
       where: { productId },
       orderBy: { createdAt: 'desc' },
       include: {
@@ -173,7 +173,7 @@ export class InventoryPredictionService {
   }
 
   private async getUpcomingEvents() {
-    return prisma?.event.findMany({
+    return prisma.event.findMany({
       where: {
         date: {
           gte: new Date(),
@@ -183,7 +183,7 @@ export class InventoryPredictionService {
   }
 
   private async getMarketTrends() {
-    return prisma?.marketTrend.findMany({
+    return prisma.marketTrend.findMany({
       orderBy: { createdAt: 'desc' },
       take: 10,
     });
@@ -210,14 +210,14 @@ export class InventoryPredictionService {
 
   private async storePrediction(productId: string, prediction: DemandPrediction): Promise<void> {
     // Implementation for storing prediction
-    logger?.info('Storing demand prediction', 'InventoryPrediction', {
+    logger.info('Storing demand prediction', 'InventoryPrediction', {
       productId,
       prediction,
     });
   }
 
   private async getProductDetails(productId: string) {
-    return prisma?.product.findUnique({
+    return prisma.product.findUnique({
       where: { id: productId },
       include: {
         supplier: true,
@@ -227,7 +227,7 @@ export class InventoryPredictionService {
   }
 
   private async getSupplierData(productId: string) {
-    return prisma?.supplier.findFirst({
+    return prisma.supplier.findFirst({
       where: {
         products: {
           some: { id: productId },
@@ -253,7 +253,7 @@ export class InventoryPredictionService {
   }): number {
     const { annualDemand, orderingCost, holdingCost } = params;
 
-    return Math?.sqrt((2 * annualDemand * orderingCost) / holdingCost);
+    return Math.sqrt((2 * annualDemand * orderingCost) / holdingCost);
   }
 
   private calculateReorderPoint(params: {
@@ -262,7 +262,7 @@ export class InventoryPredictionService {
     serviceLevel: number;
   }): number {
     const { leadTime, dailyDemand, serviceLevel } = params;
-    const safetyStock = this?.calculateSafetyStock(dailyDemand, serviceLevel);
+    const safetyStock = this.calculateSafetyStock(dailyDemand, serviceLevel);
 
     return leadTime * dailyDemand + safetyStock;
   }
@@ -276,8 +276,8 @@ export class InventoryPredictionService {
   private calculateUrgency(currentStock: number, reorderPoint: number): 'LOW' | 'MEDIUM' | 'HIGH' {
 
     const ratio = currentStock / reorderPoint;
-    if (ratio <= 0?.5) return 'HIGH';
-    if (ratio <= 0?.75) return 'MEDIUM';
+    if (ratio <= 0.5) return 'HIGH';
+    if (ratio <= 0.75) return 'MEDIUM';
     return 'LOW';
   }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 
 interface VisuallyHiddenProps {
-  children: React?.ReactNode;
+  children: React.ReactNode;
   className?: string;
   asChild?: boolean;
 }
@@ -12,7 +12,7 @@ interface VisuallyHiddenProps {
  * This is a more semantic way to hide content than using sr-only utility classes
  */
 export function VisuallyHidden({ children, className, asChild = false }: VisuallyHiddenProps) {
-  const Comp = asChild ? React?.Fragment : 'span';
+  const Comp = asChild ? React.Fragment : 'span';
 
   return (
     <Comp

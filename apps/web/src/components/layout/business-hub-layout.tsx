@@ -58,7 +58,7 @@ const navItems = [
 ];
 
 interface BusinessHubLayoutProps {
-  children: React?.ReactNode;
+  children: React.ReactNode;
 }
 
 export function BusinessHubLayout({ children }: BusinessHubLayoutProps) {
@@ -73,21 +73,21 @@ export function BusinessHubLayout({ children }: BusinessHubLayoutProps) {
             <h2 className="text-xl font-bold tracking-tight">Business Hub</h2>
           </div>
           <nav className="flex-1 space-y-1 px-4 pb-4">
-            {navItems?.map((item) => {
-              const isActive = pathname === item?.href || pathname?.startsWith(`${item?.href}/`);
+            {navItems.map((item) => {
+              const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
 
               return (
                 <Link
-                  key={item?.href}
-                  href={item?.href}
+                  key={item.href}
+                  href={item.href}
                   className={`flex items-center rounded-md px-4 py-3 transition-colors ${
                     isActive
                       ? 'bg-primary/10 text-primary'
                       : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
                   }`}
                 >
-                  <span className="mr-3">{item?.icon}</span>
-                  <span>{item?.title}</span>
+                  <span className="mr-3">{item.icon}</span>
+                  <span>{item.title}</span>
                 </Link>
               );
             })}
@@ -97,7 +97,7 @@ export function BusinessHubLayout({ children }: BusinessHubLayoutProps) {
               <div className="mr-3 h-8 w-8 rounded-full bg-gray-300" />
               <div>
                 <p className="text-sm font-medium">Business Profile</p>
-                <p className="text-xs text-muted-foreground">business@vibewell?.com</p>
+                <p className="text-xs text-muted-foreground">business@vibewell.com</p>
               </div>
             </div>
           </div>

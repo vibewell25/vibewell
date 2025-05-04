@@ -14,4 +14,4 @@ interface Event {
   tags: string[];
 }
 
-const capacity = event?.capacity || 0;
+const capacity = event.capacity || 0;

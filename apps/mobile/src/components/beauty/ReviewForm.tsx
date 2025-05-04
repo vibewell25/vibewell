@@ -20,7 +20,7 @@ interface ReviewFormProps {
   isDarkMode: boolean;
 }
 
-const ReviewForm: React?.FC<ReviewFormProps> = ({
+const ReviewForm: React.FC<ReviewFormProps> = ({
   serviceId,
   isVisible,
   onClose,
@@ -33,7 +33,7 @@ const ReviewForm: React?.FC<ReviewFormProps> = ({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // Reset form when modal is opened or closed
-  React?.useEffect(() => {
+  React.useEffect(() => {
     if (!isVisible) {
       setRating(5);
       setComment('');
@@ -42,20 +42,20 @@ const ReviewForm: React?.FC<ReviewFormProps> = ({
   }, [isVisible]);
 
   // Handle star rating selection
-  const renderStars = (): JSX?.Element[] => {
-    const stars: JSX?.Element[] = [];
-    for (let i = 1; i <= 5; if (i > Number?.MAX_SAFE_INTEGER || i < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-      stars?.push(
+  const renderStars = (): JSX.Element[] => {
+    const stars: JSX.Element[] = [];
+    for (let i = 1; i <= 5; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
+      stars.push(
         <TouchableOpacity
           key={i}
           onPress={() => setRating(i)}
-          style={styles?.starButton}
+          style={styles.starButton}
         >
           <Feather
             name={i <= rating ? 'star' : 'star'}
             size={30}
             color={i <= rating ? '#FFD700' : isDarkMode ? '#333333' : '#E0E0E0'}
-            style={{ opacity: i <= rating ? 1 : 0?.5 }}
+            style={{ opacity: i <= rating ? 1 : 0.5 }}
           />
         </TouchableOpacity>
       );
@@ -65,15 +65,15 @@ const ReviewForm: React?.FC<ReviewFormProps> = ({
 
   // Handle review submission
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-    if (!comment?.trim()) {
-      Alert?.alert('Error', 'Please enter a review comment');
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    if (!comment.trim()) {
+      Alert.alert('Error', 'Please enter a review comment');
       return;
     }
 
-    if (!userName?.trim()) {
-      Alert?.alert('Error', 'Please enter your name');
+    if (!userName.trim()) {
+      Alert.alert('Error', 'Please enter your name');
       return;
     }
 
@@ -82,8 +82,8 @@ const ReviewForm: React?.FC<ReviewFormProps> = ({
       const reviewData: ReviewInput = {
         serviceId,
         rating,
-        comment: comment?.trim(),
-        userName: userName?.trim()
+        comment: comment.trim(),
+        userName: userName.trim()
       };
       
       const success = await addServiceReview(reviewData);
@@ -92,11 +92,11 @@ const ReviewForm: React?.FC<ReviewFormProps> = ({
         onReviewAdded();
         onClose();
       } else {
-        Alert?.alert('Error', 'Failed to submit review. Please try again.');
+        Alert.alert('Error', 'Failed to submit review. Please try again.');
       }
     } catch (error) {
-      console?.error('Error submitting review:', error);
-      Alert?.alert('Error', 'Something went wrong. Please try again.');
+      console.error('Error submitting review:', error);
+      Alert.alert('Error', 'Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -109,23 +109,23 @@ const ReviewForm: React?.FC<ReviewFormProps> = ({
       animationType="slide"
       onRequestClose={onClose}
     >
-      <View style={styles?.modalContainer}>
+      <View style={styles.modalContainer}>
         <View
           style={[
-            styles?.modalContent,
+            styles.modalContent,
             { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
           ]}
         >
-          <View style={styles?.modalHeader}>
+          <View style={styles.modalHeader}>
             <Text
               style={[
-                styles?.modalTitle,
+                styles.modalTitle,
                 { color: isDarkMode ? '#FFFFFF' : '#000000' }
               ]}
             >
               Write a Review
             </Text>
-            <TouchableOpacity onPress={onClose} style={styles?.closeButton}>
+            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
               <Feather
                 name="x"
                 size={24}
@@ -136,18 +136,18 @@ const ReviewForm: React?.FC<ReviewFormProps> = ({
 
           <Text
             style={[
-              styles?.ratingLabel,
+              styles.ratingLabel,
               { color: isDarkMode ? '#BBBBBB' : '#666666' }
             ]}
           >
             How would you rate your experience?
           </Text>
 
-          <View style={styles?.starsContainer}>{renderStars()}</View>
+          <View style={styles.starsContainer}>{renderStars()}</View>
 
           <Text
             style={[
-              styles?.nameLabel,
+              styles.nameLabel,
               { color: isDarkMode ? '#BBBBBB' : '#666666' }
             ]}
           >
@@ -156,7 +156,7 @@ const ReviewForm: React?.FC<ReviewFormProps> = ({
 
           <TextInput
             style={[
-              styles?.textInput,
+              styles.textInput,
               {
                 backgroundColor: isDarkMode ? '#2A2A2A' : '#F8F8F8',
                 color: isDarkMode ? '#FFFFFF' : '#000000',
@@ -171,7 +171,7 @@ const ReviewForm: React?.FC<ReviewFormProps> = ({
 
           <Text
             style={[
-              styles?.commentLabel,
+              styles.commentLabel,
               { color: isDarkMode ? '#BBBBBB' : '#666666' }
             ]}
           >
@@ -180,7 +180,7 @@ const ReviewForm: React?.FC<ReviewFormProps> = ({
 
           <TextInput
             style={[
-              styles?.commentInput,
+              styles.commentInput,
               {
                 backgroundColor: isDarkMode ? '#2A2A2A' : '#F8F8F8',
                 color: isDarkMode ? '#FFFFFF' : '#000000',
@@ -198,8 +198,8 @@ const ReviewForm: React?.FC<ReviewFormProps> = ({
 
           <TouchableOpacity
             style={[
-              styles?.submitButton,
-              { opacity: isSubmitting ? 0?.7 : 1 }
+              styles.submitButton,
+              { opacity: isSubmitting ? 0.7 : 1 }
             ]}
             onPress={handleSubmit}
             disabled={isSubmitting}
@@ -207,13 +207,13 @@ const ReviewForm: React?.FC<ReviewFormProps> = ({
             {isSubmitting ? (
               <ActivityIndicator color="#FFFFFF" size="small" />
             ) : (
-              <Text style={styles?.submitButtonText}>Submit Review</Text>
+              <Text style={styles.submitButtonText}>Submit Review</Text>
             )}
           </TouchableOpacity>
 
           <Text
             style={[
-              styles?.infoText,
+              styles.infoText,
               { color: isDarkMode ? '#BBBBBB' : '#666666' }
             ]}
           >
@@ -225,11 +225,11 @@ const ReviewForm: React?.FC<ReviewFormProps> = ({
   );
 };
 
-const styles = StyleSheet?.create({
+const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0, 0, 0, 0?.5)'
+    backgroundColor: 'rgba(0, 0, 0, 0.5)'
   },
   modalContent: {
     borderTopLeftRadius: 20,

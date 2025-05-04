@@ -27,14 +27,14 @@ export function CommunityEventsSection({
   const [sharedEvents, setSharedEvents] = useState<{ [key: string]: boolean }>({});
   useEffect(() => {
     const fetchEvents = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         setIsLoading(true);
         const upcomingEvents = await getUpcomingEvents(limit);
         setEvents(upcomingEvents);
       } catch (error) {
-        console?.error('Error fetching events:', error);
+        console.error('Error fetching events:', error);
       } finally {
         setIsLoading(false);
       }
@@ -42,33 +42,33 @@ export function CommunityEventsSection({
     fetchEvents();
   }, [limit]);
   const handleEventShare = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');eventId: string) => {
-    if (!user?.id) return;
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');eventId: string) => {
+    if (!user.id) return;
     try {
-      const event = events?.find((e) => e?.id === eventId);
+      const event = events.find((e) => e.id === eventId);
       if (!event) return;
       // In a real app, this would create a post in the social feed
-      console?.log('Sharing event:', event?.title);
+      console.log('Sharing event:', event.title);
       setSharedEvents((prev) => ({ ...prev, [eventId]: true }));
     } catch (err) {
-      console?.error('Error sharing event:', err);
+      console.error('Error sharing event:', err);
     }
   };
   const handleEventAttendance = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');eventId: string) => {
-    if (!user?.id) return;
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');eventId: string) => {
+    if (!user.id) return;
     try {
       const isAttending = sharedEvents[eventId];
       if (isAttending) {
-        await cancelEventRegistration(eventId, user?.id);
+        await cancelEventRegistration(eventId, user.id);
       } else {
         await registerForEvent(
           eventId,
-          user?.id,
-          user?.user_metadata?.full_name || 'Anonymous',
-          user?.user_metadata?.avatar_url,
+          user.id,
+          user.user_metadata.full_name || 'Anonymous',
+          user.user_metadata.avatar_url,
         );
       }
       setSharedEvents((prev) => ({ ...prev, [eventId]: !isAttending }));
@@ -76,7 +76,7 @@ export function CommunityEventsSection({
       const upcomingEvents = await getUpcomingEvents(limit);
       setEvents(upcomingEvents);
     } catch (err) {
-      console?.error('Error updating event attendance:', err);
+      console.error('Error updating event attendance:', err);
     }
   };
   return (
@@ -91,7 +91,7 @@ export function CommunityEventsSection({
           )}
           {showViewAllButton && (
             <Link href="/events" className="text-primary flex items-center hover:underline">
-              View all <Icons?.CalendarIcon className="ml-1 h-4 w-4" />
+              View all <Icons.CalendarIcon className="ml-1 h-4 w-4" />
             </Link>
           )}
         </div>
@@ -116,22 +116,22 @@ export function CommunityEventsSection({
               </Card>
             ))}
         </div>
-      ) : events?.length > 0 ? (
+      ) : events.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {events?.map((event) => (
+          {events.map((event) => (
             <EventShareCard
-              key={event?.id}
+              key={event.id}
               event={event}
-              onShare={() => handleEventShare(event?.id)}
-              onAttend={() => handleEventAttendance(event?.id)}
-              isAttending={sharedEvents[event?.id]}
+              onShare={() => handleEventShare(event.id)}
+              onAttend={() => handleEventAttendance(event.id)}
+              isAttending={sharedEvents[event.id]}
             />
           ))}
         </div>
       ) : (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-8">
-            <Icons?.CalendarIcon className="mb-4 h-12 w-12 text-muted-foreground" />
+            <Icons.CalendarIcon className="mb-4 h-12 w-12 text-muted-foreground" />
             <p className="mb-4 text-center text-muted-foreground">No upcoming community events.</p>
             {user && (
               <Link href="/events/create">

@@ -30,7 +30,7 @@ const getActivityIcon = (type: Activity['type']) => {
 };
 
 export function ActivityFeed({ activities }: ActivityFeedProps) {
-  if (activities?.length === 0) {
+  if (activities.length === 0) {
     return (
       <div className="rounded-lg bg-muted/20 p-6 text-center">
         <p className="text-muted-foreground">No recent activities</p>
@@ -39,14 +39,14 @@ export function ActivityFeed({ activities }: ActivityFeedProps) {
   }
   return (
     <div className="space-y-4">
-      {activities?.map((activity) => (
-        <div key={activity?.id} className="flex items-start gap-4 rounded-lg border p-4">
-          <div className="mt-1">{getActivityIcon(activity?.type)}</div>
+      {activities.map((activity) => (
+        <div key={activity.id} className="flex items-start gap-4 rounded-lg border p-4">
+          <div className="mt-1">{getActivityIcon(activity.type)}</div>
           <div className="flex-1 space-y-1">
-            <p className="font-medium">{activity?.title}</p>
-            <p className="text-sm text-muted-foreground">{activity?.description}</p>
+            <p className="font-medium">{activity.title}</p>
+            <p className="text-sm text-muted-foreground">{activity.description}</p>
             <p className="text-xs text-muted-foreground">
-              {format(new Date(activity?.date), 'MMM d, yyyy h:mm a')}
+              {format(new Date(activity.date), 'MMM d, yyyy h:mm a')}
             </p>
           </div>
         </div>

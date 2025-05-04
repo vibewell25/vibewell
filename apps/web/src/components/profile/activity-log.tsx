@@ -25,7 +25,7 @@ interface Activity {
   status: 'success' | 'warning' | 'error';
   location?: string;
   device?: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
 }
 
 export function ActivityLog() {
@@ -35,7 +35,7 @@ export function ActivityLog() {
       type: 'login',
       title: 'Successful Login',
       description: 'Logged in from Chrome on Mac',
-      timestamp: new Date(Date?.now() - 1000 * 60 * 5), // 5 minutes ago
+      timestamp: new Date(Date.now() - 1000 * 60 * 5), // 5 minutes ago
       status: 'success',
       location: 'New York, NY',
       device: 'Chrome on Mac',
@@ -46,7 +46,7 @@ export function ActivityLog() {
       title: 'Password Changed',
       type: 'security_change',
       description: 'Account password was updated',
-      timestamp: new Date(Date?.now() - 1000 * 60 * 30), // 30 minutes ago
+      timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
       status: 'success',
       icon: <Key className="h-5 w-5" />,
     },
@@ -55,7 +55,7 @@ export function ActivityLog() {
       type: 'device',
       title: 'New Device Detected',
       description: 'New login from iPhone 13',
-      timestamp: new Date(Date?.now() - 1000 * 60 * 60 * 2), // 2 hours ago
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
       status: 'warning',
       location: 'Los Angeles, CA',
       device: 'iPhone 13',
@@ -66,7 +66,7 @@ export function ActivityLog() {
       type: 'email',
       title: 'Email Verification',
       description: 'Email address was verified',
-      timestamp: new Date(Date?.now() - 1000 * 60 * 60 * 24), // 1 day ago
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24), // 1 day ago
       status: 'success',
       icon: <Mail className="h-5 w-5" />,
     },
@@ -75,7 +75,7 @@ export function ActivityLog() {
       type: 'profile_update',
       title: 'Profile Updated',
       description: 'Profile information was modified',
-      timestamp: new Date(Date?.now() - 1000 * 60 * 60 * 48), // 2 days ago
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 48), // 2 days ago
       status: 'success',
       icon: <User className="h-5 w-5" />,
     },
@@ -84,7 +84,7 @@ export function ActivityLog() {
       type: 'security_change',
       title: 'Two-Factor Authentication',
       description: '2FA was enabled for your account',
-      timestamp: new Date(Date?.now() - 1000 * 60 * 60 * 72), // 3 days ago
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 72), // 3 days ago
       status: 'success',
       icon: <Shield className="h-5 w-5" />,
     },
@@ -126,34 +126,34 @@ export function ActivityLog() {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-4">
-          {activities?.map((activity) => (
-            <div key={activity?.id} className="flex items-start gap-4 rounded-lg border p-4">
+          {activities.map((activity) => (
+            <div key={activity.id} className="flex items-start gap-4 rounded-lg border p-4">
               <div className="bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-full">
-                {activity?.icon}
+                {activity.icon}
               </div>
               <div className="flex-1 space-y-1">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-medium">{activity?.title}</h3>
+                  <h3 className="font-medium">{activity.title}</h3>
                   <div className="flex items-center gap-2">
-                    {getStatusBadge(activity?.status)}
+                    {getStatusBadge(activity.status)}
                     <span className="text-sm text-muted-foreground">
-                      {formatDistanceToNow(activity?.timestamp, { addSuffix: true })}
+                      {formatDistanceToNow(activity.timestamp, { addSuffix: true })}
                     </span>
                   </div>
                 </div>
-                <p className="text-sm text-muted-foreground">{activity?.description}</p>
-                {(activity?.location || activity?.device) && (
+                <p className="text-sm text-muted-foreground">{activity.description}</p>
+                {(activity.location || activity.device) && (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    {activity?.location && (
+                    {activity.location && (
                       <span className="flex items-center gap-1">
                         <Globe className="h-3 w-3" />
-                        {activity?.location}
+                        {activity.location}
                       </span>
                     )}
-                    {activity?.device && (
+                    {activity.device && (
                       <span className="flex items-center gap-1">
                         <Smartphone className="h-3 w-3" />
-                        {activity?.device}
+                        {activity.device}
                       </span>
                     )}
                   </div>

@@ -14,7 +14,7 @@ import { exists, isString } from './type-guards';
  * @returns True if the response has data
  */
 export function hasData<T>(response: ApiResponse<T>): response is ApiResponse<T> & { data: T } {
-  return exists(response?.data);
+  return exists(response.data);
 }
 
 /**
@@ -25,7 +25,7 @@ export function hasData<T>(response: ApiResponse<T>): response is ApiResponse<T>
 export function hasError<T>(
   response: ApiResponse<T>,
 ): response is ApiResponse<T> & { error: string } {
-  return exists(response?.error) && isString(response?.error);
+  return exists(response.error) && isString(response.error);
 }
 
 /**
@@ -35,7 +35,7 @@ export function hasError<T>(
  * @returns The data or the default value
  */
 export function getResponseData<T, D = T>(response: ApiResponse<T>, defaultValue: D): T | D {
-  return hasData(response) ? response?.data : defaultValue;
+  return hasData(response) ? response.data : defaultValue;
 }
 
 /**
@@ -48,7 +48,7 @@ export function getResponseError<T>(
   response: ApiResponse<T>,
   defaultError = 'Unknown error',
 ): string {
-  return hasError(response) ? response?.error : defaultError;
+  return hasError(response) ? response.error : defaultError;
 }
 
 /**
@@ -57,7 +57,7 @@ export function getResponseError<T>(
  * @returns True if the response is successful
  */
 export function isSuccessResponse<T>(response: ApiResponse<T>): boolean {
-  return response?.success && !hasError(response);
+  return response.success && !hasError(response);
 }
 
 /**
@@ -73,7 +73,7 @@ export function handleResponse<T, S, E>(
   onError: (error: string) => E,
 ): S | E {
   if (isSuccessResponse(response) && hasData(response)) {
-    return onSuccess(response?.data);
+    return onSuccess(response.data);
   } else {
     return onError(getResponseError(response));
   }
@@ -92,7 +92,7 @@ export function mapResponseData<T, R, D = R>(
   defaultValue: D,
 ): R | D {
   if (hasData(response)) {
-    return mapFn(response?.data);
+    return mapFn(response.data);
   }
   return defaultValue;
 }
@@ -104,7 +104,7 @@ export function mapResponseData<T, R, D = R>(
  * @returns True if the response status matches
  */
 export function isResponseStatus<T>(response: ApiResponse<T>, status: number): boolean {
-  return response?.status === status;
+  return response.status === status;
 }
 
 /**
@@ -123,7 +123,7 @@ export function withApiErrorHandling<T, Args extends any[]>(
       return {
         status: 0,
         success: false,
-        error: error instanceof Error ? error?.message : 'Unknown error occurred',
+        error: error instanceof Error ? error.message : 'Unknown error occurred',
       };
     }
   };

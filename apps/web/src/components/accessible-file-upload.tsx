@@ -14,7 +14,7 @@ interface AccessibleFileUploadProps {
   buttonText?: string;
 }
 
-export const AccessibleFileUpload: React?.FC<AccessibleFileUploadProps> = ({
+export const AccessibleFileUpload: React.FC<AccessibleFileUploadProps> = ({
   onFileSelect,
   accept,
   multiple = false,
@@ -32,39 +32,39 @@ export const AccessibleFileUpload: React?.FC<AccessibleFileUploadProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (files: FileList | null) => {
-    if (!files || files?.length === 0) return;
+    if (!files || files.length === 0) return;
 
     const file = files[0];
-    if (maxSize && file?.size > maxSize) {
+    if (maxSize && file.size > maxSize) {
       // Handle file size error
       return;
     }
 
-    setFileName(file?.name);
+    setFileName(file.name);
     onFileSelect(file);
   };
 
-  const handleDrag = (e: React?.DragEvent) => {
-    e?.preventDefault();
-    e?.stopPropagation();
-    if (e?.type === 'dragenter' || e?.type === 'dragover') {
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === 'dragenter' || e.type === 'dragover') {
       setDragActive(true);
-    } else if (e?.type === 'dragleave') {
+    } else if (e.type === 'dragleave') {
       setDragActive(false);
     }
   };
 
-  const handleDrop = (e: React?.DragEvent) => {
-    e?.preventDefault();
-    e?.stopPropagation();
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     setDragActive(false);
-    handleFileSelect(e?.dataTransfer.files);
+    handleFileSelect(e.dataTransfer.files);
   };
 
-  const handleKeyDown = (e: React?.KeyboardEvent) => {
-    if (e?.key === 'Enter' || e?.key === ' ') {
-      e?.preventDefault();
-      inputRef?.current?.click();
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      inputRef.current.click();
     }
   };
 
@@ -82,7 +82,7 @@ export const AccessibleFileUpload: React?.FC<AccessibleFileUploadProps> = ({
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
         onDrop={handleDrop}
-        onClick={() => !disabled && inputRef?.current?.click()}
+        onClick={() => !disabled && inputRef.current.click()}
         onKeyDown={handleKeyDown}
         tabIndex={disabled ? -1 : 0}
         role="button"
@@ -94,7 +94,7 @@ export const AccessibleFileUpload: React?.FC<AccessibleFileUploadProps> = ({
           type="file"
           accept={accept}
           multiple={multiple}
-          onChange={(e) => handleFileSelect(e?.target.files)}
+          onChange={(e) => handleFileSelect(e.target.files)}
           className="hidden"
           disabled={disabled}
           required={required}
@@ -111,7 +111,7 @@ export const AccessibleFileUpload: React?.FC<AccessibleFileUploadProps> = ({
               aria-hidden="true"
             >
               <path
-                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3?.172-3?.172a4 4 0 00-5?.656 0L28 28M8 32l9?.172-9?.172a4 4 0 015?.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h?.02"
+                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
                 strokeWidth={2}
                 strokeLinecap="round"
                 strokeLinejoin="round"

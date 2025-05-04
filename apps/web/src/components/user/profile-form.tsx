@@ -11,19 +11,19 @@ import { Button } from '@/components/ui/Button';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 
-const profileSchema = z?.object({
-  name: z?.string().min(1, 'Name is required'),
-  email: z?.string().email('Invalid email address'),
-  phone: z?.string().optional(),
-  bio: z?.string().optional(),
-  preferences: z?.object({
-    notifications: z?.boolean(),
-    marketingEmails: z?.boolean(),
-    darkMode: z?.boolean(),
+const profileSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  email: z.string().email('Invalid email address'),
+  phone: z.string().optional(),
+  bio: z.string().optional(),
+  preferences: z.object({
+    notifications: z.boolean(),
+    marketingEmails: z.boolean(),
+    darkMode: z.boolean(),
   }),
 });
 
-type ProfileFormData = z?.infer<typeof profileSchema>;
+type ProfileFormData = z.infer<typeof profileSchema>;
 
 export function ProfileForm() {
   const [isLoading, setIsLoading] = useState(true);
@@ -37,24 +37,24 @@ export function ProfileForm() {
 
   useEffect(() => {
     const fetchProfile = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         const response = await fetch('/api/user/profile');
-        if (!response?.ok) {
+        if (!response.ok) {
           throw new Error('Failed to fetch profile');
         }
-        const data = await response?.json();
+        const data = await response.json();
 
         // Set form values
-        setValue('name', data?.name);
-        setValue('email', data?.email);
-        setValue('phone', data?.phone || '');
-        setValue('bio', data?.bio || '');
-        setValue('preferences', data?.preferences);
+        setValue('name', data.name);
+        setValue('email', data.email);
+        setValue('phone', data.phone || '');
+        setValue('bio', data.bio || '');
+        setValue('preferences', data.preferences);
       } catch (error) {
-        console?.error('Error fetching profile:', error);
-        toast?.error('Failed to load profile data');
+        console.error('Error fetching profile:', error);
+        toast.error('Failed to load profile data');
       } finally {
         setIsLoading(false);
       }
@@ -64,25 +64,25 @@ export function ProfileForm() {
   }, [setValue]);
 
   const onSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');data: ProfileFormData) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');data: ProfileFormData) => {
     try {
       const response = await fetch('/api/user/profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify(data),
+        body: JSON.stringify(data),
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to update profile');
       }
 
-      toast?.success('Profile updated successfully');
+      toast.success('Profile updated successfully');
     } catch (error) {
-      console?.error('Error updating profile:', error);
-      toast?.error('Failed to update profile');
+      console.error('Error updating profile:', error);
+      toast.error('Failed to update profile');
     }
   };
 
@@ -103,25 +103,25 @@ export function ProfileForm() {
         <div>
           <Label htmlFor="name">Name</Label>
           <Input id="name" {...register('name')} placeholder="Your name" />
-          {errors?.name && <p className="mt-1 text-sm text-red-500">{errors?.name.message}</p>}
+          {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>}
         </div>
 
         <div>
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" {...register('email')} placeholder="your@email?.com" />
-          {errors?.email && <p className="mt-1 text-sm text-red-500">{errors?.email.message}</p>}
+          <Input id="email" type="email" {...register('email')} placeholder="your@email.com" />
+          {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
         </div>
 
         <div>
           <Label htmlFor="phone">Phone</Label>
           <Input id="phone" type="tel" {...register('phone')} placeholder="+1 (555) 000-0000" />
-          {errors?.phone && <p className="mt-1 text-sm text-red-500">{errors?.phone.message}</p>}
+          {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone.message}</p>}
         </div>
 
         <div>
           <Label htmlFor="bio">Bio</Label>
           <Textarea id="bio" {...register('bio')} placeholder="Tell us about yourself" rows={4} />
-          {errors?.bio && <p className="mt-1 text-sm text-red-500">{errors?.bio.message}</p>}
+          {errors.bio && <p className="mt-1 text-sm text-red-500">{errors.bio.message}</p>}
         </div>
       </div>
 
@@ -129,33 +129,33 @@ export function ProfileForm() {
         <h3 className="font-medium">Preferences</h3>
 
         <div className="flex items-center justify-between">
-          <div className="space-y-0?.5">
+          <div className="space-y-0.5">
             <Label htmlFor="notifications">Notifications</Label>
             <p className="text-sm text-muted-foreground">
               Receive notifications about your account and services
             </p>
           </div>
-          <Switch id="notifications" {...register('preferences?.notifications')} />
+          <Switch id="notifications" {...register('preferences.notifications')} />
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="space-y-0?.5">
+          <div className="space-y-0.5">
             <Label htmlFor="marketingEmails">Marketing Emails</Label>
             <p className="text-sm text-muted-foreground">
               Receive updates about new features and promotions
             </p>
           </div>
-          <Switch id="marketingEmails" {...register('preferences?.marketingEmails')} />
+          <Switch id="marketingEmails" {...register('preferences.marketingEmails')} />
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="space-y-0?.5">
+          <div className="space-y-0.5">
             <Label htmlFor="darkMode">Dark Mode</Label>
             <p className="text-sm text-muted-foreground">
               Enable dark mode for better visibility in low-light conditions
             </p>
           </div>
-          <Switch id="darkMode" {...register('preferences?.darkMode')} />
+          <Switch id="darkMode" {...register('preferences.darkMode')} />
         </div>
       </div>
 

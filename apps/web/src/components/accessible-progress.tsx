@@ -10,7 +10,7 @@ interface AccessibleProgressProps {
   className?: string;
 }
 
-export const AccessibleProgress: React?.FC<AccessibleProgressProps> = ({
+export const AccessibleProgress: React.FC<AccessibleProgressProps> = ({
   value,
   max = 100,
   min = 0,
@@ -19,8 +19,8 @@ export const AccessibleProgress: React?.FC<AccessibleProgressProps> = ({
   size = 'md',
   className = '',
 }) => {
-  const progressId = `progress-${Math?.random().toString(36).substr(2, 9)}`;
-  const percentage = Math?.min(100, Math?.max(0, ((value - min) / (max - min)) * 100));
+  const progressId = `progress-${Math.random().toString(36).substr(2, 9)}`;
+  const percentage = Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100));
 
   const sizeStyles = {
     sm: 'h-1',

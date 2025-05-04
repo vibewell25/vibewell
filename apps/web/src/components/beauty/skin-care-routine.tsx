@@ -31,13 +31,13 @@ export default function SkinCareRoutineComponent() {
   }, []);
 
   const loadRoutines = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const userRoutines = await getSkinCareRoutines();
       setRoutines(userRoutines);
     } catch (error) {
-      console?.error('Error loading routines:', error);
+      console.error('Error loading routines:', error);
     }
   };
 
@@ -45,7 +45,7 @@ export default function SkinCareRoutineComponent() {
     setNewRoutine((prev) => ({
       ...prev,
       products: [
-        ...prev?.products,
+        ...prev.products,
         {
           id: '',
           name: '',
@@ -62,15 +62,15 @@ export default function SkinCareRoutineComponent() {
   const handleProductChange = (index: number, field: keyof SkinCareProduct, value: string) => {
     setNewRoutine((prev) => ({
       ...prev,
-      products: prev?.products.map((product, i) =>
+      products: prev.products.map((product, i) =>
         i === index ? { ...product, [field]: value } : product,
       ),
     }));
   };
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       await createSkinCareRoutine(newRoutine);
       setShowNewRoutine(false);
@@ -82,7 +82,7 @@ export default function SkinCareRoutineComponent() {
       });
       loadRoutines();
     } catch (error) {
-      console?.error('Error creating routine:', error);
+      console.error('Error creating routine:', error);
     }
   };
 
@@ -99,21 +99,21 @@ export default function SkinCareRoutineComponent() {
         <Card className="space-y-4 p-6">
           <Input
             label="Routine Name"
-            value={newRoutine?.name}
-            onChange={(e) => setNewRoutine((prev) => ({ ...prev, name: e?.target.value }))}
+            value={newRoutine.name}
+            onChange={(e) => setNewRoutine((prev) => ({ ...prev, name: e.target.value }))}
           />
           <Input
             label="Description"
-            value={newRoutine?.description}
-            onChange={(e) => setNewRoutine((prev) => ({ ...prev, description: e?.target.value }))}
+            value={newRoutine.description}
+            onChange={(e) => setNewRoutine((prev) => ({ ...prev, description: e.target.value }))}
           />
           <Select
             label="Time of Day"
-            value={newRoutine?.timeOfDay}
+            value={newRoutine.timeOfDay}
             onChange={(e) =>
               setNewRoutine((prev) => ({
                 ...prev,
-                timeOfDay: e?.target.value as 'morning' | 'evening' | 'both',
+                timeOfDay: e.target.value as 'morning' | 'evening' | 'both',
               }))
             }
             options={[
@@ -131,36 +131,36 @@ export default function SkinCareRoutineComponent() {
               </Button>
             </div>
 
-            {newRoutine?.products.map((product, index) => (
+            {newRoutine.products.map((product, index) => (
               <Card key={index} className="space-y-3 p-4">
                 <Input
                   label="Product Name"
-                  value={product?.name}
-                  onChange={(e) => handleProductChange(index, 'name', e?.target.value)}
+                  value={product.name}
+                  onChange={(e) => handleProductChange(index, 'name', e.target.value)}
                 />
                 <Input
                   label="Brand"
-                  value={product?.brand}
-                  onChange={(e) => handleProductChange(index, 'brand', e?.target.value)}
+                  value={product.brand}
+                  onChange={(e) => handleProductChange(index, 'brand', e.target.value)}
                 />
                 <Select
                   label="Category"
-                  value={product?.category}
-                  onChange={(e) => handleProductChange(index, 'category', e?.target.value)}
-                  options={skinCareCategories?.map((cat) => ({
+                  value={product.category}
+                  onChange={(e) => handleProductChange(index, 'category', e.target.value)}
+                  options={skinCareCategories.map((cat) => ({
                     value: cat,
-                    label: cat?.replace('_', ' ').charAt(0).toUpperCase() + cat?.slice(1),
+                    label: cat.replace('_', ' ').charAt(0).toUpperCase() + cat.slice(1),
                   }))}
                 />
                 <Input
                   label="Frequency"
-                  value={product?.frequency}
-                  onChange={(e) => handleProductChange(index, 'frequency', e?.target.value)}
+                  value={product.frequency}
+                  onChange={(e) => handleProductChange(index, 'frequency', e.target.value)}
                 />
                 <Input
                   label="Notes"
-                  value={product?.notes || ''}
-                  onChange={(e) => handleProductChange(index, 'notes', e?.target.value)}
+                  value={product.notes || ''}
+                  onChange={(e) => handleProductChange(index, 'notes', e.target.value)}
                 />
               </Card>
             ))}
@@ -171,28 +171,28 @@ export default function SkinCareRoutineComponent() {
       )}
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {routines?.map((routine) => (
-          <Card key={routine?.id} className="p-6">
+        {routines.map((routine) => (
+          <Card key={routine.id} className="p-6">
             <div className="mb-4 flex items-start justify-between">
               <div>
-                <h3 className="text-xl font-semibold">{routine?.name}</h3>
-                <p className="text-gray-600">{routine?.description}</p>
+                <h3 className="text-xl font-semibold">{routine.name}</h3>
+                <p className="text-gray-600">{routine.description}</p>
               </div>
-              <Badge>{routine?.timeOfDay}</Badge>
+              <Badge>{routine.timeOfDay}</Badge>
             </div>
 
             <div className="space-y-3">
-              {routine?.products.map((product) => (
-                <div key={product?.id} className="border-t pt-3">
+              {routine.products.map((product) => (
+                <div key={product.id} className="border-t pt-3">
                   <div className="flex items-start justify-between">
                     <div>
-                      <h4 className="font-medium">{product?.name}</h4>
-                      <p className="text-sm text-gray-600">{product?.brand}</p>
+                      <h4 className="font-medium">{product.name}</h4>
+                      <p className="text-sm text-gray-600">{product.brand}</p>
                     </div>
-                    <Badge variant="outline">{product?.category}</Badge>
+                    <Badge variant="outline">{product.category}</Badge>
                   </div>
-                  <p className="mt-1 text-sm text-gray-500">Frequency: {product?.frequency}</p>
-                  {product?.notes && <p className="mt-1 text-sm text-gray-500">{product?.notes}</p>}
+                  <p className="mt-1 text-sm text-gray-500">Frequency: {product.frequency}</p>
+                  {product.notes && <p className="mt-1 text-sm text-gray-500">{product.notes}</p>}
                 </div>
               ))}
             </div>

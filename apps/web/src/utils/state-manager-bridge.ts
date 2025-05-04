@@ -31,4 +31,4 @@ export const {
 
 // @ts-expect-error - Ignore the .tsx extension
 
-export type { StateManager } from './state/index?.tsx';
+export type { StateManager } from './state/index.tsx';

@@ -16,7 +16,7 @@ interface AlertListProps {
   onDismiss?: (id: string) => void;
 }
 
-const AlertList: React?.FC<AlertListProps> = ({ alerts, onDismiss }) => {
+const AlertList: React.FC<AlertListProps> = ({ alerts, onDismiss }) => {
   const getSeverityColor = (severity: Alert['severity']) => {
     switch (severity) {
       case 'high':
@@ -30,7 +30,7 @@ const AlertList: React?.FC<AlertListProps> = ({ alerts, onDismiss }) => {
     }
   };
 
-  if (alerts?.length === 0) {
+  if (alerts.length === 0) {
     return (
       <div className="no-alerts">
         <p>No active alerts</p>
@@ -47,19 +47,19 @@ const AlertList: React?.FC<AlertListProps> = ({ alerts, onDismiss }) => {
 
   return (
     <div className="alert-list">
-      {alerts?.map((alert) => (
-        <div key={alert?.id} className="alert-item">
+      {alerts.map((alert) => (
+        <div key={alert.id} className="alert-item">
           <div className="alert-header">
-            <div className="severity" style={{ backgroundColor: getSeverityColor(alert?.severity) }}>
-              {alert?.severity.toUpperCase()}
+            <div className="severity" style={{ backgroundColor: getSeverityColor(alert.severity) }}>
+              {alert.severity.toUpperCase()}
             </div>
             <span className="timestamp">
-              {format(new Date(alert?.timestamp), 'MMM d, yyyy HH:mm:ss')}
+              {format(new Date(alert.timestamp), 'MMM d, yyyy HH:mm:ss')}
             </span>
             {onDismiss && (
               <button
                 className="dismiss-button"
-                onClick={() => onDismiss(alert?.id)}
+                onClick={() => onDismiss(alert.id)}
                 aria-label="Dismiss alert"
               >
                 ×
@@ -67,9 +67,9 @@ const AlertList: React?.FC<AlertListProps> = ({ alerts, onDismiss }) => {
             )}
           </div>
           <div className="alert-content">
-            <p className="message">{alert?.message}</p>
+            <p className="message">{alert.message}</p>
             <p className="details">
-              {alert?.metric}: {alert?.value} (Threshold: {alert?.threshold})
+              {alert.metric}: {alert.value} (Threshold: {alert.threshold})
             </p>
           </div>
         </div>
@@ -82,34 +82,34 @@ const AlertList: React?.FC<AlertListProps> = ({ alerts, onDismiss }) => {
           gap: 1rem;
           max-height: 400px;
           overflow-y: auto;
-          padding-right: 0?.5rem;
+          padding-right: 0.5rem;
         }
 
         .alert-item {
           background-color: var(--background-secondary);
           border-radius: 8px;
           padding: 1rem;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0?.1);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .alert-header {
           display: flex;
           align-items: center;
           gap: 1rem;
-          margin-bottom: 0?.5rem;
+          margin-bottom: 0.5rem;
         }
 
         .severity {
-          padding: 0?.25rem 0?.5rem;
+          padding: 0.25rem 0.5rem;
           border-radius: 4px;
-          font-size: 0?.75rem;
+          font-size: 0.75rem;
           font-weight: bold;
           color: white;
         }
 
         .timestamp {
           color: var(--text-secondary);
-          font-size: 0?.875rem;
+          font-size: 0.875rem;
           margin-left: auto;
         }
 
@@ -117,9 +117,9 @@ const AlertList: React?.FC<AlertListProps> = ({ alerts, onDismiss }) => {
           background: none;
           border: none;
           color: var(--text-secondary);
-          font-size: 1?.5rem;
+          font-size: 1.5rem;
           cursor: pointer;
-          padding: 0 0?.5rem;
+          padding: 0 0.5rem;
           line-height: 1;
         }
 
@@ -132,13 +132,13 @@ const AlertList: React?.FC<AlertListProps> = ({ alerts, onDismiss }) => {
         }
 
         .message {
-          margin: 0 0 0?.5rem 0;
+          margin: 0 0 0.5rem 0;
           font-weight: 500;
         }
 
         .details {
           margin: 0;
-          font-size: 0?.875rem;
+          font-size: 0.875rem;
           color: var(--text-secondary);
         }
 

@@ -17,7 +17,7 @@ interface Product {
 }
 
 // Add missing enum values locally to avoid modifying the original file
-// This is a temporary solution until the error-handler?.ts can be properly updated
+// This is a temporary solution until the error-handler.ts can be properly updated
 const ExtendedErrorSource = {
   ...ErrorSource,
   API: 'api' as any,
@@ -41,11 +41,11 @@ const ExtendedErrorCategory = {
  */
 function ProductDataFetcherComponent() {
   const errorHandler = useErrorHandler();
-  const captureError = errorHandler?.captureError;
+  const captureError = errorHandler.captureError;
 
   // Create a local implementation of withErrorHandling if it doesn't exist in the error handler
   const withErrorHandling =
-    errorHandler?.withErrorHandling ||
+    errorHandler.withErrorHandling ||
     (<T extends any[], R>(fn: (...args: T) => Promise<R>, options?: any) => {
       return async (...args: T): Promise<R> => {
         try {
@@ -74,22 +74,22 @@ function ProductDataFetcherComponent() {
         // Simulate API request
         const response = await fetch('/api/products');
 
-        if (!response?.ok) {
+        if (!response.ok) {
           // Handle specific HTTP error codes
-          if (response?.status === 404) {
+          if (response.status === 404) {
             throw new Error('Products not found');
-          } else if (response?.status === 401) {
+          } else if (response.status === 401) {
             throw new Error('Unauthorized access to products');
-          } else if (response?.status === 403) {
+          } else if (response.status === 403) {
             throw new Error('Forbidden access to products');
-          } else if (response?.status >= 500) {
+          } else if (response.status >= 500) {
             throw new Error('Server error occurred while fetching products');
           } else {
-            throw new Error(`Failed to fetch products: ${response?.statusText}`);
+            throw new Error(`Failed to fetch products: ${response.statusText}`);
           }
         }
 
-        const data = await response?.json();
+        const data = await response.json();
         setProducts(data);
         return data;
       } finally {
@@ -97,9 +97,9 @@ function ProductDataFetcherComponent() {
       }
     },
     {
-      source: ExtendedErrorSource?.API,
-      category: ExtendedErrorCategory?.RESOURCE_NOT_FOUND,
-      severity: ErrorSeverity?.WARNING,
+      source: ExtendedErrorSource.API,
+      category: ExtendedErrorCategory.RESOURCE_NOT_FOUND,
+      severity: ErrorSeverity.WARNING,
       metadata: {
         component: 'ProductDataFetcher',
         endpoint: '/api/products',
@@ -109,8 +109,8 @@ function ProductDataFetcherComponent() {
 
   // Fetch a single product with custom error handling
   const fetchProductById = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');id: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');id: string) => {
     setLoading(true);
 
     try {
@@ -128,7 +128,7 @@ function ProductDataFetcherComponent() {
       } else if (id === 'network') {
         // Simulate network error
         const networkError = new Error('Network error');
-        networkError?.name = 'TypeError'; // Simulate a fetch network error
+        networkError.name = 'TypeError'; // Simulate a fetch network error
         throw networkError;
       }
 
@@ -136,7 +136,7 @@ function ProductDataFetcherComponent() {
       const mockProduct: Product = {
         id,
         name: `Product ${id}`,
-        price: 99?.99,
+        price: 99.99,
         description: 'This is a sample product description',
         inStock: true,
       };
@@ -146,7 +146,7 @@ function ProductDataFetcherComponent() {
     } catch (error) {
       // Use the enhanceError utility to properly handle and categorize the error
       const enhanced = enhanceError(error, {
-        source: ExtendedErrorSource?.API,
+        source: ExtendedErrorSource.API,
         metadata: {
           productId: id,
           endpoint: `/api/products/${id}`,
@@ -158,11 +158,11 @@ function ProductDataFetcherComponent() {
       const retry = () => fetchProductById(id);
 
       // Capture and handle the error
-      const appError = captureError(enhanced?.originalError || enhanced?.errorMessage, {
-        source: enhanced?.source,
-        category: enhanced?.category,
-        severity: enhanced?.severity,
-        metadata: enhanced?.metadata,
+      const appError = captureError(enhanced.originalError || enhanced.errorMessage, {
+        source: enhanced.source,
+        category: enhanced.category,
+        severity: enhanced.severity,
+        metadata: enhanced.metadata,
         retry, // Pass retry function directly, compatible with error handler
       });
 
@@ -179,14 +179,14 @@ function ProductDataFetcherComponent() {
   // Wrap the fetchProductById with the error handler
   const handleFetchProduct = withErrorHandling(() => fetchProductById(productId), {
     // These are default values that will be overridden by the specific ones in fetchProductById
-    source: ExtendedErrorSource?.API,
-    category: ErrorCategory?.UNKNOWN,
-    severity: ErrorSeverity?.ERROR,
+    source: ExtendedErrorSource.API,
+    category: ErrorCategory.UNKNOWN,
+    severity: ErrorSeverity.ERROR,
   });
 
   // Initial data fetch
   useEffect(() => {
-    fetchProducts().catch(console?.error);
+    fetchProducts().catch(console.error);
   }, [fetchProducts]);
 
   // UI for testing different error scenarios
@@ -256,16 +256,16 @@ function ProductDataFetcherComponent() {
                 </div>
               </Card>
             )))
-        ) : products?.length > 0 ? (
+        ) : products.length > 0 ? (
           // Products display
-          (products?.map((product) => (
-            <Card key={product?.id} className="space-y-3 p-4">
-              <h3 className="text-lg font-bold">{product?.name}</h3>
-              <p className="font-medium text-green-600">${product?.price.toFixed(2)}</p>
-              <p className="text-gray-600">{product?.description}</p>
+          (products.map((product) => (
+            <Card key={product.id} className="space-y-3 p-4">
+              <h3 className="text-lg font-bold">{product.name}</h3>
+              <p className="font-medium text-green-600">${product.price.toFixed(2)}</p>
+              <p className="text-gray-600">{product.description}</p>
               <div className="flex items-center justify-between">
-                <span className={product?.inStock ? 'text-green-500' : 'text-red-500'}>
-                  {product?.inStock ? 'In Stock' : 'Out of Stock'}
+                <span className={product.inStock ? 'text-green-500' : 'text-red-500'}>
+                  {product.inStock ? 'In Stock' : 'Out of Stock'}
                 </span>
                 <Button size="sm" variant="outline">
                   View Details

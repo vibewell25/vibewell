@@ -24,20 +24,20 @@ interface SystemMetricsChartProps {
   metrics: Array<'cpuUsage' | 'memoryUsage' | 'diskUsage' | 'networkHealth'>;
 }
 
-const SystemMetricsChart: React?.FC<SystemMetricsChartProps> = ({ data, timeRange, metrics }) => {
+const SystemMetricsChart: React.FC<SystemMetricsChartProps> = ({ data, timeRange, metrics }) => {
   const formatXAxis = (timestamp: number) => {
     const date = new Date(timestamp);
     switch (timeRange) {
       case '1h':
-        return date?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       case '24h':
-        return date?.toLocaleString([], {
+        return date.toLocaleString([], {
           month: 'numeric',
           day: 'numeric',
           hour: '2-digit',
         });
       case '7d':
-        return date?.toLocaleDateString([], { month: 'short', day: 'numeric' });
+        return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
       default:
         return '';
     }
@@ -82,7 +82,7 @@ const SystemMetricsChart: React?.FC<SystemMetricsChartProps> = ({ data, timeRang
               color: 'var(--text-primary)',
             }}
           />
-          {metrics?.map((metric) => (
+          {metrics.map((metric) => (
             <Line
               key={metric}
               type="monotone"
@@ -100,8 +100,8 @@ const SystemMetricsChart: React?.FC<SystemMetricsChartProps> = ({ data, timeRang
         .metrics-chart {
           background: var(--background-secondary);
           border-radius: 8px;
-          padding: 1?.5rem;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0?.1);
+          padding: 1.5rem;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         /* Override Recharts tooltip styles */

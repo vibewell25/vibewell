@@ -39,15 +39,15 @@ export function FormTemplates({ businessId }: FormTemplatesProps) {
   }, []);
 
   const fetchTemplates = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const response = await fetch('/api/business/form-templates');
-      if (!response?.ok) throw new Error('Failed to fetch templates');
-      const data = await response?.json();
+      if (!response.ok) throw new Error('Failed to fetch templates');
+      const data = await response.json();
       setTemplates(data);
     } catch (error) {
-      console?.error('Error fetching templates:', error);
+      console.error('Error fetching templates:', error);
       toast({
         title: 'Error',
         description: 'Failed to load form templates',
@@ -59,31 +59,31 @@ export function FormTemplates({ businessId }: FormTemplatesProps) {
   };
 
   const useTemplate = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');template: FormTemplate) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');template: FormTemplate) => {
     try {
       const response = await fetch('/api/business/forms', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify({
+        body: JSON.stringify({
           businessId,
-          name: template?.name,
-          description: template?.description,
-          fields: template?.fields,
+          name: template.name,
+          description: template.description,
+          fields: template.fields,
           isRequired: true,
           isActive: true,
-          templateId: template?.id,
+          templateId: template.id,
         }),
       });
 
-      if (!response?.ok) throw new Error('Failed to create form from template');
+      if (!response.ok) throw new Error('Failed to create form from template');
 
       toast({
         title: 'Success',
         description: 'Form created from template successfully',
       });
     } catch (error) {
-      console?.error('Error using template:', error);
+      console.error('Error using template:', error);
       toast({
         title: 'Error',
         description: 'Failed to create form from template',
@@ -103,13 +103,13 @@ export function FormTemplates({ businessId }: FormTemplatesProps) {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {templates?.map((template) => (
-            <Card key={template?.id} className="p-4">
+          {templates.map((template) => (
+            <Card key={template.id} className="p-4">
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-lg font-semibold">{template?.name}</h3>
-                  <p className="text-sm text-gray-500">{template?.description}</p>
-                  <div className="text-sm text-gray-500">Category: {template?.category}</div>
+                  <h3 className="text-lg font-semibold">{template.name}</h3>
+                  <p className="text-sm text-gray-500">{template.description}</p>
+                  <div className="text-sm text-gray-500">Category: {template.category}</div>
                 </div>
                 <div className="space-x-2">
                   <Button variant="outline" onClick={() => setSelectedTemplate(template)}>
@@ -126,13 +126,13 @@ export function FormTemplates({ businessId }: FormTemplatesProps) {
           <div className="fixed inset-0 flex items-center justify-center bg-black/50">
             <Card className="mx-4 h-[80vh] w-full max-w-4xl overflow-auto">
               <CardHeader>
-                <CardTitle>{selectedTemplate?.name}</CardTitle>
+                <CardTitle>{selectedTemplate.name}</CardTitle>
               </CardHeader>
               <CardContent>
                 <FormPreview
-                  name={selectedTemplate?.name}
-                  description={selectedTemplate?.description}
-                  fields={selectedTemplate?.fields}
+                  name={selectedTemplate.name}
+                  description={selectedTemplate.description}
+                  fields={selectedTemplate.fields}
                 />
                 <div className="mt-6 flex justify-end space-x-2">
                   <Button variant="outline" onClick={() => setSelectedTemplate(null)}>

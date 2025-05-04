@@ -31,7 +31,7 @@ export default function ChatBot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef?.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -39,10 +39,10 @@ export default function ChatBot() {
   }, [messages]);
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent<HTMLFormElement>) => {
-    e?.preventDefault();
-    if (!input?.trim()) return;
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!input.trim()) return;
 
     const userMessage = { role: 'user' as const, content: input };
     setMessages(prev => [...prev, userMessage]);
@@ -53,21 +53,21 @@ export default function ChatBot() {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify({ messages: messages?.concat(userMessage) }),
+        body: JSON.stringify({ messages: messages.concat(userMessage) }),
       });
 
-      if (!response?.ok) throw new Error('Failed to get response');
+      if (!response.ok) throw new Error('Failed to get response');
 
-      const data = await response?.json();
-      const assistantMessage = { role: 'assistant' as const, content: data?.message };
+      const data = await response.json();
+      const assistantMessage = { role: 'assistant' as const, content: data.message };
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
-      console?.error('Chat error:', error);
+      console.error('Chat error:', error);
       setMessages(prev => [
         ...prev,
         { 
           role: 'assistant', 
-          content: 'Sorry, I encountered an error. Please try again or contact support@vibewell?.com for assistance.' 
+          content: 'Sorry, I encountered an error. Please try again or contact support@vibewell.com for assistance.' 
         },
       ]);
     } finally {
@@ -85,7 +85,7 @@ export default function ChatBot() {
         onClick={() => setIsOpen(true)}
         className="fixed bottom-20 right-4 rounded-full p-4 shadow-lg bg-pink-500 hover:bg-pink-600 text-white"
       >
-        <Icons?.message className="h-6 w-6" />
+        <Icons.message className="h-6 w-6" />
         <span className="sr-only">Open Chat Assistant</span>
       </Button>
     );
@@ -95,7 +95,7 @@ export default function ChatBot() {
     <Card className="fixed bottom-20 right-4 w-96 max-w-[calc(100vw-2rem)] shadow-lg border-pink-100">
       <div className="flex items-center justify-between border-b p-4 bg-pink-50">
         <div className="flex items-center gap-2">
-          <Icons?.chat className="h-6 w-6 text-pink-500" />
+          <Icons.chat className="h-6 w-6 text-pink-500" />
           <div>
             <h3 className="font-semibold text-pink-700">VibeBot</h3>
             <p className="text-xs text-pink-600">AI Wellness Assistant</p>
@@ -105,27 +105,27 @@ export default function ChatBot() {
           onClick={() => setIsOpen(false)}
           className="p-2 hover:bg-pink-100 rounded-full"
         >
-          <Icons?.close className="h-5 w-5" />
+          <Icons.close className="h-5 w-5" />
           <span className="sr-only">Close</span>
         </Button>
       </div>
       
       <div className="h-96 overflow-y-auto p-4 bg-white">
-        {messages?.map((message, index) => (
+        {messages.map((message, index) => (
           <div
             key={index}
             className={`mb-4 flex ${
-              message?.role === 'user' ? 'justify-end' : 'justify-start'
+              message.role === 'user' ? 'justify-end' : 'justify-start'
             }`}
           >
             <div
               className={`rounded-lg px-4 py-2 max-w-[80%] ${
-                message?.role === 'user'
+                message.role === 'user'
                   ? 'bg-pink-500 text-white'
                   : 'bg-gray-100 text-gray-800'
               }`}
             >
-              {message?.content}
+              {message.content}
             </div>
           </div>
         ))}
@@ -141,11 +141,11 @@ export default function ChatBot() {
         <div ref={messagesEndRef} />
       </div>
 
-      {messages?.length === 1 && (
+      {messages.length === 1 && (
         <div className="p-4 border-t border-pink-100 bg-pink-50">
           <p className="text-sm text-pink-700 mb-2">Common questions:</p>
           <div className="flex flex-wrap gap-2">
-            {SUGGESTIONS?.map((suggestion, index) => (
+            {SUGGESTIONS.map((suggestion, index) => (
               <button
                 key={index}
                 onClick={() => handleSuggestionClick(suggestion)}
@@ -162,7 +162,7 @@ export default function ChatBot() {
         <div className="flex gap-2">
           <Input
             value={input}
-            onChange={(e) => setInput(e?.target.value)}
+            onChange={(e) => setInput(e.target.value)}
             placeholder="Ask me anything..."
             disabled={isLoading}
             className="border-pink-200 focus:border-pink-500 focus:ring-pink-500"
@@ -173,9 +173,9 @@ export default function ChatBot() {
             className="bg-pink-500 hover:bg-pink-600 text-white"
           >
             {isLoading ? (
-              <Icons?.spinner className="h-4 w-4 animate-spin" />
+              <Icons.spinner className="h-4 w-4 animate-spin" />
             ) : (
-              <Icons?.message className="h-4 w-4" />
+              <Icons.message className="h-4 w-4" />
             )}
             <span className="sr-only">Send message</span>
           </Button>

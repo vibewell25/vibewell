@@ -16,7 +16,7 @@ interface ExportFormat {
   id: string;
   name: string;
   description: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
 }
 
 export function ActivityExport() {
@@ -49,8 +49,8 @@ export function ActivityExport() {
   ];
 
   const handleExport = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setExporting(true);
       // Simulate export process
@@ -58,7 +58,7 @@ export function ActivityExport() {
 
       toast({
         title: 'Export Successful',
-        description: `Your activity data has been exported in ${format?.toUpperCase()} format.`,
+        description: `Your activity data has been exported in ${format.toUpperCase()} format.`,
       });
     } catch (error) {
       toast({
@@ -89,15 +89,15 @@ export function ActivityExport() {
             <div className="flex items-center space-x-2">
               <input
                 type="date"
-                value={dateRange?.from.toISOString().split('T')[0]}
-                onChange={(e) => setDateRange({ ...dateRange, from: new Date(e?.target.value) })}
+                value={dateRange.from.toISOString().split('T')[0]}
+                onChange={(e) => setDateRange({ ...dateRange, from: new Date(e.target.value) })}
                 className="rounded-md border p-2"
               />
               <span>to</span>
               <input
                 type="date"
-                value={dateRange?.to.toISOString().split('T')[0]}
-                onChange={(e) => setDateRange({ ...dateRange, to: new Date(e?.target.value) })}
+                value={dateRange.to.toISOString().split('T')[0]}
+                onChange={(e) => setDateRange({ ...dateRange, to: new Date(e.target.value) })}
                 className="rounded-md border p-2"
               />
             </div>
@@ -113,11 +113,11 @@ export function ActivityExport() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {exportFormats?.map((format) => (
-                  <SelectItem key={format?.id} value={format?.id}>
+                {exportFormats.map((format) => (
+                  <SelectItem key={format.id} value={format.id}>
                     <div className="flex items-center space-x-2">
-                      {format?.icon}
-                      <span>{format?.name}</span>
+                      {format.icon}
+                      <span>{format.name}</span>
                     </div>
                   </SelectItem>
                 ))}
@@ -134,8 +134,8 @@ export function ActivityExport() {
         <div className="rounded-lg bg-muted p-4">
           <p className="text-sm text-muted-foreground">
             Your export will include all activity data from{' '}
-            {formatDate(dateRange?.from, 'MMM d, yyyy')} to {formatDate(dateRange?.to, 'MMM d, yyyy')}{' '}
-            in {format?.toUpperCase()} format.
+            {formatDate(dateRange.from, 'MMM d, yyyy')} to {formatDate(dateRange.to, 'MMM d, yyyy')}{' '}
+            in {format.toUpperCase()} format.
           </p>
         </div>
       </CardContent>

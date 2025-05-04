@@ -43,7 +43,7 @@ const cardVariants = cva('rounded-lg border bg-card text-card-foreground shadow-
 });
 
 export interface BaseCardProps
-  extends React?.HTMLAttributes<HTMLDivElement>,
+  extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof cardVariants> {
   header?: ReactNode;
   footer?: ReactNode;
@@ -71,7 +71,7 @@ export interface BaseCardProps
  * - Custom styling via className props
  * - All standard div attributes
  */
-export const BaseCard = React?.forwardRef<HTMLDivElement, BaseCardProps>(
+export const BaseCard = React.forwardRef<HTMLDivElement, BaseCardProps>(
   (
     {
       className,
@@ -131,7 +131,7 @@ export const BaseCard = React?.forwardRef<HTMLDivElement, BaseCardProps>(
                 >
                   <svg
                     className={cn('h-4 w-4 transition-transform', isCollapsed && 'rotate-180')}
-                    xmlns="http://www?.w3.org/2000/svg"
+                    xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                   >
                     <path
@@ -170,42 +170,42 @@ export const BaseCard = React?.forwardRef<HTMLDivElement, BaseCardProps>(
   },
 );
 
-BaseCard?.displayName = 'BaseCard';
+BaseCard.displayName = 'BaseCard';
 
-export interface BaseCardHeaderProps extends React?.HTMLAttributes<HTMLDivElement> {}
-export const BaseCardHeader = React?.forwardRef<HTMLDivElement, BaseCardHeaderProps>(
+export interface BaseCardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
+export const BaseCardHeader = React.forwardRef<HTMLDivElement, BaseCardHeaderProps>(
   ({ className, ...props }, ref) => (
     <div ref={ref} className={cn('border-b px-4 py-3', className)} {...props} />
   ),
 );
-BaseCardHeader?.displayName = 'BaseCardHeader';
+BaseCardHeader.displayName = 'BaseCardHeader';
 
-export interface BaseCardTitleProps extends React?.HTMLAttributes<HTMLHeadingElement> {}
-export const BaseCardTitle = React?.forwardRef<HTMLHeadingElement, BaseCardTitleProps>(
+export interface BaseCardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {}
+export const BaseCardTitle = React.forwardRef<HTMLHeadingElement, BaseCardTitleProps>(
   ({ className, ...props }, ref) => (
     <h3 ref={ref} className={cn('text-lg font-medium', className)} {...props} />
   ),
 );
-BaseCardTitle?.displayName = 'BaseCardTitle';
+BaseCardTitle.displayName = 'BaseCardTitle';
 
-export interface BaseCardDescriptionProps extends React?.HTMLAttributes<HTMLParagraphElement> {}
-export const BaseCardDescription = React?.forwardRef<HTMLParagraphElement, BaseCardDescriptionProps>(
+export interface BaseCardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}
+export const BaseCardDescription = React.forwardRef<HTMLParagraphElement, BaseCardDescriptionProps>(
   ({ className, ...props }, ref) => (
     <p ref={ref} className={cn('text-sm text-muted-foreground', className)} {...props} />
   ),
 );
-BaseCardDescription?.displayName = 'BaseCardDescription';
+BaseCardDescription.displayName = 'BaseCardDescription';
 
-export interface BaseCardContentProps extends React?.HTMLAttributes<HTMLDivElement> {}
-export const BaseCardContent = React?.forwardRef<HTMLDivElement, BaseCardContentProps>(
+export interface BaseCardContentProps extends React.HTMLAttributes<HTMLDivElement> {}
+export const BaseCardContent = React.forwardRef<HTMLDivElement, BaseCardContentProps>(
   ({ className, ...props }, ref) => <div ref={ref} className={cn('p-4', className)} {...props} />,
 );
-BaseCardContent?.displayName = 'BaseCardContent';
+BaseCardContent.displayName = 'BaseCardContent';
 
-export interface BaseCardFooterProps extends React?.HTMLAttributes<HTMLDivElement> {}
-export const BaseCardFooter = React?.forwardRef<HTMLDivElement, BaseCardFooterProps>(
+export interface BaseCardFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
+export const BaseCardFooter = React.forwardRef<HTMLDivElement, BaseCardFooterProps>(
   ({ className, ...props }, ref) => (
     <div ref={ref} className={cn('border-t px-4 py-3', className)} {...props} />
   ),
 );
-BaseCardFooter?.displayName = 'BaseCardFooter';
+BaseCardFooter.displayName = 'BaseCardFooter';

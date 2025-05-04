@@ -34,19 +34,19 @@ export function WellnessTracking() {
 
   useEffect(() => {
     const fetchWellnessData = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         const response = await fetch('/api/wellness/metrics');
-        if (!response?.ok) {
+        if (!response.ok) {
           throw new Error('Failed to fetch wellness data');
         }
-        const data = await response?.json();
-        setMetrics(data?.metrics);
-        setChartData(data?.history);
+        const data = await response.json();
+        setMetrics(data.metrics);
+        setChartData(data.history);
       } catch (error) {
-        console?.error('Error fetching wellness data:', error);
-        toast?.error('Failed to load wellness data');
+        console.error('Error fetching wellness data:', error);
+        toast.error('Failed to load wellness data');
       } finally {
         setLoading(false);
       }
@@ -66,27 +66,27 @@ export function WellnessTracking() {
   return (
     <div className="space-y-6">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {metrics?.map((metric) => (
-          <Card key={metric?.id}>
+        {metrics.map((metric) => (
+          <Card key={metric.id}>
             <CardHeader>
-              <CardTitle className="text-lg">{metric?.name}</CardTitle>
+              <CardTitle className="text-lg">{metric.name}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-2xl font-bold">
-                    {metric?.value} {metric?.unit}
+                    {metric.value} {metric.unit}
                   </span>
                   <span
-                    className={`text-sm ${metric?.trend >= 0 ? 'text-green-500' : 'text-red-500'}`}
+                    className={`text-sm ${metric.trend >= 0 ? 'text-green-500' : 'text-red-500'}`}
                   >
-                    {metric?.trend >= 0 ? '+' : ''}
-                    {metric?.trend}%
+                    {metric.trend >= 0 ? '+' : ''}
+                    {metric.trend}%
                   </span>
                 </div>
-                <Progress value={(metric?.value / metric?.target) * 100} className="h-2" />
+                <Progress value={(metric.value / metric.target) * 100} className="h-2" />
                 <p className="text-sm text-muted-foreground">
-                  Target: {metric?.target} {metric?.unit}
+                  Target: {metric.target} {metric.unit}
                 </p>
               </div>
             </CardContent>

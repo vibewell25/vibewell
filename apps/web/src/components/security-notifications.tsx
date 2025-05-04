@@ -16,49 +16,49 @@ export default function SecurityNotifications() {
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const unreadCount = notifications?.filter(n => !n?.isRead).length;
+  const unreadCount = notifications.filter(n => !n.isRead).length;
 
   const fetchNotifications = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setIsLoading(true);
       const response = await fetch('/api/admin/security-notifications');
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to fetch notifications');
       }
-      const data = await response?.json();
+      const data = await response.json();
       setNotifications(data);
     } catch (error) {
-      console?.error('Error fetching notifications:', error);
-      toast?.error('Failed to fetch security notifications');
+      console.error('Error fetching notifications:', error);
+      toast.error('Failed to fetch security notifications');
     } finally {
       setIsLoading(false);
     }
   };
 
   const markAsRead = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');id: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');id: string) => {
     try {
       const response = await fetch('/api/admin/security-notifications', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify({ id }),
+        body: JSON.stringify({ id }),
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to mark notification as read');
       }
 
       setNotifications(prev =>
-        prev?.map(n => (n?.id === id ? { ...n, isRead: true } : n))
+        prev.map(n => (n.id === id ? { ...n, isRead: true } : n))
       );
     } catch (error) {
-      console?.error('Error marking notification as read:', error);
-      toast?.error('Failed to mark notification as read');
+      console.error('Error marking notification as read:', error);
+      toast.error('Failed to mark notification as read');
     }
   };
 
@@ -102,26 +102,26 @@ export default function SecurityNotifications() {
           <div className="max-h-96 overflow-y-auto">
             {isLoading ? (
               <div className="p-4 text-center text-gray-500">Loading...</div>
-            ) : notifications?.length === 0 ? (
+            ) : notifications.length === 0 ? (
               <div className="p-4 text-center text-gray-500">No new notifications</div>
             ) : (
-              notifications?.map((notification) => (
+              notifications.map((notification) => (
                 <div
-                  key={notification?.id}
+                  key={notification.id}
                   className={`p-4 border-l-4 ${getNotificationStyle(
-                    notification?.type
-                  )} ${notification?.isRead ? 'opacity-75' : ''}`}
+                    notification.type
+                  )} ${notification.isRead ? 'opacity-75' : ''}`}
                 >
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
-                      <p className="text-sm font-medium">{notification?.message}</p>
+                      <p className="text-sm font-medium">{notification.message}</p>
                       <p className="text-xs mt-1 text-gray-500">
-                        {new Date(notification?.timestamp).toLocaleString()}
+                        {new Date(notification.timestamp).toLocaleString()}
                       </p>
                     </div>
-                    {!notification?.isRead && (
+                    {!notification.isRead && (
                       <button
-                        onClick={() => markAsRead(notification?.id)}
+                        onClick={() => markAsRead(notification.id)}
                         className="text-xs text-gray-500 hover:text-gray-700"
                       >
                         Mark as read

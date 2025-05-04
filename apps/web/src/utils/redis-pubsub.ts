@@ -47,7 +47,7 @@ class RedisPubSub extends EventEmitter {
       try {
         const parsedMessage = JSON.parse(message) as PubSubMessage;
 
-        if (this.config.messageValidation?.enabled) {
+        if (this.config.messageValidation.enabled) {
           this.validateMessage(parsedMessage);
         }
 
@@ -79,7 +79,7 @@ class RedisPubSub extends EventEmitter {
       throw new Error('Invalid message format');
     }
 
-    if (this.config.messageValidation?.schema) {
+    if (this.config.messageValidation.schema) {
       const schema = this.config.messageValidation.schema!;
       const dataObj = message.data as Record<string, unknown>;
       for (const [key, type] of Object.entries(schema)) {
@@ -104,7 +104,7 @@ class RedisPubSub extends EventEmitter {
         messageId: Math.random().toString(36).substring(2, 15),
       };
 
-      if (this.config.messageValidation?.enabled) {
+      if (this.config.messageValidation.enabled) {
         this.validateMessage(message);
       }
 

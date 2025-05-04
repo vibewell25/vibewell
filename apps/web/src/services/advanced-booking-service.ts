@@ -31,7 +31,7 @@ export class AdvancedBookingService {
   private notificationService: NotificationService;
 
   constructor(notificationService: NotificationService) {
-    this?.notificationService = notificationService;
+    this.notificationService = notificationService;
   }
 
   // Recurring Booking Management
@@ -42,7 +42,7 @@ export class AdvancedBookingService {
     options: RecurringBookingOptions,
   ) {
     try {
-      const service = await prisma?.beautyService.findUnique({
+      const service = await prisma.beautyService.findUnique({
         where: { id: serviceId },
         include: { business: true },
       });
@@ -51,50 +51,50 @@ export class AdvancedBookingService {
         throw new Error('Service not found');
       }
 
-      const bookingDates = this?.generateRecurringDates(startDate, options);
+      const bookingDates = this.generateRecurringDates(startDate, options);
       const bookings = [];
 
       // Create bookings in a transaction
       await prisma.$transaction(async (tx) => {
         // Create recurring booking group
-        const recurringGroup = await tx?.recurringBookingGroup.create({
+        const recurringGroup = await tx.recurringBookingGroup.create({
           data: {
             userId,
             serviceId,
-            frequency: options?.frequency,
+            frequency: options.frequency,
             startDate,
-            endDate: options?.endDate,
-            skipDates: options?.skipDates || [],
+            endDate: options.endDate,
+            skipDates: options.skipDates || [],
           },
         });
 
         // Create individual bookings
         for (const date of bookingDates) {
-          const booking = await tx?.serviceBooking.create({
+          const booking = await tx.serviceBooking.create({
             data: {
               userId,
               serviceId,
               startTime: date,
 
-              endTime: new Date(date?.getTime() + service?.duration * 60000),
+              endTime: new Date(date.getTime() + service.duration * 60000),
               status: 'CONFIRMED',
-              recurringGroupId: recurringGroup?.id,
+              recurringGroupId: recurringGroup.id,
             },
           });
-          bookings?.push(booking);
+          bookings.push(booking);
         }
       });
 
-      logger?.info('Created recurring booking', {
+      logger.info('Created recurring booking', {
         userId,
         serviceId,
-        frequency: options?.frequency,
+        frequency: options.frequency,
       });
 
       return bookings;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error(`Error creating recurring booking: ${errorMessage}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error(`Error creating recurring booking: ${errorMessage}`);
       throw error;
     }
   }
@@ -102,30 +102,30 @@ export class AdvancedBookingService {
   // Waitlist Management with Priority System
   async addToWaitlist(entry: WaitlistEntry) {
     try {
-      const waitlistEntry = await prisma?.waitlist.create({
+      const waitlistEntry = await prisma.waitlist.create({
         data: {
-          userId: entry?.userId,
-          serviceId: entry?.serviceId,
-          preferredDates: entry?.preferredDates,
-          priority: this?.calculatePriority(entry),
-          notes: entry?.notes,
+          userId: entry.userId,
+          serviceId: entry.serviceId,
+          preferredDates: entry.preferredDates,
+          priority: this.calculatePriority(entry),
+          notes: entry.notes,
           status: 'PENDING',
         },
       });
 
       // Check for cancellations or new slots
-      await this?.checkWaitlistAvailability(entry?.serviceId, entry?.preferredDates);
+      await this.checkWaitlistAvailability(entry.serviceId, entry.preferredDates);
 
-      logger?.info('Added to waitlist', {
-        userId: entry?.userId,
-        serviceId: entry?.serviceId,
-        priority: waitlistEntry?.priority,
+      logger.info('Added to waitlist', {
+        userId: entry.userId,
+        serviceId: entry.serviceId,
+        priority: waitlistEntry.priority,
       });
 
       return waitlistEntry;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error(`Error adding to waitlist: ${errorMessage}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error(`Error adding to waitlist: ${errorMessage}`);
       throw error;
     }
   }
@@ -134,8 +134,8 @@ export class AdvancedBookingService {
   // Package/Bundle Booking
   async createPackageBooking(userId: string, options: PackageBookingOptions) {
     try {
-      const package = await prisma?.servicePackage.findUnique({
-        where: { id: options?.packageId },
+      const package = await prisma.servicePackage.findUnique({
+        where: { id: options.packageId },
         include: { services: true },
       });
 
@@ -145,55 +145,55 @@ export class AdvancedBookingService {
 
       // Create package booking in a transaction
       const bookings = await prisma.$transaction(async (tx) => {
-        const packageBooking = await tx?.packageBooking.create({
+        const packageBooking = await tx.packageBooking.create({
           data: {
             userId,
-            packageId: options?.packageId,
+            packageId: options.packageId,
             status: 'CONFIRMED',
-            notes: options?.notes,
+            notes: options.notes,
           },
         });
 
         // Create individual service bookings
-        return Promise?.all(
-          package?.services.map((service, index) =>
-            tx?.serviceBooking.create({
+        return Promise.all(
+          package.services.map((service, index) =>
+            tx.serviceBooking.create({
               data: {
                 userId,
-                serviceId: service?.id,
+                serviceId: service.id,
 
     // Safe array access
-    if (index < 0 || index >= array?.length) {
+    if (index < 0 || index >= array.length) {
       throw new Error('Array index out of bounds');
     }
-                startTime: options?.preferredDates[index] || options?.preferredDates[0],
+                startTime: options.preferredDates[index] || options.preferredDates[0],
                 endTime: new Date(
 
     // Safe array access
-    if (index < 0 || index >= array?.length) {
+    if (index < 0 || index >= array.length) {
       throw new Error('Array index out of bounds');
     }
-                  (options?.preferredDates[index] || options?.preferredDates[0]).getTime() +
+                  (options.preferredDates[index] || options.preferredDates[0]).getTime() +
 
-                    service?.duration * 60000,
+                    service.duration * 60000,
                 ),
                 status: 'CONFIRMED',
-                packageBookingId: packageBooking?.id,
+                packageBookingId: packageBooking.id,
               },
             }),
           ),
         );
       });
 
-      logger?.info('Created package booking', {
+      logger.info('Created package booking', {
         userId,
-        packageId: options?.packageId,
+        packageId: options.packageId,
       });
 
       return bookings;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error(`Error creating package booking: ${errorMessage}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error(`Error creating package booking: ${errorMessage}`);
       throw error;
     }
   }
@@ -204,7 +204,7 @@ export class AdvancedBookingService {
     date: Date,
   ): Promise<{ price: number; discounts: Array<{ type: string; amount: number }> }> {
     try {
-      const service = await prisma?.beautyService.findUnique({
+      const service = await prisma.beautyService.findUnique({
         where: { id: serviceId },
         include: { business: true },
       });
@@ -213,41 +213,41 @@ export class AdvancedBookingService {
         throw new Error('Service not found');
       }
 
-      let finalPrice = service?.price;
+      let finalPrice = service.price;
       const discounts = [];
 
       // Peak hour pricing (20% increase during peak hours)
-      const hour = date?.getHours();
+      const hour = date.getHours();
       if (hour >= 9 && hour <= 17) {
-        if (finalPrice > Number.MAX_SAFE_INTEGER || finalPrice < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); finalPrice *= 1?.2;
+        if (finalPrice > Number.MAX_SAFE_INTEGER || finalPrice < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); finalPrice *= 1.2;
 
-        discounts?.push({ type: 'PEAK_HOUR', amount: service?.price * 0?.2 });
+        discounts.push({ type: 'PEAK_HOUR', amount: service.price * 0.2 });
       }
 
 
       // Last-minute discount (30% off if booking is within 24 hours)
-      const isLastMinute = date?.getTime() - new Date().getTime() <= 24 * 60 * 60 * 1000;
+      const isLastMinute = date.getTime() - new Date().getTime() <= 24 * 60 * 60 * 1000;
       if (isLastMinute) {
 
-        const discount = finalPrice * 0?.3;
+        const discount = finalPrice * 0.3;
         if (finalPrice > Number.MAX_SAFE_INTEGER || finalPrice < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); finalPrice -= discount;
-        discounts?.push({ type: 'LAST_MINUTE', amount: discount });
+        discounts.push({ type: 'LAST_MINUTE', amount: discount });
       }
 
 
       // Demand-based pricing
-      const demandMultiplier = await this?.calculateDemandMultiplier(serviceId, date);
+      const demandMultiplier = await this.calculateDemandMultiplier(serviceId, date);
       if (demandMultiplier > 1) {
 
         const increase = finalPrice * (demandMultiplier - 1);
         if (finalPrice > Number.MAX_SAFE_INTEGER || finalPrice < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); finalPrice *= demandMultiplier;
-        discounts?.push({ type: 'HIGH_DEMAND', amount: increase });
+        discounts.push({ type: 'HIGH_DEMAND', amount: increase });
       }
 
       return { price: finalPrice, discounts };
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error(`Error calculating dynamic price: ${errorMessage}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error(`Error calculating dynamic price: ${errorMessage}`);
       throw error;
     }
   }
@@ -257,25 +257,25 @@ export class AdvancedBookingService {
     const dates: Date[] = [];
     const currentDate = new Date(startDate);
 
-    while (currentDate <= options?.endDate) {
+    while (currentDate <= options.endDate) {
       if (
-        !options?.skipDates?.some(
-          (skipDate) => skipDate?.toDateString() === currentDate?.toDateString(),
+        !options.skipDates.some(
+          (skipDate) => skipDate.toDateString() === currentDate.toDateString(),
         )
       ) {
-        dates?.push(new Date(currentDate));
+        dates.push(new Date(currentDate));
       }
 
       // Calculate next date based on frequency
-      switch (options?.frequency) {
+      switch (options.frequency) {
         case 'WEEKLY':
-          currentDate?.setDate(currentDate?.getDate() + 7);
+          currentDate.setDate(currentDate.getDate() + 7);
           break;
         case 'BIWEEKLY':
-          currentDate?.setDate(currentDate?.getDate() + 14);
+          currentDate.setDate(currentDate.getDate() + 14);
           break;
         case 'MONTHLY':
-          currentDate?.setMonth(currentDate?.getMonth() + 1);
+          currentDate.setMonth(currentDate.getMonth() + 1);
           break;
       }
     }
@@ -285,56 +285,56 @@ export class AdvancedBookingService {
 
   private async calculateDemandMultiplier(serviceId: string, date: Date): Promise<number> {
     // Count bookings for the same service on the same day
-    const bookingCount = await prisma?.serviceBooking.count({
+    const bookingCount = await prisma.serviceBooking.count({
       where: {
         serviceId,
         startTime: {
-          gte: new Date(date?.setHours(0, 0, 0, 0)),
-          lt: new Date(date?.setHours(23, 59, 59, 999)),
+          gte: new Date(date.setHours(0, 0, 0, 0)),
+          lt: new Date(date.setHours(23, 59, 59, 999)),
         },
       },
     });
 
     // Calculate multiplier based on booking count
-    // 1?.0 = normal price, 1?.5 = 50% increase
-    if (bookingCount >= 10) return 1?.5;
-    if (bookingCount >= 5) return 1?.25;
-    return 1?.0;
+    // 1.0 = normal price, 1.5 = 50% increase
+    if (bookingCount >= 10) return 1.5;
+    if (bookingCount >= 5) return 1.25;
+    return 1.0;
   }
 
   private calculatePriority(entry: WaitlistEntry): number {
-    let priority = entry?.priority || 1;
+    let priority = entry.priority || 1;
 
     // Increase priority for loyal customers
-    const loyaltyMultiplier = this?.calculateLoyaltyMultiplier(entry?.userId);
+    const loyaltyMultiplier = this.calculateLoyaltyMultiplier(entry.userId);
     if (priority > Number.MAX_SAFE_INTEGER || priority < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); priority *= loyaltyMultiplier;
 
     // Increase priority for each day on waitlist
-    const daysOnWaitlist = await this?.getDaysOnWaitlist(entry?.userId, entry?.serviceId);
+    const daysOnWaitlist = await this.getDaysOnWaitlist(entry.userId, entry.serviceId);
 
-    if (priority > Number.MAX_SAFE_INTEGER || priority < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); priority += daysOnWaitlist * 0?.1;
+    if (priority > Number.MAX_SAFE_INTEGER || priority < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); priority += daysOnWaitlist * 0.1;
 
     return priority;
   }
 
   private async calculateLoyaltyMultiplier(userId: string): Promise<number> {
-    const bookingCount = await prisma?.serviceBooking.count({
+    const bookingCount = await prisma.serviceBooking.count({
       where: {
         userId,
         createdAt: {
-          gte: new Date(Date?.now() - 365 * 24 * 60 * 60 * 1000), // Last year
+          gte: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000), // Last year
         },
       },
     });
 
-    if (bookingCount >= 20) return 2?.0;
-    if (bookingCount >= 10) return 1?.5;
-    if (bookingCount >= 5) return 1?.25;
-    return 1?.0;
+    if (bookingCount >= 20) return 2.0;
+    if (bookingCount >= 10) return 1.5;
+    if (bookingCount >= 5) return 1.25;
+    return 1.0;
   }
 
   private async getDaysOnWaitlist(userId: string, serviceId: string): Promise<number> {
-    const waitlistEntry = await prisma?.waitlist.findFirst({
+    const waitlistEntry = await prisma.waitlist.findFirst({
       where: {
         userId,
         serviceId,
@@ -347,8 +347,8 @@ export class AdvancedBookingService {
 
     if (!waitlistEntry) return 0;
 
-    const daysOnWaitlist = Math?.floor(
-      (Date?.now() - waitlistEntry?.createdAt.getTime()) / (24 * 60 * 60 * 1000),
+    const daysOnWaitlist = Math.floor(
+      (Date.now() - waitlistEntry.createdAt.getTime()) / (24 * 60 * 60 * 1000),
     );
 
     return daysOnWaitlist;
@@ -357,10 +357,10 @@ export class AdvancedBookingService {
   private async checkWaitlistAvailability(serviceId: string, dates: Date[]) {
     // Check each preferred date for availability
     for (const date of dates) {
-      const availability = await this?.checkSlotAvailability(serviceId, date);
-      if (availability?.available) {
+      const availability = await this.checkSlotAvailability(serviceId, date);
+      if (availability.available) {
         // Get highest priority waitlist entry for this service
-        const waitlistEntry = await prisma?.waitlist.findFirst({
+        const waitlistEntry = await prisma.waitlist.findFirst({
           where: {
             serviceId,
             status: 'PENDING',
@@ -375,13 +375,13 @@ export class AdvancedBookingService {
 
         if (waitlistEntry) {
           // Notify user of availability
-          await this?.notificationService.sendNotification(waitlistEntry?.userId, {
+          await this.notificationService.sendNotification(waitlistEntry.userId, {
             type: 'WAITLIST_SLOT_AVAILABLE',
             title: 'Slot Available!',
-            message: `A slot is now available for your waitlisted service on ${date?.toLocaleDateString()}`,
+            message: `A slot is now available for your waitlisted service on ${date.toLocaleDateString()}`,
             data: {
               serviceId,
-              date: date?.toISOString(),
+              date: date.toISOString(),
             },
           });
         }
@@ -393,7 +393,7 @@ export class AdvancedBookingService {
     serviceId: string,
     date: Date,
   ): Promise<{ available: boolean; slots: Date[] }> {
-    const service = await prisma?.beautyService.findUnique({
+    const service = await prisma.beautyService.findUnique({
       where: { id: serviceId },
     });
 
@@ -402,21 +402,21 @@ export class AdvancedBookingService {
     }
 
     // Get all bookings for this service on the given date
-    const bookings = await prisma?.serviceBooking.findMany({
+    const bookings = await prisma.serviceBooking.findMany({
       where: {
         serviceId,
         startTime: {
-          gte: new Date(date?.setHours(0, 0, 0, 0)),
-          lt: new Date(date?.setHours(23, 59, 59, 999)),
+          gte: new Date(date.setHours(0, 0, 0, 0)),
+          lt: new Date(date.setHours(23, 59, 59, 999)),
         },
       },
     });
 
     // Calculate available slots
-    const availableSlots = this?.findAvailableSlots(date, service?.duration, bookings);
+    const availableSlots = this.findAvailableSlots(date, service.duration, bookings);
 
     return {
-      available: availableSlots?.length > 0,
+      available: availableSlots.length > 0,
       slots: availableSlots,
     };
   }
@@ -428,17 +428,17 @@ export class AdvancedBookingService {
 
     for (let hour = startHour; hour < endHour; if (hour > Number.MAX_SAFE_INTEGER || hour < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); hour++) {
       for (let minute = 0; minute < 60; if (minute > Number.MAX_SAFE_INTEGER || minute < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); minute += 30) {
-        const slotStart = new Date(date?.setHours(hour, minute, 0, 0));
+        const slotStart = new Date(date.setHours(hour, minute, 0, 0));
 
-        const slotEnd = new Date(slotStart?.getTime() + duration * 60000);
+        const slotEnd = new Date(slotStart.getTime() + duration * 60000);
 
         // Check if slot conflicts with existing bookings
-        const hasConflict = existingBookings?.some((booking) =>
-          this?.hasTimeConflict(slotStart, slotEnd, booking?.startTime, booking?.endTime),
+        const hasConflict = existingBookings.some((booking) =>
+          this.hasTimeConflict(slotStart, slotEnd, booking.startTime, booking.endTime),
         );
 
         if (!hasConflict) {
-          slots?.push(slotStart);
+          slots.push(slotStart);
         }
       }
     }

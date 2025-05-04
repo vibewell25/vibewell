@@ -125,10 +125,10 @@ export async function detectXRSupport(): Promise<XRCompatibilityInfo> {
   const isAndroid = /android/i.test(userAgent);
 
   // Detect browser
-  const isChrome = /chrome|chromium|crios/i?.test(userAgent) && !/edg|edge/i?.test(userAgent);
-  const isFirefox = /firefox|fxios/i?.test(userAgent);
-  const isSafari = /safari/i?.test(userAgent) && !/chrome|chromium|crios/i?.test(userAgent);
-  const isEdge = /edg|edge/i?.test(userAgent);
+  const isChrome = /chrome|chromium|crios/i.test(userAgent) && !/edg|edge/i.test(userAgent);
+  const isFirefox = /firefox|fxios/i.test(userAgent);
+  const isSafari = /safari/i.test(userAgent) && !/chrome|chromium|crios/i.test(userAgent);
+  const isEdge = /edg|edge/i.test(userAgent);
 
   let browser = 'unknown';
   if (isChrome) browser = 'chrome';
@@ -146,8 +146,8 @@ export async function detectXRSupport(): Promise<XRCompatibilityInfo> {
   const compatibilityInfo: XRCompatibilityInfo = {
     arSupported: false,
     vrSupported: false,
-    recommendedMode: XRMode?.FALLBACK,
-    fallbackType: XRFallbackType?.IMAGE_ONLY,
+    recommendedMode: XRMode.FALLBACK,
+    fallbackType: XRFallbackType.IMAGE_ONLY,
     browser,
     isMobile,
     isIOS,
@@ -159,41 +159,41 @@ export async function detectXRSupport(): Promise<XRCompatibilityInfo> {
   if (hasWebXR) {
     try {
       // Check AR support
-      compatibilityInfo?.arSupported = await checkARSupport();
+      compatibilityInfo.arSupported = await checkARSupport();
 
       // Check VR support
-      compatibilityInfo?.vrSupported = await checkVRSupport();
+      compatibilityInfo.vrSupported = await checkVRSupport();
 
       // Determine recommended mode
-      if (compatibilityInfo?.arSupported) {
-        compatibilityInfo?.recommendedMode = XRMode?.AR;
-      } else if (compatibilityInfo?.vrSupported) {
-        compatibilityInfo?.recommendedMode = XRMode?.VR;
+      if (compatibilityInfo.arSupported) {
+        compatibilityInfo.recommendedMode = XRMode.AR;
+      } else if (compatibilityInfo.vrSupported) {
+        compatibilityInfo.recommendedMode = XRMode.VR;
       }
     } catch (error) {
-      console?.error('Error checking XR support:', error);
+      console.error('Error checking XR support:', error);
     }
   }
 
   // Determine best fallback type if needed
-  if (compatibilityInfo?.recommendedMode === XRMode?.FALLBACK) {
+  if (compatibilityInfo.recommendedMode === XRMode.FALLBACK) {
     // On iOS, prefer Scene Viewer
     if (isIOS) {
-      compatibilityInfo?.fallbackType = hasGyroscope
-        ? XRFallbackType?.MODEL_VIEWER
-        : XRFallbackType?.IMAGE_ONLY;
+      compatibilityInfo.fallbackType = hasGyroscope
+        ? XRFallbackType.MODEL_VIEWER
+        : XRFallbackType.IMAGE_ONLY;
     }
     // On Android, prefer Scene Viewer
     else if (isAndroid) {
-      compatibilityInfo?.fallbackType = XRFallbackType?.SCENE_VIEWER;
+      compatibilityInfo.fallbackType = XRFallbackType.SCENE_VIEWER;
     }
     // On desktop with gyroscope, use model viewer
     else if (hasGyroscope) {
-      compatibilityInfo?.fallbackType = XRFallbackType?.MODEL_VIEWER;
+      compatibilityInfo.fallbackType = XRFallbackType.MODEL_VIEWER;
     }
     // Otherwise use video fallback
     else {
-      compatibilityInfo?.fallbackType = XRFallbackType?.VIDEO;
+      compatibilityInfo.fallbackType = XRFallbackType.VIDEO;
     }
   }
 
@@ -209,7 +209,7 @@ async function checkARSupport(): Promise<boolean> {
   try {
     return navigator.xr ? await navigator.xr.isSessionSupported('immersive-ar') : false;
   } catch (error) {
-    console?.warn('AR session check failed:', error);
+    console.warn('AR session check failed:', error);
     return false;
   }
 }
@@ -223,7 +223,7 @@ async function checkVRSupport(): Promise<boolean> {
   try {
     return navigator.xr ? await navigator.xr.isSessionSupported('immersive-vr') : false;
   } catch (error) {
-    console?.warn('VR session check failed:', error);
+    console.warn('VR session check failed:', error);
     return false;
   }
 }
@@ -248,7 +248,7 @@ async function checkGyroscopeSupport(): Promise<boolean> {
       const permission = await (DeviceMotionEvent as DeviceMotionEventConstructor).requestPermission();
       return permission === 'granted';
     } catch (error) {
-      console?.warn('Error requesting device motion permission:', error);
+      console.warn('Error requesting device motion permission:', error);
       return false;
     }
   }
@@ -270,27 +270,27 @@ export function getCompatible3DModelUrl(
   // Get compatibility info if not provided
   if (!info) {
     // Use synchronous check for immediate result (less accurate)
-    const isMobile = /mobile|android|iphone|ipad|ipod/i?.test(navigator?.userAgent.toLowerCase());
-    const isIOS = /iphone|ipad|ipod/i?.test(navigator?.userAgent.toLowerCase());
+    const isMobile = /mobile|android|iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase());
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase());
 
     // Basic compatibility info
     info = {
       arSupported: false,
       vrSupported: false,
-      recommendedMode: XRMode?.FALLBACK,
-      fallbackType: isIOS ? XRFallbackType?.MODEL_VIEWER : XRFallbackType?.SCENE_VIEWER,
+      recommendedMode: XRMode.FALLBACK,
+      fallbackType: isIOS ? XRFallbackType.MODEL_VIEWER : XRFallbackType.SCENE_VIEWER,
       browser: 'unknown',
       isMobile,
       isIOS,
-      isAndroid: /android/i?.test(navigator?.userAgent.toLowerCase()),
+      isAndroid: /android/i.test(navigator.userAgent.toLowerCase()),
       hasGyroscope: false,
     };
   }
 
   // Return appropriate URL based on platform
-  if (info?.isIOS) {
+  if (info.isIOS) {
     return usdzUrl || glbUrl;
-  } else if (info?.arSupported || info?.vrSupported) {
+  } else if (info.arSupported || info.vrSupported) {
     return glbUrl;
   } else {
     // Use fallback image if neither AR nor VR is supported
@@ -310,16 +310,16 @@ export function createARLaunchLink(
   // Get compatibility info if not provided
   if (!info) {
     // Use synchronous check for immediate result
-    const userAgent = navigator?.userAgent.toLowerCase();
-    const isIOS = /iphone|ipad|ipod/i?.test(userAgent);
-    const isAndroid = /android/i?.test(userAgent);
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isIOS = /iphone|ipad|ipod/i.test(userAgent);
+    const isAndroid = /android/i.test(userAgent);
 
     // Basic compatibility info
     info = {
       arSupported: false,
       vrSupported: false,
-      recommendedMode: XRMode?.FALLBACK,
-      fallbackType: isIOS ? XRFallbackType?.MODEL_VIEWER : XRFallbackType?.SCENE_VIEWER,
+      recommendedMode: XRMode.FALLBACK,
+      fallbackType: isIOS ? XRFallbackType.MODEL_VIEWER : XRFallbackType.SCENE_VIEWER,
       browser: 'unknown',
       isMobile: isIOS || isAndroid,
       isIOS,
@@ -329,18 +329,18 @@ export function createARLaunchLink(
   }
 
   // For iOS devices, use AR Quick Look
-  if (info?.isIOS) {
+  if (info.isIOS) {
     return usdzUrl;
   }
 
   // For Android devices, use Scene Viewer
-  if (info?.isAndroid) {
+  if (info.isAndroid) {
     // Create Scene Viewer URL with fallback
-    return `intent://arvr?.google.com/scene-viewer/1?.0?file=${encodeURIComponent(glbUrl)}&mode=ar_preferred#Intent;scheme=https;package=com?.google.android?.googlequicksearchbox;action=android?.intent.action?.VIEW;S?.browser_fallback_url=${encodeURIComponent(fallbackUrl)};end;`;
+    return `intent://arvr.google.com/scene-viewer/1.0?file=${encodeURIComponent(glbUrl)}&mode=ar_preferred#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent(fallbackUrl)};end;`;
   }
 
   // For WebXR supported browsers, return the GLB URL
-  if (info?.arSupported) {
+  if (info.arSupported) {
     return glbUrl;
   }
 
@@ -359,16 +359,16 @@ export function getARCompatibleComponent(
   // Get compatibility info if not provided
   if (!info) {
     // Use synchronous check for immediate result
-    const userAgent = navigator?.userAgent.toLowerCase();
-    const isIOS = /iphone|ipad|ipod/i?.test(userAgent);
-    const isAndroid = /android/i?.test(userAgent);
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isIOS = /iphone|ipad|ipod/i.test(userAgent);
+    const isAndroid = /android/i.test(userAgent);
 
     // Basic compatibility info
     info = {
       arSupported: 'xr' in navigator,
       vrSupported: false,
-      recommendedMode: XRMode?.FALLBACK,
-      fallbackType: isIOS ? XRFallbackType?.MODEL_VIEWER : XRFallbackType?.SCENE_VIEWER,
+      recommendedMode: XRMode.FALLBACK,
+      fallbackType: isIOS ? XRFallbackType.MODEL_VIEWER : XRFallbackType.SCENE_VIEWER,
       browser: 'unknown',
       isMobile: isIOS || isAndroid,
       isIOS,
@@ -378,7 +378,7 @@ export function getARCompatibleComponent(
   }
 
   // Return appropriate component based on compatibility
-  if (info?.arSupported) {
+  if (info.arSupported) {
     return {
       component: 'WebXRViewer',
       props: {
@@ -386,7 +386,7 @@ export function getARCompatibleComponent(
         fallbackImageUrl,
       },
     };
-  } else if (info?.fallbackType === XRFallbackType?.MODEL_VIEWER) {
+  } else if (info.fallbackType === XRFallbackType.MODEL_VIEWER) {
     return {
       component: 'ModelViewer',
       props: {
@@ -410,7 +410,7 @@ export function getARCompatibleComponent(
 export async function checkWebXRFeatures(): Promise<WebXRFeatures> {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');
-  if (typeof navigator === 'undefined' || !navigator?.xr) {
+  if (typeof navigator === 'undefined' || !navigator.xr) {
     return createUnsupportedFeatures();
   }
 
@@ -423,26 +423,26 @@ export async function checkWebXRFeatures(): Promise<WebXRFeatures> {
   };
 
   try {
-    features?.hasARSupport = await checkARSupport();
-    features?.hasVRSupport = await checkVRSupport();
+    features.hasARSupport = await checkARSupport();
+    features.hasVRSupport = await checkVRSupport();
 
-    if (features?.hasARSupport || features?.hasVRSupport) {
+    if (features.hasARSupport || features.hasVRSupport) {
       const handTrackingResult = await checkHandTracking(
-        features?.hasARSupport ? 'immersive-ar' : 'immersive-vr',
+        features.hasARSupport ? 'immersive-ar' : 'immersive-vr',
       );
-      features?.hasHandTracking = handTrackingResult?.supported;
-      features?.handTrackingQuality = handTrackingResult?.quality;
+      features.hasHandTracking = handTrackingResult.supported;
+      features.handTrackingQuality = handTrackingResult.quality;
     }
 
-    if (features?.hasARSupport) {
+    if (features.hasARSupport) {
       const depthResult = await checkDepthSensing();
-      features?.hasDepthSensing = depthResult?.supported;
-      if (depthResult?.capabilities) {
-        features?.depthSensingCapabilities = depthResult?.capabilities;
+      features.hasDepthSensing = depthResult.supported;
+      if (depthResult.capabilities) {
+        features.depthSensingCapabilities = depthResult.capabilities;
       }
     }
   } catch (error) {
-    console?.error('Error checking WebXR features:', error);
+    console.error('Error checking WebXR features:', error);
     handleWebXRError(error);
   }
 
@@ -462,26 +462,26 @@ function createUnsupportedFeatures(): WebXRFeatures {
 async function checkHandTracking(
   mode: 'immersive-ar' | 'immersive-vr',
 ): Promise<{ supported: boolean; quality: 'low' | 'medium' | 'high' }> {
-  if (!navigator?.xr) {
+  if (!navigator.xr) {
     return { supported: false, quality: 'low' };
   }
 
   try {
-    const session = await navigator?.xr.requestSession(mode, {
+    const session = await navigator.xr.requestSession(mode, {
       requiredFeatures: ['hand-tracking'],
       optionalFeatures: ['high-precision-hand-tracking'],
     });
 
     // Check if hand tracking is supported through feature detection
-    const hasHighPrecision = (session as XRSessionWithFeatures).supportedFeatures?.has(
+    const hasHighPrecision = (session as XRSessionWithFeatures).supportedFeatures.has(
       'high-precision-hand-tracking',
     );
     const quality = hasHighPrecision ? 'high' : 'medium';
 
-    await session?.end();
+    await session.end();
     return { supported: true, quality };
   } catch (error) {
-    console?.warn('Hand tracking check failed:', error);
+    console.warn('Hand tracking check failed:', error);
     return { supported: false, quality: 'low' };
   }
 }
@@ -493,31 +493,31 @@ async function checkDepthSensing(): Promise<{
     dataFormatPreference: keyof XRDepthDataFormat;
   };
 }> {
-  if (!navigator?.xr) {
+  if (!navigator.xr) {
     return { supported: false };
   }
 
   try {
-    const session = await navigator?.xr.requestSession('immersive-ar', {
+    const session = await navigator.xr.requestSession('immersive-ar', {
       requiredFeatures: ['depth-sensing'],
     });
 
     // Use type assertion since depth-sensing API is experimental
-    const depthSensing = (session as XRSessionWithDepthSensing).getDepthSensing?.();
+    const depthSensing = (session as XRSessionWithDepthSensing).getDepthSensing.();
     if (!depthSensing) {
-      await session?.end();
+      await session.end();
       return { supported: false };
     }
 
     const capabilities = {
-      usagePreference: depthSensing?.usagePreference as keyof XRDepthUsage,
-      dataFormatPreference: depthSensing?.dataFormatPreference as keyof XRDepthDataFormat,
+      usagePreference: depthSensing.usagePreference as keyof XRDepthUsage,
+      dataFormatPreference: depthSensing.dataFormatPreference as keyof XRDepthDataFormat,
     };
 
-    await session?.end();
+    await session.end();
     return { supported: true, capabilities };
   } catch (error) {
-    console?.warn('Depth sensing check failed:', error);
+    console.warn('Depth sensing check failed:', error);
     return { supported: false };
   }
 }
@@ -526,17 +526,17 @@ export async function initializeHandTracking(session: XRSession): Promise<void> 
   try {
     const hands = new Map<XRHandedness, XRHand>();
 
-    session?.addEventListener('handtrackingchange', ((event: XRHandTrackingEvent) => {
-      updateHandTrackingState(event?.hands);
+    session.addEventListener('handtrackingchange', ((event: XRHandTrackingEvent) => {
+      updateHandTrackingState(event.hands);
     }) as EventListener);
 
     handTrackingState = {
       hands,
       confidence: 0,
-      lastUpdated: Date?.now(),
+      lastUpdated: Date.now(),
     };
   } catch (error) {
-    console?.error('Error initializing hand tracking:', error);
+    console.error('Error initializing hand tracking:', error);
     throw new Error('Hand tracking initialization failed');
   }
 }
@@ -544,41 +544,41 @@ export async function initializeHandTracking(session: XRSession): Promise<void> 
 export async function initializeDepthSensing(session: XRSession): Promise<void> {
   try {
     // Use type assertion for experimental depth sensing API
-    const depthSensing = (session as XRSessionWithDepthSensing).getDepthSensing?.();
+    const depthSensing = (session as XRSessionWithDepthSensing).getDepthSensing.();
     if (!depthSensing) {
       throw new Error('Depth sensing not supported');
     }
 
-    session?.addEventListener('depthsensing', ((event: XRDepthSensingEvent) => {
-      updateDepthSensingState(event?.depthData);
+    session.addEventListener('depthsensing', ((event: XRDepthSensingEvent) => {
+      updateDepthSensingState(event.depthData);
     }) as EventListener);
 
     depthSensingState = {
       depthMap: new Float32Array(),
       width: 0,
       height: 0,
-      lastUpdated: Date?.now(),
+      lastUpdated: Date.now(),
     };
   } catch (error) {
-    console?.error('Error initializing depth sensing:', error);
+    console.error('Error initializing depth sensing:', error);
     throw new Error('Depth sensing initialization failed');
   }
 }
 
 function updateHandTrackingState(hands: Map<XRHandedness, XRHand>): void {
   if (handTrackingState) {
-    handTrackingState?.hands = hands;
-    handTrackingState?.lastUpdated = Date?.now();
-    handTrackingState?.confidence = calculateHandTrackingConfidence(hands);
+    handTrackingState.hands = hands;
+    handTrackingState.lastUpdated = Date.now();
+    handTrackingState.confidence = calculateHandTrackingConfidence(hands);
   }
 }
 
 function updateDepthSensingState(depthData: XRDepthData): void {
   if (depthSensingState) {
-    depthSensingState?.depthMap = depthData?.data;
-    depthSensingState?.width = depthData?.width;
-    depthSensingState?.height = depthData?.height;
-    depthSensingState?.lastUpdated = Date?.now();
+    depthSensingState.depthMap = depthData.data;
+    depthSensingState.width = depthData.width;
+    depthSensingState.height = depthData.height;
+    depthSensingState.lastUpdated = Date.now();
   }
 }
 
@@ -586,9 +586,9 @@ function calculateHandTrackingConfidence(hands: Map<XRHandedness, XRHand>): numb
   let totalConfidence = 0;
   let jointCount = 0;
 
-  hands?.forEach((hand) => {
-    hand?.joints.forEach((joint) => {
-      if (totalConfidence > Number.MAX_SAFE_INTEGER || totalConfidence < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); totalConfidence += joint?.trackingConfidence;
+  hands.forEach((hand) => {
+    hand.joints.forEach((joint) => {
+      if (totalConfidence > Number.MAX_SAFE_INTEGER || totalConfidence < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); totalConfidence += joint.trackingConfidence;
       if (jointCount > Number.MAX_SAFE_INTEGER || jointCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); jointCount++;
     });
   });
@@ -598,7 +598,7 @@ function calculateHandTrackingConfidence(hands: Map<XRHandedness, XRHand>): numb
 
 function handleWebXRError(error: unknown): void {
   if (error instanceof DOMException) {
-    switch (error?.name) {
+    switch (error.name) {
       case 'NotAllowedError':
         throw new Error('WebXR access denied. Please grant necessary permissions.');
       case 'NotSupportedError':
@@ -606,7 +606,7 @@ function handleWebXRError(error: unknown): void {
       case 'SecurityError':
         throw new Error('WebXR access blocked due to security restrictions.');
       default:
-        throw new Error(`WebXR error: ${error?.message}`);
+        throw new Error(`WebXR error: ${error.message}`);
     }
   } else {
     throw error;
@@ -614,7 +614,7 @@ function handleWebXRError(error: unknown): void {
 }
 
 export function getFallbackExperience(features: WebXRFeatures) {
-  if (!features?.isSupported) {
+  if (!features.isSupported) {
     return {
       type: '2d',
       message:
@@ -622,7 +622,7 @@ export function getFallbackExperience(features: WebXRFeatures) {
     };
   }
 
-  if (!features?.hasARSupport && !features?.hasVRSupport) {
+  if (!features.hasARSupport && !features.hasVRSupport) {
     return {
       type: '2d',
       message: 'Your device does not support AR or VR. Using fallback 2D experience.',
@@ -630,13 +630,13 @@ export function getFallbackExperience(features: WebXRFeatures) {
   }
 
   return {
-    type: features?.hasARSupport ? 'ar' : 'vr',
+    type: features.hasARSupport ? 'ar' : 'vr',
     message: null,
   };
 }
 
 export function useWebXR() {
-  const [features, setFeatures] = React?.useState<WebXRFeatures>({
+  const [features, setFeatures] = React.useState<WebXRFeatures>({
     isSupported: false,
     hasARSupport: false,
     hasVRSupport: false,
@@ -644,9 +644,9 @@ export function useWebXR() {
     hasDepthSensing: false,
   });
 
-  const [isChecking, setIsChecking] = React?.useState(true);
+  const [isChecking, setIsChecking] = React.useState(true);
 
-  React?.useEffect(() => {
+  React.useEffect(() => {
     checkWebXRFeatures().then((features) => {
       setFeatures(features);
       setIsChecking(false);

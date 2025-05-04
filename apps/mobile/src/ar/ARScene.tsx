@@ -7,7 +7,7 @@ interface ARSceneProps {
   scale: [number, number, number];
 }
 
-const ARScene: React?.FC<ARSceneProps> = ({ onLoadEnd, source, scale }) => (
+const ARScene: React.FC<ARSceneProps> = ({ onLoadEnd, source, scale }) => (
   <ViroARScene>
     <ViroAmbientLight color="#FFFFFF" intensity={500} />
     <Viro3DObject

@@ -22,13 +22,13 @@ export default function ModuleContentEditor({
   initialContent,
   onSave,
 }: ModuleContentEditorProps) {
-  const [sections, setSections] = useState<ContentSection[]>(initialContent?.sections || []);
+  const [sections, setSections] = useState<ContentSection[]>(initialContent.sections || []);
   const [selectedSection, setSelectedSection] = useState<ContentSection | null>(null);
   const [saving, setSaving] = useState(false);
 
   const handleAddSection = (type: 'text' | 'video' | 'quiz') => {
     const newSection: ContentSection = {
-      id: Math?.random().toString(36).substr(2, 9),
+      id: Math.random().toString(36).substr(2, 9),
       type,
       title: '',
       content: type === 'quiz' ? { questions: [] } : '',
@@ -38,12 +38,12 @@ export default function ModuleContentEditor({
   };
 
   const handleUpdateSection = (updatedSection: ContentSection) => {
-    setSections(sections?.map((s) => (s?.id === updatedSection?.id ? updatedSection : s)));
+    setSections(sections.map((s) => (s.id === updatedSection.id ? updatedSection : s)));
   };
 
   const handleSave = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setSaving(true);
     try {
       const content = {
@@ -56,7 +56,7 @@ export default function ModuleContentEditor({
       }
       onSave();
     } catch (error) {
-      console?.error('Error saving module content:', error);
+      console.error('Error saving module content:', error);
     } finally {
       setSaving(false);
     }
@@ -65,13 +65,13 @@ export default function ModuleContentEditor({
   const renderSectionEditor = () => {
     if (!selectedSection) return null;
 
-    switch (selectedSection?.type) {
+    switch (selectedSection.type) {
       case 'text':
         return (
           <div className="space-y-4">
             <Input
               label="Section Title"
-              value={selectedSection?.title}
+              value={selectedSection.title}
               onChange={(value) =>
                 handleUpdateSection({
                   ...selectedSection,
@@ -81,7 +81,7 @@ export default function ModuleContentEditor({
             />
             <Textarea
               label="Content"
-              value={selectedSection?.content}
+              value={selectedSection.content}
               onChange={(value) =>
                 handleUpdateSection({
                   ...selectedSection,
@@ -98,7 +98,7 @@ export default function ModuleContentEditor({
           <div className="space-y-4">
             <Input
               label="Section Title"
-              value={selectedSection?.title}
+              value={selectedSection.title}
               onChange={(value) =>
                 handleUpdateSection({
                   ...selectedSection,
@@ -108,7 +108,7 @@ export default function ModuleContentEditor({
             />
             <Input
               label="Video URL"
-              value={selectedSection?.content}
+              value={selectedSection.content}
               onChange={(value) =>
                 handleUpdateSection({
                   ...selectedSection,
@@ -125,7 +125,7 @@ export default function ModuleContentEditor({
           <div className="space-y-4">
             <Input
               label="Section Title"
-              value={selectedSection?.title}
+              value={selectedSection.title}
               onChange={(value) =>
                 handleUpdateSection({
                   ...selectedSection,
@@ -134,14 +134,14 @@ export default function ModuleContentEditor({
               }
             />
             <div className="space-y-4">
-              {selectedSection?.content.questions?.map((question: any, index: number) => (
+              {selectedSection.content.questions.map((question: any, index: number) => (
                 <Card key={index} className="p-4">
                   <div className="space-y-4">
                     <Input
                       label={`Question ${index + 1}`}
-                      value={question?.text}
+                      value={question.text}
                       onChange={(value) => {
-                        const newQuestions = [...selectedSection?.content.questions];
+                        const newQuestions = [...selectedSection.content.questions];
                         newQuestions[index] = {
                           ...question,
                           text: value,
@@ -149,25 +149,25 @@ export default function ModuleContentEditor({
                         handleUpdateSection({
                           ...selectedSection,
                           content: {
-                            ...selectedSection?.content,
+                            ...selectedSection.content,
                             questions: newQuestions,
                           },
                         });
                       }}
                     />
                     <div className="grid grid-cols-2 gap-4">
-                      {question?.options.map((option: string, optionIndex: number) => (
+                      {question.options.map((option: string, optionIndex: number) => (
                         <Input
                           key={optionIndex}
                           label={`Option ${optionIndex + 1}`}
                           value={option}
                           onChange={(value) => {
-                            const newQuestions = [...selectedSection?.content.questions];
+                            const newQuestions = [...selectedSection.content.questions];
                             newQuestions[index].options[optionIndex] = value;
                             handleUpdateSection({
                               ...selectedSection,
                               content: {
-                                ...selectedSection?.content,
+                                ...selectedSection.content,
                                 questions: newQuestions,
                               },
                             });
@@ -177,20 +177,20 @@ export default function ModuleContentEditor({
                     </div>
                     <Select
                       label="Correct Answer"
-                      value={question?.correctAnswer}
+                      value={question.correctAnswer}
                       onChange={(value) => {
-                        const newQuestions = [...selectedSection?.content.questions];
+                        const newQuestions = [...selectedSection.content.questions];
                         newQuestions[index].correctAnswer = value;
                         handleUpdateSection({
                           ...selectedSection,
                           content: {
-                            ...selectedSection?.content,
+                            ...selectedSection.content,
                             questions: newQuestions,
                           },
                         });
                       }}
-                      options={question?.options.map((option: string, i: number) => ({
-                        value: i?.toString(),
+                      options={question.options.map((option: string, i: number) => ({
+                        value: i.toString(),
                         label: option,
                       }))}
                     />
@@ -201,7 +201,7 @@ export default function ModuleContentEditor({
                 variant="outline"
                 onClick={() => {
                   const newQuestions = [
-                    ...selectedSection?.content.questions,
+                    ...selectedSection.content.questions,
                     {
                       text: '',
                       options: ['', '', '', ''],
@@ -211,7 +211,7 @@ export default function ModuleContentEditor({
                   handleUpdateSection({
                     ...selectedSection,
                     content: {
-                      ...selectedSection?.content,
+                      ...selectedSection.content,
                       questions: newQuestions,
                     },
                   });
@@ -250,18 +250,18 @@ export default function ModuleContentEditor({
           </div>
         </div>
         <div className="space-y-2">
-          {sections?.map((section) => (
+          {sections.map((section) => (
             <div
-              key={section?.id}
+              key={section.id}
               className={`cursor-pointer rounded-lg p-3 ${
-                selectedSection?.id === section?.id
+                selectedSection.id === section.id
                   ? 'border-blue-200 bg-blue-50'
                   : 'bg-gray-50 hover:bg-gray-100'
               }`}
               onClick={() => setSelectedSection(section)}
             >
-              <h3 className="font-medium">{section?.title || `Untitled ${section?.type} section`}</h3>
-              <p className="text-sm capitalize text-gray-500">{section?.type}</p>
+              <h3 className="font-medium">{section.title || `Untitled ${section.type} section`}</h3>
+              <p className="text-sm capitalize text-gray-500">{section.type}</p>
             </div>
           ))}
         </div>
@@ -276,7 +276,7 @@ export default function ModuleContentEditor({
               <Button
                 variant="outline"
                 onClick={() => {
-                  setSections(sections?.filter((s) => s?.id !== selectedSection?.id));
+                  setSections(sections.filter((s) => s.id !== selectedSection.id));
                   setSelectedSection(null);
                 }}
               >

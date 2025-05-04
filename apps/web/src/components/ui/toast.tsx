@@ -6,7 +6,7 @@ export interface ToastProps {
   id: string;
   title?: string;
   description?: string;
-  action?: React?.ReactNode;
+  action?: React.ReactNode;
   type?: 'default' | 'success' | 'error' | 'warning' | 'info';
   duration?: number;
   onDismiss?: (id: string) => void;
@@ -53,25 +53,25 @@ export function Toast({
       container: 'bg-green-50',
       title: 'text-green-800',
       description: 'text-green-700',
-      icon: <Icons?.checkCircle className="h-5 w-5 text-green-500" aria-hidden="true" />,
+      icon: <Icons.checkCircle className="h-5 w-5 text-green-500" aria-hidden="true" />,
     },
     error: {
       container: 'bg-red-50',
       title: 'text-red-800',
       description: 'text-red-700',
-      icon: <Icons?.close className="h-5 w-5 text-red-500" aria-hidden="true" />,
+      icon: <Icons.close className="h-5 w-5 text-red-500" aria-hidden="true" />,
     },
     warning: {
       container: 'bg-yellow-50',
       title: 'text-yellow-800',
       description: 'text-yellow-700',
-      icon: <Icons?.bell className="h-5 w-5 text-yellow-500" aria-hidden="true" />,
+      icon: <Icons.bell className="h-5 w-5 text-yellow-500" aria-hidden="true" />,
     },
     info: {
       container: 'bg-blue-50',
       title: 'text-blue-800',
       description: 'text-blue-700',
-      icon: <Icons?.bell className="h-5 w-5 text-blue-500" aria-hidden="true" />,
+      icon: <Icons.bell className="h-5 w-5 text-blue-500" aria-hidden="true" />,
     },
   };
 
@@ -81,17 +81,17 @@ export function Toast({
     <div
       className={cn(
         'pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 transition-all duration-300',
-        styles?.container,
+        styles.container,
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0',
       )}
     >
       <div className="p-4">
         <div className="flex items-start">
-          {styles?.icon && <div className="mr-3 flex-shrink-0">{styles?.icon}</div>}
+          {styles.icon && <div className="mr-3 flex-shrink-0">{styles.icon}</div>}
           <div className="flex-1">
-            {title && <div className={cn('text-sm font-medium', styles?.title)}>{title}</div>}
+            {title && <div className={cn('text-sm font-medium', styles.title)}>{title}</div>}
             {description && (
-              <div className={cn('mt-1 text-sm', styles?.description)}>{description}</div>
+              <div className={cn('mt-1 text-sm', styles.description)}>{description}</div>
             )}
             {action && <div className="mt-3">{action}</div>}
           </div>
@@ -101,7 +101,7 @@ export function Toast({
               onClick={handleDismiss}
             >
               <span className="sr-only">Close</span>
-              <Icons?.close className="h-5 w-5" aria-hidden="true" />
+              <Icons.close className="h-5 w-5" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -118,7 +118,7 @@ export interface ToastContainerProps {
     | 'bottom-left'
     | 'top-center'
     | 'bottom-center';
-  children: React?.ReactNode;
+  children: React.ReactNode;
 }
 
 export function ToastContainer({ position = 'bottom-right', children }: ToastContainerProps) {
@@ -151,37 +151,37 @@ type ToastState = ToastProps[];
 type ToastAction = { type: 'ADD_TOAST'; toast: ToastProps } | { type: 'REMOVE_TOAST'; id: string };
 
 const ToastStateContext = createContext<ToastState | undefined>(undefined);
-const ToastDispatchContext = createContext<React?.Dispatch<ToastAction> | undefined>(undefined);
+const ToastDispatchContext = createContext<React.Dispatch<ToastAction> | undefined>(undefined);
 
 function toastReducer(state: ToastState, action: ToastAction): ToastState {
-  switch (action?.type) {
+  switch (action.type) {
     case 'ADD_TOAST':
-      return [...state, action?.toast];
+      return [...state, action.toast];
     case 'REMOVE_TOAST':
-      return state?.filter((toast) => toast?.id !== action?.id);
+      return state.filter((toast) => toast.id !== action.id);
     default:
       return state;
   }
 }
 
-export function ToastProvider({ children }: { children: React?.ReactNode }) {
+export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, dispatch] = useReducer(toastReducer, []);
 
   return (
-    <ToastStateContext?.Provider value={toasts}>
-      <ToastDispatchContext?.Provider value={dispatch}>
+    <ToastStateContext.Provider value={toasts}>
+      <ToastDispatchContext.Provider value={dispatch}>
         {children}
         <ToastContainer>
-          {toasts?.map((toast) => (
+          {toasts.map((toast) => (
             <Toast
-              key={toast?.id}
+              key={toast.id}
               {...toast}
               onDismiss={(id) => dispatch({ type: 'REMOVE_TOAST', id })}
             />
           ))}
         </ToastContainer>
-      </ToastDispatchContext?.Provider>
-    </ToastStateContext?.Provider>
+      </ToastDispatchContext.Provider>
+    </ToastStateContext.Provider>
   );
 }
 
@@ -194,7 +194,7 @@ export function useToast() {
 
   const toast = useCallback(
     (props: Omit<ToastProps, 'id'>) => {
-      const id = Math?.random().toString(36).substring(2, 9);
+      const id = Math.random().toString(36).substring(2, 9);
       dispatch({
         type: 'ADD_TOAST',
         toast: { id, ...props },

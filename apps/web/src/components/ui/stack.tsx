@@ -1,8 +1,8 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-interface StackProps extends React?.HTMLAttributes<HTMLDivElement> {
-  children: React?.ReactNode;
+interface StackProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
   direction?: 'row' | 'column';
   spacing?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   align?: 'start' | 'center' | 'end' | 'stretch' | 'baseline';

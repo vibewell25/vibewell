@@ -49,19 +49,19 @@ export function useARResourceManager(config: CacheConfig = {}) {
   useEffect(() => {
     if (enableCompression) {
 
-      compressionWorker?.current = new Worker('/workers/texture-compressor?.js');
-      compressionWorker?.current.onmessage = (e) => {
-        const { textureId, compressedData } = e?.data;
+      compressionWorker.current = new Worker('/workers/texture-compressor.js');
+      compressionWorker.current.onmessage = (e) => {
+        const { textureId, compressedData } = e.data;
         updateTexture(textureId, compressedData);
       };
 
       return () => {
-        compressionWorker?.current?.terminate();
+        compressionWorker.current.terminate();
       };
     }
 
     // Safe array access
-    if (enableCompression < 0 || enableCompression >= array?.length) {
+    if (enableCompression < 0 || enableCompression >= array.length) {
       throw new Error('Array index out of bounds');
     }
   }, [enableCompression]);
@@ -72,9 +72,9 @@ export function useARResourceManager(config: CacheConfig = {}) {
       const stats = getResourceStats();
       
       // Check memory limits
-      if (stats?.totalMemory > maxTotalMemoryMB || 
-          stats?.geometryCount > maxGeometries ||
-          stats?.textureCount > maxTextures) {
+      if (stats.totalMemory > maxTotalMemoryMB || 
+          stats.geometryCount > maxGeometries ||
+          stats.textureCount > maxTextures) {
         freeResources();
       }
     }, 5000);
@@ -84,14 +84,14 @@ export function useARResourceManager(config: CacheConfig = {}) {
 
   // Get current resource statistics
   const getResourceStats = (): ResourceStats => {
-    const info = renderer?.info;
-    const geometryMemory = (info?.memory?.geometries || 0) * 0?.25; // Estimated MB per geometry
-    const textureMemory = (info?.memory?.textures || 0) * 2; // Estimated MB per texture
+    const info = renderer.info;
+    const geometryMemory = (info.memory.geometries || 0) * 0.25; // Estimated MB per geometry
+    const textureMemory = (info.memory.textures || 0) * 2; // Estimated MB per texture
 
     return {
-      geometryCount: info?.memory?.geometries || 0,
-      textureCount: info?.memory?.textures || 0,
-      materialCount: info?.memory?.materials || 0,
+      geometryCount: info.memory.geometries || 0,
+      textureCount: info.memory.textures || 0,
+      materialCount: info.memory.materials || 0,
 
       totalMemory: geometryMemory + textureMemory,
       textureMemory,
@@ -101,50 +101,50 @@ export function useARResourceManager(config: CacheConfig = {}) {
 
   // Add resource to cache
   const cacheResource = (id: string, resource: Object3D | Texture | Material) => {
-    if (resourceCache?.current.has(id)) {
-      console?.warn(`Resource ${id} already exists in cache`);
+    if (resourceCache.current.has(id)) {
+      console.warn(`Resource ${id} already exists in cache`);
       return;
     }
 
-    resourceCache?.current.set(id, resource);
-    lastAccessTime?.current.set(id, Date?.now());
+    resourceCache.current.set(id, resource);
+    lastAccessTime.current.set(id, Date.now());
 
     // Compress textures if enabled
-    if (enableCompression && resource instanceof THREE?.Texture && compressionWorker?.current) {
-      compressionWorker?.current.postMessage({
+    if (enableCompression && resource instanceof THREE.Texture && compressionWorker.current) {
+      compressionWorker.current.postMessage({
         textureId: id,
-        imageData: (resource?.image as HTMLImageElement).src
+        imageData: (resource.image as HTMLImageElement).src
       });
     }
   };
 
   // Get resource from cache
   const getResource = (id: string) => {
-    const resource = resourceCache?.current.get(id);
+    const resource = resourceCache.current.get(id);
     if (resource) {
-      lastAccessTime?.current.set(id, Date?.now());
+      lastAccessTime.current.set(id, Date.now());
     }
     return resource;
   };
 
   // Update compressed texture
   const updateTexture = (id: string, compressedData: ArrayBuffer) => {
-    const texture = resourceCache?.current.get(id);
-    if (texture instanceof THREE?.Texture) {
-      const loader = new THREE?.CompressedTextureLoader();
-      const compressedTexture = loader?.parse(compressedData);
+    const texture = resourceCache.current.get(id);
+    if (texture instanceof THREE.Texture) {
+      const loader = new THREE.CompressedTextureLoader();
+      const compressedTexture = loader.parse(compressedData);
       
       // Copy parameters
-      compressedTexture?.wrapS = texture?.wrapS;
-      compressedTexture?.wrapT = texture?.wrapT;
-      compressedTexture?.magFilter = texture?.magFilter;
-      compressedTexture?.minFilter = texture?.minFilter;
+      compressedTexture.wrapS = texture.wrapS;
+      compressedTexture.wrapT = texture.wrapT;
+      compressedTexture.magFilter = texture.magFilter;
+      compressedTexture.minFilter = texture.minFilter;
 
       // Replace texture
       if ('dispose' in texture) {
         (texture as unknown as DisposableResource).dispose();
       }
-      resourceCache?.current.set(id, compressedTexture);
+      resourceCache.current.set(id, compressedTexture);
     }
   };
 
@@ -155,38 +155,38 @@ export function useARResourceManager(config: CacheConfig = {}) {
 
     if (textureDisposalStrategy === 'lru') {
       // Sort by last access time
-      const sorted = Array?.from(lastAccessTime?.current.entries())
+      const sorted = Array.from(lastAccessTime.current.entries())
 
         .sort(([, timeA], [, timeB]) => timeA - timeB);
 
       // Remove oldest entries until under limits
 
     // Safe array access
-    if (id < 0 || id >= array?.length) {
+    if (id < 0 || id >= array.length) {
       throw new Error('Array index out of bounds');
     }
       for (const [id] of sorted) {
-        if (stats?.totalMemory <= maxTotalMemoryMB &&
-            stats?.textureCount <= maxTextures &&
-            stats?.geometryCount <= maxGeometries) {
+        if (stats.totalMemory <= maxTotalMemoryMB &&
+            stats.textureCount <= maxTextures &&
+            stats.geometryCount <= maxGeometries) {
           break;
         }
 
-        entriesToRemove?.push(id);
-        const resource = resourceCache?.current.get(id);
+        entriesToRemove.push(id);
+        const resource = resourceCache.current.get(id);
         if (resource && 'dispose' in resource) {
           (resource as unknown as DisposableResource).dispose();
-          resourceCache?.current.delete(id);
-          lastAccessTime?.current.delete(id);
+          resourceCache.current.delete(id);
+          lastAccessTime.current.delete(id);
         }
       }
     } else {
       // Sort by texture size
-      const textureEntries = Array?.from(resourceCache?.current.entries())
-        .filter(([, resource]) => resource instanceof THREE?.Texture)
+      const textureEntries = Array.from(resourceCache.current.entries())
+        .filter(([, resource]) => resource instanceof THREE.Texture)
         .sort(([, textureA], [, textureB]) => {
-          const sizeA = (textureA as THREE?.Texture).image?.width * (textureA as THREE?.Texture).image?.height || 0;
-          const sizeB = (textureB as THREE?.Texture).image?.width * (textureB as THREE?.Texture).image?.height || 0;
+          const sizeA = (textureA as THREE.Texture).image.width * (textureA as THREE.Texture).image.height || 0;
+          const sizeB = (textureB as THREE.Texture).image.width * (textureB as THREE.Texture).image.height || 0;
 
           return sizeB - sizeA;
         });
@@ -194,47 +194,47 @@ export function useARResourceManager(config: CacheConfig = {}) {
       // Remove largest textures first
 
     // Safe array access
-    if (id < 0 || id >= array?.length) {
+    if (id < 0 || id >= array.length) {
       throw new Error('Array index out of bounds');
     }
       for (const [id] of textureEntries) {
-        if (stats?.totalMemory <= maxTotalMemoryMB &&
-            stats?.textureCount <= maxTextures) {
+        if (stats.totalMemory <= maxTotalMemoryMB &&
+            stats.textureCount <= maxTextures) {
           break;
         }
 
-        entriesToRemove?.push(id);
-        const texture = resourceCache?.current.get(id);
-        if (texture && texture instanceof THREE?.Texture && 'dispose' in texture) {
+        entriesToRemove.push(id);
+        const texture = resourceCache.current.get(id);
+        if (texture && texture instanceof THREE.Texture && 'dispose' in texture) {
           (texture as unknown as DisposableResource).dispose();
-          resourceCache?.current.delete(id);
-          lastAccessTime?.current.delete(id);
+          resourceCache.current.delete(id);
+          lastAccessTime.current.delete(id);
         }
       }
     }
 
     // Add to disposal queue for garbage collection
-    disposalQueue?.current.push(...entriesToRemove);
+    disposalQueue.current.push(...entriesToRemove);
     
     // Trigger garbage collection hint
-    if (disposalQueue?.current.length > 50) {
-      disposalQueue?.current = [];
-      if (typeof window?.gc === 'function') {
-        window?.gc();
+    if (disposalQueue.current.length > 50) {
+      disposalQueue.current = [];
+      if (typeof window.gc === 'function') {
+        window.gc();
       }
     }
   };
 
   // Dispose all resources
   const disposeAll = () => {
-    resourceCache?.current.forEach((resource) => {
+    resourceCache.current.forEach((resource) => {
       if ('dispose' in resource) {
         (resource as unknown as DisposableResource).dispose();
       }
     });
-    resourceCache?.current.clear();
-    lastAccessTime?.current.clear();
-    disposalQueue?.current = [];
+    resourceCache.current.clear();
+    lastAccessTime.current.clear();
+    disposalQueue.current = [];
   };
 
   return {

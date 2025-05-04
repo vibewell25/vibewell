@@ -1,13 +1,13 @@
 import React, { lazy, Suspense, ComponentType } from 'react';
 
 interface LoadableOptions {
-  fallback?: React?.ReactNode;
+  fallback?: React.ReactNode;
   ssr?: boolean;
-  suspenseFallback?: React?.ReactNode;
+  suspenseFallback?: React.ReactNode;
 }
 
 /**
- * Creates a dynamically loaded component using React?.lazy with a Suspense boundary
+ * Creates a dynamically loaded component using React.lazy with a Suspense boundary
  * and optional fallback UI during loading.
  *
  * @param importFunc - Dynamic import function for the component
@@ -22,7 +22,7 @@ export function loadable<T extends ComponentType<any>>(
 
   const LazyComponent = lazy(importFunc);
 
-  const LoadableComponent = (props: React?.ComponentProps<T>) => {
+  const LoadableComponent = (props: React.ComponentProps<T>) => {
     return (
       <Suspense fallback={suspenseFallback}>
         <LazyComponent {...props} />
@@ -32,13 +32,13 @@ export function loadable<T extends ComponentType<any>>(
 
   // Add display name for debugging
   const getComponentName = () => {
-    const displayName = importFunc?.toString().match(/\/([^\/]+)'/)?.[1] || 'Unknown';
+    const displayName = importFunc.toString().match(/\/([^\/]+)'/).[1] || 'Unknown';
     return `Loadable(${displayName})`;
   };
-  LoadableComponent?.displayName = getComponentName();
+  LoadableComponent.displayName = getComponentName();
 
   // Support preloading for critical components
-  LoadableComponent?.preload = importFunc;
+  LoadableComponent.preload = importFunc;
 
   return LoadableComponent;
 }

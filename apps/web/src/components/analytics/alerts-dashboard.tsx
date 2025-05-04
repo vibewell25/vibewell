@@ -49,24 +49,24 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AlertCircle, Edit, Plus, Trash2 } from 'lucide-react';
 
 // Alert form schema
-const alertFormSchema = z?.object({
-  name: z?.string().min(3, { message: 'Alert name must be at least 3 characters' }),
-  description: z?.string().optional(),
-  product_id: z?.string().uuid({ message: 'Valid product ID is required' }),
-  metric: z?.enum(['rating', 'views', 'purchases', 'try_ons'], {
+const alertFormSchema = z.object({
+  name: z.string().min(3, { message: 'Alert name must be at least 3 characters' }),
+  description: z.string().optional(),
+  product_id: z.string().uuid({ message: 'Valid product ID is required' }),
+  metric: z.enum(['rating', 'views', 'purchases', 'try_ons'], {
     required_error: 'Please select a metric',
   }),
-  condition: z?.enum(['below', 'above'], {
+  condition: z.enum(['below', 'above'], {
     required_error: 'Please select a condition',
   }),
-  threshold: z?.coerce.number().min(0, { message: 'Threshold must be a positive number' }),
+  threshold: z.coerce.number().min(0, { message: 'Threshold must be a positive number' }),
   notification_methods: z
-    .array(z?.string())
+    .array(z.string())
     .min(1, { message: 'Select at least one notification method' }),
-  is_active: z?.boolean().default(true),
+  is_active: z.boolean().default(true),
 });
 
-type AlertFormValues = z?.infer<typeof alertFormSchema>;
+type AlertFormValues = z.infer<typeof alertFormSchema>;
 
 export function AlertsDashboard() {
   const [alerts, setAlerts] = useState<any[]>([]);
@@ -96,19 +96,19 @@ export function AlertsDashboard() {
 
   useEffect(() => {
     const fetchData = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         setLoading(true);
-        const [alertsData, productsData] = await Promise?.all([
-          alertService?.getAllAlerts(),
-          productService?.getProducts({ limit: 100 }),
+        const [alertsData, productsData] = await Promise.all([
+          alertService.getAllAlerts(),
+          productService.getProducts({ limit: 100 }),
         ]);
 
         setAlerts(alertsData || []);
-        setProducts(productsData?.data || []);
+        setProducts(productsData.data || []);
       } catch (error) {
-        console?.error('Error fetching data:', error);
+        console.error('Error fetching data:', error);
         toast({
           title: 'Error fetching data',
           description: 'Could not load alerts and products',
@@ -122,26 +122,26 @@ export function AlertsDashboard() {
     fetchData();
   }, []);
 
-  const filteredAlerts = alerts?.filter((alert) => {
+  const filteredAlerts = alerts.filter((alert) => {
     if (activeTab === 'all') return true;
-    if (activeTab === 'active') return alert?.is_active;
-    if (activeTab === 'triggered') return alert?.last_triggered !== null;
+    if (activeTab === 'active') return alert.is_active;
+    if (activeTab === 'triggered') return alert.last_triggered !== null;
     return true;
   });
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');values: AlertFormValues) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');values: AlertFormValues) => {
     try {
       if (editingAlert) {
-        await alertService?.updateAlert(editingAlert?.id, values);
+        await alertService.updateAlert(editingAlert.id, values);
         toast({
           title: 'Alert updated',
           description: 'The alert has been updated successfully',
           variant: 'default',
         });
       } else {
-        await alertService?.createAlert(values);
+        await alertService.createAlert(values);
         toast({
           title: 'Alert created',
           description: 'The new alert has been created successfully',
@@ -150,13 +150,13 @@ export function AlertsDashboard() {
       }
 
       // Refresh alerts list
-      const updatedAlerts = await alertService?.getAllAlerts();
+      const updatedAlerts = await alertService.getAllAlerts();
       setAlerts(updatedAlerts || []);
 
       setOpenDialog(false);
       resetForm();
     } catch (error) {
-      console?.error('Error submitting alert:', error);
+      console.error('Error submitting alert:', error);
       toast({
         title: 'Error',
         description: 'There was an error saving the alert',
@@ -166,13 +166,13 @@ export function AlertsDashboard() {
   };
 
   const handleDeleteAlert = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!deletingAlertId) return;
 
     try {
-      await alertService?.deleteAlert(deletingAlertId);
-      setAlerts(alerts?.filter((alert) => alert?.id !== deletingAlertId));
+      await alertService.deleteAlert(deletingAlertId);
+      setAlerts(alerts.filter((alert) => alert.id !== deletingAlertId));
       setDeletingAlertId(null);
       toast({
         title: 'Alert deleted',
@@ -180,7 +180,7 @@ export function AlertsDashboard() {
         variant: 'default',
       });
     } catch (error) {
-      console?.error('Error deleting alert:', error);
+      console.error('Error deleting alert:', error);
       toast({
         title: 'Error',
         description: 'There was an error deleting the alert',
@@ -191,26 +191,26 @@ export function AlertsDashboard() {
 
   const handleEditAlert = (alert: any) => {
     setEditingAlert(alert);
-    form?.reset({
-      name: alert?.name,
-      description: alert?.description || '',
-      product_id: alert?.product_id,
-      metric: alert?.metric,
-      condition: alert?.condition,
-      threshold: Number(alert?.threshold),
-      notification_methods: alert?.notification_methods,
-      is_active: alert?.is_active,
+    form.reset({
+      name: alert.name,
+      description: alert.description || '',
+      product_id: alert.product_id,
+      metric: alert.metric,
+      condition: alert.condition,
+      threshold: Number(alert.threshold),
+      notification_methods: alert.notification_methods,
+      is_active: alert.is_active,
     });
     setOpenDialog(true);
   };
 
   const handleToggleAlertStatus = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');alertId: string, isActive: boolean) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');alertId: string, isActive: boolean) => {
     try {
-      await alertService?.updateAlert(alertId, { is_active: !isActive });
+      await alertService.updateAlert(alertId, { is_active: !isActive });
       setAlerts(
-        alerts?.map((alert) => (alert?.id === alertId ? { ...alert, is_active: !isActive } : alert)),
+        alerts.map((alert) => (alert.id === alertId ? { ...alert, is_active: !isActive } : alert)),
       );
       toast({
         title: 'Alert status updated',
@@ -218,7 +218,7 @@ export function AlertsDashboard() {
         variant: 'default',
       });
     } catch (error) {
-      console?.error('Error toggling alert status:', error);
+      console.error('Error toggling alert status:', error);
       toast({
         title: 'Error',
         description: 'There was an error updating the alert status',
@@ -228,7 +228,7 @@ export function AlertsDashboard() {
   };
 
   const resetForm = () => {
-    form?.reset({
+    form.reset({
       name: '',
       description: '',
       product_id: '',
@@ -242,8 +242,8 @@ export function AlertsDashboard() {
   };
 
   const getProductName = (productId: string) => {
-    const product = products?.find((p) => p?.id === productId);
-    return product ? product?.name : 'Unknown Product';
+    const product = products.find((p) => p.id === productId);
+    return product ? product.name : 'Unknown Product';
   };
 
   const getMetricLabel = (metric: string) => {
@@ -305,7 +305,7 @@ export function AlertsDashboard() {
                     </div>
                   ))}
                 </div>
-              ) : filteredAlerts?.length === 0 ? (
+              ) : filteredAlerts.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-10 text-center">
                   <AlertCircle className="mb-4 h-10 w-10 text-muted-foreground" />
                   <h3 className="text-lg font-semibold">No alerts found</h3>
@@ -337,34 +337,34 @@ export function AlertsDashboard() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filteredAlerts?.map((alert) => (
-                      <TableRow key={alert?.id}>
+                    {filteredAlerts.map((alert) => (
+                      <TableRow key={alert.id}>
                         <TableCell>
                           <Switch
-                            checked={alert?.is_active}
+                            checked={alert.is_active}
                             onCheckedChange={() =>
-                              handleToggleAlertStatus(alert?.id, alert?.is_active)
+                              handleToggleAlertStatus(alert.id, alert.is_active)
                             }
                           />
                         </TableCell>
                         <TableCell className="font-medium">
-                          {alert?.name}
-                          {alert?.last_triggered && (
+                          {alert.name}
+                          {alert.last_triggered && (
                             <Badge variant="destructive" className="ml-2">
                               Triggered
                             </Badge>
                           )}
                         </TableCell>
-                        <TableCell>{getProductName(alert?.product_id)}</TableCell>
+                        <TableCell>{getProductName(alert.product_id)}</TableCell>
                         <TableCell>
-                          <Badge variant="outline">{getMetricLabel(alert?.metric)}</Badge>
+                          <Badge variant="outline">{getMetricLabel(alert.metric)}</Badge>
                         </TableCell>
                         <TableCell>
-                          {alert?.condition} {alert?.threshold}
+                          {alert.condition} {alert.threshold}
                         </TableCell>
                         <TableCell>
-                          {alert?.last_triggered ? (
-                            new Date(alert?.last_triggered).toLocaleString()
+                          {alert.last_triggered ? (
+                            new Date(alert.last_triggered).toLocaleString()
                           ) : (
                             <span className="text-muted-foreground">Never</span>
                           )}
@@ -376,7 +376,7 @@ export function AlertsDashboard() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => setDeletingAlertId(alert?.id)}
+                            onClick={() => setDeletingAlertId(alert.id)}
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -404,9 +404,9 @@ export function AlertsDashboard() {
           </DialogHeader>
 
           <Form {...form}>
-            <form onSubmit={form?.handleSubmit(handleSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
               <FormField
-                control={form?.control}
+                control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
@@ -420,7 +420,7 @@ export function AlertsDashboard() {
               />
 
               <FormField
-                control={form?.control}
+                control={form.control}
                 name="description"
                 render={({ field }) => (
                   <FormItem>
@@ -434,21 +434,21 @@ export function AlertsDashboard() {
               />
 
               <FormField
-                control={form?.control}
+                control={form.control}
                 name="product_id"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Product</FormLabel>
-                    <Select onValueChange={field?.onChange} value={field?.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select a product" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {products?.map((product) => (
-                          <SelectItem key={product?.id} value={product?.id}>
-                            {product?.name}
+                        {products.map((product) => (
+                          <SelectItem key={product.id} value={product.id}>
+                            {product.name}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -460,12 +460,12 @@ export function AlertsDashboard() {
 
               <div className="grid grid-cols-2 gap-4">
                 <FormField
-                  control={form?.control}
+                  control={form.control}
                   name="metric"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Metric</FormLabel>
-                      <Select onValueChange={field?.onChange} value={field?.value}>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select a metric" />
@@ -484,12 +484,12 @@ export function AlertsDashboard() {
                 />
 
                 <FormField
-                  control={form?.control}
+                  control={form.control}
                   name="condition"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Condition</FormLabel>
-                      <Select onValueChange={field?.onChange} value={field?.value}>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select a condition" />
@@ -507,16 +507,16 @@ export function AlertsDashboard() {
               </div>
 
               <FormField
-                control={form?.control}
+                control={form.control}
                 name="threshold"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Threshold Value</FormLabel>
                     <FormControl>
-                      <Input type="number" min="0" step="0?.1" {...field} />
+                      <Input type="number" min="0" step="0.1" {...field} />
                     </FormControl>
                     <FormDescription>
-                      {form?.watch('metric') === 'rating'
+                      {form.watch('metric') === 'rating'
                         ? 'For ratings, set a value between 1-5'
                         : 'Set the threshold value that will trigger the alert'}
                     </FormDescription>
@@ -526,26 +526,26 @@ export function AlertsDashboard() {
               />
 
               <FormField
-                control={form?.control}
+                control={form.control}
                 name="notification_methods"
                 render={() => (
                   <FormItem>
                     <FormLabel>Notification Methods</FormLabel>
                     <div className="space-y-2">
                       <FormField
-                        control={form?.control}
+                        control={form.control}
                         name="notification_methods"
                         render={({ field }) => (
                           <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                             <FormControl>
                               <Checkbox
-                                checked={field?.value?.includes('email')}
+                                checked={field.value.includes('email')}
                                 onCheckedChange={(checked) => {
-                                  const current = field?.value || [];
+                                  const current = field.value || [];
                                   if (checked) {
-                                    field?.onChange([...current, 'email']);
+                                    field.onChange([...current, 'email']);
                                   } else {
-                                    field?.onChange(current?.filter((v) => v !== 'email'));
+                                    field.onChange(current.filter((v) => v !== 'email'));
                                   }
                                 }}
                               />
@@ -555,19 +555,19 @@ export function AlertsDashboard() {
                         )}
                       />
                       <FormField
-                        control={form?.control}
+                        control={form.control}
                         name="notification_methods"
                         render={({ field }) => (
                           <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                             <FormControl>
                               <Checkbox
-                                checked={field?.value?.includes('dashboard')}
+                                checked={field.value.includes('dashboard')}
                                 onCheckedChange={(checked) => {
-                                  const current = field?.value || [];
+                                  const current = field.value || [];
                                   if (checked) {
-                                    field?.onChange([...current, 'dashboard']);
+                                    field.onChange([...current, 'dashboard']);
                                   } else {
-                                    field?.onChange(current?.filter((v) => v !== 'dashboard'));
+                                    field.onChange(current.filter((v) => v !== 'dashboard'));
                                   }
                                 }}
                               />
@@ -583,12 +583,12 @@ export function AlertsDashboard() {
               />
 
               <FormField
-                control={form?.control}
+                control={form.control}
                 name="is_active"
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-4">
                     <FormControl>
-                      <Checkbox checked={field?.value} onCheckedChange={field?.onChange} />
+                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                     <div className="space-y-1 leading-none">
                       <FormLabel>Active Alert</FormLabel>

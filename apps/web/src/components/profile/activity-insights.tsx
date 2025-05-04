@@ -7,7 +7,7 @@ interface Insight {
   type: 'security' | 'usage' | 'recommendation';
   title: string;
   description: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
   action?: {
     label: string;
     onClick: () => void;
@@ -76,15 +76,15 @@ export function ActivityInsights() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {insights?.map((insight) => (
-          <div key={insight?.id} className="flex items-start space-x-4 rounded-lg border p-4">
-            <div className={`mt-1 ${getInsightColor(insight?.type)}`}>{insight?.icon}</div>
+        {insights.map((insight) => (
+          <div key={insight.id} className="flex items-start space-x-4 rounded-lg border p-4">
+            <div className={`mt-1 ${getInsightColor(insight.type)}`}>{insight.icon}</div>
             <div className="flex-1 space-y-2">
-              <h3 className="text-sm font-medium">{insight?.title}</h3>
-              <p className="text-sm text-muted-foreground">{insight?.description}</p>
-              {insight?.action && (
-                <Button variant="outline" size="sm" onClick={insight?.action.onClick}>
-                  {insight?.action.label}
+              <h3 className="text-sm font-medium">{insight.title}</h3>
+              <p className="text-sm text-muted-foreground">{insight.description}</p>
+              {insight.action && (
+                <Button variant="outline" size="sm" onClick={insight.action.onClick}>
+                  {insight.action.label}
                 </Button>
               )}
             </div>

@@ -35,11 +35,11 @@ export default function AppointmentList({ appointments }: AppointmentListProps) 
         <h2 className="text-lg font-medium text-gray-900">Upcoming Appointments</h2>
       </div>
       <ul role="list" className="divide-y divide-gray-200 overflow-y-auto max-h-[600px]">
-        {appointments?.length === 0 ? (
+        {appointments.length === 0 ? (
           <li className="p-4 text-center text-gray-500">No appointments scheduled</li>
         ) : (
-          appointments?.map((appointment) => (
-            <li key={appointment?.id} className="p-4 hover:bg-gray-50">
+          appointments.map((appointment) => (
+            <li key={appointment.id} className="p-4 hover:bg-gray-50">
               <div className="flex items-center space-x-4">
                 <div className="flex-shrink-0">
                   <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100">
@@ -48,25 +48,25 @@ export default function AppointmentList({ appointments }: AppointmentListProps) 
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-gray-900">
-                    {appointment?.user.name}
+                    {appointment.user.name}
                   </p>
                   <p className="truncate text-sm text-gray-500">
-                    {appointment?.service.name}
+                    {appointment.service.name}
                   </p>
                   <div className="mt-2 flex items-center text-sm text-gray-500">
-                    <CalendarIcon className="mr-1?.5 h-4 w-4 flex-shrink-0" />
-                    {format(new Date(appointment?.startTime), 'MMM d, yyyy')}
-                    <ClockIcon className="ml-4 mr-1?.5 h-4 w-4 flex-shrink-0" />
-                    {format(new Date(appointment?.startTime), 'h:mm a')}
+                    <CalendarIcon className="mr-1.5 h-4 w-4 flex-shrink-0" />
+                    {format(new Date(appointment.startTime), 'MMM d, yyyy')}
+                    <ClockIcon className="ml-4 mr-1.5 h-4 w-4 flex-shrink-0" />
+                    {format(new Date(appointment.startTime), 'h:mm a')}
                   </div>
                 </div>
                 <div>
                   <span
                     className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${getStatusColor(
-                      appointment?.status
+                      appointment.status
                     )}`}
                   >
-                    {appointment?.status.toLowerCase()}
+                    {appointment.status.toLowerCase()}
                   </span>
                 </div>
               </div>

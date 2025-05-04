@@ -3,14 +3,14 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { ChevronRight } from 'lucide-react';
 
-export interface BreadcrumbProps extends React?.HTMLAttributes<HTMLElement> {
-  children: React?.ReactNode;
+export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
+  children: React.ReactNode;
 }
 
-export interface BreadcrumbItemProps extends React?.HTMLAttributes<HTMLElement> {
+export interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLElement> {
   href?: string;
   current?: boolean;
-  children: React?.ReactNode;
+  children: React.ReactNode;
 }
 
 export function Breadcrumb({ className, children, ...props }: BreadcrumbProps) {
@@ -28,7 +28,7 @@ export function BreadcrumbItem({
   children,
   ...props
 }: BreadcrumbItemProps) {
-  const BreadcrumbItem = React?.useMemo(() => {
+  const BreadcrumbItem = React.useMemo(() => {
     if (current) {
       return (
         <span

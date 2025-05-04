@@ -13,8 +13,8 @@ export function useFocusOnMount<T extends HTMLElement>(shouldFocus = true) {
   const ref = useRef<T>(null);
 
   useEffect(() => {
-    if (shouldFocus && ref?.current) {
-      ref?.current.focus();
+    if (shouldFocus && ref.current) {
+      ref.current.focus();
     }
   }, [shouldFocus]);
 
@@ -28,33 +28,33 @@ export function useFocusTrap<T extends HTMLElement>(active = true) {
   const containerRef = useRef<T>(null);
 
   useEffect(() => {
-    if (!active || !containerRef?.current) return;
+    if (!active || !containerRef.current) return;
 
-    const container = containerRef?.current;
-    const focusableElements = container?.querySelectorAll(
+    const container = containerRef.current;
+    const focusableElements = container.querySelectorAll(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
     );
     const firstFocusable = focusableElements[0] as HTMLElement;
-    const lastFocusable = focusableElements[focusableElements?.length - 1] as HTMLElement;
+    const lastFocusable = focusableElements[focusableElements.length - 1] as HTMLElement;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e?.key !== 'Tab') return;
+      if (e.key !== 'Tab') return;
 
-      if (e?.shiftKey) {
-        if (document?.activeElement === firstFocusable) {
-          e?.preventDefault();
-          lastFocusable?.focus();
+      if (e.shiftKey) {
+        if (document.activeElement === firstFocusable) {
+          e.preventDefault();
+          lastFocusable.focus();
         }
       } else {
-        if (document?.activeElement === lastFocusable) {
-          e?.preventDefault();
-          firstFocusable?.focus();
+        if (document.activeElement === lastFocusable) {
+          e.preventDefault();
+          firstFocusable.focus();
         }
       }
     };
 
-    container?.addEventListener('keydown', handleKeyDown);
-    return () => container?.removeEventListener('keydown', handleKeyDown);
+    container.addEventListener('keydown', handleKeyDown);
+    return () => container.removeEventListener('keydown', handleKeyDown);
   }, [active]);
 
   return containerRef;
@@ -70,21 +70,21 @@ export function useKeyboardInteraction(
 ) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      switch (e?.key) {
+      switch (e.key) {
         case 'Enter':
-          onEnter?.();
+          onEnter.();
           break;
         case 'Escape':
-          onEscape?.();
+          onEscape.();
           break;
         case ' ':
-          onSpace?.();
+          onSpace.();
           break;
       }
     };
 
-    window?.addEventListener('keydown', handleKeyDown);
-    return () => window?.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onEnter, onEscape, onSpace]);
 }
 
@@ -95,7 +95,7 @@ export function LiveRegion({
   children,
   politeness = 'polite',
 }: {
-  children: React?.ReactNode;
+  children: React.ReactNode;
   politeness?: 'polite' | 'assertive';
 }) {
   return (
@@ -126,7 +126,7 @@ export function LoadingState({
   children,
 }: {
   isLoading: boolean;
-  children: React?.ReactNode;
+  children: React.ReactNode;
 }) {
   return (
     <div aria-busy={isLoading} aria-live="polite">
@@ -138,7 +138,7 @@ export function LoadingState({
 /**
  * Component to provide accessible tooltips
  */
-export function Tooltip({ children, content }: { children: React?.ReactNode; content: string }) {
+export function Tooltip({ children, content }: { children: React.ReactNode; content: string }) {
   return (
     <div className="group relative inline-block">
       {children}

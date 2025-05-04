@@ -129,22 +129,22 @@ export default function AnalyticsDashboard() {
         name: 'John Doe',
         bookings: 85,
         revenue: 8500,
-        rating: 4?.8,
-        utilization: 0?.85
+        rating: 4.8,
+        utilization: 0.85
       },
       {
         name: 'Jane Smith',
         bookings: 75,
         revenue: 7500,
-        rating: 4?.9,
-        utilization: 0?.80
+        rating: 4.9,
+        utilization: 0.80
       }
     ]
   };
 
   const predictiveData: PredictiveAnalytics = {
     revenueProjection: 18500,
-    clientGrowthRate: 15?.3,
+    clientGrowthRate: 15.3,
     recommendedServices: [
       { name: 'Spa Package', potential: 85 },
       { name: 'Hair Treatment', potential: 78 },
@@ -158,21 +158,21 @@ export default function AnalyticsDashboard() {
   };
 
   const marketingMetrics: MarketingMetrics = {
-    acquisitionCost: 45?.20,
+    acquisitionCost: 45.20,
     customerLifetimeValue: 850,
     marketingRoi: 285,
     channelPerformance: [
-      { channel: 'Social Media', clients: 45, conversion: 3?.2 },
-      { channel: 'Email', clients: 32, conversion: 4?.5 },
-      { channel: 'Referral', clients: 28, conversion: 8?.1 }
+      { channel: 'Social Media', clients: 45, conversion: 3.2 },
+      { channel: 'Email', clients: 32, conversion: 4.5 },
+      { channel: 'Referral', clients: 28, conversion: 8.1 }
     ]
   };
 
   const handleExport = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     // Implementation for report export would go here
-    console?.log(`Exporting ${reportType} report...`);
+    console.log(`Exporting ${reportType} report...`);
   };
 
   return (
@@ -201,9 +201,9 @@ export default function AnalyticsDashboard() {
                 <CardDescription>Last 30 days</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">${analyticsData?.revenue.total}</div>
+                <div className="text-2xl font-bold">${analyticsData.revenue.total}</div>
                 <p className="text-xs text-muted-foreground">
-                  +12?.5% from last month
+                  +12.5% from last month
                 </p>
               </CardContent>
             </Card>
@@ -214,9 +214,9 @@ export default function AnalyticsDashboard() {
                 <CardDescription>Last 30 days</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{analyticsData?.bookings.total}</div>
+                <div className="text-2xl font-bold">{analyticsData.bookings.total}</div>
                 <p className="text-xs text-muted-foreground">
-                  +5?.9% from last month
+                  +5.9% from last month
                 </p>
               </CardContent>
             </Card>
@@ -227,9 +227,9 @@ export default function AnalyticsDashboard() {
                 <CardDescription>Last 30 days</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{analyticsData?.clients.new}</div>
+                <div className="text-2xl font-bold">{analyticsData.clients.new}</div>
                 <p className="text-xs text-muted-foreground">
-                  +2?.5% from last month
+                  +2.5% from last month
                 </p>
               </CardContent>
             </Card>
@@ -241,10 +241,10 @@ export default function AnalyticsDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {((analyticsData?.clients.returning / analyticsData?.clients.total) * 100).toFixed(1)}%
+                  {((analyticsData.clients.returning / analyticsData.clients.total) * 100).toFixed(1)}%
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  +1?.2% from last month
+                  +1.2% from last month
                 </p>
               </CardContent>
             </Card>
@@ -256,7 +256,7 @@ export default function AnalyticsDashboard() {
                 <CardTitle>Revenue Over Time</CardTitle>
               </CardHeader>
               <CardContent>
-                <RevenueChart data={analyticsData?.revenue.history} />
+                <RevenueChart data={analyticsData.revenue.history} />
               </CardContent>
             </Card>
 
@@ -265,7 +265,7 @@ export default function AnalyticsDashboard() {
                 <CardTitle>Popular Services</CardTitle>
               </CardHeader>
               <CardContent>
-                <PopularServicesChart data={analyticsData?.services.popular} />
+                <PopularServicesChart data={analyticsData.services.popular} />
               </CardContent>
             </Card>
           </div>

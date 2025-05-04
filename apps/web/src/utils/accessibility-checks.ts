@@ -52,13 +52,13 @@ export interface AccessibilityCheckResult {
  * @returns Whether the component has valid alt text
  */
 export function hasValidAltText(props: any): boolean {
-  if (props?.alt === undefined || props?.alt === '') {
+  if (props.alt === undefined || props.alt === '') {
     return false;
   }
 
   // Check if alt text is too generic
   const genericAltTexts = ['image', 'picture', 'photo', 'icon'];
-  return !genericAltTexts?.includes(props?.alt.toLowerCase());
+  return !genericAltTexts.includes(props.alt.toLowerCase());
 }
 
 /**
@@ -70,7 +70,7 @@ export function hasValidAltText(props: any): boolean {
  */
 export function hasFormLabel(props: any): boolean {
   return (
-    props?.id !== undefined &&
+    props.id !== undefined &&
 
 
     (props['aria-label'] !== undefined || props['aria-labelledby'] !== undefined)
@@ -86,13 +86,13 @@ export function hasFormLabel(props: any): boolean {
  */
 export function isKeyboardAccessible(props: any): boolean {
   // Check for onClick without keydown or keyup handlers
-  if (props?.onClick !== undefined && props?.onKeyDown === undefined && props?.onKeyUp === undefined) {
+  if (props.onClick !== undefined && props.onKeyDown === undefined && props.onKeyUp === undefined) {
     return false;
   }
 
   // Check tabIndex usage
 
-  if (props?.tabIndex !== undefined && props?.tabIndex < 0 && !props['aria-hidden']) {
+  if (props.tabIndex !== undefined && props.tabIndex < 0 && !props['aria-hidden']) {
     return false;
   }
 
@@ -143,14 +143,14 @@ export function enhanceAccessibility(props: any): any {
 
   // Add missing aria attributes where appropriate
 
-  if (props?.role === 'button' && !props['aria-pressed']) {
+  if (props.role === 'button' && !props['aria-pressed']) {
 
     enhanced['aria-pressed'] = false;
   }
 
   // Ensure images have alt text
-  if (props?.src && !hasValidAltText(props)) {
-    enhanced?.alt = props?.alt || 'Image';
+  if (props.src && !hasValidAltText(props)) {
+    enhanced.alt = props.alt || 'Image';
   }
 
   return enhanced;

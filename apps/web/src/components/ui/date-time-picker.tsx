@@ -25,15 +25,15 @@ interface DateTimePickerProps {
 }
 
 export function DateTimePicker({ date, setDate, disabled }: DateTimePickerProps) {
-  const [selectedDate, setSelectedDate] = React?.useState<Date | undefined>(date);
+  const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(date);
 
   // Update the parent component state when the internal state changes
-  React?.useEffect(() => {
+  React.useEffect(() => {
     setDate(selectedDate);
   }, [selectedDate, setDate]);
 
   // Update the internal state when the parent prop changes
-  React?.useEffect(() => {
+  React.useEffect(() => {
     setSelectedDate(date);
   }, [date]);
 
@@ -73,7 +73,7 @@ export function DateTimePicker({ date, setDate, disabled }: DateTimePickerProps)
   );
 }
 
-// time-picker?.tsx component for selecting hours, minutes and AM/PM
+// time-picker.tsx component for selecting hours, minutes and AM/PM
 
 interface TimePickerDemoProps {
   date: Date;
@@ -84,7 +84,7 @@ interface TimePickerDemoProps {
 export function TimePickerDemo({ date, setDate, className }: TimePickerDemoProps) {
   // Helper functions for time manipulations
   function getHours(date: Date) {
-    const hours = date?.getHours();
+    const hours = date.getHours();
     if (hours === 0) {
       return 12;
     }
@@ -95,11 +95,11 @@ export function TimePickerDemo({ date, setDate, className }: TimePickerDemoProps
   }
 
   function getMinutes(date: Date) {
-    return date?.getMinutes();
+    return date.getMinutes();
   }
 
   function getPeriod(date: Date) {
-    return date?.getHours() >= 12 ? 'PM' : 'AM';
+    return date.getHours() >= 12 ? 'PM' : 'AM';
   }
 
   function setHours(hours: number, period: 'AM' | 'PM') {
@@ -111,27 +111,27 @@ export function TimePickerDemo({ date, setDate, className }: TimePickerDemoProps
     }
 
     const newDate = new Date(date);
-    newDate?.setHours(hours);
+    newDate.setHours(hours);
     setDate(newDate);
     return newDate;
   }
 
   function setMinutes(minutes: number) {
     const newDate = new Date(date);
-    newDate?.setMinutes(minutes);
+    newDate.setMinutes(minutes);
     setDate(newDate);
     return newDate;
   }
 
-  function handleHoursChange(e: React?.ChangeEvent<HTMLInputElement>) {
-    const hours = parseInt(e?.target.value, 10);
+  function handleHoursChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const hours = parseInt(e.target.value, 10);
     if (isNaN(hours)) return;
     if (hours < 1 || hours > 12) return;
     setHours(hours, getPeriod(date));
   }
 
-  function handleMinutesChange(e: React?.ChangeEvent<HTMLInputElement>) {
-    const minutes = parseInt(e?.target.value, 10);
+  function handleMinutesChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const minutes = parseInt(e.target.value, 10);
     if (isNaN(minutes)) return;
     if (minutes < 0 || minutes > 59) return;
     setMinutes(minutes);

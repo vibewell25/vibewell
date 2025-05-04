@@ -31,50 +31,50 @@ export function VerificationForm({ form }: VerificationFormProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Handle document file selection
-  const handleDocumentChange = (e: React?.ChangeEvent<HTMLInputElement>) => {
-    const file = e?.target.files?.[0];
+  const handleDocumentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files.[0];
     if (!file) return;
 
     // Validate file type and size
     const validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
-    if (!validTypes?.includes(file?.type)) {
+    if (!validTypes.includes(file.type)) {
       alert('Please select a PDF, JPG, or PNG file');
       return;
     }
 
-    if (file?.size > 10 * 1024 * 1024) {
+    if (file.size > 10 * 1024 * 1024) {
       // 10MB max
       alert('File must be less than 10MB');
       return;
     }
 
     // Set file name for display
-    setDocumentName(file?.name);
+    setDocumentName(file.name);
 
     // Create preview if it's an image
-    if (file?.type.startsWith('image/')) {
+    if (file.type.startsWith('image/')) {
       const reader = new FileReader();
-      reader?.onload = () => {
-        setDocumentPreview(reader?.result as string);
+      reader.onload = () => {
+        setDocumentPreview(reader.result as string);
       };
-      reader?.readAsDataURL(file);
+      reader.readAsDataURL(file);
     } else {
       // For PDFs, just show an icon (no preview)
       setDocumentPreview(null);
     }
 
     // Set form value
-    form?.setValue('verificationDocument', file, { shouldValidate: true });
-    form?.setValue('verificationType', documentType, { shouldValidate: true });
+    form.setValue('verificationDocument', file, { shouldValidate: true });
+    form.setValue('verificationType', documentType, { shouldValidate: true });
   };
 
   // Remove document
   const removeDocument = () => {
-    form?.setValue('verificationDocument', null, { shouldValidate: true });
+    form.setValue('verificationDocument', null, { shouldValidate: true });
     setDocumentPreview(null);
     setDocumentName(null);
-    if (fileInputRef?.current) {
-      fileInputRef?.current.value = '';
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
@@ -94,7 +94,7 @@ export function VerificationForm({ form }: VerificationFormProps) {
         </CardHeader>
         <CardContent className="space-y-6">
           <FormField
-            control={form?.control}
+            control={form.control}
             name="legalBusinessName"
             render={({ field }) => (
               <FormItem>
@@ -108,13 +108,13 @@ export function VerificationForm({ form }: VerificationFormProps) {
           />
 
           <FormField
-            control={form?.control}
+            control={form.control}
             name="taxIdNumber"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Tax ID Number / EIN</FormLabel>
                 <FormControl>
-                  <Input placeholder="e?.g. 12-3456789" {...field} />
+                  <Input placeholder="e.g. 12-3456789" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -122,12 +122,12 @@ export function VerificationForm({ form }: VerificationFormProps) {
           />
 
           <FormField
-            control={form?.control}
+            control={form.control}
             name="businessType"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Business Type</FormLabel>
-                <Select onValueChange={field?.onChange} defaultValue={field?.value}>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select business type" />
@@ -157,7 +157,7 @@ export function VerificationForm({ form }: VerificationFormProps) {
         <CardContent className="space-y-6">
           <div className="space-y-4">
             <FormField
-              control={form?.control}
+              control={form.control}
               name="verificationType"
               render={({ field }) => (
                 <FormItem className="space-y-3">
@@ -165,10 +165,10 @@ export function VerificationForm({ form }: VerificationFormProps) {
                   <FormControl>
                     <RadioGroup
                       onValueChange={(value) => {
-                        field?.onChange(value);
+                        field.onChange(value);
                         setDocumentType(value);
                       }}
-                      defaultValue={field?.value || 'business_license'}
+                      defaultValue={field.value || 'business_license'}
                       className="grid grid-cols-1 gap-4 md:grid-cols-2"
                     >
                       <FormItem className="flex items-center space-x-3 space-y-0">
@@ -212,7 +212,7 @@ export function VerificationForm({ form }: VerificationFormProps) {
                       <p className="text-xs text-muted-foreground">
                         {documentType
                           .split('_')
-                          .map((word) => word?.charAt(0).toUpperCase() + word?.slice(1))
+                          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                           .join(' ')}
                       </p>
                     </div>
@@ -243,7 +243,7 @@ export function VerificationForm({ form }: VerificationFormProps) {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => fileInputRef?.current?.click()}
+                  onClick={() => fileInputRef.current.click()}
                 >
                   <Upload className="mr-2 h-4 w-4" />
                   {documentName ? 'Replace Document' : 'Upload Document'}
@@ -253,12 +253,12 @@ export function VerificationForm({ form }: VerificationFormProps) {
           </div>
 
           <FormField
-            control={form?.control}
+            control={form.control}
             name="termsAgreed"
             render={({ field }) => (
               <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                 <FormControl>
-                  <Checkbox checked={field?.value} onCheckedChange={field?.onChange} />
+                  <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
                 <div className="space-y-1 leading-none">
                   <FormLabel>

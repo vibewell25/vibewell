@@ -32,14 +32,14 @@
 describe('Performance Test Utils', () => {
   beforeEach(() => {
     // Mock performance API
-    global?.performance = {
-      now: jest?.fn().mockReturnValue(0),
+    global.performance = {
+      now: jest.fn().mockReturnValue(0),
       memory: {
         jsHeapSizeLimit: 2000000000,
         totalJSHeapSize: 1000000000,
         usedJSHeapSize: 500000000,
       },
-      getEntriesByName: jest?.fn().mockReturnValue([
+      getEntriesByName: jest.fn().mockReturnValue([
         {
           domainLookupStart: 0,
           domainLookupEnd: 100,
@@ -53,22 +53,22 @@ describe('Performance Test Utils', () => {
     } as any;
 
     // Mock requestAnimationFrame
-    global?.requestAnimationFrame = (callback: FrameRequestCallback) => {
-      return setTimeout(() => callback(performance?.now()), 16) as any;
+    global.requestAnimationFrame = (callback: FrameRequestCallback) => {
+      return setTimeout(() => callback(performance.now()), 16) as any;
     };
   });
 
   afterEach(() => {
-    jest?.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should measure execution time', async () => {
-    const mockFn = jest?.fn().mockImplementation(() => {
-      (performance?.now as jest?.Mock).mockReturnValue(100);
+    const mockFn = jest.fn().mockImplementation(() => {
+      (performance.now as jest.Mock).mockReturnValue(100);
     });
 
     const result = await measurePerformance(mockFn);
-    expect(result?.executionTime).toBe(100);
+    expect(result.executionTime).toBe(100);
   });
 
   it('should measure memory usage', async () => {
@@ -81,9 +81,9 @@ describe('Performance Test Utils', () => {
   });
 
   it('should measure network request timing', async () => {
-    global?.fetch = jest?.fn().mockResolvedValue({ ok: true });
+    global.fetch = jest.fn().mockResolvedValue({ ok: true });
 
-    const { metrics } = await measureNetworkRequest('https://api?.example.com');
+    const { metrics } = await measureNetworkRequest('https://api.example.com');
     expect(metrics).toEqual({
       domainLookupTime: 100,
       connectTime: 100,

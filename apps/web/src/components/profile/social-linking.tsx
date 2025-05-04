@@ -21,7 +21,7 @@ interface SocialAccount {
   username: string;
   url: string;
   connected: boolean;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
 }
 
 export function SocialLinking() {
@@ -81,15 +81,15 @@ export function SocialLinking() {
   const [newUrl, setNewUrl] = useState('');
 
   const handleConnect = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');accountId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');accountId: string) => {
     try {
       // Simulate API call to connect account
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       setAccounts((prev) =>
-        prev?.map((account) =>
-          account?.id === accountId
+        prev.map((account) =>
+          account.id === accountId
             ? { ...account, connected: true, username: newUsername, url: newUrl }
             : account,
         ),
@@ -98,32 +98,32 @@ export function SocialLinking() {
       setEditingAccount(null);
       setNewUsername('');
       setNewUrl('');
-      toast?.success('Account connected successfully');
+      toast.success('Account connected successfully');
     } catch (error) {
-      console?.error('Error connecting account:', error);
-      toast?.error('Failed to connect account');
+      console.error('Error connecting account:', error);
+      toast.error('Failed to connect account');
     }
   };
 
   const handleDisconnect = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');accountId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');accountId: string) => {
     try {
       // Simulate API call to disconnect account
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       setAccounts((prev) =>
-        prev?.map((account) =>
-          account?.id === accountId
+        prev.map((account) =>
+          account.id === accountId
             ? { ...account, connected: false, username: '', url: '' }
             : account,
         ),
       );
 
-      toast?.success('Account disconnected successfully');
+      toast.success('Account disconnected successfully');
     } catch (error) {
-      console?.error('Error disconnecting account:', error);
-      toast?.error('Failed to disconnect account');
+      console.error('Error disconnecting account:', error);
+      toast.error('Failed to disconnect account');
     }
   };
 
@@ -137,49 +137,49 @@ export function SocialLinking() {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">
-          {accounts?.map((account) => (
+          {accounts.map((account) => (
             <div
-              key={account?.id}
+              key={account.id}
               className="flex items-center justify-between rounded-lg border p-4"
             >
               <div className="flex items-center gap-3">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
-                  {account?.icon}
+                  {account.icon}
                 </div>
                 <div>
-                  <h4 className="font-medium">{account?.platform}</h4>
-                  {account?.connected && (
-                    <p className="text-sm text-muted-foreground">{account?.username}</p>
+                  <h4 className="font-medium">{account.platform}</h4>
+                  {account.connected && (
+                    <p className="text-sm text-muted-foreground">{account.username}</p>
                   )}
                 </div>
               </div>
 
-              {account?.connected ? (
+              {account.connected ? (
                 <div className="flex items-center gap-2">
-                  <Button variant="outline" size="sm" onClick={() => handleDisconnect(account?.id)}>
+                  <Button variant="outline" size="sm" onClick={() => handleDisconnect(account.id)}>
                     <X className="mr-2 h-4 w-4" />
                     Disconnect
                   </Button>
                 </div>
-              ) : editingAccount === account?.id ? (
+              ) : editingAccount === account.id ? (
                 <div className="flex items-center gap-2">
                   <div className="space-y-2">
                     <Input
                       placeholder="Username"
                       value={newUsername}
-                      onChange={(e) => setNewUsername(e?.target.value)}
+                      onChange={(e) => setNewUsername(e.target.value)}
                       className="h-8"
                     />
                     <Input
                       placeholder="URL"
                       value={newUrl}
-                      onChange={(e) => setNewUrl(e?.target.value)}
+                      onChange={(e) => setNewUrl(e.target.value)}
                       className="h-8"
                     />
                   </div>
                   <Button
                     size="sm"
-                    onClick={() => handleConnect(account?.id)}
+                    onClick={() => handleConnect(account.id)}
                     disabled={!newUsername || !newUrl}
                   >
                     <Check className="mr-2 h-4 w-4" />
@@ -187,7 +187,7 @@ export function SocialLinking() {
                   </Button>
                 </div>
               ) : (
-                <Button variant="outline" size="sm" onClick={() => setEditingAccount(account?.id)}>
+                <Button variant="outline" size="sm" onClick={() => setEditingAccount(account.id)}>
                   Connect
                 </Button>
               )}

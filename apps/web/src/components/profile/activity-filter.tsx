@@ -49,12 +49,12 @@ export function ActivityFilter({
       <div className="space-y-2">
         <Label htmlFor="search">Search</Label>
         <div className="relative">
-          <Search className="absolute left-2 top-2?.5 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             id="search"
             placeholder="Search activities..."
             value={searchQuery}
-            onChange={(e) => handleSearch(e?.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
             className="pl-8"
           />
         </div>
@@ -82,10 +82,10 @@ export function ActivityFilter({
         <div className="flex items-center gap-2">
           <Input
             type="date"
-            value={dateRange?.from.toISOString().substring(0, 10)}
+            value={dateRange.from.toISOString().substring(0, 10)}
             onChange={(e) => {
-              const newDate = new Date(e?.target.value);
-              const newRange = { from: newDate, to: dateRange?.to };
+              const newDate = new Date(e.target.value);
+              const newRange = { from: newDate, to: dateRange.to };
               handleDateRangeChange(newRange);
             }}
             className="w-full"
@@ -93,10 +93,10 @@ export function ActivityFilter({
           <span className="text-muted-foreground">to</span>
           <Input
             type="date"
-            value={dateRange?.to.toISOString().substring(0, 10)}
+            value={dateRange.to.toISOString().substring(0, 10)}
             onChange={(e) => {
-              const newDate = new Date(e?.target.value);
-              const newRange = { from: dateRange?.from, to: newDate };
+              const newDate = new Date(e.target.value);
+              const newRange = { from: dateRange.from, to: newDate };
               handleDateRangeChange(newRange);
             }}
             className="w-full"
@@ -107,7 +107,7 @@ export function ActivityFilter({
             onClick={() => {
               const today = new Date();
               const thirtyDaysAgo = new Date(today);
-              thirtyDaysAgo?.setDate(thirtyDaysAgo?.getDate() - 30);
+              thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
               handleDateRangeChange({ from: thirtyDaysAgo, to: today });
             }}
           >

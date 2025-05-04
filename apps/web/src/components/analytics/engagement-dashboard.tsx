@@ -44,8 +44,8 @@ export default function EngagementDashboard({
 
   useEffect(() => {
     async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); fetchMetrics() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); fetchMetrics() {
       setLoading(true);
       setError(null);
 
@@ -75,19 +75,19 @@ export default function EngagementDashboard({
           });
         } else {
           // Use custom date range
-          startDate = dateRange?.from || subWeeks(endDate, 1);
-          endDate = dateRange?.to || endDate;
+          startDate = dateRange.from || subWeeks(endDate, 1);
+          endDate = dateRange.to || endDate;
         }
 
         const analyticsService = new AnalyticsService();
-        const metrics = await analyticsService?.getEngagementMetrics({
-          start: startDate?.toISOString(),
-          end: endDate?.toISOString(),
+        const metrics = await analyticsService.getEngagementMetrics({
+          start: startDate.toISOString(),
+          end: endDate.toISOString(),
         });
 
         setMetrics(metrics);
       } catch (err) {
-        console?.error('Error fetching analytics metrics:', err);
+        console.error('Error fetching analytics metrics:', err);
         setError('Failed to load analytics data. Please try again later.');
       } finally {
         setLoading(false);
@@ -95,30 +95,30 @@ export default function EngagementDashboard({
     }
 
     fetchMetrics();
-  }, [timeRange, dateRange?.from, dateRange?.to]);
+  }, [timeRange, dateRange.from, dateRange.to]);
 
   // Prepare data for charts
   const sessionTypeData = metrics
     ? [
-        { name: 'Makeup', value: metrics?.makeupSessions },
-        { name: 'Hairstyle', value: metrics?.hairstyleSessions },
-        { name: 'Accessory', value: metrics?.accessorySessions },
+        { name: 'Makeup', value: metrics.makeupSessions },
+        { name: 'Hairstyle', value: metrics.hairstyleSessions },
+        { name: 'Accessory', value: metrics.accessorySessions },
       ]
     : [];
 
   const shareMethodData = metrics
     ? [
-        { name: 'Social', value: metrics?.socialShares },
-        { name: 'Email', value: metrics?.emailShares },
-        { name: 'Download', value: metrics?.downloadShares },
+        { name: 'Social', value: metrics.socialShares },
+        { name: 'Email', value: metrics.emailShares },
+        { name: 'Download', value: metrics.downloadShares },
       ]
     : [];
 
-  const topProductsData = metrics?.topViewedProducts || [];
+  const topProductsData = metrics.topViewedProducts || [];
 
   const categoryBreakdownData = metrics
-    ? Object?.entries(metrics?.productCategoryBreakdown).map(([category, count]) => ({
-        name: category?.charAt(0).toUpperCase() + category?.slice(1),
+    ? Object.entries(metrics.productCategoryBreakdown).map(([category, count]) => ({
+        name: category.charAt(0).toUpperCase() + category.slice(1),
         value: count,
       }))
     : [];
@@ -133,53 +133,53 @@ export default function EngagementDashboard({
     // Prepare data arrays
     const sessionData = [
       ['Type', 'Count'],
-      ['Makeup', metrics?.makeupSessions.toString()],
-      ['Hairstyle', metrics?.hairstyleSessions.toString()],
-      ['Accessory', metrics?.accessorySessions.toString()],
+      ['Makeup', metrics.makeupSessions.toString()],
+      ['Hairstyle', metrics.hairstyleSessions.toString()],
+      ['Accessory', metrics.accessorySessions.toString()],
     ];
 
     const shareData = [
       ['Method', 'Count'],
-      ['Social', metrics?.socialShares.toString()],
-      ['Email', metrics?.emailShares.toString()],
-      ['Download', metrics?.downloadShares.toString()],
+      ['Social', metrics.socialShares.toString()],
+      ['Email', metrics.emailShares.toString()],
+      ['Download', metrics.downloadShares.toString()],
     ];
 
     const productData = [
       ['Product ID', 'Name', 'Views'],
-      ...metrics?.topViewedProducts.map((product) => [
-        product?.product_id,
-        product?.name,
-        product?.views.toString(),
+      ...metrics.topViewedProducts.map((product) => [
+        product.product_id,
+        product.name,
+        product.views.toString(),
       ]),
     ];
 
     const categoryData = [
       ['Category', 'Views'],
-      ...Object?.entries(metrics?.productCategoryBreakdown).map(([category, count]) => [
+      ...Object.entries(metrics.productCategoryBreakdown).map(([category, count]) => [
         category,
-        count?.toString(),
+        count.toString(),
       ]),
     ];
 
     const summaryData = [
       ['Metric', 'Value'],
-      ['Total Sessions', metrics?.totalSessions.toString()],
-      ['Unique Users', metrics?.uniqueUsers.toString()],
-      ['Avg. Duration (s)', metrics?.averageDuration.toFixed(2)],
-      ['Success Rate (%)', metrics?.successRate.toFixed(2)],
+      ['Total Sessions', metrics.totalSessions.toString()],
+      ['Unique Users', metrics.uniqueUsers.toString()],
+      ['Avg. Duration (s)', metrics.averageDuration.toFixed(2)],
+      ['Success Rate (%)', metrics.successRate.toFixed(2)],
     ];
 
     // Convert array to CSV string
     const arrayToCsv = (data: string[][]) => {
-      return data?.map((row) => row?.map((cell) => `"${cell}"`).join(',')).join('\n');
+      return data.map((row) => row.map((cell) => `"${cell}"`).join(',')).join('\n');
     };
 
     // Generate CSV content
     const csvContent = [
       '# VIBEWELL ENGAGEMENT ANALYTICS REPORT',
       `# Generated: ${format(new Date(), 'PPpp')}`,
-      `# Time Range: ${format(dateRange?.from || new Date(), 'PPP')} to ${format(dateRange?.to || new Date(), 'PPP')}`,
+      `# Time Range: ${format(dateRange.from || new Date(), 'PPP')} to ${format(dateRange.to || new Date(), 'PPP')}`,
       '\n# SUMMARY',
       arrayToCsv(summaryData),
       '\n# SESSION DATA',
@@ -194,13 +194,13 @@ export default function EngagementDashboard({
 
     // Create and trigger download
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL?.createObjectURL(blob);
-    const link = document?.createElement('a');
-    link?.setAttribute('href', url);
-    link?.setAttribute('download', `vibewell-engagement-${format(new Date(), 'yyyy-MM-dd')}.csv`);
-    document?.body.appendChild(link);
-    link?.click();
-    document?.body.removeChild(link);
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `vibewell-engagement-${format(new Date(), 'yyyy-MM-dd')}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -229,17 +229,17 @@ export default function EngagementDashboard({
                     size="sm"
                     className={cn(
                       'justify-start text-left font-normal',
-                      !dateRange?.from && 'text-muted-foreground',
+                      !dateRange.from && 'text-muted-foreground',
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {dateRange?.from ? (
-                      dateRange?.to ? (
+                    {dateRange.from ? (
+                      dateRange.to ? (
                         <>
-                          {format(dateRange?.from, 'MMM d')} - {format(dateRange?.to, 'MMM d, yyyy')}
+                          {format(dateRange.from, 'MMM d')} - {format(dateRange.to, 'MMM d, yyyy')}
                         </>
                       ) : (
-                        format(dateRange?.from, 'MMM d, yyyy')
+                        format(dateRange.from, 'MMM d, yyyy')
                       )
                     ) : (
                       <span>Pick a date range</span>
@@ -250,15 +250,15 @@ export default function EngagementDashboard({
                   <Calendar
                     initialFocus
                     mode="range"
-                    defaultMonth={dateRange?.from}
+                    defaultMonth={dateRange.from}
                     selected={{
-                      from: dateRange?.from,
-                      to: dateRange?.to,
+                      from: dateRange.from,
+                      to: dateRange.to,
                     }}
                     onSelect={(range) => {
                       setDateRange({
-                        from: range?.from,
-                        to: range?.to,
+                        from: range.from,
+                        to: range.to,
                       });
                     }}
                     numberOfMonths={2}
@@ -270,12 +270,12 @@ export default function EngagementDashboard({
                 variant="ghost"
                 size="icon"
                 onClick={() => {
-                  if (dateRange?.from && dateRange?.to) {
+                  if (dateRange.from && dateRange.to) {
                     // Refresh data with current date range
                     setTimeRange('custom');
                   }
                 }}
-                disabled={!dateRange?.from || !dateRange?.to || loading}
+                disabled={!dateRange.from || !dateRange.to || loading}
               >
                 <RefreshCw className={cn('h-4 w-4', loading && 'animate-spin')} />
               </Button>
@@ -290,10 +290,10 @@ export default function EngagementDashboard({
       </div>
 
       {/* Time range info */}
-      {metrics && metrics?.timeRange && (
+      {metrics && metrics.timeRange && (
         <p className="text-sm text-muted-foreground">
-          Showing data from {format(new Date(metrics?.timeRange.start), 'PPP')} to{' '}
-          {format(new Date(metrics?.timeRange.end), 'PPP')}
+          Showing data from {format(new Date(metrics.timeRange.start), 'PPP')} to{' '}
+          {format(new Date(metrics.timeRange.end), 'PPP')}
         </p>
       )}
 
@@ -301,7 +301,7 @@ export default function EngagementDashboard({
       {loading && (
         <div className="w-full space-y-4">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {Array?.from({ length: 4 }).map((_, i) => (
+            {Array.from({ length: 4 }).map((_, i) => (
               <Card key={i}>
                 <CardHeader className="pb-2">
                   <Skeleton className="h-4 w-24" />
@@ -314,7 +314,7 @@ export default function EngagementDashboard({
           </div>
 
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            {Array?.from({ length: 2 }).map((_, i) => (
+            {Array.from({ length: 2 }).map((_, i) => (
               <Card key={i}>
                 <CardHeader>
                   <Skeleton className="h-6 w-40" />
@@ -351,7 +351,7 @@ export default function EngagementDashboard({
                 <CardTitle className="text-sm font-medium">Total Sessions</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{metrics?.totalSessions.toLocaleString()}</div>
+                <div className="text-3xl font-bold">{metrics.totalSessions.toLocaleString()}</div>
               </CardContent>
             </Card>
 
@@ -360,7 +360,7 @@ export default function EngagementDashboard({
                 <CardTitle className="text-sm font-medium">Unique Users</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{metrics?.uniqueUsers.toLocaleString()}</div>
+                <div className="text-3xl font-bold">{metrics.uniqueUsers.toLocaleString()}</div>
               </CardContent>
             </Card>
 
@@ -369,7 +369,7 @@ export default function EngagementDashboard({
                 <CardTitle className="text-sm font-medium">Avg Duration</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{Math?.round(metrics?.averageDuration)}s</div>
+                <div className="text-3xl font-bold">{Math.round(metrics.averageDuration)}s</div>
               </CardContent>
             </Card>
 
@@ -378,7 +378,7 @@ export default function EngagementDashboard({
                 <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{Math?.round(metrics?.successRate)}%</div>
+                <div className="text-3xl font-bold">{Math.round(metrics.successRate)}%</div>
               </CardContent>
             </Card>
           </div>
@@ -413,8 +413,8 @@ export default function EngagementDashboard({
                           fill="#8884d8"
                           dataKey="value"
                         >
-                          {categoryBreakdownData?.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS?.length]} />
+                          {categoryBreakdownData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                           ))}
                         </Pie>
                         <Tooltip />
@@ -445,7 +445,7 @@ export default function EngagementDashboard({
                           dataKey="name"
                           width={90}
                           tickFormatter={(value) =>
-                            value?.length > 15 ? `${value?.substring(0, 15)}...` : value
+                            value.length > 15 ? `${value.substring(0, 15)}...` : value
                           }
                         />
                         <Tooltip />
@@ -478,15 +478,15 @@ export default function EngagementDashboard({
                         </tr>
                       </thead>
                       <tbody>
-                        {topProductsData?.map((product, index) => (
+                        {topProductsData.map((product, index) => (
                           <tr key={index} className="border-b hover:bg-muted/50">
-                            <td className="px-3 py-2">{product?.name}</td>
-                            <td className="px-3 py-2 text-right">{product?.views}</td>
+                            <td className="px-3 py-2">{product.name}</td>
+                            <td className="px-3 py-2 text-right">{product.views}</td>
                             <td className="px-3 py-2 text-right">
-                              {Math?.round(product?.views * 0?.7)}
+                              {Math.round(product.views * 0.7)}
                             </td>
                             <td className="px-3 py-2 text-right">
-                              {Math?.round(Math?.random() * 100)}%
+                              {Math.round(Math.random() * 100)}%
                             </td>
                           </tr>
                         ))}
@@ -549,7 +549,7 @@ export default function EngagementDashboard({
                           cy="50"
                           r="40"
                           fill="transparent"
-                          strokeDasharray={`${metrics?.successRate * 2?.51} 251?.2`}
+                          strokeDasharray={`${metrics.successRate * 2.51} 251.2`}
                           strokeDashoffset="0"
                           transform="rotate(-90 50 50)"
                         />
@@ -557,14 +557,14 @@ export default function EngagementDashboard({
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-center">
                           <div className="text-4xl font-bold">
-                            {Math?.round(metrics?.successRate)}%
+                            {Math.round(metrics.successRate)}%
                           </div>
                           <div className="text-sm text-muted-foreground">Success Rate</div>
                         </div>
                       </div>
                     </div>
                     <div className="mt-6 text-center text-sm text-muted-foreground">
-                      Based on {metrics?.totalSessions} total sessions
+                      Based on {metrics.totalSessions} total sessions
                     </div>
                   </CardContent>
                 </Card>
@@ -593,8 +593,8 @@ export default function EngagementDashboard({
                           fill="#8884d8"
                           dataKey="value"
                         >
-                          {shareMethodData?.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS?.length]} />
+                          {shareMethodData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                           ))}
                         </Pie>
                         <Tooltip />
@@ -616,7 +616,7 @@ export default function EngagementDashboard({
                           Total Shares
                         </div>
                         <div className="text-2xl font-bold">
-                          {metrics?.socialShares + metrics?.emailShares + metrics?.downloadShares}
+                          {metrics.socialShares + metrics.emailShares + metrics.downloadShares}
                         </div>
                       </div>
 
@@ -625,12 +625,12 @@ export default function EngagementDashboard({
                           Share to Try-On Ratio
                         </div>
                         <div className="text-2xl font-bold">
-                          {metrics?.totalSessions > 0
+                          {metrics.totalSessions > 0
                             ? (
-                                ((metrics?.socialShares +
-                                  metrics?.emailShares +
-                                  metrics?.downloadShares) /
-                                  metrics?.totalSessions) *
+                                ((metrics.socialShares +
+                                  metrics.emailShares +
+                                  metrics.downloadShares) /
+                                  metrics.totalSessions) *
                                 100
                               ).toFixed(1)
                             : '0'}
@@ -643,15 +643,15 @@ export default function EngagementDashboard({
                         <div className="space-y-2">
                           <div className="flex items-center justify-between">
                             <span>Social</span>
-                            <span className="font-medium">{metrics?.socialShares}</span>
+                            <span className="font-medium">{metrics.socialShares}</span>
                           </div>
                           <div className="flex items-center justify-between">
                             <span>Email</span>
-                            <span className="font-medium">{metrics?.emailShares}</span>
+                            <span className="font-medium">{metrics.emailShares}</span>
                           </div>
                           <div className="flex items-center justify-between">
                             <span>Download</span>
-                            <span className="font-medium">{metrics?.downloadShares}</span>
+                            <span className="font-medium">{metrics.downloadShares}</span>
                           </div>
                         </div>
                       </div>

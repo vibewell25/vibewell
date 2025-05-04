@@ -24,13 +24,13 @@ export default function BeautyProgress() {
   }, []);
 
   const loadLogs = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const userLogs = await getSkinConditionLogs();
-      setLogs(userLogs?.sort((a, b) => new Date(a?.date).getTime() - new Date(b?.date).getTime()));
+      setLogs(userLogs.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()));
     } catch (error) {
-      console?.error('Error loading logs:', error);
+      console.error('Error loading logs:', error);
     }
   };
 
@@ -40,17 +40,17 @@ export default function BeautyProgress() {
 
     switch (timeframe) {
       case 'week':
-        cutoffDate?.setDate(now?.getDate() - 7);
+        cutoffDate.setDate(now.getDate() - 7);
         break;
       case 'month':
-        cutoffDate?.setMonth(now?.getMonth() - 1);
+        cutoffDate.setMonth(now.getMonth() - 1);
         break;
       case 'year':
-        cutoffDate?.setFullYear(now?.getFullYear() - 1);
+        cutoffDate.setFullYear(now.getFullYear() - 1);
         break;
     }
 
-    return logs?.filter((log) => new Date(log?.date) >= cutoffDate);
+    return logs.filter((log) => new Date(log.date) >= cutoffDate);
   };
 
   const getConcernFrequency = () => {
@@ -66,13 +66,13 @@ export default function BeautyProgress() {
     };
 
     getFilteredLogs().forEach((log) => {
-      log?.concerns.forEach((concern) => {
+      log.concerns.forEach((concern) => {
         concerns[concern]++;
       });
     });
 
-    return Object?.entries(concerns).map(([name, count]) => ({
-      name: name?.replace('_', ' '),
+    return Object.entries(concerns).map(([name, count]) => ({
+      name: name.replace('_', ' '),
       count,
     }));
   };
@@ -157,7 +157,7 @@ export default function BeautyProgress() {
               <p className="text-sm text-gray-600">Average Mood</p>
               <p className="text-2xl font-semibold">
                 {(
-                  filteredLogs?.reduce((sum, log) => sum + log?.mood, 0) / filteredLogs?.length
+                  filteredLogs.reduce((sum, log) => sum + log.mood, 0) / filteredLogs.length
                 ).toFixed(1)}
               </p>
             </div>
@@ -165,7 +165,7 @@ export default function BeautyProgress() {
               <p className="text-sm text-gray-600">Average Stress</p>
               <p className="text-2xl font-semibold">
                 {(
-                  filteredLogs?.reduce((sum, log) => sum + log?.stress, 0) / filteredLogs?.length
+                  filteredLogs.reduce((sum, log) => sum + log.stress, 0) / filteredLogs.length
                 ).toFixed(1)}
               </p>
             </div>
@@ -173,7 +173,7 @@ export default function BeautyProgress() {
               <p className="text-sm text-gray-600">Average Sleep</p>
               <p className="text-2xl font-semibold">
                 {(
-                  filteredLogs?.reduce((sum, log) => sum + log?.sleep, 0) / filteredLogs?.length
+                  filteredLogs.reduce((sum, log) => sum + log.sleep, 0) / filteredLogs.length
                 ).toFixed(1)}
               </p>
             </div>
@@ -181,7 +181,7 @@ export default function BeautyProgress() {
               <p className="text-sm text-gray-600">Average Hydration</p>
               <p className="text-2xl font-semibold">
                 {(
-                  filteredLogs?.reduce((sum, log) => sum + log?.hydration, 0) / filteredLogs?.length
+                  filteredLogs.reduce((sum, log) => sum + log.hydration, 0) / filteredLogs.length
                 ).toFixed(1)}
               </p>
             </div>

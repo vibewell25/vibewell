@@ -19,8 +19,8 @@ export const touchTargets = {
 // Hook to detect screen size
 export function useScreenSize() {
   const [screenSize, setScreenSize] = useState({
-    width: typeof window !== 'undefined' ? window?.innerWidth : 0,
-    height: typeof window !== 'undefined' ? window?.innerHeight : 0,
+    width: typeof window !== 'undefined' ? window.innerWidth : 0,
+    height: typeof window !== 'undefined' ? window.innerHeight : 0,
   });
 
   useEffect(() => {
@@ -28,13 +28,13 @@ export function useScreenSize() {
 
     const handleResize = () => {
       setScreenSize({
-        width: window?.innerWidth,
-        height: window?.innerHeight,
+        width: window.innerWidth,
+        height: window.innerHeight,
       });
     };
 
-    window?.addEventListener('resize', handleResize);
-    return () => window?.removeEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return screenSize;
@@ -44,9 +44,9 @@ export function useScreenSize() {
 export function useDeviceType() {
   const { width } = useScreenSize();
 
-  if (width < breakpoints?.sm) {
+  if (width < breakpoints.sm) {
     return 'mobile';
-  } else if (width < breakpoints?.lg) {
+  } else if (width < breakpoints.lg) {
     return 'tablet';
   }
   return 'desktop';
@@ -59,11 +59,11 @@ export function useTouchCapability() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const hasTouch = process?.env['HASTOUCH'] in window ||
-      navigator?.maxTouchPoints > 0 ||
+    const hasTouch = process.env['HASTOUCH'] in window ||
+      navigator.maxTouchPoints > 0 ||
 
       // @ts-ignore
-      navigator?.msMaxTouchPoints > 0;
+      navigator.msMaxTouchPoints > 0;
 
     setIsTouch(hasTouch);
   }, []);
@@ -75,14 +75,14 @@ export function useTouchCapability() {
 export function getResponsiveStyles(deviceType: 'mobile' | 'tablet' | 'desktop') {
   const baseStyles = {
     interactive: {
-      minWidth: `${touchTargets?.minimum}px`,
-      minHeight: `${touchTargets?.minimum}px`,
-      padding: '0?.5rem',
-      margin: '0?.25rem',
+      minWidth: `${touchTargets.minimum}px`,
+      minHeight: `${touchTargets.minimum}px`,
+      padding: '0.5rem',
+      margin: '0.25rem',
     },
     text: {
       fontSize: '1rem',
-      lineHeight: '1?.5',
+      lineHeight: '1.5',
     },
     spacing: {
       gap: '1rem',
@@ -95,29 +95,29 @@ export function getResponsiveStyles(deviceType: 'mobile' | 'tablet' | 'desktop')
       return {
         ...baseStyles,
         interactive: {
-          ...baseStyles?.interactive,
-          minWidth: `${touchTargets?.comfortable}px`,
-          minHeight: `${touchTargets?.comfortable}px`,
-          padding: '0?.75rem',
-          margin: '0?.5rem',
+          ...baseStyles.interactive,
+          minWidth: `${touchTargets.comfortable}px`,
+          minHeight: `${touchTargets.comfortable}px`,
+          padding: '0.75rem',
+          margin: '0.5rem',
         },
         text: {
-          ...baseStyles?.text,
-          fontSize: '1?.125rem',
+          ...baseStyles.text,
+          fontSize: '1.125rem',
         },
         spacing: {
-          ...baseStyles?.spacing,
-          gap: '1?.5rem',
-          padding: '1?.5rem',
+          ...baseStyles.spacing,
+          gap: '1.5rem',
+          padding: '1.5rem',
         },
       };
     case 'tablet':
       return {
         ...baseStyles,
         interactive: {
-          ...baseStyles?.interactive,
-          minWidth: `${touchTargets?.comfortable}px`,
-          minHeight: `${touchTargets?.comfortable}px`,
+          ...baseStyles.interactive,
+          minWidth: `${touchTargets.comfortable}px`,
+          minHeight: `${touchTargets.comfortable}px`,
         },
       };
     default:

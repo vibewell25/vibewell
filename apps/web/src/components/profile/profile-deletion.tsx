@@ -24,17 +24,17 @@ export function ProfileDeletion() {
   });
 
   const handleDelete = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       // Simulate API call to delete account
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      toast?.success('Account deleted successfully');
+      toast.success('Account deleted successfully');
       // Redirect to home page or show success message
     } catch (error) {
-      console?.error('Error deleting account:', error);
-      toast?.error('Failed to delete account');
+      console.error('Error deleting account:', error);
+      toast.error('Failed to delete account');
     }
   };
 
@@ -45,7 +45,7 @@ export function ProfileDeletion() {
     }));
   };
 
-  const allAcknowledged = Object?.values(acknowledgements).every(Boolean);
+  const allAcknowledged = Object.values(acknowledgements).every(Boolean);
   const canDelete = allAcknowledged && confirmationText === 'DELETE MY ACCOUNT';
 
   return (
@@ -85,7 +85,7 @@ export function ProfileDeletion() {
               <div className="flex items-start space-x-2">
                 <Checkbox
                   id="dataLoss"
-                  checked={acknowledgements?.dataLoss}
+                  checked={acknowledgements.dataLoss}
                   onCheckedChange={() => handleAcknowledge('dataLoss')}
                 />
                 <div className="space-y-1">
@@ -101,7 +101,7 @@ export function ProfileDeletion() {
               <div className="flex items-start space-x-2">
                 <Checkbox
                   id="irreversible"
-                  checked={acknowledgements?.irreversible}
+                  checked={acknowledgements.irreversible}
                   onCheckedChange={() => handleAcknowledge('irreversible')}
                 />
                 <div className="space-y-1">
@@ -115,7 +115,7 @@ export function ProfileDeletion() {
               <div className="flex items-start space-x-2">
                 <Checkbox
                   id="backup"
-                  checked={acknowledgements?.backup}
+                  checked={acknowledgements.backup}
                   onCheckedChange={() => handleAcknowledge('backup')}
                 />
                 <div className="space-y-1">
@@ -129,7 +129,7 @@ export function ProfileDeletion() {
               <div className="flex items-start space-x-2">
                 <Checkbox
                   id="verification"
-                  checked={acknowledgements?.verification}
+                  checked={acknowledgements.verification}
                   onCheckedChange={() => handleAcknowledge('verification')}
                 />
                 <div className="space-y-1">
@@ -145,7 +145,7 @@ export function ProfileDeletion() {
               <div className="flex items-start space-x-2">
                 <Checkbox
                   id="privacy"
-                  checked={acknowledgements?.privacy}
+                  checked={acknowledgements.privacy}
                   onCheckedChange={() => handleAcknowledge('privacy')}
                 />
                 <div className="space-y-1">
@@ -163,7 +163,7 @@ export function ProfileDeletion() {
                 <Input
                   id="confirmation"
                   value={confirmationText}
-                  onChange={(e) => setConfirmationText(e?.target.value)}
+                  onChange={(e) => setConfirmationText(e.target.value)}
                   placeholder="DELETE MY ACCOUNT"
                   className="font-mono"
                 />

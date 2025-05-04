@@ -1,8 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { RootErrorBoundary } from '../RootErrorBoundary';
 
-// Mock console?.error to avoid test output pollution
-jest?.spyOn(console, 'error').mockImplementation(() => {});
+// Mock console.error to avoid test output pollution
+jest.spyOn(console, 'error').mockImplementation(() => {});
 
 describe('RootErrorBoundary', () => {
   const ErrorComponent = () => {
@@ -11,7 +11,7 @@ describe('RootErrorBoundary', () => {
 
   beforeEach(() => {
     // Clear mocks before each test
-    jest?.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('renders children when there is no error', () => {
@@ -21,8 +21,8 @@ describe('RootErrorBoundary', () => {
       </RootErrorBoundary>,
     );
 
-    expect(screen?.getByText('Normal application content')).toBeInTheDocument();
-    expect(screen?.queryByText(/Oops, something went wrong/i)).not?.toBeInTheDocument();
+    expect(screen.getByText('Normal application content')).toBeInTheDocument();
+    expect(screen.queryByText(/Oops, something went wrong/i)).not.toBeInTheDocument();
   });
 
   it('renders error UI when an error occurs', () => {
@@ -33,12 +33,12 @@ describe('RootErrorBoundary', () => {
     );
 
     // Check error UI is rendered
-    expect(screen?.getByText(/Oops, something went wrong/i)).toBeInTheDocument();
+    expect(screen.getByText(/Oops, something went wrong/i)).toBeInTheDocument();
     expect(
-      screen?.getByText(/We're sorry, but we encountered an unexpected error/i),
+      screen.getByText(/We're sorry, but we encountered an unexpected error/i),
     ).toBeInTheDocument();
-    expect(screen?.getByRole('button', { name: /Refresh page/i })).toBeInTheDocument();
-    expect(screen?.getByRole('link', { name: /Go to homepage/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Refresh page/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Go to homepage/i })).toBeInTheDocument();
   });
 
   it('logs error details to console', () => {
@@ -48,15 +48,15 @@ describe('RootErrorBoundary', () => {
       </RootErrorBoundary>,
     );
 
-    expect(console?.error).toHaveBeenCalledWith(
+    expect(console.error).toHaveBeenCalledWith(
       'Application error caught by RootErrorBoundary:',
-      expect?.any(Error),
+      expect.any(Error),
     );
   });
 
   it('provides error details in development mode', () => {
-    const originalNodeEnv = process?.env.NODE_ENV;
-    process?.env.NODE_ENV = 'development';
+    const originalNodeEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'development';
 
     render(
       <RootErrorBoundary>
@@ -64,15 +64,15 @@ describe('RootErrorBoundary', () => {
       </RootErrorBoundary>,
     );
 
-    expect(screen?.getByText(/Error details \(development only\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Error details \(development only\)/i)).toBeInTheDocument();
 
     // Restore NODE_ENV
-    process?.env.NODE_ENV = originalNodeEnv;
+    process.env.NODE_ENV = originalNodeEnv;
   });
 
   it("doesn't show error details in production mode", () => {
-    const originalNodeEnv = process?.env.NODE_ENV;
-    process?.env.NODE_ENV = 'production';
+    const originalNodeEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'production';
 
     render(
       <RootErrorBoundary>
@@ -80,17 +80,17 @@ describe('RootErrorBoundary', () => {
       </RootErrorBoundary>,
     );
 
-    expect(screen?.queryByText(/Error details \(development only\)/i)).not?.toBeInTheDocument();
+    expect(screen.queryByText(/Error details \(development only\)/i)).not.toBeInTheDocument();
 
     // Restore NODE_ENV
-    process?.env.NODE_ENV = originalNodeEnv;
+    process.env.NODE_ENV = originalNodeEnv;
   });
 
   it('calls handleReload when Refresh button is clicked', () => {
-    // Mock location?.reload
+    // Mock location.reload
     const { location } = window;
-    delete window?.location;
-    window?.location = { ...location, reload: jest?.fn() };
+    delete window.location;
+    window.location = { ...location, reload: jest.fn() };
 
     render(
       <RootErrorBoundary>
@@ -98,13 +98,13 @@ describe('RootErrorBoundary', () => {
       </RootErrorBoundary>,
     );
 
-    fireEvent?.click(screen?.getByRole('button', { name: /Refresh page/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Refresh page/i }));
 
     // Check if reload was called
-    expect(window?.location.reload).toHaveBeenCalled();
+    expect(window.location.reload).toHaveBeenCalled();
 
     // Restore original location
-    window?.location = location;
+    window.location = location;
   });
 
   it('matches error snapshot', () => {

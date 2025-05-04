@@ -43,15 +43,15 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
   }, [businessId]);
 
   const fetchForms = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const response = await fetch(`/api/business/forms?businessId=${businessId}`);
-      if (!response?.ok) throw new Error('Failed to fetch forms');
-      const data = await response?.json();
+      if (!response.ok) throw new Error('Failed to fetch forms');
+      const data = await response.json();
       setForms(data);
     } catch (error) {
-      console?.error('Error fetching forms:', error);
+      console.error('Error fetching forms:', error);
       toast({
         title: 'Error',
         description: 'Failed to load consultation forms',
@@ -63,16 +63,16 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
   };
 
   const handleSave = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');form: ConsultationForm) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');form: ConsultationForm) => {
     try {
       const response = await fetch('/api/business/forms', {
-        method: form?.id ? 'PUT' : 'POST',
+        method: form.id ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify({ ...form, businessId }),
+        body: JSON.stringify({ ...form, businessId }),
       });
 
-      if (!response?.ok) throw new Error('Failed to save form');
+      if (!response.ok) throw new Error('Failed to save form');
 
       toast({
         title: 'Success',
@@ -82,7 +82,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
       setEditingForm(null);
       fetchForms();
     } catch (error) {
-      console?.error('Error saving form:', error);
+      console.error('Error saving form:', error);
       toast({
         title: 'Error',
         description: 'Failed to save form',
@@ -92,14 +92,14 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
   };
 
   const handleDelete = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');formId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');formId: string) => {
     try {
       const response = await fetch(`/api/business/forms?id=${formId}`, {
         method: 'DELETE',
       });
 
-      if (!response?.ok) throw new Error('Failed to delete form');
+      if (!response.ok) throw new Error('Failed to delete form');
 
       toast({
         title: 'Success',
@@ -108,7 +108,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
 
       fetchForms();
     } catch (error) {
-      console?.error('Error deleting form:', error);
+      console.error('Error deleting form:', error);
       toast({
         title: 'Error',
         description: 'Failed to delete form',
@@ -147,12 +147,12 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
             Add New Form
           </Button>
 
-          {forms?.map((form) => (
-            <Card key={form?.id} className="p-4">
+          {forms.map((form) => (
+            <Card key={form.id} className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold">{form?.name}</h3>
-                  <p className="text-sm text-gray-500">{form?.description}</p>
+                  <h3 className="text-lg font-semibold">{form.name}</h3>
+                  <p className="text-sm text-gray-500">{form.description}</p>
                 </div>
                 <div className="space-x-2">
                   <Button
@@ -173,7 +173,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
                   >
                     Preview
                   </Button>
-                  <Button variant="destructive" onClick={() => form?.id && handleDelete(form?.id)}>
+                  <Button variant="destructive" onClick={() => form.id && handleDelete(form.id)}>
                     Delete
                   </Button>
                 </div>
@@ -186,7 +186,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
           <div className="fixed inset-0 flex items-center justify-center bg-black/50">
             <Card className="mx-4 h-[80vh] w-full max-w-4xl overflow-auto">
               <CardHeader>
-                <CardTitle>{editingForm?.id ? 'Edit Form' : 'New Form'}</CardTitle>
+                <CardTitle>{editingForm.id ? 'Edit Form' : 'New Form'}</CardTitle>
               </CardHeader>
               <CardContent>
                 <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -199,8 +199,8 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
                     <div>
                       <Label>Name</Label>
                       <Input
-                        value={editingForm?.name}
-                        onChange={(e) => setEditingForm({ ...editingForm, name: e?.target.value })}
+                        value={editingForm.name}
+                        onChange={(e) => setEditingForm({ ...editingForm, name: e.target.value })}
                         required
                       />
                     </div>
@@ -208,11 +208,11 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
                     <div>
                       <Label>Description</Label>
                       <Textarea
-                        value={editingForm?.description || ''}
+                        value={editingForm.description || ''}
                         onChange={(e) =>
                           setEditingForm({
                             ...editingForm,
-                            description: e?.target.value,
+                            description: e.target.value,
                           })
                         }
                       />
@@ -220,7 +220,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
 
                     <div className="flex items-center space-x-2">
                       <Switch
-                        checked={editingForm?.isRequired}
+                        checked={editingForm.isRequired}
                         onCheckedChange={(checked) => handleSwitchChange(checked, 'isRequired')}
                       />
                       <Label>Required</Label>
@@ -228,7 +228,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
 
                     <div className="flex items-center space-x-2">
                       <Switch
-                        checked={editingForm?.isActive}
+                        checked={editingForm.isActive}
                         onCheckedChange={(checked) => handleSwitchChange(checked, 'isActive')}
                       />
                       <Label>Active</Label>
@@ -237,7 +237,7 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
                     <div className="mt-6">
                       <Label>Form Fields</Label>
                       <FormFieldEditor
-                        fields={editingForm?.fields}
+                        fields={editingForm.fields}
                         onChange={(fields) => setEditingForm({ ...editingForm, fields })}
                       />
                     </div>
@@ -245,9 +245,9 @@ export function ConsultationForms({ businessId }: ConsultationFormProps) {
 
                   <TabsContent value="preview">
                     <FormPreview
-                      name={editingForm?.name}
-                      description={editingForm?.description}
-                      fields={editingForm?.fields}
+                      name={editingForm.name}
+                      description={editingForm.description}
+                      fields={editingForm.fields}
                     />
                   </TabsContent>
                 </Tabs>

@@ -4,28 +4,28 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { ServiceDetailRouteProp, ServiceDetailNavigationProp } from '../types/navigation';
 import { deleteService } from '../services/serviceService';
 
-const ServiceDetailScreen: React?.FC = () => {
+const ServiceDetailScreen: React.FC = () => {
   const route = useRoute<ServiceDetailRouteProp>();
   const navigation = useNavigation<ServiceDetailNavigationProp>();
-  const { service } = route?.params;
+  const { service } = route.params;
 
   const handleDelete = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
-      await deleteService(service?.id);
-      navigation?.navigate('ServiceList');
+      await deleteService(service.id);
+      navigation.navigate('ServiceList');
     } catch (e) {
-      Alert?.alert('Error', 'Failed to delete service');
+      Alert.alert('Error', 'Failed to delete service');
     }
   };
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
-      <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{service?.name}</Text>
-      <Text style={{ marginVertical: 8 }}>Price: ${service?.price.toFixed(2)}</Text>
-      <Text style={{ marginBottom: 16 }}>Duration: {service?.duration} minutes</Text>
-      <Button title="Edit" onPress={() => navigation?.navigate('ServiceForm', { service })} />
+      <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{service.name}</Text>
+      <Text style={{ marginVertical: 8 }}>Price: ${service.price.toFixed(2)}</Text>
+      <Text style={{ marginBottom: 16 }}>Duration: {service.duration} minutes</Text>
+      <Button title="Edit" onPress={() => navigation.navigate('ServiceForm', { service })} />
       <View style={{ marginTop: 12 }}>
         <Button title="Delete" onPress={handleDelete} color="#E63946" />
       </View>

@@ -25,28 +25,28 @@ export default function ModuleViewer({ moduleId, staffId, module }: ModuleViewer
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let timer: NodeJS?.Timeout;
-    if (progress?.status === 'IN_PROGRESS') {
+    let timer: NodeJS.Timeout;
+    if (progress.status === 'IN_PROGRESS') {
       timer = setInterval(() => {
         setTimeSpent((prev) => prev + 1);
       }, 60000); // Update every minute
     }
     return () => clearInterval(timer);
-  }, [progress?.status]);
+  }, [progress.status]);
 
   useEffect(() => {
     async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); loadProgress() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); loadProgress() {
       try {
         const data = await getModuleProgress(moduleId, staffId);
         setProgress(data);
         if (data) {
-          setNotes(data?.notes || '');
-          setTimeSpent(data?.timeSpent || 0);
+          setNotes(data.notes || '');
+          setTimeSpent(data.timeSpent || 0);
         }
       } catch (error) {
-        console?.error('Error loading module progress:', error);
+        console.error('Error loading module progress:', error);
       } finally {
         setLoading(false);
       }
@@ -56,8 +56,8 @@ export default function ModuleViewer({ moduleId, staffId, module }: ModuleViewer
   }, [moduleId, staffId]);
 
   const handleStart = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const updated = await createOrUpdateProgress({
         moduleId,
@@ -68,19 +68,19 @@ export default function ModuleViewer({ moduleId, staffId, module }: ModuleViewer
       });
       setProgress(updated);
     } catch (error) {
-      console?.error('Error starting module:', error);
+      console.error('Error starting module:', error);
     }
   };
 
   const handleComplete = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
-      const evidenceUrls = await Promise?.all(
-        evidence?.map(async (file) => {
+      const evidenceUrls = await Promise.all(
+        evidence.map(async (file) => {
           // Here you would implement your file upload logic
           // and return the URL of the uploaded file
-          return `/uploads/${file?.name}`;
+          return `/uploads/${file.name}`;
         }),
       );
 
@@ -94,7 +94,7 @@ export default function ModuleViewer({ moduleId, staffId, module }: ModuleViewer
       });
       setProgress(updated);
     } catch (error) {
-      console?.error('Error completing module:', error);
+      console.error('Error completing module:', error);
     }
   };
 
@@ -103,27 +103,27 @@ export default function ModuleViewer({ moduleId, staffId, module }: ModuleViewer
   }
 
   const ModuleContent = () => {
-    switch (module?.type) {
+    switch (module.type) {
       case 'VIDEO':
         return (
           <div className="aspect-video rounded-lg bg-black">
-            <video src={module?.content.videoUrl} controls className="h-full w-full" />
+            <video src={module.content.videoUrl} controls className="h-full w-full" />
           </div>
         );
       case 'DOCUMENT':
         return (
           <div className="prose max-w-none">
-            <div dangerouslySetInnerHTML={{ __html: module?.content.html }} />
+            <div dangerouslySetInnerHTML={{ __html: module.content.html }} />
           </div>
         );
       case 'QUIZ':
         return (
           <div className="space-y-4">
-            {module?.content.questions?.map((q: any, i: number) => (
+            {module.content.questions.map((q: any, i: number) => (
               <Card key={i} className="p-4">
-                <h3 className="mb-2 font-medium">{q?.question}</h3>
+                <h3 className="mb-2 font-medium">{q.question}</h3>
                 <div className="space-y-2">
-                  {q?.options.map((option: string, j: number) => (
+                  {q.options.map((option: string, j: number) => (
                     <label key={j} className="flex items-center space-x-2">
                       <input type="radio" name={`q${i}`} value={j} />
                       <span>{option}</span>
@@ -144,36 +144,36 @@ export default function ModuleViewer({ moduleId, staffId, module }: ModuleViewer
       <Card className="p-6">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-2xl font-bold">{module?.name}</h1>
-            <p className="mt-1 text-gray-500">{module?.description}</p>
+            <h1 className="text-2xl font-bold">{module.name}</h1>
+            <p className="mt-1 text-gray-500">{module.description}</p>
           </div>
           <div className="flex items-center space-x-2">
             {!progress && <Button onClick={handleStart}>Start Module</Button>}
-            {progress?.status === 'IN_PROGRESS' && (
+            {progress.status === 'IN_PROGRESS' && (
               <Button onClick={handleComplete}>Complete Module</Button>
             )}
           </div>
         </div>
 
-        {progress?.status === 'IN_PROGRESS' && (
+        {progress.status === 'IN_PROGRESS' && (
           <div className="mt-4 rounded-lg bg-blue-50 p-4">
-            <p className="text-sm text-blue-700">Time spent: {Math?.round(timeSpent)} minutes</p>
+            <p className="text-sm text-blue-700">Time spent: {Math.round(timeSpent)} minutes</p>
           </div>
         )}
       </Card>
 
-      {progress?.status === 'IN_PROGRESS' && (
+      {progress.status === 'IN_PROGRESS' && (
         <Card className="p-6">
           <ModuleContent />
         </Card>
       )}
 
-      {progress?.status === 'IN_PROGRESS' && (
+      {progress.status === 'IN_PROGRESS' && (
         <Card className="space-y-4 p-6">
           <h2 className="text-lg font-semibold">Notes & Evidence</h2>
           <TextArea
             value={notes}
-            onChange={(e) => setNotes(e?.target.value)}
+            onChange={(e) => setNotes(e.target.value)}
             placeholder="Take notes about what you've learned..."
             rows={4}
           />

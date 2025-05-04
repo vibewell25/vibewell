@@ -33,8 +33,8 @@ const POSE_CONFIG = {
   },
 };
 
-const calculateAngle = (pose: poseDetection?.Pose, joint: string): number => {
-  const keypoints = pose?.keypoints;
+const calculateAngle = (pose: poseDetection.Pose, joint: string): number => {
+  const keypoints = pose.keypoints;
 
   // Define joint connections for angle calculation
   const jointConnections: Record<string, [string, string, string]> = {
@@ -50,51 +50,51 @@ const calculateAngle = (pose: poseDetection?.Pose, joint: string): number => {
 
   const [p1Name, p2Name, p3Name] = jointConnections[joint];
 
-  const p1 = keypoints?.find((kp) => kp?.name === p1Name);
-  const p2 = keypoints?.find((kp) => kp?.name === p2Name);
-  const p3 = keypoints?.find((kp) => kp?.name === p3Name);
+  const p1 = keypoints.find((kp) => kp.name === p1Name);
+  const p2 = keypoints.find((kp) => kp.name === p2Name);
+  const p3 = keypoints.find((kp) => kp.name === p3Name);
 
-  if (!p1?.x || !p1?.y || !p2?.x || !p2?.y || !p3?.x || !p3?.y) {
+  if (!p1.x || !p1.y || !p2.x || !p2.y || !p3.x || !p3.y) {
     return 0;
   }
 
   // Calculate vectors
-  const vector1 = { x: p1?.x - p2?.x, y: p1?.y - p2?.y };
-  const vector2 = { x: p3?.x - p2?.x, y: p3?.y - p2?.y };
+  const vector1 = { x: p1.x - p2.x, y: p1.y - p2.y };
+  const vector2 = { x: p3.x - p2.x, y: p3.y - p2.y };
 
   // Calculate angle in radians
-  const angle = Math?.atan2(
-    vector1?.x * vector2?.y - vector1?.y * vector2?.x,
-    vector1?.x * vector2?.x + vector1?.y * vector2?.y,
+  const angle = Math.atan2(
+    vector1.x * vector2.y - vector1.y * vector2.x,
+    vector1.x * vector2.x + vector1.y * vector2.y,
   );
 
   // Convert to degrees
-  return Math?.abs(angle * (180 / Math?.PI));
+  return Math.abs(angle * (180 / Math.PI));
 };
 
-const WorkoutFormCorrection: React?.FC<WorkoutFormCorrectionProps> = ({
+const WorkoutFormCorrection: React.FC<WorkoutFormCorrectionProps> = ({
   exerciseType,
   onFormUpdate,
   showGuideLines = true,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [detector, setDetector] = useState<poseDetection?.PoseDetector | null>(null);
+  const [detector, setDetector] = useState<poseDetection.PoseDetector | null>(null);
   const [camera, setCamera] = useState<Camera | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   useEffect(() => {
     const initializePoseDetection = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-      await tf?.ready();
-      const model = poseDetection?.SupportedModels.BlazePose;
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+      await tf.ready();
+      const model = poseDetection.SupportedModels.BlazePose;
       const detectorConfig = {
         runtime: 'tfjs',
         modelType: 'full',
         enableSmoothing: true,
       };
-      const detector = await poseDetection?.createDetector(model, detectorConfig);
+      const detector = await poseDetection.createDetector(model, detectorConfig);
       setDetector(detector);
     };
 
@@ -102,20 +102,20 @@ const WorkoutFormCorrection: React?.FC<WorkoutFormCorrectionProps> = ({
   }, []);
 
   useEffect(() => {
-    if (!videoRef?.current) return;
+    if (!videoRef.current) return;
 
-    const camera = new Camera(videoRef?.current, {
+    const camera = new Camera(videoRef.current, {
       onFrame: async () => {
-        if (!detector || !videoRef?.current || !canvasRef?.current) return;
+        if (!detector || !videoRef.current || !canvasRef.current) return;
 
-        const poses = await detector?.estimatePoses(videoRef?.current, {
+        const poses = await detector.estimatePoses(videoRef.current, {
           flipHorizontal: false,
         });
 
-        if (poses?.length > 0) {
+        if (poses.length > 0) {
           const pose = poses[0];
           const feedback = analyzeForm(pose, exerciseType);
-          drawPose(pose, canvasRef?.current);
+          drawPose(pose, canvasRef.current);
           onFormUpdate(calculateFormScore(pose, exerciseType), feedback);
         }
       },
@@ -123,23 +123,23 @@ const WorkoutFormCorrection: React?.FC<WorkoutFormCorrectionProps> = ({
       height: 480,
     });
 
-    camera?.start();
+    camera.start();
     setCamera(camera);
 
     return () => {
-      camera?.stop();
+      camera.stop();
     };
   }, [detector, exerciseType]);
 
-  const analyzeForm = (pose: poseDetection?.Pose, exerciseType: string): string[] => {
+  const analyzeForm = (pose: poseDetection.Pose, exerciseType: string): string[] => {
     const feedback: string[] = [];
     const config = POSE_CONFIG[exerciseType as keyof typeof POSE_CONFIG];
 
     // Analyze pose based on exercise type
     if (exerciseType === 'squat') {
       const kneeAngle = calculateAngle(pose, 'knee');
-      if (Math?.abs(kneeAngle - config?.idealAngles.knee) > 15) {
-        feedback?.push('Adjust knee angle - aim for 90 degrees');
+      if (Math.abs(kneeAngle - config.idealAngles.knee) > 15) {
+        feedback.push('Adjust knee angle - aim for 90 degrees');
       }
     }
     // Add more exercise-specific form analysis
@@ -147,16 +147,16 @@ const WorkoutFormCorrection: React?.FC<WorkoutFormCorrectionProps> = ({
     return feedback;
   };
 
-  const calculateFormScore = (pose: poseDetection?.Pose, exerciseType: string): number => {
+  const calculateFormScore = (pose: poseDetection.Pose, exerciseType: string): number => {
     // Implement form scoring logic based on pose alignment with ideal form
     return 85; // Placeholder score
   };
 
-  const drawPose = (pose: poseDetection?.Pose, canvas: HTMLCanvasElement) => {
-    const ctx = canvas?.getContext('2d');
+  const drawPose = (pose: poseDetection.Pose, canvas: HTMLCanvasElement) => {
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    ctx?.clearRect(0, 0, canvas?.width, canvas?.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (showGuideLines) {
       // Draw guide lines for ideal form
@@ -164,14 +164,14 @@ const WorkoutFormCorrection: React?.FC<WorkoutFormCorrectionProps> = ({
     }
 
     // Draw detected pose
-    drawKeypoints(pose?.keypoints, 0?.5, ctx);
-    drawSkeleton(pose?.keypoints, 0?.5, ctx);
+    drawKeypoints(pose.keypoints, 0.5, ctx);
+    drawSkeleton(pose.keypoints, 0.5, ctx);
   };
 
   const drawGuideLines = (ctx: CanvasRenderingContext2D, exerciseType: string) => {
     // Implement guide line drawing based on exercise type
-    ctx?.strokeStyle = 'rgba(0, 255, 0, 0?.5)';
-    ctx?.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(0, 255, 0, 0.5)';
+    ctx.lineWidth = 2;
     // Draw exercise-specific guide lines
   };
 
@@ -189,7 +189,7 @@ const WorkoutFormCorrection: React?.FC<WorkoutFormCorrectionProps> = ({
 
       <div className="mt-4 rounded-lg bg-white p-4 shadow">
         <h3 className="mb-2 text-lg font-semibold">
-          {exerciseType?.charAt(0).toUpperCase() + exerciseType?.slice(1)} Form Analysis
+          {exerciseType.charAt(0).toUpperCase() + exerciseType.slice(1)} Form Analysis
         </h3>
         <div className="flex items-center gap-4">
           <button
@@ -202,7 +202,7 @@ const WorkoutFormCorrection: React?.FC<WorkoutFormCorrectionProps> = ({
             <input
               type="checkbox"
               checked={showGuideLines}
-              onChange={(e) => (showGuideLines = e?.target.checked)}
+              onChange={(e) => (showGuideLines = e.target.checked)}
               className="form-checkbox"
             />
             Show Guide Lines

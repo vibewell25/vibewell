@@ -37,36 +37,36 @@ export default function BusinessProfileEdit() {
 
   useEffect(() => {
     async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); loadBusinessProfile() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); loadBusinessProfile() {
       if (!user) return;
 
       try {
         setIsLoading(true);
-        const profile = await fetchBusinessProfile(user?.sub as string);
+        const profile = await fetchBusinessProfile(user.sub as string);
 
         if (profile) {
           setFormData({
-            name: profile?.name || '',
-            description: profile?.description || '',
-            location: profile?.location || '',
-            website: profile?.website || '',
-            phone: profile?.phone || '',
+            name: profile.name || '',
+            description: profile.description || '',
+            location: profile.location || '',
+            website: profile.website || '',
+            phone: profile.phone || '',
             logo: null,
             bannerImage: null,
           });
 
-          if (profile?.logoUrl) {
-            setLogoPreview(profile?.logoUrl);
+          if (profile.logoUrl) {
+            setLogoPreview(profile.logoUrl);
           }
 
-          if (profile?.bannerImageUrl) {
-            setBannerPreview(profile?.bannerImageUrl);
+          if (profile.bannerImageUrl) {
+            setBannerPreview(profile.bannerImageUrl);
           }
         }
       } catch (error) {
-        console?.error('Error loading business profile:', error);
-        toast?.error('Failed to load business profile');
+        console.error('Error loading business profile:', error);
+        toast.error('Failed to load business profile');
       } finally {
         setIsLoading(false);
       }
@@ -77,8 +77,8 @@ export default function BusinessProfileEdit() {
     }
   }, [user, userLoading]);
 
-  const handleInputChange = (e: React?.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e?.target;
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -87,10 +87,10 @@ export default function BusinessProfileEdit() {
 
     if (file) {
       const reader = new FileReader();
-      reader?.onload = (e) => {
-        setLogoPreview(e?.target?.result as string);
+      reader.onload = (e) => {
+        setLogoPreview(e.target.result as string);
       };
-      reader?.readAsDataURL(file);
+      reader.readAsDataURL(file);
     } else {
       setLogoPreview(null);
     }
@@ -101,39 +101,39 @@ export default function BusinessProfileEdit() {
 
     if (file) {
       const reader = new FileReader();
-      reader?.onload = (e) => {
-        setBannerPreview(e?.target?.result as string);
+      reader.onload = (e) => {
+        setBannerPreview(e.target.result as string);
       };
-      reader?.readAsDataURL(file);
+      reader.readAsDataURL(file);
     } else {
       setBannerPreview(null);
     }
   };
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent) => {
-    e?.preventDefault();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
+    e.preventDefault();
 
     if (!user) {
-      toast?.error('You must be logged in to save your profile');
+      toast.error('You must be logged in to save your profile');
       return;
     }
 
     setIsSaving(true);
 
     try {
-      await updateBusinessProfile(user?.sub as string, {
+      await updateBusinessProfile(user.sub as string, {
         ...formData,
-        logoFile: formData?.logo,
-        bannerImageFile: formData?.bannerImage,
+        logoFile: formData.logo,
+        bannerImageFile: formData.bannerImage,
       });
 
-      toast?.success('Business profile updated successfully');
-      router?.push('/business/profile');
+      toast.success('Business profile updated successfully');
+      router.push('/business/profile');
     } catch (error) {
-      console?.error('Error updating business profile:', error);
-      toast?.error('Failed to update business profile');
+      console.error('Error updating business profile:', error);
+      toast.error('Failed to update business profile');
     } finally {
       setIsSaving(false);
     }
@@ -148,7 +148,7 @@ export default function BusinessProfileEdit() {
   }
 
   if (!user) {
-    router?.push('/auth/login');
+    router.push('/auth/login');
     return null;
   }
 
@@ -165,7 +165,7 @@ export default function BusinessProfileEdit() {
             <Input
               id="name"
               name="name"
-              value={formData?.name}
+              value={formData.name}
               onChange={handleInputChange}
               placeholder="Your business name"
               required
@@ -179,7 +179,7 @@ export default function BusinessProfileEdit() {
             <Textarea
               id="description"
               name="description"
-              value={formData?.description}
+              value={formData.description}
               onChange={handleInputChange}
               placeholder="Describe your business"
               rows={4}
@@ -193,7 +193,7 @@ export default function BusinessProfileEdit() {
             <Input
               id="location"
               name="location"
-              value={formData?.location}
+              value={formData.location}
               onChange={handleInputChange}
               placeholder="Business location"
             />
@@ -207,9 +207,9 @@ export default function BusinessProfileEdit() {
               id="website"
               name="website"
               type="url"
-              value={formData?.website}
+              value={formData.website}
               onChange={handleInputChange}
-              placeholder="https://your-website?.com"
+              placeholder="https://your-website.com"
             />
           </div>
 
@@ -220,7 +220,7 @@ export default function BusinessProfileEdit() {
             <Input
               id="phone"
               name="phone"
-              value={formData?.phone}
+              value={formData.phone}
               onChange={handleInputChange}
               placeholder="+1 (123) 456-7890"
             />
@@ -273,7 +273,7 @@ export default function BusinessProfileEdit() {
           <Button
             type="button"
             variant="outline"
-            onClick={() => router?.push('/business/profile')}
+            onClick={() => router.push('/business/profile')}
             disabled={isSaving}
           >
             Cancel

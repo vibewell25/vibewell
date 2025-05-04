@@ -24,35 +24,35 @@ export function OfflineSupport({ className = '' }: OfflineSupportProps) {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
 
-    window?.addEventListener('online', handleOnline);
-    window?.addEventListener('offline', handleOffline);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
 
     // Load cached data from IndexedDB
     loadCachedData();
 
     return () => {
-      window?.removeEventListener('online', handleOnline);
-      window?.removeEventListener('offline', handleOffline);
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
     };
   }, []);
 
   const loadCachedData = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const db = await openDatabase();
-      const data = await db?.getAll('cachedData');
-      if (data?.length > 0) {
+      const data = await db.getAll('cachedData');
+      if (data.length > 0) {
         setCachedData(data[0]);
       }
     } catch (error) {
-      console?.error('Error loading cached data:', error);
+      console.error('Error loading cached data:', error);
     }
   };
 
   const syncData = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!isOnline) {
       toast({
         title: 'Offline',
@@ -67,13 +67,13 @@ export function OfflineSupport({ className = '' }: OfflineSupportProps) {
 
       // Get cached data from IndexedDB
       const db = await openDatabase();
-      const cachedData = await db?.getAll('cachedData');
+      const cachedData = await db.getAll('cachedData');
 
-      if (cachedData?.length > 0) {
+      if (cachedData.length > 0) {
         // Sync appointments
         const appointments = cachedData[0].appointments || [];
         for (const appointment of appointments) {
-          if (appointment?.needsSync) {
+          if (appointment.needsSync) {
             await syncAppointment(appointment);
           }
         }
@@ -82,7 +82,7 @@ export function OfflineSupport({ className = '' }: OfflineSupportProps) {
         // ...
 
         // Update last synced timestamp
-        await db?.put('cachedData', {
+        await db.put('cachedData', {
           ...cachedData[0],
           lastSynced: new Date().toISOString(),
         });
@@ -95,7 +95,7 @@ export function OfflineSupport({ className = '' }: OfflineSupportProps) {
         description: 'Your data has been successfully synchronized',
       });
     } catch (error) {
-      console?.error('Error syncing data:', error);
+      console.error('Error syncing data:', error);
       toast({
         title: 'Sync Failed',
         description: 'Failed to synchronize data. Please try again.',
@@ -107,36 +107,36 @@ export function OfflineSupport({ className = '' }: OfflineSupportProps) {
   };
 
   const syncAppointment = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');appointment: any) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');appointment: any) => {
     const response = await fetch('/api/appointments/sync', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON?.stringify(appointment),
+      body: JSON.stringify(appointment),
     });
 
-    if (!response?.ok) {
+    if (!response.ok) {
       throw new Error('Failed to sync appointment');
     }
 
-    return response?.json();
+    return response.json();
   };
 
   const openDatabase = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     return new Promise<IDBDatabase>((resolve, reject) => {
-      const request = indexedDB?.open('vibewell', 1);
+      const request = indexedDB.open('vibewell', 1);
 
-      request?.onerror = () => reject(request?.error);
-      request?.onsuccess = () => resolve(request?.result);
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => resolve(request.result);
 
-      request?.onupgradeneeded = (event) => {
-        const db = (event?.target as IDBOpenDBRequest).result;
-        if (!db?.objectStoreNames.contains('cachedData')) {
-          db?.createObjectStore('cachedData', { keyPath: 'id' });
+      request.onupgradeneeded = (event) => {
+        const db = (event.target as IDBOpenDBRequest).result;
+        if (!db.objectStoreNames.contains('cachedData')) {
+          db.createObjectStore('cachedData', { keyPath: 'id' });
         }
       };
     });
@@ -159,8 +159,8 @@ export function OfflineSupport({ className = '' }: OfflineSupportProps) {
             <div>
               <h3 className="font-medium">Last Synced</h3>
               <p className="text-sm text-gray-500">
-                {cachedData?.lastSynced
-                  ? new Date(cachedData?.lastSynced).toLocaleString()
+                {cachedData.lastSynced
+                  ? new Date(cachedData.lastSynced).toLocaleString()
                   : 'Never'}
               </p>
             </div>
@@ -170,9 +170,9 @@ export function OfflineSupport({ className = '' }: OfflineSupportProps) {
               className="flex items-center space-x-2"
             >
               {isSyncing ? (
-                <Icons?.Spinner className="h-4 w-4 animate-spin" />
+                <Icons.Spinner className="h-4 w-4 animate-spin" />
               ) : (
-                <Icons?.RefreshCw className="h-4 w-4" />
+                <Icons.RefreshCw className="h-4 w-4" />
               )}
               <span>{isSyncing ? 'Syncing...' : 'Sync Now'}</span>
             </Button>
@@ -183,11 +183,11 @@ export function OfflineSupport({ className = '' }: OfflineSupportProps) {
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
                 <span>Appointments</span>
-                <span>{cachedData?.appointments?.length || 0}</span>
+                <span>{cachedData.appointments.length || 0}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
                 <span>Services</span>
-                <span>{cachedData?.services?.length || 0}</span>
+                <span>{cachedData.services.length || 0}</span>
               </div>
             </div>
           </div>

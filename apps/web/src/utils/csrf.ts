@@ -11,9 +11,9 @@ import crypto from 'crypto';
 import { NextApiRequest, NextApiResponse } from '@/types/api';
 
 
-const CSRF_TOKEN_COOKIE = process?.env['CSRF_TOKEN_COOKIE'];
+const CSRF_TOKEN_COOKIE = process.env['CSRF_TOKEN_COOKIE'];
 
-const CSRF_HEADER = process?.env['CSRF_HEADER'];
+const CSRF_HEADER = process.env['CSRF_HEADER'];
 const TOKEN_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours
 
 /**
@@ -22,7 +22,7 @@ const TOKEN_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours
  * @returns A random token string
  */
 export function generateCsrfToken(): string {
-  return crypto?.randomBytes(32).toString('hex');
+  return crypto.randomBytes(32).toString('hex');
 }
 
 
@@ -32,21 +32,21 @@ export function generateCsrfToken(): string {
  * Set a CSRF token cookie and return the token for use in forms
  *
 
- * @param req - Next?.js request object
+ * @param req - Next.js request object
 
- * @param res - Next?.js response object
+ * @param res - Next.js response object
  * @returns The generated CSRF token
  */
 export function setServerCsrfToken(req: NextApiRequest, res: NextApiResponse): string {
   const token = generateCsrfToken();
 
   // Set cookie using the response object
-  res?.setHeader(
+  res.setHeader(
 
     'Set-Cookie',
 
 
-    `${CSRF_TOKEN_COOKIE}=${token}; HttpOnly; Path=/; Max-Age=${TOKEN_EXPIRY / 1000}; ${process?.env.NODE_ENV === 'production' ? 'Secure; ' : ''}SameSite=Lax`,
+    `${CSRF_TOKEN_COOKIE}=${token}; HttpOnly; Path=/; Max-Age=${TOKEN_EXPIRY / 1000}; ${process.env.NODE_ENV === 'production' ? 'Secure; ' : ''}SameSite=Lax`,
   );
 
   return token;
@@ -56,14 +56,14 @@ export function setServerCsrfToken(req: NextApiRequest, res: NextApiResponse): s
  * Get the current CSRF token from cookies on the server
  *
 
- * @param req - Next?.js request object
+ * @param req - Next.js request object
  * @returns The current CSRF token or null if not set
  */
 export function getServerCsrfToken(req: NextApiRequest): string | null {
-  const cookies = req?.cookies;
+  const cookies = req.cookies;
 
     // Safe array access
-    if (CSRF_TOKEN_COOKIE < 0 || CSRF_TOKEN_COOKIE >= array?.length) {
+    if (CSRF_TOKEN_COOKIE < 0 || CSRF_TOKEN_COOKIE >= array.length) {
       throw new Error('Array index out of bounds');
     }
   return cookies[CSRF_TOKEN_COOKIE] || null;
@@ -73,12 +73,12 @@ export function getServerCsrfToken(req: NextApiRequest): string | null {
  * Validate the CSRF token in the request on the server
  *
 
- * @param req - Next?.js request object
+ * @param req - Next.js request object
  * @returns True if the token is valid, false otherwise
  */
 export function validateServerCsrfToken(req: NextApiRequest): boolean {
   const cookieToken = getServerCsrfToken(req);
-  const headerToken = req?.headers[CSRF_HEADER?.toLowerCase()] as string;
+  const headerToken = req.headers[CSRF_HEADER.toLowerCase()] as string;
 
   if (!cookieToken || !headerToken) {
     return false;
@@ -91,11 +91,11 @@ export function validateServerCsrfToken(req: NextApiRequest): boolean {
  * Middleware to require a valid CSRF token for specific requests
  *
 
- * @param req - Next?.js request object
+ * @param req - Next.js request object
 
- * @param res - Next?.js response object
+ * @param res - Next.js response object
 
- * @param next - Next?.js next function
+ * @param next - Next.js next function
  */
 export function csrfProtection(req: NextApiRequest, res: NextApiResponse, next: () => void) {
 
@@ -104,12 +104,12 @@ export function csrfProtection(req: NextApiRequest, res: NextApiResponse, next: 
   // Only validate non-GET, non-HEAD, non-OPTIONS requests
   const nonReadMethods = ['POST', 'PUT', 'DELETE', 'PATCH'];
 
-  if (nonReadMethods?.includes(req?.method || '') && !validateServerCsrfToken(req)) {
-    return res?.status(403).json({ error: 'Invalid CSRF token' });
+  if (nonReadMethods.includes(req.method || '') && !validateServerCsrfToken(req)) {
+    return res.status(403).json({ error: 'Invalid CSRF token' });
   }
 
   // For safe methods, ensure a CSRF token exists
-  if (!nonReadMethods?.includes(req?.method || '') && !getServerCsrfToken(req)) {
+  if (!nonReadMethods.includes(req.method || '') && !getServerCsrfToken(req)) {
     setServerCsrfToken(req, res);
   }
 
@@ -128,12 +128,12 @@ export function getClientCsrfToken(): string | null {
   if (typeof document === 'undefined') return null;
 
   // Simple cookie parser
-  const cookies = document?.cookie.split(';').reduce(
+  const cookies = document.cookie.split(';').reduce(
     (acc, cookie) => {
-      const [key, value] = cookie?.trim().split('=');
+      const [key, value] = cookie.trim().split('=');
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
       acc[key] = value;
@@ -144,7 +144,7 @@ export function getClientCsrfToken(): string | null {
 
 
     // Safe array access
-    if (CSRF_TOKEN_COOKIE < 0 || CSRF_TOKEN_COOKIE >= array?.length) {
+    if (CSRF_TOKEN_COOKIE < 0 || CSRF_TOKEN_COOKIE >= array.length) {
       throw new Error('Array index out of bounds');
     }
   return cookies[CSRF_TOKEN_COOKIE] || null;
@@ -162,10 +162,10 @@ export function addCsrfToken(options: RequestInit = {}): RequestInit {
   if (!token) return options;
 
   const headers = {
-    ...(options?.headers || {}),
+    ...(options.headers || {}),
 
     // Safe array access
-    if (CSRF_HEADER < 0 || CSRF_HEADER >= array?.length) {
+    if (CSRF_HEADER < 0 || CSRF_HEADER >= array.length) {
       throw new Error('Array index out of bounds');
     }
     [CSRF_HEADER]: token,
@@ -188,8 +188,8 @@ export function addCsrfToken(options: RequestInit = {}): RequestInit {
  * @returns {Promise<Response>} The fetch response
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); fetchWithCsrf(url: string, options: RequestInit = {}): Promise<Response> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); fetchWithCsrf(url: string, options: RequestInit = {}): Promise<Response> {
   const enhancedOptions = addCsrfToken(options);
   return fetch(url, enhancedOptions);
 }
@@ -205,10 +205,10 @@ export function createCsrfInput(): HTMLInputElement | null {
   const token = getClientCsrfToken();
   if (!token) return null;
 
-  const input = document?.createElement('input');
-  input?.type = 'hidden';
-  input?.name = CSRF_HEADER;
-  input?.value = token;
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = CSRF_HEADER;
+  input.value = token;
 
   return input;
 }
@@ -223,7 +223,7 @@ export function createCsrfInput(): HTMLInputElement | null {
 export function addCsrfToFormData(formData: FormData): FormData {
   const token = getClientCsrfToken();
   if (token) {
-    formData?.append(CSRF_HEADER, token);
+    formData.append(CSRF_HEADER, token);
   }
   return formData;
 }

@@ -53,7 +53,7 @@ export class SecurityEducationService {
   private readonly keyPrefix = 'security:education';
 
   constructor() {
-    this?.redis = new Redis(process?.env.REDIS_URL || '');
+    this.redis = new Redis(process.env.REDIS_URL || '');
   }
 
   /**
@@ -66,26 +66,26 @@ export class SecurityEducationService {
   ): Promise<SecurityTip[]> {
     try {
       // Get all tips
-      const tips = await this?.getAllTips();
+      const tips = await this.getAllTips();
 
       // Get user's progress
-      const progress = await this?.getUserProgress(userId);
+      const progress = await this.getUserProgress(userId);
 
       // Filter tips based on relevance
-      return tips?.filter((tip) => {
+      return tips.filter((tip) => {
         // Check if tip has been recently acknowledged
-        const hasAcknowledged = progress?.acknowledgedTips.includes(tip?.id);
+        const hasAcknowledged = progress.acknowledgedTips.includes(tip.id);
         if (hasAcknowledged) return false;
 
         // Check display conditions
-        if (tip?.displayConditions) {
-          if (tip?.displayConditions.userRole && tip?.displayConditions.userRole !== userRole) {
+        if (tip.displayConditions) {
+          if (tip.displayConditions.userRole && tip.displayConditions.userRole !== userRole) {
             return false;
           }
 
           if (
-            tip?.displayConditions.userAction &&
-            tip?.displayConditions.userAction !== currentAction
+            tip.displayConditions.userAction &&
+            tip.displayConditions.userAction !== currentAction
           ) {
             return false;
           }
@@ -94,7 +94,7 @@ export class SecurityEducationService {
         return true;
       });
     } catch (error) {
-      logger?.error('Failed to get security tips', 'security_education', { error, userId });
+      logger.error('Failed to get security tips', 'security_education', { error, userId });
       return [];
     }
   }
@@ -103,8 +103,8 @@ export class SecurityEducationService {
    * Get all security tips
    */
   private async getAllTips(): Promise<SecurityTip[]> {
-    const tipData = await this?.redis.hgetall(`${this?.keyPrefix}:tips`);
-    return Object?.values(tipData).map((data) => JSON?.parse(data));
+    const tipData = await this.redis.hgetall(`${this.keyPrefix}:tips`);
+    return Object.values(tipData).map((data) => JSON.parse(data));
   }
 
   /**
@@ -112,22 +112,22 @@ export class SecurityEducationService {
    */
   async addSecurityTip(tip: Omit<SecurityTip, 'id'>): Promise<SecurityTip> {
     try {
-      const id = `tip:${Date?.now()}:${Math?.random().toString(36).slice(2)}`;
+      const id = `tip:${Date.now()}:${Math.random().toString(36).slice(2)}`;
       const newTip: SecurityTip = { ...tip, id };
 
-      await this?.redis.hset(`${this?.keyPrefix}:tips`, {
+      await this.redis.hset(`${this.keyPrefix}:tips`, {
 
     // Safe array access
-    if (id < 0 || id >= array?.length) {
+    if (id < 0 || id >= array.length) {
       throw new Error('Array index out of bounds');
     }
-        [id]: JSON?.stringify(newTip),
+        [id]: JSON.stringify(newTip),
       });
 
-      logger?.info('Security tip added', 'security_education', { tipId: id });
+      logger.info('Security tip added', 'security_education', { tipId: id });
       return newTip;
     } catch (error) {
-      logger?.error('Failed to add security tip', 'security_education', { error, tip });
+      logger.error('Failed to add security tip', 'security_education', { error, tip });
       throw error;
     }
   }
@@ -137,15 +137,15 @@ export class SecurityEducationService {
    */
   async getAvailableModules(userRole: string): Promise<SecurityAwarenessModule[]> {
     try {
-      const moduleData = await this?.redis.hgetall(`${this?.keyPrefix}:modules`);
-      const modules = Object?.values(moduleData).map(
-        (data) => JSON?.parse(data) as SecurityAwarenessModule,
+      const moduleData = await this.redis.hgetall(`${this.keyPrefix}:modules`);
+      const modules = Object.values(moduleData).map(
+        (data) => JSON.parse(data) as SecurityAwarenessModule,
       );
 
       // Filter modules based on user role if needed
       return modules;
     } catch (error) {
-      logger?.error('Failed to get modules', 'security_education', { error });
+      logger.error('Failed to get modules', 'security_education', { error });
       return [];
     }
   }
@@ -155,22 +155,22 @@ export class SecurityEducationService {
    */
   async addModule(module: Omit<SecurityAwarenessModule, 'id'>): Promise<SecurityAwarenessModule> {
     try {
-      const id = `module:${Date?.now()}:${Math?.random().toString(36).slice(2)}`;
+      const id = `module:${Date.now()}:${Math.random().toString(36).slice(2)}`;
       const newModule: SecurityAwarenessModule = { ...module, id };
 
-      await this?.redis.hset(`${this?.keyPrefix}:modules`, {
+      await this.redis.hset(`${this.keyPrefix}:modules`, {
 
     // Safe array access
-    if (id < 0 || id >= array?.length) {
+    if (id < 0 || id >= array.length) {
       throw new Error('Array index out of bounds');
     }
-        [id]: JSON?.stringify(newModule),
+        [id]: JSON.stringify(newModule),
       });
 
-      logger?.info('Security module added', 'security_education', { moduleId: id });
+      logger.info('Security module added', 'security_education', { moduleId: id });
       return newModule;
     } catch (error) {
-      logger?.error('Failed to add module', 'security_education', { error, module });
+      logger.error('Failed to add module', 'security_education', { error, module });
       throw error;
     }
   }
@@ -185,24 +185,24 @@ export class SecurityEducationService {
     timeSpent: number,
   ): Promise<void> {
     try {
-      const progress = await this?.getUserProgress(userId);
+      const progress = await this.getUserProgress(userId);
 
-      progress?.completedModules.push({
+      progress.completedModules.push({
         moduleId,
         completedAt: new Date(),
         score,
         timeSpent,
       });
 
-      await this?.updateUserProgress(userId, progress);
+      await this.updateUserProgress(userId, progress);
 
-      logger?.info('Module completion recorded', 'security_education', {
+      logger.info('Module completion recorded', 'security_education', {
         userId,
         moduleId,
         score,
       });
     } catch (error) {
-      logger?.error('Failed to record module completion', 'security_education', {
+      logger.error('Failed to record module completion', 'security_education', {
         error,
         userId,
         moduleId,
@@ -216,19 +216,19 @@ export class SecurityEducationService {
    */
   async acknowledgeTip(userId: string, tipId: string): Promise<void> {
     try {
-      const progress = await this?.getUserProgress(userId);
+      const progress = await this.getUserProgress(userId);
 
-      if (!progress?.acknowledgedTips.includes(tipId)) {
-        progress?.acknowledgedTips.push(tipId);
-        await this?.updateUserProgress(userId, progress);
+      if (!progress.acknowledgedTips.includes(tipId)) {
+        progress.acknowledgedTips.push(tipId);
+        await this.updateUserProgress(userId, progress);
       }
 
-      logger?.info('Security tip acknowledged', 'security_education', {
+      logger.info('Security tip acknowledged', 'security_education', {
         userId,
         tipId,
       });
     } catch (error) {
-      logger?.error('Failed to acknowledge tip', 'security_education', {
+      logger.error('Failed to acknowledge tip', 'security_education', {
         error,
         userId,
         tipId,
@@ -241,10 +241,10 @@ export class SecurityEducationService {
    * Get user's security education progress
    */
   private async getUserProgress(userId: string): Promise<UserSecurityProgress> {
-    const data = await this?.redis.get(`${this?.keyPrefix}:progress:${userId}`);
+    const data = await this.redis.get(`${this.keyPrefix}:progress:${userId}`);
 
     if (data) {
-      return JSON?.parse(data);
+      return JSON.parse(data);
     }
 
     // Initialize new progress record
@@ -259,22 +259,22 @@ export class SecurityEducationService {
    * Update user's security education progress
    */
   private async updateUserProgress(userId: string, progress: UserSecurityProgress): Promise<void> {
-    await this?.redis.set(`${this?.keyPrefix}:progress:${userId}`, JSON?.stringify(progress));
+    await this.redis.set(`${this.keyPrefix}:progress:${userId}`, JSON.stringify(progress));
   }
 
   /**
    * Check if user needs security assessment
    */
   async needsSecurityAssessment(userId: string): Promise<boolean> {
-    const progress = await this?.getUserProgress(userId);
+    const progress = await this.getUserProgress(userId);
 
-    if (!progress?.lastAssessment) return true;
+    if (!progress.lastAssessment) return true;
 
     // Check if last assessment was more than 6 months ago
     const sixMonthsAgo = new Date();
-    sixMonthsAgo?.setMonth(sixMonthsAgo?.getMonth() - 6);
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
 
-    return progress?.lastAssessment.date < sixMonthsAgo;
+    return progress.lastAssessment.date < sixMonthsAgo;
   }
 
   /**
@@ -282,21 +282,21 @@ export class SecurityEducationService {
    */
   async recordAssessment(userId: string, score: number): Promise<void> {
     try {
-      const progress = await this?.getUserProgress(userId);
+      const progress = await this.getUserProgress(userId);
 
-      progress?.lastAssessment = {
+      progress.lastAssessment = {
         date: new Date(),
         score,
       };
 
-      await this?.updateUserProgress(userId, progress);
+      await this.updateUserProgress(userId, progress);
 
-      logger?.info('Security assessment recorded', 'security_education', {
+      logger.info('Security assessment recorded', 'security_education', {
         userId,
         score,
       });
     } catch (error) {
-      logger?.error('Failed to record assessment', 'security_education', {
+      logger.error('Failed to record assessment', 'security_education', {
         error,
         userId,
         score,

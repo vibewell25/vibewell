@@ -40,6 +40,6 @@ interface UserPreferencesProps {
  * which are stored in localStorage
  *
  * @param {UserPreferencesProps} props - Component properties
- * @returns {JSX?.Element} Rendered preferences panel
+ * @returns {JSX.Element} Rendered preferences panel
  */
 export {};

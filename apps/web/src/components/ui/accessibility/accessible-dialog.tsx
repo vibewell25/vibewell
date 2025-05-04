@@ -17,11 +17,11 @@ export interface AccessibleDialogProps {
   onClose: () => void;
   title: string;
   description?: string;
-  children: React?.ReactNode;
+  children: React.ReactNode;
   className?: string;
   contentClassName?: string;
-  initialFocusRef?: React?.RefObject<HTMLElement>;
-  returnFocusRef?: React?.RefObject<HTMLElement>;
+  initialFocusRef?: React.RefObject<HTMLElement>;
+  returnFocusRef?: React.RefObject<HTMLElement>;
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
   closeOnEsc?: boolean;
   closeOnOverlayClick?: boolean;
@@ -59,12 +59,12 @@ const AccessibleDialogComponent: ForwardRefRenderFunction<HTMLDivElement, Access
   // Combine the forwarded ref with our local ref
   const combinedRef = useCallback(
     (node: HTMLDivElement) => {
-      dialogRef?.current = node;
+      dialogRef.current = node;
 
       if (typeof forwardedRef === 'function') {
         forwardedRef(node);
       } else if (forwardedRef) {
-        forwardedRef?.current = node;
+        forwardedRef.current = node;
       }
     },
     [forwardedRef],
@@ -73,7 +73,7 @@ const AccessibleDialogComponent: ForwardRefRenderFunction<HTMLDivElement, Access
   // Handle ESC key press
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
-      if (event?.key === 'Escape' && closeOnEsc) {
+      if (event.key === 'Escape' && closeOnEsc) {
         onClose();
       }
     },
@@ -82,8 +82,8 @@ const AccessibleDialogComponent: ForwardRefRenderFunction<HTMLDivElement, Access
 
   // Handle overlay click
   const handleOverlayClick = useCallback(
-    (event: React?.MouseEvent<HTMLDivElement>) => {
-      if (event?.target === event?.currentTarget && closeOnOverlayClick) {
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (event.target === event.currentTarget && closeOnOverlayClick) {
         onClose();
       }
     },
@@ -93,7 +93,7 @@ const AccessibleDialogComponent: ForwardRefRenderFunction<HTMLDivElement, Access
   // Store the previously focused element when dialog opens
   useEffect(() => {
     if (isOpen && !isMounted) {
-      previousActiveElement?.current = document?.activeElement;
+      previousActiveElement.current = document.activeElement;
       setIsMounted(true);
     } else if (!isOpen && isMounted) {
       setIsMounted(false);
@@ -103,18 +103,18 @@ const AccessibleDialogComponent: ForwardRefRenderFunction<HTMLDivElement, Access
   // Add event listener for Escape key
   useEffect(() => {
     if (isOpen) {
-      document?.addEventListener('keydown', handleKeyDown);
-      return () => document?.removeEventListener('keydown', handleKeyDown);
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
     }
   }, [isOpen, handleKeyDown]);
 
   // Return focus to the element that had focus before the dialog was opened
   useEffect(() => {
     return () => {
-      if (previousActiveElement?.current instanceof HTMLElement) {
-        previousActiveElement?.current.focus();
-      } else if (returnFocusRef?.current) {
-        returnFocusRef?.current.focus();
+      if (previousActiveElement.current instanceof HTMLElement) {
+        previousActiveElement.current.focus();
+      } else if (returnFocusRef.current) {
+        returnFocusRef.current.focus();
       }
     };
   }, [returnFocusRef]);
@@ -159,7 +159,7 @@ const AccessibleDialogComponent: ForwardRefRenderFunction<HTMLDivElement, Access
                 sizeClasses[size],
                 contentClassName,
               )}
-              onClick={(e) => e?.stopPropagation()}
+              onClick={(e) => e.stopPropagation()}
             >
               {/* Dialog header */}
               <div className="flex items-center justify-between border-b px-6 py-4">
@@ -182,7 +182,7 @@ const AccessibleDialogComponent: ForwardRefRenderFunction<HTMLDivElement, Access
                     className="rounded-full p-2 text-muted-foreground hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
                   >
                     <svg
-                      xmlns="http://www?.w3.org/2000/svg"
+                      xmlns="http://www.w3.org/2000/svg"
                       width="18"
                       height="18"
                       viewBox="0 0 24 24"
@@ -206,7 +206,7 @@ const AccessibleDialogComponent: ForwardRefRenderFunction<HTMLDivElement, Access
         </div>
       </RemoveScroll>
     </Announce>,
-    document?.body,
+    document.body,
   );
 };
 

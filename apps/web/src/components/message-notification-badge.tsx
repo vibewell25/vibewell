@@ -14,24 +14,24 @@ export function MessageNotificationBadge() {
       return;
     }
     const fetchUnreadCount = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         setLoading(true);
         const response = await fetch('/api/messages');
-        if (!response?.ok) {
-          console?.error('Failed to fetch messages');
+        if (!response.ok) {
+          console.error('Failed to fetch messages');
           return;
         }
-        const data = await response?.json();
+        const data = await response.json();
         // Calculate total unread messages across all conversations
         const totalUnread =
-          data?.conversations?.reduce((total: number, conversation: any) => {
-            return total + (conversation?.unreadCount || 0);
+          data.conversations.reduce((total: number, conversation: any) => {
+            return total + (conversation.unreadCount || 0);
           }, 0) || 0;
         setUnreadCount(totalUnread);
       } catch (error) {
-        console?.error('Error fetching unread messages:', error);
+        console.error('Error fetching unread messages:', error);
       } finally {
         setLoading(false);
       }
@@ -47,7 +47,7 @@ export function MessageNotificationBadge() {
   }
   return (
     <Link href="/messages" className="relative inline-block">
-      <Icons?.ChatBubbleLeftRightIcon className="h-6 w-6 text-muted-foreground transition-colors hover:text-foreground" />
+      <Icons.ChatBubbleLeftRightIcon className="h-6 w-6 text-muted-foreground transition-colors hover:text-foreground" />
       {unreadCount > 0 && (
         <span className="bg-primary absolute -right-1 -top-1 inline-flex h-4 w-4 items-center justify-center rounded-full text-xs font-bold text-white">
           {unreadCount > 9 ? '9+' : unreadCount}

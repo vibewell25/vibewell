@@ -34,7 +34,7 @@ export default function BarChart({
   layout = 'horizontal',
   stackId,
 }: BarChartProps) {
-  if (!data || data?.length === 0) {
+  if (!data || data.length === 0) {
     return (
       <div className="flex h-full items-center justify-center text-muted-foreground">
         No data available
@@ -82,18 +82,18 @@ export default function BarChart({
           contentStyle={{
             backgroundColor: 'white',
             borderRadius: '8px',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0?.1)',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
             border: 'none',
           }}
         />
         <Legend verticalAlign="bottom" height={36} />
 
-        {bars?.map((bar, index) => (
+        {bars.map((bar, index) => (
           <Bar
             key={index}
-            dataKey={bar?.dataKey}
-            name={bar?.name || bar?.dataKey}
-            fill={bar?.color || `#${Math?.floor(Math?.random() * 16777215).toString(16)}`}
+            dataKey={bar.dataKey}
+            name={bar.name || bar.dataKey}
+            fill={bar.color || `#${Math.floor(Math.random() * 16777215).toString(16)}`}
             stackId={stackId}
             radius={[4, 4, 0, 0]}
             animationDuration={750}

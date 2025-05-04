@@ -37,22 +37,22 @@ export function ActivityStats() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Total Events</span>
-              <span className="text-sm text-muted-foreground">{stats?.totalEvents}</span>
+              <span className="text-sm text-muted-foreground">{stats.totalEvents}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Last Activity</span>
               <span className="text-sm text-muted-foreground">
-                {formatDistanceToNow(new Date(stats?.lastActivity), { addSuffix: true })}
+                {formatDistanceToNow(new Date(stats.lastActivity), { addSuffix: true })}
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Most Active Time</span>
-              <span className="text-sm text-muted-foreground">{stats?.mostActiveTime}</span>
+              <span className="text-sm text-muted-foreground">{stats.mostActiveTime}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Most Common Event</span>
               <span className="text-sm capitalize text-muted-foreground">
-                {stats?.mostCommonEvent}
+                {stats.mostCommonEvent}
               </span>
             </div>
           </div>
@@ -65,15 +65,15 @@ export function ActivityStats() {
                   <span className="text-sm font-medium">Successful</span>
                 </div>
                 <span className="text-sm text-muted-foreground">
-                  {stats?.successfulEvents} (
-                  {getPercentage(stats?.successfulEvents, stats?.totalEvents)}%)
+                  {stats.successfulEvents} (
+                  {getPercentage(stats.successfulEvents, stats.totalEvents)}%)
                 </span>
               </div>
               <div className="h-2 w-full rounded-full bg-green-100">
                 <div
                   className="h-2 rounded-full bg-green-500"
                   style={{
-                    width: `${getPercentage(stats?.successfulEvents, stats?.totalEvents)}%`,
+                    width: `${getPercentage(stats.successfulEvents, stats.totalEvents)}%`,
                   }}
                 />
               </div>
@@ -86,14 +86,14 @@ export function ActivityStats() {
                   <span className="text-sm font-medium">Warnings</span>
                 </div>
                 <span className="text-sm text-muted-foreground">
-                  {stats?.warningEvents} ({getPercentage(stats?.warningEvents, stats?.totalEvents)}%)
+                  {stats.warningEvents} ({getPercentage(stats.warningEvents, stats.totalEvents)}%)
                 </span>
               </div>
               <div className="h-2 w-full rounded-full bg-yellow-100">
                 <div
                   className="h-2 rounded-full bg-yellow-500"
                   style={{
-                    width: `${getPercentage(stats?.warningEvents, stats?.totalEvents)}%`,
+                    width: `${getPercentage(stats.warningEvents, stats.totalEvents)}%`,
                   }}
                 />
               </div>
@@ -106,14 +106,14 @@ export function ActivityStats() {
                   <span className="text-sm font-medium">Errors</span>
                 </div>
                 <span className="text-sm text-muted-foreground">
-                  {stats?.errorEvents} ({getPercentage(stats?.errorEvents, stats?.totalEvents)}%)
+                  {stats.errorEvents} ({getPercentage(stats.errorEvents, stats.totalEvents)}%)
                 </span>
               </div>
               <div className="h-2 w-full rounded-full bg-red-100">
                 <div
                   className="h-2 rounded-full bg-red-500"
                   style={{
-                    width: `${getPercentage(stats?.errorEvents, stats?.totalEvents)}%`,
+                    width: `${getPercentage(stats.errorEvents, stats.totalEvents)}%`,
                   }}
                 />
               </div>

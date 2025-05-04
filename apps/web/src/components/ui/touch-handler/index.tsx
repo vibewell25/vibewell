@@ -4,7 +4,7 @@ import { TouchPosition, TouchGesture } from './utils';
 import { useTouchEvents } from './use-touch-events';
 
 export interface TouchHandlerProps {
-  children: React?.ReactNode;
+  children: React.ReactNode;
   onGesture?: (gesture: TouchGesture) => void;
   onTap?: (position: TouchPosition) => void;
   onSwipe?: (direction: 'left' | 'right' | 'up' | 'down', distance: number) => void;

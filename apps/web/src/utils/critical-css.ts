@@ -78,7 +78,7 @@ const CRITICAL_PROPERTIES = new Set([
 
 export function extractCriticalCSS(html: string): string {
   // Read the main CSS file
-  const cssPath = join(process?.cwd(), 'public', 'styles', 'main?.css');
+  const cssPath = join(process.cwd(), 'public', 'styles', 'main.css');
 
   const fullCSS = readFileSync(cssPath, 'utf-8');
 
@@ -87,57 +87,57 @@ export function extractCriticalCSS(html: string): string {
   const classRegex = /class="([^"]*)"/g;
   let match;
 
-  while ((match = classRegex?.exec(html)) !== null) {
+  while ((match = classRegex.exec(html)) !== null) {
     match[1].split(/\s+/).forEach((className) => {
-      if (CRITICAL_CLASSES?.has(className)) {
-        usedClasses?.add(className);
+      if (CRITICAL_CLASSES.has(className)) {
+        usedClasses.add(className);
       }
     });
   }
 
   // Extract relevant CSS rules
   const criticalCSS = new Set<string>();
-  const cssRules = fullCSS?.match(/[^}]+}/g) || [];
+  const cssRules = fullCSS.match(/[^}]+}/g) || [];
 
-  cssRules?.forEach((rule) => {
+  cssRules.forEach((rule) => {
     // Check if rule contains critical classes or properties
     const isCritical =
-      Array?.from(usedClasses).some((className) => rule?.includes(`.${className}`)) ||
-      Array?.from(CRITICAL_PROPERTIES).some((property) => rule?.includes(property));
+      Array.from(usedClasses).some((className) => rule.includes(`.${className}`)) ||
+      Array.from(CRITICAL_PROPERTIES).some((property) => rule.includes(property));
 
     if (isCritical) {
-      criticalCSS?.add(rule);
+      criticalCSS.add(rule);
     }
   });
 
-  return Array?.from(criticalCSS).join('\n');
+  return Array.from(criticalCSS).join('\n');
 }
 
 export function inlineCriticalCSS(html: string, criticalCSS: string): string {
 
-  return html?.replace('</head>', `<style id="critical-css">${criticalCSS}</style></head>`);
+  return html.replace('</head>', `<style id="critical-css">${criticalCSS}</style></head>`);
 }
 
 export function loadDeferredCSS(href: string): void {
   // Create a link element for the full CSS
-  const link = document?.createElement('link');
-  link?.rel = 'stylesheet';
-  link?.href = href;
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = href;
 
   // Create a preload link
-  const preload = document?.createElement('link');
-  preload?.rel = 'preload';
-  preload?.as = 'style';
-  preload?.href = href;
+  const preload = document.createElement('link');
+  preload.rel = 'preload';
+  preload.as = 'style';
+  preload.href = href;
 
   // Append elements to head
-  document?.head.appendChild(preload);
-  document?.head.appendChild(link);
+  document.head.appendChild(preload);
+  document.head.appendChild(link);
 
   // Remove critical CSS after full CSS loads
-  link?.onload = () => {
+  link.onload = () => {
 
-    const criticalCSS = document?.getElementById('critical-css');
-    criticalCSS?.parentNode?.removeChild(criticalCSS);
+    const criticalCSS = document.getElementById('critical-css');
+    criticalCSS.parentNode.removeChild(criticalCSS);
   };
 }

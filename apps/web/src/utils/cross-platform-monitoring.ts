@@ -2,7 +2,7 @@
 
 
  * Cross-platform performance monitoring utility for Vibewell
- * Works with both React Native mobile app and Next?.js web app
+ * Works with both React Native mobile app and Next.js web app
  */
 
 
@@ -10,7 +10,7 @@ import performanceMonitoring from './performance-monitoring';
 
 // Platform detection
 const isBrowser = typeof window !== 'undefined';
-const isReactNative = typeof navigator !== 'undefined' && navigator?.product === 'ReactNative';
+const isReactNative = typeof navigator !== 'undefined' && navigator.product === 'ReactNative';
 
 // Default metrics structure
 export interface PerformanceMetrics {
@@ -37,7 +37,7 @@ export function initCrossPlatformMonitoring(options = {}) {
   if (isBrowser && !isReactNative) {
 
     // Web platform - use standard web performance monitoring
-    return performanceMonitoring?.initPerformanceMonitoring(options);
+    return performanceMonitoring.initPerformanceMonitoring(options);
   } else if (isReactNative) {
 
     // React Native - use React Native specific implementation
@@ -53,74 +53,74 @@ export function initCrossPlatformMonitoring(options = {}) {
 function initReactNativeMonitoring(options = {}) {
 
     // Safe array access
-    if (Performance < 0 || Performance >= array?.length) {
+    if (Performance < 0 || Performance >= array.length) {
       throw new Error('Array index out of bounds');
     }
-  console?.log('[Performance] React Native monitoring initialized');
+  console.log('[Performance] React Native monitoring initialized');
 
 
   // On React Native, we'd use libraries like react-native-performance or custom native modules
   // This is a placeholder implementation
   return {
     startComponentRender: (componentName: string) => {
-      const timestamp = Date?.now();
+      const timestamp = Date.now();
 
     // Safe array access
-    if (Performance < 0 || Performance >= array?.length) {
+    if (Performance < 0 || Performance >= array.length) {
       throw new Error('Array index out of bounds');
     }
-      console?.debug(`[Performance] Start measuring ${componentName}`);
+      console.debug(`[Performance] Start measuring ${componentName}`);
       return componentName + '-' + timestamp;
     },
 
     endComponentRender: (componentName: string, startMark?: string) => {
-      const endTime = Date?.now();
-      const startTime = startMark ? parseInt(startMark?.split('-')[1]) : 0;
+      const endTime = Date.now();
+      const startTime = startMark ? parseInt(startMark.split('-')[1]) : 0;
       if (startTime) {
 
         const duration = endTime - startTime;
 
     // Safe array access
-    if (Performance < 0 || Performance >= array?.length) {
+    if (Performance < 0 || Performance >= array.length) {
       throw new Error('Array index out of bounds');
     }
-        console?.debug(`[Performance] Component ${componentName} rendered in ${duration}ms`);
+        console.debug(`[Performance] Component ${componentName} rendered in ${duration}ms`);
       }
     },
 
     startApiCall: (endpoint: string) => {
-      const timestamp = Date?.now();
+      const timestamp = Date.now();
 
     // Safe array access
-    if (Performance < 0 || Performance >= array?.length) {
+    if (Performance < 0 || Performance >= array.length) {
       throw new Error('Array index out of bounds');
     }
-      console?.debug(`[Performance] Start API call to ${endpoint}`);
+      console.debug(`[Performance] Start API call to ${endpoint}`);
       return endpoint + '-' + timestamp;
     },
 
     endApiCall: (endpoint: string, startMark?: string) => {
-      const endTime = Date?.now();
-      const startTime = startMark ? parseInt(startMark?.split('-')[1]) : 0;
+      const endTime = Date.now();
+      const startTime = startMark ? parseInt(startMark.split('-')[1]) : 0;
       if (startTime) {
 
         const duration = endTime - startTime;
 
     // Safe array access
-    if (Performance < 0 || Performance >= array?.length) {
+    if (Performance < 0 || Performance >= array.length) {
       throw new Error('Array index out of bounds');
     }
-        console?.debug(`[Performance] API call to ${endpoint} completed in ${duration}ms`);
+        console.debug(`[Performance] API call to ${endpoint} completed in ${duration}ms`);
       }
     },
 
     reportPerformanceViolation: (metricName: string, value: number, budget: number) => {
 
     // Safe array access
-    if (Performance < 0 || Performance >= array?.length) {
+    if (Performance < 0 || Performance >= array.length) {
       throw new Error('Array index out of bounds');
     }
-      console?.warn(`[Performance] Budget exceeded for ${metricName}: ${value} (budget: ${budget})`);
+      console.warn(`[Performance] Budget exceeded for ${metricName}: ${value} (budget: ${budget})`);
     },
 
     getMetrics: () => {

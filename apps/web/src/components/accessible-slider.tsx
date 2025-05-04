@@ -13,7 +13,7 @@ interface AccessibleSliderProps {
   formatValue?: (value: number) => string;
 }
 
-export const AccessibleSlider: React?.FC<AccessibleSliderProps> = ({
+export const AccessibleSlider: React.FC<AccessibleSliderProps> = ({
   min,
   max,
   value,
@@ -23,7 +23,7 @@ export const AccessibleSlider: React?.FC<AccessibleSliderProps> = ({
   className = '',
   disabled = false,
   showValue = true,
-  formatValue = (val) => val?.toString(),
+  formatValue = (val) => val.toString(),
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -31,7 +31,7 @@ export const AccessibleSlider: React?.FC<AccessibleSliderProps> = ({
 
   const percentage = ((value - min) / (max - min)) * 100;
 
-  const handleMouseDown = (e: React?.MouseEvent) => {
+  const handleMouseDown = (e: React.MouseEvent) => {
     if (disabled) return;
     setIsDragging(true);
     updateValue(e);
@@ -46,28 +46,28 @@ export const AccessibleSlider: React?.FC<AccessibleSliderProps> = ({
     setIsDragging(false);
   };
 
-  const handleKeyDown = (e: React?.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (disabled) return;
 
     let newValue = value;
 
-    switch (e?.key) {
+    switch (e.key) {
       case 'ArrowLeft':
       case 'ArrowDown':
-        e?.preventDefault();
-        newValue = Math?.max(min, value - step);
+        e.preventDefault();
+        newValue = Math.max(min, value - step);
         break;
       case 'ArrowRight':
       case 'ArrowUp':
-        e?.preventDefault();
-        newValue = Math?.min(max, value + step);
+        e.preventDefault();
+        newValue = Math.min(max, value + step);
         break;
       case 'Home':
-        e?.preventDefault();
+        e.preventDefault();
         newValue = min;
         break;
       case 'End':
-        e?.preventDefault();
+        e.preventDefault();
         newValue = max;
         break;
       default:
@@ -77,27 +77,27 @@ export const AccessibleSlider: React?.FC<AccessibleSliderProps> = ({
     onChange(newValue);
   };
 
-  const updateValue = (e: MouseEvent | React?.MouseEvent) => {
-    if (!sliderRef?.current) return;
+  const updateValue = (e: MouseEvent | React.MouseEvent) => {
+    if (!sliderRef.current) return;
 
-    const rect = sliderRef?.current.getBoundingClientRect();
-    const x = e?.clientX - rect?.left;
-    const percentage = Math?.max(0, Math?.min(1, x / rect?.width));
+    const rect = sliderRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = Math.max(0, Math.min(1, x / rect.width));
     const newValue = min + percentage * (max - min);
-    const steppedValue = Math?.round(newValue / step) * step;
+    const steppedValue = Math.round(newValue / step) * step;
 
     onChange(steppedValue);
   };
 
   useEffect(() => {
     if (isDragging) {
-      document?.addEventListener('mousemove', handleMouseMove);
-      document?.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
     }
 
     return () => {
-      document?.removeEventListener('mousemove', handleMouseMove);
-      document?.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
     };
   }, [isDragging]);
 

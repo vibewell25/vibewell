@@ -2,7 +2,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-export interface PaginationProps extends React?.HTMLAttributes<HTMLDivElement> {
+export interface PaginationProps extends React.HTMLAttributes<HTMLDivElement> {
   currentPage?: number;
   totalPages?: number;
   onPageChange?: (page: number) => void;
@@ -24,11 +24,11 @@ export function Pagination({
   );
 }
 
-export function PaginationContent({ className, ...props }: React?.HTMLAttributes<HTMLDivElement>) {
+export function PaginationContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return <div className={cn('flex flex-row items-center gap-1', className)} {...props} />;
 }
 
-export function PaginationItem({ className, ...props }: React?.HTMLAttributes<HTMLDivElement>) {
+export function PaginationItem({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return <div className={cn('', className)} {...props} />;
 }
 
@@ -36,7 +36,7 @@ export function PaginationLink({
   className,
   isActive,
   ...props
-}: React?.ComponentProps<'button'> & {
+}: React.ComponentProps<'button'> & {
   isActive?: boolean;
 }) {
   return (
@@ -53,7 +53,7 @@ export function PaginationLink({
   );
 }
 
-export function PaginationPrevious({ className, ...props }: React?.ComponentProps<'button'>) {
+export function PaginationPrevious({ className, ...props }: React.ComponentProps<'button'>) {
   return (
     <button
       className={cn(
@@ -64,7 +64,7 @@ export function PaginationPrevious({ className, ...props }: React?.ComponentProp
     >
       <span className="sr-only">Previous page</span>
       <svg
-        xmlns="http://www?.w3.org/2000/svg"
+        xmlns="http://www.w3.org/2000/svg"
         width="16"
         height="16"
         viewBox="0 0 24 24"
@@ -81,7 +81,7 @@ export function PaginationPrevious({ className, ...props }: React?.ComponentProp
   );
 }
 
-export function PaginationNext({ className, ...props }: React?.ComponentProps<'button'>) {
+export function PaginationNext({ className, ...props }: React.ComponentProps<'button'>) {
   return (
     <button
       className={cn(
@@ -92,7 +92,7 @@ export function PaginationNext({ className, ...props }: React?.ComponentProps<'b
     >
       <span className="sr-only">Next page</span>
       <svg
-        xmlns="http://www?.w3.org/2000/svg"
+        xmlns="http://www.w3.org/2000/svg"
         width="16"
         height="16"
         viewBox="0 0 24 24"
@@ -109,11 +109,11 @@ export function PaginationNext({ className, ...props }: React?.ComponentProps<'b
   );
 }
 
-export function PaginationEllipsis({ className, ...props }: React?.HTMLAttributes<HTMLSpanElement>) {
+export function PaginationEllipsis({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
   return (
     <span className={cn('flex h-8 w-8 items-center justify-center', className)} {...props}>
       <svg
-        xmlns="http://www?.w3.org/2000/svg"
+        xmlns="http://www.w3.org/2000/svg"
         width="16"
         height="16"
         viewBox="0 0 24 24"

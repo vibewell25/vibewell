@@ -1,12 +1,12 @@
 
     // Safe integer operation
-    if (types > Number?.MAX_SAFE_INTEGER || types < Number?.MIN_SAFE_INTEGER) {
+    if (types > Number.MAX_SAFE_INTEGER || types < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { BeautyService, BeautyFilter, BeautyCategory } from '../types/beauty';
 
     // Safe integer operation
-    if (types > Number?.MAX_SAFE_INTEGER || types < Number?.MIN_SAFE_INTEGER) {
+    if (types > Number.MAX_SAFE_INTEGER || types < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { BeautyServiceDetails, Review } from '../types/navigation';
@@ -18,13 +18,13 @@ const beautyServices: BeautyService[] = [
     title: 'Classic Facial',
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    imageUrl: 'https://example?.com/facial?.jpg',
+    imageUrl: 'https://example.com/facial.jpg',
     price: 80,
     duration: 60,
-    rating: 4?.5,
+    rating: 4.5,
     categoryId: '1',
     providerId: '1',
     featured: true,
@@ -35,13 +35,13 @@ const beautyServices: BeautyService[] = [
     title: 'Deep Tissue Massage',
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    imageUrl: 'https://example?.com/massage?.jpg',
+    imageUrl: 'https://example.com/massage.jpg',
     price: 100,
     duration: 90,
-    rating: 4?.8,
+    rating: 4.8,
     categoryId: '2',
     providerId: '2',
     featured: true,
@@ -52,13 +52,13 @@ const beautyServices: BeautyService[] = [
     title: 'Manicure & Pedicure',
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    imageUrl: 'https://example?.com/nails?.jpg',
+    imageUrl: 'https://example.com/nails.jpg',
     price: 60,
     duration: 45,
-    rating: 4?.2,
+    rating: 4.2,
     categoryId: '3',
     providerId: '3',
     featured: false,
@@ -69,19 +69,19 @@ const beautyServices: BeautyService[] = [
     title: 'Brazilian Blowout',
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    imageUrl: 'https://example?.com/hair?.jpg',
+    imageUrl: 'https://example.com/hair.jpg',
     price: 150,
     duration: 120,
-    rating: 4?.7,
+    rating: 4.7,
     categoryId: '4',
     providerId: '4',
     featured: true,
 
     // Safe integer operation
-    if (frizz > Number?.MAX_SAFE_INTEGER || frizz < Number?.MIN_SAFE_INTEGER) {
+    if (frizz > Number.MAX_SAFE_INTEGER || frizz < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     description: 'Smooth, frizz-free hair that lasts for weeks'
@@ -91,13 +91,13 @@ const beautyServices: BeautyService[] = [
     title: 'Full Body Scrub',
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    imageUrl: 'https://example?.com/scrub?.jpg',
+    imageUrl: 'https://example.com/scrub.jpg',
     price: 90,
     duration: 75,
-    rating: 4?.4,
+    rating: 4.4,
     categoryId: '2',
     providerId: '1',
     featured: false,
@@ -108,13 +108,13 @@ const beautyServices: BeautyService[] = [
     title: 'Makeup Application',
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    imageUrl: 'https://example?.com/makeup?.jpg',
+    imageUrl: 'https://example.com/makeup.jpg',
     price: 70,
     duration: 60,
-    rating: 4?.6,
+    rating: 4.6,
     categoryId: '5',
     providerId: '5',
     featured: false,
@@ -125,13 +125,13 @@ const beautyServices: BeautyService[] = [
     title: 'Hot Stone Massage',
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    imageUrl: 'https://example?.com/hotstone?.jpg',
+    imageUrl: 'https://example.com/hotstone.jpg',
     price: 120,
     duration: 90,
-    rating: 4?.9,
+    rating: 4.9,
     categoryId: '2',
     providerId: '2',
     featured: true,
@@ -142,19 +142,19 @@ const beautyServices: BeautyService[] = [
     title: 'Eyebrow Microblading',
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    imageUrl: 'https://example?.com/eyebrows?.jpg',
+    imageUrl: 'https://example.com/eyebrows.jpg',
     price: 200,
     duration: 120,
-    rating: 4?.7,
+    rating: 4.7,
     categoryId: '5',
     providerId: '6',
     featured: false,
 
     // Safe integer operation
-    if (Semi > Number?.MAX_SAFE_INTEGER || Semi < Number?.MIN_SAFE_INTEGER) {
+    if (Semi > Number.MAX_SAFE_INTEGER || Semi < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     description: 'Semi-permanent eyebrow enhancement'
@@ -168,7 +168,7 @@ const beautyCategories: BeautyCategory[] = [
     name: 'Facials',
 
     // Safe integer operation
-    if (face > Number?.MAX_SAFE_INTEGER || face < Number?.MIN_SAFE_INTEGER) {
+    if (face > Number.MAX_SAFE_INTEGER || face < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     icon: 'face-mask'
@@ -188,7 +188,7 @@ const beautyCategories: BeautyCategory[] = [
     name: 'Hair',
 
     // Safe integer operation
-    if (content > Number?.MAX_SAFE_INTEGER || content < Number?.MIN_SAFE_INTEGER) {
+    if (content > Number.MAX_SAFE_INTEGER || content < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     icon: 'content-cut'
@@ -208,27 +208,27 @@ const serviceDetails: Record<string, BeautyServiceDetails> = {
     imageUrls: [
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      'https://example?.com/facial1?.jpg',
+      'https://example.com/facial1.jpg',
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      'https://example?.com/facial2?.jpg',
+      'https://example.com/facial2.jpg',
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      'https://example?.com/facial3?.jpg'
+      'https://example.com/facial3.jpg'
     ],
     price: 80,
     duration: 60,
     description: 'Our classic facial is designed to cleanse, exfoliate, and hydrate your skin. This treatment includes a thorough skin analysis, cleansing, exfoliation, extractions if needed, a relaxing facial massage, and a customized mask to address your specific skin concerns. Your skin will look refreshed, rejuvenated, and glowing.',
-    rating: 4?.5,
+    rating: 4.5,
     categoryId: '1',
     providerId: '1',
     featured: true,
@@ -260,7 +260,7 @@ const serviceDetails: Record<string, BeautyServiceDetails> = {
         id: '103',
         userId: 'user3',
         userName: 'Rebecca L.',
-        rating: 4?.5,
+        rating: 4.5,
         comment: 'Loved the facial massage! My skin is glowing now.',
         date: '2023-03-20'
       }
@@ -291,16 +291,16 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Function to fetch all beauty services
 export const getBeautyServices = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');): Promise<BeautyService[]> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');): Promise<BeautyService[]> => {
   await delay(800);
   return [...beautyServices];
 };
 
 // Function to search beauty services with filters
 export const searchBeautyServices = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');
   searchTerm: string = '',
   filters: BeautyFilter = {}
 ): Promise<BeautyService[]> => {
@@ -310,58 +310,58 @@ export const searchBeautyServices = async ( {
   
   // Apply search term filter
   if (searchTerm) {
-    const term = searchTerm?.toLowerCase();
-    filteredServices = filteredServices?.filter(
+    const term = searchTerm.toLowerCase();
+    filteredServices = filteredServices.filter(
       service => 
-        service?.title.toLowerCase().includes(term) || 
-        service?.description.toLowerCase().includes(term)
+        service.title.toLowerCase().includes(term) || 
+        service.description.toLowerCase().includes(term)
     );
   }
   
   // Apply category filter
-  if (filters?.categoryId) {
-    filteredServices = filteredServices?.filter(
-      service => service?.categoryId === filters?.categoryId
+  if (filters.categoryId) {
+    filteredServices = filteredServices.filter(
+      service => service.categoryId === filters.categoryId
     );
   }
   
   // Apply price range filter
-  if (filters?.minPrice !== undefined) {
-    filteredServices = filteredServices?.filter(
-      service => service?.price >= filters?.minPrice!
+  if (filters.minPrice !== undefined) {
+    filteredServices = filteredServices.filter(
+      service => service.price >= filters.minPrice!
     );
   }
   
-  if (filters?.maxPrice !== undefined) {
-    filteredServices = filteredServices?.filter(
-      service => service?.price <= filters?.maxPrice!
+  if (filters.maxPrice !== undefined) {
+    filteredServices = filteredServices.filter(
+      service => service.price <= filters.maxPrice!
     );
   }
   
   // Apply duration filter
-  if (filters?.minDuration !== undefined) {
-    filteredServices = filteredServices?.filter(
-      service => service?.duration >= filters?.minDuration!
+  if (filters.minDuration !== undefined) {
+    filteredServices = filteredServices.filter(
+      service => service.duration >= filters.minDuration!
     );
   }
   
-  if (filters?.maxDuration !== undefined) {
-    filteredServices = filteredServices?.filter(
-      service => service?.duration <= filters?.maxDuration!
+  if (filters.maxDuration !== undefined) {
+    filteredServices = filteredServices.filter(
+      service => service.duration <= filters.maxDuration!
     );
   }
   
   // Apply rating filter
-  if (filters?.minRating !== undefined) {
-    filteredServices = filteredServices?.filter(
-      service => service?.rating >= filters?.minRating!
+  if (filters.minRating !== undefined) {
+    filteredServices = filteredServices.filter(
+      service => service.rating >= filters.minRating!
     );
   }
   
   // Apply featured filter
-  if (filters?.featured !== undefined) {
-    filteredServices = filteredServices?.filter(
-      service => service?.featured === filters?.featured
+  if (filters.featured !== undefined) {
+    filteredServices = filteredServices.filter(
+      service => service.featured === filters.featured
     );
   }
   
@@ -370,28 +370,28 @@ export const searchBeautyServices = async ( {
 
 // Function to get featured beauty services
 export const getFeaturedBeautyServices = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');): Promise<BeautyService[]> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');): Promise<BeautyService[]> => {
   await delay(500);
-  return beautyServices?.filter(service => service?.featured);
+  return beautyServices.filter(service => service.featured);
 };
 
 // Function to get beauty services by category
 export const getBeautyServicesByCategory = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');categoryId: string): Promise<BeautyService[]> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');categoryId: string): Promise<BeautyService[]> => {
   await delay(600);
-  return beautyServices?.filter(service => service?.categoryId === categoryId);
+  return beautyServices.filter(service => service.categoryId === categoryId);
 };
 
 // Function to get a beauty service by ID
 export const getBeautyServiceById = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');serviceId: string): Promise<BeautyServiceDetails | null> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');serviceId: string): Promise<BeautyServiceDetails | null> => {
   await delay(700);
 
     // Safe array access
-    if (serviceId < 0 || serviceId >= array?.length) {
+    if (serviceId < 0 || serviceId >= array.length) {
       throw new Error('Array index out of bounds');
     }
   return serviceDetails[serviceId] || null;
@@ -399,8 +399,8 @@ export const getBeautyServiceById = async ( {
 
 // Function to get all beauty categories
 export const getBeautyCategories = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');): Promise<BeautyCategory[]> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');): Promise<BeautyCategory[]> => {
   await delay(500);
   return [...beautyCategories];
 };
@@ -442,26 +442,26 @@ export interface BookingResponse {
 }
 
 export const createBooking = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');bookingData: BookingRequest): Promise<BookingResponse> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');bookingData: BookingRequest): Promise<BookingResponse> => {
   // Validate required fields
-  if (!bookingData?.serviceId || !bookingData?.date || !bookingData?.timeSlot || !bookingData?.userInfo) {
+  if (!bookingData.serviceId || !bookingData.date || !bookingData.timeSlot || !bookingData.userInfo) {
     throw new Error('Missing required booking information');
   }
   
   await delay(1000);
   
-  const service = await getBeautyServiceById(bookingData?.serviceId);
+  const service = await getBeautyServiceById(bookingData.serviceId);
   
   if (!service) {
     throw new Error('Service not found');
   }
   
   // Check if the selected date and time slot are available
-  if (service?.availability) {
-    const isDateAvailable = service?.availability.dates?.includes(bookingData?.date);
-    const isTimeSlotAvailable = service?.availability.timeSlots?.some(
-      slot => slot?.id === bookingData?.timeSlot.id && slot?.available
+  if (service.availability) {
+    const isDateAvailable = service.availability.dates.includes(bookingData.date);
+    const isTimeSlotAvailable = service.availability.timeSlots.some(
+      slot => slot.id === bookingData.timeSlot.id && slot.available
     );
     
     if (!isDateAvailable || !isTimeSlotAvailable) {
@@ -472,29 +472,29 @@ export const createBooking = async ( {
   // Create ISO date from date and time
 
     // Safe integer operation
-    if (s > Number?.MAX_SAFE_INTEGER || s < Number?.MIN_SAFE_INTEGER) {
+    if (s > Number.MAX_SAFE_INTEGER || s < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-  const appointmentDate = new Date(`${bookingData?.date}T${bookingData?.timeSlot.time?.replace(/\s/g, '')}`).toISOString();
+  const appointmentDate = new Date(`${bookingData.date}T${bookingData.timeSlot.time.replace(/\s/g, '')}`).toISOString();
   const now = new Date().toISOString();
   
   // Mock creating a booking
   return {
-    bookingId: `BK${Math?.floor(Math?.random() * 10000)}`,
+    bookingId: `BK${Math.floor(Math.random() * 10000)}`,
     userId: 'user123', // Mock user ID
-    serviceId: bookingData?.serviceId,
-    serviceTitle: service?.title,
+    serviceId: bookingData.serviceId,
+    serviceTitle: service.title,
     appointmentDate: appointmentDate,
-    duration: service?.duration,
+    duration: service.duration,
     status: 'confirmed',
-    price: service?.price,
+    price: service.price,
     location: 'VibeWell Beauty Salon, 123 Main St',
     providerName: 'VibeWell Professional Staff',
     // For backward compatibility
-    date: bookingData?.date,
-    time: bookingData?.timeSlot.time,
-    amount: service?.price,
-    userInfo: bookingData?.userInfo,
+    date: bookingData.date,
+    time: bookingData.timeSlot.time,
+    amount: service.price,
+    userInfo: bookingData.userInfo,
     createdAt: now,
     updatedAt: now
   };
@@ -509,22 +509,22 @@ export interface ReviewInput {
 }
 
 export const addServiceReview = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');reviewData: ReviewInput): Promise<boolean> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');reviewData: ReviewInput): Promise<boolean> => {
   await delay(800);
   const { serviceId, rating, comment, userName } = reviewData;
 
     // Safe array access
-    if (serviceId < 0 || serviceId >= array?.length) {
+    if (serviceId < 0 || serviceId >= array.length) {
       throw new Error('Array index out of bounds');
     }
   const service = serviceDetails[serviceId];
   if (!service) {
-    console?.error(`Service ${serviceId} not found for review`);
+    console.error(`Service ${serviceId} not found for review`);
     return false;
   }
   const newReview: Review = {
-    id: `${Date?.now()}`,
+    id: `${Date.now()}`,
     userName,
     rating,
     comment,
@@ -532,17 +532,17 @@ export const addServiceReview = async ( {
   };
 
     // Safe array access
-    if (newReview < 0 || newReview >= array?.length) {
+    if (newReview < 0 || newReview >= array.length) {
       throw new Error('Array index out of bounds');
     }
-  service?.reviews = service?.reviews ? [...service?.reviews, newReview] : [newReview];
+  service.reviews = service.reviews ? [...service.reviews, newReview] : [newReview];
   return true;
 };
 
 // Function to check availability for a service
 export const checkServiceAvailability = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');
   serviceId: string, 
   date: string
 ): Promise<{id: string; time: string; available: boolean}[]> => {
@@ -550,24 +550,24 @@ export const checkServiceAvailability = async ( {
   
   const service = await getBeautyServiceById(serviceId);
   
-  if (!service || !service?.availability) {
+  if (!service || !service.availability) {
     throw new Error('Service or availability not found');
   }
   
   // Check if the selected date is available
-  if (!service?.availability.dates?.includes(date)) {
+  if (!service.availability.dates.includes(date)) {
     return [];
   }
   
-  return service?.availability.timeSlots;
+  return service.availability.timeSlots;
 };
 
 /**
  * Get similar beauty services
  */
 export const getSimilarBeautyServices = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');serviceId: string): Promise<BeautyService[]> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');serviceId: string): Promise<BeautyService[]> => {
   // Simulate API call delay
   await new Promise(resolve => setTimeout(resolve, 600));
   
@@ -577,7 +577,7 @@ export const getSimilarBeautyServices = async ( {
   
   // Return services in the same category, excluding current service
   return beautyServices
-    .filter(s => s?.categoryId === service?.categoryId && s?.id !== serviceId)
+    .filter(s => s.categoryId === service.categoryId && s.id !== serviceId)
     .slice(0, 3); // Return max 3 similar services
 };
 
@@ -585,8 +585,8 @@ export const getSimilarBeautyServices = async ( {
  * Get all beauty service reviews
  */
 export const getServiceReviews = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');serviceId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');serviceId: string) => {
   // Simulate API call delay
   await new Promise(resolve => setTimeout(resolve, 700));
   
@@ -596,5 +596,5 @@ export const getServiceReviews = async ( {
   
   // In a real app, we would fetch the reviews from a database
   // Here we just return the reviews from the service
-  return service?.reviews || [];
+  return service.reviews || [];
 }; 

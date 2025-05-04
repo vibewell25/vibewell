@@ -19,23 +19,23 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { Loader2 } from 'lucide-react';
 
-const providerProfileSchema = z?.object({
-  fullName: z?.string().min(2, 'Name must be at least 2 characters'),
-  bio: z?.string().min(10, 'Bio must be at least 10 characters'),
-  specialties: z?.string().min(5, 'Specialties must be at least 5 characters'),
-  certifications: z?.string().optional(),
-  experience: z?.string().min(1, 'Years of experience is required'),
-  phone: z?.string().min(10, 'Phone number must be at least 10 characters'),
-  email: z?.string().email('Invalid email address'),
-  website: z?.string().url('Invalid website URL').optional().or(z?.literal('')),
-  socialMedia: z?.object({
-    facebook: z?.string().url('Invalid Facebook URL').optional().or(z?.literal('')),
-    instagram: z?.string().url('Invalid Instagram URL').optional().or(z?.literal('')),
-    twitter: z?.string().url('Invalid Twitter URL').optional().or(z?.literal('')),
+const providerProfileSchema = z.object({
+  fullName: z.string().min(2, 'Name must be at least 2 characters'),
+  bio: z.string().min(10, 'Bio must be at least 10 characters'),
+  specialties: z.string().min(5, 'Specialties must be at least 5 characters'),
+  certifications: z.string().optional(),
+  experience: z.string().min(1, 'Years of experience is required'),
+  phone: z.string().min(10, 'Phone number must be at least 10 characters'),
+  email: z.string().email('Invalid email address'),
+  website: z.string().url('Invalid website URL').optional().or(z.literal('')),
+  socialMedia: z.object({
+    facebook: z.string().url('Invalid Facebook URL').optional().or(z.literal('')),
+    instagram: z.string().url('Invalid Instagram URL').optional().or(z.literal('')),
+    twitter: z.string().url('Invalid Twitter URL').optional().or(z.literal('')),
   }),
 });
 
-type ProviderProfileData = z?.infer<typeof providerProfileSchema>;
+type ProviderProfileData = z.infer<typeof providerProfileSchema>;
 
 interface ProviderProfileFormProps {
   initialData?: Partial<ProviderProfileData>;
@@ -49,25 +49,25 @@ export function ProviderProfileForm({ initialData }: ProviderProfileFormProps) {
   const form = useForm<ProviderProfileData>({
     resolver: zodResolver(providerProfileSchema),
     defaultValues: {
-      fullName: initialData?.fullName || '',
-      bio: initialData?.bio || '',
-      specialties: initialData?.specialties || '',
-      certifications: initialData?.certifications || '',
-      experience: initialData?.experience || '',
-      phone: initialData?.phone || '',
-      email: initialData?.email || '',
-      website: initialData?.website || '',
+      fullName: initialData.fullName || '',
+      bio: initialData.bio || '',
+      specialties: initialData.specialties || '',
+      certifications: initialData.certifications || '',
+      experience: initialData.experience || '',
+      phone: initialData.phone || '',
+      email: initialData.email || '',
+      website: initialData.website || '',
       socialMedia: {
-        facebook: initialData?.socialMedia?.facebook || '',
-        instagram: initialData?.socialMedia?.instagram || '',
-        twitter: initialData?.socialMedia?.twitter || '',
+        facebook: initialData.socialMedia.facebook || '',
+        instagram: initialData.socialMedia.instagram || '',
+        twitter: initialData.socialMedia.twitter || '',
       },
     },
   });
 
   async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); onSubmit(data: ProviderProfileData) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); onSubmit(data: ProviderProfileData) {
     setIsLoading(true);
     try {
       const response = await fetch('/api/provider/profile', {
@@ -75,10 +75,10 @@ export function ProviderProfileForm({ initialData }: ProviderProfileFormProps) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify(data),
+        body: JSON.stringify(data),
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to create provider profile');
       }
 
@@ -87,9 +87,9 @@ export function ProviderProfileForm({ initialData }: ProviderProfileFormProps) {
         description: 'Your provider profile has been created.',
       });
 
-      router?.push('/provider/dashboard');
+      router.push('/provider/dashboard');
     } catch (error) {
-      console?.error('Error creating provider profile:', error);
+      console.error('Error creating provider profile:', error);
       toast({
         title: 'Error',
         description: 'Failed to create provider profile. Please try again.',
@@ -102,9 +102,9 @@ export function ProviderProfileForm({ initialData }: ProviderProfileFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form?.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
-          control={form?.control}
+          control={form.control}
           name="fullName"
           render={({ field }) => (
             <FormItem>
@@ -118,7 +118,7 @@ export function ProviderProfileForm({ initialData }: ProviderProfileFormProps) {
         />
 
         <FormField
-          control={form?.control}
+          control={form.control}
           name="bio"
           render={({ field }) => (
             <FormItem>
@@ -136,7 +136,7 @@ export function ProviderProfileForm({ initialData }: ProviderProfileFormProps) {
         />
 
         <FormField
-          control={form?.control}
+          control={form.control}
           name="specialties"
           render={({ field }) => (
             <FormItem>
@@ -150,7 +150,7 @@ export function ProviderProfileForm({ initialData }: ProviderProfileFormProps) {
         />
 
         <FormField
-          control={form?.control}
+          control={form.control}
           name="certifications"
           render={({ field }) => (
             <FormItem>
@@ -164,7 +164,7 @@ export function ProviderProfileForm({ initialData }: ProviderProfileFormProps) {
         />
 
         <FormField
-          control={form?.control}
+          control={form.control}
           name="experience"
           render={({ field }) => (
             <FormItem>
@@ -178,7 +178,7 @@ export function ProviderProfileForm({ initialData }: ProviderProfileFormProps) {
         />
 
         <FormField
-          control={form?.control}
+          control={form.control}
           name="phone"
           render={({ field }) => (
             <FormItem>
@@ -192,7 +192,7 @@ export function ProviderProfileForm({ initialData }: ProviderProfileFormProps) {
         />
 
         <FormField
-          control={form?.control}
+          control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
@@ -206,7 +206,7 @@ export function ProviderProfileForm({ initialData }: ProviderProfileFormProps) {
         />
 
         <FormField
-          control={form?.control}
+          control={form.control}
           name="website"
           render={({ field }) => (
             <FormItem>
@@ -223,8 +223,8 @@ export function ProviderProfileForm({ initialData }: ProviderProfileFormProps) {
           <h3 className="text-lg font-medium">Social Media</h3>
 
           <FormField
-            control={form?.control}
-            name="socialMedia?.facebook"
+            control={form.control}
+            name="socialMedia.facebook"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Facebook</FormLabel>
@@ -237,8 +237,8 @@ export function ProviderProfileForm({ initialData }: ProviderProfileFormProps) {
           />
 
           <FormField
-            control={form?.control}
-            name="socialMedia?.instagram"
+            control={form.control}
+            name="socialMedia.instagram"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Instagram</FormLabel>
@@ -251,8 +251,8 @@ export function ProviderProfileForm({ initialData }: ProviderProfileFormProps) {
           />
 
           <FormField
-            control={form?.control}
-            name="socialMedia?.twitter"
+            control={form.control}
+            name="socialMedia.twitter"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Twitter</FormLabel>

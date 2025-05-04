@@ -8,7 +8,7 @@ interface AudioControlsProps {
   }[];
 }
 
-const AudioControls: React?.FC<AudioControlsProps> = ({ soundscapes }) => {
+const AudioControls: React.FC<AudioControlsProps> = ({ soundscapes }) => {
   const {
     isPlaying,
     volume,
@@ -21,7 +21,7 @@ const AudioControls: React?.FC<AudioControlsProps> = ({ soundscapes }) => {
   } = useAudio();
 
   const handlePlayPause = () => {
-    if (!currentSoundscape && soundscapes?.length > 0) {
+    if (!currentSoundscape && soundscapes.length > 0) {
       // If nothing is playing, start with the first soundscape
       playAudio(soundscapes[0].url);
     } else if (isPlaying) {
@@ -31,15 +31,15 @@ const AudioControls: React?.FC<AudioControlsProps> = ({ soundscapes }) => {
     }
   };
 
-  const handleSoundscapeChange = (event: React?.ChangeEvent<HTMLSelectElement>) => {
-    const selectedSoundscape = soundscapes?.find((s) => s?.url === event?.target.value);
+  const handleSoundscapeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedSoundscape = soundscapes.find((s) => s.url === event.target.value);
     if (selectedSoundscape) {
-      playAudio(selectedSoundscape?.url);
+      playAudio(selectedSoundscape.url);
     }
   };
 
-  const handleVolumeChange = (event: React?.ChangeEvent<HTMLInputElement>) => {
-    const newVolume = parseFloat(event?.target.value);
+  const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newVolume = parseFloat(event.target.value);
     setVolume(newVolume);
   };
 
@@ -59,9 +59,9 @@ const AudioControls: React?.FC<AudioControlsProps> = ({ soundscapes }) => {
         aria-label="Select soundscape"
       >
         <option value="">Select a soundscape</option>
-        {soundscapes?.map((soundscape) => (
-          <option key={soundscape?.url} value={soundscape?.url}>
-            {soundscape?.name}
+        {soundscapes.map((soundscape) => (
+          <option key={soundscape.url} value={soundscape.url}>
+            {soundscape.name}
           </option>
         ))}
       </select>
@@ -73,7 +73,7 @@ const AudioControls: React?.FC<AudioControlsProps> = ({ soundscapes }) => {
           type="range"
           min="0"
           max="1"
-          step="0?.1"
+          step="0.1"
           value={volume}
           onChange={handleVolumeChange}
         />
@@ -85,30 +85,30 @@ const AudioControls: React?.FC<AudioControlsProps> = ({ soundscapes }) => {
           align-items: center;
           gap: 1rem;
           padding: 1rem;
-          background: rgba(255, 255, 255, 0?.1);
+          background: rgba(255, 255, 255, 0.1);
           border-radius: 8px;
         }
 
         button {
-          padding: 0?.5rem 1rem;
+          padding: 0.5rem 1rem;
           border: none;
           background: transparent;
           cursor: pointer;
-          font-size: 1?.5rem;
+          font-size: 1.5rem;
         }
 
         select {
-          padding: 0?.5rem;
+          padding: 0.5rem;
           border-radius: 4px;
-          background: rgba(255, 255, 255, 0?.1);
+          background: rgba(255, 255, 255, 0.1);
           color: inherit;
-          border: 1px solid rgba(255, 255, 255, 0?.2);
+          border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .volume-control {
           display: flex;
           align-items: center;
-          gap: 0?.5rem;
+          gap: 0.5rem;
         }
 
         input[type='range'] {

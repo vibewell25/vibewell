@@ -7,11 +7,11 @@ interface AccessibleDialogProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  children: React?.ReactNode;
-  initialFocusRef?: React?.RefObject<HTMLElement>;
+  children: React.ReactNode;
+  initialFocusRef?: React.RefObject<HTMLElement>;
 }
 
-export const AccessibleDialog: React?.FC<AccessibleDialogProps> = ({
+export const AccessibleDialog: React.FC<AccessibleDialogProps> = ({
   isOpen,
   onClose,
   title,
@@ -24,27 +24,27 @@ export const AccessibleDialog: React?.FC<AccessibleDialogProps> = ({
   useEffect(() => {
     if (isOpen) {
       // Store the last focused element
-      lastFocusedElement?.current = document?.activeElement as HTMLElement;
+      lastFocusedElement.current = document.activeElement as HTMLElement;
       
       // Focus the dialog
-      if (initialFocusRef?.current) {
-        initialFocusRef?.current.focus();
-      } else if (dialogRef?.current) {
-        dialogRef?.current.focus();
+      if (initialFocusRef.current) {
+        initialFocusRef.current.focus();
+      } else if (dialogRef.current) {
+        dialogRef.current.focus();
       }
 
       // Handle escape key
       const handleEscape = (e: KeyboardEvent) => {
-        if (e?.key === 'Escape') {
+        if (e.key === 'Escape') {
           onClose();
         }
       };
 
-      document?.addEventListener('keydown', handleEscape);
-      return () => document?.removeEventListener('keydown', handleEscape);
-    } else if (lastFocusedElement?.current) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    } else if (lastFocusedElement.current) {
       // Restore focus to the last focused element
-      lastFocusedElement?.current.focus();
+      lastFocusedElement.current.focus();
     }
   }, [isOpen, onClose, initialFocusRef]);
 
@@ -52,18 +52,18 @@ export const AccessibleDialog: React?.FC<AccessibleDialogProps> = ({
     if (isOpen) {
       // Trap focus within the dialog
       const handleFocus = (e: FocusEvent) => {
-        if (dialogRef?.current && !dialogRef?.current.contains(e?.target as Node)) {
-          e?.preventDefault();
-          if (initialFocusRef?.current) {
-            initialFocusRef?.current.focus();
-          } else if (dialogRef?.current) {
-            dialogRef?.current.focus();
+        if (dialogRef.current && !dialogRef.current.contains(e.target as Node)) {
+          e.preventDefault();
+          if (initialFocusRef.current) {
+            initialFocusRef.current.focus();
+          } else if (dialogRef.current) {
+            dialogRef.current.focus();
           }
         }
       };
 
-      document?.addEventListener('focus', handleFocus, true);
-      return () => document?.removeEventListener('focus', handleFocus, true);
+      document.addEventListener('focus', handleFocus, true);
+      return () => document.removeEventListener('focus', handleFocus, true);
     }
   }, [isOpen, initialFocusRef]);
 
@@ -88,7 +88,7 @@ export const AccessibleDialog: React?.FC<AccessibleDialogProps> = ({
         </div>
       </div>
     </div>,
-    document?.body
+    document.body
   );
 };
 

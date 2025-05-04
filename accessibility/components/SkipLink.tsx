@@ -7,7 +7,7 @@ interface SkipLinkProps {
   label?: string;
 }
 
-export const SkipLink: React?.FC<SkipLinkProps> = ({ 
+export const SkipLink: React.FC<SkipLinkProps> = ({ 
   targetId, 
   label = "Skip to main content" 
 }) => {

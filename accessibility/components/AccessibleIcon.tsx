@@ -4,13 +4,13 @@ import React from 'react';
 
 interface AccessibleIconProps {
   label: string;
-  children: React?.ReactNode;
+  children: React.ReactNode;
   className?: string;
-  as?: keyof JSX?.IntrinsicElements;
+  as?: keyof JSX.IntrinsicElements;
   decorative?: boolean;
 }
 
-export const AccessibleIcon: React?.FC<AccessibleIconProps> = ({
+export const AccessibleIcon: React.FC<AccessibleIconProps> = ({
   label,
   children,
   className = '',

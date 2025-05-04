@@ -1,11 +1,11 @@
 import React from 'react';
 
 interface ScreenReaderTextProps {
-  children: React?.ReactNode;
-  as?: keyof JSX?.IntrinsicElements;
+  children: React.ReactNode;
+  as?: keyof JSX.IntrinsicElements;
 }
 
-export const ScreenReaderText: React?.FC<ScreenReaderTextProps> = ({ 
+export const ScreenReaderText: React.FC<ScreenReaderTextProps> = ({ 
   children,
   as: Component = 'span'
 }) => {

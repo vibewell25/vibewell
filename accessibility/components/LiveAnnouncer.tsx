@@ -4,10 +4,10 @@ import React, { useEffect, useState } from 'react';
 
 interface LiveAnnouncerProps {
   politeness?: 'polite' | 'assertive';
-  children?: React?.ReactNode;
+  children?: React.ReactNode;
 }
 
-export const LiveAnnouncer: React?.FC<LiveAnnouncerProps> = ({
+export const LiveAnnouncer: React.FC<LiveAnnouncerProps> = ({
   politeness = 'polite',
   children
 }) => {

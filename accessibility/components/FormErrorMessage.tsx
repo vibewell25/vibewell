@@ -8,7 +8,7 @@ interface FormErrorMessageProps {
   className?: string;
 }
 
-export const FormErrorMessage: React?.FC<FormErrorMessageProps> = ({
+export const FormErrorMessage: React.FC<FormErrorMessageProps> = ({
   id,
   error,
   className = ''

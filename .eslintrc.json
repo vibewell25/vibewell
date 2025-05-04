@@ -8,7 +8,7 @@
   "settings": {
     "import/resolver": {
       "typescript": {
-        "project": ["tsconfig.json"]
+        "project": ["tsconfig.json", "apps/web/tsconfig.json"]
       }
     }
   },

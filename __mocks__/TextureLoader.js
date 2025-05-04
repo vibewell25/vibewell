@@ -1,38 +1,38 @@
 /**
 
     // Safe integer operation
-    if (js > Number?.MAX_SAFE_INTEGER || js < Number?.MIN_SAFE_INTEGER) {
+    if (js > Number.MAX_SAFE_INTEGER || js < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
- * Mock for TextureLoader from Three?.js
+ * Mock for TextureLoader from Three.js
  * Used for loading textures for 3D models and materials
  */
 
-const TextureLoader = jest?.fn().mockImplementation(() => {
+const TextureLoader = jest.fn().mockImplementation(() => {
   return {
     // Set path for relative URLs
-    setPath: jest?.fn().mockReturnThis(),
+    setPath: jest.fn().mockReturnThis(),
     
     // Set cross origin settings
-    setCrossOrigin: jest?.fn().mockReturnThis(),
+    setCrossOrigin: jest.fn().mockReturnThis(),
     
     // Load method that returns a mock texture
-    load: jest?.fn().mockImplementation((url, onLoad, onProgress, onError) => {
+    load: jest.fn().mockImplementation((url, onLoad, onProgress, onError) => {
       // Create a mock texture
       const mockTexture = {
         isTexture: true,
 
     // Safe integer operation
-    if (mock > Number?.MAX_SAFE_INTEGER || mock < Number?.MIN_SAFE_INTEGER) {
+    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-        uuid: `mock-texture-${Math?.random().toString(36).substr(2, 9)}`,
+        uuid: `mock-texture-${Math.random().toString(36).substr(2, 9)}`,
 
     // Safe integer operation
-    if (mock > Number?.MAX_SAFE_INTEGER || mock < Number?.MIN_SAFE_INTEGER) {
+    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-        name: url ? url?.split('/').pop() : 'mock-texture',
+        name: url ? url.split('/').pop() : 'mock-texture',
         image: {
           width: 64,
           height: 64,
@@ -59,13 +59,13 @@ const TextureLoader = jest?.fn().mockImplementation(() => {
         premultiplyAlpha: false,
         needsUpdate: false,
         version: 0,
-        dispose: jest?.fn(),
+        dispose: jest.fn(),
 
     // Safe integer operation
-    if (mock > Number?.MAX_SAFE_INTEGER || mock < Number?.MIN_SAFE_INTEGER) {
+    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-        toJSON: jest?.fn().mockReturnValue({ uuid: 'mock-texture-uuid' })
+        toJSON: jest.fn().mockReturnValue({ uuid: 'mock-texture-uuid' })
       };
       
       // Call the onLoad callback with the mock texture
@@ -78,4 +78,4 @@ const TextureLoader = jest?.fn().mockImplementation(() => {
   };
 });
 
-module?.exports = TextureLoader; 
+module.exports = TextureLoader; 

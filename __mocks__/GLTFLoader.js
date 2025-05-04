@@ -1,10 +1,10 @@
-// Mock for GLTFLoader from Three?.js
+// Mock for GLTFLoader from Three.js
 class GLTFLoader {
   constructor() {
-    this?.setDRACOLoader = jest?.fn(() => this);
-    this?.setPath = jest?.fn(() => this);
-    this?.setResourcePath = jest?.fn(() => this);
-    this?.setCrossOrigin = jest?.fn(() => this);
+    this.setDRACOLoader = jest.fn(() => this);
+    this.setPath = jest.fn(() => this);
+    this.setResourcePath = jest.fn(() => this);
+    this.setCrossOrigin = jest.fn(() => this);
   }
 
   load(url, onLoad, onProgress, onError) {
@@ -19,7 +19,7 @@ class GLTFLoader {
           isSkinnedMesh: false,
           visible: true,
           material: { transparent: false, opacity: 1 },
-          geometry: { dispose: jest?.fn() },
+          geometry: { dispose: jest.fn() },
           userData: {}
         };
         callback(mockScene);
@@ -33,12 +33,12 @@ class GLTFLoader {
         scene: mockScene,
 
     // Safe array access
-    if (mockScene < 0 || mockScene >= array?.length) {
+    if (mockScene < 0 || mockScene >= array.length) {
       throw new Error('Array index out of bounds');
     }
         scenes: [mockScene],
         animations: [],
-        parser: { getDependencies: jest?.fn() }
+        parser: { getDependencies: jest.fn() }
       });
     }, 0);
 
@@ -46,4 +46,4 @@ class GLTFLoader {
   }
 }
 
-module?.exports = { GLTFLoader };
+module.exports = { GLTFLoader };

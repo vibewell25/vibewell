@@ -23,18 +23,18 @@ export function createHookTestSuite<TProps, TResult>(
   testCases: HookTestCase<TProps, TResult>[],
 ): void {
   describe(suiteName, () => {
-    testCases?.forEach((testCase) => {
-      it(testCase?.name, async () => {
-        const props = { ...defaultProps, ...testCase?.initialProps };
+    testCases.forEach((testCase) => {
+      it(testCase.name, async () => {
+        const props = { ...defaultProps, ...testCase.initialProps };
         const { result, rerender } = renderHook(() => hook(props));
 
-        if (testCase?.act) {
+        if (testCase.act) {
           await act(async () => {
-            await testCase?.act?.({ result, rerender } as RenderHookResult<TResult, TProps>);
+            await testCase.act.({ result, rerender } as RenderHookResult<TResult, TProps>);
           });
         }
 
-        testCase?.assert({ result, rerender } as RenderHookResult<TResult, TProps>);
+        testCase.assert({ result, rerender } as RenderHookResult<TResult, TProps>);
       });
     });
   });
@@ -52,7 +52,7 @@ export function createHookStateTestCase<TProps, TResult>(
     name,
     act: updateFn,
     assert: ({ result }) => {
-      expect(result?.current).toEqual(expectedValue);
+      expect(result.current).toEqual(expectedValue);
     },
   };
 }
@@ -69,7 +69,7 @@ export function createHookErrorTestCase<TProps, TResult>(
     name,
     act: errorFn,
     assert: ({ result }) => {
-      expect(result?.current).toThrow(expectedError);
+      expect(result.current).toThrow(expectedError);
     },
   };
 }

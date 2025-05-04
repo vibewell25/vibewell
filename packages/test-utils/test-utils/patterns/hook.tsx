@@ -37,27 +37,27 @@ export function createHookTestSuite<HookResult, HookArgs extends any[]>(
   testCases: HookTestCase<HookResult, HookArgs>[],
 ): void {
   describe(`${name} Hook`, () => {
-    testCases?.forEach((testCase) => {
-      it(testCase?.name, async () => {
+    testCases.forEach((testCase) => {
+      it(testCase.name, async () => {
         // Setup the test case
-        if (testCase?.setup) {
-          await testCase?.setup();
+        if (testCase.setup) {
+          await testCase.setup();
         }
 
         // Initialize the hook with test case arguments
-        const initialArgs = testCase?.initialArgs || ([] as unknown as HookArgs);
+        const initialArgs = testCase.initialArgs || ([] as unknown as HookArgs);
 
         // Create a stateful variable to capture hook result
         let capturedResult: HookResult | undefined;
 
         // Create a wrapper component to test the hook
-        const HookTestComponent: React?.FC<{
+        const HookTestComponent: React.FC<{
           onResult: (res: HookResult) => void;
         }> = (props) => {
           const result = useHook(...initialArgs);
-          React?.useEffect(() => {
-            props?.onResult(result);
-          }, [result, props?.onResult]);
+          React.useEffect(() => {
+            props.onResult(result);
+          }, [result, props.onResult]);
           return null;
         };
 
@@ -75,30 +75,30 @@ export function createHookTestSuite<HookResult, HookArgs extends any[]>(
         }
 
         // Run initial assertions
-        if (testCase?.initialAssertions) {
-          await testCase?.initialAssertions(capturedResult);
+        if (testCase.initialAssertions) {
+          await testCase.initialAssertions(capturedResult);
         }
 
         // Perform actions if defined
-        if (testCase?.actions) {
-          for (const action of testCase?.actions) {
+        if (testCase.actions) {
+          for (const action of testCase.actions) {
             await action(capturedResult);
 
             // Wait after action if needed
-            if ('waitAfter' in action && action?.waitAfter) {
-              await waitFor(action?.waitAfter);
+            if ('waitAfter' in action && action.waitAfter) {
+              await waitFor(action.waitAfter);
             }
           }
         }
 
         // Run final assertions
-        if (testCase?.assertions) {
-          await testCase?.assertions(capturedResult);
+        if (testCase.assertions) {
+          await testCase.assertions(capturedResult);
         }
 
         // Teardown the test case
-        if (testCase?.teardown) {
-          await testCase?.teardown();
+        if (testCase.teardown) {
+          await testCase.teardown();
         }
       });
     });
@@ -107,7 +107,7 @@ export function createHookTestSuite<HookResult, HookArgs extends any[]>(
 
 // Helper for waiting after actions
 async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); waitFor(callback: () => Promise<void> | void): Promise<void> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); waitFor(callback: () => Promise<void> | void): Promise<void> {
   await callback();
 }

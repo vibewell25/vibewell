@@ -4,7 +4,7 @@
 import React from 'react';
 import { renderHook, act } from '@testing-library/react';
 
-type Provider = React?.ComponentType<{ children: React?.ReactNode }>;
+type Provider = React.ComponentType<{ children: React.ReactNode }>;
 
 /**
  * Create a wrapper component for testing hooks with context providers
@@ -12,8 +12,8 @@ type Provider = React?.ComponentType<{ children: React?.ReactNode }>;
  * @returns Wrapper component
  */
 export function createWrapperWithProviders(providers: Provider[] = []) {
-  return ({ children }: { children: React?.ReactNode }) => {
-    return providers?.reduceRight((acc, Provider) => {
+  return ({ children }: { children: React.ReactNode }) => {
+    return providers.reduceRight((acc, Provider) => {
       return <Provider>{acc}</Provider>;
     }, children);
   };
@@ -42,8 +42,8 @@ export function renderHookWithProviders<TProps, TResult>(
  * @returns Promise<void>
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); waitForAsyncEvents(callback?: () => void): Promise<void> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); waitForAsyncEvents(callback?: () => void): Promise<void> {
   await act(async () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
     if (callback) callback();
@@ -63,8 +63,8 @@ interface HookAction<TResult> {
  * @returns The result of renderHook
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testHookUpdates<TProps, TResult>(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testHookUpdates<TProps, TResult>(
   hook: (props: TProps) => TResult,
   actions: HookAction<TResult>[],
   options: Parameters<typeof renderHookWithProviders>[1] = {},

@@ -36,7 +36,7 @@ try {
 } catch (e) {}
 
 // Mock fetch for API testing if needed
-global?.fetch = global?.fetch || jest?.fn();
+global.fetch = global.fetch || jest.fn();
 
 interface MockStore {
   [key: string]: string;
@@ -48,14 +48,14 @@ type SetItemFn = (key: string, value: string) => void;
 type RemoveItemFn = (key: string) => void;
 type ClearFn = () => void;
 interface StorageMock {
-  // @ts-expect-error - We're having issues with jest?.Mock types but the runtime behavior is fine
-  getItem: jest?.Mock;
-  // @ts-expect-error - We're having issues with jest?.Mock types but the runtime behavior is fine
-  setItem: jest?.Mock;
-  // @ts-expect-error - We're having issues with jest?.Mock types but the runtime behavior is fine
-  removeItem: jest?.Mock;
-  // @ts-expect-error - We're having issues with jest?.Mock types but the runtime behavior is fine
-  clear: jest?.Mock;
+  // @ts-expect-error - We're having issues with jest.Mock types but the runtime behavior is fine
+  getItem: jest.Mock;
+  // @ts-expect-error - We're having issues with jest.Mock types but the runtime behavior is fine
+  setItem: jest.Mock;
+  // @ts-expect-error - We're having issues with jest.Mock types but the runtime behavior is fine
+  removeItem: jest.Mock;
+  // @ts-expect-error - We're having issues with jest.Mock types but the runtime behavior is fine
+  clear: jest.Mock;
   getAll: () => MockStore;
 }
 
@@ -126,7 +126,7 @@ interface TestRunnerContext {
   jest: typeof jest;
   mockAPI: (url: string, response: any, options?: MockAPIOptions) => void;
   mockService: (serviceName: string, mockImplementation: any) => void;
-  createMock: (value: any) => jest?.Mock;
+  createMock: (value: any) => jest.Mock;
 }
 
 interface TestRunnerOptions {
@@ -190,53 +190,53 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
   } = options;
 
   // Setup mocks based on options
-  if (mocks?.localStorage) {
+  if (mocks.localStorage) {
     // Setup localStorage mock
     const localStorageMock = ((): StorageMock => {
       let store: MockStore = {};
       return {
-        getItem: jest?.fn((key: string): string | null => {
+        getItem: jest.fn((key: string): string | null => {
           return store[key] || null;
         }),
-        setItem: jest?.fn((key: string, value: string): void => {
-          store[key] = value?.toString();
+        setItem: jest.fn((key: string, value: string): void => {
+          store[key] = value.toString();
         }),
-        removeItem: jest?.fn((key: string): void => {
+        removeItem: jest.fn((key: string): void => {
           delete store[key];
         }),
-        clear: jest?.fn((): void => {
+        clear: jest.fn((): void => {
           store = {};
         }),
         getAll: () => store,
       };
     })();
 
-    Object?.defineProperty(window, 'localStorage', {
+    Object.defineProperty(window, 'localStorage', {
       value: localStorageMock,
       writable: true,
     });
   }
 
-  if (mocks?.sessionStorage) {
+  if (mocks.sessionStorage) {
     // Setup sessionStorage mock
     const sessionStorageMock = ((): StorageMock => {
       let store: MockStore = {};
       return {
-        getItem: jest?.fn((key: string): string | null => store[key] || null),
-        setItem: jest?.fn((key: string, value: string): void => {
-          store[key] = value?.toString();
+        getItem: jest.fn((key: string): string | null => store[key] || null),
+        setItem: jest.fn((key: string, value: string): void => {
+          store[key] = value.toString();
         }),
-        removeItem: jest?.fn((key: string): void => {
+        removeItem: jest.fn((key: string): void => {
           delete store[key];
         }),
-        clear: jest?.fn((): void => {
+        clear: jest.fn((): void => {
           store = {};
         }),
         getAll: () => store,
       };
     })();
 
-    Object?.defineProperty(window, 'sessionStorage', {
+    Object.defineProperty(window, 'sessionStorage', {
       value: sessionStorageMock,
       writable: true,
     });
@@ -244,7 +244,7 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
 
   // Choose the appropriate wrapper
   let Wrapper: ComponentType<any> = CustomWrapper || DefaultWrapper;
-  if (options?.withRouter) {
+  if (options.withRouter) {
     Wrapper = RouterWrapper;
   }
 
@@ -252,13 +252,13 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
   const testRunner: TestRunnerContext = {
     // Test function implementations go here
     // They will be properly typed and not use JSX directly
-    // Actual JSX is extracted to the TestWrappers?.tsx file
+    // Actual JSX is extracted to the TestWrappers.tsx file
     test: (description, testFn) => {
       it(description, testFn);
     },
 
     testEach: (description, testData, testFn) => {
-      testData?.forEach((data, index) => {
+      testData.forEach((data, index) => {
         it(`${description} (case ${index + 1})`, () => testFn(data));
       });
     },
@@ -287,7 +287,7 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
 
         // We would need to use the actual metrics from performanceMonitor here
         // but since we don't have access to them easily, we'll just log a placeholder
-        console?.log(`Measured performance for "${description}"`);
+        console.log(`Measured performance for "${description}"`);
       });
     },
 
@@ -300,7 +300,7 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
       // Start performance measuring if enabled
       let startTime = 0;
       if (performanceMetrics) {
-        startTime = performance?.now();
+        startTime = performance.now();
       }
 
       const result = render(ui, {
@@ -310,7 +310,7 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
 
       // Calculate render time if performance metrics are enabled
       if (performanceMetrics) {
-        const renderTime = performance?.now() - startTime;
+        const renderTime = performance.now() - startTime;
         return {
           ...result,
           renderTime,
@@ -323,11 +323,11 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
     renderWithRouter: (ui, options = {}) => {
       const { route = '/', ...restOptions } = options;
 
-      const RouterWrapperWithRoute = ({ children }: { children: React?.ReactNode }) => {
-        return React?.createElement(RouterWrapper, { initialRoute: route, children });
+      const RouterWrapperWithRoute = ({ children }: { children: React.ReactNode }) => {
+        return React.createElement(RouterWrapper, { initialRoute: route, children });
       };
 
-      return testRunner?.render(ui, {
+      return testRunner.render(ui, {
         wrapper: RouterWrapperWithRoute,
         ...restOptions,
       });
@@ -336,19 +336,19 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
     renderWithAuth: (ui, options = {}) => {
       const { user, ...restOptions } = options;
 
-      const AuthWrapperWithUser = ({ children }: { children: React?.ReactNode }) => {
-        return React?.createElement(AuthWrapper, { mockUser: user, children });
+      const AuthWrapperWithUser = ({ children }: { children: React.ReactNode }) => {
+        return React.createElement(AuthWrapper, { mockUser: user, children });
       };
 
-      return testRunner?.render(ui, {
+      return testRunner.render(ui, {
         wrapper: AuthWrapperWithUser,
         ...restOptions,
       });
     },
 
     renderWithAxe: async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); (
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); (
       ui: ReactElement,
       options: RenderOptions = {},
     ): Promise<RenderResult & { axeResults: any }> {
@@ -358,8 +358,8 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
         );
       }
 
-      const result = testRunner?.render(ui, options);
-      const axeResults = await axe(result?.container);
+      const result = testRunner.render(ui, options);
+      const axeResults = await axe(result.container);
 
       return {
         ...result,
@@ -368,8 +368,8 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
     },
 
     renderWithSnapshot: (ui, options = {}) => {
-      const result = testRunner?.render(ui, options);
-      expect(result?.container).toMatchSnapshot();
+      const result = testRunner.render(ui, options);
+      expect(result.container).toMatchSnapshot();
       return result;
     },
 
@@ -385,33 +385,33 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
         delay = 0,
       } = options;
 
-      // Implement based on your mocking strategy (e?.g., MSW, jest?.spyOn, etc.)
-      (global?.fetch as jest?.Mock).mockImplementation(
+      // Implement based on your mocking strategy (e.g., MSW, jest.spyOn, etc.)
+      (global.fetch as jest.Mock).mockImplementation(
         (fetchUrl: string, fetchOptions: RequestInit = {}) => {
-          if (fetchUrl === url && (!fetchOptions?.method || fetchOptions?.method === method)) {
+          if (fetchUrl === url && (!fetchOptions.method || fetchOptions.method === method)) {
             return new Promise((resolve) => {
               setTimeout(() => {
                 resolve({
                   ok: status >= 200 && status < 300,
                   status,
                   headers: new Headers(headers),
-                  json: () => Promise?.resolve(response),
+                  json: () => Promise.resolve(response),
                 });
               }, delay);
             });
           }
 
-          return Promise?.reject(new Error(`Unhandled request: ${fetchUrl}`));
+          return Promise.reject(new Error(`Unhandled request: ${fetchUrl}`));
         },
       );
     },
 
     mockService: (serviceName, mockImplementation) => {
-      jest?.mock(`../services/${serviceName}`, () => mockImplementation);
+      jest.mock(`../services/${serviceName}`, () => mockImplementation);
     },
 
-    createMock: (value: any): jest?.Mock => {
-      return jest?.fn().mockReturnValue(value);
+    createMock: (value: any): jest.Mock => {
+      return jest.fn().mockReturnValue(value);
     },
 
     testIntegration: (description, testFn) => {
@@ -426,7 +426,7 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
           );
         }
 
-        const { container } = testRunner?.render(ui, options);
+        const { container } = testRunner.render(ui, options);
         const results = await axe(container);
 
         expect(results).toHaveNoViolations();
@@ -442,7 +442,7 @@ export function createTestRunner(name: string, options: TestSuiteOptions = {}): 
     },
 
     // Provide access to testing libraries
-    user: userEvent?.setup(),
+    user: userEvent.setup(),
     screen,
     within,
     fireEvent,

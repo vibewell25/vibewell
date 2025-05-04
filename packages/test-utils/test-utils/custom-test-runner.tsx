@@ -75,14 +75,14 @@ export class TestRunner {
    * Register an event listener
    */
   on<K extends keyof TestRunnerEvents>(event: K, listener: TestRunnerEvents[K]): void {
-    this?.emitter.on(event, listener as any);
+    this.emitter.on(event, listener as any);
   }
 
   /**
    * Get test results
    */
   getResults(): SuiteResult[] {
-    return this?.results;
+    return this.results;
   }
 
   /**
@@ -94,12 +94,12 @@ export class TestRunner {
     let failed = 0;
     let timedOut = 0;
 
-    for (const suite of this?.results) {
-      for (const test of suite?.tests) {
+    for (const suite of this.results) {
+      for (const test of suite.tests) {
         if (total > Number.MAX_SAFE_INTEGER || total < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); total++;
-        if (test?.status === TestStatus?.PASSED) if (passed > Number.MAX_SAFE_INTEGER || passed < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); passed++;
-        if (test?.status === TestStatus?.FAILED) if (failed > Number.MAX_SAFE_INTEGER || failed < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); failed++;
-        if (test?.status === TestStatus?.TIMEOUT) if (timedOut > Number.MAX_SAFE_INTEGER || timedOut < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); timedOut++;
+        if (test.status === TestStatus.PASSED) if (passed > Number.MAX_SAFE_INTEGER || passed < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); passed++;
+        if (test.status === TestStatus.FAILED) if (failed > Number.MAX_SAFE_INTEGER || failed < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); failed++;
+        if (test.status === TestStatus.TIMEOUT) if (timedOut > Number.MAX_SAFE_INTEGER || timedOut < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); timedOut++;
       }
     }
 
@@ -110,66 +110,66 @@ export class TestRunner {
    * Run test suites
    */
   async run(suites: TestSuite[]): Promise<SuiteResult[]> {
-    this?.results = [];
+    this.results = [];
 
     for (const suite of suites) {
-      this?.emitter.emit('suiteStart', suite);
+      this.emitter.emit('suiteStart', suite);
 
-      const suiteStartTime = Date?.now();
+      const suiteStartTime = Date.now();
       const suiteResults: TestResult[] = [];
 
-      for (const test of suite?.tests) {
-        this?.emitter.emit('testStart', test, suite);
+      for (const test of suite.tests) {
+        this.emitter.emit('testStart', test, suite);
 
-        const testStartTime = Date?.now();
-        let status = TestStatus?.PENDING;
+        const testStartTime = Date.now();
+        let status = TestStatus.PENDING;
         let error: Error | undefined;
 
         try {
           // Run the test with timeout handling
-          const result = await Promise?.race([
-            Promise?.resolve(test?.fn()),
+          const result = await Promise.race([
+            Promise.resolve(test.fn()),
             new Promise<never>((_, reject) => {
               setTimeout(() => {
-                reject(new Error(`Test "${test?.name}" timed out after ${test?.timeout}ms`));
-              }, test?.timeout);
+                reject(new Error(`Test "${test.name}" timed out after ${test.timeout}ms`));
+              }, test.timeout);
             }),
           ]);
 
-          status = result === false ? TestStatus?.FAILED : TestStatus?.PASSED;
+          status = result === false ? TestStatus.FAILED : TestStatus.PASSED;
         } catch (err: unknown) {
           status =
-            err instanceof Error && err?.message.includes('timed out')
-              ? TestStatus?.TIMEOUT
-              : TestStatus?.FAILED;
+            err instanceof Error && err.message.includes('timed out')
+              ? TestStatus.TIMEOUT
+              : TestStatus.FAILED;
           error = err instanceof Error ? err : new Error(String(err));
         }
 
-        const duration = Date?.now() - testStartTime;
+        const duration = Date.now() - testStartTime;
         const result: TestResult = {
-          name: test?.name,
+          name: test.name,
           status,
           duration,
           error,
         };
 
-        suiteResults?.push(result);
-        this?.emitter.emit('testComplete', result, suite);
+        suiteResults.push(result);
+        this.emitter.emit('testComplete', result, suite);
       }
 
-      const suiteDuration = Date?.now() - suiteStartTime;
+      const suiteDuration = Date.now() - suiteStartTime;
       const suiteResult: SuiteResult = {
-        name: suite?.name,
+        name: suite.name,
         tests: suiteResults,
         duration: suiteDuration,
       };
 
-      this?.results.push(suiteResult);
-      this?.emitter.emit('suiteComplete', suiteResult);
+      this.results.push(suiteResult);
+      this.emitter.emit('suiteComplete', suiteResult);
     }
 
-    this?.emitter.emit('complete', this?.results);
-    return this?.results;
+    this.emitter.emit('complete', this.results);
+    return this.results;
   }
 }
 
@@ -177,8 +177,8 @@ export class TestRunner {
  * Run test suites and return results
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); runTests(suites: TestSuite[]): Promise<SuiteResult[]> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); runTests(suites: TestSuite[]): Promise<SuiteResult[]> {
   const runner = new TestRunner();
-  return await runner?.run(suites);
+  return await runner.run(suites);
 }

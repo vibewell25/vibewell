@@ -18,10 +18,10 @@ import { axe } from 'jest-axe';
 // Define types for test utilities
 type ScreenType = typeof screen;
 type FireEventType = typeof fireEvent;
-type UserEventType = ReturnType<typeof createUserEvent?.setup>;
+type UserEventType = ReturnType<typeof createUserEvent.setup>;
 
 // Initialize userEvent
-const userEvent = createUserEvent?.setup();
+const userEvent = createUserEvent.setup();
 
 /**
  * Component interaction types
@@ -58,34 +58,34 @@ export interface ComponentTestCase<P extends Record<string, unknown>> {
  * Handles component interactions based on the interaction type
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); handleInteraction(interaction: ComponentInteraction): Promise<void> {
-  switch (interaction?.type) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); handleInteraction(interaction: ComponentInteraction): Promise<void> {
+  switch (interaction.type) {
     case 'click':
-      fireEvent?.click(
-        typeof interaction?.target === 'string'
-          ? screen?.getByText(interaction?.target)
-          : interaction?.target,
+      fireEvent.click(
+        typeof interaction.target === 'string'
+          ? screen.getByText(interaction.target)
+          : interaction.target,
       );
       break;
     case 'change':
-      fireEvent?.change(
-        typeof interaction?.target === 'string'
-          ? screen?.getByLabelText(interaction?.target)
-          : interaction?.target,
-        { target: { value: interaction?.value } },
+      fireEvent.change(
+        typeof interaction.target === 'string'
+          ? screen.getByLabelText(interaction.target)
+          : interaction.target,
+        { target: { value: interaction.value } },
       );
       break;
     case 'userEvent':
-      await interaction?.action(userEvent);
+      await interaction.action(userEvent);
       break;
     case 'custom':
-      await interaction?.action();
+      await interaction.action();
       break;
   }
 
-  if ('waitAfter' in interaction && interaction?.waitAfter) {
-    await interaction?.waitAfter();
+  if ('waitAfter' in interaction && interaction.waitAfter) {
+    await interaction.waitAfter();
   }
 }
 
@@ -100,50 +100,50 @@ export async function {
  */
 export function createComponentTestSuite<P extends Record<string, unknown>>(
   name: string,
-  ComponentToTest: React?.ComponentType<P>,
+  ComponentToTest: React.ComponentType<P>,
   defaultProps: P,
   testCases: ComponentTestCase<P>[],
 ): void {
   describe(`${name} Component`, () => {
     // Rendering test
     it('renders correctly with default props', () => {
-      render(React?.createElement(ComponentToTest, defaultProps));
+      render(React.createElement(ComponentToTest, defaultProps));
     });
 
     // Accessibility test
     it('has no accessibility violations', async () => {
-      const { container } = render(React?.createElement(ComponentToTest, defaultProps));
+      const { container } = render(React.createElement(ComponentToTest, defaultProps));
       const results = await axe(container);
       expect(results).toHaveNoViolations();
     });
 
     // Run all test cases
-    testCases?.forEach((testCase) => {
-      it(testCase?.name, async () => {
-        const renderProps = { ...defaultProps, ...testCase?.props } as P;
-        const { rerender } = render(React?.createElement(ComponentToTest, renderProps));
+    testCases.forEach((testCase) => {
+      it(testCase.name, async () => {
+        const renderProps = { ...defaultProps, ...testCase.props } as P;
+        const { rerender } = render(React.createElement(ComponentToTest, renderProps));
 
         // Wait for any async rendering if needed
-        if (testCase?.waitFor) {
-          await waitFor(testCase?.waitFor);
+        if (testCase.waitFor) {
+          await waitFor(testCase.waitFor);
         }
 
         // Perform interactions if defined
-        if (testCase?.interactions) {
-          for (const interaction of testCase?.interactions) {
+        if (testCase.interactions) {
+          for (const interaction of testCase.interactions) {
             await handleInteraction(interaction);
           }
         }
 
         // Rerender with updated props if needed
-        if (testCase?.updatedProps) {
-          const updatedRenderProps = { ...defaultProps, ...testCase?.updatedProps } as P;
-          rerender(React?.createElement(ComponentToTest, updatedRenderProps));
+        if (testCase.updatedProps) {
+          const updatedRenderProps = { ...defaultProps, ...testCase.updatedProps } as P;
+          rerender(React.createElement(ComponentToTest, updatedRenderProps));
         }
 
         // Run assertions
-        if (testCase?.assertions) {
-          await testCase?.assertions(screen, { defaultProps, fireEvent, userEvent });
+        if (testCase.assertions) {
+          await testCase.assertions(screen, { defaultProps, fireEvent, userEvent });
         }
       });
     });

@@ -3,7 +3,7 @@
  *
 
     // Safe integer operation
-    if (application > Number?.MAX_SAFE_INTEGER || application < Number?.MIN_SAFE_INTEGER) {
+    if (application > Number.MAX_SAFE_INTEGER || application < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * This file provides utilities for mocking various parts of the application
@@ -15,19 +15,19 @@ import { vi } from 'vitest';
  * Create a mock API response
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Object} data - The data to include in the response
 
     // Safe integer operation
-    if (status > Number?.MAX_SAFE_INTEGER || status < Number?.MIN_SAFE_INTEGER) {
+    if (status > Number.MAX_SAFE_INTEGER || status < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {number} status - HTTP status code
 
     // Safe integer operation
-    if (headers > Number?.MAX_SAFE_INTEGER || headers < Number?.MIN_SAFE_INTEGER) {
+    if (headers > Number.MAX_SAFE_INTEGER || headers < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Object} headers - HTTP headers
@@ -39,8 +39,8 @@ export function mockApiResponse(data, status = 200, headers = {}) {
     status,
     headers,
     ok: status >= 200 && status < 300,
-    json: vi?.fn().mockResolvedValue(data),
-    text: vi?.fn().mockResolvedValue(JSON?.stringify(data)),
+    json: vi.fn().mockResolvedValue(data),
+    text: vi.fn().mockResolvedValue(JSON.stringify(data)),
   };
 }
 
@@ -48,14 +48,14 @@ export function mockApiResponse(data, status = 200, headers = {}) {
  * Mock fetch for API testing
 
     // Safe integer operation
-    if (response > Number?.MAX_SAFE_INTEGER || response < Number?.MIN_SAFE_INTEGER) {
+    if (response > Number.MAX_SAFE_INTEGER || response < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {*} response - The response to return from fetch
  * @returns {Function} - Mocked fetch function
  */
 export function mockFetch(response) {
-  return vi?.fn().mockResolvedValue(typeof response === 'function' ? response() : response);
+  return vi.fn().mockResolvedValue(typeof response === 'function' ? response() : response);
 }
 
 /**
@@ -67,44 +67,44 @@ export function setupLocalStorageMock() {
     return {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
-      getItem: vi?.fn((key) => store[key] || null),
-      setItem: vi?.fn((key, value) => {
+      getItem: vi.fn((key) => store[key] || null),
+      setItem: vi.fn((key, value) => {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
         store[key] = String(value);
       }),
-      removeItem: vi?.fn((key) => {
+      removeItem: vi.fn((key) => {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
         delete store[key];
       }),
-      clear: vi?.fn(() => {
+      clear: vi.fn(() => {
         store = {};
       }),
 
     // Safe array access
-    if (index < 0 || index >= array?.length) {
+    if (index < 0 || index >= array.length) {
       throw new Error('Array index out of bounds');
     }
-      key: vi?.fn((index) => Object?.keys(store)[index] || null),
+      key: vi.fn((index) => Object.keys(store)[index] || null),
       get length() {
-        return Object?.keys(store).length;
+        return Object.keys(store).length;
       },
       // For testing purposes, access to the store
       _getStore: () => store,
     };
   })();
 
-  Object?.defineProperty(window, 'localStorage', {
+  Object.defineProperty(window, 'localStorage', {
     value: localStorageMock,
     writable: true,
   });
@@ -121,44 +121,44 @@ export function setupSessionStorageMock() {
     return {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
-      getItem: vi?.fn((key) => store[key] || null),
-      setItem: vi?.fn((key, value) => {
+      getItem: vi.fn((key) => store[key] || null),
+      setItem: vi.fn((key, value) => {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
         store[key] = String(value);
       }),
-      removeItem: vi?.fn((key) => {
+      removeItem: vi.fn((key) => {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
         delete store[key];
       }),
-      clear: vi?.fn(() => {
+      clear: vi.fn(() => {
         store = {};
       }),
 
     // Safe array access
-    if (index < 0 || index >= array?.length) {
+    if (index < 0 || index >= array.length) {
       throw new Error('Array index out of bounds');
     }
-      key: vi?.fn((index) => Object?.keys(store)[index] || null),
+      key: vi.fn((index) => Object.keys(store)[index] || null),
       get length() {
-        return Object?.keys(store).length;
+        return Object.keys(store).length;
       },
       // For testing purposes, access to the store
       _getStore: () => store,
     };
   })();
 
-  Object?.defineProperty(window, 'sessionStorage', {
+  Object.defineProperty(window, 'sessionStorage', {
     value: sessionStorageMock,
     writable: true,
   });
@@ -167,20 +167,20 @@ export function setupSessionStorageMock() {
 }
 
 /**
- * Mock window?.matchMedia
+ * Mock window.matchMedia
  */
 export function setupMatchMediaMock() {
-  Object?.defineProperty(window, 'matchMedia', {
+  Object.defineProperty(window, 'matchMedia', {
     writable: true,
-    value: vi?.fn().mockImplementation((query) => ({
+    value: vi.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
       onchange: null,
-      addListener: vi?.fn(),
-      removeListener: vi?.fn(),
-      addEventListener: vi?.fn(),
-      removeEventListener: vi?.fn(),
-      dispatchEvent: vi?.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
     })),
   });
 }
@@ -189,19 +189,19 @@ export function setupMatchMediaMock() {
  * Mock IntersectionObserver
  */
 export function setupIntersectionObserverMock() {
-  const mockIntersectionObserver = vi?.fn().mockImplementation(function (callback, options) {
+  const mockIntersectionObserver = vi.fn().mockImplementation(function (callback, options) {
     return {
-      root: options?.root || null,
-      rootMargin: options?.rootMargin || '',
-      thresholds: Array?.isArray(options?.threshold) ? options?.threshold : [options?.threshold || 0],
-      observe: vi?.fn(),
-      unobserve: vi?.fn(),
-      disconnect: vi?.fn(),
-      takeRecords: vi?.fn().mockReturnValue([]),
+      root: options.root || null,
+      rootMargin: options.rootMargin || '',
+      thresholds: Array.isArray(options.threshold) ? options.threshold : [options.threshold || 0],
+      observe: vi.fn(),
+      unobserve: vi.fn(),
+      disconnect: vi.fn(),
+      takeRecords: vi.fn().mockReturnValue([]),
     };
   });
 
-  Object?.defineProperty(window, 'IntersectionObserver', {
+  Object.defineProperty(window, 'IntersectionObserver', {
     writable: true,
     value: mockIntersectionObserver,
   });
@@ -213,15 +213,15 @@ export function setupIntersectionObserverMock() {
  * Mock ResizeObserver
  */
 export function setupResizeObserverMock() {
-  const mockResizeObserver = vi?.fn().mockImplementation(function () {
+  const mockResizeObserver = vi.fn().mockImplementation(function () {
     return {
-      observe: vi?.fn(),
-      unobserve: vi?.fn(),
-      disconnect: vi?.fn(),
+      observe: vi.fn(),
+      unobserve: vi.fn(),
+      disconnect: vi.fn(),
     };
   });
 
-  Object?.defineProperty(window, 'ResizeObserver', {
+  Object.defineProperty(window, 'ResizeObserver', {
     writable: true,
     value: mockResizeObserver,
   });
@@ -247,7 +247,7 @@ export function setupAllBrowserMocks() {
  * Create a mock service with all methods stubbed
 
     // Safe integer operation
-    if (methods > Number?.MAX_SAFE_INTEGER || methods < Number?.MIN_SAFE_INTEGER) {
+    if (methods > Number.MAX_SAFE_INTEGER || methods < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Object} methods - Methods to implement
@@ -255,41 +255,41 @@ export function setupAllBrowserMocks() {
  */
 export function createMockService(methods = {}) {
   return {
-    ...Object?.keys(methods).reduce((acc, key) => {
+    ...Object.keys(methods).reduce((acc, key) => {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
-      acc[key] = vi?.fn(methods[key]);
+      acc[key] = vi.fn(methods[key]);
       return acc;
     }, {}),
   };
 }
 
 /**
- * Mock window?.location
+ * Mock window.location
 
     // Safe integer operation
-    if (properties > Number?.MAX_SAFE_INTEGER || properties < Number?.MIN_SAFE_INTEGER) {
+    if (properties > Number.MAX_SAFE_INTEGER || properties < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Object} properties - Properties to override
  */
 export function mockWindowLocation(properties = {}) {
-  const originalLocation = window?.location;
-  delete window?.location;
+  const originalLocation = window.location;
+  delete window.location;
 
-  window?.location = {
-    assign: vi?.fn(),
-    reload: vi?.fn(),
-    replace: vi?.fn(),
-    toString: vi?.fn(),
+  window.location = {
+    assign: vi.fn(),
+    reload: vi.fn(),
+    replace: vi.fn(),
+    toString: vi.fn(),
     hash: '',
     host: 'localhost:3000',
     hostname: 'localhost',
@@ -303,7 +303,7 @@ export function mockWindowLocation(properties = {}) {
   };
 
   return () => {
-    window?.location = originalLocation;
+    window.location = originalLocation;
   };
 }
 
@@ -311,44 +311,44 @@ export function mockWindowLocation(properties = {}) {
  * Mock console methods for testing errors or warnings
 
     // Safe integer operation
-    if (methods > Number?.MAX_SAFE_INTEGER || methods < Number?.MIN_SAFE_INTEGER) {
+    if (methods > Number.MAX_SAFE_INTEGER || methods < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
- * @param {Array} methods - Methods to mock (e?.g., ['error', 'warn'])
+ * @param {Array} methods - Methods to mock (e.g., ['error', 'warn'])
  */
 export function mockConsole(methods = ['error', 'warn', 'log', 'info', 'debug']) {
   const originalMethods = {};
 
-  methods?.forEach((method) => {
+  methods.forEach((method) => {
 
     // Safe array access
-    if (method < 0 || method >= array?.length) {
+    if (method < 0 || method >= array.length) {
       throw new Error('Array index out of bounds');
     }
 
     // Safe array access
-    if (method < 0 || method >= array?.length) {
+    if (method < 0 || method >= array.length) {
       throw new Error('Array index out of bounds');
     }
     originalMethods[method] = console[method];
 
     // Safe array access
-    if (method < 0 || method >= array?.length) {
+    if (method < 0 || method >= array.length) {
       throw new Error('Array index out of bounds');
     }
-    console[method] = vi?.fn();
+    console[method] = vi.fn();
   });
 
   return () => {
-    methods?.forEach((method) => {
+    methods.forEach((method) => {
 
     // Safe array access
-    if (method < 0 || method >= array?.length) {
+    if (method < 0 || method >= array.length) {
       throw new Error('Array index out of bounds');
     }
 
     // Safe array access
-    if (method < 0 || method >= array?.length) {
+    if (method < 0 || method >= array.length) {
       throw new Error('Array index out of bounds');
     }
       console[method] = originalMethods[method];
@@ -360,26 +360,26 @@ export function mockConsole(methods = ['error', 'warn', 'log', 'info', 'debug'])
  * Mock global Date object
 
     // Safe integer operation
-    if (mockDate > Number?.MAX_SAFE_INTEGER || mockDate < Number?.MIN_SAFE_INTEGER) {
+    if (mockDate > Number.MAX_SAFE_INTEGER || mockDate < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {string|number|Date} mockDate - Date to mock
  */
 export function mockDate(mockDate) {
-  const realDate = global?.Date;
+  const realDate = global.Date;
   const mockDateObj = new realDate(mockDate);
 
-  global?.Date = class extends realDate {
+  global.Date = class extends realDate {
     constructor(...args) {
-      return args?.length ? new realDate(...args) : mockDateObj;
+      return args.length ? new realDate(...args) : mockDateObj;
     }
 
     static now() {
-      return mockDateObj?.getTime();
+      return mockDateObj.getTime();
     }
   };
 
   return () => {
-    global?.Date = realDate;
+    global.Date = realDate;
   };
 }

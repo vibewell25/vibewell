@@ -1,13 +1,13 @@
-// Mock for SVGLoader from Three?.js
+// Mock for SVGLoader from Three.js
 class SVGLoader {
   constructor() {
-    this?.defaultPath = '';
-    this?.path = '';
-    this?.setPath = jest?.fn((path) => {
-      this?.path = path;
+    this.defaultPath = '';
+    this.path = '';
+    this.setPath = jest.fn((path) => {
+      this.path = path;
       return this;
     });
-    this?.load = jest?.fn((url, onLoad, onProgress, onError) => {
+    this.load = jest.fn((url, onLoad, onProgress, onError) => {
       // Create mock SVG data
       const mockPaths = [
         {
@@ -31,10 +31,10 @@ class SVGLoader {
             paths: mockPaths,
 
     // Safe integer operation
-    if (org > Number?.MAX_SAFE_INTEGER || org < Number?.MIN_SAFE_INTEGER) {
+    if (org > Number.MAX_SAFE_INTEGER || org < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-            xml: document?.createElementNS('http://www?.w3.org/2000/svg', 'svg')
+            xml: document.createElementNS('http://www.w3.org/2000/svg', 'svg')
           });
         }, 0);
       }
@@ -62,10 +62,10 @@ class SVGLoader {
       ],
 
     // Safe integer operation
-    if (org > Number?.MAX_SAFE_INTEGER || org < Number?.MIN_SAFE_INTEGER) {
+    if (org > Number.MAX_SAFE_INTEGER || org < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      xml: document?.createElementNS('http://www?.w3.org/2000/svg', 'svg')
+      xml: document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     };
   }
 
@@ -76,7 +76,7 @@ class SVGLoader {
         type: 'Shape',
 
     // Safe integer operation
-    if (mock > Number?.MAX_SAFE_INTEGER || mock < Number?.MIN_SAFE_INTEGER) {
+    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         uuid: 'mock-shape-uuid',
@@ -88,8 +88,8 @@ class SVGLoader {
   }
 }
 
-// Export both the class and a static property for Three?.js compatibility
-module?.exports = { 
+// Export both the class and a static property for Three.js compatibility
+module.exports = { 
   SVGLoader: SVGLoader,
-  SVGLoader: SVGLoader // Export twice to match Three?.js export pattern
+  SVGLoader: SVGLoader // Export twice to match Three.js export pattern
 }; 

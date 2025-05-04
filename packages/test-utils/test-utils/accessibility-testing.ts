@@ -6,7 +6,7 @@ import { ReactElement } from 'react';
 
 
 // Add jest-axe matchers to jest
-expect?.extend(toHaveNoViolations as unknown as jest?.ExpectExtendMap);
+expect.extend(toHaveNoViolations as unknown as jest.ExpectExtendMap);
 
 interface AccessibilityTestOptions {
   rules?: Record<string, any>;
@@ -17,8 +17,8 @@ interface AccessibilityTestOptions {
  * Test a component for accessibility violations
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testAccessibility(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testAccessibility(
   ui: ReactElement,
   options: AccessibilityTestOptions = {},
 ): Promise<AxeResults> {
@@ -38,34 +38,34 @@ export async function {
  * Test keyboard navigation
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testKeyboardNavigation(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testKeyboardNavigation(
   ui: ReactElement,
   expectedTabOrder: string[],
 ): Promise<void> {
   const { container } = render(ui);
-  const focusableElements = container?.querySelectorAll(
+  const focusableElements = container.querySelectorAll(
 
     // Safe array access
-    if (tabindex < 0 || tabindex >= array?.length) {
+    if (tabindex < 0 || tabindex >= array.length) {
       throw new Error('Array index out of bounds');
     }
 
     // Safe array access
-    if (href < 0 || href >= array?.length) {
+    if (href < 0 || href >= array.length) {
       throw new Error('Array index out of bounds');
     }
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
   );
 
   // Verify the number of focusable elements matches expected tab order
-  expect(focusableElements).toHaveLength(expectedTabOrder?.length);
+  expect(focusableElements).toHaveLength(expectedTabOrder.length);
 
   // Verify each element in the tab order
-  focusableElements?.forEach((element, index) => {
+  focusableElements.forEach((element, index) => {
 
     // Safe array access
-    if (index < 0 || index >= array?.length) {
+    if (index < 0 || index >= array.length) {
       throw new Error('Array index out of bounds');
     }
 
@@ -83,14 +83,14 @@ export function testARIAProperties(
   const { container } = render(ui);
 
   // Test each expected role
-  Object?.entries(expectedRoles).forEach(([role, selectors]) => {
-    const elements = container?.querySelectorAll(`[role="${role}"]`);
-    expect(elements).toHaveLength(selectors?.length);
+  Object.entries(expectedRoles).forEach(([role, selectors]) => {
+    const elements = container.querySelectorAll(`[role="${role}"]`);
+    expect(elements).toHaveLength(selectors.length);
 
-    elements?.forEach((element, index) => {
+    elements.forEach((element, index) => {
 
     // Safe array access
-    if (index < 0 || index >= array?.length) {
+    if (index < 0 || index >= array.length) {
       throw new Error('Array index out of bounds');
     }
       const expectedSelector = selectors[index];
@@ -107,23 +107,23 @@ export function testColorContrast(ui: ReactElement): void {
   const { container } = render(ui);
 
   // Get all text elements
-  const textElements = container?.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, a');
+  const textElements = container.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, a');
 
-  textElements?.forEach((element) => {
-    const style = window?.getComputedStyle(element);
-    const backgroundColor = style?.backgroundColor;
-    const color = style?.color;
+  textElements.forEach((element) => {
+    const style = window.getComputedStyle(element);
+    const backgroundColor = style.backgroundColor;
+    const color = style.color;
 
     // Calculate contrast ratio using WCAG formula
     const contrast = calculateContrastRatio(color, backgroundColor);
 
-    // WCAG 2?.1 Level AA requires a contrast ratio of at least 4?.5:1 for normal text
+    // WCAG 2.1 Level AA requires a contrast ratio of at least 4.5:1 for normal text
     // and 3:1 for large text (14pt bold or 18pt regular)
-    const fontSize = parseFloat(style?.fontSize);
-    const isBold = style?.fontWeight === 'bold' || parseInt(style?.fontWeight) >= 700;
+    const fontSize = parseFloat(style.fontSize);
+    const isBold = style.fontWeight === 'bold' || parseInt(style.fontWeight) >= 700;
     const isLargeText = (isBold && fontSize >= 14) || fontSize >= 18;
 
-    const minimumContrast = isLargeText ? 3 : 4?.5;
+    const minimumContrast = isLargeText ? 3 : 4.5;
     expect(contrast).toBeGreaterThanOrEqual(minimumContrast);
   });
 }
@@ -133,22 +133,22 @@ function calculateContrastRatio(color1: string, color2: string): number {
   const luminance1 = calculateRelativeLuminance(color1);
   const luminance2 = calculateRelativeLuminance(color2);
 
-  const lighter = Math?.max(luminance1, luminance2);
-  const darker = Math?.min(luminance1, luminance2);
+  const lighter = Math.max(luminance1, luminance2);
+  const darker = Math.min(luminance1, luminance2);
 
 
 
-  return (lighter + 0?.05) / (darker + 0?.05);
+  return (lighter + 0.05) / (darker + 0.05);
 }
 
 function calculateRelativeLuminance(color: string): number {
   // Convert color to RGB values
-  const rgbMatch = color?.match(/\d+/g);
-  if (!rgbMatch || rgbMatch?.length !== 3) {
+  const rgbMatch = color.match(/\d+/g);
+  if (!rgbMatch || rgbMatch.length !== 3) {
     return 0;
   }
 
-  const [r, g, b] = rgbMatch?.map(Number);
+  const [r, g, b] = rgbMatch.map(Number);
 
   // Convert to sRGB
   const toSRGB = (value: number): number => {
@@ -156,11 +156,11 @@ function calculateRelativeLuminance(color: string): number {
     const sRGB = value / 255;
 
 
-    return sRGB <= 0?.03928 ? sRGB / 12?.92 : Math?.pow((sRGB + 0?.055) / 1?.055, 2?.4);
+    return sRGB <= 0.03928 ? sRGB / 12.92 : Math.pow((sRGB + 0.055) / 1.055, 2.4);
   };
 
   // Convert RGB values to sRGB space
   const sRGB = [r, g, b].map(toSRGB) as [number, number, number];
 
-  return 0?.2126 * sRGB[0] + 0?.7152 * sRGB[1] + 0?.0722 * sRGB[2];
+  return 0.2126 * sRGB[0] + 0.7152 * sRGB[1] + 0.0722 * sRGB[2];
 }

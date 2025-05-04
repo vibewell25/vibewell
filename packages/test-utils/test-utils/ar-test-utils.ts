@@ -9,7 +9,7 @@ import React from 'react';
 // Mock WebGL context
 const mockWebGL = {
   getContext: () => ({
-    canvas: document?.createElement('canvas'),
+    canvas: document.createElement('canvas'),
     getExtension: () => null,
     getParameter: () => {},
     getShaderPrecisionFormat: () => ({
@@ -22,19 +22,19 @@ const mockWebGL = {
 
 // Mock XR session
 const mockXRSession = {
-  requestReferenceSpace: () => Promise?.resolve({}),
+  requestReferenceSpace: () => Promise.resolve({}),
   requestAnimationFrame: (callback: FrameRequestCallback) => {
     callback(0);
     return 0;
   },
-  end: () => Promise?.resolve(),
+  end: () => Promise.resolve(),
 };
 
 // Custom render function for AR components
-export function renderARComponent(ui: React?.ReactElement) {
+export function renderARComponent(ui: React.ReactElement) {
   // Mock canvas and WebGL context
-  const canvas = document?.createElement('canvas');
-  Object?.defineProperty(canvas, 'getContext', { value: mockWebGL?.getContext });
+  const canvas = document.createElement('canvas');
+  Object.defineProperty(canvas, 'getContext', { value: mockWebGL.getContext });
 
   // Setup mock XR
   (global as any).XRSession = mockXRSession;
@@ -47,10 +47,10 @@ export function renderARComponent(ui: React?.ReactElement) {
 
   // Return properly rendered component without JSX-like syntax
   return render(
-    React?.createElement(
+    React.createElement(
       MockCanvas,
       {},
-      React?.createElement(MockGL, {}, React?.createElement(MockXR, {}, ui)),
+      React.createElement(MockGL, {}, React.createElement(MockXR, {}, ui)),
     ),
   );
 }
@@ -62,17 +62,17 @@ export class ARTestHelper {
   }
 
   static calculateDistance(v1: Vector3, v2: Vector3) {
-    return v1?.distanceTo(v2);
+    return v1.distanceTo(v2);
   }
 
   static isWithinBounds(position: Vector3, bounds: { min: Vector3; max: Vector3 }) {
     return (
-      position?.x >= bounds?.min.x &&
-      position?.x <= bounds?.max.x &&
-      position?.y >= bounds?.min.y &&
-      position?.y <= bounds?.max.y &&
-      position?.z >= bounds?.min.z &&
-      position?.z <= bounds?.max.z
+      position.x >= bounds.min.x &&
+      position.x <= bounds.max.x &&
+      position.y >= bounds.min.y &&
+      position.y <= bounds.max.y &&
+      position.z >= bounds.min.z &&
+      position.z <= bounds.max.z
     );
   }
 }
@@ -83,30 +83,30 @@ export class ARPerformanceTest {
   private measurements: { name: string; duration: number }[] = [];
 
   startMeasurement() {
-    this?.startTime = performance?.now();
+    this.startTime = performance.now();
   }
 
   endMeasurement(name: string) {
-    const duration = performance?.now() - this?.startTime;
-    this?.measurements.push({ name, duration });
+    const duration = performance.now() - this.startTime;
+    this.measurements.push({ name, duration });
   }
 
   getResults() {
     return {
-      measurements: this?.measurements,
+      measurements: this.measurements,
       averageDuration:
 
-        this?.measurements.reduce((acc, m) => acc + m?.duration, 0) / this?.measurements.length,
-      maxDuration: Math?.max(...this?.measurements.map((m) => m?.duration)),
-      minDuration: Math?.min(...this?.measurements.map((m) => m?.duration)),
+        this.measurements.reduce((acc, m) => acc + m.duration, 0) / this.measurements.length,
+      maxDuration: Math.max(...this.measurements.map((m) => m.duration)),
+      minDuration: Math.min(...this.measurements.map((m) => m.duration)),
     };
   }
 
   assertPerformance(maxDuration: number) {
-    const results = this?.getResults();
-    if (results?.averageDuration > maxDuration) {
+    const results = this.getResults();
+    if (results.averageDuration > maxDuration) {
       throw new Error(
-        `Performance test failed: average duration ${results?.averageDuration}ms exceeds maximum ${maxDuration}ms`,
+        `Performance test failed: average duration ${results.averageDuration}ms exceeds maximum ${maxDuration}ms`,
       );
     }
   }
@@ -117,19 +117,19 @@ export class ARAssetTest {
   static async testAssetLoading(url: string): Promise<boolean> {
     try {
       const response = await fetch(url);
-      if (!response?.ok) throw new Error(`Failed to load asset: ${response?.statusText}`);
+      if (!response.ok) throw new Error(`Failed to load asset: ${response.statusText}`);
 
-      const buffer = await response?.arrayBuffer();
-      return buffer?.byteLength > 0;
+      const buffer = await response.arrayBuffer();
+      return buffer.byteLength > 0;
     } catch (error) {
-      console?.error('Asset loading test failed:', error);
+      console.error('Asset loading test failed:', error);
       return false;
     }
   }
 
   static validateGLTF(buffer: ArrayBuffer): boolean {
     // Basic GLTF validation
-    const header = new Uint32Array(buffer?.slice(0, 20));
+    const header = new Uint32Array(buffer.slice(0, 20));
     const magic = header[0];
     const version = header[1];
 
@@ -147,11 +147,11 @@ describe('AR Component Tests', () => {
 
   it('should measure AR performance', () => {
     const perfTest = new ARPerformanceTest();
-    perfTest?.startMeasurement();
+    perfTest.startMeasurement();
     // Your AR operations here
 
-    perfTest?.endMeasurement('test-operation');
-    perfTest?.assertPerformance(100); // Assert operation takes less than 100ms
+    perfTest.endMeasurement('test-operation');
+    perfTest.assertPerformance(100); // Assert operation takes less than 100ms
   });
 });
 */

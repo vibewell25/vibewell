@@ -5,9 +5,9 @@ import { useAnalytics } from '@/hooks/use-analytics';
 import { AnalyticsService } from '@/services/analytics-service';
 
 // Mock the hooks and services
-jest?.mock('@/hooks/use-analytics');
-jest?.mock('@/services/analytics-service');
-jest?.mock('@/components/ar/social-share-buttons', () => ({
+jest.mock('@/hooks/use-analytics');
+jest.mock('@/services/analytics-service');
+jest.mock('@/components/ar/social-share-buttons', () => ({
   SocialShareButtons: ({ 
     imageData, 
     type, 
@@ -31,12 +31,12 @@ jest?.mock('@/components/ar/social-share-buttons', () => ({
 }));
 
 // Mock global fetch
-global?.fetch = jest?.fn();
+global.fetch = jest.fn();
 
 describe('ShareDialog', () => {
   const mockProps = {
     isOpen: true,
-    onClose: jest?.fn(),
+    onClose: jest.fn(),
     imageData: 'data:image/png;base64,mockImageData',
     type: 'makeup' as const,
     productName: 'Red Lipstick',
@@ -44,24 +44,24 @@ describe('ShareDialog', () => {
   };
   
   const mockAnalyticsReturn = {
-    trackEvent: jest?.fn()
+    trackEvent: jest.fn()
   };
   
   const mockAnalyticsService = {
-    trackShare: jest?.fn().mockResolvedValue({})
+    trackShare: jest.fn().mockResolvedValue({})
   };
   
   beforeEach(() => {
-    jest?.clearAllMocks();
+    jest.clearAllMocks();
     
     // Setup mocks
-    (useAnalytics as jest?.Mock).mockReturnValue(mockAnalyticsReturn);
-    (AnalyticsService as jest?.Mock).mockImplementation(() => mockAnalyticsService);
+    (useAnalytics as jest.Mock).mockReturnValue(mockAnalyticsReturn);
+    (AnalyticsService as jest.Mock).mockImplementation(() => mockAnalyticsService);
     
     // Setup fetch mock
-    (global?.fetch as jest?.Mock).mockResolvedValue({
+    (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,
-      json: () => Promise?.resolve({ shareUrl: 'https://vibewell?.com/share/abc123' })
+      json: () => Promise.resolve({ shareUrl: 'https://vibewell.com/share/abc123' })
     });
   });
   
@@ -70,12 +70,12 @@ describe('ShareDialog', () => {
     render(<ShareDialog {...mockProps} />);
     
     // Assert
-    expect(screen?.getByText('Share Your Look')).toBeInTheDocument();
-    expect(screen?.getByRole('img')).toBeInTheDocument();
-    expect(screen?.getByRole('img').getAttribute('src')).toBe(mockProps?.imageData);
-    expect(screen?.getByText('Social Media')).toBeInTheDocument();
-    expect(screen?.getByText('Email')).toBeInTheDocument();
-    expect(screen?.getByText('Download Image')).toBeInTheDocument();
+    expect(screen.getByText('Share Your Look')).toBeInTheDocument();
+    expect(screen.getByRole('img')).toBeInTheDocument();
+    expect(screen.getByRole('img').getAttribute('src')).toBe(mockProps.imageData);
+    expect(screen.getByText('Social Media')).toBeInTheDocument();
+    expect(screen.getByText('Email')).toBeInTheDocument();
+    expect(screen.getByText('Download Image')).toBeInTheDocument();
   });
   
   it('does not render when closed', () => {
@@ -83,7 +83,7 @@ describe('ShareDialog', () => {
     render(<ShareDialog {...mockProps} isOpen={false} />);
     
     // Assert
-    expect(screen?.queryByText('Share Your Look')).not?.toBeInTheDocument();
+    expect(screen.queryByText('Share Your Look')).not.toBeInTheDocument();
   });
   
   it('handles email sharing correctly', async () => {
@@ -91,51 +91,51 @@ describe('ShareDialog', () => {
     render(<ShareDialog {...mockProps} />);
     
     // Act - Switch to email tab
-    fireEvent?.click(screen?.getByText('Email'));
+    fireEvent.click(screen.getByText('Email'));
     
     // Enter email
-    const emailInput = screen?.getByPlaceholderText('Enter email address');
-    fireEvent?.change(emailInput, { target: { value: 'test@example?.com' } });
+    const emailInput = screen.getByPlaceholderText('Enter email address');
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     
     // Click share button
-    fireEvent?.click(screen?.getByText('Share via Email'));
+    fireEvent.click(screen.getByText('Share via Email'));
     
     // Assert
-    expect(global?.fetch).toHaveBeenCalledWith('/api/share', {
+    expect(global.fetch).toHaveBeenCalledWith('/api/share', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON?.stringify({
-        email: 'test@example?.com',
-        imageData: mockProps?.imageData,
-        type: mockProps?.type,
-        productName: mockProps?.productName,
+      body: JSON.stringify({
+        email: 'test@example.com',
+        imageData: mockProps.imageData,
+        type: mockProps.type,
+        productName: mockProps.productName,
       }),
     });
     
     await waitFor(() => {
       // Check that analytics was called
-      expect(mockAnalyticsReturn?.trackEvent).toHaveBeenCalledWith(
+      expect(mockAnalyticsReturn.trackEvent).toHaveBeenCalledWith(
         'share_attempt',
-        expect?.objectContaining({
-          type: mockProps?.type,
+        expect.objectContaining({
+          type: mockProps.type,
           method: 'email'
         })
       );
       
-      expect(mockAnalyticsReturn?.trackEvent).toHaveBeenCalledWith(
+      expect(mockAnalyticsReturn.trackEvent).toHaveBeenCalledWith(
         'share_success',
-        expect?.objectContaining({
-          type: mockProps?.type,
+        expect.objectContaining({
+          type: mockProps.type,
           method: 'email'
         })
       );
       
       // Check that analytics service was called
-      expect(mockAnalyticsService?.trackShare).toHaveBeenCalledWith({
+      expect(mockAnalyticsService.trackShare).toHaveBeenCalledWith({
         sessionId: 'abc123',
-        userId: mockProps?.userId,
+        userId: mockProps.userId,
         platform: 'email',
         method: 'email',
         success: true
@@ -146,36 +146,36 @@ describe('ShareDialog', () => {
   it('handles email share errors correctly', async () => {
     // Arrange
     const mockError = new Error('Server error');
-    (global?.fetch as jest?.Mock).mockRejectedValueOnce(mockError);
+    (global.fetch as jest.Mock).mockRejectedValueOnce(mockError);
     
     render(<ShareDialog {...mockProps} />);
     
     // Act - Switch to email tab
-    fireEvent?.click(screen?.getByText('Email'));
+    fireEvent.click(screen.getByText('Email'));
     
     // Enter email
-    const emailInput = screen?.getByPlaceholderText('Enter email address');
-    fireEvent?.change(emailInput, { target: { value: 'test@example?.com' } });
+    const emailInput = screen.getByPlaceholderText('Enter email address');
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     
     // Click share button
-    fireEvent?.click(screen?.getByText('Share via Email'));
+    fireEvent.click(screen.getByText('Share via Email'));
     
     // Assert
     await waitFor(() => {
       // Check that analytics error was tracked
-      expect(mockAnalyticsReturn?.trackEvent).toHaveBeenCalledWith(
+      expect(mockAnalyticsReturn.trackEvent).toHaveBeenCalledWith(
         'share_error',
-        expect?.objectContaining({
-          type: mockProps?.type,
+        expect.objectContaining({
+          type: mockProps.type,
           method: 'email',
           error: 'Server error'
         })
       );
       
       // Check that analytics service was called with error
-      expect(mockAnalyticsService?.trackShare).toHaveBeenCalledWith({
+      expect(mockAnalyticsService.trackShare).toHaveBeenCalledWith({
         sessionId: 'unknown',
-        userId: mockProps?.userId,
+        userId: mockProps.userId,
         platform: 'email',
         method: 'email',
         success: false,
@@ -190,54 +190,54 @@ describe('ShareDialog', () => {
     const mockLink = {
       href: '',
       download: '',
-      click: jest?.fn(),
+      click: jest.fn(),
     };
     
-    // Type-safe mocking of document?.createElement
-    const originalCreateElement = document?.createElement;
-    document?.createElement = jest?.fn().mockImplementation((tag) => {
+    // Type-safe mocking of document.createElement
+    const originalCreateElement = document.createElement;
+    document.createElement = jest.fn().mockImplementation((tag) => {
       if (tag === 'a') {
         return mockLink as unknown as HTMLElement;
       }
-      return originalCreateElement?.call(document, tag);
+      return originalCreateElement.call(document, tag);
     });
     
-    const mockAppendChild = jest?.fn();
-    const mockRemoveChild = jest?.fn();
-    document?.body.appendChild = mockAppendChild;
-    document?.body.removeChild = mockRemoveChild;
+    const mockAppendChild = jest.fn();
+    const mockRemoveChild = jest.fn();
+    document.body.appendChild = mockAppendChild;
+    document.body.removeChild = mockRemoveChild;
     
     // Act
     render(<ShareDialog {...mockProps} />);
     
     // Click download button
-    fireEvent?.click(screen?.getByText('Download Image'));
+    fireEvent.click(screen.getByText('Download Image'));
     
     // Assert
-    expect(document?.createElement).toHaveBeenCalledWith('a');
-    expect(mockLink?.href).toBe(mockProps?.imageData);
-    expect(mockLink?.download).toMatch(/vibewell-makeup-.*\.png/);
-    expect(mockLink?.click).toHaveBeenCalled();
+    expect(document.createElement).toHaveBeenCalledWith('a');
+    expect(mockLink.href).toBe(mockProps.imageData);
+    expect(mockLink.download).toMatch(/vibewell-makeup-.*\.png/);
+    expect(mockLink.click).toHaveBeenCalled();
     expect(mockAppendChild).toHaveBeenCalledWith(mockLink);
     expect(mockRemoveChild).toHaveBeenCalledWith(mockLink);
     
-    expect(mockAnalyticsReturn?.trackEvent).toHaveBeenCalledWith(
+    expect(mockAnalyticsReturn.trackEvent).toHaveBeenCalledWith(
       'image_downloaded',
-      expect?.objectContaining({
-        type: mockProps?.type
+      expect.objectContaining({
+        type: mockProps.type
       })
     );
     
-    expect(mockAnalyticsService?.trackShare).toHaveBeenCalledWith({
+    expect(mockAnalyticsService.trackShare).toHaveBeenCalledWith({
       sessionId: 'download',
-      userId: mockProps?.userId,
+      userId: mockProps.userId,
       platform: 'local',
       method: 'download',
       success: true
     });
     
-    // Restore original document?.createElement
-    document?.createElement = originalCreateElement;
+    // Restore original document.createElement
+    document.createElement = originalCreateElement;
   });
   
   it('shows social share buttons after successful email share', async () => {
@@ -245,26 +245,26 @@ describe('ShareDialog', () => {
     render(<ShareDialog {...mockProps} />);
     
     // Act - Switch to email tab and share
-    fireEvent?.click(screen?.getByText('Email'));
+    fireEvent.click(screen.getByText('Email'));
     
     // Enter email
-    const emailInput = screen?.getByPlaceholderText('Enter email address');
-    fireEvent?.change(emailInput, { target: { value: 'test@example?.com' } });
+    const emailInput = screen.getByPlaceholderText('Enter email address');
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     
     // Click share button
-    fireEvent?.click(screen?.getByText('Share via Email'));
+    fireEvent.click(screen.getByText('Share via Email'));
     
     // Wait for share to complete
     await waitFor(() => {
-      expect(mockAnalyticsService?.trackShare).toHaveBeenCalled();
+      expect(mockAnalyticsService.trackShare).toHaveBeenCalled();
     });
     
     // Switch to social tab
-    fireEvent?.click(screen?.getByText('Social Media'));
+    fireEvent.click(screen.getByText('Social Media'));
     
     // Assert
-    expect(screen?.getByTestId('social-share-buttons')).toBeInTheDocument();
-    expect(screen?.getByText(`URL: https://vibewell?.com/share/abc123`)).toBeInTheDocument();
+    expect(screen.getByTestId('social-share-buttons')).toBeInTheDocument();
+    expect(screen.getByText(`URL: https://vibewell.com/share/abc123`)).toBeInTheDocument();
   });
   
   it('tracks social sharing through social buttons', async () => {
@@ -273,38 +273,38 @@ describe('ShareDialog', () => {
     render(<ShareDialog {...mockProps} />);
     
     // Email share
-    fireEvent?.click(screen?.getByText('Email'));
-    const emailInput = screen?.getByPlaceholderText('Enter email address');
-    fireEvent?.change(emailInput, { target: { value: 'test@example?.com' } });
-    fireEvent?.click(screen?.getByText('Share via Email'));
+    fireEvent.click(screen.getByText('Email'));
+    const emailInput = screen.getByPlaceholderText('Enter email address');
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.click(screen.getByText('Share via Email'));
     
     // Wait for share to complete
     await waitFor(() => {
-      expect(mockAnalyticsService?.trackShare).toHaveBeenCalled();
+      expect(mockAnalyticsService.trackShare).toHaveBeenCalled();
     });
     
     // Switch to social tab
-    fireEvent?.click(screen?.getByText('Social Media'));
+    fireEvent.click(screen.getByText('Social Media'));
     
     // Act - Click on Facebook share
-    fireEvent?.click(screen?.getByTestId('facebook-share'));
+    fireEvent.click(screen.getByTestId('facebook-share'));
     
     // Assert
-    expect(mockAnalyticsService?.trackShare).toHaveBeenCalledWith({
+    expect(mockAnalyticsService.trackShare).toHaveBeenCalledWith({
       sessionId: 'abc123',
-      userId: mockProps?.userId,
+      userId: mockProps.userId,
       platform: 'facebook',
       method: 'social',
       success: true
     });
     
     // Act - Click on Twitter share
-    fireEvent?.click(screen?.getByTestId('twitter-share'));
+    fireEvent.click(screen.getByTestId('twitter-share'));
     
     // Assert
-    expect(mockAnalyticsService?.trackShare).toHaveBeenCalledWith({
+    expect(mockAnalyticsService.trackShare).toHaveBeenCalledWith({
       sessionId: 'abc123',
-      userId: mockProps?.userId,
+      userId: mockProps.userId,
       platform: 'twitter',
       method: 'social',
       success: true
@@ -316,9 +316,9 @@ describe('ShareDialog', () => {
     render(<ShareDialog {...mockProps} />);
     
     // Act - Click on close button (usually the X in top right)
-    fireEvent?.click(screen?.getByRole('button', { name: /close/i }));
+    fireEvent.click(screen.getByRole('button', { name: /close/i }));
     
     // Assert
-    expect(mockProps?.onClose).toHaveBeenCalled();
+    expect(mockProps.onClose).toHaveBeenCalled();
   });
 }); 

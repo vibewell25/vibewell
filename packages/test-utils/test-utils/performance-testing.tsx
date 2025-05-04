@@ -19,19 +19,19 @@ export function measureRenderTime(renderFn, iterations = 5) {
 
   // Measure render time for each iteration
   for (let i = 0; i < iterations; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-    const start = performance?.now();
+    const start = performance.now();
     renderFn();
-    const end = performance?.now();
-    times?.push(end - start);
+    const end = performance.now();
+    times.push(end - start);
   }
 
   // Calculate statistics
   return {
     times,
-    min: Math?.min(...times),
-    max: Math?.max(...times),
-    average: times?.reduce((sum, time) => sum + time, 0) / times?.length,
-    median: times?.sort()[Math?.floor(times?.length / 2)],
+    min: Math.min(...times),
+    max: Math.max(...times),
+    average: times.reduce((sum, time) => sum + time, 0) / times.length,
+    median: times.sort()[Math.floor(times.length / 2)],
   };
 }
 
@@ -56,20 +56,20 @@ export function measureUpdateTime(renderFn, updateFn, iterations = 5) {
   for (let i = 0; i < iterations; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
     updateFn();
 
-    const start = performance?.now();
+    const start = performance.now();
     rerender();
-    const end = performance?.now();
+    const end = performance.now();
 
-    times?.push(end - start);
+    times.push(end - start);
   }
 
   // Calculate statistics
   return {
     times,
-    min: Math?.min(...times),
-    max: Math?.max(...times),
-    average: times?.reduce((sum, time) => sum + time, 0) / times?.length,
-    median: times?.sort()[Math?.floor(times?.length / 2)],
+    min: Math.min(...times),
+    max: Math.max(...times),
+    average: times.reduce((sum, time) => sum + time, 0) / times.length,
+    median: times.sort()[Math.floor(times.length / 2)],
   };
 }
 
@@ -85,7 +85,7 @@ export function testRenderPerformance(renderFn, timeBudget, iterations = 5) {
 
   expect(average).toBeLessThanOrEqual(
     timeBudget,
-    `Component rendered in ${average?.toFixed(2)}ms, which exceeds the time budget of ${timeBudget}ms`,
+    `Component rendered in ${average.toFixed(2)}ms, which exceeds the time budget of ${timeBudget}ms`,
   );
 
   return average <= timeBudget;
@@ -97,8 +97,8 @@ export function testRenderPerformance(renderFn, timeBudget, iterations = 5) {
  * @returns {Object} - Memory usage before and after rendering
  */
 export function measureMemoryUsage(renderFn) {
-  // Only works in environments that support performance?.memory
-  if (!performance?.memory) {
+  // Only works in environments that support performance.memory
+  if (!performance.memory) {
     return {
       supported: false,
       message: 'Memory measurement not supported in this environment',
@@ -107,8 +107,8 @@ export function measureMemoryUsage(renderFn) {
 
   // Measure memory before rendering
   const before = {
-    usedJSHeapSize: performance?.memory.usedJSHeapSize,
-    totalJSHeapSize: performance?.memory.totalJSHeapSize,
+    usedJSHeapSize: performance.memory.usedJSHeapSize,
+    totalJSHeapSize: performance.memory.totalJSHeapSize,
   };
 
   // Render the component
@@ -116,8 +116,8 @@ export function measureMemoryUsage(renderFn) {
 
   // Measure memory after rendering
   const after = {
-    usedJSHeapSize: performance?.memory.usedJSHeapSize,
-    totalJSHeapSize: performance?.memory.totalJSHeapSize,
+    usedJSHeapSize: performance.memory.usedJSHeapSize,
+    totalJSHeapSize: performance.memory.totalJSHeapSize,
   };
 
   return {
@@ -125,8 +125,8 @@ export function measureMemoryUsage(renderFn) {
     before,
     after,
     difference: {
-      usedJSHeapSize: after?.usedJSHeapSize - before?.usedJSHeapSize,
-      totalJSHeapSize: after?.totalJSHeapSize - before?.totalJSHeapSize,
+      usedJSHeapSize: after.usedJSHeapSize - before.usedJSHeapSize,
+      totalJSHeapSize: after.totalJSHeapSize - before.totalJSHeapSize,
     },
   };
 }
@@ -138,8 +138,8 @@ export function measureMemoryUsage(renderFn) {
  * @returns {Object} - API response time measurements
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); measureApiResponseTime(apiFn, iterations = 5) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); measureApiResponseTime(apiFn, iterations = 5) {
   const times = [];
 
   // Warmup call
@@ -147,19 +147,19 @@ export async function {
 
   // Measure API call time for each iteration
   for (let i = 0; i < iterations; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-    const start = performance?.now();
+    const start = performance.now();
     await apiFn();
-    const end = performance?.now();
-    times?.push(end - start);
+    const end = performance.now();
+    times.push(end - start);
   }
 
   // Calculate statistics
   return {
     times,
-    min: Math?.min(...times),
-    max: Math?.max(...times),
-    average: times?.reduce((sum, time) => sum + time, 0) / times?.length,
-    median: times?.sort()[Math?.floor(times?.length / 2)],
+    min: Math.min(...times),
+    max: Math.max(...times),
+    average: times.reduce((sum, time) => sum + time, 0) / times.length,
+    median: times.sort()[Math.floor(times.length / 2)],
   };
 }
 
@@ -171,13 +171,13 @@ export async function {
  * @returns {Promise<boolean>} - Whether the API responded within the time budget
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testApiPerformance(apiFn, timeBudget, iterations = 5) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testApiPerformance(apiFn, timeBudget, iterations = 5) {
   const { average } = await measureApiResponseTime(apiFn, iterations);
 
   expect(average).toBeLessThanOrEqual(
     timeBudget,
-    `API responded in ${average?.toFixed(2)}ms, which exceeds the time budget of ${timeBudget}ms`,
+    `API responded in ${average.toFixed(2)}ms, which exceeds the time budget of ${timeBudget}ms`,
   );
 
   return average <= timeBudget;
@@ -191,8 +191,8 @@ export async function {
  * @returns {Promise<Object>} - Frame rate measurements
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); measureFrameRate(renderFn, interactionFn, durationMs = 1000) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); measureFrameRate(renderFn, interactionFn, durationMs = 1000) {
   let frames = 0;
   let rafId;
 
@@ -200,14 +200,14 @@ export async function {
   renderFn();
 
   // Start measuring frame rate
-  const startTime = performance?.now();
+  const startTime = performance.now();
 
   // Create a promise that resolves after the duration
   const frameRatePromise = new Promise((resolve) => {
     // Function to count frames
     const countFrame = () => {
       if (frames > Number.MAX_SAFE_INTEGER || frames < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); frames++;
-      const currentTime = performance?.now();
+      const currentTime = performance.now();
 
       if (currentTime - startTime < durationMs) {
         rafId = requestAnimationFrame(countFrame);
@@ -249,13 +249,13 @@ export async function {
  * @returns {Promise<boolean>} - Whether the component maintained the minimum frame rate
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testFrameRate(renderFn, interactionFn, minFps = 30, durationMs = 1000) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testFrameRate(renderFn, interactionFn, minFps = 30, durationMs = 1000) {
   const { fps } = await measureFrameRate(renderFn, interactionFn, durationMs);
 
   expect(fps).toBeGreaterThanOrEqual(
     minFps,
-    `Component ran at ${fps?.toFixed(2)} FPS, which is below the minimum of ${minFps} FPS`,
+    `Component ran at ${fps.toFixed(2)} FPS, which is below the minimum of ${minFps} FPS`,
   );
 
   return fps >= minFps;
@@ -272,9 +272,9 @@ export function formatPerformanceMeasurement(measurement, name) {
 
   return `
 Performance measurement: ${name}
-  Min: ${min?.toFixed(2)}ms
-  Max: ${max?.toFixed(2)}ms
-  Average: ${average?.toFixed(2)}ms
-  Median: ${median?.toFixed(2)}ms
+  Min: ${min.toFixed(2)}ms
+  Max: ${max.toFixed(2)}ms
+  Average: ${average.toFixed(2)}ms
+  Median: ${median.toFixed(2)}ms
   `.trim();
 }

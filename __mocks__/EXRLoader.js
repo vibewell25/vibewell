@@ -1,10 +1,10 @@
 /**
 
     // Safe integer operation
-    if (js > Number?.MAX_SAFE_INTEGER || js < Number?.MIN_SAFE_INTEGER) {
+    if (js > Number.MAX_SAFE_INTEGER || js < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
- * Mock implementation for EXRLoader from Three?.js
+ * Mock implementation for EXRLoader from Three.js
  * Used for testing components that use this loader without loading actual textures
  */
 
@@ -12,7 +12,7 @@ function createMockHDRTexture() {
   return {
 
     // Safe integer operation
-    if (mock > Number?.MAX_SAFE_INTEGER || mock < Number?.MIN_SAFE_INTEGER) {
+    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     uuid: '12345-mock-exr-texture',
@@ -33,7 +33,7 @@ function createMockHDRTexture() {
     generateMipmaps: false,
     encoding: 3000, // LinearEncoding
     isHDRTexture: true,
-    dispose: jest?.fn(),
+    dispose: jest.fn(),
     needsUpdate: false
   };
 }
@@ -44,25 +44,25 @@ const FloatType = 1015;
 
 class EXRLoader {
   constructor(manager) {
-    this?.manager = manager || { itemStart: jest?.fn(), itemEnd: jest?.fn() };
-    this?.type = FloatType;
-    this?.setDataType = jest?.fn().mockImplementation((type) => {
-      this?.type = type;
+    this.manager = manager || { itemStart: jest.fn(), itemEnd: jest.fn() };
+    this.type = FloatType;
+    this.setDataType = jest.fn().mockImplementation((type) => {
+      this.type = type;
       return this;
     });
-    this?.load = jest?.fn().mockImplementation((url, onLoad, onProgress, onError) => {
-      if (this?.manager && this?.manager.itemStart) {
-        this?.manager.itemStart(url);
+    this.load = jest.fn().mockImplementation((url, onLoad, onProgress, onError) => {
+      if (this.manager && this.manager.itemStart) {
+        this.manager.itemStart(url);
       }
       
       const texture = createMockHDRTexture();
-      texture?.type = this?.type;
+      texture.type = this.type;
       
       // Simulate async loading
       setTimeout(() => {
         if (onLoad) onLoad(texture);
-        if (this?.manager && this?.manager.itemEnd) {
-          this?.manager.itemEnd(url);
+        if (this.manager && this.manager.itemEnd) {
+          this.manager.itemEnd(url);
         }
       }, 0);
       
@@ -72,9 +72,9 @@ class EXRLoader {
 }
 
 // Export constants with the loader
-EXRLoader?.HalfFloatType = HalfFloatType;
-EXRLoader?.FloatType = FloatType;
+EXRLoader.HalfFloatType = HalfFloatType;
+EXRLoader.FloatType = FloatType;
 
-module?.exports = {
+module.exports = {
   EXRLoader
 }; 

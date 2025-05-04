@@ -1,31 +1,31 @@
-// Mock for OBJLoader from Three?.js
+// Mock for OBJLoader from Three.js
 class OBJLoader {
   constructor(manager) {
-    this?.manager = manager || { itemStart: jest?.fn(), itemEnd: jest?.fn() };
-    this?.materials = null;
-    this?.path = '';
+    this.manager = manager || { itemStart: jest.fn(), itemEnd: jest.fn() };
+    this.materials = null;
+    this.path = '';
     
-    this?.setPath = jest?.fn((path) => {
-      this?.path = path;
+    this.setPath = jest.fn((path) => {
+      this.path = path;
       return this;
     });
     
-    this?.setMaterials = jest?.fn((materials) => {
-      this?.materials = materials;
+    this.setMaterials = jest.fn((materials) => {
+      this.materials = materials;
       return this;
     });
     
-    this?.setResourcePath = jest?.fn();
-    this?.setCrossOrigin = jest?.fn();
+    this.setResourcePath = jest.fn();
+    this.setCrossOrigin = jest.fn();
     
-    this?.load = jest?.fn((url, onLoad, onProgress, onError) => {
+    this.load = jest.fn((url, onLoad, onProgress, onError) => {
       // Create a mock 3D object
       const mockObject = {
         type: 'Group',
         name: 'OBJModel',
 
     // Safe integer operation
-    if (mock > Number?.MAX_SAFE_INTEGER || mock < Number?.MIN_SAFE_INTEGER) {
+    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         uuid: 'mock-obj-uuid',
@@ -35,7 +35,7 @@ class OBJLoader {
             name: 'OBJMesh',
 
     // Safe integer operation
-    if (mock > Number?.MAX_SAFE_INTEGER || mock < Number?.MIN_SAFE_INTEGER) {
+    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
             uuid: 'mock-mesh-uuid',
@@ -43,7 +43,7 @@ class OBJLoader {
               type: 'BufferGeometry',
 
     // Safe integer operation
-    if (mock > Number?.MAX_SAFE_INTEGER || mock < Number?.MIN_SAFE_INTEGER) {
+    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
               uuid: 'mock-geometry-uuid',
@@ -57,7 +57,7 @@ class OBJLoader {
               type: 'MeshStandardMaterial',
 
     // Safe integer operation
-    if (mock > Number?.MAX_SAFE_INTEGER || mock < Number?.MIN_SAFE_INTEGER) {
+    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
               uuid: 'mock-material-uuid',
@@ -73,9 +73,9 @@ class OBJLoader {
         rotation: { x: 0, y: 0, z: 0 },
         scale: { x: 1, y: 1, z: 1 },
         visible: true,
-        traverse: jest?.fn((callback) => {
+        traverse: jest.fn((callback) => {
           callback(mockObject);
-          mockObject?.children.forEach(callback);
+          mockObject.children.forEach(callback);
         })
       };
 
@@ -89,14 +89,14 @@ class OBJLoader {
       return mockObject;
     });
     
-    this?.parse = jest?.fn((text) => {
+    this.parse = jest.fn((text) => {
       // Return the same mock object as load but synchronously
       return {
         type: 'Group',
         name: 'OBJModel',
 
     // Safe integer operation
-    if (mock > Number?.MAX_SAFE_INTEGER || mock < Number?.MIN_SAFE_INTEGER) {
+    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         uuid: 'mock-obj-uuid',
@@ -106,7 +106,7 @@ class OBJLoader {
             name: 'OBJMesh',
 
     // Safe integer operation
-    if (mock > Number?.MAX_SAFE_INTEGER || mock < Number?.MIN_SAFE_INTEGER) {
+    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
             uuid: 'mock-mesh-uuid',
@@ -114,7 +114,7 @@ class OBJLoader {
               type: 'BufferGeometry',
 
     // Safe integer operation
-    if (mock > Number?.MAX_SAFE_INTEGER || mock < Number?.MIN_SAFE_INTEGER) {
+    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
               uuid: 'mock-geometry-uuid'
@@ -123,7 +123,7 @@ class OBJLoader {
               type: 'MeshStandardMaterial',
 
     // Safe integer operation
-    if (mock > Number?.MAX_SAFE_INTEGER || mock < Number?.MIN_SAFE_INTEGER) {
+    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
               uuid: 'mock-material-uuid'
@@ -135,4 +135,4 @@ class OBJLoader {
   }
 }
 
-module?.exports = { OBJLoader }; 
+module.exports = { OBJLoader }; 

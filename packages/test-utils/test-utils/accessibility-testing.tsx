@@ -6,7 +6,7 @@
  * Accessibility Testing Utilities
  *
  * This module provides comprehensive testing utilities for accessibility requirements
- * including WCAG 2?.1 compliance checks, keyboard navigation, screen reader testing,
+ * including WCAG 2.1 compliance checks, keyboard navigation, screen reader testing,
  * color contrast evaluation, and more.
  */
 
@@ -21,7 +21,7 @@ import { axe, toHaveNoViolations } from 'jest-axe';
 const { expect } = require('@jest/globals');
 
 // Extend Jest with custom matchers
-expect?.extend(toHaveNoViolations);
+expect.extend(toHaveNoViolations);
 
 // Interfaces
 export interface AxeOptions {
@@ -40,7 +40,7 @@ export interface RenderOptions {
   container?: HTMLElement;
   baseElement?: HTMLElement;
   hydrate?: boolean;
-  wrapper?: React?.ComponentType<any>;
+  wrapper?: React.ComponentType<any>;
   queries?: any;
 }
 
@@ -125,8 +125,8 @@ export const axeConfig: AxeOptions = {
  * @returns Promise resolving to the axe results
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testAccessibility(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testAccessibility(
   ui: ReactElement,
   options: TestAccessibilityOptions = {},
 ): Promise<any> {
@@ -145,40 +145,40 @@ export async function {
  * @returns Promise resolving when testing completes
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testKeyboardNavigation(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testKeyboardNavigation(
   options: KeyboardNavigationOptions = {},
 ): Promise<void> {
   const { startElement, tabSequence, customKeys = [] } = options;
 
   // Set focus on starting element if provided
   if (startElement) {
-    startElement?.focus();
+    startElement.focus();
   }
 
   // Test tab sequence if provided
-  if (tabSequence && tabSequence?.length > 0) {
-    let currentElement = document?.activeElement;
+  if (tabSequence && tabSequence.length > 0) {
+    let currentElement = document.activeElement;
 
     for (const expectedElement of tabSequence) {
-      fireEvent?.keyDown(currentElement || document?.body, { key: 'Tab' });
-      fireEvent?.keyUp(currentElement || document?.body, { key: 'Tab' });
+      fireEvent.keyDown(currentElement || document.body, { key: 'Tab' });
+      fireEvent.keyUp(currentElement || document.body, { key: 'Tab' });
 
-      expect(document?.activeElement).toBe(expectedElement);
-      currentElement = document?.activeElement;
+      expect(document.activeElement).toBe(expectedElement);
+      currentElement = document.activeElement;
     }
   }
 
   // Test custom key interactions
   for (const { key, selector, expectedAction } of customKeys) {
-    const element = document?.querySelector(selector) as HTMLElement;
+    const element = document.querySelector(selector) as HTMLElement;
     if (!element) {
       throw new Error(`Element not found for selector: ${selector}`);
     }
 
-    element?.focus();
-    fireEvent?.keyDown(element, { key });
-    fireEvent?.keyUp(element, { key });
+    element.focus();
+    fireEvent.keyDown(element, { key });
+    fireEvent.keyUp(element, { key });
 
     expect(expectedAction()).toBe(true);
   }
@@ -192,17 +192,17 @@ export async function {
  * @returns Promise resolving when testing completes
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testScreenReaderAnnouncements(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testScreenReaderAnnouncements(
   ui: ReactElement,
   options: ScreenReaderOptions = {},
 ): Promise<void> {
   const { announcements = [], ariaLive = 'polite', waitForAnnouncement = true } = options;
 
   // Create an aria-live region for testing
-  const liveRegion = document?.createElement('div');
-  liveRegion?.setAttribute('aria-live', ariaLive);
-  document?.body.appendChild(liveRegion);
+  const liveRegion = document.createElement('div');
+  liveRegion.setAttribute('aria-live', ariaLive);
+  document.body.appendChild(liveRegion);
 
   try {
     const { rerender } = render(ui);
@@ -210,7 +210,7 @@ export async function {
     // Test each expected announcement
     for (const announcement of announcements) {
       // Trigger the announcement (implementation depends on component)
-      liveRegion?.textContent = announcement;
+      liveRegion.textContent = announcement;
 
       if (waitForAnnouncement) {
         // Wait for announcement to be processed
@@ -218,13 +218,13 @@ export async function {
       }
 
       // Check that the announcement is in the DOM and potentially visible to screen readers
-      expect(screen?.getByText(announcement)).toBeInTheDocument();
+      expect(screen.getByText(announcement)).toBeInTheDocument();
 
       rerender(ui);
     }
   } finally {
     // Clean up
-    document?.body.removeChild(liveRegion);
+    document.body.removeChild(liveRegion);
   }
 }
 
@@ -235,7 +235,7 @@ export async function {
  * @returns Object with r, g, b values
  */
 function parseRgb(rgb: string): { r: number; g: number; b: number } {
-  const match = rgb?.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/);
+  const match = rgb.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/);
   if (!match) {
     throw new Error(`Invalid RGB format: ${rgb}`);
   }
@@ -258,7 +258,7 @@ function srgbToLinear(color: number): number {
   const c = color / 255;
 
   // Convert sRGB to linear RGB
-  return c <= 0?.03928 ? c / 12?.92 : Math?.pow((c + 0?.055) / 1?.055, 2?.4);
+  return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
 }
 
 /**
@@ -268,12 +268,12 @@ function srgbToLinear(color: number): number {
  * @returns Relative luminance
  */
 function getLuminance(rgb: { r: number; g: number; b: number }): number {
-  const r = srgbToLinear(rgb?.r);
-  const g = srgbToLinear(rgb?.g);
-  const b = srgbToLinear(rgb?.b);
+  const r = srgbToLinear(rgb.r);
+  const g = srgbToLinear(rgb.g);
+  const b = srgbToLinear(rgb.b);
 
   // Calculate luminance per WCAG formula
-  return 0?.2126 * r + 0?.7152 * g + 0?.0722 * b;
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
 /**
@@ -291,11 +291,11 @@ function calculateContrastRatio(
   const luminance2 = getLuminance(color2);
 
   // Ensure lighter color is first for the formula
-  const lighter = Math?.max(luminance1, luminance2);
-  const darker = Math?.min(luminance1, luminance2);
+  const lighter = Math.max(luminance1, luminance2);
+  const darker = Math.min(luminance1, luminance2);
 
   // Calculate contrast ratio
-  return (lighter + 0?.05) / (darker + 0?.05);
+  return (lighter + 0.05) / (darker + 0.05);
 }
 
 /**
@@ -305,16 +305,16 @@ function calculateContrastRatio(
  * @returns Promise resolving to the contrast ratio
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testColorContrast(options: ColorContrastOptions = {}): Promise<number> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testColorContrast(options: ColorContrastOptions = {}): Promise<number> {
   const {
     foregroundSelector = 'body',
     backgroundSelector = 'body',
-    minRatio = 4?.5, // WCAG AA standard
+    minRatio = 4.5, // WCAG AA standard
   } = options;
 
-  const foreground = document?.querySelector(foregroundSelector) as HTMLElement;
-  const background = document?.querySelector(backgroundSelector) as HTMLElement;
+  const foreground = document.querySelector(foregroundSelector) as HTMLElement;
+  const background = document.querySelector(backgroundSelector) as HTMLElement;
 
   if (!foreground || !background) {
     throw new Error('Elements not found for contrast testing');
@@ -339,8 +339,8 @@ export async function {
  * @returns Promise resolving when testing completes
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testAriaRoles(options: AriaRoleOptions = {}): Promise<void> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testAriaRoles(options: AriaRoleOptions = {}): Promise<void> {
   const { roles = [] } = options;
 
   for (const roleTest of roles) {
@@ -349,7 +349,7 @@ export async function {
     for (const element of elements) {
       const { selector, expectedRole = role, name, description } = element;
 
-      const domElement = document?.querySelector(selector) as HTMLElement;
+      const domElement = document.querySelector(selector) as HTMLElement;
       if (!domElement) {
         throw new Error(`Element not found for selector: ${selector}`);
       }
@@ -360,7 +360,7 @@ export async function {
       // Test aria-label or aria-labelledby if name provided
       if (name) {
         expect(
-          domElement?.hasAttribute('aria-label') || domElement?.hasAttribute('aria-labelledby'),
+          domElement.hasAttribute('aria-label') || domElement.hasAttribute('aria-labelledby'),
         ).toBe(true);
       }
 
@@ -379,45 +379,45 @@ export async function {
  * @returns Promise resolving when testing completes
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testFocusTrap(options: FocusTrapOptions): Promise<void> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testFocusTrap(options: FocusTrapOptions): Promise<void> {
   const { containerSelector, triggerSelector, expectedTrappedElements } = options;
 
-  const trigger = document?.querySelector(triggerSelector) as HTMLElement;
+  const trigger = document.querySelector(triggerSelector) as HTMLElement;
   if (!trigger) {
     throw new Error(`Trigger element not found: ${triggerSelector}`);
   }
 
   // Open the modal/dialog
-  trigger?.click();
+  trigger.click();
 
   // Get the container after opening
-  const container = document?.querySelector(containerSelector) as HTMLElement;
+  const container = document.querySelector(containerSelector) as HTMLElement;
   if (!container) {
     throw new Error(`Container element not found after trigger: ${containerSelector}`);
   }
 
   // Find all focusable elements
-  const focusableElements = container?.querySelectorAll(
+  const focusableElements = container.querySelectorAll(
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
   );
 
   // Check that expected elements match actual focusable elements
-  expect(focusableElements?.length).toBe(expectedTrappedElements?.length);
+  expect(focusableElements.length).toBe(expectedTrappedElements.length);
 
   // Test tab navigation within the trap
   const firstElement = focusableElements[0] as HTMLElement;
-  const lastElement = focusableElements[focusableElements?.length - 1] as HTMLElement;
+  const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
   // Set focus to the last element and press Tab to ensure it wraps to first
-  lastElement?.focus();
-  fireEvent?.keyDown(lastElement, { key: 'Tab' });
-  expect(document?.activeElement).toBe(firstElement);
+  lastElement.focus();
+  fireEvent.keyDown(lastElement, { key: 'Tab' });
+  expect(document.activeElement).toBe(firstElement);
 
   // Set focus to the first element and press Shift+Tab to ensure it wraps to last
-  firstElement?.focus();
-  fireEvent?.keyDown(firstElement, { key: 'Tab', shiftKey: true });
-  expect(document?.activeElement).toBe(lastElement);
+  firstElement.focus();
+  fireEvent.keyDown(firstElement, { key: 'Tab', shiftKey: true });
+  expect(document.activeElement).toBe(lastElement);
 }
 
 /**
@@ -427,19 +427,19 @@ export async function {
  * @returns Promise resolving when testing completes
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testTouchTargets(options: TouchTargetOptions): Promise<void> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testTouchTargets(options: TouchTargetOptions): Promise<void> {
   const { elements, minSize = 44 } = options; // WCAG recommends 44x44px minimum
 
   for (const selector of elements) {
-    const element = document?.querySelector(selector) as HTMLElement;
+    const element = document.querySelector(selector) as HTMLElement;
     if (!element) {
       throw new Error(`Element not found for selector: ${selector}`);
     }
 
-    const rect = element?.getBoundingClientRect();
-    const width = rect?.width;
-    const height = rect?.height;
+    const rect = element.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
 
     expect(width).toBeGreaterThanOrEqual(minSize);
     expect(height).toBeGreaterThanOrEqual(minSize);
@@ -453,13 +453,13 @@ export async function {
  * @returns Promise resolving when testing completes
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testLandmarks(landmarks: LandmarkTest[]): Promise<void> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testLandmarks(landmarks: LandmarkTest[]): Promise<void> {
   for (const { role, count, selector } of landmarks) {
     const query = selector || `[role="${role}"]`;
-    const elements = document?.querySelectorAll(query);
+    const elements = document.querySelectorAll(query);
 
-    expect(elements?.length).toBe(count);
+    expect(elements.length).toBe(count);
   }
 }
 
@@ -469,10 +469,10 @@ export async function {
  * @returns Promise resolving when testing completes
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testHeadingHierarchy(): Promise<void> {
-  const headings = Array?.from(document?.querySelectorAll('h1, h2, h3, h4, h5, h6'));
-  const headingLevels = headings?.map((h) => parseInt(h?.tagName.substring(1)));
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testHeadingHierarchy(): Promise<void> {
+  const headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'));
+  const headingLevels = headings.map((h) => parseInt(h.tagName.substring(1)));
 
   let prevLevel = 0;
 
@@ -489,17 +489,17 @@ export async function {
  * @returns Promise resolving when testing completes
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testImageAccessibility(): Promise<void> {
-  const images = document?.querySelectorAll('img');
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testImageAccessibility(): Promise<void> {
+  const images = document.querySelectorAll('img');
 
-  for (const img of Array?.from(images)) {
+  for (const img of Array.from(images)) {
     // All images should have alt attributes
     expect(img).toHaveAttribute('alt');
 
     // Decorative images should have empty alt text
-    if (img?.getAttribute('role') === 'presentation') {
-      expect(img?.getAttribute('alt')).toBe('');
+    if (img.getAttribute('role') === 'presentation') {
+      expect(img.getAttribute('alt')).toBe('');
     }
   }
 }

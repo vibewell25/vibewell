@@ -28,7 +28,7 @@ export const XSS_VECTORS = [
  * @param options - Additional test options
  */
 export function testXSSVulnerabilities(
-  Component: React?.ComponentType<any>,
+  Component: React.ComponentType<any>,
   propName: string,
   options: {
     additionalVectors?: string[];
@@ -40,8 +40,8 @@ export function testXSSVulnerabilities(
   const vectors = [...XSS_VECTORS, ...additionalVectors];
 
   describe('XSS Security Testing', () => {
-    vectors?.forEach((vector) => {
-      it(`should sanitize potential XSS vector: ${vector?.substring(0, 20)}...`, () => {
+    vectors.forEach((vector) => {
+      it(`should sanitize potential XSS vector: ${vector.substring(0, 20)}...`, () => {
         const props = { [propName]: vector };
         const { container } = render(<Component {...props} />, renderOptions);
 
@@ -51,17 +51,17 @@ export function testXSSVulnerabilities(
         } else {
           // Default checks
           // 1. No script tags should be rendered
-          expect(container?.querySelector('script')).toBeNull();
+          expect(container.querySelector('script')).toBeNull();
 
           // 2. No inline event handlers should be rendered
-          const html = container?.innerHTML;
-          expect(html).not?.toMatch(/onerror=/i);
-          expect(html).not?.toMatch(/onload=/i);
+          const html = container.innerHTML;
+          expect(html).not.toMatch(/onerror=/i);
+          expect(html).not.toMatch(/onload=/i);
 
           // 3. No javascript: URLs should be rendered
-          const links = container?.querySelectorAll('a');
-          links?.forEach((link) => {
-            expect(link?.href).not?.toMatch(/^javascript:/i);
+          const links = container.querySelectorAll('a');
+          links.forEach((link) => {
+            expect(link.href).not.toMatch(/^javascript:/i);
           });
         }
       });
@@ -100,19 +100,19 @@ export function testSQLInjectionVulnerabilities(
   const vectors = [...SQL_INJECTION_VECTORS, ...additionalVectors];
 
   describe('SQL Injection Security Testing', () => {
-    vectors?.forEach((vector) => {
-      it(`should handle SQL injection vector: ${vector?.substring(0, 20)}...`, async () => {
+    vectors.forEach((vector) => {
+      it(`should handle SQL injection vector: ${vector.substring(0, 20)}...`, async () => {
         const params = { ...baseParams, [paramName]: vector };
 
         if (expectError) {
           // The API should reject the request or throw an error when SQL injection is attempted
-          await expect(apiFn(params)).rejects?.toThrow();
+          await expect(apiFn(params)).rejects.toThrow();
         } else {
           // The API should sanitize the input and not return sensitive data
           const result = await apiFn(params);
-          expect(result).not?.toContain('password');
-          expect(result).not?.toContain('credit_card');
-          expect(result).not?.toContain('ssn');
+          expect(result).not.toContain('password');
+          expect(result).not.toContain('credit_card');
+          expect(result).not.toContain('ssn');
         }
       });
     });
@@ -154,7 +154,7 @@ export function testAuthorization(
   const { setupAuth, teardownAuth } = options;
 
   describe('Authorization Security Testing', () => {
-    testCases?.forEach(({ permissionLevel, shouldAllow, action }) => {
+    testCases.forEach(({ permissionLevel, shouldAllow, action }) => {
       it(`should ${shouldAllow ? 'allow' : 'deny'} access to users with ${permissionLevel} permission`, async () => {
         // Setup auth state for this test case
         if (setupAuth) {
@@ -164,10 +164,10 @@ export function testAuthorization(
         try {
           if (shouldAllow) {
             // Should complete successfully
-            await expect(action()).resolves?.not.toThrow();
+            await expect(action()).resolves.not.toThrow();
           } else {
             // Should throw an authorization error
-            await expect(action()).rejects?.toThrow();
+            await expect(action()).rejects.toThrow();
           }
         } finally {
           // Tear down auth state
@@ -186,7 +186,7 @@ export function testAuthorization(
  * @param options - Test options
  */
 export function testAuthenticationRequired(
-  Component: React?.ComponentType<any>,
+  Component: React.ComponentType<any>,
   options: {
     mockAuthState?: { isAuthenticated: boolean };
     redirectPath?: string;
@@ -202,12 +202,12 @@ export function testAuthenticationRequired(
   describe('Authentication Security Testing', () => {
     it('should require authentication', () => {
       // Mock any auth-related hooks or contexts
-      jest?.spyOn(global, 'window', 'get').mockImplementation(() => ({
+      jest.spyOn(global, 'window', 'get').mockImplementation(() => ({
         ...window,
         location: {
-          ...window?.location,
+          ...window.location,
           pathname: '',
-          replace: jest?.fn(),
+          replace: jest.fn(),
         },
       }));
 
@@ -217,7 +217,7 @@ export function testAuthenticationRequired(
       });
 
       // Check that unauthenticated users are redirected
-      expect(window?.location.replace).toHaveBeenCalledWith(expect?.stringContaining(redirectPath));
+      expect(window.location.replace).toHaveBeenCalledWith(expect.stringContaining(redirectPath));
     });
   });
 }
@@ -228,7 +228,7 @@ export function testAuthenticationRequired(
  * @param options - Test options
  */
 export function testSensitiveDataLeakage(
-  Component: React?.ComponentType<any>,
+  Component: React.ComponentType<any>,
   options: {
     props?: Record<string, any>;
     sensitiveData?: string[];
@@ -245,16 +245,16 @@ export function testSensitiveDataLeakage(
     it('should not expose sensitive data in HTML', () => {
       const { container } = render(<Component {...props} />, renderOptions);
 
-      const html = container?.innerHTML.toLowerCase();
+      const html = container.innerHTML.toLowerCase();
 
       // Check for sensitive data leakage
-      sensitiveData?.forEach((term) => {
-        expect(html).not?.toContain(term?.toLowerCase());
+      sensitiveData.forEach((term) => {
+        expect(html).not.toContain(term.toLowerCase());
       });
 
       // Check for common sensitive data patterns
-      expect(html).not?.toMatch(/[0-9]{4}[- ]?[0-9]{4}[- ]?[0-9]{4}[- ]?[0-9]{4}/); // Credit card
-      expect(html).not?.toMatch(/[0-9]{3}[- ]?[0-9]{2}[- ]?[0-9]{4}/); // SSN
+      expect(html).not.toMatch(/[0-9]{4}[- ]?[0-9]{4}[- ]?[0-9]{4}[- ]?[0-9]{4}/); // Credit card
+      expect(html).not.toMatch(/[0-9]{3}[- ]?[0-9]{2}[- ]?[0-9]{4}/); // SSN
     });
   });
 }
@@ -266,7 +266,7 @@ export function testSensitiveDataLeakage(
  * @param options - Additional test options
  */
 export function testCSRFProtection(
-  formComponent: React?.ReactElement,
+  formComponent: React.ReactElement,
   submitAction: () => void,
   options: {
     csrfTokenSelector?: string;
@@ -280,19 +280,19 @@ export function testCSRFProtection(
       const { container } = render(formComponent);
 
       // Check for CSRF token in the form
-      const csrfToken = container?.querySelector(csrfTokenSelector);
-      expect(csrfToken).not?.toBeNull();
+      const csrfToken = container.querySelector(csrfTokenSelector);
+      expect(csrfToken).not.toBeNull();
     });
 
     if (mockFetch) {
       it('should send CSRF token with form submission', async () => {
         // Mock fetch to capture request headers
-        const originalFetch = global?.fetch;
-        const mockFetchFn = jest?.fn().mockResolvedValue({
+        const originalFetch = global.fetch;
+        const mockFetchFn = jest.fn().mockResolvedValue({
           ok: true,
-          json: () => Promise?.resolve({}),
+          json: () => Promise.resolve({}),
         });
-        global?.fetch = mockFetchFn;
+        global.fetch = mockFetchFn;
 
         try {
           const { container } = render(formComponent);
@@ -302,22 +302,22 @@ export function testCSRFProtection(
 
           // Check that the fetch call included the CSRF token
           expect(mockFetchFn).toHaveBeenCalled();
-          const fetchCall = mockFetchFn?.mock.calls[0];
+          const fetchCall = mockFetchFn.mock.calls[0];
           const [url, options] = fetchCall;
 
           // CSRF token should be in headers, body, or URL depending on implementation
           const hasCSRFToken =
-            (options?.headers &&
-              (options?.headers['X-CSRF-Token'] ||
-                options?.headers['csrf-token'] ||
-                options?.headers['x-csrf-token'])) ||
-            (options?.body && options?.body.includes('csrf_token')) ||
-            url?.includes('csrf_token');
+            (options.headers &&
+              (options.headers['X-CSRF-Token'] ||
+                options.headers['csrf-token'] ||
+                options.headers['x-csrf-token'])) ||
+            (options.body && options.body.includes('csrf_token')) ||
+            url.includes('csrf_token');
 
           expect(hasCSRFToken).toBe(true);
         } finally {
           // Restore original fetch
-          global?.fetch = originalFetch;
+          global.fetch = originalFetch;
         }
       });
     }
@@ -340,8 +340,8 @@ export function checkSecurityHeaders(
     'Strict-Transport-Security': /.+/,
   },
 ): void {
-  Object?.entries(expectedHeaders).forEach(([header, expected]) => {
-    const value = response?.headers.get(header);
+  Object.entries(expectedHeaders).forEach(([header, expected]) => {
+    const value = response.headers.get(header);
     if (expected instanceof RegExp) {
       expect(value).toMatch(expected);
     } else {
@@ -359,37 +359,37 @@ export function checkSecurityHeaders(
  * @param renderOptions Additional options for render
  */
 export function testRedirectAfterAuthFailure<P>(
-  Component: React?.ComponentType<P>,
+  Component: React.ComponentType<P>,
   props: P,
   expectedRedirectPath: string,
   renderOptions = {},
 ): void {
   describe('Redirect after auth failure', () => {
     let originalLocation: Location;
-    let locationMock: jest?.Mock;
+    let locationMock: jest.Mock;
 
     beforeEach(() => {
-      originalLocation = window?.location;
-      locationMock = jest?.fn();
+      originalLocation = window.location;
+      locationMock = jest.fn();
 
       // Mock the window location
-      Object?.defineProperty(window, 'location', {
+      Object.defineProperty(window, 'location', {
         configurable: true,
         value: {
           pathname: '/',
-          replace: jest?.fn(),
+          replace: jest.fn(),
         },
         writable: true,
       });
 
       // Mock the auth error response
       // @ts-expect-error - Ignore strict window type checking
-      jest?.spyOn(global, 'window', 'get').mockImplementation(() => {
+      jest.spyOn(global, 'window', 'get').mockImplementation(() => {
         // Create a partial window mock with just the properties we need
         const windowMock = {
           location: {
             pathname: '/',
-            replace: jest?.fn(),
+            replace: jest.fn(),
             // Add other required location properties
             href: 'http://localhost:3000/',
             origin: 'http://localhost:3000',
@@ -399,9 +399,9 @@ export function testRedirectAfterAuthFailure<P>(
             search: '',
             port: '',
             protocol: 'http:',
-            reload: jest?.fn(),
-            assign: jest?.fn(),
-            toString: jest?.fn().mockReturnValue('http://localhost:3000/'),
+            reload: jest.fn(),
+            assign: jest.fn(),
+            toString: jest.fn().mockReturnValue('http://localhost:3000/'),
           },
           // Add other required window properties as needed
         };
@@ -412,8 +412,8 @@ export function testRedirectAfterAuthFailure<P>(
 
     afterEach(() => {
       // Restore original window
-      jest?.restoreAllMocks();
-      Object?.defineProperty(window, 'location', {
+      jest.restoreAllMocks();
+      Object.defineProperty(window, 'location', {
         configurable: true,
         value: originalLocation,
         writable: true,
@@ -421,10 +421,10 @@ export function testRedirectAfterAuthFailure<P>(
     });
 
     it(`redirects to ${expectedRedirectPath} after authentication failure`, () => {
-      render(React?.createElement(Component, props), renderOptions);
+      render(React.createElement(Component, props), renderOptions);
 
       // Assert redirection happened
-      expect(window?.location.replace).toHaveBeenCalledWith(expectedRedirectPath);
+      expect(window.location.replace).toHaveBeenCalledWith(expectedRedirectPath);
     });
   });
 }

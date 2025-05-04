@@ -10,7 +10,7 @@ import { render, RenderOptions } from '@testing-library/react';
 
 import { axe, toHaveNoViolations } from 'jest-axe';
 
-expect?.extend(toHaveNoViolations);
+expect.extend(toHaveNoViolations);
 
 export interface TestRunnerOptions extends RenderOptions {
   name: string;

@@ -23,7 +23,7 @@ export interface MockApiResponse<T = any> {
  * Create a mock API response
  */
 export function mockApiResponse<T>(data: T): Mock {
-  return vi?.fn().mockResolvedValue({ data });
+  return vi.fn().mockResolvedValue({ data });
 }
 
 /**
@@ -33,8 +33,8 @@ export function mockApiResponse<T>(data: T): Mock {
  */
 export function mockFetch<T = any>(
   response: MockApiResponse<T> | (() => MockApiResponse<T>),
-): vi?.Mock {
-  return vi?.fn().mockResolvedValue(typeof response === 'function' ? response() : response);
+): vi.Mock {
+  return vi.fn().mockResolvedValue(typeof response === 'function' ? response() : response);
 }
 
 /**
@@ -56,24 +56,24 @@ export interface MockStorage {
 export function createMockStorage(): MockStorage {
   const store: Record<string, string | undefined> = {};
   return {
-    getItem: vi?.fn((key: string) => store[key] || null),
-    setItem: vi?.fn((key: string, value: string) => {
+    getItem: vi.fn((key: string) => store[key] || null),
+    setItem: vi.fn((key: string, value: string) => {
       store[key] = String(value);
     }),
-    removeItem: vi?.fn((key: string) => {
+    removeItem: vi.fn((key: string) => {
       store[key] = undefined;
     }),
-    clear: vi?.fn(() => {
-      Object?.keys(store).forEach((key) => {
+    clear: vi.fn(() => {
+      Object.keys(store).forEach((key) => {
         store[key] = undefined;
       });
     }),
-    key: vi?.fn((index: number) => Object?.keys(store)[index] || null),
+    key: vi.fn((index: number) => Object.keys(store)[index] || null),
     get length() {
-      return Object?.keys(store).length;
+      return Object.keys(store).length;
     },
     _getStore: () =>
-      Object?.fromEntries(Object?.entries(store).filter(([_, v]) => v !== undefined)) as Record<
+      Object.fromEntries(Object.entries(store).filter(([_, v]) => v !== undefined)) as Record<
         string,
         string
       >,
@@ -95,21 +95,21 @@ export interface MockMediaQueryList {
 }
 
 /**
- * Mock window?.matchMedia
+ * Mock window.matchMedia
  */
 export function setupMatchMediaMock(): Mock {
-  const matchMediaMock = vi?.fn().mockImplementation((query: string) => ({
+  const matchMediaMock = vi.fn().mockImplementation((query: string) => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: vi?.fn(),
-    removeListener: vi?.fn(),
-    addEventListener: vi?.fn(),
-    removeEventListener: vi?.fn(),
-    dispatchEvent: vi?.fn(),
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
   }));
 
-  Object?.defineProperty(window, 'matchMedia', {
+  Object.defineProperty(window, 'matchMedia', {
     writable: true,
     value: matchMediaMock,
   });
@@ -134,22 +134,22 @@ export interface MockIntersectionObserver {
  * Mock IntersectionObserver
  */
 export function setupIntersectionObserverMock(): Mock {
-  const mockIntersectionObserver = vi?.fn().mockImplementation(function (
+  const mockIntersectionObserver = vi.fn().mockImplementation(function (
     callback: IntersectionObserverCallback,
     options?: IntersectionObserverInit,
   ) {
     return {
-      root: options?.root || null,
-      rootMargin: options?.rootMargin || '0px',
-      thresholds: Array?.isArray(options?.threshold) ? options?.threshold : [options?.threshold || 0],
-      observe: vi?.fn(),
-      unobserve: vi?.fn(),
-      disconnect: vi?.fn(),
-      takeRecords: vi?.fn().mockReturnValue([]),
+      root: options.root || null,
+      rootMargin: options.rootMargin || '0px',
+      thresholds: Array.isArray(options.threshold) ? options.threshold : [options.threshold || 0],
+      observe: vi.fn(),
+      unobserve: vi.fn(),
+      disconnect: vi.fn(),
+      takeRecords: vi.fn().mockReturnValue([]),
     };
   });
 
-  Object?.defineProperty(window, 'IntersectionObserver', {
+  Object.defineProperty(window, 'IntersectionObserver', {
     writable: true,
     value: mockIntersectionObserver,
   });
@@ -170,15 +170,15 @@ export interface MockResizeObserver {
  * Mock ResizeObserver
  */
 export function setupResizeObserverMock(): Mock {
-  const mockResizeObserver = vi?.fn().mockImplementation(function () {
+  const mockResizeObserver = vi.fn().mockImplementation(function () {
     return {
-      observe: vi?.fn(),
-      unobserve: vi?.fn(),
-      disconnect: vi?.fn(),
+      observe: vi.fn(),
+      unobserve: vi.fn(),
+      disconnect: vi.fn(),
     };
   });
 
-  Object?.defineProperty(window, 'ResizeObserver', {
+  Object.defineProperty(window, 'ResizeObserver', {
     writable: true,
     value: mockResizeObserver,
   });
@@ -192,12 +192,12 @@ export function setupResizeObserverMock(): Mock {
 export interface BrowserMocks {
   localStorage: MockStorage;
   sessionStorage: MockStorage;
-  matchMedia: vi?.Mock<MockMediaQueryList, [query: string]>;
-  intersectionObserver: vi?.Mock<
+  matchMedia: vi.Mock<MockMediaQueryList, [query: string]>;
+  intersectionObserver: vi.Mock<
     MockIntersectionObserver,
     [callback: IntersectionObserverCallback, options?: IntersectionObserverInit]
   >;
-  resizeObserver: vi?.Mock<MockResizeObserver, []>;
+  resizeObserver: vi.Mock<MockResizeObserver, []>;
 }
 
 /**
@@ -221,29 +221,29 @@ export function setupAllBrowserMocks(): BrowserMocks {
  */
 export function createMockService<T extends Record<string, any>>(methods: Partial<T> = {}): T {
   return {
-    ...Object?.keys(methods).reduce(
+    ...Object.keys(methods).reduce(
       (acc, key) => {
-        acc[key] = vi?.fn(methods[key]);
+        acc[key] = vi.fn(methods[key]);
         return acc;
       },
-      {} as Record<string, vi?.Mock>,
+      {} as Record<string, vi.Mock>,
     ),
   } as T;
 }
 
 /**
- * Mock window?.location
+ * Mock window.location
  * @param {Object} properties - Properties to override
  */
 export function mockWindowLocation(properties = {}) {
-  const originalLocation = window?.location;
-  delete window?.location;
+  const originalLocation = window.location;
+  delete window.location;
 
-  window?.location = {
-    assign: vi?.fn(),
-    reload: vi?.fn(),
-    replace: vi?.fn(),
-    toString: vi?.fn(),
+  window.location = {
+    assign: vi.fn(),
+    reload: vi.fn(),
+    replace: vi.fn(),
+    toString: vi.fn(),
     hash: '',
     host: 'localhost:3000',
     hostname: 'localhost',
@@ -257,7 +257,7 @@ export function mockWindowLocation(properties = {}) {
   };
 
   return () => {
-    window?.location = originalLocation;
+    window.location = originalLocation;
   };
 }
 
@@ -269,15 +269,15 @@ export function mockConsole(
 ): () => void {
   const originalMethods: Partial<Record<keyof Console, any>> = {};
 
-  methods?.forEach((method) => {
+  methods.forEach((method) => {
     if (console[method]) {
       originalMethods[method] = console[method];
-      (console[method] as any) = vi?.fn();
+      (console[method] as any) = vi.fn();
     }
   });
 
   return () => {
-    methods?.forEach((method) => {
+    methods.forEach((method) => {
       if (originalMethods[method]) {
         console[method] = originalMethods[method];
       }
@@ -295,30 +295,30 @@ export function mockDate(mockDate: string | number | Date): () => void {
   class MockDate extends RealDate {
     constructor(...args: ConstructorParameters<typeof Date>) {
       super();
-      if (args?.length) {
+      if (args.length) {
         return new RealDate(...args);
       }
       return mockDateObj;
     }
 
     static override now() {
-      return mockDateObj?.getTime();
+      return mockDateObj.getTime();
     }
   }
 
-  global?.Date = MockDate as DateConstructor;
+  global.Date = MockDate as DateConstructor;
 
   return () => {
-    global?.Date = RealDate;
+    global.Date = RealDate;
   };
 }
 
 export function mockLocation(): void {
   const mockLocation = {
-    assign: vi?.fn(),
-    reload: vi?.fn(),
-    replace: vi?.fn(),
-    toString: vi?.fn(),
+    assign: vi.fn(),
+    reload: vi.fn(),
+    replace: vi.fn(),
+    toString: vi.fn(),
     hash: '',
     host: '',
     hostname: '',
@@ -330,7 +330,7 @@ export function mockLocation(): void {
     search: '',
   } as unknown as Location;
 
-  Object?.defineProperty(window, 'location', {
+  Object.defineProperty(window, 'location', {
     configurable: true,
     value: mockLocation,
     writable: true,
@@ -340,7 +340,7 @@ export function mockLocation(): void {
 export function mockProcedure<T>(data: T): Procedure<any, any, any, any> {
   return {
     _def: {
-      query: vi?.fn().mockResolvedValue(data),
+      query: vi.fn().mockResolvedValue(data),
     },
   } as unknown as Procedure<any, any, any, any>;
 }

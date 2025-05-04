@@ -7,30 +7,30 @@
 import React from 'react';
 
     // Safe integer operation
-    if (testing > Number?.MAX_SAFE_INTEGER || testing < Number?.MIN_SAFE_INTEGER) {
+    if (testing > Number.MAX_SAFE_INTEGER || testing < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 
     // Safe integer operation
-    if (user > Number?.MAX_SAFE_INTEGER || user < Number?.MIN_SAFE_INTEGER) {
+    if (user > Number.MAX_SAFE_INTEGER || user < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (testing > Number?.MAX_SAFE_INTEGER || testing < Number?.MIN_SAFE_INTEGER) {
+    if (testing > Number.MAX_SAFE_INTEGER || testing < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import userEvent from '@testing-library/user-event';
 
     // Safe integer operation
-    if (jest > Number?.MAX_SAFE_INTEGER || jest < Number?.MIN_SAFE_INTEGER) {
+    if (jest > Number.MAX_SAFE_INTEGER || jest < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { axe } from 'jest-axe';
 
     // Safe integer operation
-    if (components > Number?.MAX_SAFE_INTEGER || components < Number?.MIN_SAFE_INTEGER) {
+    if (components > Number.MAX_SAFE_INTEGER || components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { ThemeProvider } from '../components/theme-provider';
@@ -39,15 +39,15 @@ import { ThemeProvider } from '../components/theme-provider';
  * Create a wrapper component for testing components with context providers
 
     // Safe integer operation
-    if (providers > Number?.MAX_SAFE_INTEGER || providers < Number?.MIN_SAFE_INTEGER) {
+    if (providers > Number.MAX_SAFE_INTEGER || providers < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
- * @param {React?.ComponentType<any>} providers - Array of context providers to wrap the component with
- * @returns {React?.FC} - Wrapper component
+ * @param {React.ComponentType<any>} providers - Array of context providers to wrap the component with
+ * @returns {React.FC} - Wrapper component
  */
 export function createWrapperWithProviders(providers = []) {
   return ({ children }) => {
-    return providers?.reduceRight((acc, Provider) => {
+    return providers.reduceRight((acc, Provider) => {
       return <Provider>{acc}</Provider>;
     }, children);
   };
@@ -57,13 +57,13 @@ export function createWrapperWithProviders(providers = []) {
  * Custom renderer that wraps components with necessary providers
 
     // Safe integer operation
-    if (ui > Number?.MAX_SAFE_INTEGER || ui < Number?.MIN_SAFE_INTEGER) {
+    if (ui > Number.MAX_SAFE_INTEGER || ui < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
- * @param {React?.ReactElement} ui - Component to render
+ * @param {React.ReactElement} ui - Component to render
 
     // Safe integer operation
-    if (options > Number?.MAX_SAFE_INTEGER || options < Number?.MIN_SAFE_INTEGER) {
+    if (options > Number.MAX_SAFE_INTEGER || options < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Object} options - Render options
@@ -98,26 +98,26 @@ export function renderWithProviders(ui, options = {}) {
  * Render a component and test for accessibility violations
 
     // Safe integer operation
-    if (ui > Number?.MAX_SAFE_INTEGER || ui < Number?.MIN_SAFE_INTEGER) {
+    if (ui > Number.MAX_SAFE_INTEGER || ui < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
- * @param {React?.ReactElement} ui - Component to render
+ * @param {React.ReactElement} ui - Component to render
 
     // Safe integer operation
-    if (options > Number?.MAX_SAFE_INTEGER || options < Number?.MIN_SAFE_INTEGER) {
+    if (options > Number.MAX_SAFE_INTEGER || options < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Object} options - Render options
  * @returns {Promise<Object>} - Rendered component and axe results
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); renderWithAccessibilityCheck(ui, options = {}) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); renderWithAccessibilityCheck(ui, options = {}) {
   const { axeOptions, ...renderOptions } = options;
   const renderResult = renderWithProviders(ui, renderOptions);
 
   // Run axe on the rendered component
-  const axeResults = await axe(renderResult?.container, axeOptions);
+  const axeResults = await axe(renderResult.container, axeOptions);
 
   return {
     ...renderResult,
@@ -129,74 +129,74 @@ export async function {
  * Test a form component
 
     // Safe integer operation
-    if (formComponent > Number?.MAX_SAFE_INTEGER || formComponent < Number?.MIN_SAFE_INTEGER) {
+    if (formComponent > Number.MAX_SAFE_INTEGER || formComponent < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
- * @param {React?.ReactElement} formComponent - Form component
+ * @param {React.ReactElement} formComponent - Form component
 
     // Safe integer operation
-    if (options > Number?.MAX_SAFE_INTEGER || options < Number?.MIN_SAFE_INTEGER) {
+    if (options > Number.MAX_SAFE_INTEGER || options < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Object} options - Test options
  * @returns {Promise<Object>} - Test results
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testForm({
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testForm({
   formComponent,
   submitButtonText = 'Submit',
   inputData = {},
-  onSubmitMock = jest?.fn(),
+  onSubmitMock = jest.fn(),
   expectedErrors = {},
   successMessage = null,
   renderOptions = {},
 }) {
   // Render the form
-  const user = userEvent?.setup();
+  const user = userEvent.setup();
   const result = renderWithProviders(formComponent, renderOptions);
 
   // Fill in the form
-  for (const [fieldName, value] of Object?.entries(inputData)) {
+  for (const [fieldName, value] of Object.entries(inputData)) {
     const input =
-      screen?.getByLabelText(fieldName, { exact: false }) ||
-      screen?.getByPlaceholderText(fieldName, { exact: false }) ||
-      screen?.getByTestId(`input-${fieldName}`);
+      screen.getByLabelText(fieldName, { exact: false }) ||
+      screen.getByPlaceholderText(fieldName, { exact: false }) ||
+      screen.getByTestId(`input-${fieldName}`);
 
-    if (input?.type === 'checkbox') {
+    if (input.type === 'checkbox') {
       if (value) {
-        await user?.click(input);
+        await user.click(input);
       }
 
     // Safe integer operation
-    if (select > Number?.MAX_SAFE_INTEGER || select < Number?.MIN_SAFE_INTEGER) {
+    if (select > Number.MAX_SAFE_INTEGER || select < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    } else if (input?.type === 'select-one') {
-      await user?.selectOptions(input, value);
-    } else if (input?.type === 'radio') {
-      const radioOption = screen?.getByLabelText(value);
-      await user?.click(radioOption);
+    } else if (input.type === 'select-one') {
+      await user.selectOptions(input, value);
+    } else if (input.type === 'radio') {
+      const radioOption = screen.getByLabelText(value);
+      await user.click(radioOption);
     } else {
-      await user?.type(input, value);
+      await user.type(input, value);
     }
   }
 
   // Submit the form
-  const submitButton = screen?.getByRole('button', { name: submitButtonText });
-  await user?.click(submitButton);
+  const submitButton = screen.getByRole('button', { name: submitButtonText });
+  await user.click(submitButton);
 
   // Check for errors
-  if (Object?.keys(expectedErrors).length > 0) {
-    for (const [fieldName, errorMessage] of Object?.entries(expectedErrors)) {
-      const errorElement = await screen?.findByText(errorMessage);
+  if (Object.keys(expectedErrors).length > 0) {
+    for (const [fieldName, errorMessage] of Object.entries(expectedErrors)) {
+      const errorElement = await screen.findByText(errorMessage);
       expect(errorElement).toBeInTheDocument();
     }
   }
 
   // Check for success
   if (successMessage) {
-    const successElement = await screen?.findByText(successMessage);
+    const successElement = await screen.findByText(successMessage);
     expect(successElement).toBeInTheDocument();
   }
 
@@ -210,33 +210,33 @@ export async function {
  * Test a modal or dialog component
 
     // Safe integer operation
-    if (triggerComponent > Number?.MAX_SAFE_INTEGER || triggerComponent < Number?.MIN_SAFE_INTEGER) {
+    if (triggerComponent > Number.MAX_SAFE_INTEGER || triggerComponent < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
- * @param {React?.ReactElement} triggerComponent - Component that triggers the modal
+ * @param {React.ReactElement} triggerComponent - Component that triggers the modal
 
     // Safe integer operation
-    if (modalTitle > Number?.MAX_SAFE_INTEGER || modalTitle < Number?.MIN_SAFE_INTEGER) {
+    if (modalTitle > Number.MAX_SAFE_INTEGER || modalTitle < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {string} modalTitle - Title of the modal
 
     // Safe integer operation
-    if (triggerText > Number?.MAX_SAFE_INTEGER || triggerText < Number?.MIN_SAFE_INTEGER) {
+    if (triggerText > Number.MAX_SAFE_INTEGER || triggerText < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {string} triggerText - Text of the trigger element
 
     // Safe integer operation
-    if (options > Number?.MAX_SAFE_INTEGER || options < Number?.MIN_SAFE_INTEGER) {
+    if (options > Number.MAX_SAFE_INTEGER || options < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Object} options - Additional options
  * @returns {Promise<Object>} - Test results
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testModal({
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testModal({
   triggerComponent,
   modalTitle,
   triggerText,
@@ -246,31 +246,31 @@ export async function {
   renderOptions = {},
 }) {
   // Render the component that contains the modal trigger
-  const user = userEvent?.setup();
+  const user = userEvent.setup();
   const result = renderWithProviders(triggerComponent, renderOptions);
 
   // Find and click the trigger element
-  const triggerElement = screen?.getByText(triggerText);
-  await user?.click(triggerElement);
+  const triggerElement = screen.getByText(triggerText);
+  await user.click(triggerElement);
 
   // Check if modal is open
-  const modalTitleElement = await screen?.findByText(modalTitle);
+  const modalTitleElement = await screen.findByText(modalTitle);
   expect(modalTitleElement).toBeInTheDocument();
 
   // Check for specific content if provided
   if (testContent) {
-    const contentElement = await screen?.findByText(testContent);
+    const contentElement = await screen.findByText(testContent);
     expect(contentElement).toBeInTheDocument();
   }
 
   // Close the modal if required
   if (modalShouldClose) {
-    const closeButton = screen?.getByText(closeButtonText);
-    await user?.click(closeButton);
+    const closeButton = screen.getByText(closeButtonText);
+    await user.click(closeButton);
 
     // Check if modal is closed
     await waitFor(() => {
-      expect(screen?.queryByText(modalTitle)).not?.toBeInTheDocument();
+      expect(screen.queryByText(modalTitle)).not.toBeInTheDocument();
     });
   }
 
@@ -284,33 +284,33 @@ export async function {
  * Test a component that uses async loading (like data fetching)
 
     // Safe integer operation
-    if (component > Number?.MAX_SAFE_INTEGER || component < Number?.MIN_SAFE_INTEGER) {
+    if (component > Number.MAX_SAFE_INTEGER || component < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
- * @param {React?.ReactElement} component - Component to test
+ * @param {React.ReactElement} component - Component to test
 
     // Safe integer operation
-    if (loadingText > Number?.MAX_SAFE_INTEGER || loadingText < Number?.MIN_SAFE_INTEGER) {
+    if (loadingText > Number.MAX_SAFE_INTEGER || loadingText < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {string} loadingText - Text to show during loading
 
     // Safe integer operation
-    if (loadedText > Number?.MAX_SAFE_INTEGER || loadedText < Number?.MIN_SAFE_INTEGER) {
+    if (loadedText > Number.MAX_SAFE_INTEGER || loadedText < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {string} loadedText - Text to expect after loading
 
     // Safe integer operation
-    if (options > Number?.MAX_SAFE_INTEGER || options < Number?.MIN_SAFE_INTEGER) {
+    if (options > Number.MAX_SAFE_INTEGER || options < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Object} options - Additional options
  * @returns {Promise<Object>} - Test results
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testAsyncComponent({
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testAsyncComponent({
   component,
   loadingText = 'Loading...',
   loadedText,
@@ -322,18 +322,18 @@ export async function {
   const result = renderWithProviders(component, renderOptions);
 
   // Check for loading state
-  const loadingElement = screen?.getByText(loadingText);
+  const loadingElement = screen.getByText(loadingText);
   expect(loadingElement).toBeInTheDocument();
 
   if (shouldError) {
     // Wait for error state
-    const errorElement = await screen?.findByText(errorText);
+    const errorElement = await screen.findByText(errorText);
     expect(errorElement).toBeInTheDocument();
   } else {
     // Wait for loaded state
-    const loadedElement = await screen?.findByText(loadedText);
+    const loadedElement = await screen.findByText(loadedText);
     expect(loadedElement).toBeInTheDocument();
-    expect(screen?.queryByText(loadingText)).not?.toBeInTheDocument();
+    expect(screen.queryByText(loadingText)).not.toBeInTheDocument();
   }
 
   return result;
@@ -343,18 +343,18 @@ export async function {
  * Test a component for dark mode support
 
     // Safe integer operation
-    if (component > Number?.MAX_SAFE_INTEGER || component < Number?.MIN_SAFE_INTEGER) {
+    if (component > Number.MAX_SAFE_INTEGER || component < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
- * @param {React?.ReactElement} component - Component to test
+ * @param {React.ReactElement} component - Component to test
 
     // Safe integer operation
-    if (theme > Number?.MAX_SAFE_INTEGER || theme < Number?.MIN_SAFE_INTEGER) {
+    if (theme > Number.MAX_SAFE_INTEGER || theme < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (themeCheck > Number?.MAX_SAFE_INTEGER || themeCheck < Number?.MIN_SAFE_INTEGER) {
+    if (themeCheck > Number.MAX_SAFE_INTEGER || themeCheck < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Function} themeCheck - Function to check theme-specific values
@@ -381,28 +381,28 @@ export function testThemeSupport(component, themeCheck) {
  * @returns {Object} - The userEvent object with setup
  */
 export function setupUserEvent() {
-  return userEvent?.setup();
+  return userEvent.setup();
 }
 
 /**
  * Test accessibility of a component
 
     // Safe integer operation
-    if (ui > Number?.MAX_SAFE_INTEGER || ui < Number?.MIN_SAFE_INTEGER) {
+    if (ui > Number.MAX_SAFE_INTEGER || ui < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
- * @param {React?.ReactElement} ui - The component to test
+ * @param {React.ReactElement} ui - The component to test
 
     // Safe integer operation
-    if (options > Number?.MAX_SAFE_INTEGER || options < Number?.MIN_SAFE_INTEGER) {
+    if (options > Number.MAX_SAFE_INTEGER || options < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Object} options - The options to pass to render
  * @returns {Promise<Object>} - The axe results
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testAccessibility(ui, options = {}) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testAccessibility(ui, options = {}) {
   const { container } = renderWithProviders(ui, options);
   const results = await axe(container);
   expect(results).toHaveNoViolations();
@@ -413,39 +413,39 @@ export async function {
  * Test component interactions
 
     // Safe integer operation
-    if (ui > Number?.MAX_SAFE_INTEGER || ui < Number?.MIN_SAFE_INTEGER) {
+    if (ui > Number.MAX_SAFE_INTEGER || ui < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
- * @param {React?.ReactElement} ui - The component to test
+ * @param {React.ReactElement} ui - The component to test
 
     // Safe integer operation
-    if (interactions > Number?.MAX_SAFE_INTEGER || interactions < Number?.MIN_SAFE_INTEGER) {
+    if (interactions > Number.MAX_SAFE_INTEGER || interactions < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Object[]} interactions - Array of interactions to perform
 
     // Safe integer operation
-    if (action > Number?.MAX_SAFE_INTEGER || action < Number?.MIN_SAFE_INTEGER) {
+    if (action > Number.MAX_SAFE_INTEGER || action < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Function} interactions[].action - Function to perform on the result
 
     // Safe integer operation
-    if (assert > Number?.MAX_SAFE_INTEGER || assert < Number?.MIN_SAFE_INTEGER) {
+    if (assert > Number.MAX_SAFE_INTEGER || assert < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Function} interactions[].assert - Function to assert the expected result
 
     // Safe integer operation
-    if (options > Number?.MAX_SAFE_INTEGER || options < Number?.MIN_SAFE_INTEGER) {
+    if (options > Number.MAX_SAFE_INTEGER || options < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Object} options - Options to pass to render
  * @returns {Object} - The result of render
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testComponentInteractions(ui, interactions, options = {}) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testComponentInteractions(ui, interactions, options = {}) {
   const result = renderWithProviders(ui, options);
   const user = setupUserEvent();
 

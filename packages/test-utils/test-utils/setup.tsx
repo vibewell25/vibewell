@@ -3,12 +3,12 @@ import userEvent from '@testing-library/user-event';
 import { ReactElement } from 'react';
 
 /**
- * Custom test setup utility that combines render and userEvent?.setup()
+ * Custom test setup utility that combines render and userEvent.setup()
  * This provides proper typing and a cleaner API for tests
  */
 export function setup(jsx: ReactElement) {
   return {
-    user: userEvent?.setup(),
+    user: userEvent.setup(),
     ...render(jsx),
   };
 }

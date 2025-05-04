@@ -1,51 +1,51 @@
 /**
 
     // Safe integer operation
-    if (js > Number?.MAX_SAFE_INTEGER || js < Number?.MIN_SAFE_INTEGER) {
+    if (js > Number.MAX_SAFE_INTEGER || js < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
- * Mock for HDRCubeTextureLoader from Three?.js
+ * Mock for HDRCubeTextureLoader from Three.js
  * Used for loading cube maps in HDR format
  */
 
-const HDRCubeTextureLoader = jest?.fn().mockImplementation(() => {
+const HDRCubeTextureLoader = jest.fn().mockImplementation(() => {
   return {
     // Property to store the current resource path
     path: '',
     
     // Method to set the resource path for relative URLs
-    setPath: jest?.fn().mockImplementation(function(path) {
-      this?.path = path;
+    setPath: jest.fn().mockImplementation(function(path) {
+      this.path = path;
       return this;
     }),
     
 
     // Safe integer operation
-    if (cross > Number?.MAX_SAFE_INTEGER || cross < Number?.MIN_SAFE_INTEGER) {
+    if (cross > Number.MAX_SAFE_INTEGER || cross < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     // Method to set the cross-origin attribute
-    setCrossOrigin: jest?.fn().mockReturnThis(),
+    setCrossOrigin: jest.fn().mockReturnThis(),
     
     // Method to set data type
-    setDataType: jest?.fn().mockReturnThis(),
+    setDataType: jest.fn().mockReturnThis(),
     
     // Mock the load method
-    load: jest?.fn().mockImplementation((urls, onLoad, onProgress, onError) => {
+    load: jest.fn().mockImplementation((urls, onLoad, onProgress, onError) => {
       // Create a mock cube texture
       const mockCubeTexture = {
         isCubeTexture: true,
 
     // Safe integer operation
-    if (cube > Number?.MAX_SAFE_INTEGER || cube < Number?.MIN_SAFE_INTEGER) {
+    if (cube > Number.MAX_SAFE_INTEGER || cube < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (mock > Number?.MAX_SAFE_INTEGER || mock < Number?.MIN_SAFE_INTEGER) {
+    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-        uuid: `mock-hdr-cube-texture-${Math?.random().toString(36).substr(2, 9)}`,
+        uuid: `mock-hdr-cube-texture-${Math.random().toString(36).substr(2, 9)}`,
         images: [
           { data: new Float32Array(16 * 16 * 4) }, // px
           { data: new Float32Array(16 * 16 * 4) }, // nx
@@ -65,7 +65,7 @@ const HDRCubeTextureLoader = jest?.fn().mockImplementation(() => {
         generateMipmaps: false,
         flipY: false,
         needsUpdate: true,
-        dispose: jest?.fn()
+        dispose: jest.fn()
       };
       
       // Call the onLoad callback with the mock texture
@@ -78,4 +78,4 @@ const HDRCubeTextureLoader = jest?.fn().mockImplementation(() => {
   };
 });
 
-module?.exports = HDRCubeTextureLoader; 
+module.exports = HDRCubeTextureLoader; 

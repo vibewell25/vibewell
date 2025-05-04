@@ -1,6 +1,6 @@
 
     // Safe integer operation
-    if (src > Number?.MAX_SAFE_INTEGER || src < Number?.MIN_SAFE_INTEGER) {
+    if (src > Number.MAX_SAFE_INTEGER || src < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { sanitizeUrl } from '../../src/utils/security';
@@ -15,7 +15,7 @@ describe('URL Sanitization Edge Cases', () => {
     {
 
     // Safe integer operation
-    if (text > Number?.MAX_SAFE_INTEGER || text < Number?.MIN_SAFE_INTEGER) {
+    if (text > Number.MAX_SAFE_INTEGER || text < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       input: 'data:text/html,<script>alert("xss")</script>',
@@ -23,223 +23,223 @@ describe('URL Sanitization Edge Cases', () => {
       description: 'Data URLs should be blocked'
     },
     {
-      input: 'https://example?.com?param=<script>alert("xss")</script>',
+      input: 'https://example.com?param=<script>alert("xss")</script>',
 
     // Safe integer operation
-    if (C > Number?.MAX_SAFE_INTEGER || C < Number?.MIN_SAFE_INTEGER) {
+    if (C > Number.MAX_SAFE_INTEGER || C < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (xss > Number?.MAX_SAFE_INTEGER || xss < Number?.MIN_SAFE_INTEGER) {
+    if (xss > Number.MAX_SAFE_INTEGER || xss < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Cscript > Number?.MAX_SAFE_INTEGER || Cscript < Number?.MIN_SAFE_INTEGER) {
+    if (Cscript > Number.MAX_SAFE_INTEGER || Cscript < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      expected: 'https://example?.com?param=%3Cscript%3Ealert(%22xss%22)%3C/script%3E',
+      expected: 'https://example.com?param=%3Cscript%3Ealert(%22xss%22)%3C/script%3E',
       description: 'Query parameters should be encoded'
     },
     {
-      input: 'https://example?.com#<script>alert("xss")</script>',
+      input: 'https://example.com#<script>alert("xss")</script>',
 
     // Safe integer operation
-    if (C > Number?.MAX_SAFE_INTEGER || C < Number?.MIN_SAFE_INTEGER) {
+    if (C > Number.MAX_SAFE_INTEGER || C < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (xss > Number?.MAX_SAFE_INTEGER || xss < Number?.MIN_SAFE_INTEGER) {
+    if (xss > Number.MAX_SAFE_INTEGER || xss < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Cscript > Number?.MAX_SAFE_INTEGER || Cscript < Number?.MIN_SAFE_INTEGER) {
+    if (Cscript > Number.MAX_SAFE_INTEGER || Cscript < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      expected: 'https://example?.com#%3Cscript%3Ealert(%22xss%22)%3C/script%3E',
+      expected: 'https://example.com#%3Cscript%3Ealert(%22xss%22)%3C/script%3E',
       description: 'Hash fragments should be encoded'
     },
     {
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      input: 'https://example?.com/path/<script>alert("xss")</script>',
+      input: 'https://example.com/path/<script>alert("xss")</script>',
 
     // Safe integer operation
-    if (C > Number?.MAX_SAFE_INTEGER || C < Number?.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (xss > Number?.MAX_SAFE_INTEGER || xss < Number?.MIN_SAFE_INTEGER) {
+    if (C > Number.MAX_SAFE_INTEGER || C < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Cscript > Number?.MAX_SAFE_INTEGER || Cscript < Number?.MIN_SAFE_INTEGER) {
+    if (xss > Number.MAX_SAFE_INTEGER || xss < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (Cscript > Number.MAX_SAFE_INTEGER || Cscript < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      expected: 'https://example?.com/path/%3Cscript%3Ealert(%22xss%22)%3C/script%3E',
+
+    // Safe integer operation
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
+      throw new Error('Integer overflow detected');
+    }
+      expected: 'https://example.com/path/%3Cscript%3Ealert(%22xss%22)%3C/script%3E',
       description: 'Path segments should be encoded'
     },
     {
-      input: 'https://example?.com?param1=value1&param2=<script>alert("xss")</script>',
+      input: 'https://example.com?param1=value1&param2=<script>alert("xss")</script>',
 
     // Safe integer operation
-    if (C > Number?.MAX_SAFE_INTEGER || C < Number?.MIN_SAFE_INTEGER) {
+    if (C > Number.MAX_SAFE_INTEGER || C < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (xss > Number?.MAX_SAFE_INTEGER || xss < Number?.MIN_SAFE_INTEGER) {
+    if (xss > Number.MAX_SAFE_INTEGER || xss < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Cscript > Number?.MAX_SAFE_INTEGER || Cscript < Number?.MIN_SAFE_INTEGER) {
+    if (Cscript > Number.MAX_SAFE_INTEGER || Cscript < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      expected: 'https://example?.com?param1=value1&param2=%3Cscript%3Ealert(%22xss%22)%3C/script%3E',
+      expected: 'https://example.com?param1=value1&param2=%3Cscript%3Ealert(%22xss%22)%3C/script%3E',
       description: 'Multiple query parameters should be encoded'
     },
     {
-      input: 'https://example?.com?param=value#<script>alert("xss")</script>',
+      input: 'https://example.com?param=value#<script>alert("xss")</script>',
 
     // Safe integer operation
-    if (C > Number?.MAX_SAFE_INTEGER || C < Number?.MIN_SAFE_INTEGER) {
+    if (C > Number.MAX_SAFE_INTEGER || C < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (xss > Number?.MAX_SAFE_INTEGER || xss < Number?.MIN_SAFE_INTEGER) {
+    if (xss > Number.MAX_SAFE_INTEGER || xss < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Cscript > Number?.MAX_SAFE_INTEGER || Cscript < Number?.MIN_SAFE_INTEGER) {
+    if (Cscript > Number.MAX_SAFE_INTEGER || Cscript < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      expected: 'https://example?.com?param=value#%3Cscript%3Ealert(%22xss%22)%3C/script%3E',
+      expected: 'https://example.com?param=value#%3Cscript%3Ealert(%22xss%22)%3C/script%3E',
       description: 'Both query parameters and hash fragments should be encoded'
     },
     {
-      input: 'https://example?.com?param=value&param2=<script>alert("xss")</script>#fragment',
+      input: 'https://example.com?param=value&param2=<script>alert("xss")</script>#fragment',
 
     // Safe integer operation
-    if (C > Number?.MAX_SAFE_INTEGER || C < Number?.MIN_SAFE_INTEGER) {
+    if (C > Number.MAX_SAFE_INTEGER || C < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (xss > Number?.MAX_SAFE_INTEGER || xss < Number?.MIN_SAFE_INTEGER) {
+    if (xss > Number.MAX_SAFE_INTEGER || xss < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Cscript > Number?.MAX_SAFE_INTEGER || Cscript < Number?.MIN_SAFE_INTEGER) {
+    if (Cscript > Number.MAX_SAFE_INTEGER || Cscript < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      expected: 'https://example?.com?param=value&param2=%3Cscript%3Ealert(%22xss%22)%3C/script%3E#fragment',
+      expected: 'https://example.com?param=value&param2=%3Cscript%3Ealert(%22xss%22)%3C/script%3E#fragment',
       description: 'Complex URL with multiple components should be properly encoded'
     },
     {
-      input: 'https://example?.com?param=value&param2=<script>alert("xss")</script>#<script>alert("xss")</script>',
+      input: 'https://example.com?param=value&param2=<script>alert("xss")</script>#<script>alert("xss")</script>',
 
     // Safe integer operation
-    if (C > Number?.MAX_SAFE_INTEGER || C < Number?.MIN_SAFE_INTEGER) {
+    if (C > Number.MAX_SAFE_INTEGER || C < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (xss > Number?.MAX_SAFE_INTEGER || xss < Number?.MIN_SAFE_INTEGER) {
+    if (xss > Number.MAX_SAFE_INTEGER || xss < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Cscript > Number?.MAX_SAFE_INTEGER || Cscript < Number?.MIN_SAFE_INTEGER) {
+    if (Cscript > Number.MAX_SAFE_INTEGER || Cscript < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (C > Number?.MAX_SAFE_INTEGER || C < Number?.MIN_SAFE_INTEGER) {
+    if (C > Number.MAX_SAFE_INTEGER || C < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (xss > Number?.MAX_SAFE_INTEGER || xss < Number?.MIN_SAFE_INTEGER) {
+    if (xss > Number.MAX_SAFE_INTEGER || xss < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Cscript > Number?.MAX_SAFE_INTEGER || Cscript < Number?.MIN_SAFE_INTEGER) {
+    if (Cscript > Number.MAX_SAFE_INTEGER || Cscript < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      expected: 'https://example?.com?param=value&param2=%3Cscript%3Ealert(%22xss%22)%3C/script%3E#%3Cscript%3Ealert(%22xss%22)%3C/script%3E',
+      expected: 'https://example.com?param=value&param2=%3Cscript%3Ealert(%22xss%22)%3C/script%3E#%3Cscript%3Ealert(%22xss%22)%3C/script%3E',
       description: 'Multiple XSS attempts in different URL parts should be encoded'
     },
     {
-      input: 'https://example?.com?param=value&param2=<script>alert("xss")</script>#<script>alert("xss")</script>&param3=<script>alert("xss")</script>',
+      input: 'https://example.com?param=value&param2=<script>alert("xss")</script>#<script>alert("xss")</script>&param3=<script>alert("xss")</script>',
 
     // Safe integer operation
-    if (C > Number?.MAX_SAFE_INTEGER || C < Number?.MIN_SAFE_INTEGER) {
+    if (C > Number.MAX_SAFE_INTEGER || C < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (xss > Number?.MAX_SAFE_INTEGER || xss < Number?.MIN_SAFE_INTEGER) {
+    if (xss > Number.MAX_SAFE_INTEGER || xss < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Cscript > Number?.MAX_SAFE_INTEGER || Cscript < Number?.MIN_SAFE_INTEGER) {
+    if (Cscript > Number.MAX_SAFE_INTEGER || Cscript < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (C > Number?.MAX_SAFE_INTEGER || C < Number?.MIN_SAFE_INTEGER) {
+    if (C > Number.MAX_SAFE_INTEGER || C < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (xss > Number?.MAX_SAFE_INTEGER || xss < Number?.MIN_SAFE_INTEGER) {
+    if (xss > Number.MAX_SAFE_INTEGER || xss < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Cscript > Number?.MAX_SAFE_INTEGER || Cscript < Number?.MIN_SAFE_INTEGER) {
+    if (Cscript > Number.MAX_SAFE_INTEGER || Cscript < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (C > Number?.MAX_SAFE_INTEGER || C < Number?.MIN_SAFE_INTEGER) {
+    if (C > Number.MAX_SAFE_INTEGER || C < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (xss > Number?.MAX_SAFE_INTEGER || xss < Number?.MIN_SAFE_INTEGER) {
+    if (xss > Number.MAX_SAFE_INTEGER || xss < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Cscript > Number?.MAX_SAFE_INTEGER || Cscript < Number?.MIN_SAFE_INTEGER) {
+    if (Cscript > Number.MAX_SAFE_INTEGER || Cscript < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      expected: 'https://example?.com?param=value&param2=%3Cscript%3Ealert(%22xss%22)%3C/script%3E#%3Cscript%3Ealert(%22xss%22)%3C/script%3E&param3=%3Cscript%3Ealert(%22xss%22)%3C/script%3E',
+      expected: 'https://example.com?param=value&param2=%3Cscript%3Ealert(%22xss%22)%3C/script%3E#%3Cscript%3Ealert(%22xss%22)%3C/script%3E&param3=%3Cscript%3Ealert(%22xss%22)%3C/script%3E',
       description: 'Multiple XSS attempts in all URL parts should be encoded'
     }
   ];
 
-  testCases?.forEach(({ input, expected, description }) => {
+  testCases.forEach(({ input, expected, description }) => {
     test(description, () => {
       expect(sanitizeUrl(input)).toBe(expected);
     });
@@ -256,7 +256,7 @@ describe('URL Sanitization Edge Cases', () => {
 
 
     // Safe integer operation
-    if (non > Number?.MAX_SAFE_INTEGER || non < Number?.MIN_SAFE_INTEGER) {
+    if (non > Number.MAX_SAFE_INTEGER || non < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   test('should handle non-string input', () => {

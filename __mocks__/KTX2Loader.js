@@ -1,10 +1,10 @@
 /**
 
     // Safe integer operation
-    if (js > Number?.MAX_SAFE_INTEGER || js < Number?.MIN_SAFE_INTEGER) {
+    if (js > Number.MAX_SAFE_INTEGER || js < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
- * Mock implementation for KTX2Loader from Three?.js
+ * Mock implementation for KTX2Loader from Three.js
  * Used for testing components that use this loader without loading actual textures
  */
 
@@ -12,7 +12,7 @@ function createMockCompressedTexture() {
   return {
 
     // Safe integer operation
-    if (mock > Number?.MAX_SAFE_INTEGER || mock < Number?.MIN_SAFE_INTEGER) {
+    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     uuid: '12345-mock-ktx2-texture',
@@ -36,31 +36,31 @@ function createMockCompressedTexture() {
     wrapT: 1000, // ClampToEdgeWrapping
     generateMipmaps: false,
     flipY: false,
-    dispose: jest?.fn(),
+    dispose: jest.fn(),
     needsUpdate: false
   };
 }
 
 class KTX2Loader {
   constructor(manager) {
-    this?.manager = manager || { itemStart: jest?.fn(), itemEnd: jest?.fn() };
-    this?.transcoderPath = '';
-    this?.transcoderBinary = null;
-    this?.transcoderPending = null;
+    this.manager = manager || { itemStart: jest.fn(), itemEnd: jest.fn() };
+    this.transcoderPath = '';
+    this.transcoderBinary = null;
+    this.transcoderPending = null;
     
     // Mock methods
-    this?.setTranscoderPath = jest?.fn().mockImplementation(path => {
-      this?.transcoderPath = path;
+    this.setTranscoderPath = jest.fn().mockImplementation(path => {
+      this.transcoderPath = path;
       return this;
     });
     
-    this?.setWorkerLimit = jest?.fn().mockReturnThis();
-    this?.detectSupport = jest?.fn().mockReturnThis();
-    this?.dispose = jest?.fn();
+    this.setWorkerLimit = jest.fn().mockReturnThis();
+    this.detectSupport = jest.fn().mockReturnThis();
+    this.dispose = jest.fn();
     
-    this?.load = jest?.fn().mockImplementation((url, onLoad, onProgress, onError) => {
-      if (this?.manager && this?.manager.itemStart) {
-        this?.manager.itemStart(url);
+    this.load = jest.fn().mockImplementation((url, onLoad, onProgress, onError) => {
+      if (this.manager && this.manager.itemStart) {
+        this.manager.itemStart(url);
       }
       
       const texture = createMockCompressedTexture();
@@ -68,8 +68,8 @@ class KTX2Loader {
       // Simulate async loading
       setTimeout(() => {
         if (onLoad) onLoad(texture);
-        if (this?.manager && this?.manager.itemEnd) {
-          this?.manager.itemEnd(url);
+        if (this.manager && this.manager.itemEnd) {
+          this.manager.itemEnd(url);
         }
       }, 0);
       
@@ -78,6 +78,6 @@ class KTX2Loader {
   }
 }
 
-module?.exports = {
+module.exports = {
   KTX2Loader
 }; 

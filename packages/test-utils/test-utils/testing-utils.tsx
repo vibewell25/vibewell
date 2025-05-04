@@ -18,29 +18,29 @@ const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>
  * This function checks for accessibility violations using axe-core
  */
 const testAccessibility = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');element: Element) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');element: Element) => {
   const results = await axe(element);
   // Use a workaround for TypeScript not recognizing toHaveNoViolations
-  // The actual matcher is added in the jest?.enhanced-setup?.js file
-  expect(results?.violations.length).toBe(0);
+  // The actual matcher is added in the jest.enhanced-setup.js file
+  expect(results.violations.length).toBe(0);
 };
 
 /**
- * Mock for window?.matchMedia
+ * Mock for window.matchMedia
  */
 const mockMatchMedia = () => {
-  Object?.defineProperty(window, 'matchMedia', {
+  Object.defineProperty(window, 'matchMedia', {
     writable: true,
-    value: vi?.fn().mockImplementation((query) => ({
+    value: vi.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
       onchange: null,
-      addListener: vi?.fn(),
-      removeListener: vi?.fn(),
-      addEventListener: vi?.fn(),
-      removeEventListener: vi?.fn(),
-      dispatchEvent: vi?.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
     })),
   });
 };
@@ -55,18 +55,18 @@ const waitFor = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms)
  */
 const mockFunctions = {
   mockFetch: () => {
-    const originalFetch = global?.fetch;
-    global?.fetch = vi?.fn().mockImplementation(() =>
-      Promise?.resolve({
+    const originalFetch = global.fetch;
+    global.fetch = vi.fn().mockImplementation(() =>
+      Promise.resolve({
         ok: true,
-        json: () => Promise?.resolve({ data: 'mocked data' }),
-        text: () => Promise?.resolve('mocked text'),
-        blob: () => Promise?.resolve(new Blob(['mocked blob'])),
+        json: () => Promise.resolve({ data: 'mocked data' }),
+        text: () => Promise.resolve('mocked text'),
+        blob: () => Promise.resolve(new Blob(['mocked blob'])),
       }),
     );
 
     return () => {
-      global?.fetch = originalFetch;
+      global.fetch = originalFetch;
     };
   },
 };

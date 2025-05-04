@@ -28,20 +28,20 @@ export function createServiceTestSuite<ServiceResult, ServiceParams extends any[
   mockFn?: (mockResponse: any, mockError?: Error) => void,
 ): void {
   describe(`${name} Service`, () => {
-    testCases?.forEach((testCase) => {
-      it(testCase?.name, async () => {
+    testCases.forEach((testCase) => {
+      it(testCase.name, async () => {
         // Setup mocks if provided
-        if (mockFn && (testCase?.mockResponse || testCase?.mockError)) {
-          mockFn(testCase?.mockResponse, testCase?.mockError);
+        if (mockFn && (testCase.mockResponse || testCase.mockError)) {
+          mockFn(testCase.mockResponse, testCase.mockError);
         }
 
         // Setup the test case
-        if (testCase?.setup) {
-          await testCase?.setup();
+        if (testCase.setup) {
+          await testCase.setup();
         }
 
         // Initialize params
-        const params = testCase?.params || ([] as unknown as ServiceParams);
+        const params = testCase.params || ([] as unknown as ServiceParams);
 
         // Call the service function and handle result
         let result: ServiceResult | Error;
@@ -49,18 +49,18 @@ export function createServiceTestSuite<ServiceResult, ServiceParams extends any[
           result = await serviceFunction(...params);
 
           // Run assertions if provided
-          if (testCase?.assertions) {
-            await testCase?.assertions(result);
+          if (testCase.assertions) {
+            await testCase.assertions(result);
           }
         } catch (error) {
           result = error as Error;
 
           // Run error assertions if provided
-          if (testCase?.errorAssertions) {
-            await testCase?.errorAssertions(error as Error);
-          } else if (testCase?.assertions) {
+          if (testCase.errorAssertions) {
+            await testCase.errorAssertions(error as Error);
+          } else if (testCase.assertions) {
             // Fall back to regular assertions
-            await testCase?.assertions(error as Error);
+            await testCase.assertions(error as Error);
           } else {
             // Re-throw if no assertions provided
             throw error;
@@ -68,8 +68,8 @@ export function createServiceTestSuite<ServiceResult, ServiceParams extends any[
         }
 
         // Teardown the test case
-        if (testCase?.teardown) {
-          await testCase?.teardown();
+        if (testCase.teardown) {
+          await testCase.teardown();
         }
       });
     });
@@ -93,8 +93,8 @@ export function createServiceMock<ServiceResult, ServiceParams extends any[]>(
   let mockError: Error | null = null;
 
   const mock = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');...args: ServiceParams): Promise<ServiceResult> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');...args: ServiceParams): Promise<ServiceResult> => {
     if (mockError) {
       throw mockError;
     }

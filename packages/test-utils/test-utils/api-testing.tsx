@@ -13,61 +13,61 @@ import { mockApiResponse } from '@/types/api';
  */
 export function createMockApiClient(responses = {}) {
   return {
-    get: jest?.fn((path) => {
+    get: jest.fn((path) => {
       if (responses[path]) {
-        return Promise?.resolve(responses[path]);
+        return Promise.resolve(responses[path]);
       }
-      return Promise?.resolve(mockApiResponse({ message: 'Mock GET response' }));
+      return Promise.resolve(mockApiResponse({ message: 'Mock GET response' }));
     }),
 
-    post: jest?.fn((path, data) => {
+    post: jest.fn((path, data) => {
       if (responses[path]) {
-        return Promise?.resolve(
+        return Promise.resolve(
           typeof responses[path] === 'function' ? responses[path](data) : responses[path],
         );
       }
-      return Promise?.resolve(mockApiResponse({ message: 'Mock POST response', data }));
+      return Promise.resolve(mockApiResponse({ message: 'Mock POST response', data }));
     }),
 
-    put: jest?.fn((path, data) => {
+    put: jest.fn((path, data) => {
       if (responses[path]) {
-        return Promise?.resolve(
+        return Promise.resolve(
           typeof responses[path] === 'function' ? responses[path](data) : responses[path],
         );
       }
-      return Promise?.resolve(mockApiResponse({ message: 'Mock PUT response', data }));
+      return Promise.resolve(mockApiResponse({ message: 'Mock PUT response', data }));
     }),
 
-    patch: jest?.fn((path, data) => {
+    patch: jest.fn((path, data) => {
       if (responses[path]) {
-        return Promise?.resolve(
+        return Promise.resolve(
           typeof responses[path] === 'function' ? responses[path](data) : responses[path],
         );
       }
-      return Promise?.resolve(mockApiResponse({ message: 'Mock PATCH response', data }));
+      return Promise.resolve(mockApiResponse({ message: 'Mock PATCH response', data }));
     }),
 
-    delete: jest?.fn((path) => {
+    delete: jest.fn((path) => {
       if (responses[path]) {
-        return Promise?.resolve(responses[path]);
+        return Promise.resolve(responses[path]);
       }
-      return Promise?.resolve(mockApiResponse({ message: 'Mock DELETE response' }));
+      return Promise.resolve(mockApiResponse({ message: 'Mock DELETE response' }));
     }),
 
-    request: jest?.fn((config) => {
+    request: jest.fn((config) => {
       const { url, method = 'GET', data } = config;
       if (responses[url]) {
-        return Promise?.resolve(
+        return Promise.resolve(
           typeof responses[url] === 'function' ? responses[url](data, method) : responses[url],
         );
       }
-      return Promise?.resolve(mockApiResponse({ message: `Mock ${method} response`, data }));
+      return Promise.resolve(mockApiResponse({ message: `Mock ${method} response`, data }));
     }),
   };
 }
 
 /**
- * Create a mock HTTP response object for testing Next?.js API handlers
+ * Create a mock HTTP response object for testing Next.js API handlers
  * @returns {Object} - Mock response object
  */
 export function createMockResponse() {
@@ -80,56 +80,56 @@ export function createMockResponse() {
     finished: false,
     _sent: false,
 
-    status: jest?.fn(function (statusCode) {
-      this?.statusCode = statusCode;
+    status: jest.fn(function (statusCode) {
+      this.statusCode = statusCode;
       return this;
     }),
 
-    json: jest?.fn(function (data) {
-      this?._sent = true;
-      this?.data = data;
+    json: jest.fn(function (data) {
+      this._sent = true;
+      this.data = data;
       return this;
     }),
 
-    send: jest?.fn(function (data) {
-      this?._sent = true;
-      this?.data = data;
+    send: jest.fn(function (data) {
+      this._sent = true;
+      this.data = data;
       return this;
     }),
 
-    setHeader: jest?.fn(function (name, value) {
-      this?.headers[name?.toLowerCase()] = value;
+    setHeader: jest.fn(function (name, value) {
+      this.headers[name.toLowerCase()] = value;
       return this;
     }),
 
-    getHeader: jest?.fn(function (name) {
-      return this?.headers[name?.toLowerCase()];
+    getHeader: jest.fn(function (name) {
+      return this.headers[name.toLowerCase()];
     }),
 
-    removeHeader: jest?.fn(function (name) {
-      delete this?.headers[name?.toLowerCase()];
+    removeHeader: jest.fn(function (name) {
+      delete this.headers[name.toLowerCase()];
       return this;
     }),
 
-    setCookie: jest?.fn(function (name, value, options) {
-      this?.cookies[name] = { value, options };
+    setCookie: jest.fn(function (name, value, options) {
+      this.cookies[name] = { value, options };
       return this;
     }),
 
-    clearCookie: jest?.fn(function (name) {
-      delete this?.cookies[name];
+    clearCookie: jest.fn(function (name) {
+      delete this.cookies[name];
       return this;
     }),
 
-    redirect: jest?.fn(function (url) {
-      this?._sent = true;
-      this?.redirectUrl = url;
+    redirect: jest.fn(function (url) {
+      this._sent = true;
+      this.redirectUrl = url;
       return this;
     }),
 
-    end: jest?.fn(function (data) {
-      this?._sent = true;
-      if (data) this?.data = data;
+    end: jest.fn(function (data) {
+      this._sent = true;
+      if (data) this.data = data;
       return this;
     }),
   };
@@ -138,7 +138,7 @@ export function createMockResponse() {
 }
 
 /**
- * Create a mock HTTP request object for testing Next?.js API handlers
+ * Create a mock HTTP request object for testing Next.js API handlers
  * @param {Object} options - Request options
  * @returns {Object} - Mock request object
  */
@@ -171,7 +171,7 @@ export function createMockRequest(options = {}) {
 }
 
 /**
- * Create mock Next?.js API request and response objects
+ * Create mock Next.js API request and response objects
  * @param {Object} reqOptions - Request options
  * @returns {Object} - Mock req and res objects
  */
@@ -183,14 +183,14 @@ export function createMockReqRes(reqOptions = {}) {
 }
 
 /**
- * Test a Next?.js API handler
+ * Test a Next.js API handler
  * @param {Function} handler - API route handler
  * @param {Object} reqOptions - Request options
  * @returns {Promise<Object>} - Response from the handler
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testApiHandler(handler, reqOptions = {}) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testApiHandler(handler, reqOptions = {}) {
   const { req, res } = createMockReqRes(reqOptions);
   await handler(req, res);
   return { req, res };

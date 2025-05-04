@@ -271,7 +271,7 @@ router.get('/events', auth_1.checkJwt, async (req, res) => {
         access_token: token.accessToken,
         refresh_token: token.refreshToken,
         scope: token.scope ?? undefined,
-        expiry_date: token.expiryDate?.getTime() ?? undefined,
+        expiry_date: token.expiryDate.getTime() ?? undefined,
     });
     try {
         const calendar = googleapis_1.google.calendar({ version: 'v3', auth: oAuth2Client });

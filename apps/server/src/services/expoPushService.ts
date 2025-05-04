@@ -1,6 +1,6 @@
 
     // Safe integer operation
-    if (expo > Number?.MAX_SAFE_INTEGER || expo < Number?.MIN_SAFE_INTEGER) {
+    if (expo > Number.MAX_SAFE_INTEGER || expo < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { Expo, ExpoPushMessage, ExpoPushReceipt } from 'expo-server-sdk';
@@ -17,26 +17,26 @@ const expo = new Expo();
  * @param data Optional data payload
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); sendUserPushNotifications(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); sendUserPushNotifications(
   userId: string,
   title: string,
   body: string,
   data?: Record<string, any>
 ): Promise<{ success: boolean; receipts?: ExpoPushReceipt[]; error?: string }> {
   // Fetch user push tokens from DB
-  const user = await prisma?.user.findUnique({ where: { id: userId } });
+  const user = await prisma.user.findUnique({ where: { id: userId } });
   if (!user) {
     return { success: false, error: 'User not found' };
   }
 
-  const tokens = Array?.isArray(user?.pushTokens) ? user?.pushTokens : [];
+  const tokens = Array.isArray(user.pushTokens) ? user.pushTokens : [];
   // Build messages
   const messages: ExpoPushMessage[] = [];
   for (const entry of tokens) {
     const token = (entry as any).token;
-    if (Expo?.isExpoPushToken(token)) {
-      messages?.push({
+    if (Expo.isExpoPushToken(token)) {
+      messages.push({
         to: token,
         sound: 'default',
         title,
@@ -47,16 +47,16 @@ export async function {
   }
 
   // Chunk messages
-  const chunks = expo?.chunkPushNotifications(messages);
+  const chunks = expo.chunkPushNotifications(messages);
   const receipts: ExpoPushReceipt[] = [];
   try {
     for (const chunk of chunks) {
-      const chunkReceipts = await expo?.sendPushNotificationsAsync(chunk);
-      receipts?.push(...chunkReceipts);
+      const chunkReceipts = await expo.sendPushNotificationsAsync(chunk);
+      receipts.push(...chunkReceipts);
     }
     return { success: true, receipts };
   } catch (err: any) {
-    console?.error('Push send error:', err);
-    return { success: false, error: err?.message };
+    console.error('Push send error:', err);
+    return { success: false, error: err.message };
   }
 }

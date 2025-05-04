@@ -1528,7 +1528,7 @@ router.get('/metrics/services', auth_1.checkJwt, async (req, res) => {
     });
     const services = await Promise.all(groups.map(async (g) => {
         const svc = await prisma.service.findUnique({ where: { id: g.serviceId } });
-        return { serviceId: g.serviceId, name: svc?.name || null, count: g._count.id };
+        return { serviceId: g.serviceId, name: svc.name || null, count: g._count.id };
     }));
     res.json({ services });
 });

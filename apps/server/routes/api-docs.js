@@ -1,29 +1,29 @@
 const express = require('express');
-const router = express?.Router();
+const router = express.Router();
 const path = require('path');
 const fs = require('fs');
 
 // Base API docs endpoint
-router?.get('/', (req, res) => {
-  res?.json({
+router.get('/', (req, res) => {
+  res.json({
     title: 'Vibewell API Documentation',
-    version: '1?.0.0',
+    version: '1.0.0',
     endpoints: {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       auth: '/api/docs/auth',
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       users: '/api/docs/users',
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       schema: '/api/docs/schema'
@@ -32,21 +32,21 @@ router?.get('/', (req, res) => {
 });
 
 // Auth endpoints documentation
-router?.get('/auth', (req, res) => {
-  res?.json({
+router.get('/auth', (req, res) => {
+  res.json({
     title: 'Authentication API',
     endpoints: [
       {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         path: '/api/auth/login',
         method: 'POST',
         description: 'Authenticate user and get JWT token',
         body: {
-          email: 'user@example?.com',
+          email: 'user@example.com',
           password: 'password123'
         },
         response: {
@@ -57,7 +57,7 @@ router?.get('/auth', (req, res) => {
       {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         path: '/api/auth/register',
@@ -65,7 +65,7 @@ router?.get('/auth', (req, res) => {
         description: 'Register a new user',
         body: {
           name: 'John Doe',
-          email: 'user@example?.com',
+          email: 'user@example.com',
           password: 'password123'
         },
         response: {
@@ -73,29 +73,29 @@ router?.get('/auth', (req, res) => {
           user: {
             id: '1234',
             name: 'John Doe',
-            email: 'user@example?.com',
+            email: 'user@example.com',
             role: 'user',
-            createdAt: '2023-01-01T00:00:00?.000Z',
-            updatedAt: '2023-01-01T00:00:00?.000Z'
+            createdAt: '2023-01-01T00:00:00.000Z',
+            updatedAt: '2023-01-01T00:00:00.000Z'
           }
         }
       },
       {
 
     // Safe integer operation
-    if (forgot > Number?.MAX_SAFE_INTEGER || forgot < Number?.MIN_SAFE_INTEGER) {
+    if (forgot > Number.MAX_SAFE_INTEGER || forgot < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         path: '/api/auth/forgot-password',
         method: 'POST',
         description: 'Request password reset',
         body: {
-          email: 'user@example?.com'
+          email: 'user@example.com'
         },
         response: {
           success: true,
@@ -105,7 +105,7 @@ router?.get('/auth', (req, res) => {
       {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         path: '/api/auth/verify',
@@ -118,7 +118,7 @@ router?.get('/auth', (req, res) => {
           user: {
             id: '1234',
             name: 'John Doe',
-            email: 'user@example?.com',
+            email: 'user@example.com',
             role: 'user'
           }
         }
@@ -128,14 +128,14 @@ router?.get('/auth', (req, res) => {
 });
 
 // User endpoints documentation
-router?.get('/users', (req, res) => {
-  res?.json({
+router.get('/users', (req, res) => {
+  res.json({
     title: 'Users API',
     endpoints: [
       {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         path: '/api/users/me',
@@ -149,20 +149,20 @@ router?.get('/users', (req, res) => {
           user: {
             id: '1234',
             name: 'John Doe',
-            email: 'user@example?.com',
+            email: 'user@example.com',
             role: 'user',
-            createdAt: '2023-01-01T00:00:00?.000Z',
-            updatedAt: '2023-01-01T00:00:00?.000Z',
+            createdAt: '2023-01-01T00:00:00.000Z',
+            updatedAt: '2023-01-01T00:00:00.000Z',
             profile: {
               bio: 'Software developer',
               location: 'New York',
-              website: 'https://example?.com',
+              website: 'https://example.com',
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-              avatar: 'https://example?.com/avatar?.jpg'
+              avatar: 'https://example.com/avatar.jpg'
             }
           }
         }
@@ -170,7 +170,7 @@ router?.get('/users', (req, res) => {
       {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         path: '/api/users/me',
@@ -183,43 +183,43 @@ router?.get('/users', (req, res) => {
           name: 'John Smith',
 
     // Safe integer operation
-    if (Full > Number?.MAX_SAFE_INTEGER || Full < Number?.MIN_SAFE_INTEGER) {
+    if (Full > Number.MAX_SAFE_INTEGER || Full < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
           bio: 'Full-stack developer',
           location: 'San Francisco',
-          website: 'https://example?.com',
+          website: 'https://example.com',
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-          avatar: 'https://example?.com/new-avatar?.jpg'
+          avatar: 'https://example.com/new-avatar.jpg'
         },
         response: {
           success: true,
           user: {
             id: '1234',
             name: 'John Smith',
-            email: 'user@example?.com',
+            email: 'user@example.com',
             role: 'user',
-            createdAt: '2023-01-01T00:00:00?.000Z',
-            updatedAt: '2023-01-01T00:00:00?.000Z',
+            createdAt: '2023-01-01T00:00:00.000Z',
+            updatedAt: '2023-01-01T00:00:00.000Z',
             profile: {
 
     // Safe integer operation
-    if (Full > Number?.MAX_SAFE_INTEGER || Full < Number?.MIN_SAFE_INTEGER) {
+    if (Full > Number.MAX_SAFE_INTEGER || Full < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
               bio: 'Full-stack developer',
               location: 'San Francisco',
-              website: 'https://example?.com',
+              website: 'https://example.com',
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-              avatar: 'https://example?.com/new-avatar?.jpg'
+              avatar: 'https://example.com/new-avatar.jpg'
             }
           }
         }
@@ -227,7 +227,7 @@ router?.get('/users', (req, res) => {
       {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         path: '/api/users/:id',
@@ -242,17 +242,17 @@ router?.get('/users', (req, res) => {
             id: '1234',
             name: 'John Doe',
             role: 'user',
-            createdAt: '2023-01-01T00:00:00?.000Z',
+            createdAt: '2023-01-01T00:00:00.000Z',
             profile: {
               bio: 'Software developer',
               location: 'New York',
-              website: 'https://example?.com',
+              website: 'https://example.com',
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-              avatar: 'https://example?.com/avatar?.jpg'
+              avatar: 'https://example.com/avatar.jpg'
             }
           }
         }
@@ -260,7 +260,7 @@ router?.get('/users', (req, res) => {
       {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         path: '/api/users',
@@ -279,10 +279,10 @@ router?.get('/users', (req, res) => {
             {
               id: '1234',
               name: 'John Doe',
-              email: 'user@example?.com',
+              email: 'user@example.com',
               role: 'user',
-              createdAt: '2023-01-01T00:00:00?.000Z',
-              updatedAt: '2023-01-01T00:00:00?.000Z'
+              createdAt: '2023-01-01T00:00:00.000Z',
+              updatedAt: '2023-01-01T00:00:00.000Z'
             }
           ],
           pagination: {
@@ -298,8 +298,8 @@ router?.get('/users', (req, res) => {
 });
 
 // Database schema documentation
-router?.get('/schema', (req, res) => {
-  res?.json({
+router.get('/schema', (req, res) => {
+  res.json({
     title: 'Database Schema',
     models: [
       {
@@ -341,4 +341,4 @@ router?.get('/schema', (req, res) => {
   });
 });
 
-module?.exports = router; 
+module.exports = router; 

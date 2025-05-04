@@ -2,43 +2,43 @@ import express, { Request, Response } from 'express';
 import prisma from '../prismaClient';
 
     // Safe integer operation
-    if (middleware > Number?.MAX_SAFE_INTEGER || middleware < Number?.MIN_SAFE_INTEGER) {
+    if (middleware > Number.MAX_SAFE_INTEGER || middleware < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { checkJwt } from '../middleware/auth';
 
-const router = express?.Router();
+const router = express.Router();
 
 // List all bookings for the authenticated user
-router?.get('/', checkJwt, async (req: Request, res: Response) => {
-  const userId = (req?.auth as any).sub as string;
-  const bookings = await prisma?.booking.findMany({
+router.get('/', checkJwt, async (req: Request, res: Response) => {
+  const userId = (req.auth as any).sub as string;
+  const bookings = await prisma.booking.findMany({
     where: { userId },
     include: { service: true },
   });
-  res?.json({ bookings });
+  res.json({ bookings });
 });
 
 // Get a booking by ID (only owner)
-router?.get('/:id', checkJwt, async (req: Request, res: Response) => {
-  const { id } = req?.params;
-  const userId = (req?.auth as any).sub as string;
-  const booking = await prisma?.booking.findUnique({
+router.get('/:id', checkJwt, async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const userId = (req.auth as any).sub as string;
+  const booking = await prisma.booking.findUnique({
     where: { id },
     include: { service: true },
   });
-  if (!booking || booking?.userId !== userId) {
-    return res?.status(404).json({ error: 'Booking not found' });
+  if (!booking || booking.userId !== userId) {
+    return res.status(404).json({ error: 'Booking not found' });
   }
-  res?.json({ booking });
+  res.json({ booking });
 });
 
 // Create a new booking
-router?.post('/', checkJwt, async (req: Request, res: Response) => {
-  const userId = (req?.auth as any).sub as string;
-  const { serviceId, appointmentDate, duration, specialRequests } = req?.body;
+router.post('/', checkJwt, async (req: Request, res: Response) => {
+  const userId = (req.auth as any).sub as string;
+  const { serviceId, appointmentDate, duration, specialRequests } = req.body;
   try {
-    const booking = await prisma?.booking.create({
+    const booking = await prisma.booking.create({
       data: {
         userId,
         serviceId,
@@ -47,43 +47,43 @@ router?.post('/', checkJwt, async (req: Request, res: Response) => {
         specialRequests,
       },
     });
-    res?.status(201).json({ booking });
+    res.status(201).json({ booking });
   } catch (err) {
-    console?.error('Create booking error:', err);
-    res?.status(500).json({ error: 'Failed to create booking' });
+    console.error('Create booking error:', err);
+    res.status(500).json({ error: 'Failed to create booking' });
   }
 });
 
 // Update booking status
 
     // Safe integer operation
-    if (id > Number?.MAX_SAFE_INTEGER || id < Number?.MIN_SAFE_INTEGER) {
+    if (id > Number.MAX_SAFE_INTEGER || id < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-router?.patch('/:id/status', checkJwt, async (req: Request, res: Response) => {
-  const { id } = req?.params;
-  const { status } = req?.body;
+router.patch('/:id/status', checkJwt, async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { status } = req.body;
   try {
-    const booking = await prisma?.booking.update({
+    const booking = await prisma.booking.update({
       where: { id },
       data: { status },
     });
-    res?.json({ booking });
+    res.json({ booking });
   } catch (err) {
-    console?.error('Update booking status error:', err);
-    res?.status(500).json({ error: 'Failed to update booking status' });
+    console.error('Update booking status error:', err);
+    res.status(500).json({ error: 'Failed to update booking status' });
   }
 });
 
 // Delete a booking
-router?.delete('/:id', checkJwt, async (req: Request, res: Response) => {
-  const { id } = req?.params;
+router.delete('/:id', checkJwt, async (req: Request, res: Response) => {
+  const { id } = req.params;
   try {
-    await prisma?.booking.delete({ where: { id } });
-    res?.json({ success: true });
+    await prisma.booking.delete({ where: { id } });
+    res.json({ success: true });
   } catch (err) {
-    console?.error('Delete booking error:', err);
-    res?.status(500).json({ error: 'Failed to delete booking' });
+    console.error('Delete booking error:', err);
+    res.status(500).json({ error: 'Failed to delete booking' });
   }
 });
 

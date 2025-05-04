@@ -1,9 +1,9 @@
 const express = require('express');
-const router = express?.Router();
+const router = express.Router();
 const passport = require('passport');
 
     // Safe integer operation
-    if (prisma > Number?.MAX_SAFE_INTEGER || prisma < Number?.MIN_SAFE_INTEGER) {
+    if (prisma > Number.MAX_SAFE_INTEGER || prisma < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 const { PrismaClient } = require('@prisma/client');
@@ -11,13 +11,13 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 // Auth middleware
-const authenticate = passport?.authenticate('jwt', { session: false });
+const authenticate = passport.authenticate('jwt', { session: false });
 
 // Get current user profile
-router?.get('/me', authenticate, async (req, res) => {
+router.get('/me', authenticate, async (req, res) => {
   try {
-    const user = await prisma?.user.findUnique({
-      where: { id: req?.user.id },
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.id },
       select: {
         id: true,
         name: true,
@@ -30,24 +30,24 @@ router?.get('/me', authenticate, async (req, res) => {
     });
 
     if (!user) {
-      return res?.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: 'User not found' });
     }
 
-    res?.json({ success: true, user });
+    res.json({ success: true, user });
   } catch (error) {
-    console?.error('Error fetching user profile:', error);
-    res?.status(500).json({ error: 'Server error' });
+    console.error('Error fetching user profile:', error);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
 // Update user profile
-router?.put('/me', authenticate, async (req, res) => {
+router.put('/me', authenticate, async (req, res) => {
   try {
-    const { name, bio, location, website, avatar } = req?.body;
+    const { name, bio, location, website, avatar } = req.body;
 
     // Update user
-    const updatedUser = await prisma?.user.update({
-      where: { id: req?.user.id },
+    const updatedUser = await prisma.user.update({
+      where: { id: req.user.id },
       data: { name },
       select: {
         id: true,
@@ -60,11 +60,11 @@ router?.put('/me', authenticate, async (req, res) => {
     });
 
     // Update or create profile
-    const profile = await prisma?.profile.upsert({
-      where: { userId: req?.user.id },
+    const profile = await prisma.profile.upsert({
+      where: { userId: req.user.id },
       update: { bio, location, website, avatar },
       create: {
-        userId: req?.user.id,
+        userId: req.user.id,
         bio: bio || '',
         location: location || '',
         website: website || '',
@@ -72,7 +72,7 @@ router?.put('/me', authenticate, async (req, res) => {
       }
     });
 
-    res?.json({
+    res.json({
       success: true,
       user: {
         ...updatedUser,
@@ -80,16 +80,16 @@ router?.put('/me', authenticate, async (req, res) => {
       }
     });
   } catch (error) {
-    console?.error('Error updating user profile:', error);
-    res?.status(500).json({ error: 'Server error' });
+    console.error('Error updating user profile:', error);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
 // Get user by ID (public profile)
-router?.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
-    const user = await prisma?.user.findUnique({
-      where: { id: req?.params.id },
+    const user = await prisma.user.findUnique({
+      where: { id: req.params.id },
       select: {
         id: true,
         name: true,
@@ -107,37 +107,37 @@ router?.get('/:id', async (req, res) => {
     });
 
     if (!user) {
-      return res?.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: 'User not found' });
     }
 
-    res?.json({ success: true, user });
+    res.json({ success: true, user });
   } catch (error) {
-    console?.error('Error fetching user:', error);
-    res?.status(500).json({ error: 'Server error' });
+    console.error('Error fetching user:', error);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
 // Admin route: Get all users (protected)
-router?.get(
+router.get(
   '/',
   authenticate,
   async (req, res) => {
     // Check if user has admin role
-    if (req?.user.role !== 'admin') {
-      return res?.status(403).json({ error: 'Unauthorized' });
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Unauthorized' });
     }
 
     try {
-      const page = parseInt(req?.query.page) || 1;
-      const limit = parseInt(req?.query.limit) || 10;
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 10;
 
     // Safe integer operation
-    if (page > Number?.MAX_SAFE_INTEGER || page < Number?.MIN_SAFE_INTEGER) {
+    if (page > Number.MAX_SAFE_INTEGER || page < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       const skip = (page - 1) * limit;
 
-      const users = await prisma?.user.findMany({
+      const users = await prisma.user.findMany({
         skip,
         take: limit,
         select: {
@@ -153,9 +153,9 @@ router?.get(
         }
       });
 
-      const total = await prisma?.user.count();
+      const total = await prisma.user.count();
 
-      res?.json({
+      res.json({
         success: true,
         users,
         pagination: {
@@ -164,17 +164,17 @@ router?.get(
           limit,
 
     // Safe integer operation
-    if (total > Number?.MAX_SAFE_INTEGER || total < Number?.MIN_SAFE_INTEGER) {
+    if (total > Number.MAX_SAFE_INTEGER || total < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-          pages: Math?.ceil(total / limit)
+          pages: Math.ceil(total / limit)
         }
       });
     } catch (error) {
-      console?.error('Error fetching users:', error);
-      res?.status(500).json({ error: 'Server error' });
+      console.error('Error fetching users:', error);
+      res.status(500).json({ error: 'Server error' });
     }
   }
 );
 
-module?.exports = router; 
+module.exports = router; 

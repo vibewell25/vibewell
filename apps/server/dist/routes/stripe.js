@@ -1503,7 +1503,7 @@ if (typeof stripe === 'number' && (stripe > Number.MAX_SAFE_INTEGER || stripe < 
     switch (event.type) {
         case 'checkout.session.completed': {
             const session = event.data.object;
-            const email = session.customer_details?.email;
+            const email = session.customer_details.email;
             if (email) {
                 const user = await prismaClient_1.default.user.findUnique({ where: { email } });
                 if (user) {

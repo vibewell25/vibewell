@@ -1,11 +1,11 @@
 
     // Safe integer operation
-    if (static > Number?.MAX_SAFE_INTEGER || static < Number?.MIN_SAFE_INTEGER) {
+    if (static > Number.MAX_SAFE_INTEGER || static < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (express > Number?.MAX_SAFE_INTEGER || express < Number?.MIN_SAFE_INTEGER) {
+    if (express > Number.MAX_SAFE_INTEGER || express < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import 'express-serve-static-core';
@@ -13,12 +13,12 @@ import { JwtPayload } from 'jsonwebtoken';
 
 
     // Safe integer operation
-    if (static > Number?.MAX_SAFE_INTEGER || static < Number?.MIN_SAFE_INTEGER) {
+    if (static > Number.MAX_SAFE_INTEGER || static < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (express > Number?.MAX_SAFE_INTEGER || express < Number?.MIN_SAFE_INTEGER) {
+    if (express > Number.MAX_SAFE_INTEGER || express < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 declare module 'express-serve-static-core' {

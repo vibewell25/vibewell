@@ -1514,7 +1514,7 @@ router.get('/google/events', auth_1.checkJwt, async (req, res) => {
         access_token: token.accessToken,
         refresh_token: token.refreshToken,
         scope: token.scope ?? undefined,
-        expiry_date: token.expiryDate?.getTime(),
+        expiry_date: token.expiryDate.getTime(),
     });
     try {
         const calendarClient = googleapis_1.google.calendar({ version: 'v3', auth: oAuth2Client });
@@ -1947,7 +1947,7 @@ router.post('/events', auth_1.checkJwt, async (req, res) => {
             access_token: gToken.accessToken,
             refresh_token: gToken.refreshToken,
             scope: gToken.scope ?? undefined,
-            expiry_date: gToken.expiryDate?.getTime(),
+            expiry_date: gToken.expiryDate.getTime(),
         });
         const calendarClient = googleapis_1.google.calendar({ version: 'v3', auth: oAuth2Client });
         const start = new Date(booking.appointmentDate);

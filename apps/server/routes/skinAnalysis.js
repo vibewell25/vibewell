@@ -96,7 +96,7 @@ router.post('/', upload.single('photo'), async (req, res) => {
       redness: extractRating(analysisText, 'redness') || Math.floor(Math.random() * 50),
       overall: extractRating(analysisText, 'overall') || Math.floor(Math.random() * 20) + 70,
       analysis: analysisText,
-      recommendations: analysisText.split('Recommendations:')[1]?.trim() || 'Based on the analysis, we recommend a daily skincare routine focused on hydration and protection.'
+      recommendations: analysisText.split('Recommendations:')[1].trim() || 'Based on the analysis, we recommend a daily skincare routine focused on hydration and protection.'
     };
 
     // Cleanup uploaded files

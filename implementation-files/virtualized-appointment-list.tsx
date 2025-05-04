@@ -17,7 +17,7 @@ interface VirtualizedAppointmentListProps {
   className?: string;
 }
 
-export const VirtualizedAppointmentList: React?.FC<VirtualizedAppointmentListProps> = ({
+export const VirtualizedAppointmentList: React.FC<VirtualizedAppointmentListProps> = ({
   appointments,
   onSelectAppointment,
   className = '',
@@ -25,13 +25,13 @@ export const VirtualizedAppointmentList: React?.FC<VirtualizedAppointmentListPro
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const handleSelectAppointment = (appointment: Appointment) => {
-    setSelectedId(appointment?.id);
+    setSelectedId(appointment.id);
     onSelectAppointment(appointment);
   };
 
-  const AppointmentRow = ({ index, style }: { index: number, style: React?.CSSProperties }) => {
+  const AppointmentRow = ({ index, style }: { index: number, style: React.CSSProperties }) => {
     const appointment = appointments[index];
-    const isSelected = selectedId === appointment?.id;
+    const isSelected = selectedId === appointment.id;
     
     return (
       <div 
@@ -45,21 +45,21 @@ export const VirtualizedAppointmentList: React?.FC<VirtualizedAppointmentListPro
       >
         <div className="flex justify-between items-center">
           <div>
-            <h3 className="font-medium">{appointment?.clientName}</h3>
-            <p className="text-sm text-gray-500">{appointment?.serviceName}</p>
+            <h3 className="font-medium">{appointment.clientName}</h3>
+            <p className="text-sm text-gray-500">{appointment.serviceName}</p>
           </div>
           <div className="text-right">
-            <p className="text-sm">{appointment?.date} at {appointment?.time}</p>
+            <p className="text-sm">{appointment.date} at {appointment.time}</p>
             <span 
               className={`inline-block px-2 py-1 text-xs rounded-full ${
-                appointment?.status === 'confirmed' 
+                appointment.status === 'confirmed' 
                   ? 'bg-green-100 text-green-800' 
-                  : appointment?.status === 'pending'
+                  : appointment.status === 'pending'
                   ? 'bg-yellow-100 text-yellow-800'
                   : 'bg-red-100 text-red-800'
               }`}
             >
-              {appointment?.status}
+              {appointment.status}
             </span>
           </div>
         </div>
@@ -74,7 +74,7 @@ export const VirtualizedAppointmentList: React?.FC<VirtualizedAppointmentListPro
           <FixedSizeList
             height={height}
             width={width}
-            itemCount={appointments?.length}
+            itemCount={appointments.length}
             itemSize={80}
             overscanCount={5}
           >

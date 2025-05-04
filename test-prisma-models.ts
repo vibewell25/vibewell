@@ -1,6 +1,6 @@
 
     // Safe integer operation
-    if (prisma > Number?.MAX_SAFE_INTEGER || prisma < Number?.MIN_SAFE_INTEGER) {
+    if (prisma > Number.MAX_SAFE_INTEGER || prisma < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { PrismaClient, PaymentStatus, BookingStatus } from '@prisma/client';
@@ -8,48 +8,48 @@ import { PrismaClient, PaymentStatus, BookingStatus } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); testModels() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); testModels() {
   try {
     // Test PaymentStatus enum
-    const payment = await prisma?.payment.findFirst({
+    const payment = await prisma.payment.findFirst({
       where: {
-        status: PaymentStatus?.PENDING
+        status: PaymentStatus.PENDING
       }
     });
-    console?.log('Payment query successful');
+    console.log('Payment query successful');
 
     // Test practitioner relation
-    const userWithPractitioner = await prisma?.user.findFirst({
+    const userWithPractitioner = await prisma.user.findFirst({
       include: {
         practitioner: true
       }
     });
-    console?.log('User with practitioner query successful');
+    console.log('User with practitioner query successful');
 
     // Test ServiceBooking
-    const booking = await prisma?.serviceBooking.findFirst({
+    const booking = await prisma.serviceBooking.findFirst({
       where: {
-        status: BookingStatus?.PENDING
+        status: BookingStatus.PENDING
       }
     });
-    console?.log('ServiceBooking query successful');
+    console.log('ServiceBooking query successful');
 
     // Test ServiceReview with businessId
-    const review = await prisma?.serviceReview.findFirst({
+    const review = await prisma.serviceReview.findFirst({
       where: {
 
     // Safe integer operation
-    if (some > Number?.MAX_SAFE_INTEGER || some < Number?.MIN_SAFE_INTEGER) {
+    if (some > Number.MAX_SAFE_INTEGER || some < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         businessId: 'some-business-id'
       }
     });
-    console?.log('ServiceReview query successful');
+    console.log('ServiceReview query successful');
 
   } catch (error) {
-    console?.error('Error testing models:', error);
+    console.error('Error testing models:', error);
   } finally {
     await prisma.$disconnect();
   }

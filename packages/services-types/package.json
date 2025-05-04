@@ -1,0 +1,10 @@
+{
+  "name": "@vibewell/services-types",
+  "version": "1.0.0",
+  "private": false,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b"
+  }
+} 

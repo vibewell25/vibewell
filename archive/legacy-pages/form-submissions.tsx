@@ -14,7 +14,7 @@ const FormSubmissions: NextPage = () => {
   const fetchSubs = async () => {
     const res = await fetchWithTimeout('/api/formSubmissions');
     const json = await res.json();
-    setSubs(json?.submissions || []);
+    setSubs(json.submissions || []);
   };
 
   useEffect(() => { fetchSubs(); }, []);
@@ -35,7 +35,7 @@ const FormSubmissions: NextPage = () => {
             <div>Definition: {s.definitionId}</div>
           </div>
           <div className="space-x-2">
-            <Button onClick={() => router?.push(`/form-submissions/${s.id}`)}>Details</Button>
+            <Button onClick={() => router.push(`/form-submissions/${s.id}`)}>Details</Button>
             <Button onClick={() => handleDelete(s.id)}>Delete</Button>
           </div>
         </Card>

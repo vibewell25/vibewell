@@ -16,7 +16,7 @@ const Notifications: NextPage = () => {
     const fetchNotifications = async () => {
       const res = await fetchWithTimeout('/api/notifications');
       const data = await res.json();
-      setItems(data?.notifications || []);
+      setItems(data.notifications || []);
     };
     
     fetchNotifications();

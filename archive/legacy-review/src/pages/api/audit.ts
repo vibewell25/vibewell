@@ -31,97 +31,97 @@ interface AuditApiRequest extends NextApiRequest {
 }
 
 export default async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); handler(req: AuditApiRequest, res: NextApiResponse) {
-  if (req?.method === 'GET') {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); handler(req: AuditApiRequest, res: NextApiResponse) {
+  if (req.method === 'GET') {
     return handleGetRequest(req, res);
-  } else if (req?.method === 'POST') {
+  } else if (req.method === 'POST') {
     return handlePostRequest(req, res);
   } else {
-    return res?.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 }
 
 async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); handleGetRequest(req: AuditApiRequest, res: NextApiResponse) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); handleGetRequest(req: AuditApiRequest, res: NextApiResponse) {
   try {
-    const { reportId, category, comprehensive } = req?.query;
+    const { reportId, category, comprehensive } = req.query;
 
     if (reportId) {
       // Return a specific report by ID
 
-      const reportPath = path?.join(process?.cwd(), 'reports/audit', `${reportId}.json`);
-      if (fs?.existsSync(reportPath)) {
-        const reportContent = fs?.readFileSync(reportPath, 'utf8');
-        return res?.status(200).json(JSON?.parse(reportContent));
+      const reportPath = path.join(process.cwd(), 'reports/audit', `${reportId}.json`);
+      if (fs.existsSync(reportPath)) {
+        const reportContent = fs.readFileSync(reportPath, 'utf8');
+        return res.status(200).json(JSON.parse(reportContent));
       } else {
-        return res?.status(404).json({ error: 'Report not found' });
+        return res.status(404).json({ error: 'Report not found' });
       }
     }
 
     if (comprehensive) {
       // Return the latest comprehensive report
 
-      const reportsDir = path?.join(process?.cwd(), 'reports/audit');
+      const reportsDir = path.join(process.cwd(), 'reports/audit');
       const files = fs
         .readdirSync(reportsDir)
-        .filter((file) => file?.startsWith('comprehensive_'))
+        .filter((file) => file.startsWith('comprehensive_'))
         .sort()
         .reverse();
 
-      if (files?.length > 0) {
-        const latestReport = fs?.readFileSync(path?.join(reportsDir, files[0]), 'utf8');
-        return res?.status(200).json(JSON?.parse(latestReport));
+      if (files.length > 0) {
+        const latestReport = fs.readFileSync(path.join(reportsDir, files[0]), 'utf8');
+        return res.status(200).json(JSON.parse(latestReport));
       } else {
-        return res?.status(404).json({ error: 'No comprehensive reports found' });
+        return res.status(404).json({ error: 'No comprehensive reports found' });
       }
     }
 
     if (category) {
       // Return reports for a specific category
 
-      const categoryDir = path?.join(process?.cwd(), 'reports/audit', category?.toString());
-      if (fs?.existsSync(categoryDir)) {
+      const categoryDir = path.join(process.cwd(), 'reports/audit', category.toString());
+      if (fs.existsSync(categoryDir)) {
         const files = fs
           .readdirSync(categoryDir)
-          .filter((file) => file?.endsWith('.json'))
+          .filter((file) => file.endsWith('.json'))
           .sort()
           .reverse();
 
-        const reports = files?.slice(0, 10).map((file) => {
-          const content = fs?.readFileSync(path?.join(categoryDir, file), 'utf8');
-          return JSON?.parse(content);
+        const reports = files.slice(0, 10).map((file) => {
+          const content = fs.readFileSync(path.join(categoryDir, file), 'utf8');
+          return JSON.parse(content);
         });
 
-        return res?.status(200).json({ reports });
+        return res.status(200).json({ reports });
       } else {
-        return res?.status(404).json({ error: 'Category not found' });
+        return res.status(404).json({ error: 'Category not found' });
       }
     }
 
     // Return a list of all available reports
 
-    const auditDir = path?.join(process?.cwd(), 'reports/audit');
+    const auditDir = path.join(process.cwd(), 'reports/audit');
     const categories = fs
       .readdirSync(auditDir, { withFileTypes: true })
-      .filter((dirent) => dirent?.isDirectory())
-      .map((dirent) => dirent?.name);
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
 
     const reportsByCategory: Record<string, string[]> = {};
 
     for (const cat of categories) {
-      const catDir = path?.join(auditDir, cat);
-      if (fs?.existsSync(catDir)) {
+      const catDir = path.join(auditDir, cat);
+      if (fs.existsSync(catDir)) {
         const files = fs
           .readdirSync(catDir)
-          .filter((file) => file?.endsWith('.json'))
+          .filter((file) => file.endsWith('.json'))
           .sort()
           .reverse();
 
 
     // Safe array access
-    if (cat < 0 || cat >= array?.length) {
+    if (cat < 0 || cat >= array.length) {
       throw new Error('Array index out of bounds');
     }
         reportsByCategory[cat] = files;
@@ -130,104 +130,104 @@ async function {
 
     const rootFiles = fs
       .readdirSync(auditDir)
-      .filter((file) => file?.endsWith('.json') && file?.startsWith('comprehensive_'))
+      .filter((file) => file.endsWith('.json') && file.startsWith('comprehensive_'))
       .sort()
       .reverse();
 
     reportsByCategory['comprehensive'] = rootFiles;
 
-    return res?.status(200).json({ reportsByCategory });
+    return res.status(200).json({ reportsByCategory });
   } catch (error) {
-    console?.error('Error handling GET request:', error);
-    return res?.status(500).json({ error: 'Internal server error' });
+    console.error('Error handling GET request:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }
 
 async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); handlePostRequest(req: AuditApiRequest, res: NextApiResponse) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); handlePostRequest(req: AuditApiRequest, res: NextApiResponse) {
   try {
-    const { action, category, issueId, data } = req?.body;
+    const { action, category, issueId, data } = req.body;
 
     switch (action) {
       case 'run_comprehensive_audit':
         await runComprehensiveAudit();
-        return res?.status(200).json({ success: true, message: 'Comprehensive audit initiated' });
+        return res.status(200).json({ success: true, message: 'Comprehensive audit initiated' });
 
       case 'run_category_audit':
         if (!category) {
-          return res?.status(400).json({ error: 'Category is required for category audit' });
+          return res.status(400).json({ error: 'Category is required for category audit' });
         }
         await runCategoryAudit(category as AuditCategory);
-        return res?.status(200).json({ success: true, message: `${category} audit initiated` });
+        return res.status(200).json({ success: true, message: `${category} audit initiated` });
 
       case 'report_issue':
-        if (!data || !data?.category || !data?.severity || !data?.title || !data?.description) {
-          return res?.status(400).json({ error: 'Missing required fields for reporting issue' });
+        if (!data || !data.category || !data.severity || !data.title || !data.description) {
+          return res.status(400).json({ error: 'Missing required fields for reporting issue' });
         }
-        const newIssueId = await auditService?.reportIssue(
-          data?.category,
-          data?.severity,
-          data?.title,
-          data?.description,
-          data?.metadata || {},
+        const newIssueId = await auditService.reportIssue(
+          data.category,
+          data.severity,
+          data.title,
+          data.description,
+          data.metadata || {},
         );
-        return res?.status(200).json({ success: true, issueId: newIssueId });
+        return res.status(200).json({ success: true, issueId: newIssueId });
 
       case 'update_issue':
-        if (!issueId || !data || !data?.status) {
-          return res?.status(400).json({ error: 'Missing required fields for updating issue' });
+        if (!issueId || !data || !data.status) {
+          return res.status(400).json({ error: 'Missing required fields for updating issue' });
         }
-        await auditService?.updateIssueStatus(issueId, data?.status);
-        return res?.status(200).json({ success: true, message: 'Issue updated' });
+        await auditService.updateIssueStatus(issueId, data.status);
+        return res.status(200).json({ success: true, message: 'Issue updated' });
 
       default:
-        return res?.status(400).json({ error: 'Invalid action' });
+        return res.status(400).json({ error: 'Invalid action' });
     }
   } catch (error) {
-    console?.error('Error handling POST request:', error);
-    return res?.status(500).json({ error: 'Internal server error' });
+    console.error('Error handling POST request:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }
 
 async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); runComprehensiveAudit() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); runComprehensiveAudit() {
   // Simulate some audit processes
-  await securityAuditService?.processVulnerabilityResults([
+  await securityAuditService.processVulnerabilityResults([
     {
 
       id: 'CVE-2023-1234',
       title: 'XSS Vulnerability',
 
       description: 'Cross-site scripting vulnerability in comments',
-      cvssScore: 7?.5,
+      cvssScore: 7.5,
       severity: 'high',
       component: 'Web UI',
     },
   ]);
 
-  await performanceAuditService?.recordLoadTestResult({
+  await performanceAuditService.recordLoadTestResult({
     averageResponseTime: 850,
     p95ResponseTime: 1200,
     p99ResponseTime: 1800,
     failedRequests: 3,
     totalRequests: 1000,
-    timestamp: Date?.now(),
+    timestamp: Date.now(),
   });
 
-  await uxAuditService?.recordUserFlowResult({
+  await uxAuditService.recordUserFlowResult({
     flowName: 'Booking Process',
-    completionRate: 0?.85,
+    completionRate: 0.85,
     averageTimeToComplete: 120,
     dropOffPoints: [
-      { step: 'payment', rate: 0?.08 },
-      { step: 'confirmation', rate: 0?.04 },
+      { step: 'payment', rate: 0.08 },
+      { step: 'confirmation', rate: 0.04 },
     ],
-    timestamp: Date?.now(),
+    timestamp: Date.now(),
   });
 
-  await complianceAuditService?.updateGDPRStatus({
+  await complianceAuditService.updateGDPRStatus({
     cookieConsentImplemented: true,
     dataRetentionPolicyImplemented: true,
     dataExportFunctionalityAvailable: true,
@@ -243,62 +243,62 @@ async function {
     ],
   });
 
-  await bookingAuditService?.recordIntegrityResult({
+  await bookingAuditService.recordIntegrityResult({
     totalBookingsChecked: 500,
     doubleBookings: 1,
     timeSlotConflicts: 2,
     resourceAllocationConflicts: 0,
-    timestamp: Date?.now(),
+    timestamp: Date.now(),
   });
 
   // Generate a comprehensive report
-  const report = auditController?.generateComprehensiveReport();
+  const report = auditController.generateComprehensiveReport();
 
   // Save the report to disk
-  const timestamp = Date?.now();
+  const timestamp = Date.now();
 
-  const reportPath = path?.join(process?.cwd(), 'reports/audit', `comprehensive_${timestamp}.json`);
-  fs?.writeFileSync(reportPath, JSON?.stringify(report, null, 2));
+  const reportPath = path.join(process.cwd(), 'reports/audit', `comprehensive_${timestamp}.json`);
+  fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
 
   return report;
 }
 
 async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); runCategoryAudit(category: AuditCategory | string) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); runCategoryAudit(category: AuditCategory | string) {
   switch (category) {
-    case AuditCategory?.SECURITY:
-      await securityAuditService?.processVulnerabilityResults([
+    case AuditCategory.SECURITY:
+      await securityAuditService.processVulnerabilityResults([
         {
 
           id: 'CVE-2023-5678',
           title: 'SQL Injection Vulnerability',
           description: 'SQL injection vulnerability in search endpoint',
-          cvssScore: 8?.2,
+          cvssScore: 8.2,
           severity: 'high',
           component: 'API',
         },
       ]);
       break;
 
-    case AuditCategory?.PERFORMANCE:
-      await performanceAuditService?.recordLoadTestResult({
+    case AuditCategory.PERFORMANCE:
+      await performanceAuditService.recordLoadTestResult({
         averageResponseTime: 750,
         p95ResponseTime: 1100,
         p99ResponseTime: 1600,
         failedRequests: 2,
         totalRequests: 1000,
-        timestamp: Date?.now(),
+        timestamp: Date.now(),
       });
       break;
 
-    case AuditCategory?.UX:
-      await uxAuditService?.recordAccessibilityResult({
+    case AuditCategory.UX:
+      await uxAuditService.recordAccessibilityResult({
         conformanceLevel: 'AA',
         issues: [
           {
 
-            id: 'WCAG-1?.4.3',
+            id: 'WCAG-1.4.3',
             title: 'Contrast Ratio',
             description: 'Text on hero section has insufficient contrast ratio',
             severity: 'medium',
@@ -312,16 +312,16 @@ async function {
           altText: 15,
           properLabels: 22,
         },
-        timestamp: Date?.now(),
+        timestamp: Date.now(),
       });
       break;
 
-    case AuditCategory?.COMPLIANCE:
-      await complianceAuditService?.auditDataRetention('monthly');
+    case AuditCategory.COMPLIANCE:
+      await complianceAuditService.auditDataRetention('monthly');
       break;
 
-    case AuditCategory?.BOOKING:
-      await bookingAuditService?.recordNotificationResult({
+    case AuditCategory.BOOKING:
+      await bookingAuditService.recordNotificationResult({
         totalNotifications: 100,
         deliveredSuccessfully: 98,
         failedNotifications: 2,
@@ -330,7 +330,7 @@ async function {
           p95: 350,
           max: 800,
         },
-        timestamp: Date?.now(),
+        timestamp: Date.now(),
       });
       break;
 
@@ -340,18 +340,18 @@ async function {
 
 
   // Generate a category-specific report
-  const report = auditService?.generateReport(category as AuditCategory);
+  const report = auditService.generateReport(category as AuditCategory);
 
   // Save the report to disk
-  const timestamp = Date?.now();
+  const timestamp = Date.now();
 
-  const categoryDir = path?.join(process?.cwd(), 'reports/audit', category?.toString());
-  if (!fs?.existsSync(categoryDir)) {
-    fs?.mkdirSync(categoryDir, { recursive: true });
+  const categoryDir = path.join(process.cwd(), 'reports/audit', category.toString());
+  if (!fs.existsSync(categoryDir)) {
+    fs.mkdirSync(categoryDir, { recursive: true });
   }
 
-  const reportPath = path?.join(categoryDir, `${category}_${timestamp}.json`);
-  fs?.writeFileSync(reportPath, JSON?.stringify(report, null, 2));
+  const reportPath = path.join(categoryDir, `${category}_${timestamp}.json`);
+  fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
 
   return report;
 }

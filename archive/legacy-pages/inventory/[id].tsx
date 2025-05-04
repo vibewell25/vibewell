@@ -10,7 +10,7 @@ type InventoryItem = { id: string; name: string; description: string; quantity: 
 
 const InventoryDetail: NextPage = () => {
   const router = useRouter();
-  const { id } = router?.query as { id: string };
+  const { id } = router.query as { id: string };
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [quantity, setQuantity] = useState(0);
@@ -21,9 +21,9 @@ const InventoryDetail: NextPage = () => {
     const fetchInventoryItem = async () => {
       const res = await fetchWithTimeout(`/api/inventory/${id}`);
       const data = await res.json();
-      setName(data?.name);
-      setDescription(data?.description);
-      setQuantity(data?.quantity);
+      setName(data.name);
+      setDescription(data.description);
+      setQuantity(data.quantity);
     };
     
     fetchInventoryItem();
@@ -50,7 +50,7 @@ const InventoryDetail: NextPage = () => {
         <Input type="number" placeholder="Quantity" value={quantity} onChange={e => setQuantity(Number(e.target.value))} />
         <div className="space-x-2">
           <Button type="submit">Update</Button>
-          <Button onClick={() => router?.back()}>Cancel</Button>
+          <Button onClick={() => router.back()}>Cancel</Button>
         </div>
       </form>
     </div>

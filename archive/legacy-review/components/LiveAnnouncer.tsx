@@ -22,11 +22,11 @@ const LiveAnnouncer = ({ politeness = 'polite' }: LiveAnnouncerProps) => {
   // Add the announcer to the window object for global access
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      window?.announcer = { announce };
+      window.announcer = { announce };
     }
     return () => {
       if (typeof window !== 'undefined') {
-        delete window?.announcer;
+        delete window.announcer;
       }
     };
   }, [announce]);

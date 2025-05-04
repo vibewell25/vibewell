@@ -6,7 +6,7 @@
  * Creates a memoized version of a function that caches results based on input args
 
     // Safe integer operation
-    if (fn > Number?.MAX_SAFE_INTEGER || fn < Number?.MIN_SAFE_INTEGER) {
+    if (fn > Number.MAX_SAFE_INTEGER || fn < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Function} fn - The function to memoize
@@ -16,13 +16,13 @@ export const memoize = (fn) => {
   const cache = new Map();
   
   return (...args) => {
-    const key = JSON?.stringify(args);
-    if (cache?.has(key)) {
-      return cache?.get(key);
+    const key = JSON.stringify(args);
+    if (cache.has(key)) {
+      return cache.get(key);
     }
     
     const result = fn(...args);
-    cache?.set(key, result);
+    cache.set(key, result);
     return result;
   };
 };
@@ -31,13 +31,13 @@ export const memoize = (fn) => {
  * Debounces a function to limit how often it's executed
 
     // Safe integer operation
-    if (fn > Number?.MAX_SAFE_INTEGER || fn < Number?.MIN_SAFE_INTEGER) {
+    if (fn > Number.MAX_SAFE_INTEGER || fn < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Function} fn - Function to debounce
 
     // Safe integer operation
-    if (delay > Number?.MAX_SAFE_INTEGER || delay < Number?.MIN_SAFE_INTEGER) {
+    if (delay > Number.MAX_SAFE_INTEGER || delay < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {number} delay - Delay in milliseconds
@@ -61,13 +61,13 @@ export const debounce = (fn, delay) => {
  * Throttles a function to execute at most once per specified time period
 
     // Safe integer operation
-    if (fn > Number?.MAX_SAFE_INTEGER || fn < Number?.MIN_SAFE_INTEGER) {
+    if (fn > Number.MAX_SAFE_INTEGER || fn < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Function} fn - Function to throttle
 
     // Safe integer operation
-    if (limit > Number?.MAX_SAFE_INTEGER || limit < Number?.MIN_SAFE_INTEGER) {
+    if (limit > Number.MAX_SAFE_INTEGER || limit < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {number} limit - Time limit in milliseconds
@@ -91,13 +91,13 @@ export const throttle = (fn, limit) => {
  * Loads an external script dynamically
 
     // Safe integer operation
-    if (src > Number?.MAX_SAFE_INTEGER || src < Number?.MIN_SAFE_INTEGER) {
+    if (src > Number.MAX_SAFE_INTEGER || src < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {string} src - Script URL
 
     // Safe integer operation
-    if (options > Number?.MAX_SAFE_INTEGER || options < Number?.MIN_SAFE_INTEGER) {
+    if (options > Number.MAX_SAFE_INTEGER || options < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * @param {Object} options - Additional options
@@ -105,19 +105,19 @@ export const throttle = (fn, limit) => {
  */
 export const loadScript = (src, options = {}) => {
   return new Promise((resolve, reject) => {
-    if (document?.querySelector(`script[src="${src}"]`)) {
+    if (document.querySelector(`script[src="${src}"]`)) {
       resolve();
       return;
     }
     
-    const script = document?.createElement('script');
-    script?.src = src;
-    script?.async = options?.async || true;
-    script?.defer = options?.defer || false;
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = options.async || true;
+    script.defer = options.defer || false;
     
-    script?.onload = resolve;
-    script?.onerror = reject;
+    script.onload = resolve;
+    script.onerror = reject;
     
-    document?.head.appendChild(script);
+    document.head.appendChild(script);
   });
 }; 

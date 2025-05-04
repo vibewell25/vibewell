@@ -31,43 +31,43 @@ export default function ProductRecommendations() {
   }, [filters]);
 
   const loadRecommendations = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
       const products = await getProductRecommendations(filters);
       setRecommendations(products);
     } catch (error) {
-      console?.error('Error loading recommendations:', error);
+      console.error('Error loading recommendations:', error);
     } finally {
       setLoading(false);
     }
   };
 
   const loadUserPreferences = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const logs = await getSkinConditionLogs();
-      if (logs?.length > 0) {
+      if (logs.length > 0) {
         // Get the most recent log's concerns
-        const recentConcerns = logs[logs?.length - 1].concerns;
+        const recentConcerns = logs[logs.length - 1].concerns;
         setFilters((prev) => ({
           ...prev,
           concerns: recentConcerns,
         }));
       }
     } catch (error) {
-      console?.error('Error loading user preferences:', error);
+      console.error('Error loading user preferences:', error);
     }
   };
 
   const handleConcernToggle = (concern: SkinConcern) => {
     setFilters((prev) => ({
       ...prev,
-      concerns: prev?.concerns.includes(concern)
-        ? prev?.concerns.filter((c) => c !== concern)
-        : [...prev?.concerns, concern],
+      concerns: prev.concerns.includes(concern)
+        ? prev.concerns.filter((c) => c !== concern)
+        : [...prev.concerns, concern],
     }));
   };
 
@@ -94,26 +94,26 @@ export default function ProductRecommendations() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <Select
             label="Skin Type"
-            value={filters?.skinType}
+            value={filters.skinType}
             onChange={(e) =>
               setFilters((prev) => ({
                 ...prev,
-                skinType: e?.target.value as (typeof skinTypes)[number],
+                skinType: e.target.value as (typeof skinTypes)[number],
               }))
             }
-            options={skinTypes?.map((type) => ({
+            options={skinTypes.map((type) => ({
               value: type,
-              label: type?.charAt(0).toUpperCase() + type?.slice(1),
+              label: type.charAt(0).toUpperCase() + type.slice(1),
             }))}
           />
 
           <Select
             label="Price Range"
-            value={filters?.priceRange}
+            value={filters.priceRange}
             onChange={(e) =>
               setFilters((prev) => ({
                 ...prev,
-                priceRange: e?.target.value as typeof filters?.priceRange,
+                priceRange: e.target.value as typeof filters.priceRange,
               }))
             }
             options={[
@@ -128,13 +128,13 @@ export default function ProductRecommendations() {
         <div className="mt-4">
           <label className="mb-2 block text-sm font-medium">Skin Concerns</label>
           <div className="flex flex-wrap gap-2">
-            {skinConcerns?.map((concern) => (
+            {skinConcerns.map((concern) => (
               <Button
                 key={concern}
-                variant={filters?.concerns.includes(concern) ? 'default' : 'outline'}
+                variant={filters.concerns.includes(concern) ? 'default' : 'outline'}
                 onClick={() => handleConcernToggle(concern)}
               >
-                {concern?.replace('_', ' ')}
+                {concern.replace('_', ' ')}
               </Button>
             ))}
           </div>
@@ -147,13 +147,13 @@ export default function ProductRecommendations() {
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {recommendations?.map((product) => (
-            <Card key={product?.id} className="p-6">
-              {product?.image && (
+          {recommendations.map((product) => (
+            <Card key={product.id} className="p-6">
+              {product.image && (
                 <div className="mb-4">
                   <img
-                    src={product?.image}
-                    alt={product?.name}
+                    src={product.image}
+                    alt={product.name}
                     className="h-48 w-full rounded object-cover"
                   />
                 </div>
@@ -162,19 +162,19 @@ export default function ProductRecommendations() {
               <div className="space-y-3">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h3 className="text-lg font-semibold">{product?.name}</h3>
-                    <p className="text-sm text-gray-600">{product?.brand}</p>
+                    <h3 className="text-lg font-semibold">{product.name}</h3>
+                    <p className="text-sm text-gray-600">{product.brand}</p>
                   </div>
-                  <Badge>{getPriceRangeLabel(product?.priceRange)}</Badge>
+                  <Badge>{getPriceRangeLabel(product.priceRange)}</Badge>
                 </div>
 
-                <p className="text-sm">{product?.description}</p>
+                <p className="text-sm">{product.description}</p>
 
-                {product?.keyIngredients && (
+                {product.keyIngredients && (
                   <div>
                     <h4 className="mb-1 text-sm font-medium">Key Ingredients</h4>
                     <div className="flex flex-wrap gap-1">
-                      {product?.keyIngredients.map((ingredient, index) => (
+                      {product.keyIngredients.map((ingredient, index) => (
                         <span key={index} className="rounded-full bg-gray-100 px-2 py-1 text-xs">
                           {ingredient}
                         </span>
@@ -183,22 +183,22 @@ export default function ProductRecommendations() {
                   </div>
                 )}
 
-                {product?.suitableFor && (
+                {product.suitableFor && (
                   <div>
                     <h4 className="mb-1 text-sm font-medium">Best For</h4>
                     <div className="flex flex-wrap gap-1">
-                      {product?.suitableFor.map((concern, index) => (
+                      {product.suitableFor.map((concern, index) => (
                         <span key={index} className="rounded-full bg-gray-100 px-2 py-1 text-xs">
-                          {concern?.replace('_', ' ')}
+                          {concern.replace('_', ' ')}
                         </span>
                       ))}
                     </div>
                   </div>
                 )}
 
-                {product?.purchaseLink && (
+                {product.purchaseLink && (
                   <a
-                    href={product?.purchaseLink}
+                    href={product.purchaseLink}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-4 block"

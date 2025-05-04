@@ -11,7 +11,7 @@ const DynamicSystemMonitorDashboard = dynamic(
   },
 );
 
-const MonitoringPage: React?.FC = () => {
+const MonitoringPage: React.FC = () => {
   return (
     <div className="monitoring-page">
       <h1>System Monitoring</h1>

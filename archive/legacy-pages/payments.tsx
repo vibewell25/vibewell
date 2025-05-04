@@ -20,7 +20,7 @@ const Payments: NextPage = () => {
   const fetchSubs = async () => {
     const res = await fetchWithTimeout('/api/stripe/subscriptions');
     const data = await res.json();
-    setSubs(data?.subscriptions || []);
+    setSubs(data.subscriptions || []);
   };
 
   useEffect(() => { fetchSubs(); }, []);
@@ -53,7 +53,7 @@ const Payments: NextPage = () => {
       });
       
       const data = await res.json();
-      if (data?.url && window) {
+      if (data.url && window) {
         window.location.href = data.url;
       } else {
         alert('Error creating checkout session');

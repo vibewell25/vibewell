@@ -7,7 +7,7 @@ import { fetchWithTimeout } from '../../src/utils/timeout-handler';
 
 const EventDetail: NextPage = () => {
   const router = useRouter();
-  const { id } = router?.query;
+  const { id } = router.query;
   const [event, setEvent] = useState<any>(null);
   const [regs, setRegs] = useState<any[]>([]);
 
@@ -21,7 +21,7 @@ const EventDetail: NextPage = () => {
       
       const regsRes = await fetchWithTimeout(`/api/eventRegistrations/event/${id}`);
       const regsData = await regsRes.json();
-      setRegs(regsData?.registrations || []);
+      setRegs(regsData.registrations || []);
     };
     
     fetchEventData();

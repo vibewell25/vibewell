@@ -24,7 +24,7 @@ const Inventory: NextPage = () => {
     try {
       const res = await fetchWithTimeout('/api/inventory');
       const json = await res.json();
-      setItems(json?.items || []);
+      setItems(json.items || []);
     } finally {
       setLoading(false);
     }
@@ -135,7 +135,7 @@ const Inventory: NextPage = () => {
             <div>{item.description}</div>
           </div>
           <div className="space-x-2">
-            <Button onClick={() => router?.push(`/inventory/${item.id}`)}>Edit</Button>
+            <Button onClick={() => router.push(`/inventory/${item.id}`)}>Edit</Button>
             <Button onClick={() => handleDelete(item.id)}>Delete</Button>
           </div>
         </Card>

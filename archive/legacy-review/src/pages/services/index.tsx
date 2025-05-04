@@ -14,7 +14,7 @@ import {
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { ServiceCard } from '../../components/BeautyServices/ServiceCard';
-import { BeautyServiceService } from '../../services/beautyService?.service';
+import { BeautyServiceService } from '../../services/beautyService.service';
 interface Category {
   id: string;
   name: string;
@@ -57,11 +57,11 @@ export default function ServicesPage({ services: initialServices, categories }: 
   const toast = useToast();
   const { isSignedIn } = useUser();
 
-  const filteredServices = services?.filter((service) => {
+  const filteredServices = services.filter((service) => {
     const matchesSearch =
-      service?.name.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-      service?.description?.toLowerCase().includes(searchTerm?.toLowerCase());
-    const matchesCategory = !selectedCategory || service?.category.id === selectedCategory;
+      service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      service.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = !selectedCategory || service.category.id === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -77,16 +77,16 @@ export default function ServicesPage({ services: initialServices, categories }: 
       return;
     }
 
-    router?.push(`/booking/${serviceId}`);
+    router.push(`/booking/${serviceId}`);
   };
 
   return (
-    <Container maxW="container?.xl" py={8}>
+    <Container maxW="container.xl" py={8}>
       <Box mb={8}>
         <Heading size="xl" mb={2}>
           Beauty & Wellness Services
         </Heading>
-        <Text color="gray?.600">
+        <Text color="gray.600">
           Discover our range of professional beauty and wellness services
         </Text>
       </Box>
@@ -96,32 +96,32 @@ export default function ServicesPage({ services: initialServices, categories }: 
           <Input
             placeholder="Search services..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e?.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
           <Select
             placeholder="All Categories"
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e?.target.value)}
+            onChange={(e) => setSelectedCategory(e.target.value)}
             maxW="200px"
           >
-            {categories?.map((category) => (
-              <option key={category?.id} value={category?.id}>
-                {category?.name}
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
               </option>
             ))}
           </Select>
         </HStack>
       </Box>
 
-      {filteredServices?.length > 0 ? (
+      {filteredServices.length > 0 ? (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
-          {filteredServices?.map((service) => (
-            <ServiceCard key={service?.id} {...service} onBookNow={handleBookNow} />
+          {filteredServices.map((service) => (
+            <ServiceCard key={service.id} {...service} onBookNow={handleBookNow} />
           ))}
         </SimpleGrid>
       ) : (
-        <Box textAlign="center" py={10} px={6} bg="gray?.50" borderRadius="lg">
-          <Text color="gray?.600">No services found matching your criteria</Text>
+        <Box textAlign="center" py={10} px={6} bg="gray.50" borderRadius="lg">
+          <Text color="gray.600">No services found matching your criteria</Text>
           <Button
             mt={4}
             colorScheme="blue"

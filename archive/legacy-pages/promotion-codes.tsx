@@ -21,7 +21,7 @@ const PromotionCodes: NextPage = () => {
   const fetchCodes = async () => {
     const res = await fetchWithTimeout('/api/promotionCodes');
     const json = await res.json();
-    setCodes(json?.codes || []);
+    setCodes(json.codes || []);
   };
 
   useEffect(() => { fetchCodes(); }, []);

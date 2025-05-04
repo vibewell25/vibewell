@@ -18,7 +18,7 @@ const PayrollRecords: NextPage = () => {
   const fetchRecords = async () => {
     const res = await fetchWithTimeout('/api/payrollRecords/me');
     const data = await res.json();
-    setRecords(data?.records || []);
+    setRecords(data.records || []);
   };
 
   useEffect(() => { fetchRecords(); }, []);

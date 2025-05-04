@@ -27,11 +27,11 @@ const AuditLogsPage: NextPage = () => {
     {
       id: 1,
       timestamp: '2024-03-20 10:30:00',
-      user: 'admin@vibewell?.com',
+      user: 'admin@vibewell.com',
       action: 'User account created',
       category: 'users',
-      details: 'New user registration: john?.doe@example?.com',
-      ip: '192?.168.1?.100',
+      details: 'New user registration: john.doe@example.com',
+      ip: '192.168.1.100',
     },
     {
       id: 2,
@@ -45,11 +45,11 @@ const AuditLogsPage: NextPage = () => {
     {
       id: 3,
       timestamp: '2024-03-20 09:45:00',
-      user: 'admin@vibewell?.com',
+      user: 'admin@vibewell.com',
       action: 'Service updated',
       category: 'services',
       details: 'Updated pricing for "Spa Package"',
-      ip: '192?.168.1?.100',
+      ip: '192.168.1.100',
     },
   ];
 
@@ -77,12 +77,12 @@ const AuditLogsPage: NextPage = () => {
               </label>
               <select
                 value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e?.target.value)}
+                onChange={(e) => setSelectedCategory(e.target.value)}
                 className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-pink-500 focus:border-pink-500 rounded-md"
               >
-                {categories?.map((category) => (
-                  <option key={category?.id} value={category?.id}>
-                    {category?.label}
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.label}
                   </option>
                 ))}
               </select>
@@ -93,12 +93,12 @@ const AuditLogsPage: NextPage = () => {
               </label>
               <select
                 value={dateRange}
-                onChange={(e) => setDateRange(e?.target.value)}
+                onChange={(e) => setDateRange(e.target.value)}
                 className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-pink-500 focus:border-pink-500 rounded-md"
               >
-                {timeRanges?.map((range) => (
-                  <option key={range?.id} value={range?.id}>
-                    {range?.label}
+                {timeRanges.map((range) => (
+                  <option key={range.id} value={range.id}>
+                    {range.label}
                   </option>
                 ))}
               </select>
@@ -133,27 +133,27 @@ const AuditLogsPage: NextPage = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {auditLogs?.map((log) => (
-                  <tr key={log?.id} className="hover:bg-gray-50">
+                {auditLogs.map((log) => (
+                  <tr key={log.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {log?.timestamp}
+                      {log.timestamp}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {log?.user}
+                      {log.user}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {log?.action}
+                      {log.action}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                       <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-                        {log?.category}
+                        {log.category}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {log?.ip}
+                      {log.ip}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
-                      {log?.details}
+                      {log.details}
                     </td>
                   </tr>
                 ))}

@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 // Define form schema with zod
-const reviewSchema = z?.object({
+const reviewSchema = z.object({
   title: z
     .string()
     .min(3, 'Title must be at least 3 characters')
@@ -13,9 +13,9 @@ const reviewSchema = z?.object({
     .string()
     .min(10, 'Review text must be at least 10 characters')
     .max(1000, 'Review text must be at most 1000 characters'),
-  rating: z?.number().min(1, 'Please select a rating').max(5, 'Maximum rating is 5 stars'),
+  rating: z.number().min(1, 'Please select a rating').max(5, 'Maximum rating is 5 stars'),
 });
-type ReviewFormInputs = z?.infer<typeof reviewSchema>;
+type ReviewFormInputs = z.infer<typeof reviewSchema>;
 interface ReviewFormProps {
   providerId: string;
   bookingId?: string; // Optional booking ID
@@ -60,7 +60,7 @@ export default function ReviewForm({
     try {
       await onSubmit(data);
     } catch (error) {
-      console?.error('Error submitting review:', error);
+      console.error('Error submitting review:', error);
     } finally {
       setSubmitting(false);
     }
@@ -89,7 +89,7 @@ export default function ReviewForm({
             </button>
           ))}
         </div>
-        {errors?.rating && <p className="mt-1 text-sm text-red-500">{errors?.rating.message}</p>}
+        {errors.rating && <p className="mt-1 text-sm text-red-500">{errors.rating.message}</p>}
       </div>
       <div className="mb-4">
         <label htmlFor="title" className="mb-2 block font-medium text-gray-700">
@@ -102,7 +102,7 @@ export default function ReviewForm({
           placeholder="Summarize your experience"
           {...register('title')}
         />
-        {errors?.title && <p className="mt-1 text-sm text-red-500">{errors?.title.message}</p>}
+        {errors.title && <p className="mt-1 text-sm text-red-500">{errors.title.message}</p>}
       </div>
       <div className="mb-6">
         <label htmlFor="text" className="mb-2 block font-medium text-gray-700">
@@ -115,7 +115,7 @@ export default function ReviewForm({
           placeholder="Share your experience with this service provider"
           {...register('text')}
         ></textarea>
-        {errors?.text && <p className="mt-1 text-sm text-red-500">{errors?.text.message}</p>}
+        {errors.text && <p className="mt-1 text-sm text-red-500">{errors.text.message}</p>}
       </div>
       <div className="flex justify-end space-x-4">
         {onCancel && (
@@ -137,7 +137,7 @@ export default function ReviewForm({
             <span className="flex items-center">
               <svg
                 className="-ml-1 mr-2 h-4 w-4 animate-spin text-white"
-                xmlns="http://www?.w3.org/2000/svg"
+                xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
               >
@@ -152,7 +152,7 @@ export default function ReviewForm({
                 <path
                   className="opacity-75"
                   fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5?.373 0 0 5?.373 0 12h4zm2 5?.291A7.962 7?.962 0 014 12H0c0 3?.042 1?.135 5?.824 3 7?.938l3-2?.647z"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 ></path>
               </svg>
               Processing...

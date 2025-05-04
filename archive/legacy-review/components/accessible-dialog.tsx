@@ -8,7 +8,7 @@ interface AccessibleDialogProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  children: React?.ReactNode;
+  children: React.ReactNode;
   description?: string;
 }
 
@@ -27,12 +27,12 @@ export function AccessibleDialog({
   // Prevent scrolling when dialog is open
   useEffect(() => {
     if (isOpen) {
-      document?.body.style?.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
     } else {
-      document?.body.style?.overflow = '';
+      document.body.style.overflow = '';
     }
     return () => {
-      document?.body.style?.overflow = '';
+      document.body.style.overflow = '';
     };
   }, [isOpen]);
 
@@ -74,7 +74,7 @@ export function AccessibleDialog({
           aria-label="Close dialog"
         >
           <svg
-            xmlns="http://www?.w3.org/2000/svg"
+            xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"
             fill="none"
             viewBox="0 0 24 24"

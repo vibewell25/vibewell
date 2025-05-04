@@ -47,12 +47,12 @@ export function BookingList({ userId, role }: BookingListProps) {
   }, [userId, role]);
 
   const loadBookings = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
       const bookingService = new BookingService();
-      const data = await bookingService?.getBookings(userId, role);
+      const data = await bookingService.getBookings(userId, role);
       setBookings(data);
     } catch (err) {
       setError('Failed to load bookings');
@@ -79,12 +79,12 @@ export function BookingList({ userId, role }: BookingListProps) {
     };
 
     const statusInfo = statusMap[status] || { label: status, variant: 'secondary' };
-    return <Badge variant={statusInfo?.variant}>{statusInfo?.label}</Badge>;
+    return <Badge variant={statusInfo.variant}>{statusInfo.label}</Badge>;
   };
 
-  const filteredBookings = bookings?.filter((booking) => {
+  const filteredBookings = bookings.filter((booking) => {
     if (filter === 'all') return true;
-    return booking?.status === filter;
+    return booking.status === filter;
   });
 
   if (loading) {
@@ -100,7 +100,7 @@ export function BookingList({ userId, role }: BookingListProps) {
     );
   }
 
-  if (filteredBookings?.length === 0) {
+  if (filteredBookings.length === 0) {
     return (
       <div className="flex h-64 flex-col items-center justify-center">
         <p className="mb-4 text-gray-500">No bookings found</p>
@@ -140,45 +140,45 @@ export function BookingList({ userId, role }: BookingListProps) {
       </div>
 
       <div className="grid gap-4">
-        {filteredBookings?.map((booking) => (
+        {filteredBookings.map((booking) => (
           <Card
-            key={booking?.id}
+            key={booking.id}
             className="cursor-pointer p-4 transition-colors hover:bg-gray-50"
-            onClick={() => router?.push(`/bookings?id=${booking?.id}`)}
+            onClick={() => router.push(`/bookings?id=${booking.id}`)}
           >
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="text-lg font-semibold">{booking?.service.name}</h3>
+                <h3 className="text-lg font-semibold">{booking.service.name}</h3>
                 <p className="text-sm text-gray-500">
-                  {format(new Date(booking?.start_time), 'PPP p')}
+                  {format(new Date(booking.start_time), 'PPP p')}
                 </p>
                 <p className="text-sm text-gray-500">
-                  Duration: {booking?.service.duration} minutes
+                  Duration: {booking.service.duration} minutes
                 </p>
-                <p className="text-sm text-gray-500">Price: ${booking?.service.price}</p>
+                <p className="text-sm text-gray-500">Price: ${booking.service.price}</p>
                 {role === 'customer' ? (
-                  <p className="text-sm text-gray-500">Provider: {booking?.provider.name}</p>
+                  <p className="text-sm text-gray-500">Provider: {booking.provider.name}</p>
                 ) : (
-                  <p className="text-sm text-gray-500">Customer: {booking?.customer.name}</p>
+                  <p className="text-sm text-gray-500">Customer: {booking.customer.name}</p>
                 )}
               </div>
               <div className="flex flex-col items-end gap-2">
-                {getStatusBadge(booking?.status)}
+                {getStatusBadge(booking.status)}
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={(e) => {
-                    e?.stopPropagation();
-                    router?.push(`/bookings?id=${booking?.id}`);
+                    e.stopPropagation();
+                    router.push(`/bookings?id=${booking.id}`);
                   }}
                 >
                   View Details
                 </Button>
               </div>
             </div>
-            {booking?.notes && (
+            {booking.notes && (
               <div className="mt-2">
-                <p className="text-sm text-gray-500">Notes: {booking?.notes}</p>
+                <p className="text-sm text-gray-500">Notes: {booking.notes}</p>
               </div>
             )}
           </Card>

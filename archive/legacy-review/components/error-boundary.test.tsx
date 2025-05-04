@@ -11,20 +11,20 @@ const ErrorThrowingComponent = ({ shouldThrow = true }: { shouldThrow?: boolean 
 };
 
 describe('ErrorBoundary', () => {
-  // Mock console?.error to prevent test noise
-  let originalConsoleError: typeof console?.error;
+  // Mock console.error to prevent test noise
+  let originalConsoleError: typeof console.error;
 
   beforeAll(() => {
-    originalConsoleError = console?.error;
-    console?.error = jest?.fn();
+    originalConsoleError = console.error;
+    console.error = jest.fn();
   });
 
   afterAll(() => {
-    console?.error = originalConsoleError;
+    console.error = originalConsoleError;
   });
 
   beforeEach(() => {
-    jest?.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('renders children when there is no error', () => {
@@ -34,7 +34,7 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>,
     );
 
-    expect(screen?.getByText('Test content')).toBeInTheDocument();
+    expect(screen.getByText('Test content')).toBeInTheDocument();
   });
 
   it('renders fallback UI when an error occurs', () => {
@@ -45,15 +45,15 @@ describe('ErrorBoundary', () => {
     );
 
     // Error message should be displayed
-    expect(screen?.getByText(/Something went wrong/i)).toBeInTheDocument();
-    expect(screen?.getByText(/Test error/i)).toBeInTheDocument();
+    expect(screen.getByText(/Something went wrong/i)).toBeInTheDocument();
+    expect(screen.getByText(/Test error/i)).toBeInTheDocument();
 
     // Try Again button should be present
-    expect(screen?.getByRole('button', { name: /try again/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /try again/i })).toBeInTheDocument();
   });
 
   it('logs error details', () => {
-    const consoleSpy = jest?.spyOn(console, 'error');
+    const consoleSpy = jest.spyOn(console, 'error');
 
     render(
       <ErrorBoundary>
@@ -61,14 +61,14 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>,
     );
 
-    // Check that console?.error was called
+    // Check that console.error was called
     expect(consoleSpy).toHaveBeenCalled();
 
     // The error object should be in the args
-    const errorArg = consoleSpy?.mock.calls?.find(
+    const errorArg = consoleSpy.mock.calls.find(
       (call) =>
         call[0] instanceof Error ||
-        (typeof call[0] === 'object' && call[0]?.message === 'Test error'),
+        (typeof call[0] === 'object' && call[0].message === 'Test error'),
     );
 
     expect(errorArg).toBeTruthy();
@@ -87,13 +87,13 @@ describe('ErrorBoundary', () => {
     );
 
     // Error message should still be displayed
-    expect(screen?.getByText(/Something went wrong/i)).toBeInTheDocument();
+    expect(screen.getByText(/Something went wrong/i)).toBeInTheDocument();
   });
 
   it('recovers after error', () => {
     // Use a component state to control whether it throws
     const TestComponent = () => {
-      const [shouldThrow, setShouldThrow] = React?.useState(true);
+      const [shouldThrow, setShouldThrow] = React.useState(true);
 
       if (shouldThrow) {
         throw new Error('Test error');
@@ -109,14 +109,14 @@ describe('ErrorBoundary', () => {
     );
 
     // Error should be displayed initially
-    expect(screen?.getByText(/Something went wrong/i)).toBeInTheDocument();
+    expect(screen.getByText(/Something went wrong/i)).toBeInTheDocument();
 
     // Simulate fixing the error and re-rendering
-    const tryAgainButton = screen?.getByRole('button', { name: /try again/i });
+    const tryAgainButton = screen.getByRole('button', { name: /try again/i });
 
     // When we click "Try Again", the ErrorBoundary will reset its state
     // In a real app, this would allow the component to re-render without the error
-    fireEvent?.click(tryAgainButton);
+    fireEvent.click(tryAgainButton);
 
     // After clicking "Try Again", we would re-render the component
     // For testing purposes, we simulate a successful render after error reset
@@ -127,6 +127,6 @@ describe('ErrorBoundary', () => {
     );
 
     // Now the recovered content should be visible
-    expect(screen?.getByText('Recovered content')).toBeInTheDocument();
+    expect(screen.getByText('Recovered content')).toBeInTheDocument();
   });
 });

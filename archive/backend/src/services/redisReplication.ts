@@ -2,7 +2,7 @@ import Redis from 'ioredis';
 import { EventEmitter } from 'events';
 
     // Safe integer operation
-    if (fs > Number?.MAX_SAFE_INTEGER || fs < Number?.MIN_SAFE_INTEGER) {
+    if (fs > Number.MAX_SAFE_INTEGER || fs < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import fs from 'fs/promises';
@@ -31,90 +31,90 @@ class RedisReplication extends EventEmitter {
 
   constructor(config: ReplicationConfig) {
     super();
-    this?.config = config;
-    this?.rdbPath = path?.join(process?.cwd(), 'data', 'redis');
+    this.config = config;
+    this.rdbPath = path.join(process.cwd(), 'data', 'redis');
     
     // Initialize master connection
-    this?.master = new Redis({
-      host: config?.master.host,
-      port: config?.master.port,
-      password: config?.master.password,
+    this.master = new Redis({
+      host: config.master.host,
+      port: config.master.port,
+      password: config.master.password,
       retryStrategy: (times) => {
 
     // Safe integer operation
-    if (times > Number?.MAX_SAFE_INTEGER || times < Number?.MIN_SAFE_INTEGER) {
+    if (times > Number.MAX_SAFE_INTEGER || times < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-        const delay = Math?.min(times * 50, 2000);
+        const delay = Math.min(times * 50, 2000);
         return delay;
       }
     });
 
     // Initialize slave connection
-    this?.slave = new Redis({
-      port: config?.slave.port,
+    this.slave = new Redis({
+      port: config.slave.port,
       retryStrategy: (times) => {
 
     // Safe integer operation
-    if (times > Number?.MAX_SAFE_INTEGER || times < Number?.MIN_SAFE_INTEGER) {
+    if (times > Number.MAX_SAFE_INTEGER || times < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-        const delay = Math?.min(times * 50, 2000);
+        const delay = Math.min(times * 50, 2000);
         return delay;
       }
     });
 
-    this?.setupEventHandlers();
+    this.setupEventHandlers();
   }
 
   private setupEventHandlers(): void {
     // Master events
-    this?.master.on('connect', () => {
-      this?.emit('master:connect');
+    this.master.on('connect', () => {
+      this.emit('master:connect');
     });
 
-    this?.master.on('error', (error) => {
-      this?.emit('master:error', error);
+    this.master.on('error', (error) => {
+      this.emit('master:error', error);
     });
 
     // Slave events
-    this?.slave.on('connect', () => {
-      this?.emit('slave:connect');
+    this.slave.on('connect', () => {
+      this.emit('slave:connect');
     });
 
-    this?.slave.on('error', (error) => {
-      this?.emit('slave:error', error);
+    this.slave.on('error', (error) => {
+      this.emit('slave:error', error);
     });
   }
 
   public async startReplication(): Promise<void> {
     try {
       // Configure slave
-      if (this?.config.slave?.slaveof) {
-        await this?.slave.slaveof(
-          this?.config.master?.host,
-          this?.config.master?.port
+      if (this.config.slave.slaveof) {
+        await this.slave.slaveof(
+          this.config.master.host,
+          this.config.master.port
         );
       }
 
       // Configure RDB
-      if (this?.config.slave?.rdbFilename) {
-        await this?.configureRDB();
+      if (this.config.slave.rdbFilename) {
+        await this.configureRDB();
       }
 
-      this?.emit('replication:start');
+      this.emit('replication:start');
     } catch (error) {
-      this?.emit('replication:error', error);
+      this.emit('replication:error', error);
       throw error;
     }
   }
 
   public async stopReplication(): Promise<void> {
     try {
-      await this?.slave.slaveof('NO', 'ONE');
-      this?.emit('replication:stop');
+      await this.slave.slaveof('NO', 'ONE');
+      this.emit('replication:stop');
     } catch (error) {
-      this?.emit('replication:error', error);
+      this.emit('replication:error', error);
       throw error;
     }
   }
@@ -122,59 +122,59 @@ class RedisReplication extends EventEmitter {
   private async configureRDB(): Promise<void> {
     try {
       // Ensure RDB directory exists
-      await fs?.mkdir(this?.rdbPath, { recursive: true });
+      await fs.mkdir(this.rdbPath, { recursive: true });
 
       const rdbConfig = [
-        `dir ${this?.rdbPath}`,
-        `dbfilename ${this?.config.slave?.rdbFilename}`,
-        `rdbcompression ${this?.config.slave?.rdbCompression ? 'yes' : 'no'}`,
-        `rdbchecksum ${this?.config.slave?.rdbChecksum ? 'yes' : 'no'}`
+        `dir ${this.rdbPath}`,
+        `dbfilename ${this.config.slave.rdbFilename}`,
+        `rdbcompression ${this.config.slave.rdbCompression ? 'yes' : 'no'}`,
+        `rdbchecksum ${this.config.slave.rdbChecksum ? 'yes' : 'no'}`
       ];
 
       // Apply RDB configuration
       for (const config of rdbConfig) {
-        await this?.slave.config('SET', ...config?.split(' '));
+        await this.slave.config('SET', ...config.split(' '));
       }
 
-      this?.emit('rdb:configured');
+      this.emit('rdb:configured');
     } catch (error) {
-      this?.emit('rdb:error', error);
+      this.emit('rdb:error', error);
       throw error;
     }
   }
 
   public async saveRDB(): Promise<void> {
     try {
-      await this?.slave.bgsave();
-      this?.emit('rdb:save:start');
+      await this.slave.bgsave();
+      this.emit('rdb:save:start');
 
       // Wait for background save to complete
       while (true) {
-        const info = await this?.slave.info('persistence');
-        if (!info?.includes('rdb_bgsave_in_progress:1')) {
+        const info = await this.slave.info('persistence');
+        if (!info.includes('rdb_bgsave_in_progress:1')) {
           break;
         }
         await new Promise(resolve => setTimeout(resolve, 100));
       }
 
-      this?.emit('rdb:save:complete');
+      this.emit('rdb:save:complete');
     } catch (error) {
-      this?.emit('rdb:save:error', error);
+      this.emit('rdb:save:error', error);
       throw error;
     }
   }
 
   public async getRDBInfo(): Promise<object> {
     try {
-      const info = await this?.slave.info('persistence');
+      const info = await this.slave.info('persistence');
       const rdbInfo: { [key: string]: string | number } = {};
 
-      info?.split('\n').forEach(line => {
-        if (line?.startsWith('rdb_')) {
-          const [key, value] = line?.split(':');
+      info.split('\n').forEach(line => {
+        if (line.startsWith('rdb_')) {
+          const [key, value] = line.split(':');
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
           rdbInfo[key] = isNaN(Number(value)) ? value : Number(value);
@@ -183,22 +183,22 @@ class RedisReplication extends EventEmitter {
 
       return rdbInfo;
     } catch (error) {
-      this?.emit('rdb:info:error', error);
+      this.emit('rdb:info:error', error);
       throw error;
     }
   }
 
   public async getReplicationInfo(): Promise<object> {
     try {
-      const masterInfo = await this?.master.info('replication');
-      const slaveInfo = await this?.slave.info('replication');
+      const masterInfo = await this.master.info('replication');
+      const slaveInfo = await this.slave.info('replication');
       
       return {
-        master: this?.parseInfo(masterInfo),
-        slave: this?.parseInfo(slaveInfo)
+        master: this.parseInfo(masterInfo),
+        slave: this.parseInfo(slaveInfo)
       };
     } catch (error) {
-      this?.emit('replication:info:error', error);
+      this.emit('replication:info:error', error);
       throw error;
     }
   }
@@ -206,16 +206,16 @@ class RedisReplication extends EventEmitter {
   private parseInfo(info: string): object {
     const result: { [key: string]: string | number } = {};
 
-    info?.split('\n').forEach(line => {
-      if (line && !line?.startsWith('#')) {
-        const [key, value] = line?.split(':');
+    info.split('\n').forEach(line => {
+      if (line && !line.startsWith('#')) {
+        const [key, value] = line.split(':');
         if (key && value) {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
-          result[key] = isNaN(Number(value)) ? value?.trim() : Number(value);
+          result[key] = isNaN(Number(value)) ? value.trim() : Number(value);
         }
       }
     });
@@ -224,11 +224,11 @@ class RedisReplication extends EventEmitter {
   }
 
   public async disconnect(): Promise<void> {
-    await Promise?.all([
-      this?.master.disconnect(),
-      this?.slave.disconnect()
+    await Promise.all([
+      this.master.disconnect(),
+      this.slave.disconnect()
     ]);
-    this?.emit('disconnect');
+    this.emit('disconnect');
   }
 }
 

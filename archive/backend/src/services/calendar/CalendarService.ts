@@ -1,14 +1,14 @@
 import { google } from 'googleapis';
 
     // Safe integer operation
-    if (google > Number?.MAX_SAFE_INTEGER || google < Number?.MIN_SAFE_INTEGER) {
+    if (google > Number.MAX_SAFE_INTEGER || google < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { OAuth2Client } from 'google-auth-library';
 import axios from 'axios';
 
     // Safe integer operation
-    if (ical > Number?.MAX_SAFE_INTEGER || ical < Number?.MIN_SAFE_INTEGER) {
+    if (ical > Number.MAX_SAFE_INTEGER || ical < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import ical from 'ical-generator';
@@ -59,177 +59,177 @@ class CalendarService {
   private googleAuth: OAuth2Client | null = null;
 
   private constructor(config: CalendarConfig) {
-    this?.config = config;
-    this?.initializeGoogleAuth();
+    this.config = config;
+    this.initializeGoogleAuth();
   }
 
   public static getInstance(config?: CalendarConfig): CalendarService {
-    if (!CalendarService?.instance && config) {
-      CalendarService?.instance = new CalendarService(config);
+    if (!CalendarService.instance && config) {
+      CalendarService.instance = new CalendarService(config);
     }
-    return CalendarService?.instance;
+    return CalendarService.instance;
   }
 
   private initializeGoogleAuth(): void {
-    if (this?.config.google) {
-      this?.googleAuth = new google?.auth.OAuth2(
-        this?.config.google?.clientId,
-        this?.config.google?.clientSecret,
-        this?.config.google?.redirectUri
+    if (this.config.google) {
+      this.googleAuth = new google.auth.OAuth2(
+        this.config.google.clientId,
+        this.config.google.clientSecret,
+        this.config.google.redirectUri
       );
     }
   }
 
   // Google Calendar Integration
   public async createGoogleEvent(event: CalendarEvent, accessToken: string): Promise<any> {
-    if (!this?.googleAuth) {
+    if (!this.googleAuth) {
       throw new Error('Google Calendar not configured');
     }
 
-    this?.googleAuth.setCredentials({ access_token: accessToken });
-    const calendar = google?.calendar({ version: 'v3', auth: this?.googleAuth });
+    this.googleAuth.setCredentials({ access_token: accessToken });
+    const calendar = google.calendar({ version: 'v3', auth: this.googleAuth });
 
     const googleEvent = {
-      summary: event?.title,
-      description: event?.description,
-      location: event?.location,
+      summary: event.title,
+      description: event.description,
+      location: event.location,
       start: {
-        dateTime: event?.start.toISOString(),
-        timeZone: Intl?.DateTimeFormat().resolvedOptions().timeZone
+        dateTime: event.start.toISOString(),
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
       },
       end: {
-        dateTime: event?.end.toISOString(),
-        timeZone: Intl?.DateTimeFormat().resolvedOptions().timeZone
+        dateTime: event.end.toISOString(),
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
       },
-      attendees: event?.attendees?.map(email => ({ email })),
+      attendees: event.attendees.map(email => ({ email })),
       reminders: {
         useDefault: false,
-        overrides: event?.reminders?.map(reminder => ({
-          method: reminder?.method,
-          minutes: reminder?.minutes
+        overrides: event.reminders.map(reminder => ({
+          method: reminder.method,
+          minutes: reminder.minutes
         }))
       }
     };
 
-    if (event?.recurrence) {
+    if (event.recurrence) {
       googleEvent['recurrence'] = [
-        `RRULE:FREQ=${event?.recurrence.frequency?.toUpperCase()}` +
-        (event?.recurrence.interval ? `;INTERVAL=${event?.recurrence.interval}` : '') +
-        (event?.recurrence.until ? `;UNTIL=${event?.recurrence.until?.toISOString().replace(/[-:]/g, '').split('.')[0]}Z` : '') +
-        (event?.recurrence.count ? `;COUNT=${event?.recurrence.count}` : '')
+        `RRULE:FREQ=${event.recurrence.frequency.toUpperCase()}` +
+        (event.recurrence.interval ? `;INTERVAL=${event.recurrence.interval}` : '') +
+        (event.recurrence.until ? `;UNTIL=${event.recurrence.until.toISOString().replace(/[-:]/g, '').split('.')[0]}Z` : '') +
+        (event.recurrence.count ? `;COUNT=${event.recurrence.count}` : '')
       ];
     }
 
     try {
-      const response = await calendar?.events.insert({
+      const response = await calendar.events.insert({
         calendarId: 'primary',
         requestBody: googleEvent
       });
-      return response?.data;
+      return response.data;
     } catch (error) {
-      console?.error('Google Calendar error:', error);
+      console.error('Google Calendar error:', error);
       throw error;
     }
   }
 
   // Microsoft Calendar Integration
   public async createMicrosoftEvent(event: CalendarEvent, accessToken: string): Promise<any> {
-    if (!this?.config.microsoft) {
+    if (!this.config.microsoft) {
       throw new Error('Microsoft Calendar not configured');
     }
 
     const microsoftEvent = {
-      subject: event?.title,
+      subject: event.title,
       body: {
         contentType: 'HTML',
-        content: event?.description
+        content: event.description
       },
       start: {
-        dateTime: event?.start.toISOString(),
-        timeZone: Intl?.DateTimeFormat().resolvedOptions().timeZone
+        dateTime: event.start.toISOString(),
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
       },
       end: {
-        dateTime: event?.end.toISOString(),
-        timeZone: Intl?.DateTimeFormat().resolvedOptions().timeZone
+        dateTime: event.end.toISOString(),
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
       },
       location: {
-        displayName: event?.location
+        displayName: event.location
       },
-      attendees: event?.attendees?.map(email => ({
+      attendees: event.attendees.map(email => ({
         emailAddress: { address: email },
         type: 'required'
       }))
     };
 
     try {
-      const response = await axios?.post(
+      const response = await axios.post(
 
     // Safe integer operation
-    if (me > Number?.MAX_SAFE_INTEGER || me < Number?.MIN_SAFE_INTEGER) {
+    if (me > Number.MAX_SAFE_INTEGER || me < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (com > Number?.MAX_SAFE_INTEGER || com < Number?.MIN_SAFE_INTEGER) {
+    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-        'https://graph?.microsoft.com/v1?.0/me/events',
+        'https://graph.microsoft.com/v1.0/me/events',
         microsoftEvent,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
 
     // Safe integer operation
-    if (application > Number?.MAX_SAFE_INTEGER || application < Number?.MIN_SAFE_INTEGER) {
+    if (application > Number.MAX_SAFE_INTEGER || application < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Content > Number?.MAX_SAFE_INTEGER || Content < Number?.MIN_SAFE_INTEGER) {
+    if (Content > Number.MAX_SAFE_INTEGER || Content < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
             'Content-Type': 'application/json'
           }
         }
       );
-      return response?.data;
+      return response.data;
     } catch (error) {
-      console?.error('Microsoft Calendar error:', error);
+      console.error('Microsoft Calendar error:', error);
       throw error;
     }
   }
 
   // Apple Calendar Integration (iCloud)
   public async createAppleEvent(event: CalendarEvent): Promise<string> {
-    if (!this?.config.apple) {
+    if (!this.config.apple) {
       throw new Error('Apple Calendar not configured');
     }
 
     const calendar = ical({
-      domain: 'vibewell?.com',
+      domain: 'vibewell.com',
       name: 'Vibewell Calendar'
     });
 
-    const iCalEvent = calendar?.createEvent({
+    const iCalEvent = calendar.createEvent({
       id: uuidv4(),
-      start: event?.start,
-      end: event?.end,
-      summary: event?.title,
-      description: event?.description,
-      location: event?.location,
-      timezone: Intl?.DateTimeFormat().resolvedOptions().timeZone
+      start: event.start,
+      end: event.end,
+      summary: event.title,
+      description: event.description,
+      location: event.location,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
     });
 
-    if (event?.recurrence) {
-      iCalEvent?.repeating({
-        freq: event?.recurrence.frequency,
-        interval: event?.recurrence.interval,
-        until: event?.recurrence.until,
-        count: event?.recurrence.count
+    if (event.recurrence) {
+      iCalEvent.repeating({
+        freq: event.recurrence.frequency,
+        interval: event.recurrence.interval,
+        until: event.recurrence.until,
+        count: event.recurrence.count
       });
     }
 
-    return calendar?.toString();
+    return calendar.toString();
   }
 
   // Generic Calendar Operations
@@ -241,14 +241,14 @@ class CalendarService {
     switch (provider) {
       case 'google':
         if (!accessToken) throw new Error('Access token required for Google Calendar');
-        return this?.createGoogleEvent(event, accessToken);
+        return this.createGoogleEvent(event, accessToken);
 
       case 'microsoft':
         if (!accessToken) throw new Error('Access token required for Microsoft Calendar');
-        return this?.createMicrosoftEvent(event, accessToken);
+        return this.createMicrosoftEvent(event, accessToken);
 
       case 'apple':
-        return this?.createAppleEvent(event);
+        return this.createAppleEvent(event);
 
       default:
         throw new Error('Unsupported calendar provider');
@@ -264,10 +264,10 @@ class CalendarService {
     const results = [];
     for (const event of events) {
       try {
-        const result = await this?.createEvent(event, provider, accessToken);
-        results?.push({ success: true, data: result });
+        const result = await this.createEvent(event, provider, accessToken);
+        results.push({ success: true, data: result });
       } catch (error) {
-        results?.push({ success: false, error });
+        results.push({ success: false, error });
       }
     }
     return results;
@@ -280,23 +280,23 @@ class CalendarService {
   ): Promise<string> {
     if (format === 'ical') {
       const calendar = ical({
-        domain: 'vibewell?.com',
+        domain: 'vibewell.com',
         name: 'Vibewell Calendar'
       });
 
-      events?.forEach(event => {
-        calendar?.createEvent({
-          start: event?.start,
-          end: event?.end,
-          summary: event?.title,
-          description: event?.description,
-          location: event?.location
+      events.forEach(event => {
+        calendar.createEvent({
+          start: event.start,
+          end: event.end,
+          summary: event.title,
+          description: event.description,
+          location: event.location
         });
       });
 
-      return calendar?.toString();
+      return calendar.toString();
     } else {
-      return JSON?.stringify(events);
+      return JSON.stringify(events);
     }
   }
 }

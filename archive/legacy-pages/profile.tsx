@@ -8,9 +8,9 @@ import { fetchWithTimeout } from '../src/utils/timeout-handler';
 
 const Profile: NextPage = () => {
   const { user, error, isLoading } = useUser();
-  const [name, setName] = useState(user?.name || 'John Doe');
-  const [email, setEmail] = useState(user?.email || 'john@example.com');
-  const [avatar, setAvatar] = useState(user?.picture || 'https://via.placeholder.com/150');
+  const [name, setName] = useState(user.name || 'John Doe');
+  const [email, setEmail] = useState(user.email || 'john@example.com');
+  const [avatar, setAvatar] = useState(user.picture || 'https://via.placeholder.com/150');
   const [msg, setMsg] = useState('');
 
   const handleUpdate = async () => {
@@ -29,7 +29,7 @@ const Profile: NextPage = () => {
   };
 
   if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error?.message}</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div className="max-w-md mx-auto mt-8 p-4">

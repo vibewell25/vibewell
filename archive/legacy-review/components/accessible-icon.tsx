@@ -1,13 +1,13 @@
 import React from 'react';
 
 interface AccessibleIconProps {
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
   label: string;
   labelPosition?: 'before' | 'after' | 'hidden';
-  onClick?: (event: React?.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
-export const AccessibleIcon: React?.FC<AccessibleIconProps> = ({
+export const AccessibleIcon: React.FC<AccessibleIconProps> = ({
   icon,
   label,
   labelPosition = 'hidden',

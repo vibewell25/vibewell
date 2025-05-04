@@ -44,7 +44,7 @@ import {
 import { AvatarEditorDialog } from './avatar-editor';
 import { toast } from '@/components/ui/use-toast';
 
-const profileFormSchema = z?.object({
+const profileFormSchema = z.object({
   username: z
     .string()
     .min(3, 'Username must be at least 3 characters')
@@ -80,52 +80,52 @@ const profileFormSchema = z?.object({
     .max(100, 'Location must be less than 100 characters')
     .nullish()
     .transform((val) => val || ''),
-  visibility: z?.enum(['public', 'private', 'contacts']),
-  emailVerified: z?.boolean().default(false),
+  visibility: z.enum(['public', 'private', 'contacts']),
+  emailVerified: z.boolean().default(false),
   privacy: z
     .object({
-      showEmail: z?.boolean().default(false),
-      showPhone: z?.boolean().default(true),
-      allowTagging: z?.boolean().default(true),
-      receiveNotifications: z?.boolean().default(true),
+      showEmail: z.boolean().default(false),
+      showPhone: z.boolean().default(true),
+      allowTagging: z.boolean().default(true),
+      receiveNotifications: z.boolean().default(true),
     })
     .default({}),
   notifications: z
     .object({
-      email: z?.boolean().default(true),
-      sms: z?.boolean().default(false),
-      push: z?.boolean().default(true),
-      marketing: z?.boolean().default(false),
+      email: z.boolean().default(true),
+      sms: z.boolean().default(false),
+      push: z.boolean().default(true),
+      marketing: z.boolean().default(false),
     })
     .default({}),
   accountSettings: z
     .object({
-      twoFactorAuth: z?.boolean().default(false),
-      loginNotifications: z?.boolean().default(true),
-      autoLogout: z?.boolean().default(false),
-      dataDownload: z?.boolean().default(false),
+      twoFactorAuth: z.boolean().default(false),
+      loginNotifications: z.boolean().default(true),
+      autoLogout: z.boolean().default(false),
+      dataDownload: z.boolean().default(false),
     })
     .default({}),
 });
 
-type ProfileFormValues = z?.infer<typeof profileFormSchema>;
+type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 // Notification preferences schema
-const notificationSchema = z?.object({
-  email_marketing: z?.boolean().default(false),
-  email_updates: z?.boolean().default(true),
-  email_comments: z?.boolean().default(true),
-  email_security: z?.boolean().default(true),
-  push_new_features: z?.boolean().default(true),
-  push_mentions: z?.boolean().default(true),
-  push_comments: z?.boolean().default(true),
-  push_bookings: z?.boolean().default(true),
-  sms_security: z?.boolean().default(true),
-  sms_updates: z?.boolean().default(false),
-  sms_bookings: z?.boolean().default(true),
+const notificationSchema = z.object({
+  email_marketing: z.boolean().default(false),
+  email_updates: z.boolean().default(true),
+  email_comments: z.boolean().default(true),
+  email_security: z.boolean().default(true),
+  push_new_features: z.boolean().default(true),
+  push_mentions: z.boolean().default(true),
+  push_comments: z.boolean().default(true),
+  push_bookings: z.boolean().default(true),
+  sms_security: z.boolean().default(true),
+  sms_updates: z.boolean().default(false),
+  sms_bookings: z.boolean().default(true),
 });
 
-type NotificationPreferences = z?.infer<typeof notificationSchema>;
+type NotificationPreferences = z.infer<typeof notificationSchema>;
 
 type PrivacyField = keyof ProfileFormValues['privacy'];
 type NotificationField = keyof ProfileFormValues['notifications'];
@@ -185,22 +185,22 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      username: initialData?.username ?? '',
-      fullName: initialData?.fullName ?? '',
-      email: initialData?.email ?? '',
-      bio: initialData?.bio ?? '',
-      website: initialData?.website ?? '',
-      location: initialData?.location ?? '',
-      visibility: initialData?.visibility ?? 'public',
-      emailVerified: initialData?.emailVerified ?? false,
+      username: initialData.username ?? '',
+      fullName: initialData.fullName ?? '',
+      email: initialData.email ?? '',
+      bio: initialData.bio ?? '',
+      website: initialData.website ?? '',
+      location: initialData.location ?? '',
+      visibility: initialData.visibility ?? 'public',
+      emailVerified: initialData.emailVerified ?? false,
       privacy: {
-        ...(initialData?.privacy ?? {}),
+        ...(initialData.privacy ?? {}),
       },
       notifications: {
-        ...(initialData?.notifications ?? {}),
+        ...(initialData.notifications ?? {}),
       },
       accountSettings: {
-        ...(initialData?.accountSettings ?? {}),
+        ...(initialData.accountSettings ?? {}),
       },
     },
   });
@@ -208,8 +208,8 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
   // Fetch profile data
   useEffect(() => {
     async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); fetchProfile() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); fetchProfile() {
       if (!userId) return;
 
       try {
@@ -226,41 +226,41 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
         if (data) {
           // Update form values
-          form?.reset({
-            username: data?.username || '',
-            fullName: data?.full_name || '',
-            email: data?.email || '',
-            bio: data?.bio || '',
-            website: data?.website || '',
-            location: data?.location || '',
-            visibility: data?.visibility || 'public',
-            emailVerified: data?.email_verified || false,
+          form.reset({
+            username: data.username || '',
+            fullName: data.full_name || '',
+            email: data.email || '',
+            bio: data.bio || '',
+            website: data.website || '',
+            location: data.location || '',
+            visibility: data.visibility || 'public',
+            emailVerified: data.email_verified || false,
             privacy: {
-              ...data?.privacy,
+              ...data.privacy,
             },
             notifications: {
-              ...data?.notification_preferences,
+              ...data.notification_preferences,
             },
             accountSettings: {
-              ...data?.account_settings,
+              ...data.account_settings,
             },
           });
 
           // Set avatar URL
-          if (data?.avatar_url) {
-            setAvatarUrl(data?.avatar_url);
+          if (data.avatar_url) {
+            setAvatarUrl(data.avatar_url);
           }
 
           // Set notification preferences
-          if (data?.notification_preferences) {
+          if (data.notification_preferences) {
             setNotifications({
               ...notifications,
-              ...data?.notification_preferences,
+              ...data.notification_preferences,
             });
           }
         }
       } catch (err) {
-        console?.error('Error fetching profile:', err);
+        console.error('Error fetching profile:', err);
         setError('Failed to load profile data');
       } finally {
         setLoading(false);
@@ -271,9 +271,9 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
   }, [userId, form, supabase]);
 
   const handleFileSelect = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.ChangeEvent<HTMLInputElement>) => {
-    const file = e?.target.files?.[0];
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files.[0];
     if (file) {
       setSelectedImage(file);
       setShowAvatarEditor(true);
@@ -281,8 +281,8 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
   };
 
   const handleAvatarSave = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');croppedImage: Blob) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');croppedImage: Blob) => {
     try {
       setLoading(true);
       setError(null);
@@ -292,11 +292,11 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
       }
 
       // Upload the cropped image to Supabase storage
-      const fileExt = selectedImage?.name?.split('.').pop();
-      const fileName = `${userId}-${Date?.now()}.${fileExt}`;
+      const fileExt = selectedImage.name.split('.').pop();
+      const fileName = `${userId}-${Date.now()}.${fileExt}`;
       const filePath = `avatars/${fileName}`;
 
-      const { error: uploadError } = await supabase?.storage
+      const { error: uploadError } = await supabase.storage
         .from('avatars')
         .upload(filePath, croppedImage, {
           contentType: 'image/jpeg',
@@ -308,7 +308,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
       // Get the public URL
       const {
         data: { publicUrl },
-      } = supabase?.storage.from('avatars').getPublicUrl(filePath);
+      } = supabase.storage.from('avatars').getPublicUrl(filePath);
 
       // Update the profile with the new avatar URL
       const { error: updateError } = await supabase
@@ -327,7 +327,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
         description: 'Profile picture updated successfully',
       });
     } catch (err) {
-      console?.error('Error saving avatar:', err);
+      console.error('Error saving avatar:', err);
       toast({
         title: 'Error',
         description: 'Failed to update profile picture',
@@ -339,20 +339,20 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
   };
 
   const handleEmailVerification = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setIsVerifyingEmail(true);
       setError(null);
 
       const {
         data: { user },
-      } = await supabase?.auth.getUser();
-      if (!user?.email) throw new Error('No user email found');
+      } = await supabase.auth.getUser();
+      if (!user.email) throw new Error('No user email found');
 
-      const { error } = await supabase?.auth.resend({
+      const { error } = await supabase.auth.resend({
         type: 'signup',
-        email: user?.email,
+        email: user.email,
       });
 
       if (error) throw error;
@@ -362,7 +362,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
         description: 'Please check your inbox for the verification link',
       });
     } catch (err) {
-      console?.error('Error sending verification email:', err);
+      console.error('Error sending verification email:', err);
       toast({
         title: 'Error',
         description: 'Failed to send verification email',
@@ -385,17 +385,17 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
       const updateData = {
         id: userId,
-        username: values?.username,
-        full_name: values?.fullName,
-        email: values?.email,
-        bio: values?.bio || '',
-        website: values?.website || '',
-        location: values?.location || '',
-        visibility: values?.visibility,
+        username: values.username,
+        full_name: values.fullName,
+        email: values.email,
+        bio: values.bio || '',
+        website: values.website || '',
+        location: values.location || '',
+        visibility: values.visibility,
         avatar_url: avatarUrl,
-        notification_preferences: values?.notifications,
-        privacy: values?.privacy,
-        account_settings: values?.accountSettings,
+        notification_preferences: values.notifications,
+        privacy: values.privacy,
+        account_settings: values.accountSettings,
         updated_at: new Date().toISOString(),
       };
 
@@ -412,7 +412,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
         onSuccess();
       }
     } catch (err) {
-      console?.error('Error updating profile:', err);
+      console.error('Error updating profile:', err);
       setError('Failed to update profile');
     } finally {
       setLoading(false);
@@ -421,24 +421,24 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
   // Add this function to handle password updates
   const handlePasswordUpdate = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
       setPasswordError(null);
 
       // Validate passwords
-      if (passwordValues?.newPassword.length < 8) {
+      if (passwordValues.newPassword.length < 8) {
         throw new Error('New password must be at least 8 characters');
       }
 
-      if (passwordValues?.newPassword !== passwordValues?.confirmPassword) {
+      if (passwordValues.newPassword !== passwordValues.confirmPassword) {
         throw new Error('New passwords do not match');
       }
 
       // Update password via Supabase Auth
-      const { error } = await supabase?.auth.updateUser({
-        password: passwordValues?.newPassword,
+      const { error } = await supabase.auth.updateUser({
+        password: passwordValues.newPassword,
       });
 
       if (error) throw error;
@@ -453,8 +453,8 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
       setPasswordSuccess('Password updated successfully');
       setTimeout(() => setPasswordSuccess(null), 3000);
     } catch (err) {
-      console?.error('Error updating password:', err);
-      setPasswordError(err instanceof Error ? err?.message : 'Failed to update password');
+      console.error('Error updating password:', err);
+      setPasswordError(err instanceof Error ? err.message : 'Failed to update password');
     } finally {
       setLoading(false);
     }
@@ -462,8 +462,8 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
   // Add this function to handle data export
   const handleDataExport = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
       setError(null);
@@ -493,7 +493,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
       const { data: messagesData, error: messagesError } = await supabase
         .from('messages')
         .select('*')
-        .or(`sender_id?.eq.${userId},receiver_id?.eq.${userId}`);
+        .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`);
 
       if (messagesError) throw messagesError;
 
@@ -515,28 +515,28 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
       };
 
       // Convert to JSON
-      const dataStr = JSON?.stringify(exportData, null, 2);
+      const dataStr = JSON.stringify(exportData, null, 2);
 
       // Create a download link
       const dataBlob = new Blob([dataStr], { type: 'application/json' });
-      const url = URL?.createObjectURL(dataBlob);
-      const link = document?.createElement('a');
-      link?.href = url;
-      link?.download = `vibewell_data_export_${new Date().toISOString().slice(0, 10)}.json`;
-      document?.body.appendChild(link);
-      link?.click();
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `vibewell_data_export_${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(link);
+      link.click();
 
       // Clean up
       setTimeout(() => {
-        URL?.revokeObjectURL(url);
-        document?.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        document.body.removeChild(link);
       }, 100);
 
       setSuccess('Your data has been exported successfully');
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
-      console?.error('Error exporting data:', err);
-      setError('Failed to export data: ' + (err instanceof Error ? err?.message : 'Unknown error'));
+      console.error('Error exporting data:', err);
+      setError('Failed to export data: ' + (err instanceof Error ? err.message : 'Unknown error'));
     } finally {
       setLoading(false);
     }
@@ -544,8 +544,8 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
   // Add this function to handle account deletion
   const handleAccountDeletion = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
       setError(null);
@@ -555,24 +555,24 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
       }
 
       // Delete user data from profiles table
-      const { error: profileError } = await supabase?.from('profiles').delete().eq('id', userId);
+      const { error: profileError } = await supabase.from('profiles').delete().eq('id', userId);
 
       if (profileError) throw profileError;
 
       // Delete user from auth
-      const { error: authError } = await supabase?.auth.admin?.deleteUser(userId);
+      const { error: authError } = await supabase.auth.admin.deleteUser(userId);
 
       if (authError) throw authError;
 
       // Sign out the user
-      await supabase?.auth.signOut();
+      await supabase.auth.signOut();
 
       // Redirect to home page
-      router?.push('/');
+      router.push('/');
     } catch (err) {
-      console?.error('Error deleting account:', err);
+      console.error('Error deleting account:', err);
       setError(
-        'Failed to delete account: ' + (err instanceof Error ? err?.message : 'Unknown error'),
+        'Failed to delete account: ' + (err instanceof Error ? err.message : 'Unknown error'),
       );
       setLoading(false);
       setShowDeleteConfirmation(false);
@@ -581,14 +581,14 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
   // Add this function to handle logout from all devices
   const handleLogoutAllDevices = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
       setError(null);
 
       // Sign out from all devices by revoking tokens
-      const { error } = await supabase?.auth.signOut({ scope: 'global' });
+      const { error } = await supabase.auth.signOut({ scope: 'global' });
 
       if (error) throw error;
 
@@ -597,10 +597,10 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
       setSuccess('Successfully logged out from all devices except this one');
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
-      console?.error('Error logging out from all devices:', err);
+      console.error('Error logging out from all devices:', err);
       setError(
         'Failed to log out from all devices: ' +
-          (err instanceof Error ? err?.message : 'Unknown error'),
+          (err instanceof Error ? err.message : 'Unknown error'),
       );
     } finally {
       setLoading(false);
@@ -609,17 +609,17 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
   // Add this function to handle password recovery
   const handlePasswordRecovery = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
       setError(null);
 
-      const email = form?.getValues('email');
+      const email = form.getValues('email');
 
       // Send password recovery email
-      const { error } = await supabase?.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window?.location.origin}/reset-password`,
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
       });
 
       if (error) throw error;
@@ -627,9 +627,9 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
       setSuccess('Password recovery email sent. Please check your inbox.');
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
-      console?.error('Error sending recovery email:', err);
+      console.error('Error sending recovery email:', err);
       setError(
-        'Failed to send recovery email: ' + (err instanceof Error ? err?.message : 'Unknown error'),
+        'Failed to send recovery email: ' + (err instanceof Error ? err.message : 'Unknown error'),
       );
     } finally {
       setLoading(false);
@@ -638,16 +638,16 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
   // Update the form submission handler
   const handleFormSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');
-    e: React?.FormEvent<HTMLFormElement>,
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');
+    e: React.FormEvent<HTMLFormElement>,
     form: UseFormReturn<ProfileFormValues>,
   ) => {
-    e?.preventDefault();
+    e.preventDefault();
     try {
-      await form?.handleSubmit(onSubmit)(e);
+      await form.handleSubmit(onSubmit)(e);
     } catch (err) {
-      console?.error('Error submitting form:', err);
+      console.error('Error submitting form:', err);
       setError('Failed to submit form');
     }
   };
@@ -661,19 +661,19 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
     checked: boolean,
     form: UseFormReturn<ProfileFormValues>,
   ): void => {
-    const formValues = form?.getValues();
+    const formValues = form.getValues();
 
-    if (field in formValues?.privacy) {
-      form?.setValue(`privacy.${field}`, checked, { shouldDirty: true });
-    } else if (field in formValues?.notifications) {
-      form?.setValue(`notifications.${field}`, checked, { shouldDirty: true });
-    } else if (field in formValues?.accountSettings) {
-      form?.setValue(`accountSettings.${field}`, checked, { shouldDirty: true });
+    if (field in formValues.privacy) {
+      form.setValue(`privacy.${field}`, checked, { shouldDirty: true });
+    } else if (field in formValues.notifications) {
+      form.setValue(`notifications.${field}`, checked, { shouldDirty: true });
+    } else if (field in formValues.accountSettings) {
+      form.setValue(`accountSettings.${field}`, checked, { shouldDirty: true });
     }
   };
 
   const handleVisibilityChange = (value: 'public' | 'private' | 'contacts') => {
-    form?.setValue('visibility', value, { shouldDirty: true });
+    form.setValue('visibility', value, { shouldDirty: true });
   };
 
   return (
@@ -693,7 +693,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   <AvatarImage src={avatarUrl} alt="Profile picture" />
                 ) : (
                   <AvatarFallback className="bg-primary/10">
-                    {form?.watch('fullName')?.charAt(0) || form?.watch('username')?.charAt(0) || 'U'}
+                    {form.watch('fullName').charAt(0) || form.watch('username').charAt(0) || 'U'}
                   </AvatarFallback>
                 )}
               </Avatar>
@@ -703,7 +703,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 size="icon"
                 className="absolute bottom-0 right-0 rounded-full border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground"
                 type="button"
-                onClick={() => document?.getElementById('avatar-upload')?.click()}
+                onClick={() => document.getElementById('avatar-upload').click()}
                 aria-label="Upload avatar"
                 data-cy="avatar-upload-button"
               >
@@ -735,12 +735,12 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 <Label htmlFor="username">Username</Label>
                 <Input
                   id="username"
-                  {...form?.register('username')}
+                  {...form.register('username')}
                   placeholder="johndoe"
                   data-cy="username-input"
                 />
-                {form?.formState.errors?.username && (
-                  <p className="text-sm text-red-500">{form?.formState.errors?.username.message}</p>
+                {form.formState.errors.username && (
+                  <p className="text-sm text-red-500">{form.formState.errors.username.message}</p>
                 )}
               </div>
 
@@ -748,12 +748,12 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 <Label htmlFor="fullName">Full Name</Label>
                 <Input
                   id="fullName"
-                  {...form?.register('fullName')}
+                  {...form.register('fullName')}
                   placeholder="John Doe"
                   data-cy="fullname-input"
                 />
-                {form?.formState.errors?.fullName && (
-                  <p className="text-sm text-red-500">{form?.formState.errors?.fullName.message}</p>
+                {form.formState.errors.fullName && (
+                  <p className="text-sm text-red-500">{form.formState.errors.fullName.message}</p>
                 )}
               </div>
             </div>
@@ -763,7 +763,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 <Label htmlFor="email" className="text-base font-medium">
                   Email Address
                 </Label>
-                {!form?.watch('emailVerified') && (
+                {!form.watch('emailVerified') && (
                   <Button
                     variant="outline"
                     size="sm"
@@ -794,23 +794,23 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
               <div className="relative">
                 <Input
                   id="email"
-                  {...form?.register('email')}
-                  placeholder="your?.email@example?.com"
+                  {...form.register('email')}
+                  placeholder="your.email@example.com"
                   data-cy="email-input"
-                  className={`pr-10 ${form?.watch('emailVerified') ? 'border-green-500 focus-visible:ring-green-300' : ''}`}
+                  className={`pr-10 ${form.watch('emailVerified') ? 'border-green-500 focus-visible:ring-green-300' : ''}`}
                 />
-                {form?.watch('emailVerified') && (
+                {form.watch('emailVerified') && (
                   <div className="absolute right-3 top-1/2 -translate-y-1/2 transform">
                     <Check className="h-5 w-5 text-green-500" />
                   </div>
                 )}
               </div>
 
-              {form?.formState.errors?.email && (
-                <p className="text-sm text-red-500">{form?.formState.errors?.email.message}</p>
+              {form.formState.errors.email && (
+                <p className="text-sm text-red-500">{form.formState.errors.email.message}</p>
               )}
 
-              {form?.watch('emailVerified') ? (
+              {form.watch('emailVerified') ? (
                 <div className="flex items-center rounded border border-green-100 bg-green-50 p-2 text-sm text-green-600">
                   <Check className="mr-2 h-4 w-4 flex-shrink-0" />
                   <span>
@@ -820,7 +820,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 </div>
               ) : (
                 <div className="flex items-start rounded border border-amber-100 bg-amber-50 p-2 text-sm text-amber-600">
-                  <AlertTriangle className="mr-2 mt-0?.5 h-4 w-4 flex-shrink-0" />
+                  <AlertTriangle className="mr-2 mt-0.5 h-4 w-4 flex-shrink-0" />
                   <div>
                     <p className="font-medium">Email not verified</p>
                     <p className="mt-1 text-amber-700">
@@ -843,16 +843,16 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
               <Label htmlFor="bio">Bio</Label>
               <Textarea
                 id="bio"
-                {...form?.register('bio')}
+                {...form.register('bio')}
                 placeholder="Tell us about yourself"
                 rows={3}
                 data-cy="bio-input"
               />
-              {form?.formState.errors?.bio && (
-                <p className="text-sm text-red-500">{form?.formState.errors?.bio.message}</p>
+              {form.formState.errors.bio && (
+                <p className="text-sm text-red-500">{form.formState.errors.bio.message}</p>
               )}
               <p className="text-sm text-muted-foreground">
-                {form?.watch('bio')?.length || 0}/300 characters
+                {form.watch('bio').length || 0}/300 characters
               </p>
             </div>
 
@@ -861,12 +861,12 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 <Label htmlFor="website">Website</Label>
                 <Input
                   id="website"
-                  {...form?.register('website')}
-                  placeholder="https://yourwebsite?.com"
+                  {...form.register('website')}
+                  placeholder="https://yourwebsite.com"
                   data-cy="website-input"
                 />
-                {form?.formState.errors?.website && (
-                  <p className="text-sm text-red-500">{form?.formState.errors?.website.message}</p>
+                {form.formState.errors.website && (
+                  <p className="text-sm text-red-500">{form.formState.errors.website.message}</p>
                 )}
               </div>
 
@@ -874,12 +874,12 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 <Label htmlFor="location">Location</Label>
                 <Input
                   id="location"
-                  {...form?.register('location')}
+                  {...form.register('location')}
                   placeholder="City, Country"
                   data-cy="location-input"
                 />
-                {form?.formState.errors?.location && (
-                  <p className="text-sm text-red-500">{form?.formState.errors?.location.message}</p>
+                {form.formState.errors.location && (
+                  <p className="text-sm text-red-500">{form.formState.errors.location.message}</p>
                 )}
               </div>
             </div>
@@ -913,7 +913,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     id="visibility-public"
                     name="visibility"
                     value="public"
-                    checked={form?.watch('visibility') === 'public'}
+                    checked={form.watch('visibility') === 'public'}
                     onChange={(e) => handleVisibilityChange('public')}
                     className="text-primary h-4 w-4 rounded-full"
                   />
@@ -931,7 +931,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     id="visibility-contacts"
                     name="visibility"
                     value="contacts"
-                    checked={form?.watch('visibility') === 'contacts'}
+                    checked={form.watch('visibility') === 'contacts'}
                     onChange={(e) => handleVisibilityChange('contacts')}
                     className="text-primary h-4 w-4 rounded-full"
                   />
@@ -949,7 +949,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     id="visibility-private"
                     name="visibility"
                     value="private"
-                    checked={form?.watch('visibility') === 'private'}
+                    checked={form.watch('visibility') === 'private'}
                     onChange={(e) => handleVisibilityChange('private')}
                     className="text-primary h-4 w-4 rounded-full"
                   />
@@ -971,56 +971,56 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Email Address</Label>
                     <p className="text-sm text-muted-foreground">
                       Show your email address on your public profile
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('privacy?.showEmail')}
+                    checked={form.watch('privacy.showEmail')}
                     onCheckedChange={(checked) => handleSwitchChange('showEmail', checked, form)}
                     aria-label="Show email"
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Phone Number</Label>
                     <p className="text-sm text-muted-foreground">
                       Allow others to see your phone number
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('privacy?.showPhone')}
+                    checked={form.watch('privacy.showPhone')}
                     onCheckedChange={(checked) => handleSwitchChange('showPhone', checked, form)}
                     aria-label="Show phone number"
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Profile Tagging</Label>
                     <p className="text-sm text-muted-foreground">
                       Allow others to tag you in posts and comments
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('privacy?.allowTagging')}
+                    checked={form.watch('privacy.allowTagging')}
                     onCheckedChange={(checked) => handleSwitchChange('allowTagging', checked, form)}
                     aria-label="Allow tagging"
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Activity Status</Label>
                     <p className="text-sm text-muted-foreground">
                       Show when you're active on the platform
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('privacy?.receiveNotifications')}
+                    checked={form.watch('privacy.receiveNotifications')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('receiveNotifications', checked, form)
                     }
@@ -1040,56 +1040,56 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Email Notifications</Label>
                     <p className="text-sm text-muted-foreground">
                       Receive updates and notifications via email
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.email')}
+                    checked={form.watch('notifications.email')}
                     onCheckedChange={(checked) => handleSwitchChange('email', checked, form)}
                     aria-label="Email notifications"
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">SMS Notifications</Label>
                     <p className="text-sm text-muted-foreground">
                       Receive text messages for important updates
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.sms')}
+                    checked={form.watch('notifications.sms')}
                     onCheckedChange={(checked) => handleSwitchChange('sms', checked, form)}
                     aria-label="SMS notifications"
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Push Notifications</Label>
                     <p className="text-sm text-muted-foreground">
                       Receive push notifications on your devices
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.push')}
+                    checked={form.watch('notifications.push')}
                     onCheckedChange={(checked) => handleSwitchChange('push', checked, form)}
                     aria-label="Push notifications"
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Marketing Communications</Label>
                     <p className="text-sm text-muted-foreground">
                       Receive promotional emails and offers
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.marketing')}
+                    checked={form.watch('notifications.marketing')}
                     onCheckedChange={(checked) => handleSwitchChange('marketing', checked, form)}
                     aria-label="Marketing communications"
                   />
@@ -1107,7 +1107,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <label className="text-sm font-medium">Two-Factor Authentication</label>
                     <p className="text-sm text-muted-foreground">
                       Add an extra layer of security to your account with two-factor authentication.
@@ -1115,13 +1115,13 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <div className="flex items-center space-x-2">
                     <Switch
-                      checked={form?.watch('accountSettings?.twoFactorAuth')}
+                      checked={form.watch('accountSettings.twoFactorAuth')}
                       onCheckedChange={(checked) =>
                         handleSwitchChange('twoFactorAuth', checked, form)
                       }
                       id="two-factor-auth"
                     />
-                    {form?.watch('accountSettings?.twoFactorAuth') && (
+                    {form.watch('accountSettings.twoFactorAuth') && (
                       <Button
                         variant="outline"
                         size="sm"
@@ -1136,14 +1136,14 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <label className="text-sm font-medium">Login Notifications</label>
                     <p className="text-sm text-muted-foreground">
                       Receive an email notification when a new device logs into your account.
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('accountSettings?.loginNotifications')}
+                    checked={form.watch('accountSettings.loginNotifications')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('loginNotifications', checked, form)
                     }
@@ -1152,21 +1152,21 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <label className="text-sm font-medium">Auto Logout</label>
                     <p className="text-sm text-muted-foreground">
                       Automatically log out after 24 hours of inactivity for improved security.
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('accountSettings?.autoLogout')}
+                    checked={form.watch('accountSettings.autoLogout')}
                     onCheckedChange={(checked) => handleSwitchChange('autoLogout', checked, form)}
                     id="auto-logout"
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <label className="text-sm font-medium">Data Download</label>
                     <p className="text-sm text-muted-foreground">
                       Allow one-click download of all your personal data from Vibewell.
@@ -1174,13 +1174,13 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   </div>
                   <div className="flex items-center space-x-2">
                     <Switch
-                      checked={form?.watch('accountSettings?.dataDownload')}
+                      checked={form.watch('accountSettings.dataDownload')}
                       onCheckedChange={(checked) =>
                         handleSwitchChange('dataDownload', checked, form)
                       }
                       id="data-download"
                     />
-                    {form?.watch('accountSettings?.dataDownload') && (
+                    {form.watch('accountSettings.dataDownload') && (
                       <Button
                         variant="outline"
                         size="sm"
@@ -1198,7 +1198,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
             <div className="flex justify-end">
               <Button
                 type="submit"
-                disabled={loading || !form?.formState.isDirty}
+                disabled={loading || !form.formState.isDirty}
                 data-cy="save-profile-button"
               >
                 {loading ? 'Saving...' : 'Save Changes'}
@@ -1224,7 +1224,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     id="visibility-public"
                     name="visibility"
                     value="public"
-                    checked={form?.watch('visibility') === 'public'}
+                    checked={form.watch('visibility') === 'public'}
                     onChange={(e) => handleVisibilityChange('public')}
                     className="text-primary h-4 w-4 rounded-full"
                   />
@@ -1242,7 +1242,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     id="visibility-contacts"
                     name="visibility"
                     value="contacts"
-                    checked={form?.watch('visibility') === 'contacts'}
+                    checked={form.watch('visibility') === 'contacts'}
                     onChange={(e) => handleVisibilityChange('contacts')}
                     className="text-primary h-4 w-4 rounded-full"
                   />
@@ -1260,7 +1260,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     id="visibility-private"
                     name="visibility"
                     value="private"
-                    checked={form?.watch('visibility') === 'private'}
+                    checked={form.watch('visibility') === 'private'}
                     onChange={(e) => handleVisibilityChange('private')}
                     className="text-primary h-4 w-4 rounded-full"
                   />
@@ -1286,56 +1286,56 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 gap-4">
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Email Address</Label>
                     <p className="text-sm text-muted-foreground">
                       Show your email address on your public profile
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('privacy?.showEmail')}
+                    checked={form.watch('privacy.showEmail')}
                     onCheckedChange={(checked) => handleSwitchChange('showEmail', checked, form)}
                     aria-label="Show email"
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Phone Number</Label>
                     <p className="text-sm text-muted-foreground">
                       Allow others to see your phone number
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('privacy?.showPhone')}
+                    checked={form.watch('privacy.showPhone')}
                     onCheckedChange={(checked) => handleSwitchChange('showPhone', checked, form)}
                     aria-label="Show phone number"
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Profile Tagging</Label>
                     <p className="text-sm text-muted-foreground">
                       Allow others to tag you in posts and comments
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('privacy?.allowTagging')}
+                    checked={form.watch('privacy.allowTagging')}
                     onCheckedChange={(checked) => handleSwitchChange('allowTagging', checked, form)}
                     aria-label="Allow tagging"
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Activity Status</Label>
                     <p className="text-sm text-muted-foreground">
                       Show when you're active on the platform
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('privacy?.receiveNotifications')}
+                    checked={form.watch('privacy.receiveNotifications')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('receiveNotifications', checked, form)
                     }
@@ -1357,56 +1357,56 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
             <CardContent>
               <div className="grid grid-cols-1 gap-4">
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Email Notifications</Label>
                     <p className="text-sm text-muted-foreground">
                       Receive updates and notifications via email
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.email')}
+                    checked={form.watch('notifications.email')}
                     onCheckedChange={(checked) => handleSwitchChange('email', checked, form)}
                     aria-label="Email notifications"
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">SMS Notifications</Label>
                     <p className="text-sm text-muted-foreground">
                       Receive text messages for important updates
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.sms')}
+                    checked={form.watch('notifications.sms')}
                     onCheckedChange={(checked) => handleSwitchChange('sms', checked, form)}
                     aria-label="SMS notifications"
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Push Notifications</Label>
                     <p className="text-sm text-muted-foreground">
                       Receive push notifications on your devices
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.push')}
+                    checked={form.watch('notifications.push')}
                     onCheckedChange={(checked) => handleSwitchChange('push', checked, form)}
                     aria-label="Push notifications"
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Marketing Communications</Label>
                     <p className="text-sm text-muted-foreground">
                       Receive promotional emails and offers
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.marketing')}
+                    checked={form.watch('notifications.marketing')}
                     onCheckedChange={(checked) => handleSwitchChange('marketing', checked, form)}
                     aria-label="Marketing communications"
                   />
@@ -1418,8 +1418,8 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
           <div className="flex justify-end">
             <Button
               type="submit"
-              onClick={form?.handleSubmit(onSubmit)}
-              disabled={loading || !form?.formState.isDirty}
+              onClick={form.handleSubmit(onSubmit)}
+              disabled={loading || !form.formState.isDirty}
               data-cy="save-privacy-button"
             >
               {loading ? (
@@ -1446,14 +1446,14 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 gap-4">
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Marketing</Label>
                     <p className="text-sm text-muted-foreground">
                       Promotional emails about new features and offers
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.email_marketing')}
+                    checked={form.watch('notifications.email_marketing')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('email_marketing', checked, form)
                     }
@@ -1462,14 +1462,14 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Account Updates</Label>
                     <p className="text-sm text-muted-foreground">
                       Important updates about your account
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.email_updates')}
+                    checked={form.watch('notifications.email_updates')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('email_updates', checked, form)
                     }
@@ -1478,14 +1478,14 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Comments</Label>
                     <p className="text-sm text-muted-foreground">
                       Replies to your comments and reviews
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.email_comments')}
+                    checked={form.watch('notifications.email_comments')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('email_comments', checked, form)
                     }
@@ -1494,14 +1494,14 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Security Alerts</Label>
                     <p className="text-sm text-muted-foreground">
                       Security updates, suspicious activity, and password changes
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.email_security')}
+                    checked={form.watch('notifications.email_security')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('email_security', checked, form)
                     }
@@ -1523,14 +1523,14 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 gap-4">
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">New Features</Label>
                     <p className="text-sm text-muted-foreground">
                       Announcements about new platform features
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.push_new_features')}
+                    checked={form.watch('notifications.push_new_features')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('push_new_features', checked, form)
                     }
@@ -1539,14 +1539,14 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Mentions</Label>
                     <p className="text-sm text-muted-foreground">
                       When someone mentions you in a comment
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.push_mentions')}
+                    checked={form.watch('notifications.push_mentions')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('push_mentions', checked, form)
                     }
@@ -1555,14 +1555,14 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Comments</Label>
                     <p className="text-sm text-muted-foreground">
                       Replies to your comments and reviews
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.push_comments')}
+                    checked={form.watch('notifications.push_comments')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('push_comments', checked, form)
                     }
@@ -1571,14 +1571,14 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Booking Updates</Label>
                     <p className="text-sm text-muted-foreground">
                       Updates about your appointments and services
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.push_bookings')}
+                    checked={form.watch('notifications.push_bookings')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('push_bookings', checked, form)
                     }
@@ -1600,42 +1600,42 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 gap-4">
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Security Alerts</Label>
                     <p className="text-sm text-muted-foreground">
                       Critical security alerts and verification codes
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.sms_security')}
+                    checked={form.watch('notifications.sms_security')}
                     onCheckedChange={(checked) => handleSwitchChange('sms_security', checked, form)}
                     aria-label="SMS security alerts"
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Account Updates</Label>
                     <p className="text-sm text-muted-foreground">
                       Important updates about your account
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.sms_updates')}
+                    checked={form.watch('notifications.sms_updates')}
                     onCheckedChange={(checked) => handleSwitchChange('sms_updates', checked, form)}
                     aria-label="SMS updates"
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0?.5">
+                  <div className="space-y-0.5">
                     <Label className="text-base">Booking Reminders</Label>
                     <p className="text-sm text-muted-foreground">
                       Appointment confirmations and reminders
                     </p>
                   </div>
                   <Switch
-                    checked={form?.watch('notifications?.sms_bookings')}
+                    checked={form.watch('notifications.sms_bookings')}
                     onCheckedChange={(checked) => handleSwitchChange('sms_bookings', checked, form)}
                     aria-label="SMS booking reminders"
                   />
@@ -1647,7 +1647,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
           <div className="flex justify-end">
             <Button
               type="submit"
-              onClick={form?.handleSubmit(onSubmit)}
+              onClick={form.handleSubmit(onSubmit)}
               disabled={loading}
               data-cy="save-notifications-button"
             >
@@ -1677,9 +1677,9 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     <Input
                       id="current-password"
                       type={showCurrentPassword ? 'text' : 'password'}
-                      value={passwordValues?.currentPassword}
+                      value={passwordValues.currentPassword}
                       onChange={(e) =>
-                        setPasswordValues({ ...passwordValues, currentPassword: e?.target.value })
+                        setPasswordValues({ ...passwordValues, currentPassword: e.target.value })
                       }
                       placeholder="Enter your current password"
                       data-cy="current-password-input"
@@ -1709,9 +1709,9 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     <Input
                       id="new-password"
                       type={showNewPassword ? 'text' : 'password'}
-                      value={passwordValues?.newPassword}
+                      value={passwordValues.newPassword}
                       onChange={(e) =>
-                        setPasswordValues({ ...passwordValues, newPassword: e?.target.value })
+                        setPasswordValues({ ...passwordValues, newPassword: e.target.value })
                       }
                       placeholder="Enter your new password"
                       data-cy="new-password-input"
@@ -1744,9 +1744,9 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     <Input
                       id="confirm-password"
                       type={showConfirmPassword ? 'text' : 'password'}
-                      value={passwordValues?.confirmPassword}
+                      value={passwordValues.confirmPassword}
                       onChange={(e) =>
-                        setPasswordValues({ ...passwordValues, confirmPassword: e?.target.value })
+                        setPasswordValues({ ...passwordValues, confirmPassword: e.target.value })
                       }
                       placeholder="Confirm your new password"
                       data-cy="confirm-password-input"
@@ -1790,9 +1790,9 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 onClick={handlePasswordUpdate}
                 disabled={
                   loading ||
-                  !passwordValues?.currentPassword ||
-                  !passwordValues?.newPassword ||
-                  !passwordValues?.confirmPassword
+                  !passwordValues.currentPassword ||
+                  !passwordValues.newPassword ||
+                  !passwordValues.confirmPassword
                 }
                 data-cy="update-password-button"
               >
@@ -1813,7 +1813,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 <div className="flex items-center space-x-4">
                   <div className="rounded-full bg-gray-100 p-2">
                     <svg
-                      xmlns="http://www?.w3.org/2000/svg"
+                      xmlns="http://www.w3.org/2000/svg"
                       width="24"
                       height="24"
                       viewBox="0 0 24 24"
@@ -1841,7 +1841,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 <div className="flex items-center space-x-4">
                   <div className="rounded-full bg-gray-100 p-2">
                     <svg
-                      xmlns="http://www?.w3.org/2000/svg"
+                      xmlns="http://www.w3.org/2000/svg"
                       width="24"
                       height="24"
                       viewBox="0 0 24 24"
@@ -1852,7 +1852,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                       strokeLinejoin="round"
                       className="text-[#1DA1F2]"
                     >
-                      <path d="M22 4s-.7 2?.1-2 3?.4c1.6 10-9?.4 17?.3-18 11?.6 2?.2.1 4?.4-.6 6-2C3 15?.5.5 9?.6 3 5c2?.2 2?.6 5?.6 4?.1 9 4-.9-4?.2 4-6?.6 7-3?.8 1?.1 0 3-1?.2 3-1?.2z"></path>
+                      <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
                     </svg>
                   </div>
                   <div>
@@ -1869,7 +1869,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                 <div className="flex items-center space-x-4">
                   <div className="rounded-full bg-gray-100 p-2">
                     <svg
-                      xmlns="http://www?.w3.org/2000/svg"
+                      xmlns="http://www.w3.org/2000/svg"
                       width="24"
                       height="24"
                       viewBox="0 0 24 24"
@@ -1880,7 +1880,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                       strokeLinejoin="round"
                       className="text-[#DB4437]"
                     >
-                      <path d="M12 22C6?.47715 22 2 17?.5228 2 12C2 6?.47715 6?.47715 2 12 2C14?.1313 2 16?.0799 2?.73029 17?.6133 3?.93957L15.4143 7?.67435C14.5635 6?.93207 13?.3952 6?.5 12?.1217 6?.5C9.2894 6?.5 7 8?.73949 7 11?.5C7 14?.2605 9?.2894 16?.5 12?.1217 16?.5C14.4028 16?.5 16?.1242 15?.0952 16?.5 13?.2987H12V9.74885H21?.5V12C21.5 17?.5228 17?.0228 22 12 22Z" />
+                      <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C14.1313 2 16.0799 2.73029 17.6133 3.93957L15.4143 7.67435C14.5635 6.93207 13.3952 6.5 12.1217 6.5C9.2894 6.5 7 8.73949 7 11.5C7 14.2605 9.2894 16.5 12.1217 16.5C14.4028 16.5 16.1242 15.0952 16.5 13.2987H12V9.74885H21.5V12C21.5 17.5228 17.0228 22 12 22Z" />
                     </svg>
                   </div>
                   <div>
@@ -1993,7 +1993,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
               <div className="space-y-2">
                 <h4 className="text-sm font-medium">Recovery Email</h4>
                 <p className="text-sm text-muted-foreground">
-                  We'll use your primary email for account recovery: {form?.watch('email')}
+                  We'll use your primary email for account recovery: {form.watch('email')}
                 </p>
               </div>
 
@@ -2003,7 +2003,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   <Button
                     variant="outline"
                     onClick={handlePasswordRecovery}
-                    disabled={loading || !form?.watch('email')}
+                    disabled={loading || !form.watch('email')}
                     className="justify-start"
                     data-cy="reset-password-button"
                   >
@@ -2014,9 +2014,9 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   <Button
                     variant="outline"
                     onClick={() =>
-                      form?.setValue('accountSettings?.twoFactorAuth', true, { shouldDirty: true })
+                      form.setValue('accountSettings.twoFactorAuth', true, { shouldDirty: true })
                     }
-                    disabled={form?.watch('accountSettings?.twoFactorAuth')}
+                    disabled={form.watch('accountSettings.twoFactorAuth')}
                     className="justify-start"
                     data-cy="enable-2fa-button"
                   >
@@ -2074,7 +2074,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
               <Input
                 id="confirm-deletion"
                 value={deleteConfirmationText}
-                onChange={(e) => setDeleteConfirmationText(e?.target.value)}
+                onChange={(e) => setDeleteConfirmationText(e.target.value)}
                 placeholder="DELETE MY ACCOUNT"
                 className="border-red-300 focus:border-red-500"
                 data-cy="confirm-deletion-input"

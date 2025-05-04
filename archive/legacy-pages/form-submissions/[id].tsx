@@ -11,7 +11,7 @@ type Submission = { id: string; definitionId: string; data: any; documents: Docu
 
 const SubmissionDetail: NextPage = () => {
   const router = useRouter();
-  const { id } = router?.query as { id: string };
+  const { id } = router.query as { id: string };
   const [sub, setSub] = useState<Submission | null>(null);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const SubmissionDetail: NextPage = () => {
           ))}
         </>
       )}
-      <Button onClick={() => router?.back()}>Back</Button>
+      <Button onClick={() => router.back()}>Back</Button>
     </div>
   );
 };

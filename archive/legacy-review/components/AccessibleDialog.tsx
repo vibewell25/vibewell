@@ -7,11 +7,11 @@ interface AccessibleDialogProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  children: React?.ReactNode;
+  children: React.ReactNode;
   className?: string;
 }
 
-export const AccessibleDialog: React?.FC<AccessibleDialogProps> = ({
+export const AccessibleDialog: React.FC<AccessibleDialogProps> = ({
   isOpen,
   onClose,
   title,
@@ -23,32 +23,32 @@ export const AccessibleDialog: React?.FC<AccessibleDialogProps> = ({
   useEffect(() => {
     if (isOpen) {
       // Focus the dialog when it opens
-      dialogRef?.current?.focus();
+      dialogRef.current.focus();
 
       // Trap focus within the dialog
       const handleTabKey = (e: KeyboardEvent) => {
-        if (e?.key === 'Tab') {
-          const focusableElements = dialogRef?.current?.querySelectorAll(
+        if (e.key === 'Tab') {
+          const focusableElements = dialogRef.current.querySelectorAll(
             'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
           );
 
           if (focusableElements) {
             const firstElement = focusableElements[0] as HTMLElement;
-            const lastElement = focusableElements[focusableElements?.length - 1] as HTMLElement;
+            const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
-            if (e?.shiftKey && document?.activeElement === firstElement) {
-              lastElement?.focus();
-              e?.preventDefault();
-            } else if (!e?.shiftKey && document?.activeElement === lastElement) {
-              firstElement?.focus();
-              e?.preventDefault();
+            if (e.shiftKey && document.activeElement === firstElement) {
+              lastElement.focus();
+              e.preventDefault();
+            } else if (!e.shiftKey && document.activeElement === lastElement) {
+              firstElement.focus();
+              e.preventDefault();
             }
           }
         }
       };
 
-      document?.addEventListener('keydown', handleTabKey);
-      return () => document?.removeEventListener('keydown', handleTabKey);
+      document.addEventListener('keydown', handleTabKey);
+      return () => document.removeEventListener('keydown', handleTabKey);
     }
   }, [isOpen]);
 
@@ -79,7 +79,7 @@ export const AccessibleDialog: React?.FC<AccessibleDialogProps> = ({
         </button>
       </div>
     </div>,
-    document?.body,
+    document.body,
   );
 };
 

@@ -21,8 +21,8 @@ export function WebAuthnButton({
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   const handleClick = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setStatus('loading');
       const options = {
@@ -34,14 +34,14 @@ export function WebAuthnButton({
 
       if (verified) {
         setStatus('success');
-        onSuccess?.();
+        onSuccess.();
       } else {
         throw new WebAuthnError('Verification failed', 'VERIFICATION_FAILED');
       }
     } catch (err) {
       setStatus('error');
       const error = err instanceof Error ? err : new Error('Operation failed');
-      onError?.(error);
+      onError.(error);
     }
   };
 
@@ -65,7 +65,7 @@ export function WebAuthnButton({
             <path
               className="opacity-75"
               fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5?.373 0 0 5?.373 0 12h4zm2 5?.291A7.962 7?.962 0 014 12H0c0 3?.042 1?.135 5?.824 3 7?.938l3-2?.647z"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             />
           </svg>
           <span>Processing...</span>
@@ -75,7 +75,7 @@ export function WebAuthnButton({
           <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path
               fillRule="evenodd"
-              d="M16?.707 5?.293a1 1 0 010 1?.414l-8 8a1 1 0 01-1?.414 0l-4-4a1 1 0 011?.414-1?.414L8 12?.586l7.293-7?.293a1 1 0 011?.414 0z"
+              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
               clipRule="evenodd"
             />
           </svg>
@@ -86,11 +86,11 @@ export function WebAuthnButton({
           <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path
               fillRule="evenodd"
-              d="M4?.293 4?.293a1 1 0 011?.414 0L10 8?.586l4.293-4?.293a1 1 0 111?.414 1?.414L11.414 10l4?.293 4?.293a1 1 0 01-1?.414 1?.414L10 11?.414l-4?.293 4?.293a1 1 0 01-1?.414-1?.414L8.586 10 4?.293 5?.707a1 1 0 010-1?.414z"
+              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
               clipRule="evenodd"
             />
           </svg>
-          <span>Error: {error?.message}</span>
+          <span>Error: {error.message}</span>
         </>
       ) : (
         <span>{mode === 'register' ? 'Register Device' : 'Authenticate'}</span>

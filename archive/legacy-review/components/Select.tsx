@@ -11,7 +11,7 @@ interface SelectOption {
   label: string;
 }
 
-interface SelectProps extends React?.SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   error?: string;
   options: SelectOption[];

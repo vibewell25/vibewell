@@ -23,7 +23,7 @@ interface AccessibleBreadcrumbProps {
   /** Optional CSS class name for custom styling */
   className?: string;
   /** Custom separator between breadcrumb items */
-  separator?: React?.ReactNode;
+  separator?: React.ReactNode;
   /** Callback function when a breadcrumb item is clicked */
   onItemClick?: (item: BreadcrumbItem, index: number) => void;
   /** Custom styles for different states */
@@ -40,29 +40,29 @@ interface AccessibleBreadcrumbProps {
  * Validates the breadcrumb items for security and correctness
  */
 const validateBreadcrumbItems = (items: BreadcrumbItem[]): void => {
-  if (!Array?.isArray(items)) {
+  if (!Array.isArray(items)) {
     throw new Error('Items must be an array');
   }
 
-  if (items?.length === 0) {
+  if (items.length === 0) {
     throw new Error('Items array cannot be empty');
   }
 
-  items?.forEach((item, index) => {
-    if (!item?.label || typeof item?.label !== 'string') {
+  items.forEach((item, index) => {
+    if (!item.label || typeof item.label !== 'string') {
       throw new Error(`Invalid label at index ${index}`);
     }
 
     // Sanitize label to prevent XSS
-    const sanitizedLabel = DOMPurify?.sanitize(item?.label);
-    if (sanitizedLabel !== item?.label) {
+    const sanitizedLabel = DOMPurify.sanitize(item.label);
+    if (sanitizedLabel !== item.label) {
       throw new Error(`Invalid characters in label at index ${index}`);
     }
 
     // Validate href if present
-    if (item?.href) {
+    if (item.href) {
       try {
-        new URL(item?.href);
+        new URL(item.href);
       } catch {
         throw new Error(`Invalid URL at index ${index}`);
       }
@@ -77,16 +77,16 @@ const sanitizeUrl = (url: string): string => {
   try {
     const parsedUrl = new URL(url);
     // Only allow http and https protocols
-    if (!['http:', 'https:'].includes(parsedUrl?.protocol)) {
+    if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
       throw new Error('Invalid protocol');
     }
-    return parsedUrl?.toString();
+    return parsedUrl.toString();
   } catch {
     return '#';
   }
 };
 
-export const AccessibleBreadcrumb: React?.FC<AccessibleBreadcrumbProps> = ({
+export const AccessibleBreadcrumb: React.FC<AccessibleBreadcrumbProps> = ({
   items,
   className = '',
   separator = '/',
@@ -94,11 +94,11 @@ export const AccessibleBreadcrumb: React?.FC<AccessibleBreadcrumbProps> = ({
   styles = {},
 }) => {
   // Validate items on component mount
-  React?.useEffect(() => {
+  React.useEffect(() => {
     try {
       validateBreadcrumbItems(items);
     } catch (error) {
-      console?.error('Breadcrumb validation error:', error);
+      console.error('Breadcrumb validation error:', error);
     }
   }, [items]);
 
@@ -111,45 +111,45 @@ export const AccessibleBreadcrumb: React?.FC<AccessibleBreadcrumbProps> = ({
   };
 
   const mergedStyles = {
-    container: `${defaultStyles?.container} ${styles?.container || ''}`,
-    item: `${defaultStyles?.item} ${styles?.item || ''}`,
-    currentItem: `${defaultStyles?.currentItem} ${styles?.currentItem || ''}`,
-    separator: `${defaultStyles?.separator} ${styles?.separator || ''}`,
-    link: `${defaultStyles?.link} ${styles?.link || ''}`,
+    container: `${defaultStyles.container} ${styles.container || ''}`,
+    item: `${defaultStyles.item} ${styles.item || ''}`,
+    currentItem: `${defaultStyles.currentItem} ${styles.currentItem || ''}`,
+    separator: `${defaultStyles.separator} ${styles.separator || ''}`,
+    link: `${defaultStyles.link} ${styles.link || ''}`,
   };
 
   return (
     <ErrorBoundary fallback={<div>Error loading breadcrumb navigation</div>}>
-      <nav className={`${className} ${mergedStyles?.container}`} aria-label="Breadcrumb">
+      <nav className={`${className} ${mergedStyles.container}`} aria-label="Breadcrumb">
         <ol>
-          {items?.map((item, index) => {
-            const isLastItem = index === items?.length - 1;
-            const isCurrent = item?.isCurrent || isLastItem;
-            const sanitizedHref = item?.href ? sanitizeUrl(item?.href) : undefined;
+          {items.map((item, index) => {
+            const isLastItem = index === items.length - 1;
+            const isCurrent = item.isCurrent || isLastItem;
+            const sanitizedHref = item.href ? sanitizeUrl(item.href) : undefined;
 
             return (
-              <li key={index} className={mergedStyles?.item}>
+              <li key={index} className={mergedStyles.item}>
                 {index > 0 && (
-                  <span className={mergedStyles?.separator} aria-hidden="true">
+                  <span className={mergedStyles.separator} aria-hidden="true">
                     {separator}
                   </span>
                 )}
                 {isCurrent ? (
-                  <span className={mergedStyles?.currentItem} aria-current="page">
-                    {item?.label}
+                  <span className={mergedStyles.currentItem} aria-current="page">
+                    {item.label}
                   </span>
                 ) : (
                   <a
                     href={sanitizedHref}
                     onClick={(e) => {
-                      e?.preventDefault();
-                      onItemClick?.(item, index);
+                      e.preventDefault();
+                      onItemClick.(item, index);
                     }}
-                    className={mergedStyles?.link}
-                    rel={sanitizedHref?.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    target={sanitizedHref?.startsWith('http') ? '_blank' : undefined}
+                    className={mergedStyles.link}
+                    rel={sanitizedHref.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    target={sanitizedHref.startsWith('http') ? '_blank' : undefined}
                   >
-                    {item?.label}
+                    {item.label}
                   </a>
                 )}
               </li>

@@ -10,7 +10,7 @@ type Provider = { id: string; name: string; description: string; businessName: s
 
 const ProviderDetail: NextPage = () => {
   const router = useRouter();
-  const { id } = router?.query;
+  const { id } = router.query;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [businessName, setBusinessName] = useState('');
@@ -21,10 +21,10 @@ const ProviderDetail: NextPage = () => {
     const fetchProvider = async () => {
       const res = await fetchWithTimeout(`/api/providers/${id}`);
       const data = await res.json();
-      const p = data?.provider;
-      setName(p?.name);
-      setDescription(p?.description);
-      setBusinessName(p?.businessName);
+      const p = data.provider;
+      setName(p.name);
+      setDescription(p.description);
+      setBusinessName(p.businessName);
     };
     
     fetchProvider();
@@ -51,7 +51,7 @@ const ProviderDetail: NextPage = () => {
         <Input placeholder="Business Name" value={businessName} onChange={e => setBusinessName(e.target.value)} />
         <div className="space-x-2">
           <Button type="submit">Update</Button>
-          <Button onClick={() => router?.back()}>Cancel</Button>
+          <Button onClick={() => router.back()}>Cancel</Button>
         </div>
       </form>
     </div>

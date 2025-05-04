@@ -3,33 +3,33 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
 // Lazy-loaded components
-const Dashboard = React?.lazy(() => import('../pages/Dashboard'));
-const Profile = React?.lazy(() => import('../pages/Profile'));
-const Settings = React?.lazy(() => import('../pages/Settings'));
-const SecuritySettings = React?.lazy(() => import('../pages/SecuritySettings'));
-const PrivacySettings = React?.lazy(() => import('../pages/PrivacySettings'));
-const NotificationSettings = React?.lazy(() => import('../pages/NotificationSettings'));
-const PaymentMethods = React?.lazy(() => import('../pages/PaymentMethods'));
-const Subscriptions = React?.lazy(() => import('../pages/Subscriptions'));
-const Analytics = React?.lazy(() => import('../pages/Analytics'));
-const Reports = React?.lazy(() => import('../pages/Reports'));
+const Dashboard = React.lazy(() => import('../pages/Dashboard'));
+const Profile = React.lazy(() => import('../pages/Profile'));
+const Settings = React.lazy(() => import('../pages/Settings'));
+const SecuritySettings = React.lazy(() => import('../pages/SecuritySettings'));
+const PrivacySettings = React.lazy(() => import('../pages/PrivacySettings'));
+const NotificationSettings = React.lazy(() => import('../pages/NotificationSettings'));
+const PaymentMethods = React.lazy(() => import('../pages/PaymentMethods'));
+const Subscriptions = React.lazy(() => import('../pages/Subscriptions'));
+const Analytics = React.lazy(() => import('../pages/Analytics'));
+const Reports = React.lazy(() => import('../pages/Reports'));
 
 // Auth components
-const Login = React?.lazy(() => import('../pages/auth/Login'));
-const Register = React?.lazy(() => import('../pages/auth/Register'));
-const ForgotPassword = React?.lazy(() => import('../pages/auth/ForgotPassword'));
-const ResetPassword = React?.lazy(() => import('../pages/auth/ResetPassword'));
-const TwoFactorSetup = React?.lazy(() => import('../pages/auth/TwoFactorSetup'));
+const Login = React.lazy(() => import('../pages/auth/Login'));
+const Register = React.lazy(() => import('../pages/auth/Register'));
+const ForgotPassword = React.lazy(() => import('../pages/auth/ForgotPassword'));
+const ResetPassword = React.lazy(() => import('../pages/auth/ResetPassword'));
+const TwoFactorSetup = React.lazy(() => import('../pages/auth/TwoFactorSetup'));
 
 // Layout components
-const MainLayout = React?.lazy(() => import('../layouts/MainLayout'));
-const AuthLayout = React?.lazy(() => import('../layouts/AuthLayout'));
+const MainLayout = React.lazy(() => import('../layouts/MainLayout'));
+const AuthLayout = React.lazy(() => import('../layouts/AuthLayout'));
 
 // Error components
-const NotFound = React?.lazy(() => import('../pages/errors/NotFound'));
-const ErrorBoundary = React?.lazy(() => import('../components/common/ErrorBoundary'));
+const NotFound = React.lazy(() => import('../pages/errors/NotFound'));
+const ErrorBoundary = React.lazy(() => import('../components/common/ErrorBoundary'));
 
-const Router: React?.FC = () => {
+const Router: React.FC = () => {
   return (
     <BrowserRouter>
       <ErrorBoundary>

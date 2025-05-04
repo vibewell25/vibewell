@@ -24,10 +24,10 @@ export function Todo({ title = "Todo List", className }: TodoProps) {
   const { highContrast, fontSize } = useAccessibilityContext();
 
   const addTodo = () => {
-    if (newTodo?.trim() === "") return;
+    if (newTodo.trim() === "") return;
     
     const todo: TodoItem = {
-      id: Math?.random().toString(36).substring(2, 9),
+      id: Math.random().toString(36).substring(2, 9),
       text: newTodo,
       completed: false
     };
@@ -38,18 +38,18 @@ export function Todo({ title = "Todo List", className }: TodoProps) {
 
   const toggleTodo = (id: string) => {
     setTodos(
-      todos?.map(todo => 
-        todo?.id === id ? { ...todo, completed: !todo?.completed } : todo
+      todos.map(todo => 
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
       )
     );
   };
 
   const deleteTodo = (id: string) => {
-    setTodos(todos?.filter(todo => todo?.id !== id));
+    setTodos(todos.filter(todo => todo.id !== id));
   };
 
-  const handleKeyDown = (e: React?.KeyboardEvent) => {
-    if (e?.key === 'Enter') {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
       addTodo();
     }
   };
@@ -84,7 +84,7 @@ export function Todo({ title = "Todo List", className }: TodoProps) {
       <div className="flex gap-2 mb-4">
         <Input
           value={newTodo}
-          onChange={(e) => setNewTodo(e?.target.value)}
+          onChange={(e) => setNewTodo(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Add a new task"
           className={cn(
@@ -102,7 +102,7 @@ export function Todo({ title = "Todo List", className }: TodoProps) {
       </div>
       
       <div className="space-y-2">
-        {todos?.length === 0 ? (
+        {todos.length === 0 ? (
           <p className={cn(
             "text-center py-2",
             getFontSize(),
@@ -111,46 +111,46 @@ export function Todo({ title = "Todo List", className }: TodoProps) {
             No tasks yet. Add some above!
           </p>
         ) : (
-          todos?.map(todo => (
+          todos.map(todo => (
             <div 
-              key={todo?.id} 
+              key={todo.id} 
               className={cn(
                 "flex items-center justify-between p-2 rounded border",
-                todo?.completed ? 
+                todo.completed ? 
                   highContrast ? "bg-gray-200 dark:bg-gray-800" : "bg-muted/50" : "",
                 highContrast ? "border-2 border-black dark:border-white" : ""
               )}
             >
               <div className="flex items-center gap-2">
                 <Checkbox 
-                  checked={todo?.completed}
-                  onCheckedChange={() => toggleTodo(todo?.id)}
-                  id={`todo-${todo?.id}`}
+                  checked={todo.completed}
+                  onCheckedChange={() => toggleTodo(todo.id)}
+                  id={`todo-${todo.id}`}
                   className={highContrast ? "border-2 border-black dark:border-white" : ""}
-                  aria-label={`Mark "${todo?.text}" as ${todo?.completed ? 'incomplete' : 'complete'}`}
+                  aria-label={`Mark "${todo.text}" as ${todo.completed ? 'incomplete' : 'complete'}`}
                 />
                 <label 
-                  htmlFor={`todo-${todo?.id}`}
+                  htmlFor={`todo-${todo.id}`}
                   className={cn(
                     "cursor-pointer",
                     getFontSize(),
-                    todo?.completed ? "line-through" : "",
-                    todo?.completed && !highContrast ? "text-muted-foreground" : "",
+                    todo.completed ? "line-through" : "",
+                    todo.completed && !highContrast ? "text-muted-foreground" : "",
                     highContrast ? "text-black dark:text-white" : ""
                   )}
                 >
-                  {todo?.text}
+                  {todo.text}
                 </label>
               </div>
               <Button 
                 variant={highContrast ? "default" : "ghost"}
                 size="icon" 
-                onClick={() => deleteTodo(todo?.id)}
+                onClick={() => deleteTodo(todo.id)}
                 className={cn(
                   "h-7 w-7",
                   highContrast ? "border-2 border-black dark:border-white" : ""
                 )}
-                aria-label={`Delete task "${todo?.text}"`}
+                aria-label={`Delete task "${todo.text}"`}
               >
                 <Trash2 size={16} />
               </Button>

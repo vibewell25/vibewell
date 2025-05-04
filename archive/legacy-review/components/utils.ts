@@ -10,9 +10,9 @@ export function formatMessageTime(timestamp: string): string {
   const date = new Date(timestamp);
   const now = new Date();
   const isToday =
-    date?.getDate() === now?.getDate() &&
-    date?.getMonth() === now?.getMonth() &&
-    date?.getFullYear() === now?.getFullYear();
+    date.getDate() === now.getDate() &&
+    date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear();
   if (isToday) {
     return format(date, 'HH:mm');
   } else {
@@ -25,21 +25,21 @@ export function formatMessageTime(timestamp: string): string {
  * Formats the last seen timestamp in a human-readable format
  * @param timestamp ISO timestamp string
 
- * @returns Human-readable format (e?.g., "Just now", "5 minutes ago", etc.)
+ * @returns Human-readable format (e.g., "Just now", "5 minutes ago", etc.)
  */
 export function formatLastSeen(timestamp: string): string {
   const date = new Date(timestamp);
   const now = new Date();
-  const diffMs = now?.getTime() - date?.getTime();
+  const diffMs = now.getTime() - date.getTime();
 
-  const diffMins = Math?.floor(diffMs / 60000);
+  const diffMins = Math.floor(diffMs / 60000);
   if (diffMins < 1) {
     return 'Just now';
   } else if (diffMins < 60) {
     return `${diffMins} ${diffMins === 1 ? 'minute' : 'minutes'} ago`;
   } else if (diffMins < 1440) {
 
-    const hours = Math?.floor(diffMins / 60);
+    const hours = Math.floor(diffMins / 60);
     return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
   } else {
     return format(date, 'MMM d, yyyy');

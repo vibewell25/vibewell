@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { Container, Box } from '@chakra-ui/react';
 import { PractitionerProfile } from '../../components/Practitioners/PractitionerProfile';
-import { PractitionerService } from '../../services/practitioner?.service';
+import { PractitionerService } from '../../services/practitioner.service';
 import { useRouter } from 'next/router';
 
 interface PractitionerPageProps {
@@ -43,11 +43,11 @@ export default function PractitionerPage({ practitioner }: PractitionerPageProps
   const router = useRouter();
 
   const handleBookService = (serviceId: string) => {
-    router?.push(`/booking?practitionerId=${practitioner?.id}&serviceId=${serviceId}`);
+    router.push(`/booking?practitionerId=${practitioner.id}&serviceId=${serviceId}`);
   };
 
   return (
-    <Container maxW="container?.xl" py={8}>
+    <Container maxW="container.xl" py={8}>
       <Box>
         <PractitionerProfile {...practitioner} onBookService={handleBookService} />
       </Box>

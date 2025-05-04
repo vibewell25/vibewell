@@ -4,7 +4,7 @@ import { BookingApp } from '../components/BookingApp';
 /**
  * Example page that uses the BookingApp component
  */
-export const BookingsPage: React?.FC = () => {
+export const BookingsPage: React.FC = () => {
   return (
     <div className="page-container">
       <div className="page-header">

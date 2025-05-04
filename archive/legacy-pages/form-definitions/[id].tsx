@@ -7,7 +7,7 @@ import { fetchWithTimeout } from '../../src/utils/timeout-handler';
 
 const DefinitionDetail: NextPage = () => {
   const router = useRouter();
-  const { id } = router?.query as { id: string };
+  const { id } = router.query as { id: string };
   const [name, setName] = useState('');
   const [fields, setFields] = useState('');
 
@@ -17,8 +17,8 @@ const DefinitionDetail: NextPage = () => {
     const fetchDefinition = async () => {
       const res = await fetchWithTimeout(`/api/formDefinitions/${id}`);
       const data = await res.json();
-      setName(data?.name);
-      setFields(data?.fields);
+      setName(data.name);
+      setFields(data.fields);
     };
     
     fetchDefinition();
@@ -44,7 +44,7 @@ const DefinitionDetail: NextPage = () => {
         <Input placeholder="Fields (JSON)" value={fields} onChange={e => setFields(e.target.value)} />
         <div className="space-x-2">
           <Button type="submit">Update</Button>
-          <Button onClick={() => router?.back()}>Cancel</Button>
+          <Button onClick={() => router.back()}>Cancel</Button>
         </div>
       </form>
     </div>

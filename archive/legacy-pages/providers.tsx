@@ -19,7 +19,7 @@ const Providers: NextPage = () => {
   const fetchProv = async () => {
     const res = await fetchWithTimeout('/api/providers');
     const data = await res.json();
-    setProviders(data?.providers || []);
+    setProviders(data.providers || []);
   };
 
   useEffect(() => { fetchProv(); }, []);

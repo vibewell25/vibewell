@@ -30,7 +30,7 @@ const inputVariants = cva(
 );
 
 export interface InputProps
-  extends React?.InputHTMLAttributes<HTMLInputElement>,
+  extends React.InputHTMLAttributes<HTMLInputElement>,
     VariantProps<typeof inputVariants> {
   error?: string;
   success?: string;
@@ -39,9 +39,9 @@ export interface InputProps
 /**
  * Input component for form controls
  * @param {InputProps} props - The input props
- * @returns {React?.ReactElement} The Input component
+ * @returns {React.ReactElement} The Input component
  */
-const Input = React?.forwardRef<HTMLInputElement, InputProps>(
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, variant, size, error, success, ...props }, ref) => {
     // Determine variant based on error/success state
     const inputVariant = error ? 'error' : success ? 'success' : variant;
@@ -65,6 +65,6 @@ const Input = React?.forwardRef<HTMLInputElement, InputProps>(
   },
 );
 
-Input?.displayName = 'Input';
+Input.displayName = 'Input';
 
 export { Input, inputVariants };

@@ -116,7 +116,7 @@ export default async function handler(
         
         logger.warn('Payment failed', {
           paymentIntentId: paymentIntent.id,
-          error: paymentIntent.last_payment_error?.message || 'Unknown error',
+          error: paymentIntent.last_payment_error.message || 'Unknown error',
           userId,
           orderId,
         });
@@ -151,7 +151,7 @@ export default async function handler(
             userId: user.id,
             stripeSubscriptionId: subscription.id,
             status: subscription.status,
-            planId: subscription.items.data[0]?.price.id || '',
+            planId: subscription.items.data[0].price.id || '',
             currentPeriodStart: new Date(subscription.current_period_start * 1000),
             currentPeriodEnd: new Date(subscription.current_period_end * 1000),
             cancelAtPeriodEnd: subscription.cancel_at_period_end,

@@ -31,14 +31,14 @@ const PractitionersPage = () => {
   const toast = useToast();
 
   const filteredPractitioners = useMemo(() => {
-    return mockPractitioners?.filter((practitioner) => {
-      const nameMatch = practitioner?.user.name?.toLowerCase().includes(searchQuery?.toLowerCase());
-      const specializationMatch = practitioner?.specialization.some((specialization: string) =>
-        specialization?.toLowerCase().includes(searchQuery?.toLowerCase()),
+    return mockPractitioners.filter((practitioner) => {
+      const nameMatch = practitioner.user.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const specializationMatch = practitioner.specialization.some((specialization: string) =>
+        specialization.toLowerCase().includes(searchQuery.toLowerCase()),
       );
 
       const specializationFilterMatch =
-        !selectedSpecialization || practitioner?.specialization.includes(selectedSpecialization);
+        !selectedSpecialization || practitioner.specialization.includes(selectedSpecialization);
 
       return (nameMatch || specializationMatch) && specializationFilterMatch;
     });
@@ -48,11 +48,11 @@ const PractitionersPage = () => {
     return [...filteredPractitioners].sort((a, b) => {
       switch (sortBy) {
         case 'rating':
-          return b?.rating - a?.rating;
+          return b.rating - a.rating;
         case 'experience':
-          return b?.experience - a?.experience;
+          return b.experience - a.experience;
         case 'name':
-          return a?.user.name?.localeCompare(b?.user.name);
+          return a.user.name.localeCompare(b.user.name);
         default:
           return 0;
       }
@@ -61,7 +61,7 @@ const PractitionersPage = () => {
 
   const handleViewProfile = (id: string) => {
     try {
-      const practitioner = mockPractitioners?.find((p) => p?.id === id);
+      const practitioner = mockPractitioners.find((p) => p.id === id);
       if (practitioner) {
         setSelectedPractitioner(practitioner);
         setShowList(false);
@@ -101,7 +101,7 @@ const PractitionersPage = () => {
   };
 
   return (
-    <Container maxW="container?.xl" py={8}>
+    <Container maxW="container.xl" py={8}>
       <VStack align="stretch" gap={6}>
         <Box>
           <Heading mb={4}>Practitioner Components Test</Heading>
@@ -125,18 +125,18 @@ const PractitionersPage = () => {
                 <Input
                   placeholder="Search by name or specialization..."
                   value={searchQuery}
-                  onChange={(e: React?.ChangeEvent<HTMLInputElement>) =>
-                    setSearchQuery(e?.target.value)
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setSearchQuery(e.target.value)
                   }
                 />
                 <Select
                   value={selectedSpecialization}
-                  onChange={(e: React?.ChangeEvent<HTMLSelectElement>) =>
-                    setSelectedSpecialization(e?.target.value)
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                    setSelectedSpecialization(e.target.value)
                   }
                 >
                   <option value="">All Specializations</option>
-                  {mockSpecializations?.map((spec) => (
+                  {mockSpecializations.map((spec) => (
                     <option key={spec} value={spec}>
                       {spec}
                     </option>
@@ -144,7 +144,7 @@ const PractitionersPage = () => {
                 </Select>
                 <Select
                   value={sortBy}
-                  onChange={(e: React?.ChangeEvent<HTMLSelectElement>) => setSortBy(e?.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSortBy(e.target.value)}
                 >
                   <option value="rating">Sort by Rating</option>
                   <option value="experience">Sort by Experience</option>
@@ -152,8 +152,8 @@ const PractitionersPage = () => {
                 </Select>
               </HStack>
 
-              {sortedPractitioners?.length === 0 ? (
-                <Text color="gray?.600">No practitioners found matching your criteria</Text>
+              {sortedPractitioners.length === 0 ? (
+                <Text color="gray.600">No practitioners found matching your criteria</Text>
               ) : (
                 <PractitionerList
                   practitioners={sortedPractitioners}

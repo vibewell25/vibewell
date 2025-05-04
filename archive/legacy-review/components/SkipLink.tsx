@@ -4,10 +4,10 @@ import React from 'react';
 
 interface SkipLinkProps {
   targetId?: string;
-  children?: React?.ReactNode;
+  children?: React.ReactNode;
 }
 
-export const SkipLink: React?.FC<SkipLinkProps> = ({
+export const SkipLink: React.FC<SkipLinkProps> = ({
   targetId = 'main-content',
   children = 'Skip to main content',
 }) => {

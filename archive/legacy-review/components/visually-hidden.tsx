@@ -1,13 +1,13 @@
 import React, { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 
-export interface VisuallyHiddenProps extends React?.HTMLAttributes<HTMLSpanElement> {
+export interface VisuallyHiddenProps extends React.HTMLAttributes<HTMLSpanElement> {
   /**
    * If true, the content will be visually hidden but announced to screen readers.
    * If false, the content will be visible (useful for conditional hiding).
    */
   hidden?: boolean;
-  children: React?.ReactNode;
+  children: React.ReactNode;
   as?: 'span' | 'div' | 'p';
 }
 
@@ -39,7 +39,7 @@ export const VisuallyHidden = forwardRef<HTMLElement, VisuallyHiddenProps>(
   },
 );
 
-VisuallyHidden?.displayName = 'VisuallyHidden';
+VisuallyHidden.displayName = 'VisuallyHidden';
 
 export default VisuallyHidden;
 
@@ -62,7 +62,7 @@ export function IconLabel({
   icon,
   label,
   ...props
-}: { icon: React?.ReactNode; label: string } & Omit<VisuallyHiddenProps, 'hidden' | 'children'>) {
+}: { icon: React.ReactNode; label: string } & Omit<VisuallyHiddenProps, 'hidden' | 'children'>) {
   return (
     <>
       {icon}
@@ -75,7 +75,7 @@ export function A11yButton({
   children,
   a11yLabel,
   ...props
-}: React?.ButtonHTMLAttributes<HTMLButtonElement> & { a11yLabel: string }) {
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { a11yLabel: string }) {
   return (
     <button {...props}>
       {children}
@@ -93,7 +93,7 @@ export function A11yHeading({
   children,
   className,
   ...props
-}: React?.HTMLAttributes<HTMLHeadingElement> & {
+}: React.HTMLAttributes<HTMLHeadingElement> & {
   visualLevel?: 1 | 2 | 3 | 4 | 5 | 6;
   a11yLevel: 1 | 2 | 3 | 4 | 5 | 6;
 }) {

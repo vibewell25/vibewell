@@ -36,7 +36,7 @@ const userSchema = new Schema({
     type: String,
     required: function(this: IUser) {
       // Password is required only if no social auth provider is used
-      return !this?.authProvider;
+      return !this.authProvider;
     },
     minlength: 8,
     select: false
@@ -85,7 +85,7 @@ const userSchema = new Schema({
   backupCodes: {
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
     type: [String],
@@ -96,18 +96,18 @@ const userSchema = new Schema({
 });
 
 // Hash password before saving
-userSchema?.pre('save', async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');(next) {
+userSchema.pre('save', async function {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');(next) {
   const user = this as IUser;
   
-  if (!user?.isModified('password') || !user?.password) {
+  if (!user.isModified('password') || !user.password) {
     return next();
   }
 
   try {
-    const salt = await bcrypt?.genSalt(10);
-    user?.password = await bcrypt?.hash(user?.password, salt);
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
     next();
   } catch (error) {
     next(error as Error);
@@ -115,29 +115,29 @@ userSchema?.pre('save', async function {
 });
 
 // Compare password method
-userSchema?.methods.comparePassword = async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');(candidatePassword: string): Promise<boolean> {
+userSchema.methods.comparePassword = async function {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');(candidatePassword: string): Promise<boolean> {
   const user = this as IUser;
   
-  if (!user?.password) {
+  if (!user.password) {
     return false;
   }
 
   try {
-    return await bcrypt?.compare(candidatePassword, user?.password);
+    return await bcrypt.compare(candidatePassword, user.password);
   } catch (error) {
     return false;
   }
 };
 
 // Create indexes
-userSchema?.index({ email: 1 });
-userSchema?.index({ googleId: 1 });
-userSchema?.index({ facebookId: 1 });
-userSchema?.index({ twitterId: 1 });
-userSchema?.index({ linkedinId: 1 });
-userSchema?.index({ githubId: 1 });
-userSchema?.index({ appleId: 1 });
+userSchema.index({ email: 1 });
+userSchema.index({ googleId: 1 });
+userSchema.index({ facebookId: 1 });
+userSchema.index({ twitterId: 1 });
+userSchema.index({ linkedinId: 1 });
+userSchema.index({ githubId: 1 });
+userSchema.index({ appleId: 1 });
 
-export const User = mongoose?.model<IUser>('User', userSchema); 
+export const User = mongoose.model<IUser>('User', userSchema); 

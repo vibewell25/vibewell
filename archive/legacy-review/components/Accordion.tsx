@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 interface AccordionItem {
   id: string;
   title: string;
-  content: React?.ReactNode;
+  content: React.ReactNode;
 }
 interface AccordionProps {
   items: AccordionItem[];

@@ -7,25 +7,25 @@ import { startComponentRender, endComponentRender } from '../../utils/performanc
  * @param componentName Name to identify this component in performance metrics
  */
 export function withPerformanceMonitoring<P extends object>(
-  Component: React?.ComponentType<P>,
+  Component: React.ComponentType<P>,
   componentName: string,
-): React?.FC<P> {
-  const displayName = Component?.displayName || Component?.name || componentName;
+): React.FC<P> {
+  const displayName = Component.displayName || Component.name || componentName;
 
   // Create a monitored component
-  const MonitoredComponent: React?.FC<P> = (props) => {
+  const MonitoredComponent: React.FC<P> = (props) => {
     // Start measuring component render time
     const startMark = startComponentRender(componentName);
 
     // Reference for cleanup - explicitly store as string | null
-    const markRef = React?.useRef<string | null>(startMark);
+    const markRef = React.useRef<string | null>(startMark);
 
     // Effect to end measurement after render
-    React?.useEffect(() => {
-      // We need to check if markRef?.current exists
-      if (markRef?.current) {
+    React.useEffect(() => {
+      // We need to check if markRef.current exists
+      if (markRef.current) {
         // Pass the string, not null
-        endComponentRender(componentName, markRef?.current);
+        endComponentRender(componentName, markRef.current);
       } else {
         // If we don't have a mark, just use the name
         endComponentRender(componentName);
@@ -33,9 +33,9 @@ export function withPerformanceMonitoring<P extends object>(
 
       // Cleanup on unmount
       return () => {
-        if (markRef?.current) {
+        if (markRef.current) {
           // Pass the string, not null
-          endComponentRender(`${componentName}-unmount`, markRef?.current);
+          endComponentRender(`${componentName}-unmount`, markRef.current);
         } else {
           // If we don't have a mark, just use the name
           endComponentRender(`${componentName}-unmount`);
@@ -48,7 +48,7 @@ export function withPerformanceMonitoring<P extends object>(
   };
 
   // Set display name for debugging
-  MonitoredComponent?.displayName = `WithPerformanceMonitoring(${displayName})`;
+  MonitoredComponent.displayName = `WithPerformanceMonitoring(${displayName})`;
 
   return MonitoredComponent;
 }

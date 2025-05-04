@@ -39,7 +39,7 @@ const Bookings: NextPage = () => {
               className="border rounded-lg p-4 flex justify-between items-center bg-white shadow-sm"
             >
               <div>
-                <h3 className="font-medium">{booking.service?.name || 'Unnamed Service'}</h3>
+                <h3 className="font-medium">{booking.service.name || 'Unnamed Service'}</h3>
                 <p className="text-gray-600 text-sm">
                   {new Date(booking.appointmentDate).toLocaleDateString()} 
                   {' '}

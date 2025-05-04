@@ -17,7 +17,7 @@ const FormDefinitions: NextPage = () => {
   const fetchDefs = async () => {
     const res = await fetchWithTimeout('/api/formDefinitions');
     const json = await res.json();
-    setDefinitions(json?.definitions || []);
+    setDefinitions(json.definitions || []);
   };
 
   useEffect(() => { fetchDefs(); }, []);
@@ -55,7 +55,7 @@ const FormDefinitions: NextPage = () => {
             <pre className="text-sm bg-gray-100 p-2 rounded">{d.fields}</pre>
           </div>
           <div className="space-x-2">
-            <Button onClick={() => router?.push(`/form-definitions/${d.id}`)}>Edit</Button>
+            <Button onClick={() => router.push(`/form-definitions/${d.id}`)}>Edit</Button>
             <Button onClick={() => handleDelete(d.id)}>Delete</Button>
           </div>
         </Card>

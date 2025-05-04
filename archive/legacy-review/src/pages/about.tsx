@@ -11,7 +11,7 @@ const AboutPage: NextPage = () => {
         <meta property="og:title" content="About VibeWell" />
         <meta property="og:description" content="Learn about VibeWell's mission, values, and community." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www?.getvibewell.com/about" />
+        <meta property="og:url" content="https://www.getvibewell.com/about" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <main className="flex-1 bg-white">

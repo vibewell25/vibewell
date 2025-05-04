@@ -12,21 +12,21 @@ const Services: NextPage = () => {
 
   useEffect(() => {
     fetch('/api/services')
-      .then(res => res?.json())
-      .then(data => setServices(data?.services || []));
+      .then(res => res.json())
+      .then(data => setServices(data.services || []));
   }, []);
 
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Services</h1>
-      {services?.length ? (
-        services?.map(s => (
-          <Card key={s?.id} className="mb-2 flex justify-between items-center">
+      {services.length ? (
+        services.map(s => (
+          <Card key={s.id} className="mb-2 flex justify-between items-center">
             <div>
-              <div className="font-semibold">{s?.name}</div>
-              <div>${s?.price.toFixed(2)} – {s?.duration} mins</div>
+              <div className="font-semibold">{s.name}</div>
+              <div>${s.price.toFixed(2)} – {s.duration} mins</div>
             </div>
-            <Button onClick={() => router?.push(`/book?serviceId=${s?.id}`)}>Book</Button>
+            <Button onClick={() => router.push(`/book?serviceId=${s.id}`)}>Book</Button>
           </Card>
         ))
       ) : (

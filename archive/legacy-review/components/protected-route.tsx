@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/use-unified-auth';
 
 interface ProtectedRouteProps {
-  children: React?.ReactNode;
+  children: React.ReactNode;
   requiredRole?: UserRole;
   redirectTo?: string;
 }
@@ -32,10 +32,10 @@ export function ProtectedRoute({
     if (!loading) {
       if (!isAuthenticated) {
         // Add the current path to the redirect query parameter
-        router?.push(`${redirectTo}?redirectTo=${window?.location.pathname}`);
+        router.push(`${redirectTo}?redirectTo=${window.location.pathname}`);
       } else if (requiredRole && !hasRole(requiredRole)) {
         // If the user doesn't have the required role, redirect to unauthorized page
-        router?.push('/error/unauthorized');
+        router.push('/error/unauthorized');
       }
     }
   }, [isAuthenticated, loading, hasRole, requiredRole, redirectTo, router]);

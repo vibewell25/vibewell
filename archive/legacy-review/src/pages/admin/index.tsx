@@ -46,10 +46,10 @@ const AdminPortal: NextPage = () => {
             ].map((activity, index) => (
               <div key={index} className="flex items-center justify-between py-2 border-b border-gray-100">
                 <div>
-                  <p className="text-gray-900">{activity?.action}</p>
-                  <p className="text-sm text-gray-500">by {activity?.user}</p>
+                  <p className="text-gray-900">{activity.action}</p>
+                  <p className="text-sm text-gray-500">by {activity.user}</p>
                 </div>
-                <span className="text-sm text-gray-500">{activity?.time}</span>
+                <span className="text-sm text-gray-500">{activity.time}</span>
               </div>
             ))}
           </div>

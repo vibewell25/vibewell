@@ -25,8 +25,8 @@ const Security: NextPage = () => {
   const setupTOTP = async () => {
     const res = await fetchWithTimeout('/api/security/totp/setup');
     const data = await res.json();
-    setSecret(data?.base32);
-    setQr(data?.otpauthUrl);
+    setSecret(data.base32);
+    setQr(data.otpauthUrl);
   };
 
   const verifyTOTP = async (e: FormEvent) => {
@@ -44,27 +44,27 @@ const Security: NextPage = () => {
   const registerWebAuthn = async () => {
     const opts = await fetchWithTimeout('/api/security/webauthn/register').then(r => r.json());
     
-    if (!navigator?.credentials) {
+    if (!navigator.credentials) {
       setMsg('WebAuthn not supported in this browser');
       return;
     }
     
     const publicKey: any = {
       ...opts,
-      challenge: bufferDecode(opts?.challenge),
-      user: { ...opts?.user, id: bufferDecode(opts?.user.id) }
+      challenge: bufferDecode(opts.challenge),
+      user: { ...opts.user, id: bufferDecode(opts.user.id) }
     };
     
     try {
       const cred: any = await navigator.credentials.create({ publicKey });
       const att = cred as any;
       const response = {
-        id: att?.id,
-        rawId: bufferEncode(att?.rawId),
-        type: att?.type,
+        id: att.id,
+        rawId: bufferEncode(att.rawId),
+        type: att.type,
         response: {
-          attestationObject: bufferEncode(att?.response.attestationObject),
-          clientDataJSON: bufferEncode(att?.response.clientDataJSON)
+          attestationObject: bufferEncode(att.response.attestationObject),
+          clientDataJSON: bufferEncode(att.response.clientDataJSON)
         }
       };
       
@@ -83,7 +83,7 @@ const Security: NextPage = () => {
 
   /* WebAuthn Authentication */
   const authWebAuthn = async () => {
-    if (!navigator?.credentials) {
+    if (!navigator.credentials) {
       setMsg('WebAuthn not supported in this browser');
       return;
     }
@@ -92,24 +92,24 @@ const Security: NextPage = () => {
       const opts = await fetchWithTimeout('/api/security/webauthn/authenticate').then(r => r.json());
       const publicKey: any = {
         ...opts,
-        challenge: bufferDecode(opts?.challenge),
-        allowCredentials: opts?.allowCredentials.map((c:any) => ({
+        challenge: bufferDecode(opts.challenge),
+        allowCredentials: opts.allowCredentials.map((c:any) => ({
           ...c,
-          id: bufferDecode(c?.id)
+          id: bufferDecode(c.id)
         }))
       };
       
       const assertion: any = await navigator.credentials.get({ publicKey });
       const resp = assertion as any;
       const data = {
-        id: resp?.id,
-        rawId: bufferEncode(resp?.rawId),
-        type: resp?.type,
+        id: resp.id,
+        rawId: bufferEncode(resp.rawId),
+        type: resp.type,
         response: {
-          authenticatorData: bufferEncode(resp?.response.authenticatorData),
-          clientDataJSON: bufferEncode(resp?.response.clientDataJSON),
-          signature: bufferEncode(resp?.response.signature),
-          userHandle: resp?.response.userHandle ? bufferEncode(resp?.response.userHandle) : undefined
+          authenticatorData: bufferEncode(resp.response.authenticatorData),
+          clientDataJSON: bufferEncode(resp.response.clientDataJSON),
+          signature: bufferEncode(resp.response.signature),
+          userHandle: resp.response.userHandle ? bufferEncode(resp.response.userHandle) : undefined
         }
       };
       

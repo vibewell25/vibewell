@@ -60,17 +60,17 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
 
   // Start session timing when component mounts
   useEffect(() => {
-    setSessionStartTime(Date?.now());
+    setSessionStartTime(Date.now());
 
     return () => {
       // Track session duration on unmount
       if (sessionStartTime && userId) {
-        const duration = Math?.floor((Date?.now() - sessionStartTime) / 1000);
-        analyticsService?.trackTryOnSession({
+        const duration = Math.floor((Date.now() - sessionStartTime) / 1000);
+        analyticsService.trackTryOnSession({
           userId,
-          type: selectedModel?.type,
-          productId: selectedModel?.id,
-          productName: selectedModel?.name,
+          type: selectedModel.type,
+          productId: selectedModel.id,
+          productName: selectedModel.name,
           duration,
           intensity,
           success: !error,
@@ -79,7 +79,7 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
         // Track achievement for engagement features
         if (!error) {
           trackAchievement('try_on_complete');
-          trackAchievement(`try_on_${selectedModel?.type}`);
+          trackAchievement(`try_on_${selectedModel.type}`);
         }
       }
     };
@@ -94,11 +94,11 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
 
       // Load the model
       const loadModel = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
         try {
           // Get model data from cache with progress tracking
-          const data = await getModel(selectedModel?.url, selectedModel?.type, (progress) =>
+          const data = await getModel(selectedModel.url, selectedModel.type, (progress) =>
             setLoadingProgress(progress),
           );
 
@@ -110,9 +110,9 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
           }
 
           trackEvent('virtual_try_on_model_loaded', {
-            type: selectedModel?.type,
-            modelName: selectedModel?.name,
-            modelId: selectedModel?.id,
+            type: selectedModel.type,
+            modelName: selectedModel.name,
+            modelId: selectedModel.id,
             intensity,
           });
 
@@ -123,11 +123,11 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
             const modelsToFetch = [];
 
             for (let i = 1; i <= 2; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-              const nextIndex = (currentIndex + i) % models?.length;
+              const nextIndex = (currentIndex + i) % models.length;
               const model = models[nextIndex];
-              modelsToFetch?.push({
-                url: model?.url,
-                type: model?.type,
+              modelsToFetch.push({
+                url: model.url,
+                type: model.type,
                 priority: 10 - i * 2, // Higher priority for the next model
               });
             }
@@ -135,7 +135,7 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
             prefetchModels(modelsToFetch);
           }
         } catch (error) {
-          console?.error('Error loading model:', error);
+          console.error('Error loading model:', error);
           const err = error instanceof Error ? error : new Error('Unknown error loading model');
           setError(err);
           setLoading(false);
@@ -145,10 +145,10 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
           }
 
           trackEvent('virtual_try_on_error', {
-            type: selectedModel?.type,
-            error: err?.message,
-            modelId: selectedModel?.id,
-            modelName: selectedModel?.name,
+            type: selectedModel.type,
+            error: err.message,
+            modelId: selectedModel.id,
+            modelName: selectedModel.name,
           });
 
           toast({
@@ -165,7 +165,7 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
       return () => {
         // Cancel any active loading
         if (cancelLoading && selectedModel) {
-          cancelLoading(selectedModel?.url);
+          cancelLoading(selectedModel.url);
         }
       };
     }
@@ -193,9 +193,9 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
       variant: 'default',
     });
     trackEvent('ar_unsupported', {
-      type: selectedModel?.type,
-      modelId: selectedModel?.id,
-      modelName: selectedModel?.name,
+      type: selectedModel.type,
+      modelId: selectedModel.id,
+      modelName: selectedModel.name,
     });
   };
 
@@ -203,9 +203,9 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
     setCapturedImage(dataUrl);
     setShowShareDialog(true);
     trackEvent('virtual_try_on_captured', {
-      type: selectedModel?.type,
-      modelId: selectedModel?.id,
-      modelName: selectedModel?.name,
+      type: selectedModel.type,
+      modelId: selectedModel.id,
+      modelName: selectedModel.name,
     });
 
     // Track capture achievement
@@ -213,20 +213,20 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
   };
 
   const handleModelChange = (i: number) => {
-    if (!models || models?.length === 0) return;
+    if (!models || models.length === 0) return;
 
     // Calculate next model index
-    const nextIndex = (selectedModelIndex + i) % models?.length;
+    const nextIndex = (selectedModelIndex + i) % models.length;
     setSelectedModelIndex(nextIndex);
   };
 
   const handleIntensityChange = (newIntensity: number) => {
     setIntensity(newIntensity);
     trackEvent('virtual_try_on_intensity_change', {
-      type: selectedModel?.type,
+      type: selectedModel.type,
       intensity: newIntensity,
-      modelId: selectedModel?.id,
-      modelName: selectedModel?.name,
+      modelId: selectedModel.id,
+      modelName: selectedModel.name,
     });
   };
 
@@ -235,14 +235,14 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
       <ARSupportCheck onARUnsupported={handleARUnsupported}>
         <ModelErrorBoundary onError={onModelError}>
           <div className="mb-4 flex justify-center space-x-4">
-            {models?.map((model, index) => (
+            {models.map((model, index) => (
               <Button
-                key={model?.id}
+                key={model.id}
                 variant={selectedModelIndex === index ? 'default' : 'outline'}
                 onClick={() => handleModelChange(index)}
                 className="text-sm"
               >
-                {model?.name}
+                {model.name}
               </Button>
             ))}
           </div>
@@ -259,7 +259,7 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
               max="10"
               step="1"
               value={intensity}
-              onChange={(e) => handleIntensityChange(parseInt(e?.target.value))}
+              onChange={(e) => handleIntensityChange(parseInt(e.target.value))}
               className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200"
             />
           </div>
@@ -272,13 +272,13 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <Progress value={loadingProgress} className="mb-4 w-[60%]" />
                 <p className="text-sm text-gray-500">
-                  Loading model... {Math?.round(loadingProgress)}%
+                  Loading model... {Math.round(loadingProgress)}%
                 </p>
               </div>
             )}
             {error && (
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <p className="mb-4 text-red-500">Failed to load model: {error?.message}</p>
+                <p className="mb-4 text-red-500">Failed to load model: {error.message}</p>
                 <Button
                   onClick={() => {
                     setLoading(true);
@@ -293,7 +293,7 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
             {modelData && !loading && !error && (
               <ThreeARViewer
                 modelData={modelData}
-                type={selectedModel?.type}
+                type={selectedModel.type}
                 intensity={intensity}
                 onCapture={handleCapture}
               />
@@ -301,14 +301,14 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
           </div>
 
           {/* Cache stats display for debugging */}
-          {process?.env.NODE_ENV === 'development' && stats && (
+          {process.env.NODE_ENV === 'development' && stats && (
             <div className="mt-4 rounded-lg bg-gray-100 p-4 text-xs">
               <h4 className="mb-2 font-semibold">Cache Statistics</h4>
               <div className="grid grid-cols-2 gap-2">
-                <div>Models: {stats?.modelCount}</div>
-                <div>Size: {(stats?.totalSize / (1024 * 1024)).toFixed(2)} MB</div>
-                <div>Storage: {(stats?.deviceQuota / (1024 * 1024)).toFixed(0)} MB</div>
-                <div>Used: {stats?.percentUsed.toFixed(1)}%</div>
+                <div>Models: {stats.modelCount}</div>
+                <div>Size: {(stats.totalSize / (1024 * 1024)).toFixed(2)} MB</div>
+                <div>Storage: {(stats.deviceQuota / (1024 * 1024)).toFixed(0)} MB</div>
+                <div>Used: {stats.percentUsed.toFixed(1)}%</div>
               </div>
             </div>
           )}
@@ -321,8 +321,8 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
               isOpen={showShareDialog}
               onClose={() => setShowShareDialog(false)}
               imageData={capturedImage}
-              type={selectedModel?.type}
-              productName={selectedModel?.name}
+              type={selectedModel.type}
+              productName={selectedModel.name}
               userId={userId}
             />
           )}

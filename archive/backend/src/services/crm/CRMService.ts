@@ -63,71 +63,71 @@ class CRMService {
 
   // Salesforce Integration
   private async salesforceRequest(method: string, endpoint: string, data?: any): Promise<any> {
-    if (!this?.config.salesforce) {
+    if (!this.config.salesforce) {
       throw new Error('Salesforce configuration not found');
     }
 
     try {
       const response = await axios({
         method,
-        url: `${this?.config.salesforce?.instanceUrl}/services/data/v52?.0${endpoint}`,
+        url: `${this.config.salesforce.instanceUrl}/services/data/v52.0${endpoint}`,
         headers: {
-          Authorization: `Bearer ${this?.config.salesforce?.accessToken}`,
+          Authorization: `Bearer ${this.config.salesforce.accessToken}`,
           'Content-Type': 'application/json'
         },
         data
       });
-      return response?.data;
+      return response.data;
     } catch (error) {
-      console?.error('Salesforce API error:', error);
+      console.error('Salesforce API error:', error);
       throw error;
     }
   }
 
   // HubSpot Integration
   private async hubspotRequest(method: string, endpoint: string, data?: any): Promise<any> {
-    if (!this?.config.hubspot) {
+    if (!this.config.hubspot) {
       throw new Error('HubSpot configuration not found');
     }
 
     try {
       const response = await axios({
         method,
-        url: `https://api?.hubapi.com/crm/v3${endpoint}`,
+        url: `https://api.hubapi.com/crm/v3${endpoint}`,
         headers: {
-          Authorization: `Bearer ${this?.config.hubspot?.apiKey}`,
+          Authorization: `Bearer ${this.config.hubspot.apiKey}`,
           'Content-Type': 'application/json'
         },
         data
       });
-      return response?.data;
+      return response.data;
     } catch (error) {
-      console?.error('HubSpot API error:', error);
+      console.error('HubSpot API error:', error);
       throw error;
     }
   }
 
   // Zendesk Integration
   private async zendeskRequest(method: string, endpoint: string, data?: any): Promise<any> {
-    if (!this?.config.zendesk) {
+    if (!this.config.zendesk) {
       throw new Error('Zendesk configuration not found');
     }
 
-    const auth = Buffer?.from(`${this?.config.zendesk?.email}/token:${this?.config.zendesk?.apiToken}`).toString('base64');
+    const auth = Buffer.from(`${this.config.zendesk.email}/token:${this.config.zendesk.apiToken}`).toString('base64');
 
     try {
       const response = await axios({
         method,
-        url: `https://${this?.config.zendesk?.subdomain}.zendesk?.com/api/v2${endpoint}`,
+        url: `https://${this.config.zendesk.subdomain}.zendesk.com/api/v2${endpoint}`,
         headers: {
           Authorization: `Basic ${auth}`,
           'Content-Type': 'application/json'
         },
         data
       });
-      return response?.data;
+      return response.data;
     } catch (error) {
-      console?.error('Zendesk API error:', error);
+      console.error('Zendesk API error:', error);
       throw error;
     }
   }
@@ -136,32 +136,32 @@ class CRMService {
   public async createContact(data: ContactData, provider: 'salesforce' | 'hubspot' | 'zendesk'): Promise<any> {
     switch (provider) {
       case 'salesforce':
-        return this?.salesforceRequest('POST', '/sobjects/Contact', {
-          Email: data?.email,
-          Name: data?.name,
-          Phone: data?.phone,
-          ...data?.customFields
+        return this.salesforceRequest('POST', '/sobjects/Contact', {
+          Email: data.email,
+          Name: data.name,
+          Phone: data.phone,
+          ...data.customFields
         });
 
       case 'hubspot':
-        return this?.hubspotRequest('POST', '/objects/contacts', {
+        return this.hubspotRequest('POST', '/objects/contacts', {
           properties: {
-            email: data?.email,
-            firstname: data?.name.split(' ')[0],
-            lastname: data?.name.split(' ').slice(1).join(' '),
-            phone: data?.phone,
-            company: data?.company,
-            ...data?.customFields
+            email: data.email,
+            firstname: data.name.split(' ')[0],
+            lastname: data.name.split(' ').slice(1).join(' '),
+            phone: data.phone,
+            company: data.company,
+            ...data.customFields
           }
         });
 
       case 'zendesk':
-        return this?.zendeskRequest('POST', '/users', {
+        return this.zendeskRequest('POST', '/users', {
           user: {
-            email: data?.email,
-            name: data?.name,
-            phone: data?.phone,
-            custom_fields: data?.customFields
+            email: data.email,
+            name: data.name,
+            phone: data.phone,
+            custom_fields: data.customFields
           }
         });
 
@@ -174,27 +174,27 @@ class CRMService {
   public async createDeal(data: DealData, provider: 'salesforce' | 'hubspot'): Promise<any> {
     switch (provider) {
       case 'salesforce':
-        return this?.salesforceRequest('POST', '/sobjects/Opportunity', {
-          ContactId: data?.contactId,
-          Amount: data?.amount,
-          StageName: data?.stage,
-          Probability: data?.probability,
-          CloseDate: data?.expectedCloseDate,
-          ...data?.customFields
+        return this.salesforceRequest('POST', '/sobjects/Opportunity', {
+          ContactId: data.contactId,
+          Amount: data.amount,
+          StageName: data.stage,
+          Probability: data.probability,
+          CloseDate: data.expectedCloseDate,
+          ...data.customFields
         });
 
       case 'hubspot':
-        return this?.hubspotRequest('POST', '/objects/deals', {
+        return this.hubspotRequest('POST', '/objects/deals', {
           properties: {
-            amount: data?.amount,
-            dealstage: data?.stage,
-            probability: data?.probability,
-            closedate: data?.expectedCloseDate,
-            ...data?.customFields
+            amount: data.amount,
+            dealstage: data.stage,
+            probability: data.probability,
+            closedate: data.expectedCloseDate,
+            ...data.customFields
           },
           associations: [
             {
-              to: { id: data?.contactId },
+              to: { id: data.contactId },
               types: [{ category: 'HUBSPOT_DEFINED', typeId: 3 }]
             }
           ]
@@ -209,14 +209,14 @@ class CRMService {
   public async createTicket(data: TicketData, provider: 'zendesk'): Promise<any> {
     switch (provider) {
       case 'zendesk':
-        return this?.zendeskRequest('POST', '/tickets', {
+        return this.zendeskRequest('POST', '/tickets', {
           ticket: {
-            requester_id: data?.contactId,
-            subject: data?.subject,
-            comment: { body: data?.description },
-            priority: data?.priority,
-            status: data?.status,
-            custom_fields: data?.customFields
+            requester_id: data.contactId,
+            subject: data.subject,
+            comment: { body: data.description },
+            priority: data.priority,
+            status: data.status,
+            custom_fields: data.customFields
           }
         });
 
@@ -240,7 +240,7 @@ class CRMService {
       };
       await this.createContact(contactData, provider);
     } catch (error) {
-      console?.error(`Failed to sync user to ${provider}:`, error);
+      console.error(`Failed to sync user to ${provider}:`, error);
       throw error;
     }
   }
@@ -248,9 +248,9 @@ class CRMService {
   // Batch Operations
   public async batchSyncUsers(users: IUser[], provider: 'salesforce' | 'hubspot' | 'zendesk'): Promise<void> {
     const batchSize = 50; // Adjust based on API limits
-    for (let i = 0; i < users?.length; i += batchSize) {
-      const batch = users?.slice(i, i + batchSize);
-      await Promise?.all(batch?.map(user => this?.syncUserToCRM(user, provider)));
+    for (let i = 0; i < users.length; i += batchSize) {
+      const batch = users.slice(i, i + batchSize);
+      await Promise.all(batch.map(user => this.syncUserToCRM(user, provider)));
     }
   }
 }

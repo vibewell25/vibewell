@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 interface Tab {
   id: string;
   label: string;
-  content: React?.ReactNode;
+  content: React.ReactNode;
 }
 
 interface TabsProps {

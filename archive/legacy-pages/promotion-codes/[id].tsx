@@ -8,7 +8,7 @@ import { fetchWithTimeout } from '../../src/utils/timeout-handler';
 
 const PromotionCodeDetail: NextPage = () => {
   const router = useRouter();
-  const { id } = router?.query as { id: string };
+  const { id } = router.query as { id: string };
   const [code, setCode] = useState('');
   const [description, setDescription] = useState('');
   const [discount, setDiscount] = useState(0);
@@ -21,11 +21,11 @@ const PromotionCodeDetail: NextPage = () => {
     const fetchPromotionCode = async () => {
       const res = await fetchWithTimeout(`/api/promotionCodes/${id}`);
       const data = await res.json();
-      setCode(data?.code);
-      setDescription(data?.description);
-      setDiscount(data?.discount);
-      setValidFrom(new Date(data?.validFrom).toISOString().substr(0,10));
-      setValidTo(new Date(data?.validTo).toISOString().substr(0,10));
+      setCode(data.code);
+      setDescription(data.description);
+      setDiscount(data.discount);
+      setValidFrom(new Date(data.validFrom).toISOString().substr(0,10));
+      setValidTo(new Date(data.validTo).toISOString().substr(0,10));
     };
     
     fetchPromotionCode();
@@ -63,7 +63,7 @@ const PromotionCodeDetail: NextPage = () => {
         <div className="space-x-2">
           <Button type="submit">Update</Button>
           <Button onClick={handleDelete}>Delete</Button>
-          <Button onClick={() => router?.back()}>Cancel</Button>
+          <Button onClick={() => router.back()}>Cancel</Button>
         </div>
       </form>
     </div>

@@ -37,10 +37,10 @@ const Loyalty: NextPage = () => {
     });
     const data = await res.json();
     if (res.ok) {
-      setMessage(`Redeemed ${tierId}, new balance ${data?.balance}`);
+      setMessage(`Redeemed ${tierId}, new balance ${data.balance}`);
       fetchData();
     } else {
-      setMessage(data?.error || 'Redeem failed');
+      setMessage(data.error || 'Redeem failed');
     }
   };
 
@@ -60,7 +60,7 @@ const Loyalty: NextPage = () => {
       {txs.length ? (
         txs.map(tx => (
           <Card key={tx.id} className="mb-2">
-            <div>{tx.type} {tx.points} pts for {tx.tier?.name || 'N/A'}</div>
+            <div>{tx.type} {tx.points} pts for {tx.tier.name || 'N/A'}</div>
           </Card>
         ))
       ) : (

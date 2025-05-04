@@ -8,7 +8,7 @@ import { fetchWithTimeout } from '../../src/utils/timeout-handler';
 
 const PayrollRecordDetail: NextPage = () => {
   const router = useRouter();
-  const { id } = router?.query as { id: string };
+  const { id } = router.query as { id: string };
   const [salary, setSalary] = useState(0);
   const [periodStart, setPeriodStart] = useState('');
   const [periodEnd, setPeriodEnd] = useState('');
@@ -19,9 +19,9 @@ const PayrollRecordDetail: NextPage = () => {
     const fetchRecord = async () => {
       const res = await fetchWithTimeout(`/api/payrollRecords/${id}`);
       const data = await res.json();
-      setSalary(data?.salary);
-      setPeriodStart(new Date(data?.periodStart).toISOString().substr(0,10));
-      setPeriodEnd(new Date(data?.periodEnd).toISOString().substr(0,10));
+      setSalary(data.salary);
+      setPeriodStart(new Date(data.periodStart).toISOString().substr(0,10));
+      setPeriodEnd(new Date(data.periodEnd).toISOString().substr(0,10));
     };
     
     fetchRecord();
@@ -57,7 +57,7 @@ const PayrollRecordDetail: NextPage = () => {
         <div className="space-x-2">
           <Button type="submit">Update</Button>
           <Button onClick={handleDelete}>Delete</Button>
-          <Button onClick={() => router?.back()}>Cancel</Button>
+          <Button onClick={() => router.back()}>Cancel</Button>
         </div>
       </form>
     </div>

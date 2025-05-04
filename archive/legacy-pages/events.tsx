@@ -13,8 +13,8 @@ const Events: NextPage = () => {
 
   const fetchEvents = async () => {
     const res = await fetchWithTimeout('/api/events');
-    const data = await res?.json();
-    setEvents(data?.events || []);
+    const data = await res.json();
+    setEvents(data.events || []);
   };
 
   useEffect(() => { fetchEvents(); }, []);
@@ -23,26 +23,26 @@ const Events: NextPage = () => {
     <div className="max-w-2xl mx-auto py-6">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Events</h1>
-        <Button onClick={() => router?.push('/events/create')}>Create Event</Button>
+        <Button onClick={() => router.push('/events/create')}>Create Event</Button>
       </div>
-      {events?.map(e => (
-        <Card key={e?.id} className="mb-4 flex justify-between items-center">
+      {events.map(e => (
+        <Card key={e.id} className="mb-4 flex justify-between items-center">
           <div>
-            <div className="font-semibold">{e?.title}</div>
-            <div>{new Date(e?.date).toLocaleString()}</div>
+            <div className="font-semibold">{e.title}</div>
+            <div>{new Date(e.date).toLocaleString()}</div>
           </div>
           <div className="space-x-2">
-            <Button onClick={() => router?.push(`/events/${e?.id}`)}>Details</Button>
+            <Button onClick={() => router.push(`/events/${e.id}`)}>Details</Button>
             <Button onClick={async () => {
               if (confirm('Delete this event?')) {
-                await fetchWithTimeout(`/api/events/${e?.id}`, { method: 'DELETE' });
+                await fetchWithTimeout(`/api/events/${e.id}`, { method: 'DELETE' });
                 fetchEvents();
               }
             }}>Delete</Button>
           </div>
         </Card>
       ))}
-      {events?.length === 0 && <p>No events.</p>}
+      {events.length === 0 && <p>No events.</p>}
     </div>
   );
 };

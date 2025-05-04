@@ -6,7 +6,7 @@ import { Button } from '../components/ui/Button';
 import { LiveAnnouncer } from '../components/ui/accessibility/LiveAnnouncer';
 import { Announce } from '../components/ui/accessibility/LiveAnnouncer';
 
-const AccessibilityPage: React?.FC = () => {
+const AccessibilityPage: React.FC = () => {
   const {
     preferences,
     supportedLanguages,
@@ -56,14 +56,14 @@ const AccessibilityPage: React?.FC = () => {
                 </label>
                 <select
                   id="language"
-                  value={preferences?.language}
-                  onChange={(e) => setLanguage(e?.target.value)}
+                  value={preferences.language}
+                  onChange={(e) => setLanguage(e.target.value)}
                   className="w-full rounded border border-gray-300 px-3 py-2"
                   aria-describedby="languageDescription"
                 >
-                  {supportedLanguages?.map((lang) => (
-                    <option key={lang?.code} value={lang?.code}>
-                      {lang?.name} {lang?.isRTL ? '(RTL)' : ''}
+                  {supportedLanguages.map((lang) => (
+                    <option key={lang.code} value={lang.code}>
+                      {lang.name} {lang.isRTL ? '(RTL)' : ''}
                     </option>
                   ))}
                 </select>
@@ -87,12 +87,12 @@ const AccessibilityPage: React?.FC = () => {
                 </div>
                 <Switch
                   id="highContrast"
-                  checked={preferences?.highContrast}
+                  checked={preferences.highContrast}
                   onCheckedChange={handleToggleChange('highContrast')}
                   aria-describedby="highContrastDescription"
                 />
                 <span id="highContrastDescription" className="sr-only">
-                  {preferences?.highContrast
+                  {preferences.highContrast
                     ? 'High contrast mode is enabled'
                     : 'High contrast mode is disabled'}
                 </span>
@@ -109,12 +109,12 @@ const AccessibilityPage: React?.FC = () => {
                 </div>
                 <Switch
                   id="largeText"
-                  checked={preferences?.largeText}
+                  checked={preferences.largeText}
                   onCheckedChange={handleToggleChange('largeText')}
                   aria-describedby="largeTextDescription"
                 />
                 <span id="largeTextDescription" className="sr-only">
-                  {preferences?.largeText
+                  {preferences.largeText
                     ? 'Large text mode is enabled'
                     : 'Large text mode is disabled'}
                 </span>
@@ -135,12 +135,12 @@ const AccessibilityPage: React?.FC = () => {
                 </div>
                 <Switch
                   id="reduceMotion"
-                  checked={preferences?.reduceMotion}
+                  checked={preferences.reduceMotion}
                   onCheckedChange={handleToggleChange('reduceMotion')}
                   aria-describedby="reduceMotionDescription"
                 />
                 <span id="reduceMotionDescription" className="sr-only">
-                  {preferences?.reduceMotion
+                  {preferences.reduceMotion
                     ? 'Reduced motion is enabled'
                     : 'Reduced motion is disabled'}
                 </span>
@@ -157,12 +157,12 @@ const AccessibilityPage: React?.FC = () => {
                 </div>
                 <Switch
                   id="keyboardFocusVisible"
-                  checked={preferences?.keyboardFocusVisible}
+                  checked={preferences.keyboardFocusVisible}
                   onCheckedChange={handleToggleChange('keyboardFocusVisible')}
                   aria-describedby="keyboardFocusDescription"
                 />
                 <span id="keyboardFocusDescription" className="sr-only">
-                  {preferences?.keyboardFocusVisible
+                  {preferences.keyboardFocusVisible
                     ? 'Keyboard focus indicator is enabled'
                     : 'Keyboard focus indicator is disabled'}
                 </span>
@@ -197,8 +197,8 @@ const AccessibilityPage: React?.FC = () => {
           <div className="prose max-w-none">
             <p>
               If you encounter any accessibility issues or need assistance, please contact us at
-              <a href="mailto:accessibility@vibewell?.com" className="mx-1">
-                accessibility@vibewell?.com
+              <a href="mailto:accessibility@vibewell.com" className="mx-1">
+                accessibility@vibewell.com
               </a>
               or call our support line at
               <a href="tel:+18001234567" className="mx-1">

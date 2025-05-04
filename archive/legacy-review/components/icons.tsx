@@ -72,9 +72,9 @@ export interface IconProps extends SVGProps<SVGSVGElement> {
 }
 
 // Create a function to enhance heroicon components with size prop
-const enhanceIconWithSize = (Icon: React?.FC<SVGProps<SVGSVGElement>>) => {
+const enhanceIconWithSize = (Icon: React.FC<SVGProps<SVGSVGElement>>) => {
   return ({ size, ...props }: IconProps) => (
-    <Icon width={size || props?.width || 24} height={size || props?.height || 24} {...props} />
+    <Icon width={size || props.width || 24} height={size || props.height || 24} {...props} />
   );
 };
 

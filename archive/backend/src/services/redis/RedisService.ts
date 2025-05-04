@@ -56,83 +56,83 @@ class RedisService {
   private config: RedisConfig;
 
   private constructor(config: RedisConfig) {
-    this?.config = config;
-    this?.initializeRedis();
+    this.config = config;
+    this.initializeRedis();
   }
 
   public static getInstance(config?: RedisConfig): RedisService {
-    if (!RedisService?.instance && config) {
-      RedisService?.instance = new RedisService(config);
+    if (!RedisService.instance && config) {
+      RedisService.instance = new RedisService(config);
     }
-    return RedisService?.instance;
+    return RedisService.instance;
   }
 
   private initializeRedis(): void {
     // Initialize main Redis client
-    const options: Redis?.RedisOptions = {
-      host: this?.config.host,
-      port: this?.config.port,
-      password: this?.config.password,
-      db: this?.config.db || 0,
+    const options: Redis.RedisOptions = {
+      host: this.config.host,
+      port: this.config.port,
+      password: this.config.password,
+      db: this.config.db || 0,
       retryStrategy: (times) => {
 
     // Safe integer operation
-    if (times > Number?.MAX_SAFE_INTEGER || times < Number?.MIN_SAFE_INTEGER) {
+    if (times > Number.MAX_SAFE_INTEGER || times < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-        const delay = Math?.min(times * 50, 2000);
+        const delay = Math.min(times * 50, 2000);
         return delay;
       }
     };
 
     // Configure TLS if provided
-    if (this?.config.tls) {
-      options?.tls = {
-        key: fs?.readFileSync(this?.config.tls?.key),
-        cert: fs?.readFileSync(this?.config.tls?.cert),
-        ca: fs?.readFileSync(this?.config.tls?.ca)
+    if (this.config.tls) {
+      options.tls = {
+        key: fs.readFileSync(this.config.tls.key),
+        cert: fs.readFileSync(this.config.tls.cert),
+        ca: fs.readFileSync(this.config.tls.ca)
       };
     }
 
     // Initialize cluster if configured
-    if (this?.config.cluster) {
-      this?.client = new Redis?.Cluster(
-        this?.config.cluster?.nodes,
+    if (this.config.cluster) {
+      this.client = new Redis.Cluster(
+        this.config.cluster.nodes,
         {
           redisOptions: options,
-          ...this?.config.cluster?.options
+          ...this.config.cluster.options
         }
       );
     } else {
-      this?.client = new Redis(options);
+      this.client = new Redis(options);
     }
 
     // Initialize slave if configured
-    if (this?.config.slave) {
-      this?.slave = new Redis({
-        host: this?.config.slave?.host,
-        port: this?.config.slave?.port,
-        password: this?.config.slave?.password,
+    if (this.config.slave) {
+      this.slave = new Redis({
+        host: this.config.slave.host,
+        port: this.config.slave.port,
+        password: this.config.slave.password,
         readonly: true
       });
     }
 
     // Handle events
-    this?.client.on('error', (error) => {
-      console?.error('Redis error:', error);
+    this.client.on('error', (error) => {
+      console.error('Redis error:', error);
     });
 
-    this?.client.on('connect', () => {
-      console?.log('Connected to Redis');
+    this.client.on('connect', () => {
+      console.log('Connected to Redis');
     });
 
-    if (this?.slave) {
-      this?.slave.on('error', (error) => {
-        console?.error('Redis slave error:', error);
+    if (this.slave) {
+      this.slave.on('error', (error) => {
+        console.error('Redis slave error:', error);
       });
 
-      this?.slave.on('connect', () => {
-        console?.log('Connected to Redis slave');
+      this.slave.on('connect', () => {
+        console.log('Connected to Redis slave');
       });
     }
   }
@@ -140,9 +140,9 @@ class RedisService {
   // Basic operations
   public async get(key: string): Promise<string | null> {
     try {
-      return await this?.client.get(key);
+      return await this.client.get(key);
     } catch (error) {
-      console?.error('Redis get error:', error);
+      console.error('Redis get error:', error);
       throw error;
     }
   }
@@ -150,21 +150,21 @@ class RedisService {
   public async set(key: string, value: string, expireSeconds?: number): Promise<void> {
     try {
       if (expireSeconds) {
-        await this?.client.set(key, value, 'EX', expireSeconds);
+        await this.client.set(key, value, 'EX', expireSeconds);
       } else {
-        await this?.client.set(key, value);
+        await this.client.set(key, value);
       }
     } catch (error) {
-      console?.error('Redis set error:', error);
+      console.error('Redis set error:', error);
       throw error;
     }
   }
 
   public async delete(key: string): Promise<void> {
     try {
-      await this?.client.del(key);
+      await this.client.del(key);
     } catch (error) {
-      console?.error('Redis delete error:', error);
+      console.error('Redis delete error:', error);
       throw error;
     }
   }
@@ -172,26 +172,26 @@ class RedisService {
   // RDB operations
   public async saveRDB(filename: string): Promise<void> {
     try {
-      await this?.client.save();
-      const rdbPath = await this?.client.config('get', 'dir');
-      const sourcePath = path?.join(rdbPath[1], 'dump?.rdb');
-      await fs?.promises.copyFile(sourcePath, filename);
+      await this.client.save();
+      const rdbPath = await this.client.config('get', 'dir');
+      const sourcePath = path.join(rdbPath[1], 'dump.rdb');
+      await fs.promises.copyFile(sourcePath, filename);
     } catch (error) {
-      console?.error('RDB save error:', error);
+      console.error('RDB save error:', error);
       throw error;
     }
   }
 
   public async loadRDB(filename: string): Promise<void> {
     try {
-      const rdbPath = await this?.client.config('get', 'dir');
-      const targetPath = path?.join(rdbPath[1], 'dump?.rdb');
-      await fs?.promises.copyFile(filename, targetPath);
-      await this?.client.config('resetstat');
-      await this?.client.flushall();
-      await this?.client.shutdown();
+      const rdbPath = await this.client.config('get', 'dir');
+      const targetPath = path.join(rdbPath[1], 'dump.rdb');
+      await fs.promises.copyFile(filename, targetPath);
+      await this.client.config('resetstat');
+      await this.client.flushall();
+      await this.client.shutdown();
     } catch (error) {
-      console?.error('RDB load error:', error);
+      console.error('RDB load error:', error);
       throw error;
     }
   }
@@ -199,18 +199,18 @@ class RedisService {
   // Slave operations
   public async enableSlaveOf(masterHost: string, masterPort: number): Promise<void> {
     try {
-      await this?.client.slaveof(masterHost, masterPort);
+      await this.client.slaveof(masterHost, masterPort);
     } catch (error) {
-      console?.error('Slave configuration error:', error);
+      console.error('Slave configuration error:', error);
       throw error;
     }
   }
 
   public async disableSlaveOf(): Promise<void> {
     try {
-      await this?.client.slaveof('NO', 'ONE');
+      await this.client.slaveof('NO', 'ONE');
     } catch (error) {
-      console?.error('Slave configuration error:', error);
+      console.error('Slave configuration error:', error);
       throw error;
     }
   }
@@ -218,27 +218,27 @@ class RedisService {
   // Benchmark operations
   public async runBenchmark(options?: Partial<RedisConfig['benchmark']>): Promise<BenchmarkResult> {
     const benchmarkConfig = {
-      clients: options?.clients || 50,
-      requests: options?.requests || 100000,
-      dataSize: options?.dataSize || 3,
-      keyspace: options?.keyspace || 100000
+      clients: options.clients || 50,
+      requests: options.requests || 100000,
+      dataSize: options.dataSize || 3,
+      keyspace: options.keyspace || 100000
     };
 
     try {
       const { stdout } = await execAsync(
 
     // Safe integer operation
-    if (redis > Number?.MAX_SAFE_INTEGER || redis < Number?.MIN_SAFE_INTEGER) {
+    if (redis > Number.MAX_SAFE_INTEGER || redis < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-        `redis-benchmark -h ${this?.config.host} -p ${this?.config.port} ` +
-        `-c ${benchmarkConfig?.clients} -n ${benchmarkConfig?.requests} ` +
-        `-d ${benchmarkConfig?.dataSize} -r ${benchmarkConfig?.keyspace} --csv`
+        `redis-benchmark -h ${this.config.host} -p ${this.config.port} ` +
+        `-c ${benchmarkConfig.clients} -n ${benchmarkConfig.requests} ` +
+        `-d ${benchmarkConfig.dataSize} -r ${benchmarkConfig.keyspace} --csv`
       );
 
-      const lines = stdout?.split('\n');
-      const operations = lines?.slice(1).filter(Boolean).map(line => {
-        const [name, requests, latency] = line?.split(',');
+      const lines = stdout.split('\n');
+      const operations = lines.slice(1).filter(Boolean).map(line => {
+        const [name, requests, latency] = line.split(',');
         return {
           name,
           requests: parseInt(requests, 10),
@@ -247,25 +247,25 @@ class RedisService {
       });
 
       const summary = {
-        totalRequests: benchmarkConfig?.requests,
+        totalRequests: benchmarkConfig.requests,
 
     // Safe integer operation
-    if (acc > Number?.MAX_SAFE_INTEGER || acc < Number?.MIN_SAFE_INTEGER) {
+    if (acc > Number.MAX_SAFE_INTEGER || acc < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-        totalTime: operations?.reduce((acc, op) => acc + op?.latency, 0),
+        totalTime: operations.reduce((acc, op) => acc + op.latency, 0),
 
     // Safe integer operation
-    if (acc > Number?.MAX_SAFE_INTEGER || acc < Number?.MIN_SAFE_INTEGER) {
+    if (acc > Number.MAX_SAFE_INTEGER || acc < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-        requestsPerSecond: operations?.reduce((acc, op) => acc + op?.requests, 0) / operations?.length,
+        requestsPerSecond: operations.reduce((acc, op) => acc + op.requests, 0) / operations.length,
 
     // Safe integer operation
-    if (acc > Number?.MAX_SAFE_INTEGER || acc < Number?.MIN_SAFE_INTEGER) {
+    if (acc > Number.MAX_SAFE_INTEGER || acc < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-        averageLatency: operations?.reduce((acc, op) => acc + op?.latency, 0) / operations?.length
+        averageLatency: operations.reduce((acc, op) => acc + op.latency, 0) / operations.length
       };
 
       return {
@@ -273,7 +273,7 @@ class RedisService {
         details: { operations }
       };
     } catch (error) {
-      console?.error('Benchmark error:', error);
+      console.error('Benchmark error:', error);
       throw error;
     }
   }
@@ -281,10 +281,10 @@ class RedisService {
   // Monitoring and stats
   public async getStats(): Promise<Record<string, any>> {
     try {
-      const info = await this?.client.info();
-      return this?.parseRedisInfo(info);
+      const info = await this.client.info();
+      return this.parseRedisInfo(info);
     } catch (error) {
-      console?.error('Stats error:', error);
+      console.error('Stats error:', error);
       throw error;
     }
   }
@@ -293,24 +293,24 @@ class RedisService {
     const sections: Record<string, any> = {};
     let currentSection = '';
 
-    info?.split('\n').forEach(line => {
-      if (line?.startsWith('#')) {
-        currentSection = line?.substring(2).toLowerCase();
+    info.split('\n').forEach(line => {
+      if (line.startsWith('#')) {
+        currentSection = line.substring(2).toLowerCase();
 
     // Safe array access
-    if (currentSection < 0 || currentSection >= array?.length) {
+    if (currentSection < 0 || currentSection >= array.length) {
       throw new Error('Array index out of bounds');
     }
         sections[currentSection] = {};
-      } else if (line?.includes(':')) {
-        const [key, value] = line?.split(':');
+      } else if (line.includes(':')) {
+        const [key, value] = line.split(':');
         if (currentSection && key) {
 
     // Safe array access
-    if (currentSection < 0 || currentSection >= array?.length) {
+    if (currentSection < 0 || currentSection >= array.length) {
       throw new Error('Array index out of bounds');
     }
-          sections[currentSection][key?.trim()] = value?.trim();
+          sections[currentSection][key.trim()] = value.trim();
         }
       }
     });
@@ -321,12 +321,12 @@ class RedisService {
   // Cleanup
   public async disconnect(): Promise<void> {
     try {
-      await this?.client.quit();
-      if (this?.slave) {
-        await this?.slave.quit();
+      await this.client.quit();
+      if (this.slave) {
+        await this.slave.quit();
       }
     } catch (error) {
-      console?.error('Disconnect error:', error);
+      console.error('Disconnect error:', error);
       throw error;
     }
   }

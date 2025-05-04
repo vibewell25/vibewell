@@ -9,7 +9,7 @@ type Service = { id: string; name: string; price: number; duration: number };
 
 const Book: NextPage = () => {
   const router = useRouter();
-  const { serviceId } = router?.query;
+  const { serviceId } = router.query;
   const [service, setService] = useState<Service | null>(null);
   const [date, setDate] = useState<string>('');
   const [special, setSpecial] = useState<string>('');
@@ -19,13 +19,13 @@ const Book: NextPage = () => {
   useEffect(() => {
     if (!serviceId) return;
     fetch(`/api/services/${serviceId}`)
-      .then(res => res?.json())
-      .then(data => setService(data?.service))
+      .then(res => res.json())
+      .then(data => setService(data.service))
       .catch(() => setError('Failed to load service'));
   }, [serviceId]);
 
   const handleSubmit = async (e: FormEvent) => {
-    e?.preventDefault();
+    e.preventDefault();
     const start = Date.now();
     
     if (!service || !date) {
@@ -59,15 +59,15 @@ const Book: NextPage = () => {
       <h1 className="text-2xl font-bold mb-4">Book Service</h1>
       {service ? (
         <Card className="p-4">
-          <div className="mb-2"><strong>{service?.name}</strong> (${service?.price.toFixed(2)})</div>
+          <div className="mb-2"><strong>{service.name}</strong> (${service.price.toFixed(2)})</div>
           <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
             <div>
               <label className="block mb-1">Appointment Date</label>
-              <Input type="datetime-local" value={date} onChange={e => setDate(e?.target.value)} />
+              <Input type="datetime-local" value={date} onChange={e => setDate(e.target.value)} />
             </div>
             <div>
               <label className="block mb-1">Special Requests</label>
-              <Input type="text" value={special} onChange={e => setSpecial(e?.target.value)} placeholder="Any notes..." />
+              <Input type="text" value={special} onChange={e => setSpecial(e.target.value)} placeholder="Any notes..." />
             </div>
             {error && <p className="text-red-600">{error}</p>}
             <Button type="submit" disabled={loading}>{loading ? 'Booking...' : 'Confirm Booking'}</Button>

@@ -14,7 +14,7 @@ import {
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { PractitionerList } from '../../components/Practitioners/PractitionerList';
-import { PractitionerService } from '../../services/practitioner?.service';
+import { PractitionerService } from '../../services/practitioner.service';
 
 interface Practitioner {
   id: string;
@@ -43,29 +43,29 @@ export default function PractitionersPage({
   const [selectedSpecialization, setSelectedSpecialization] = useState('');
   const router = useRouter();
 
-  const filteredPractitioners = practitioners?.filter((practitioner) => {
-    const matchesSearch = practitioner?.user.name?.toLowerCase().includes(searchTerm?.toLowerCase());
+  const filteredPractitioners = practitioners.filter((practitioner) => {
+    const matchesSearch = practitioner.user.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesSpecialization =
-      !selectedSpecialization || practitioner?.specialization.includes(selectedSpecialization);
+      !selectedSpecialization || practitioner.specialization.includes(selectedSpecialization);
     return matchesSearch && matchesSpecialization;
   });
 
   const handleViewProfile = (id: string) => {
-    router?.push(`/practitioners/${id}`);
+    router.push(`/practitioners/${id}`);
   };
 
   const handleBookService = (id: string) => {
-    router?.push(`/booking?practitionerId=${id}`);
+    router.push(`/booking?practitionerId=${id}`);
   };
 
   return (
-    <Container maxW="container?.xl" py={8}>
+    <Container maxW="container.xl" py={8}>
       <VStack spacing={8} align="stretch">
         <Box>
           <Heading size="xl" mb={2}>
             Our Practitioners
           </Heading>
-          <Text color="gray?.600">
+          <Text color="gray.600">
             Meet our experienced team of beauty and wellness professionals
           </Text>
         </Box>
@@ -75,15 +75,15 @@ export default function PractitionersPage({
             <Input
               placeholder="Search practitioners..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e?.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Select
               placeholder="All Specializations"
               value={selectedSpecialization}
-              onChange={(e) => setSelectedSpecialization(e?.target.value)}
+              onChange={(e) => setSelectedSpecialization(e.target.value)}
               maxW="200px"
             >
-              {specializations?.map((spec) => (
+              {specializations.map((spec) => (
                 <option key={spec} value={spec}>
                   {spec}
                 </option>
@@ -92,15 +92,15 @@ export default function PractitionersPage({
           </HStack>
         </Box>
 
-        {filteredPractitioners?.length > 0 ? (
+        {filteredPractitioners.length > 0 ? (
           <PractitionerList
             practitioners={filteredPractitioners}
             onViewProfile={handleViewProfile}
             onBookService={handleBookService}
           />
         ) : (
-          <Box textAlign="center" py={10} px={6} bg="gray?.50" borderRadius="lg">
-            <Text color="gray?.600">No practitioners found matching your criteria</Text>
+          <Box textAlign="center" py={10} px={6} bg="gray.50" borderRadius="lg">
+            <Text color="gray.600">No practitioners found matching your criteria</Text>
             <Button
               mt={4}
               colorScheme="blue"

@@ -1,14 +1,14 @@
 import React from 'react';
 
-interface AccessibleButtonProps extends React?.ButtonHTMLAttributes<HTMLButtonElement> {
+interface AccessibleButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
-  leftIcon?: React?.ReactNode;
-  rightIcon?: React?.ReactNode;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
 }
 
-export const AccessibleButton: React?.FC<AccessibleButtonProps> = ({
+export const AccessibleButton: React.FC<AccessibleButtonProps> = ({
   children,
   variant = 'primary',
   size = 'md',

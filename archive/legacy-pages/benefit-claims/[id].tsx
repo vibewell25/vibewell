@@ -6,7 +6,7 @@ import Button from '../../components/ui/Button';
 
 const BenefitClaimDetail: NextPage = () => {
   const router = useRouter();
-  const { id } = router?.query as { id: string };
+  const { id } = router.query as { id: string };
   const [type, setType] = useState('');
   const [amount, setAmount] = useState(0);
   const [status, setStatus] = useState('');
@@ -15,17 +15,17 @@ const BenefitClaimDetail: NextPage = () => {
   useEffect(() => {
     if (!id) return;
     fetch(`/api/benefitClaims/${id}`)
-      .then(res => res?.json())
+      .then(res => res.json())
       .then((data: any) => {
-        setType(data?.type);
-        setAmount(data?.amount);
-        setStatus(data?.status);
-        setProcessedAt(data?.processedAt || '');
+        setType(data.type);
+        setAmount(data.amount);
+        setStatus(data.status);
+        setProcessedAt(data.processedAt || '');
       });
   }, [id]);
 
   const handleUpdate = async (e: FormEvent) => {
-    e?.preventDefault();
+    e.preventDefault();
     const start = Date.now();
     try {
       await fetch(`/api/benefitClaims/${id}`, {
@@ -62,12 +62,12 @@ const BenefitClaimDetail: NextPage = () => {
       <form onSubmit={handleUpdate} className="space-y-2">
         <div>Type: {type}</div>
         <div>Amount: {amount}</div>
-        <Input placeholder="Status" value={status} onChange={e => setStatus(e?.target.value)} />
-        <Input type="datetime-local" placeholder="Processed At" value={processedAt} onChange={e => setProcessedAt(e?.target.value)} />
+        <Input placeholder="Status" value={status} onChange={e => setStatus(e.target.value)} />
+        <Input type="datetime-local" placeholder="Processed At" value={processedAt} onChange={e => setProcessedAt(e.target.value)} />
         <div className="space-x-2">
           <Button type="submit">Update</Button>
           <Button type="button" onClick={handleDelete}>Delete</Button>
-          <Button type="button" onClick={() => router?.back()}>Cancel</Button>
+          <Button type="button" onClick={() => router.back()}>Cancel</Button>
         </div>
       </form>
     </div>

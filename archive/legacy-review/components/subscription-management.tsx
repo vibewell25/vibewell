@@ -33,15 +33,15 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
   }, []);
 
   const fetchSubscription = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const response = await fetch('/api/subscriptions/me');
-      if (!response?.ok) throw new Error('Failed to fetch subscription');
-      const data = await response?.json();
+      if (!response.ok) throw new Error('Failed to fetch subscription');
+      const data = await response.json();
       setSubscription(data);
     } catch (error) {
-      console?.error('Error fetching subscription:', error);
+      console.error('Error fetching subscription:', error);
       toast({
         title: 'Error',
         description: 'Failed to load subscription details',
@@ -53,8 +53,8 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
   };
 
   const handleCancelSubscription = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!subscription) return;
 
     try {
@@ -63,9 +63,9 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
         method: 'POST',
       });
 
-      if (!response?.ok) throw new Error('Failed to cancel subscription');
+      if (!response.ok) throw new Error('Failed to cancel subscription');
 
-      const data = await response?.json();
+      const data = await response.json();
       setSubscription(data);
 
       toast({
@@ -73,7 +73,7 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
         description: 'Your subscription will end at the current billing period',
       });
     } catch (error) {
-      console?.error('Error cancelling subscription:', error);
+      console.error('Error cancelling subscription:', error);
       toast({
         title: 'Error',
         description: 'Failed to cancel subscription',
@@ -85,8 +85,8 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
   };
 
   const handleReactivateSubscription = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!subscription) return;
 
     try {
@@ -94,9 +94,9 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
         method: 'POST',
       });
 
-      if (!response?.ok) throw new Error('Failed to reactivate subscription');
+      if (!response.ok) throw new Error('Failed to reactivate subscription');
 
-      const data = await response?.json();
+      const data = await response.json();
       setSubscription(data);
 
       toast({
@@ -104,7 +104,7 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
         description: 'Your subscription has been successfully reactivated',
       });
     } catch (error) {
-      console?.error('Error reactivating subscription:', error);
+      console.error('Error reactivating subscription:', error);
       toast({
         title: 'Error',
         description: 'Failed to reactivate subscription',
@@ -116,7 +116,7 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Icons?.Spinner className="h-8 w-8 animate-spin" />
+        <Icons.Spinner className="h-8 w-8 animate-spin" />
       </div>
     );
   }
@@ -131,7 +131,7 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
           <p className="mb-4 text-gray-600">
             You don't have an active subscription. Choose a plan to get started.
           </p>
-          <Button onClick={() => (window?.location.href = '/pricing')}>View Plans</Button>
+          <Button onClick={() => (window.location.href = '/pricing')}>View Plans</Button>
         </CardContent>
       </Card>
     );
@@ -146,21 +146,21 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-medium">{subscription?.plan.name}</h3>
+              <h3 className="font-medium">{subscription.plan.name}</h3>
               <p className="text-sm text-gray-600">
-                ${subscription?.plan.price}/{subscription?.plan.interval}
+                ${subscription.plan.price}/{subscription.plan.interval}
               </p>
             </div>
-            <Badge variant={subscription?.status === 'active' ? 'success' : 'warning'}>
-              {subscription?.status === 'active' ? 'Active' : 'Cancelled'}
+            <Badge variant={subscription.status === 'active' ? 'success' : 'warning'}>
+              {subscription.status === 'active' ? 'Active' : 'Cancelled'}
             </Badge>
           </div>
 
           <div className="text-sm text-gray-600">
-            {subscription?.status === 'active' ? (
+            {subscription.status === 'active' ? (
               <>
                 <p>
-                  Next billing date: {new Date(subscription?.currentPeriodEnd).toLocaleDateString()}
+                  Next billing date: {new Date(subscription.currentPeriodEnd).toLocaleDateString()}
                 </p>
                 <Button
                   variant="outline"
@@ -175,7 +175,7 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
               <>
                 <p>
                   Your subscription will end on{' '}
-                  {new Date(subscription?.currentPeriodEnd).toLocaleDateString()}
+                  {new Date(subscription.currentPeriodEnd).toLocaleDateString()}
                 </p>
                 <Button onClick={handleReactivateSubscription} className="mt-4">
                   Reactivate Subscription
@@ -186,7 +186,7 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
 
           <div className="mt-6 border-t border-gray-200 pt-6">
             <h4 className="mb-2 font-medium">Billing History</h4>
-            <Button variant="outline" onClick={() => (window?.location.href = '/billing')}>
+            <Button variant="outline" onClick={() => (window.location.href = '/billing')}>
               View Billing History
             </Button>
           </div>

@@ -35,7 +35,7 @@ const buttonVariants = cva(
 );
 
 export interface ButtonProps
-  extends React?.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
@@ -43,9 +43,9 @@ export interface ButtonProps
 /**
  * Primary button component for user interaction
  * @param {ButtonProps} props - The button props
- * @returns {React?.ReactElement} The Button component
+ * @returns {React.ReactElement} The Button component
  */
-const Button = React?.forwardRef<HTMLButtonElement, ButtonProps>(
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? 'slot' : 'button';
     return (
@@ -54,6 +54,6 @@ const Button = React?.forwardRef<HTMLButtonElement, ButtonProps>(
   },
 );
 
-Button?.displayName = 'Button';
+Button.displayName = 'Button';
 
 export { Button, buttonVariants };

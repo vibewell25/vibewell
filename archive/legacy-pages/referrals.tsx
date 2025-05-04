@@ -14,7 +14,7 @@ const Referrals: NextPage = () => {
     const fetchReferralCode = async () => {
       const res = await fetchWithTimeout('/api/referrals/code');
       const data = await res.json();
-      setCode(data?.referralCode);
+      setCode(data.referralCode);
     };
     
     fetchReferralCode();
@@ -27,8 +27,8 @@ const Referrals: NextPage = () => {
       body: JSON.stringify({ code: input })
     });
     const data = await res.json();
-    if (res.ok) setMsg(`Granted ${data?.rewardPoints} points!`);
-    else setMsg(data?.error);
+    if (res.ok) setMsg(`Granted ${data.rewardPoints} points!`);
+    else setMsg(data.error);
   };
 
   return (

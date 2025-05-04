@@ -13,7 +13,7 @@ interface FormProps {
  * @component
  * @example
  * ```tsx
- * <Form onSuccess={(data) => console?.log(data)} />
+ * <Form onSuccess={(data) => console.log(data)} />
  * ```
  */
 export function Form({ onSuccess }: FormProps) {
@@ -27,14 +27,14 @@ export function Form({ onSuccess }: FormProps) {
     // Use the centralized form validation utility
     const formData = { email, password };
     const validationResult = validateForm(formData);
-    setErrors(validationResult?.errors);
-    return validationResult?.isValid;
+    setErrors(validationResult.errors);
+    return validationResult.isValid;
   };
 
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent) => {
-    e?.preventDefault();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
+    e.preventDefault();
 
     if (!validateFormData()) {
       return;
@@ -48,23 +48,23 @@ export function Form({ onSuccess }: FormProps) {
         headers: addTokenToHeaders({
           'Content-Type': 'application/json',
         }),
-        body: JSON?.stringify({ email, password }),
+        body: JSON.stringify({ email, password }),
       });
 
-      const data = await response?.json();
+      const data = await response.json();
 
-      if (response?.ok) {
+      if (response.ok) {
         if (onSuccess) {
           onSuccess(data);
         }
         setEmail('');
         setPassword('');
       } else {
-        setErrors({ form: data?.message || 'Form submission failed' });
+        setErrors({ form: data.message || 'Form submission failed' });
       }
     } catch (error) {
       setErrors({ form: 'An error occurred during submission' });
-      console?.error('Form submission error:', error);
+      console.error('Form submission error:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -83,14 +83,14 @@ export function Form({ onSuccess }: FormProps) {
           id="email"
           type="email"
           value={email}
-          onChange={(e) => setEmail(e?.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-          aria-invalid={!!errors?.email}
-          aria-describedby={errors?.email ? 'email-error' : undefined}
+          aria-invalid={!!errors.email}
+          aria-describedby={errors.email ? 'email-error' : undefined}
         />
-        {errors?.email && (
+        {errors.email && (
           <span id="email-error" className="text-sm text-red-500" role="alert">
-            {errors?.email}
+            {errors.email}
           </span>
         )}
       </div>
@@ -103,21 +103,21 @@ export function Form({ onSuccess }: FormProps) {
           id="password"
           type="password"
           value={password}
-          onChange={(e) => setPassword(e?.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-          aria-invalid={!!errors?.password}
-          aria-describedby={errors?.password ? 'password-error' : undefined}
+          aria-invalid={!!errors.password}
+          aria-describedby={errors.password ? 'password-error' : undefined}
         />
-        {errors?.password && (
+        {errors.password && (
           <span id="password-error" className="text-sm text-red-500" role="alert">
-            {errors?.password}
+            {errors.password}
           </span>
         )}
       </div>
 
-      {errors?.form && (
+      {errors.form && (
         <div className="text-sm text-red-500" role="alert">
-          {errors?.form}
+          {errors.form}
         </div>
       )}
 

@@ -7,7 +7,7 @@ interface LiveAnnouncerContextType {
 }
 
 interface LiveAnnouncerProps {
-  children: React?.ReactNode;
+  children: React.ReactNode;
 }
 
 // Create context for the live announcer
@@ -41,7 +41,7 @@ export function LiveAnnouncerProvider({ children }: LiveAnnouncerProps) {
     // so we maintain announcements for a short period to ensure they're read
     setTimeout(() => {
       setAnnouncements((prevAnnouncements) =>
-        prevAnnouncements?.filter((a) => a?.message !== message),
+        prevAnnouncements.filter((a) => a.message !== message),
       );
     }, 10000);
   }, []);
@@ -52,7 +52,7 @@ export function LiveAnnouncerProvider({ children }: LiveAnnouncerProps) {
   }, []);
 
   return (
-    <LiveAnnouncerContext?.Provider value={{ announce, clear }}>
+    <LiveAnnouncerContext.Provider value={{ announce, clear }}>
       {children}
 
       {/* Polite announcements */}
@@ -73,9 +73,9 @@ export function LiveAnnouncerProvider({ children }: LiveAnnouncerProps) {
         }}
       >
         {announcements
-          .filter((a) => a?.politeness === 'polite')
+          .filter((a) => a.politeness === 'polite')
           .map((a) => (
-            <div key={a?.id}>{a?.message}</div>
+            <div key={a.id}>{a.message}</div>
           ))}
       </div>
 
@@ -97,12 +97,12 @@ export function LiveAnnouncerProvider({ children }: LiveAnnouncerProps) {
         }}
       >
         {announcements
-          .filter((a) => a?.politeness === 'assertive')
+          .filter((a) => a.politeness === 'assertive')
           .map((a) => (
-            <div key={a?.id}>{a?.message}</div>
+            <div key={a.id}>{a.message}</div>
           ))}
       </div>
-    </LiveAnnouncerContext?.Provider>
+    </LiveAnnouncerContext.Provider>
   );
 }
 
@@ -129,7 +129,7 @@ export function Announce({
 }: {
   message: string;
   politeness?: 'polite' | 'assertive';
-  children?: React?.ReactNode;
+  children?: React.ReactNode;
 }) {
   const { announce } = useLiveAnnouncer();
 
@@ -155,8 +155,8 @@ export function AnnounceFormErrors({
   const { announce } = useLiveAnnouncer();
 
   useEffect(() => {
-    if (errors && Object?.keys(errors).length > 0) {
-      const errorMessages = Object?.values(errors).join('. ');
+    if (errors && Object.keys(errors).length > 0) {
+      const errorMessages = Object.values(errors).join('. ');
       const announcement = `Form contains errors: ${errorMessages}`;
       announce(announcement, politeness);
     }

@@ -44,20 +44,20 @@ const columns: ColumnDef<User & { subscriptions: Subscription[]; bookings: Booki
     accessorKey: 'subscriptions',
     header: 'Subscription Status',
     cell: ({ row }) => {
-      const subscriptions = row?.original.subscriptions;
-      const activeSubscription = subscriptions?.find((sub) => sub?.status === 'active');
+      const subscriptions = row.original.subscriptions;
+      const activeSubscription = subscriptions.find((sub) => sub.status === 'active');
       return activeSubscription ? 'Active' : 'Inactive';
     },
   },
   {
     accessorKey: 'bookings',
     header: 'Total Bookings',
-    cell: ({ row }) => row?.original.bookings?.length,
+    cell: ({ row }) => row.original.bookings.length,
   },
   {
     accessorKey: 'createdAt',
     header: 'Join Date',
-    cell: ({ row }) => new Date(row?.original.createdAt).toLocaleDateString(),
+    cell: ({ row }) => new Date(row.original.createdAt).toLocaleDateString(),
   },
 ];
 
@@ -86,7 +86,7 @@ export function DataTable({ data }: DataTableProps) {
         <Input
           placeholder="Filter users..."
           value={filtering}
-          onChange={(e) => setFiltering(e?.target.value)}
+          onChange={(e) => setFiltering(e.target.value)}
           className="max-w-sm"
         />
       </div>
@@ -94,32 +94,32 @@ export function DataTable({ data }: DataTableProps) {
       <div className="rounded-md border">
         <Table>
           <TableHeader>
-            {table?.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup?.id}>
-                {headerGroup?.headers.map((header) => (
-                  <TableHead key={header?.id}>
-                    {header?.isPlaceholder
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
                       ? null
-                      : flexRender(header?.column.columnDef?.header, header?.getContext())}
+                      : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
-            {table?.getRowModel().rows?.length ? (
-              table?.getRowModel().rows?.map((row) => (
-                <TableRow key={row?.id} data-state={row?.getIsSelected() && 'selected'}>
-                  {row?.getVisibleCells().map((cell) => (
-                    <TableCell key={cell?.id}>
-                      {flexRender(cell?.column.columnDef?.cell, cell?.getContext())}
+            {table.getRowModel().rows.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns?.length} className="h-24 text-center">
+                <TableCell colSpan={columns.length} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>
@@ -132,16 +132,16 @@ export function DataTable({ data }: DataTableProps) {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => table?.previousPage()}
-          disabled={!table?.getCanPreviousPage()}
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
         >
           Previous
         </Button>
         <Button
           variant="outline"
           size="sm"
-          onClick={() => table?.nextPage()}
-          disabled={!table?.getCanNextPage()}
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
         >
           Next
         </Button>

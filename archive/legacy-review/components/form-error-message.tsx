@@ -2,10 +2,10 @@ import React from 'react';
 
 interface FormErrorMessageProps {
   id: string;
-  children: React?.ReactNode;
+  children: React.ReactNode;
 }
 
-export const FormErrorMessage: React?.FC<FormErrorMessageProps> = ({ id, children }) => {
+export const FormErrorMessage: React.FC<FormErrorMessageProps> = ({ id, children }) => {
   if (!children) return null;
 
   return (

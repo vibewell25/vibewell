@@ -2,14 +2,44 @@ import 'react-native';
 import type { ComponentType, Component } from 'react';
 
 declare module 'react-native' {
+  interface ViewStyle {
+    flex?: number;
+    backgroundColor?: string;
+    borderRadius?: number;
+    padding?: number;
+    marginBottom?: number;
+    elevation?: number;
+    shadowColor?: string;
+    shadowOffset?: { width: number; height: number };
+    shadowOpacity?: number;
+    shadowRadius?: number;
+    flexDirection?: 'row' | 'column';
+    justifyContent?: 'space-between' | 'flex-start' | 'flex-end' | 'center';
+  }
+
+  interface TextStyle {
+    fontSize?: number;
+    fontWeight?: string | number;
+    color?: string;
+    marginHorizontal?: number;
+    marginTop?: number;
+    marginBottom?: number;
+  }
+
   interface ViewProps {
     ref?: any;
-    style?: any;
+    style?: ViewStyle | ViewStyle[];
+    testID?: string;
+    accessible?: boolean;
+    accessibilityLabel?: string;
   }
   
   interface TextProps {
     ref?: any;
-    style?: any;
+    style?: TextStyle | TextStyle[];
+    testID?: string;
+    accessible?: boolean;
+    accessibilityLabel?: string;
   }
   
   interface FlatListProps<ItemT> {
@@ -17,13 +47,19 @@ declare module 'react-native' {
     data?: ItemT[];
     renderItem?: (info: { item: ItemT; index: number }) => React.ReactElement | null;
     keyExtractor?: (item: ItemT, index: number) => string;
-    contentContainerStyle?: any;
+    contentContainerStyle?: ViewStyle | ViewStyle[];
     showsVerticalScrollIndicator?: boolean;
+    testID?: string;
+    accessible?: boolean;
+    accessibilityLabel?: string;
   }
   
   interface SafeAreaViewProps {
     ref?: any;
-    style?: any;
+    style?: ViewStyle | ViewStyle[];
+    testID?: string;
+    accessible?: boolean;
+    accessibilityLabel?: string;
   }
 
   export class View extends Component<ViewProps> {

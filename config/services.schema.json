@@ -1,0 +1,18 @@
+{
+  "categories": [
+    {
+      "key": "beauty",
+      "label": "Beauty & Cosmetics",
+      "icon": "SparklesIcon",
+      "routeParam": "beauty",
+      "apiPath": "/api/v2/services?category=beauty"
+    },
+    {
+      "key": "wellness",
+      "label": "Wellness & Health",
+      "icon": "LeafIcon",
+      "routeParam": "wellness",
+      "apiPath": "/api/v2/services?category=wellness"
+    }
+  ]
+} 

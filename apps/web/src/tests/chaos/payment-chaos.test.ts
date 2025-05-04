@@ -41,7 +41,7 @@ describe('Payment System Chaos Tests', () => {
     });
 
     // Clear Redis cache
-    redis?.flushall();
+    redis.flushall();
   });
 
   afterEach(async () => {
@@ -53,16 +53,16 @@ describe('Payment System Chaos Tests', () => {
     const CONCURRENT_REQUESTS = 5;
 
     const paymentPromises = Array(CONCURRENT_REQUESTS).fill(null).map(() => {
-      return paymentService?.processPayment({
-        amount: faker?.number.int({ min: 1000, max: 10000 }),
+      return paymentService.processPayment({
+        amount: faker.number.int({ min: 1000, max: 10000 }),
         currency: 'usd',
-        bookingId: mockBooking?.id,
-        businessId: mockBooking?.businessId,
+        bookingId: mockBooking.id,
+        businessId: mockBooking.businessId,
       });
     });
 
-    const results = await Promise?.allSettled(paymentPromises);
-    const successfulPayments = results?.filter((r) => r?.status === 'fulfilled');
+    const results = await Promise.allSettled(paymentPromises);
+    const successfulPayments = results.filter((r) => r.status === 'fulfilled');
     
     // Only one payment should succeed
     expect(successfulPayments).toHaveLength(1);
@@ -73,19 +73,19 @@ describe('Payment System Chaos Tests', () => {
     const CONCURRENT_WEBHOOKS = 3;
 
     const webhookPromises = Array(CONCURRENT_WEBHOOKS).fill(null).map(() => {
-      return paymentService?.handleWebhook({
-        type: 'payment_intent?.succeeded',
+      return paymentService.handleWebhook({
+        type: 'payment_intent.succeeded',
         data: {
           object: {
-            id: mockPayment?.stripeId,
+            id: mockPayment.stripeId,
             status: 'succeeded',
           },
         },
       });
     });
 
-    const results = await Promise?.allSettled(webhookPromises);
-    const processedWebhooks = results?.filter((r) => r?.status === 'fulfilled');
+    const results = await Promise.allSettled(webhookPromises);
+    const processedWebhooks = results.filter((r) => r.status === 'fulfilled');
     
     // Only one webhook should be processed (idempotency)
     expect(processedWebhooks).toHaveLength(1);
@@ -95,63 +95,63 @@ describe('Payment System Chaos Tests', () => {
     const mockBooking = await createMockBooking();
     
     // Simulate database connection issues
-    jest?.spyOn(prisma, '$transaction').mockImplementationOnce(() => {
+    jest.spyOn(prisma, '$transaction').mockImplementationOnce(() => {
       throw new Error('Connection lost');
     });
 
     try {
-      await paymentService?.processPayment({
-        amount: faker?.number.int({ min: 1000, max: 10000 }),
+      await paymentService.processPayment({
+        amount: faker.number.int({ min: 1000, max: 10000 }),
         currency: 'usd',
-        bookingId: mockBooking?.id,
-        businessId: mockBooking?.businessId,
+        bookingId: mockBooking.id,
+        businessId: mockBooking.businessId,
       });
     } catch (error) {
       // Expected error
     }
 
     // Verify booking status wasn't changed
-    const booking = await prisma?.booking.findUnique({
-      where: { id: mockBooking?.id },
+    const booking = await prisma.booking.findUnique({
+      where: { id: mockBooking.id },
     });
-    expect(booking?.status).toBe('PENDING');
+    expect(booking.status).toBe('PENDING');
   });
 
   it('should handle payment provider timeouts gracefully', async () => {
     const mockBooking = await createMockBooking();
     
     // Simulate slow Stripe responses
-    networkChaos?.setLatency(6000); // 6 second delay
+    networkChaos.setLatency(6000); // 6 second delay
 
     const timeoutPromise = new Promise((_, reject) =>
       setTimeout(() => reject(new Error('Timeout')), 5000)
     );
 
-    const result = await Promise?.race([
-      paymentService?.processPayment({
-        amount: faker?.number.int({ min: 1000, max: 10000 }),
+    const result = await Promise.race([
+      paymentService.processPayment({
+        amount: faker.number.int({ min: 1000, max: 10000 }),
         currency: 'usd',
-        bookingId: mockBooking?.id,
-        businessId: mockBooking?.businessId,
+        bookingId: mockBooking.id,
+        businessId: mockBooking.businessId,
       }),
       timeoutPromise,
     ]).catch((error) => error);
 
     expect(result).toBeInstanceOf(Error);
-    expect(result?.message).toBe('Timeout');
+    expect(result.message).toBe('Timeout');
   });
 
   it('should handle Redis failures gracefully', async () => {
     const mockPayment = await createMockPayment();
     
     // Simulate Redis connection issues
-    jest?.spyOn(redis, 'set').mockRejectedValueOnce(new Error('Redis connection lost'));
+    jest.spyOn(redis, 'set').mockRejectedValueOnce(new Error('Redis connection lost'));
 
-    const result = await paymentService?.handleWebhook({
-      type: 'payment_intent?.succeeded',
+    const result = await paymentService.handleWebhook({
+      type: 'payment_intent.succeeded',
       data: {
         object: {
-          id: mockPayment?.stripeId,
+          id: mockPayment.stripeId,
           status: 'succeeded',
         },
       },
@@ -165,28 +165,28 @@ describe('Payment System Chaos Tests', () => {
     const mockPayment = await createMockPayment({ status: 'COMPLETED' });
     
     // Simulate unstable network
-    networkChaos?.setPacketLoss(0?.3); // 30% packet loss
-    networkChaos?.setLatency(2000); // 2 second delay
+    networkChaos.setPacketLoss(0.3); // 30% packet loss
+    networkChaos.setLatency(2000); // 2 second delay
 
-    const result = await paymentService?.refundPayment({
-      paymentId: mockPayment?.id,
-      amount: mockPayment?.amount,
+    const result = await paymentService.refundPayment({
+      paymentId: mockPayment.id,
+      amount: mockPayment.amount,
       reason: 'Test refund',
     });
 
-    expect(result?.status).toBe('REFUNDED');
+    expect(result.status).toBe('REFUNDED');
   });
 
   it('should prevent double refunds', async () => {
     const mockPayment = await createMockPayment({ status: 'REFUNDED' });
     
     await expect(
-      paymentService?.refundPayment({
-        paymentId: mockPayment?.id,
-        amount: mockPayment?.amount,
+      paymentService.refundPayment({
+        paymentId: mockPayment.id,
+        amount: mockPayment.amount,
         reason: 'Test refund',
       })
-    ).rejects?.toThrow('Payment already refunded');
+    ).rejects.toThrow('Payment already refunded');
   });
 
   it('should handle concurrent refund attempts', async () => {
@@ -194,15 +194,15 @@ describe('Payment System Chaos Tests', () => {
     const CONCURRENT_REFUNDS = 3;
 
     const refundPromises = Array(CONCURRENT_REFUNDS).fill(null).map(() => {
-      return paymentService?.refundPayment({
-        paymentId: mockPayment?.id,
-        amount: mockPayment?.amount,
+      return paymentService.refundPayment({
+        paymentId: mockPayment.id,
+        amount: mockPayment.amount,
         reason: 'Test refund',
       });
     });
 
-    const results = await Promise?.allSettled(refundPromises);
-    const successfulRefunds = results?.filter((r) => r?.status === 'fulfilled');
+    const results = await Promise.allSettled(refundPromises);
+    const successfulRefunds = results.filter((r) => r.status === 'fulfilled');
     
     // Only one refund should succeed
     expect(successfulRefunds).toHaveLength(1);

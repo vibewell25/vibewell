@@ -6,22 +6,22 @@ import { prisma } from '@/lib/prisma';
 import type { Payment, Booking, PaymentStatus } from '@prisma/client';
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); createMockBooking(overrides: Partial<Booking> = {}): Promise<Booking> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); createMockBooking(overrides: Partial<Booking> = {}): Promise<Booking> {
   const defaultData = {
-    id: faker?.string.uuid(),
-    userId: faker?.string.uuid(),
-    businessId: faker?.string.uuid(),
-    serviceId: faker?.string.uuid(),
+    id: faker.string.uuid(),
+    userId: faker.string.uuid(),
+    businessId: faker.string.uuid(),
+    serviceId: faker.string.uuid(),
     status: 'PENDING',
-    startTime: faker?.date.future(),
-    endTime: faker?.date.future(),
-    notes: faker?.lorem.sentence(),
+    startTime: faker.date.future(),
+    endTime: faker.date.future(),
+    notes: faker.lorem.sentence(),
     createdAt: new Date(),
     updatedAt: new Date(),
   };
 
-  return await prisma?.booking.create({
+  return await prisma.booking.create({
     data: {
       ...defaultData,
       ...overrides,
@@ -30,15 +30,15 @@ export async function {
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); createMockPayment(overrides: Partial<Payment> = {}): Promise<Payment> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); createMockPayment(overrides: Partial<Payment> = {}): Promise<Payment> {
   const defaultData = {
-    id: faker?.string.uuid(),
-    amount: faker?.number.int({ min: 1000, max: 10000 }),
+    id: faker.string.uuid(),
+    amount: faker.number.int({ min: 1000, max: 10000 }),
     currency: 'usd',
     status: 'PENDING' as PaymentStatus,
-    bookingId: faker?.string.uuid(),
-    businessId: faker?.string.uuid(),
+    bookingId: faker.string.uuid(),
+    businessId: faker.string.uuid(),
     metadata: {},
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -48,7 +48,7 @@ export async function {
     refundAmount: null,
   };
 
-  return await prisma?.payment.create({
+  return await prisma.payment.create({
     data: {
       ...defaultData,
       ...overrides,
@@ -57,9 +57,9 @@ export async function {
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); createMockRefund(paymentId: string) {
-  const payment = await prisma?.payment.findUnique({
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); createMockRefund(paymentId: string) {
+  const payment = await prisma.payment.findUnique({
     where: { id: paymentId },
   });
 
@@ -67,14 +67,14 @@ export async function {
     throw new Error('Payment not found');
   }
 
-  return await prisma?.payment.update({
+  return await prisma.payment.update({
     where: { id: paymentId },
     data: {
       status: 'REFUNDED',
       refundedAt: new Date(),
-      refundAmount: payment?.amount,
+      refundAmount: payment.amount,
       metadata: {
-        ...payment?.metadata,
+        ...payment.metadata,
         refundReason: 'customer_requested',
       },
     },

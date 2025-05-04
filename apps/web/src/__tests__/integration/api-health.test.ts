@@ -30,16 +30,16 @@ describe('Health API Endpoint', () => {
     const response = await GET();
 
     // Convert response to JSON
-    const data = await response?.json();
+    const data = await response.json();
 
     // Verify the response structure and values
-    expect(response?.status).toBe(200);
+    expect(response.status).toBe(200);
     expect(data).toHaveProperty('status', 'ok');
     expect(data).toHaveProperty('message', 'API is running');
     expect(data).toHaveProperty('timestamp');
 
     // Validate that timestamp is a valid ISO date string
-    expect(() => new Date(data?.timestamp)).not?.toThrow();
+    expect(() => new Date(data.timestamp)).not.toThrow();
   });
 
   test('should include CORS headers in the response', async () => {
@@ -47,23 +47,23 @@ describe('Health API Endpoint', () => {
     const response = await GET();
 
     // Convert response to JSON for verification
-    await response?.json();
+    await response.json();
 
-    // Set by NextResponse?.json() internally or by middleware
+    // Set by NextResponse.json() internally or by middleware
     // This test verifies that our endpoint is compatible with CORS setup
 
 
-    expect(response?.headers.get('content-type')).toBe('application/json');
+    expect(response.headers.get('content-type')).toBe('application/json');
   });
 
 
   test('should be fast - respond within 100ms', async () => {
-    const startTime = Date?.now();
+    const startTime = Date.now();
 
     // Execute the handler
     await GET();
 
-    const endTime = Date?.now();
+    const endTime = Date.now();
 
     const responseTime = endTime - startTime;
 

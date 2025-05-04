@@ -24,21 +24,21 @@ describe('Swagger UI Security Tests', () => {
   };
 
   beforeEach(() => {
-    jest?.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   describe('Rate Limiting', () => {
     it('should allow requests within rate limit', async () => {
       const req = mockSwaggerRequest();
       const response = await securityMiddleware(req);
-      expect(response?.status).not?.toBe(429);
+      expect(response.status).not.toBe(429);
     });
 
     it('should block excessive requests', async () => {
       const req = mockSwaggerRequest();
-      const responses = await Promise?.all(Array(35).map(() => securityMiddleware(req)));
-      const blockedResponses = responses?.filter((r) => r?.status === 429);
-      expect(blockedResponses?.length).toBeGreaterThan(0);
+      const responses = await Promise.all(Array(35).map(() => securityMiddleware(req)));
+      const blockedResponses = responses.filter((r) => r.status === 429);
+      expect(blockedResponses.length).toBeGreaterThan(0);
     });
   });
 
@@ -46,26 +46,26 @@ describe('Swagger UI Security Tests', () => {
     it('should set all required security headers', async () => {
       const req = mockSwaggerRequest();
       const response = await securityMiddleware(req);
-      const headers = response?.headers;
+      const headers = response.headers;
 
 
-      expect(headers?.get('Content-Security-Policy')).toBeTruthy();
+      expect(headers.get('Content-Security-Policy')).toBeTruthy();
 
 
-      expect(headers?.get('X-Content-Type-Options')).toBe('nosniff');
+      expect(headers.get('X-Content-Type-Options')).toBe('nosniff');
 
-      expect(headers?.get('X-Frame-Options')).toBe('DENY');
+      expect(headers.get('X-Frame-Options')).toBe('DENY');
 
-      expect(headers?.get('X-XSS-Protection')).toBe('1; mode=block');
+      expect(headers.get('X-XSS-Protection')).toBe('1; mode=block');
 
-      expect(headers?.get('Strict-Transport-Security')).toBeTruthy();
+      expect(headers.get('Strict-Transport-Security')).toBeTruthy();
     });
 
     it('should have correct CSP directives', async () => {
       const req = mockSwaggerRequest();
       const response = await securityMiddleware(req);
 
-      const csp = response?.headers.get('Content-Security-Policy');
+      const csp = response.headers.get('Content-Security-Policy');
 
 
       expect(csp).toContain("default-src 'self'");
@@ -80,24 +80,24 @@ describe('Swagger UI Security Tests', () => {
   });
 
   describe('Environment Restrictions', () => {
-    const originalEnv = process?.env.NODE_ENV;
+    const originalEnv = process.env.NODE_ENV;
 
     afterAll(() => {
-      process?.env.NODE_ENV = originalEnv;
+      process.env.NODE_ENV = originalEnv;
     });
 
     it('should allow access in development', async () => {
-      process?.env.NODE_ENV = 'development';
+      process.env.NODE_ENV = 'development';
       const req = mockSwaggerRequest();
       const response = await securityMiddleware(req);
-      expect(response?.status).not?.toBe(403);
+      expect(response.status).not.toBe(403);
     });
 
     it('should block access in production', async () => {
-      process?.env.NODE_ENV = 'production';
+      process.env.NODE_ENV = 'production';
       const req = mockSwaggerRequest();
       const response = await securityMiddleware(req);
-      expect(response?.status).toBe(403);
+      expect(response.status).toBe(403);
     });
   });
 
@@ -105,39 +105,39 @@ describe('Swagger UI Security Tests', () => {
     it('should redirect unauthenticated users', async () => {
       const req = mockSwaggerRequest();
       const response = await securityMiddleware(req);
-      expect(response?.status).toBe(302);
+      expect(response.status).toBe(302);
 
-      expect(response?.headers.get('Location')).toContain('/auth/login');
+      expect(response.headers.get('Location')).toContain('/auth/login');
     });
 
     it('should allow authenticated admin users', async () => {
       const req = mockSwaggerRequest({
         cookies: {
-          session: Buffer?.from(JSON?.stringify({ role: 'admin' })).toString('base64'),
+          session: Buffer.from(JSON.stringify({ role: 'admin' })).toString('base64'),
         },
       });
       const response = await securityMiddleware(req);
-      expect(response?.status).not?.toBe(401);
-      expect(response?.status).not?.toBe(302);
+      expect(response.status).not.toBe(401);
+      expect(response.status).not.toBe(302);
     });
   });
 
   describe('Security Logging', () => {
     it('should log access attempts', async () => {
-      const consoleSpy = jest?.spyOn(console, 'info');
+      const consoleSpy = jest.spyOn(console, 'info');
       const req = mockSwaggerRequest();
       await securityMiddleware(req);
       expect(consoleSpy).toHaveBeenCalled();
-      consoleSpy?.mockRestore();
+      consoleSpy.mockRestore();
     });
 
     it('should log rate limit violations', async () => {
-      const consoleSpy = jest?.spyOn(console, 'info');
+      const consoleSpy = jest.spyOn(console, 'info');
       const req = mockSwaggerRequest();
-      await Promise?.all(Array(35).map(() => securityMiddleware(req)));
+      await Promise.all(Array(35).map(() => securityMiddleware(req)));
 
-      expect(consoleSpy).toHaveBeenCalledWith(expect?.stringContaining('rate-limit'));
-      consoleSpy?.mockRestore();
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('rate-limit'));
+      consoleSpy.mockRestore();
     });
   });
 });

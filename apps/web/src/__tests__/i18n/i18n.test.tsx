@@ -9,15 +9,15 @@ const TestComponent = () => {
   const { t } = useTranslation();
   return (
     <div>
-      <h1>{t('common?.welcome')}</h1>
-      <button>{t('common?.actions.save')}</button>
+      <h1>{t('common.welcome')}</h1>
+      <button>{t('common.actions.save')}</button>
     </div>
   );
 };
 
 // Initialize i18n for tests
 beforeAll(async () => {
-  await i18n?.init({
+  await i18n.init({
     lng: 'en',
     fallbackLng: 'en',
     ns: ['common'],
@@ -51,7 +51,7 @@ beforeAll(async () => {
 
 // Reset i18n instance after each test
 afterEach(() => {
-  i18n?.changeLanguage('en');
+  i18n.changeLanguage('en');
 });
 
 describe('Internationalization', () => {
@@ -61,30 +61,30 @@ describe('Internationalization', () => {
         <TestComponent />
       </I18nextProvider>,
     );
-    expect(screen?.getByText('Welcome to Vibewell')).toBeInTheDocument();
-    expect(screen?.getByText('Save')).toBeInTheDocument();
+    expect(screen.getByText('Welcome to Vibewell')).toBeInTheDocument();
+    expect(screen.getByText('Save')).toBeInTheDocument();
   });
 
   it('changes language to Spanish', async () => {
-    await i18n?.changeLanguage('es');
+    await i18n.changeLanguage('es');
     renderWithProviders(
       <I18nextProvider i18n={i18n}>
         <TestComponent />
       </I18nextProvider>,
     );
-    expect(screen?.getByText('Bienvenido a Vibewell')).toBeInTheDocument();
-    expect(screen?.getByText('Guardar')).toBeInTheDocument();
+    expect(screen.getByText('Bienvenido a Vibewell')).toBeInTheDocument();
+    expect(screen.getByText('Guardar')).toBeInTheDocument();
   });
 
   it('handles missing translations gracefully', async () => {
-    await i18n?.changeLanguage('fr'); // We haven't created French translations yet
+    await i18n.changeLanguage('fr'); // We haven't created French translations yet
     renderWithProviders(
       <I18nextProvider i18n={i18n}>
         <TestComponent />
       </I18nextProvider>,
     );
     // Should fall back to English
-    expect(screen?.getByText('Welcome to Vibewell')).toBeInTheDocument();
-    expect(screen?.getByText('Save')).toBeInTheDocument();
+    expect(screen.getByText('Welcome to Vibewell')).toBeInTheDocument();
+    expect(screen.getByText('Save')).toBeInTheDocument();
   });
 });

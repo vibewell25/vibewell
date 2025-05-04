@@ -15,14 +15,14 @@ import { SearchInput } from '../../components/ui/SearchInput';
 
 // Mock data generation
 const generateLargeDataset = (size: number) => {
-  return Array?.from({ length: size }, (_, index) => ({
+  return Array.from({ length: size }, (_, index) => ({
     id: index,
     name: `Item ${index}`,
     description: `Description for item ${index}`,
-    value: Math?.random() * 1000,
-    date: new Date(Date?.now() - Math?.random() * 10000000000).toISOString(),
-    tags: Array?.from({ length: Math?.floor(Math?.random() * 5) + 1 }, (_, i) => `tag-${i}`),
-    image: `https://picsum?.photos/200/300?random=${index}`,
+    value: Math.random() * 1000,
+    date: new Date(Date.now() - Math.random() * 10000000000).toISOString(),
+    tags: Array.from({ length: Math.floor(Math.random() * 5) + 1 }, (_, i) => `tag-${i}`),
+    image: `https://picsum.photos/200/300?random=${index}`,
   }));
 };
 
@@ -59,9 +59,9 @@ describe('Performance Benchmarks', () => {
 
       await measureLongTasks(1000, 1);
 
-      const nameHeader = container?.querySelector('th');
+      const nameHeader = container.querySelector('th');
       if (nameHeader) {
-        await userEvent?.click(nameHeader);
+        await userEvent.click(nameHeader);
       }
     });
   });
@@ -119,9 +119,9 @@ describe('Performance Benchmarks', () => {
         <List
           items={largeDataset}
           renderItem={(item) => (
-            <div key={item?.id} style={{ padding: '1rem' }}>
-              <h3>{item?.name}</h3>
-              <p>{item?.description}</p>
+            <div key={item.id} style={{ padding: '1rem' }}>
+              <h3>{item.name}</h3>
+              <p>{item.description}</p>
             </div>
           )}
           height={400}
@@ -134,9 +134,9 @@ describe('Performance Benchmarks', () => {
 
   describe('Image Gallery', () => {
     it('should load and display images efficiently', async () => {
-      const images = mediumDataset?.map((item) => ({
-        src: item?.image,
-        alt: item?.name,
+      const images = mediumDataset.map((item) => ({
+        src: item.image,
+        alt: item.name,
         width: 200,
         height: 300,
       }));
@@ -151,7 +151,7 @@ describe('Performance Benchmarks', () => {
     });
 
     it('should handle image loading performance', async () => {
-      const imageUrl = 'https://picsum?.photos/800/600';
+      const imageUrl = 'https://picsum.photos/800/600';
       await measureNetworkRequest(imageUrl, 2000);
     });
   });
@@ -162,10 +162,10 @@ describe('Performance Benchmarks', () => {
         <SearchInput data={largeDataset} onSearch={() => {}} placeholder="Search items..." />,
       );
 
-      const input = container?.querySelector('input');
+      const input = container.querySelector('input');
       if (input) {
         await measureLongTasks(2000, 1);
-        await userEvent?.type(input, 'test search query');
+        await userEvent.type(input, 'test search query');
       }
     });
   });

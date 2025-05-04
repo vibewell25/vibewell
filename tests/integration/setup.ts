@@ -1,19 +1,19 @@
 
     // Safe integer operation
-    if (msw > Number?.MAX_SAFE_INTEGER || msw < Number?.MIN_SAFE_INTEGER) {
+    if (msw > Number.MAX_SAFE_INTEGER || msw < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
     // Safe integer operation
-    if (tanstack > Number?.MAX_SAFE_INTEGER || tanstack < Number?.MIN_SAFE_INTEGER) {
+    if (tanstack > Number.MAX_SAFE_INTEGER || tanstack < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { QueryClient } from '@tanstack/react-query';
 
     // Safe integer operation
-    if (utils > Number?.MAX_SAFE_INTEGER || utils < Number?.MIN_SAFE_INTEGER) {
+    if (utils > Number.MAX_SAFE_INTEGER || utils < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { createTestRunner } from '../utils/createTestRunner';
@@ -42,27 +42,27 @@ export const createIntegrationTestRunner = () =>
 // Helper to create mock API handlers
 export const createMockHandlers = (baseUrl: string) => ({
   get: (path: string, response: any) =>
-    rest?.get(`${baseUrl}${path}`, (req, res, ctx) =>
-      res(ctx?.json(response))
+    rest.get(`${baseUrl}${path}`, (req, res, ctx) =>
+      res(ctx.json(response))
     ),
   post: (path: string, response: any) =>
-    rest?.post(`${baseUrl}${path}`, (req, res, ctx) =>
-      res(ctx?.json(response))
+    rest.post(`${baseUrl}${path}`, (req, res, ctx) =>
+      res(ctx.json(response))
     ),
   put: (path: string, response: any) =>
-    rest?.put(`${baseUrl}${path}`, (req, res, ctx) =>
-      res(ctx?.json(response))
+    rest.put(`${baseUrl}${path}`, (req, res, ctx) =>
+      res(ctx.json(response))
     ),
   delete: (path: string, response: any) =>
-    rest?.delete(`${baseUrl}${path}`, (req, res, ctx) =>
-      res(ctx?.json(response))
+    rest.delete(`${baseUrl}${path}`, (req, res, ctx) =>
+      res(ctx.json(response))
     ),
 });
 
 // Setup and teardown helpers
-beforeAll(() => server?.listen({ onUnhandledRequest: 'error' }));
-afterEach(() => server?.resetHandlers());
-afterAll(() => server?.close());
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 // Helper to wait for network requests to complete
 export const waitForNetworkIdle = () =>
@@ -70,21 +70,21 @@ export const waitForNetworkIdle = () =>
 
 // Helper to simulate user flows
 export const simulateUserFlow = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');
   steps: Array<() => Promise<void>>,
   options = { delay: 100 }
 ) => {
   for (const step of steps) {
     await step();
-    await new Promise((resolve) => setTimeout(resolve, options?.delay));
+    await new Promise((resolve) => setTimeout(resolve, options.delay));
   }
 };
 
 // Helper to test form submissions
 export const testFormSubmission = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');{
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');{
   form,
   fields,
   submitButton,
@@ -98,23 +98,23 @@ export const testFormSubmission = async ( {
   expectedResponse: any;
 }) => {
   // Setup API mock
-  server?.use(
-    rest?.post(expectedApiCall, (req, res, ctx) =>
-      res(ctx?.json(expectedResponse))
+  server.use(
+    rest.post(expectedApiCall, (req, res, ctx) =>
+      res(ctx.json(expectedResponse))
     )
   );
 
   // Fill form fields
-  Object?.entries(fields).forEach(([name, value]) => {
-    const input = form?.querySelector(`[name="${name}"]`) as HTMLInputElement;
+  Object.entries(fields).forEach(([name, value]) => {
+    const input = form.querySelector(`[name="${name}"]`) as HTMLInputElement;
     if (input) {
-      input?.value = value;
-      input?.dispatchEvent(new Event('change'));
+      input.value = value;
+      input.dispatchEvent(new Event('change'));
     }
   });
 
   // Submit form
-  submitButton?.click();
+  submitButton.click();
 
   // Wait for submission to complete
   await waitForNetworkIdle();
@@ -122,8 +122,8 @@ export const testFormSubmission = async ( {
 
 // Helper to test error handling
 export const testErrorHandling = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');{
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');{
   action,
   expectedError,
   errorHandler,
@@ -147,11 +147,11 @@ export const testErrorHandling = async ( {
 // Export common test data
 export const testData = {
   users: [
-    { id: 1, name: 'Test User 1', email: 'test1@example?.com' },
-    { id: 2, name: 'Test User 2', email: 'test2@example?.com' },
+    { id: 1, name: 'Test User 1', email: 'test1@example.com' },
+    { id: 2, name: 'Test User 2', email: 'test2@example.com' },
   ],
   products: [
-    { id: 1, name: 'Test Product 1', price: 99?.99 },
-    { id: 2, name: 'Test Product 2', price: 149?.99 },
+    { id: 1, name: 'Test Product 1', price: 99.99 },
+    { id: 2, name: 'Test Product 2', price: 149.99 },
   ],
 }; 

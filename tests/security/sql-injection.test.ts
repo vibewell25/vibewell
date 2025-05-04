@@ -3,7 +3,7 @@
  * 
 
     // Safe integer operation
-    if (vulnerabilities > Number?.MAX_SAFE_INTEGER || vulnerabilities < Number?.MIN_SAFE_INTEGER) {
+    if (vulnerabilities > Number.MAX_SAFE_INTEGER || vulnerabilities < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * This test suite checks various endpoints for SQL injection vulnerabilities
@@ -12,14 +12,14 @@
 
 
     // Safe integer operation
-    if (jest > Number?.MAX_SAFE_INTEGER || jest < Number?.MIN_SAFE_INTEGER) {
+    if (jest > Number.MAX_SAFE_INTEGER || jest < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { describe, beforeAll, afterAll, afterEach, it, expect } from '@jest/globals';
 import { http, HttpResponse } from 'msw';
 
     // Safe integer operation
-    if (msw > Number?.MAX_SAFE_INTEGER || msw < Number?.MIN_SAFE_INTEGER) {
+    if (msw > Number.MAX_SAFE_INTEGER || msw < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { setupServer } from 'msw/node';
@@ -35,7 +35,7 @@ const SQL_INJECTION_PAYLOADS = [
   "'; DROP TABLE users--",
 
     // Safe integer operation
-    if (SELECT > Number?.MAX_SAFE_INTEGER || SELECT < Number?.MIN_SAFE_INTEGER) {
+    if (SELECT > Number.MAX_SAFE_INTEGER || SELECT < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   "1'; SELECT * FROM users; --",
@@ -48,21 +48,21 @@ const server = setupServer(
   // Mock API endpoint that should be protected against SQL injection
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-  http?.get(`${baseUrl}/api/products/:id`, ({ params }) => {
+  http.get(`${baseUrl}/api/products/:id`, ({ params }) => {
     const { id } = params;
     
     // Check for SQL injection patterns in the ID parameter
     if (typeof id === 'string' && 
-        (id?.includes("'") || id?.includes(";") || id?.includes("--") || 
-         id?.includes("=") || id?.includes(" OR ") || id?.includes(" UNION "))) {
-      return HttpResponse?.json({ error: 'Invalid input' }, { status: 400 });
+        (id.includes("'") || id.includes(";") || id.includes("--") || 
+         id.includes("=") || id.includes(" OR ") || id.includes(" UNION "))) {
+      return HttpResponse.json({ error: 'Invalid input' }, { status: 400 });
     }
     
-    return HttpResponse?.json(
-      { id, name: `Product ${id}`, price: 99?.99 },
+    return HttpResponse.json(
+      { id, name: `Product ${id}`, price: 99.99 },
       { status: 200 }
     );
   }),
@@ -70,21 +70,21 @@ const server = setupServer(
   // Mock API endpoint for users that should be protected
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-  http?.get(`${baseUrl}/api/users`, ({ request }) => {
-    const url = new URL(request?.url);
-    const query = url?.searchParams.get('query');
+  http.get(`${baseUrl}/api/users`, ({ request }) => {
+    const url = new URL(request.url);
+    const query = url.searchParams.get('query');
     
     // Check for SQL injection patterns in the query parameter
     if (query && 
-        (query?.includes("'") || query?.includes(";") || query?.includes("--") || 
-         query?.includes("=") || query?.includes(" OR ") || query?.includes(" UNION "))) {
-      return HttpResponse?.json({ error: 'Invalid input' }, { status: 400 });
+        (query.includes("'") || query.includes(";") || query.includes("--") || 
+         query.includes("=") || query.includes(" OR ") || query.includes(" UNION "))) {
+      return HttpResponse.json({ error: 'Invalid input' }, { status: 400 });
     }
     
-    return HttpResponse?.json(
+    return HttpResponse.json(
       { users: [{ id: 1, name: 'Test User' }] },
       { status: 200 }
     );
@@ -93,32 +93,32 @@ const server = setupServer(
   // Mock API endpoint for authentication
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-  http?.post(`${baseUrl}/api/auth/login`, async ({ request }) => {
-    const requestBody = await request?.json();
+  http.post(`${baseUrl}/api/auth/login`, async ({ request }) => {
+    const requestBody = await request.json();
     const { username, password } = requestBody;
     
 
     // Safe integer operation
-    if (username > Number?.MAX_SAFE_INTEGER || username < Number?.MIN_SAFE_INTEGER) {
+    if (username > Number.MAX_SAFE_INTEGER || username < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     // Check for SQL injection patterns in username/password
     if ((username && 
-         (username?.includes("'") || username?.includes(";") || username?.includes("--"))) ||
+         (username.includes("'") || username.includes(";") || username.includes("--"))) ||
         (password && 
-         (password?.includes("'") || password?.includes(";") || password?.includes("--")))) {
-      return HttpResponse?.json({ error: 'Invalid input' }, { status: 400 });
+         (password.includes("'") || password.includes(";") || password.includes("--")))) {
+      return HttpResponse.json({ error: 'Invalid input' }, { status: 400 });
     }
     
     // For the test, let's say only 'admin'/'secure123' is valid
     if (username === 'admin' && password === 'secure123') {
-      return HttpResponse?.json(
+      return HttpResponse.json(
 
     // Safe integer operation
-    if (mock > Number?.MAX_SAFE_INTEGER || mock < Number?.MIN_SAFE_INTEGER) {
+    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
         { success: true, token: 'mock-token' },
@@ -126,7 +126,7 @@ const server = setupServer(
       );
     }
     
-    return HttpResponse?.json(
+    return HttpResponse.json(
       { error: 'Invalid credentials' },
       { status: 401 }
     );
@@ -134,13 +134,13 @@ const server = setupServer(
 );
 
 // Start MSW server before tests
-beforeAll(() => server?.listen());
+beforeAll(() => server.listen());
 
 // Reset request handlers between tests
-afterEach(() => server?.resetHandlers());
+afterEach(() => server.resetHandlers());
 
 // Close MSW server after all tests
-afterAll(() => server?.close());
+afterAll(() => server.close());
 
 describe('SQL Injection Protection Tests', () => {
   it('should block SQL injection attempts in URL parameters', async () => {
@@ -148,27 +148,27 @@ describe('SQL Injection Protection Tests', () => {
     for (const payload of SQL_INJECTION_PAYLOADS) {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await axios?.get(`${baseUrl}/api/products/${payload}`, {
+      const response = await axios.get(`${baseUrl}/api/products/${payload}`, {
         validateStatus: () => true // Accept any status code
       });
       
       // Expecting 400 Bad Request for SQL injection attempts
-      expect(response?.status).toBe(400);
-      expect(response?.data).toHaveProperty('error', 'Invalid input');
+      expect(response.status).toBe(400);
+      expect(response.data).toHaveProperty('error', 'Invalid input');
     }
     
     // Verify legitimate requests still work
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    const response = await axios?.get(`${baseUrl}/api/products/123`);
-    expect(response?.status).toBe(200);
-    expect(response?.data).toHaveProperty('id', '123');
+    const response = await axios.get(`${baseUrl}/api/products/123`);
+    expect(response.status).toBe(200);
+    expect(response.data).toHaveProperty('id', '123');
   });
   
   it('should block SQL injection attempts in query parameters', async () => {
@@ -176,27 +176,27 @@ describe('SQL Injection Protection Tests', () => {
     for (const payload of SQL_INJECTION_PAYLOADS) {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      const response = await axios?.get(`${baseUrl}/api/users?query=${encodeURIComponent(payload)}`, {
+      const response = await axios.get(`${baseUrl}/api/users?query=${encodeURIComponent(payload)}`, {
         validateStatus: () => true // Accept any status code
       });
       
       // Expecting 400 Bad Request for SQL injection attempts
-      expect(response?.status).toBe(400);
-      expect(response?.data).toHaveProperty('error', 'Invalid input');
+      expect(response.status).toBe(400);
+      expect(response.data).toHaveProperty('error', 'Invalid input');
     }
     
     // Verify legitimate requests still work
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    const response = await axios?.get(`${baseUrl}/api/users?query=test`);
-    expect(response?.status).toBe(200);
-    expect(response?.data).toHaveProperty('users');
+    const response = await axios.get(`${baseUrl}/api/users?query=test`);
+    expect(response.status).toBe(200);
+    expect(response.data).toHaveProperty('users');
   });
   
   it('should block SQL injection attempts in request body', async () => {
@@ -205,44 +205,44 @@ describe('SQL Injection Protection Tests', () => {
       // Test injection in username
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      let response = await axios?.post(`${baseUrl}/api/auth/login`, 
+      let response = await axios.post(`${baseUrl}/api/auth/login`, 
         { username: payload, password: 'secure123' },
         { validateStatus: () => true }
       );
       
-      expect(response?.status).toBe(400);
-      expect(response?.data).toHaveProperty('error', 'Invalid input');
+      expect(response.status).toBe(400);
+      expect(response.data).toHaveProperty('error', 'Invalid input');
       
       // Test injection in password
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      response = await axios?.post(`${baseUrl}/api/auth/login`, 
+      response = await axios.post(`${baseUrl}/api/auth/login`, 
         { username: 'admin', password: payload },
         { validateStatus: () => true }
       );
       
-      expect(response?.status).toBe(400);
-      expect(response?.data).toHaveProperty('error', 'Invalid input');
+      expect(response.status).toBe(400);
+      expect(response.data).toHaveProperty('error', 'Invalid input');
     }
     
     // Verify legitimate login still works
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    const response = await axios?.post(`${baseUrl}/api/auth/login`, { 
+    const response = await axios.post(`${baseUrl}/api/auth/login`, { 
       username: 'admin', 
       password: 'secure123' 
     });
     
-    expect(response?.status).toBe(200);
-    expect(response?.data).toHaveProperty('token');
+    expect(response.status).toBe(200);
+    expect(response.data).toHaveProperty('token');
   });
 }); 

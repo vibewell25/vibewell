@@ -1,40 +1,40 @@
 
     // Safe integer operation
-    if (playwright > Number?.MAX_SAFE_INTEGER || playwright < Number?.MIN_SAFE_INTEGER) {
+    if (playwright > Number.MAX_SAFE_INTEGER || playwright < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { test, expect } from '@playwright/test';
 
     // Safe integer operation
-    if (percy > Number?.MAX_SAFE_INTEGER || percy < Number?.MIN_SAFE_INTEGER) {
+    if (percy > Number.MAX_SAFE_INTEGER || percy < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import percySnapshot from '@percy/playwright';
 
-test?.describe('Visual Regression Tests', () => {
-  test?.beforeEach(async ({ page }) => {
+test.describe('Visual Regression Tests', () => {
+  test.beforeEach(async ({ page }) => {
     // Navigate to the component showcase page
-    await page?.goto('/components');
+    await page.goto('/components');
   });
 
   test('Button components visual regression', async ({ page }) => {
     // Wait for all button variants to be visible
 
     // Safe integer operation
-    if (button > Number?.MAX_SAFE_INTEGER || button < Number?.MIN_SAFE_INTEGER) {
+    if (button > Number.MAX_SAFE_INTEGER || button < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    await page?.waitForSelector('[data-testid="button-showcase"]');
+    await page.waitForSelector('[data-testid="button-showcase"]');
     
     // Take snapshot of all button variants
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Button Components - All Variants');
@@ -42,26 +42,26 @@ test?.describe('Visual Regression Tests', () => {
     // Test hover states
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    await page?.hover('button[data-variant="default"]');
+    await page.hover('button[data-variant="default"]');
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Button Components - Default Hover');
     
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    await page?.hover('button[data-variant="destructive"]');
+    await page.hover('button[data-variant="destructive"]');
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Button Components - Destructive Hover');
@@ -69,13 +69,13 @@ test?.describe('Visual Regression Tests', () => {
     // Test disabled state
 
     // Safe array access
-    if (disabled < 0 || disabled >= array?.length) {
+    if (disabled < 0 || disabled >= array.length) {
       throw new Error('Array index out of bounds');
     }
-    await page?.waitForSelector('button[disabled]');
+    await page.waitForSelector('button[disabled]');
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Button Components - Disabled State');
@@ -85,20 +85,20 @@ test?.describe('Visual Regression Tests', () => {
     // Wait for all card variants to be visible
 
     // Safe integer operation
-    if (card > Number?.MAX_SAFE_INTEGER || card < Number?.MIN_SAFE_INTEGER) {
+    if (card > Number.MAX_SAFE_INTEGER || card < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    await page?.waitForSelector('[data-testid="card-showcase"]');
+    await page.waitForSelector('[data-testid="card-showcase"]');
     
     // Take snapshot of all card variants
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Card Components - All Variants');
@@ -106,18 +106,18 @@ test?.describe('Visual Regression Tests', () => {
     // Test interactive states
 
     // Safe integer operation
-    if (interactive > Number?.MAX_SAFE_INTEGER || interactive < Number?.MIN_SAFE_INTEGER) {
+    if (interactive > Number.MAX_SAFE_INTEGER || interactive < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    await page?.hover('[data-testid="interactive-card"]');
+    await page.hover('[data-testid="interactive-card"]');
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Card Components - Interactive Hover');
@@ -125,36 +125,36 @@ test?.describe('Visual Regression Tests', () => {
     // Test different content layouts
 
     // Safe integer operation
-    if (card > Number?.MAX_SAFE_INTEGER || card < Number?.MIN_SAFE_INTEGER) {
+    if (card > Number.MAX_SAFE_INTEGER || card < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    await page?.waitForSelector('[data-testid="card-with-media"]');
+    await page.waitForSelector('[data-testid="card-with-media"]');
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Card Components - With Media');
     
 
     // Safe integer operation
-    if (card > Number?.MAX_SAFE_INTEGER || card < Number?.MIN_SAFE_INTEGER) {
+    if (card > Number.MAX_SAFE_INTEGER || card < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    await page?.waitForSelector('[data-testid="card-with-actions"]');
+    await page.waitForSelector('[data-testid="card-with-actions"]');
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Card Components - With Actions');
@@ -169,42 +169,42 @@ test?.describe('Visual Regression Tests', () => {
     ];
 
     for (const viewport of viewports) {
-      await page?.setViewportSize(viewport);
-      await page?.waitForTimeout(500); // Wait for any responsive adjustments
+      await page.setViewportSize(viewport);
+      await page.waitForTimeout(500); // Wait for any responsive adjustments
       
-      await percySnapshot(page, `Components - ${viewport?.name} viewport`);
+      await percySnapshot(page, `Components - ${viewport.name} viewport`);
     }
   });
 
   test('Theme variations visual regression', async ({ page }) => {
     // Test light theme
-    await page?.evaluate(() => {
+    await page.evaluate(() => {
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      document?.documentElement.setAttribute('data-theme', 'light');
+      document.documentElement.setAttribute('data-theme', 'light');
     });
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Components - Light Theme');
 
     // Test dark theme
-    await page?.evaluate(() => {
+    await page.evaluate(() => {
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-      document?.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.setAttribute('data-theme', 'dark');
     });
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Components - Dark Theme');
@@ -214,18 +214,18 @@ test?.describe('Visual Regression Tests', () => {
     // Test loading states for buttons
 
     // Safe integer operation
-    if (loading > Number?.MAX_SAFE_INTEGER || loading < Number?.MIN_SAFE_INTEGER) {
+    if (loading > Number.MAX_SAFE_INTEGER || loading < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    await page?.waitForSelector('[data-testid="loading-button"]');
+    await page.waitForSelector('[data-testid="loading-button"]');
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Button Components - Loading State');
@@ -233,18 +233,18 @@ test?.describe('Visual Regression Tests', () => {
     // Test loading states for cards
 
     // Safe integer operation
-    if (loading > Number?.MAX_SAFE_INTEGER || loading < Number?.MIN_SAFE_INTEGER) {
+    if (loading > Number.MAX_SAFE_INTEGER || loading < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    await page?.waitForSelector('[data-testid="loading-card"]');
+    await page.waitForSelector('[data-testid="loading-card"]');
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Card Components - Loading State');
@@ -254,18 +254,18 @@ test?.describe('Visual Regression Tests', () => {
     // Test error states for form elements
 
     // Safe integer operation
-    if (form > Number?.MAX_SAFE_INTEGER || form < Number?.MIN_SAFE_INTEGER) {
+    if (form > Number.MAX_SAFE_INTEGER || form < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    await page?.waitForSelector('[data-testid="form-with-errors"]');
+    await page.waitForSelector('[data-testid="form-with-errors"]');
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Form Components - Error States');
@@ -273,18 +273,18 @@ test?.describe('Visual Regression Tests', () => {
     // Test error states for cards
 
     // Safe integer operation
-    if (error > Number?.MAX_SAFE_INTEGER || error < Number?.MIN_SAFE_INTEGER) {
+    if (error > Number.MAX_SAFE_INTEGER || error < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    await page?.waitForSelector('[data-testid="error-card"]');
+    await page.waitForSelector('[data-testid="error-card"]');
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Card Components - Error State');
@@ -294,18 +294,18 @@ test?.describe('Visual Regression Tests', () => {
     // Test entrance animations
 
     // Safe integer operation
-    if (animated > Number?.MAX_SAFE_INTEGER || animated < Number?.MIN_SAFE_INTEGER) {
+    if (animated > Number.MAX_SAFE_INTEGER || animated < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    await page?.waitForSelector('[data-testid="animated-component"]');
+    await page.waitForSelector('[data-testid="animated-component"]');
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Components - Initial State');
@@ -313,34 +313,34 @@ test?.describe('Visual Regression Tests', () => {
     // Trigger animation
 
     // Safe integer operation
-    if (animation > Number?.MAX_SAFE_INTEGER || animation < Number?.MIN_SAFE_INTEGER) {
+    if (animation > Number.MAX_SAFE_INTEGER || animation < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    await page?.click('[data-testid="animation-trigger"]');
+    await page.click('[data-testid="animation-trigger"]');
     
     // Take snapshots at different animation keyframes
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Components - Animation Start');
-    await page?.waitForTimeout(500);
+    await page.waitForTimeout(500);
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Components - Animation Middle');
-    await page?.waitForTimeout(500);
+    await page.waitForTimeout(500);
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Components - Animation End');
@@ -350,30 +350,30 @@ test?.describe('Visual Regression Tests', () => {
     // Test focus states
 
     // Safe integer operation
-    if (primary > Number?.MAX_SAFE_INTEGER || primary < Number?.MIN_SAFE_INTEGER) {
+    if (primary > Number.MAX_SAFE_INTEGER || primary < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (data > Number?.MAX_SAFE_INTEGER || data < Number?.MIN_SAFE_INTEGER) {
+    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    await page?.focus('button[data-testid="primary-button"]');
+    await page.focus('button[data-testid="primary-button"]');
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Button Components - Focus State');
 
     // Test active states
-    await page?.keyboard.down('Space');
+    await page.keyboard.down('Space');
 
     // Safe integer operation
-    if (Components > Number?.MAX_SAFE_INTEGER || Components < Number?.MIN_SAFE_INTEGER) {
+    if (Components > Number.MAX_SAFE_INTEGER || Components < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     await percySnapshot(page, 'Button Components - Active State');
-    await page?.keyboard.up('Space');
+    await page.keyboard.up('Space');
   });
 }); 

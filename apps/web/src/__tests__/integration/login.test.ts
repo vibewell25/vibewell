@@ -38,12 +38,12 @@ import * as React from 'react';
 // Mock API server
 const server = setupServer(
 
-  http?.post('/api/auth/login', async ({ request }) => {
-    const body = await request?.json();
+  http.post('/api/auth/login', async ({ request }) => {
+    const body = await request.json();
 
     // Simulate validation errors
-    if (!body?.email || !body?.password) {
-      return HttpResponse?.json(
+    if (!body.email || !body.password) {
+      return HttpResponse.json(
         {
           error: 'Email and password are required',
         },
@@ -52,21 +52,21 @@ const server = setupServer(
     }
 
     // Simulate authentication
-    if (body?.email === 'test@example?.com' && body?.password === 'Password123!') {
-      return HttpResponse?.json({
+    if (body.email === 'test@example.com' && body.password === 'Password123!') {
+      return HttpResponse.json({
         success: true,
 
         token: 'mock-jwt-token',
         user: {
           id: '123',
-          email: 'test@example?.com',
+          email: 'test@example.com',
           name: 'Test User',
         },
       });
     }
 
     // Simulate authentication failure
-    return HttpResponse?.json(
+    return HttpResponse.json(
       {
         error: 'Invalid email or password',
       },
@@ -76,18 +76,18 @@ const server = setupServer(
 );
 
 // Setup mock server
-beforeAll(() => server?.listen());
-afterEach(() => server?.resetHandlers());
-afterAll(() => server?.close());
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 // Mock useRouter
 
-jest?.mock('next/navigation', () => ({
+jest.mock('next/navigation', () => ({
   useRouter: () => ({
-    push: jest?.fn(),
+    push: jest.fn(),
   }),
   useSearchParams: () => ({
-    get: jest?.fn(),
+    get: jest.fn(),
   }),
 }));
 
@@ -98,7 +98,7 @@ const localStorageMock = (() => {
     getItem(key: string) {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
       return store[key] || null;
@@ -106,7 +106,7 @@ const localStorageMock = (() => {
     setItem(key: string, value: string) {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
       store[key] = value;
@@ -114,7 +114,7 @@ const localStorageMock = (() => {
     removeItem(key: string) {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
       delete store[key];
@@ -125,92 +125,92 @@ const localStorageMock = (() => {
   };
 })();
 
-Object?.defineProperty(window, 'localStorage', { value: localStorageMock });
+Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
 describe('Login Page', () => {
   beforeEach(() => {
-    localStorageMock?.clear();
-    jest?.clearAllMocks();
+    localStorageMock.clear();
+    jest.clearAllMocks();
   });
 
   test('renders login form', async () => {
-    render(React?.createElement(LoginPage));
+    render(React.createElement(LoginPage));
 
     // Check that form elements are present
 
-    expect(screen?.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
 
-    expect(screen?.getByLabelText(/password/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
 
-    expect(screen?.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
   });
 
   test('validates user input', async () => {
-    render(React?.createElement(LoginPage));
+    render(React.createElement(LoginPage));
 
     // Submit with empty fields
 
-    const submitButton = screen?.getByRole('button', { name: /sign in/i });
+    const submitButton = screen.getByRole('button', { name: /sign in/i });
     await act(async () => {
-      fireEvent?.click(submitButton);
+      fireEvent.click(submitButton);
     });
 
     // Should show validation errors
     await waitFor(() => {
 
-      expect(screen?.getByText(/email is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/email is required/i)).toBeInTheDocument();
 
-      expect(screen?.getByText(/password is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/password is required/i)).toBeInTheDocument();
     });
   });
 
   test('shows error message for invalid credentials', async () => {
-    render(React?.createElement(LoginPage));
+    render(React.createElement(LoginPage));
 
     // Fill in form with invalid credentials
     await act(async () => {
 
-      userEvent?.type(screen?.getByLabelText(/email/i), 'wrong@example?.com');
+      userEvent.type(screen.getByLabelText(/email/i), 'wrong@example.com');
 
-      userEvent?.type(screen?.getByLabelText(/password/i), 'wrongpassword');
+      userEvent.type(screen.getByLabelText(/password/i), 'wrongpassword');
     });
 
     // Submit form
 
-    const submitButton = screen?.getByRole('button', { name: /sign in/i });
+    const submitButton = screen.getByRole('button', { name: /sign in/i });
     await act(async () => {
-      fireEvent?.click(submitButton);
+      fireEvent.click(submitButton);
     });
 
     // Should show error message
     await waitFor(() => {
 
-      expect(screen?.getByText(/invalid email or password/i)).toBeInTheDocument();
+      expect(screen.getByText(/invalid email or password/i)).toBeInTheDocument();
     });
   });
 
   test('successfully logs in with valid credentials', async () => {
-    render(React?.createElement(LoginPage));
+    render(React.createElement(LoginPage));
 
     // Fill in form with valid credentials
     await act(async () => {
 
-      userEvent?.type(screen?.getByLabelText(/email/i), 'test@example?.com');
+      userEvent.type(screen.getByLabelText(/email/i), 'test@example.com');
 
-      userEvent?.type(screen?.getByLabelText(/password/i), 'Password123!');
+      userEvent.type(screen.getByLabelText(/password/i), 'Password123!');
     });
 
     // Submit form
 
-    const submitButton = screen?.getByRole('button', { name: /sign in/i });
+    const submitButton = screen.getByRole('button', { name: /sign in/i });
     await act(async () => {
-      fireEvent?.click(submitButton);
+      fireEvent.click(submitButton);
     });
 
     // Should save token to localStorage
     await waitFor(() => {
 
-      expect(localStorageMock?.getItem('auth_token')).toBe('mock-jwt-token');
+      expect(localStorageMock.getItem('auth_token')).toBe('mock-jwt-token');
     });
   });
 });

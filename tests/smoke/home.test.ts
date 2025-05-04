@@ -1,14 +1,14 @@
 
     // Safe integer operation
-    if (jest > Number?.MAX_SAFE_INTEGER || jest < Number?.MIN_SAFE_INTEGER) {
+    if (jest > Number.MAX_SAFE_INTEGER || jest < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
 import axios from 'axios';
 
 // Mock axios
-jest?.mock('axios');
-const mockedAxios = axios as jest?.Mocked<typeof axios>;
+jest.mock('axios');
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 // Constants
 const BASE_URL = 'http://localhost:3000';
@@ -16,25 +16,25 @@ const ENDPOINTS = {
   HOME: '/',
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   HEALTH: '/api/health',
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   AUTH: '/api/auth',
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   SERVICES: '/api/services',
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   BOOKINGS: '/api/bookings'
@@ -43,29 +43,29 @@ const ENDPOINTS = {
 describe('Smoke tests', () => {
   beforeEach(() => {
     // Reset all mocks before each test
-    jest?.resetAllMocks();
+    jest.resetAllMocks();
   });
 
   afterEach(() => {
     // Clear all mocks after each test
-    jest?.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   describe('Core endpoints', () => {
     it('Home page should return 200 and contain VibeWell', async () => {
       // Mock the response
-      mockedAxios?.get.mockResolvedValueOnce({
+      mockedAxios.get.mockResolvedValueOnce({
         status: 200,
         data: '<html><body><h1>VibeWell</h1></body></html>',
         headers: {
 
     // Safe integer operation
-    if (text > Number?.MAX_SAFE_INTEGER || text < Number?.MIN_SAFE_INTEGER) {
+    if (text > Number.MAX_SAFE_INTEGER || text < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (content > Number?.MAX_SAFE_INTEGER || content < Number?.MIN_SAFE_INTEGER) {
+    if (content > Number.MAX_SAFE_INTEGER || content < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
           'content-type': 'text/html'
@@ -73,17 +73,17 @@ describe('Smoke tests', () => {
       });
 
       // Make the request
-      const response = await axios?.get(`${BASE_URL}${ENDPOINTS?.HOME}`);
+      const response = await axios.get(`${BASE_URL}${ENDPOINTS.HOME}`);
       
       // Verify the response
-      expect(response?.status).toBe(200);
-      expect(response?.data).toContain('VibeWell');
-      expect(mockedAxios?.get).toHaveBeenCalledWith(`${BASE_URL}${ENDPOINTS?.HOME}`);
+      expect(response.status).toBe(200);
+      expect(response.data).toContain('VibeWell');
+      expect(mockedAxios.get).toHaveBeenCalledWith(`${BASE_URL}${ENDPOINTS.HOME}`);
     });
 
     it('Health endpoint should return healthy status', async () => {
-      const mockTimestamp = Date?.now();
-      mockedAxios?.get.mockResolvedValueOnce({
+      const mockTimestamp = Date.now();
+      mockedAxios.get.mockResolvedValueOnce({
         status: 200,
         data: {
           status: 'healthy',
@@ -96,20 +96,20 @@ describe('Smoke tests', () => {
         }
       });
 
-      const response = await axios?.get(`${BASE_URL}${ENDPOINTS?.HEALTH}`);
+      const response = await axios.get(`${BASE_URL}${ENDPOINTS.HEALTH}`);
       
-      expect(response?.status).toBe(200);
-      expect(response?.data).toMatchObject({
+      expect(response.status).toBe(200);
+      expect(response.data).toMatchObject({
         status: 'healthy',
-        services: expect?.any(Object)
+        services: expect.any(Object)
       });
-      expect(mockedAxios?.get).toHaveBeenCalledWith(`${BASE_URL}${ENDPOINTS?.HEALTH}`);
+      expect(mockedAxios.get).toHaveBeenCalledWith(`${BASE_URL}${ENDPOINTS.HEALTH}`);
     });
   });
 
   describe('Authentication', () => {
     it('Auth endpoint should handle unauthorized access', async () => {
-      mockedAxios?.get.mockRejectedValueOnce({
+      mockedAxios.get.mockRejectedValueOnce({
         response: {
           status: 401,
           data: { error: 'Unauthorized' }
@@ -117,18 +117,18 @@ describe('Smoke tests', () => {
       });
 
       try {
-        await axios?.get(`${BASE_URL}${ENDPOINTS?.AUTH}`);
+        await axios.get(`${BASE_URL}${ENDPOINTS.AUTH}`);
         fail('Should have thrown an error');
       } catch (error: any) {
-        expect(error?.response.status).toBe(401);
-        expect(error?.response.data).toEqual({ error: 'Unauthorized' });
+        expect(error.response.status).toBe(401);
+        expect(error.response.data).toEqual({ error: 'Unauthorized' });
       }
     });
   });
 
   describe('Services API', () => {
     it('Services endpoint should return available services', async () => {
-      mockedAxios?.get.mockResolvedValueOnce({
+      mockedAxios.get.mockResolvedValueOnce({
         status: 200,
         data: {
           services: [
@@ -138,17 +138,17 @@ describe('Smoke tests', () => {
         }
       });
 
-      const response = await axios?.get(`${BASE_URL}${ENDPOINTS?.SERVICES}`);
+      const response = await axios.get(`${BASE_URL}${ENDPOINTS.SERVICES}`);
       
-      expect(response?.status).toBe(200);
-      expect(response?.data.services).toBeInstanceOf(Array);
-      expect(response?.data.services?.length).toBeGreaterThan(0);
-      expect(response?.data.services[0]).toHaveProperty('id');
-      expect(response?.data.services[0]).toHaveProperty('name');
+      expect(response.status).toBe(200);
+      expect(response.data.services).toBeInstanceOf(Array);
+      expect(response.data.services.length).toBeGreaterThan(0);
+      expect(response.data.services[0]).toHaveProperty('id');
+      expect(response.data.services[0]).toHaveProperty('name');
     });
 
     it('Services endpoint should handle errors gracefully', async () => {
-      mockedAxios?.get.mockRejectedValueOnce({
+      mockedAxios.get.mockRejectedValueOnce({
         response: {
           status: 500,
           data: { error: 'Internal Server Error' }
@@ -156,18 +156,18 @@ describe('Smoke tests', () => {
       });
 
       try {
-        await axios?.get(`${BASE_URL}${ENDPOINTS?.SERVICES}`);
+        await axios.get(`${BASE_URL}${ENDPOINTS.SERVICES}`);
         fail('Should have thrown an error');
       } catch (error: any) {
-        expect(error?.response.status).toBe(500);
-        expect(error?.response.data?.error).toBe('Internal Server Error');
+        expect(error.response.status).toBe(500);
+        expect(error.response.data.error).toBe('Internal Server Error');
       }
     });
   });
 
   describe('Bookings API', () => {
     it('Bookings endpoint should handle rate limiting', async () => {
-      mockedAxios?.get.mockRejectedValueOnce({
+      mockedAxios.get.mockRejectedValueOnce({
         response: {
           status: 429,
           data: { 
@@ -177,7 +177,7 @@ describe('Smoke tests', () => {
           headers: {
 
     // Safe integer operation
-    if (retry > Number?.MAX_SAFE_INTEGER || retry < Number?.MIN_SAFE_INTEGER) {
+    if (retry > Number.MAX_SAFE_INTEGER || retry < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
             'retry-after': '60'
@@ -186,17 +186,17 @@ describe('Smoke tests', () => {
       });
 
       try {
-        await axios?.get(`${BASE_URL}${ENDPOINTS?.BOOKINGS}`);
+        await axios.get(`${BASE_URL}${ENDPOINTS.BOOKINGS}`);
         fail('Should have thrown an error');
       } catch (error: any) {
-        expect(error?.response.status).toBe(429);
+        expect(error.response.status).toBe(429);
 
     // Safe integer operation
-    if (retry > Number?.MAX_SAFE_INTEGER || retry < Number?.MIN_SAFE_INTEGER) {
+    if (retry > Number.MAX_SAFE_INTEGER || retry < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-        expect(error?.response.headers['retry-after']).toBe('60');
-        expect(error?.response.data?.retryAfter).toBe(60);
+        expect(error.response.headers['retry-after']).toBe('60');
+        expect(error.response.data.retryAfter).toBe(60);
       }
     });
   });

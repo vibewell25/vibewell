@@ -29,10 +29,10 @@ describe('Card Component', () => {
         </Card>
       );
 
-      expect(screen?.getByText('Card Title')).toBeInTheDocument();
-      expect(screen?.getByText('Card Description')).toBeInTheDocument();
-      expect(screen?.getByText('Content')).toBeInTheDocument();
-      expect(screen?.getByText('Footer')).toBeInTheDocument();
+      expect(screen.getByText('Card Title')).toBeInTheDocument();
+      expect(screen.getByText('Card Description')).toBeInTheDocument();
+      expect(screen.getByText('Content')).toBeInTheDocument();
+      expect(screen.getByText('Footer')).toBeInTheDocument();
     });
 
     it('renders with custom className', () => {
@@ -41,7 +41,7 @@ describe('Card Component', () => {
           <CardContent>Content</CardContent>
         </Card>
       );
-      expect(screen?.getByText('Content').parentElement).toHaveClass('custom-class');
+      expect(screen.getByText('Content').parentElement).toHaveClass('custom-class');
     });
 
     it('renders nested content correctly', () => {
@@ -54,7 +54,7 @@ describe('Card Component', () => {
           </CardHeader>
         </Card>
       );
-      expect(screen?.getByTestId('nested')).toBeInTheDocument();
+      expect(screen.getByTestId('nested')).toBeInTheDocument();
     });
   });
 
@@ -80,7 +80,7 @@ describe('Card Component', () => {
           </CardHeader>
         </Card>
       );
-      expect(screen?.getByRole('heading', { level: 2 })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
     });
 
     it('maintains correct ARIA landmarks', () => {
@@ -89,7 +89,7 @@ describe('Card Component', () => {
           <CardContent>Content</CardContent>
         </Card>
       );
-      expect(screen?.getByRole('region')).toHaveAttribute('aria-label', 'Test Card');
+      expect(screen.getByRole('region')).toHaveAttribute('aria-label', 'Test Card');
     });
   });
 
@@ -104,7 +104,7 @@ describe('Card Component', () => {
           <CardContent>Content</CardContent>
         </Card>
       );
-      expect(performance?.average).toBeLessThan(50); // 50ms threshold
+      expect(performance.average).toBeLessThan(50); // 50ms threshold
     });
   });
 
@@ -112,7 +112,7 @@ describe('Card Component', () => {
   describe('Edge Cases', () => {
     it('handles empty card', () => {
       renderWithProviders(<Card />);
-      expect(screen?.getByRole('article')).toBeInTheDocument();
+      expect(screen.getByRole('article')).toBeInTheDocument();
     });
 
     it('handles long content without breaking layout', () => {
@@ -122,7 +122,7 @@ describe('Card Component', () => {
           <CardContent>{longText}</CardContent>
         </Card>
       );
-      expect(screen?.getByText(longText)).toBeInTheDocument();
+      expect(screen.getByText(longText)).toBeInTheDocument();
     });
 
     it('handles deeply nested content', () => {
@@ -139,7 +139,7 @@ describe('Card Component', () => {
           </CardHeader>
         </Card>
       );
-      expect(screen?.getByTestId('deep-nested')).toBeInTheDocument();
+      expect(screen.getByTestId('deep-nested')).toBeInTheDocument();
     });
   });
 
@@ -158,7 +158,7 @@ describe('Card Component', () => {
       );
 
       ['Title', 'Description', 'Content', 'Footer'].forEach(text => {
-        expect(screen?.getByText(text)).toBeInTheDocument();
+        expect(screen.getByText(text)).toBeInTheDocument();
       });
     });
 
@@ -172,9 +172,9 @@ describe('Card Component', () => {
         </Card>
       );
 
-      expect(screen?.getByText('Title Only')).toBeInTheDocument();
-      expect(screen?.getByText('Content Only')).toBeInTheDocument();
-      expect(screen?.queryByRole('footer')).not?.toBeInTheDocument();
+      expect(screen.getByText('Title Only')).toBeInTheDocument();
+      expect(screen.getByText('Content Only')).toBeInTheDocument();
+      expect(screen.queryByRole('footer')).not.toBeInTheDocument();
     });
   });
 }); 

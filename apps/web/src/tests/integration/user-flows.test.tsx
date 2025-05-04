@@ -11,9 +11,9 @@ const ProfilePage = () => <div>Profile Page</div>;
 const PaymentPage = () => <div>Payment Page</div>;
 
 // Mock user actions
-const mockClick = vi?.fn();
-const mockType = vi?.fn();
-const mockClear = vi?.fn();
+const mockClick = vi.fn();
+const mockType = vi.fn();
+const mockClear = vi.fn();
 
 const mockUser = {
   click: mockClick,
@@ -23,7 +23,7 @@ const mockUser = {
 
 describe('User Flow Integration Tests', () => {
   beforeEach(() => {
-    vi?.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('Authentication Flow', () => {
@@ -32,29 +32,29 @@ describe('User Flow Integration Tests', () => {
       render(<RegisterPage />);
 
       await fillForm(mockUser, {
-        Email: 'test@example?.com',
+        Email: 'test@example.com',
         Password: 'Password123!',
         'Confirm Password': 'Password123!',
       });
 
-      await mockUser?.click(screen?.getByRole('button', { name: 'Register' }));
+      await mockUser.click(screen.getByRole('button', { name: 'Register' }));
 
       await waitFor(() => {
-        expect(screen?.getByText('Registration successful')).toBeInTheDocument();
+        expect(screen.getByText('Registration successful')).toBeInTheDocument();
       });
 
       // Test Login
       render(<LoginPage />);
 
       await fillForm(mockUser, {
-        Email: 'test@example?.com',
+        Email: 'test@example.com',
         Password: 'Password123!',
       });
 
-      await mockUser?.click(screen?.getByRole('button', { name: 'Sign in' }));
+      await mockUser.click(screen.getByRole('button', { name: 'Sign in' }));
 
       await waitFor(() => {
-        expect(screen?.getByText('Login successful')).toBeInTheDocument();
+        expect(screen.getByText('Login successful')).toBeInTheDocument();
       });
     });
   });
@@ -66,23 +66,23 @@ describe('User Flow Integration Tests', () => {
       });
 
       // Select service
-      await mockUser?.click(screen?.getByText('Select service'));
-      await mockUser?.click(screen?.getByText('Massage'));
+      await mockUser.click(screen.getByText('Select service'));
+      await mockUser.click(screen.getByText('Massage'));
 
       // Select provider
-      await mockUser?.click(screen?.getByText('Select provider'));
-      await mockUser?.click(screen?.getByText('John Doe'));
+      await mockUser.click(screen.getByText('Select provider'));
+      await mockUser.click(screen.getByText('John Doe'));
 
       // Select date and time
-      await mockUser?.click(screen?.getByLabelText('Select date'));
-      await mockUser?.click(screen?.getByText('15'));
-      await mockUser?.click(screen?.getByText('2:00 PM'));
+      await mockUser.click(screen.getByLabelText('Select date'));
+      await mockUser.click(screen.getByText('15'));
+      await mockUser.click(screen.getByText('2:00 PM'));
 
       // Confirm booking
-      await mockUser?.click(screen?.getByRole('button', { name: 'Confirm booking' }));
+      await mockUser.click(screen.getByRole('button', { name: 'Confirm booking' }));
 
       await waitFor(() => {
-        expect(screen?.getByText('Booking confirmed')).toBeInTheDocument();
+        expect(screen.getByText('Booking confirmed')).toBeInTheDocument();
       });
     });
   });
@@ -93,17 +93,17 @@ describe('User Flow Integration Tests', () => {
         session: createMockSession(),
       });
 
-      await mockUser?.click(screen?.getByRole('button', { name: 'Edit profile' }));
+      await mockUser.click(screen.getByRole('button', { name: 'Edit profile' }));
 
       await fillForm(mockUser, {
         Name: 'Updated Name',
         Phone: '123-456-7890',
       });
 
-      await mockUser?.click(screen?.getByRole('button', { name: 'Save changes' }));
+      await mockUser.click(screen.getByRole('button', { name: 'Save changes' }));
 
       await waitFor(() => {
-        expect(screen?.getByText('Profile updated successfully')).toBeInTheDocument();
+        expect(screen.getByText('Profile updated successfully')).toBeInTheDocument();
       });
     });
   });
@@ -120,10 +120,10 @@ describe('User Flow Integration Tests', () => {
         CVC: '123',
       });
 
-      await mockUser?.click(screen?.getByRole('button', { name: 'Pay now' }));
+      await mockUser.click(screen.getByRole('button', { name: 'Pay now' }));
 
       await waitFor(() => {
-        expect(screen?.getByText('Payment successful')).toBeInTheDocument();
+        expect(screen.getByText('Payment successful')).toBeInTheDocument();
       });
     });
 
@@ -138,11 +138,11 @@ describe('User Flow Integration Tests', () => {
         CVC: '123',
       });
 
-      await mockUser?.click(screen?.getByRole('button', { name: 'Pay now' }));
+      await mockUser.click(screen.getByRole('button', { name: 'Pay now' }));
 
       await waitFor(() => {
-        expect(screen?.getByText('Payment failed')).toBeInTheDocument();
-        expect(screen?.getByText('Invalid card number')).toBeInTheDocument();
+        expect(screen.getByText('Payment failed')).toBeInTheDocument();
+        expect(screen.getByText('Invalid card number')).toBeInTheDocument();
       });
     });
   });
@@ -154,18 +154,18 @@ describe('User Flow Integration Tests', () => {
       });
 
       // Select service and provider
-      await mockUser?.click(screen?.getByText('Select service'));
-      await mockUser?.click(screen?.getByText('Massage'));
-      await mockUser?.click(screen?.getByText('Select provider'));
-      await mockUser?.click(screen?.getByText('John Doe'));
+      await mockUser.click(screen.getByText('Select service'));
+      await mockUser.click(screen.getByText('Massage'));
+      await mockUser.click(screen.getByText('Select provider'));
+      await mockUser.click(screen.getByText('John Doe'));
 
       // Select date and time
-      await mockUser?.click(screen?.getByLabelText('Select date'));
-      await mockUser?.click(screen?.getByText('15'));
-      await mockUser?.click(screen?.getByText('2:00 PM'));
+      await mockUser.click(screen.getByLabelText('Select date'));
+      await mockUser.click(screen.getByText('15'));
+      await mockUser.click(screen.getByText('2:00 PM'));
 
       // Proceed to payment
-      await mockUser?.click(screen?.getByRole('button', { name: 'Proceed to payment' }));
+      await mockUser.click(screen.getByRole('button', { name: 'Proceed to payment' }));
 
       await fillForm(mockUser, {
         'Card number': '4242424242424242',
@@ -173,11 +173,11 @@ describe('User Flow Integration Tests', () => {
         CVC: '123',
       });
 
-      await mockUser?.click(screen?.getByRole('button', { name: 'Pay now' }));
+      await mockUser.click(screen.getByRole('button', { name: 'Pay now' }));
 
       await waitFor(() => {
-        expect(screen?.getByText('Booking confirmed')).toBeInTheDocument();
-        expect(screen?.getByText('Payment successful')).toBeInTheDocument();
+        expect(screen.getByText('Booking confirmed')).toBeInTheDocument();
+        expect(screen.getByText('Payment successful')).toBeInTheDocument();
       });
     });
   });

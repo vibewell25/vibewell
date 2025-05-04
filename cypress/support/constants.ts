@@ -7,15 +7,15 @@ export const TEST_CREDENTIALS = {
   
   // Test user accounts
   CUSTOMER: {
-    EMAIL: 'test?.customer@example?.com',
+    EMAIL: 'test.customer@example.com',
     NAME: 'Test Customer'
   },
   PROVIDER: {
-    EMAIL: 'test?.provider@example?.com',
+    EMAIL: 'test.provider@example.com',
     NAME: 'Test Provider'
   },
   ADMIN: {
-    EMAIL: 'test?.admin@example?.com',
+    EMAIL: 'test.admin@example.com',
     NAME: 'Test Admin'
   }
 };

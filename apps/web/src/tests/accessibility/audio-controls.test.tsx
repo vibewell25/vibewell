@@ -4,8 +4,8 @@ import AudioControls from '../../components/AudioControls';
 
 describe('AudioControls Accessibility', () => {
   const mockSoundscapes = [
-    { name: 'Rain', url: '/audio/rain?.mp3' },
-    { name: 'Ocean Waves', url: '/audio/waves?.mp3' },
+    { name: 'Rain', url: '/audio/rain.mp3' },
+    { name: 'Ocean Waves', url: '/audio/waves.mp3' },
   ];
 
   beforeAll(() => {
@@ -19,7 +19,7 @@ describe('AudioControls Accessibility', () => {
   it('should have no accessibility violations', async () => {
     const { container } = render(<AudioControls soundscapes={mockSoundscapes} />);
     const results = await axe(container);
-    expect(results?.violations).toHaveLength(0);
+    expect(results.violations).toHaveLength(0);
   });
 
   it('should have proper ARIA labels for all controls', () => {
@@ -48,7 +48,7 @@ describe('AudioControls Accessibility', () => {
       getByLabelText(/volume/i),
     ];
 
-    elements?.forEach((element, index) => {
+    elements.forEach((element, index) => {
       expect(element).toHaveAttribute('tabIndex', index === 0 ? '0' : undefined);
     });
   });

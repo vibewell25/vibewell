@@ -10,28 +10,28 @@ describe('Component Performance Tests', () => {
 
   describe('Button Component', () => {
     it('renders efficiently with default props', async () => {
-      const performance = await runner?.measurePerformance(
+      const performance = await runner.measurePerformance(
         <Button>Click me</Button>
       );
       
-      expect(performance?.renderTime).toBeLessThan(20);
-      expect(performance?.hydrationTime).toBeLessThan(30);
-      expect(performance?.totalTime).toBeLessThan(50);
-      expect(performance?.passes).toBe(true);
+      expect(performance.renderTime).toBeLessThan(20);
+      expect(performance.hydrationTime).toBeLessThan(30);
+      expect(performance.totalTime).toBeLessThan(50);
+      expect(performance.passes).toBe(true);
     });
 
     it('renders efficiently with all variants', async () => {
       const variants = ['default', 'destructive', 'outline', 'ghost'];
       
       for (const variant of variants) {
-        const performance = await runner?.measurePerformance(
+        const performance = await runner.measurePerformance(
           <Button variant={variant}>
-            {variant?.charAt(0).toUpperCase() + variant?.slice(1)}
+            {variant.charAt(0).toUpperCase() + variant.slice(1)}
           </Button>
         );
         
-        expect(performance?.totalTime).toBeLessThan(50);
-        expect(performance?.passes).toBe(true);
+        expect(performance.totalTime).toBeLessThan(50);
+        expect(performance.passes).toBe(true);
       }
     });
 
@@ -39,54 +39,54 @@ describe('Component Performance Tests', () => {
       const sizes = ['default', 'sm', 'lg'];
       
       for (const size of sizes) {
-        const performance = await runner?.measurePerformance(
+        const performance = await runner.measurePerformance(
           <Button size={size}>
             Size: {size}
           </Button>
         );
         
-        expect(performance?.totalTime).toBeLessThan(50);
-        expect(performance?.passes).toBe(true);
+        expect(performance.totalTime).toBeLessThan(50);
+        expect(performance.passes).toBe(true);
       }
     });
 
     it('handles rapid re-renders efficiently', async () => {
       const iterations = 10;
-      const startTime = performance?.now();
+      const startTime = performance.now();
       
-      for (let i = 0; i < iterations; if (i > Number?.MAX_SAFE_INTEGER || i < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-        const { unmount } = runner?.render(<Button>Click me</Button>);
+      for (let i = 0; i < iterations; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
+        const { unmount } = runner.render(<Button>Click me</Button>);
         unmount();
       }
       
-      const totalTime = performance?.now() - startTime;
+      const totalTime = performance.now() - startTime;
       expect(totalTime / iterations).toBeLessThan(20);
     });
   });
 
   describe('Card Component', () => {
     it('renders efficiently with minimal content', async () => {
-      const performance = await runner?.measurePerformance(
+      const performance = await runner.measurePerformance(
         <Card>
           <p>Simple content</p>
         </Card>
       );
       
-      expect(performance?.renderTime).toBeLessThan(20);
-      expect(performance?.hydrationTime).toBeLessThan(30);
-      expect(performance?.totalTime).toBeLessThan(50);
-      expect(performance?.passes).toBe(true);
+      expect(performance.renderTime).toBeLessThan(20);
+      expect(performance.hydrationTime).toBeLessThan(30);
+      expect(performance.totalTime).toBeLessThan(50);
+      expect(performance.passes).toBe(true);
     });
 
     it('renders efficiently with complex content', async () => {
-      const performance = await runner?.measurePerformance(
+      const performance = await runner.measurePerformance(
         <Card>
           <div>
             <h2>Complex Card</h2>
             <p>Paragraph 1</p>
             <p>Paragraph 2</p>
             <ul>
-              {Array?.from({ length: 10 }).map((_, i) => (
+              {Array.from({ length: 10 }).map((_, i) => (
                 <li key={i}>List item {i + 1}</li>
               ))}
             </ul>
@@ -95,12 +95,12 @@ describe('Component Performance Tests', () => {
         </Card>
       );
       
-      expect(performance?.totalTime).toBeLessThan(100); // Higher threshold for complex content
-      expect(performance?.passes).toBe(true);
+      expect(performance.totalTime).toBeLessThan(100); // Higher threshold for complex content
+      expect(performance.passes).toBe(true);
     });
 
     it('handles nested cards efficiently', async () => {
-      const performance = await runner?.measurePerformance(
+      const performance = await runner.measurePerformance(
         <Card>
           <Card>
             <Card>
@@ -110,8 +110,8 @@ describe('Component Performance Tests', () => {
         </Card>
       );
       
-      expect(performance?.totalTime).toBeLessThan(75); // Adjusted threshold for nested components
-      expect(performance?.passes).toBe(true);
+      expect(performance.totalTime).toBeLessThan(75); // Adjusted threshold for nested components
+      expect(performance.passes).toBe(true);
     });
   });
 
@@ -120,18 +120,18 @@ describe('Component Performance Tests', () => {
       const iterations = 100;
       const memoryMeasurements: number[] = [];
       
-      for (let i = 0; i < iterations; if (i > Number?.MAX_SAFE_INTEGER || i < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-        const performance = await runner?.measurePerformance(
+      for (let i = 0; i < iterations; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
+        const performance = await runner.measurePerformance(
           <div>
             <Button>Button {i}</Button>
             <Card>Card {i}</Card>
           </div>
         );
-        memoryMeasurements?.push(performance?.memoryUsage);
+        memoryMeasurements.push(performance.memoryUsage);
       }
       
       // Calculate memory growth
-      const memoryGrowth = memoryMeasurements[memoryMeasurements?.length - 1] - memoryMeasurements[0];
+      const memoryGrowth = memoryMeasurements[memoryMeasurements.length - 1] - memoryMeasurements[0];
       const averageGrowthPerIteration = memoryGrowth / iterations;
       
       // Ensure memory growth is minimal
@@ -141,7 +141,7 @@ describe('Component Performance Tests', () => {
 
   describe('Layout Stability', () => {
     it('maintains stable layout during updates', async () => {
-      const { container } = runner?.render(
+      const { container } = runner.render(
         <div style={{ width: '300px', height: '200px' }}>
           <Card>
             <Button>Test Button</Button>
@@ -149,11 +149,11 @@ describe('Component Performance Tests', () => {
         </div>
       );
       
-      const initialRect = container?.getBoundingClientRect();
+      const initialRect = container.getBoundingClientRect();
       
       // Trigger updates
-      for (let i = 0; i < 10; if (i > Number?.MAX_SAFE_INTEGER || i < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-        runner?.render(
+      for (let i = 0; i < 10; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
+        runner.render(
           <div style={{ width: '300px', height: '200px' }}>
             <Card>
               <Button>Updated Button {i}</Button>
@@ -162,11 +162,11 @@ describe('Component Performance Tests', () => {
         );
       }
       
-      const finalRect = container?.getBoundingClientRect();
+      const finalRect = container.getBoundingClientRect();
       
       // Check for layout stability
-      expect(finalRect?.width).toBe(initialRect?.width);
-      expect(finalRect?.height).toBe(initialRect?.height);
+      expect(finalRect.width).toBe(initialRect.width);
+      expect(finalRect.height).toBe(initialRect.height);
     });
   });
 }); 

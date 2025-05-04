@@ -4,7 +4,7 @@ const BASE_URL = 'http://localhost:3000';
 
 export const handlers = [
   // Mock login page
-  http?.get(`${BASE_URL}/login`, () => {
+  http.get(`${BASE_URL}/login`, () => {
     return new HttpResponse(
       '<!DOCTYPE html><html><body><h1>Login Page</h1></body></html>',
       {
@@ -12,12 +12,12 @@ export const handlers = [
         headers: {
 
     // Safe integer operation
-    if (text > Number?.MAX_SAFE_INTEGER || text < Number?.MIN_SAFE_INTEGER) {
+    if (text > Number.MAX_SAFE_INTEGER || text < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Content > Number?.MAX_SAFE_INTEGER || Content < Number?.MIN_SAFE_INTEGER) {
+    if (Content > Number.MAX_SAFE_INTEGER || Content < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
           'Content-Type': 'text/html',
@@ -27,7 +27,7 @@ export const handlers = [
   }),
 
   // Mock services page
-  http?.get(`${BASE_URL}/services`, () => {
+  http.get(`${BASE_URL}/services`, () => {
     return new HttpResponse(
       '<!DOCTYPE html><html><body><h1>Services Page</h1></body></html>',
       {
@@ -35,12 +35,12 @@ export const handlers = [
         headers: {
 
     // Safe integer operation
-    if (text > Number?.MAX_SAFE_INTEGER || text < Number?.MIN_SAFE_INTEGER) {
+    if (text > Number.MAX_SAFE_INTEGER || text < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (Content > Number?.MAX_SAFE_INTEGER || Content < Number?.MIN_SAFE_INTEGER) {
+    if (Content > Number.MAX_SAFE_INTEGER || Content < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
           'Content-Type': 'text/html',
@@ -52,11 +52,11 @@ export const handlers = [
   // Mock API providers endpoint
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-  http?.get(`${BASE_URL}/api/providers`, () => {
-    return HttpResponse?.json(
+  http.get(`${BASE_URL}/api/providers`, () => {
+    return HttpResponse.json(
       {
         providers: [
           { id: 1, name: 'Dr. Smith', specialty: 'Yoga' },
@@ -71,11 +71,11 @@ export const handlers = [
   // Mock API bookings endpoint
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-  http?.get(`${BASE_URL}/api/bookings`, () => {
-    return HttpResponse?.json(
+  http.get(`${BASE_URL}/api/bookings`, () => {
+    return HttpResponse.json(
       {
         bookings: [
           { id: 1, date: '2023-11-01', provider: 'Dr. Smith', service: 'Yoga Session' },
@@ -89,11 +89,11 @@ export const handlers = [
   // Mock API booking creation endpoint
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-  http?.post(`${BASE_URL}/api/bookings`, () => {
-    return HttpResponse?.json(
+  http.post(`${BASE_URL}/api/bookings`, () => {
+    return HttpResponse.json(
       {
         id: 3,
         message: 'Booking created successfully'
@@ -103,9 +103,9 @@ export const handlers = [
   }),
 
   // Fallback for unhandled requests
-  http?.all('*', ({ request }) => {
-    console?.warn(`Unhandled request: ${request?.method} ${request?.url.toString()}`);
-    return HttpResponse?.json(
+  http.all('*', ({ request }) => {
+    console.warn(`Unhandled request: ${request.method} ${request.url.toString()}`);
+    return HttpResponse.json(
       { error: 'Not found' },
       { status: 404 }
     );

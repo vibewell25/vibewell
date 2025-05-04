@@ -17,21 +17,21 @@ declare global {
 }
 
 // Mock global fetch
-global?.fetch = jest?.fn(() =>
-  Promise?.resolve({
-    json: () => Promise?.resolve({}),
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    json: () => Promise.resolve({}),
     ok: true,
     status: 200,
-    text: () => Promise?.resolve(''),
+    text: () => Promise.resolve(''),
   } as Response),
 );
 
 // Setup environment variables needed for tests
-process?.env.NEXT_PUBLIC_API_URL = 'http://localhost:3000/api';
+process.env.NEXT_PUBLIC_API_URL = 'http://localhost:3000/api';
 
 // Reset mocks between tests
 beforeEach(() => {
-  jest?.clearAllMocks();
+  jest.clearAllMocks();
 });
 
 export {};

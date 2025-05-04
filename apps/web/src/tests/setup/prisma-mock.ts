@@ -18,7 +18,7 @@ beforeEach(() => {
 
 // Mock the Prisma module
 
-jest?.mock('@/lib/database/client', () => ({
+jest.mock('@/lib/database/client', () => ({
   prisma,
 }));
 
@@ -53,14 +53,14 @@ export {};
  * describe('User service', () => {
  *   it('should get user by id', async () => {
  *     const mockUser = createMockUser();
- *     prisma?.user.findUnique?.mockResolvedValue(mockUser);
+ *     prisma.user.findUnique.mockResolvedValue(mockUser);
  *
  *     const userService = new UserService();
 
- *     const user = await userService?.getUserById('user-id-123');
+ *     const user = await userService.getUserById('user-id-123');
  *
  *     expect(user).toEqual(mockUser);
- *     expect(prisma?.user.findUnique).toHaveBeenCalledWith({
+ *     expect(prisma.user.findUnique).toHaveBeenCalledWith({
 
  *       where: { id: 'user-id-123' }
  *     });

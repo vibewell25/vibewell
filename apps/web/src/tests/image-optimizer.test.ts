@@ -25,56 +25,56 @@ import sharp from 'sharp';
 
 import ImageOptimizer from '../utils/image-optimization';
 
-jest?.mock('fs', () => ({
+jest.mock('fs', () => ({
   promises: {
-    mkdir: jest?.fn(),
-    readFile: jest?.fn(),
-    writeFile: jest?.fn(),
-    readdir: jest?.fn(),
-    stat: jest?.fn(),
-    unlink: jest?.fn(),
+    mkdir: jest.fn(),
+    readFile: jest.fn(),
+    writeFile: jest.fn(),
+    readdir: jest.fn(),
+    stat: jest.fn(),
+    unlink: jest.fn(),
   },
 }));
 
-jest?.mock('sharp', () => {
-  return jest?.fn().mockImplementation(() => ({
-    metadata: jest?.fn().mockResolvedValue({
+jest.mock('sharp', () => {
+  return jest.fn().mockImplementation(() => ({
+    metadata: jest.fn().mockResolvedValue({
       width: 1920,
       height: 1080,
       format: 'jpeg',
     }),
-    resize: jest?.fn().mockReturnThis(),
-    toFormat: jest?.fn().mockReturnThis(),
+    resize: jest.fn().mockReturnThis(),
+    toFormat: jest.fn().mockReturnThis(),
 
-    toBuffer: jest?.fn().mockResolvedValue(Buffer?.from('test-image')),
+    toBuffer: jest.fn().mockResolvedValue(Buffer.from('test-image')),
   }));
 });
 
 describe('ImageOptimizer', () => {
   let imageOptimizer: ImageOptimizer;
 
-  const testImage = Buffer?.from('test-image');
+  const testImage = Buffer.from('test-image');
 
   beforeEach(() => {
-    jest?.clearAllMocks();
-    imageOptimizer = ImageOptimizer?.getInstance();
+    jest.clearAllMocks();
+    imageOptimizer = ImageOptimizer.getInstance();
   });
 
   it('should create a singleton instance', () => {
-    const instance1 = ImageOptimizer?.getInstance();
-    const instance2 = ImageOptimizer?.getInstance();
+    const instance1 = ImageOptimizer.getInstance();
+    const instance2 = ImageOptimizer.getInstance();
     expect(instance1).toBe(instance2);
   });
 
   it('should optimize an image with default options', async () => {
-    const result = await imageOptimizer?.optimizeImage(testImage);
+    const result = await imageOptimizer.optimizeImage(testImage);
 
     expect(result).toEqual({
-      buffer: expect?.any(Buffer),
+      buffer: expect.any(Buffer),
       format: 'jpeg',
       width: 1920,
       height: 1080,
-      size: expect?.any(Number),
+      size: expect.any(Number),
     });
   });
 
@@ -87,50 +87,50 @@ describe('ImageOptimizer', () => {
       fit: 'cover' as const,
     };
 
-    const result = await imageOptimizer?.optimizeImage(testImage, options);
+    const result = await imageOptimizer.optimizeImage(testImage, options);
 
     expect(sharp).toHaveBeenCalledWith(testImage);
     expect(sharp().resize).toHaveBeenCalledWith(
-      options?.width,
-      options?.height,
-      expect?.objectContaining({ fit: options?.fit }),
+      options.width,
+      options.height,
+      expect.objectContaining({ fit: options.fit }),
     );
     expect(sharp().toFormat).toHaveBeenCalledWith(
-      options?.format,
-      expect?.objectContaining({ quality: options?.quality }),
+      options.format,
+      expect.objectContaining({ quality: options.quality }),
     );
   });
 
   it('should generate responsive images', async () => {
     const breakpoints = [300, 600, 900];
-    const results = await imageOptimizer?.generateResponsiveImages(testImage, breakpoints);
+    const results = await imageOptimizer.generateResponsiveImages(testImage, breakpoints);
 
-    expect(results?.size).toBe(breakpoints?.length);
-    breakpoints?.forEach((width) => {
-      expect(results?.has(width)).toBe(true);
-      const image = results?.get(width);
+    expect(results.size).toBe(breakpoints.length);
+    breakpoints.forEach((width) => {
+      expect(results.has(width)).toBe(true);
+      const image = results.get(width);
       expect(image).toEqual({
-        buffer: expect?.any(Buffer),
-        format: expect?.any(String),
-        width: expect?.any(Number),
-        height: expect?.any(Number),
-        size: expect?.any(Number),
+        buffer: expect.any(Buffer),
+        format: expect.any(String),
+        width: expect.any(Number),
+        height: expect.any(Number),
+        size: expect.any(Number),
       });
     });
   });
 
   it('should generate a placeholder image', async () => {
-    const placeholder = await imageOptimizer?.generatePlaceholder(testImage);
+    const placeholder = await imageOptimizer.generatePlaceholder(testImage);
 
     expect(placeholder).toMatch(/^data:image\/(webp|jpeg|png);base64,/);
-    expect(sharp().resize).toHaveBeenCalledWith(10, 10, expect?.any(Object));
+    expect(sharp().resize).toHaveBeenCalledWith(10, 10, expect.any(Object));
   });
 
   it('should use cache for repeated optimizations', async () => {
-    (fs?.readFile as jest?.Mock).mockResolvedValueOnce(testImage);
+    (fs.readFile as jest.Mock).mockResolvedValueOnce(testImage);
 
-    await imageOptimizer?.optimizeImage(testImage);
-    await imageOptimizer?.optimizeImage(testImage);
+    await imageOptimizer.optimizeImage(testImage);
+    await imageOptimizer.optimizeImage(testImage);
 
     expect(sharp).toHaveBeenCalledTimes(2); // Once for initial optimization, once for metadata
   });
@@ -138,19 +138,19 @@ describe('ImageOptimizer', () => {
   it('should clean old cache files', async () => {
     const mockFiles = ['file1', 'file2', 'file3'];
     const mockStats = {
-      mtimeMs: Date?.now() - 8 * 24 * 60 * 60 * 1000, // 8 days old
+      mtimeMs: Date.now() - 8 * 24 * 60 * 60 * 1000, // 8 days old
     };
 
-    (fs?.readdir as jest?.Mock).mockResolvedValue(mockFiles);
-    (fs?.stat as jest?.Mock).mockResolvedValue(mockStats);
+    (fs.readdir as jest.Mock).mockResolvedValue(mockFiles);
+    (fs.stat as jest.Mock).mockResolvedValue(mockStats);
 
-    await imageOptimizer?.cleanCache(7 * 24 * 60 * 60 * 1000); // 7 days
+    await imageOptimizer.cleanCache(7 * 24 * 60 * 60 * 1000); // 7 days
 
-    expect(fs?.unlink).toHaveBeenCalledTimes(mockFiles?.length);
+    expect(fs.unlink).toHaveBeenCalledTimes(mockFiles.length);
   });
 
   it('should get image metadata', async () => {
-    const metadata = await imageOptimizer?.getImageMetadata(testImage);
+    const metadata = await imageOptimizer.getImageMetadata(testImage);
 
     expect(metadata).toEqual({
       width: 1920,
@@ -161,32 +161,32 @@ describe('ImageOptimizer', () => {
 
   it('should handle file paths for input', async () => {
 
-    const filePath = 'path/to/image?.jpg';
-    (fs?.readFile as jest?.Mock).mockResolvedValueOnce(testImage);
+    const filePath = 'path/to/image.jpg';
+    (fs.readFile as jest.Mock).mockResolvedValueOnce(testImage);
 
-    await imageOptimizer?.optimizeImage(filePath);
+    await imageOptimizer.optimizeImage(filePath);
 
-    expect(fs?.readFile).toHaveBeenCalledWith(filePath);
+    expect(fs.readFile).toHaveBeenCalledWith(filePath);
   });
 
   it('should handle errors during optimization', async () => {
     const error = new Error('Optimization failed');
-    (sharp as jest?.Mock).mockImplementationOnce(() => {
+    (sharp as jest.Mock).mockImplementationOnce(() => {
       throw error;
     });
 
-    await expect(imageOptimizer?.optimizeImage(testImage)).rejects?.toThrow('Optimization failed');
+    await expect(imageOptimizer.optimizeImage(testImage)).rejects.toThrow('Optimization failed');
   });
 
   it('should handle errors during cache operations', async () => {
     const error = new Error('Cache operation failed');
-    (fs?.writeFile as jest?.Mock).mockRejectedValueOnce(error);
+    (fs.writeFile as jest.Mock).mockRejectedValueOnce(error);
 
-    const consoleSpy = jest?.spyOn(console, 'error').mockImplementation();
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
 
-    await imageOptimizer?.optimizeImage(testImage);
+    await imageOptimizer.optimizeImage(testImage);
 
     expect(consoleSpy).toHaveBeenCalledWith('Error caching image:', error);
-    consoleSpy?.mockRestore();
+    consoleSpy.mockRestore();
   });
 });

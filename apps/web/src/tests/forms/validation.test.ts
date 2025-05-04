@@ -41,9 +41,9 @@ describe('Form Validation', () => {
     describe('Email Validation', () => {
       it('should validate correct email format', () => {
 
-        const validEmails = ['test@example?.com', 'user?.name@domain?.co.uk', 'user+label@domain?.com'];
+        const validEmails = ['test@example.com', 'user.name@domain.co.uk', 'user+label@domain.com'];
 
-        validEmails?.forEach((email) => {
+        validEmails.forEach((email) => {
           expect(validateField('email', email)).toBe(true);
         });
       });
@@ -53,12 +53,12 @@ describe('Form Validation', () => {
 
           'not-an-email',
           'missing@domain',
-          '@nodomain?.com',
-          'spaces in@email?.com',
-          'missing?.domain@',
+          '@nodomain.com',
+          'spaces in@email.com',
+          'missing.domain@',
         ];
 
-        invalidEmails?.forEach((email) => {
+        invalidEmails.forEach((email) => {
           expect(() => validateField('email', email)).toThrow('Invalid email format');
         });
       });
@@ -75,7 +75,7 @@ describe('Form Validation', () => {
           expect(true).toBe(false); // Should not reach here
         } catch (error) {
           if (error instanceof ValidationError) {
-            const errors = error?.errors as string[];
+            const errors = error.errors as string[];
             expect(errors).toContain('Invalid email format');
           } else {
             throw error;
@@ -88,7 +88,7 @@ describe('Form Validation', () => {
       it('should validate strong passwords', () => {
         const validPasswords = ['StrongP@ss123', 'C0mpl3x!Pass', 'V3ryS3cur3!P@ssw0rd'];
 
-        validPasswords?.forEach((password) => {
+        validPasswords.forEach((password) => {
           expect(validateField('password', password)).toBe(true);
         });
       });
@@ -104,7 +104,7 @@ describe('Form Validation', () => {
           'NoSpecialChar123',
         ];
 
-        invalidPasswords?.forEach((password) => {
+        invalidPasswords.forEach((password) => {
           expect(() => validateField('password', password)).toThrow(
             'Password must be at least 8 characters long and contain uppercase, lowercase, number, and special character',
           );
@@ -116,7 +116,7 @@ describe('Form Validation', () => {
       it('should validate valid ages', () => {
         const validAges = [18, 25, 50, 100];
 
-        validAges?.forEach((age) => {
+        validAges.forEach((age) => {
           expect(validateField('age', age)).toBe(true);
         });
       });
@@ -124,7 +124,7 @@ describe('Form Validation', () => {
       it('should reject invalid ages', () => {
         const invalidAges = [-1, 0, 17, 151];
 
-        invalidAges?.forEach((age) => {
+        invalidAges.forEach((age) => {
           expect(() => validateField('age', age)).toThrow('Age must be between 18 and 150');
         });
       });
@@ -132,9 +132,9 @@ describe('Form Validation', () => {
 
     describe('Phone Validation', () => {
       it('should validate valid phone numbers', () => {
-        const validPhones = ['+1-123-456-7890', '(123) 456-7890', '123?.456.7890', '1234567890'];
+        const validPhones = ['+1-123-456-7890', '(123) 456-7890', '123.456.7890', '1234567890'];
 
-        validPhones?.forEach((phone) => {
+        validPhones.forEach((phone) => {
           expect(validateField('phone', phone)).toBe(true);
         });
       });
@@ -143,7 +143,7 @@ describe('Form Validation', () => {
 
         const invalidPhones = ['123', 'not-a-number', '123-456', '+1+2+3+4'];
 
-        invalidPhones?.forEach((phone) => {
+        invalidPhones.forEach((phone) => {
           expect(() => validateField('phone', phone)).toThrow('Invalid phone number format');
         });
       });
@@ -152,7 +152,7 @@ describe('Form Validation', () => {
 
   describe('Form Validation', () => {
     const validForm: TestForm = {
-      email: 'test@example?.com',
+      email: 'test@example.com',
       password: 'StrongP@ss123',
       confirmPassword: 'StrongP@ss123',
       age: 25,
@@ -165,17 +165,17 @@ describe('Form Validation', () => {
 
     it('should validate complete valid form', () => {
       const result = validateForm(validForm);
-      expect(result?.isValid).toBe(true);
-      expect(result?.errors).toEqual({});
+      expect(result.isValid).toBe(true);
+      expect(result.errors).toEqual({});
     });
 
     it('should validate form with optional fields missing', () => {
       const formWithoutOptional = { ...validForm };
-      delete formWithoutOptional?.phone;
+      delete formWithoutOptional.phone;
 
       const result = validateForm(formWithoutOptional);
-      expect(result?.isValid).toBe(true);
-      expect(result?.errors).toEqual({});
+      expect(result.isValid).toBe(true);
+      expect(result.errors).toEqual({});
     });
 
     it('should collect all validation errors', () => {
@@ -188,8 +188,8 @@ describe('Form Validation', () => {
       };
 
       const result = validateForm(invalidForm);
-      expect(result?.isValid).toBe(false);
-      expect(result?.errors).toEqual({
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toEqual({
         email: 'Invalid email format',
         password:
           'Password must be at least 8 characters long and contain uppercase, lowercase, number, and special character',
@@ -204,8 +204,8 @@ describe('Form Validation', () => {
       };
 
       const result = validateForm(formWithMismatchedPasswords);
-      expect(result?.isValid).toBe(false);
-      expect(result?.errors).toHaveProperty('confirmPassword', 'Passwords do not match');
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toHaveProperty('confirmPassword', 'Passwords do not match');
     });
 
     it('should validate nested objects', () => {
@@ -220,10 +220,10 @@ describe('Form Validation', () => {
       };
 
       const result = validateForm(formWithInvalidPreferences);
-      expect(result?.isValid).toBe(false);
-      expect(result?.errors).toEqual({
-        'preferences?.notifications': 'Must be a boolean value',
-        'preferences?.theme': 'Invalid theme selection',
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toEqual({
+        'preferences.notifications': 'Must be a boolean value',
+        'preferences.theme': 'Invalid theme selection',
       });
     });
 
@@ -231,10 +231,10 @@ describe('Form Validation', () => {
       const emptyForm = {};
 
       const result = validateForm(emptyForm);
-      expect(result?.isValid).toBe(false);
-      expect(Object?.keys(result?.errors)).toContain('email');
-      expect(Object?.keys(result?.errors)).toContain('password');
-      expect(Object?.keys(result?.errors)).toContain('age');
+      expect(result.isValid).toBe(false);
+      expect(Object.keys(result.errors)).toContain('email');
+      expect(Object.keys(result.errors)).toContain('password');
+      expect(Object.keys(result.errors)).toContain('age');
     });
   });
 
@@ -242,11 +242,11 @@ describe('Form Validation', () => {
     it('should format field errors correctly', () => {
       const errors: FormErrors = {
         email: 'Invalid email',
-        'preferences?.theme': 'Invalid theme',
+        'preferences.theme': 'Invalid theme',
       };
 
-      expect(errors?.email).toBe('Invalid email');
-      expect(errors['preferences?.theme']).toBe('Invalid theme');
+      expect(errors.email).toBe('Invalid email');
+      expect(errors['preferences.theme']).toBe('Invalid theme');
     });
 
     it('should handle multiple errors for the same field', () => {
@@ -257,7 +257,7 @@ describe('Form Validation', () => {
         validateField('password', password);
       } catch (error) {
         if (error instanceof ValidationError) {
-          errors?.push(error?.message);
+          errors.push(error.message);
         }
       }
 
@@ -269,7 +269,7 @@ describe('Form Validation', () => {
   describe('Custom Validation Rules', () => {
     it('should apply custom validation rules', () => {
       const customRule = (value: string) => {
-        if (value?.length < 3) {
+        if (value.length < 3) {
           throw new ValidationError('Must be at least 3 characters');
         }
         return true;
@@ -285,12 +285,12 @@ describe('Form Validation', () => {
 
       // Required field
       if (!value) {
-        errors?.push('Field is required');
+        errors.push('Field is required');
       }
 
       // Minimum length
-      if (value?.length < 3) {
-        errors?.push('Must be at least 3 characters');
+      if (value.length < 3) {
+        errors.push('Must be at least 3 characters');
       }
 
       expect(errors).toContain('Field is required');

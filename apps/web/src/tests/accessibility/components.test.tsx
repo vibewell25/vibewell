@@ -3,7 +3,7 @@ import { axe, toHaveNoViolations } from 'jest-axe';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 
-expect?.extend(toHaveNoViolations);
+expect.extend(toHaveNoViolations);
 
 describe('Component Accessibility', () => {
   describe('Button Component', () => {
@@ -42,9 +42,9 @@ describe('Component Accessibility', () => {
     it('basic card should have no accessibility violations', async () => {
       const { container } = render(
         <Card>
-          <Card?.Header>Accessible Header</Card?.Header>
-          <Card?.Body>Accessible Content</Card?.Body>
-          <Card?.Footer>Accessible Footer</Card?.Footer>
+          <Card.Header>Accessible Header</Card.Header>
+          <Card.Body>Accessible Content</Card.Body>
+          <Card.Footer>Accessible Footer</Card.Footer>
         </Card>,
       );
       const results = await axe(container);
@@ -54,7 +54,7 @@ describe('Component Accessibility', () => {
     it('clickable card should have proper role and keyboard support', async () => {
       const { container } = render(
         <Card clickable onClick={() => {}} aria-label="Interactive card">
-          <Card?.Body>Clickable Content</Card?.Body>
+          <Card.Body>Clickable Content</Card.Body>
         </Card>,
       );
       const results = await axe(container);
@@ -64,8 +64,8 @@ describe('Component Accessibility', () => {
     it('card with image should have proper alt text', async () => {
       const { container } = render(
         <Card>
-          <Card?.Image src="/test-image?.jpg" alt="Descriptive alt text" />
-          <Card?.Body>Content with Image</Card?.Body>
+          <Card.Image src="/test-image.jpg" alt="Descriptive alt text" />
+          <Card.Body>Content with Image</Card.Body>
         </Card>,
       );
       const results = await axe(container);
@@ -75,7 +75,7 @@ describe('Component Accessibility', () => {
     it('loading card should have proper aria attributes', async () => {
       const { container } = render(
         <Card loading aria-label="Loading content">
-          <Card?.Body>This content is hidden while loading</Card?.Body>
+          <Card.Body>This content is hidden while loading</Card.Body>
         </Card>,
       );
       const results = await axe(container);
@@ -87,18 +87,18 @@ describe('Component Accessibility', () => {
     it('nested interactive elements should maintain proper focus order', async () => {
       const { container } = render(
         <Card>
-          <Card?.Header>
+          <Card.Header>
             <h2>Interactive Card</h2>
-          </Card?.Header>
-          <Card?.Body>
+          </Card.Header>
+          <Card.Body>
             <div className="space-y-4">
               <Button variant="primary">Primary Action</Button>
               <Button variant="secondary">Secondary Action</Button>
             </div>
-          </Card?.Body>
-          <Card?.Footer>
+          </Card.Body>
+          <Card.Footer>
             <Button variant="outline">Cancel</Button>
-          </Card?.Footer>
+          </Card.Footer>
         </Card>,
       );
       const results = await axe(container);
@@ -108,11 +108,11 @@ describe('Component Accessibility', () => {
     it('complex interactive card should maintain accessibility', async () => {
       const { container } = render(
         <Card clickable onClick={() => {}} aria-labelledby="card-title">
-          <Card?.Header>
+          <Card.Header>
             <h2 id="card-title">Complex Interactive Card</h2>
             <p id="card-desc">This is a complex interactive card with multiple elements</p>
-          </Card?.Header>
-          <Card?.Body>
+          </Card.Header>
+          <Card.Body>
             <div className="space-y-4">
               <Button variant="primary" aria-describedby="card-desc">
                 Main Action
@@ -129,7 +129,7 @@ describe('Component Accessibility', () => {
                 </Button>
               </div>
             </div>
-          </Card?.Body>
+          </Card.Body>
         </Card>,
       );
       const results = await axe(container);

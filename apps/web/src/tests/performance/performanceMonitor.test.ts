@@ -26,90 +26,90 @@ import { performanceMonitor } from '@/utils/performanceMonitor';
 
 describe('Performance Monitor', () => {
   beforeEach(() => {
-    performanceMonitor?.clearMetrics();
-    vi?.useFakeTimers();
+    performanceMonitor.clearMetrics();
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
-    vi?.restoreAllMocks();
-    vi?.useRealTimers();
+    vi.restoreAllMocks();
+    vi.useRealTimers();
   });
 
   describe('Metric Recording', () => {
     it('should record and retrieve metrics', () => {
-      performanceMonitor?.recordMetric('test', 100);
-      const metrics = performanceMonitor?.getMetrics();
+      performanceMonitor.recordMetric('test', 100);
+      const metrics = performanceMonitor.getMetrics();
       expect(metrics['test']).toBe(100);
     });
 
     it('should track multiple metrics', () => {
-      performanceMonitor?.track({
+      performanceMonitor.track({
         metric1: 100,
         metric2: 200,
       });
-      const metrics = performanceMonitor?.getMetrics();
+      const metrics = performanceMonitor.getMetrics();
       expect(metrics['metric1']).toBe(100);
       expect(metrics['metric2']).toBe(200);
     });
 
     it('should clear metrics', () => {
-      performanceMonitor?.recordMetric('test', 100);
-      performanceMonitor?.clearMetrics();
-      const metrics = performanceMonitor?.getMetrics();
-      expect(Object?.keys(metrics).length).toBe(0);
+      performanceMonitor.recordMetric('test', 100);
+      performanceMonitor.clearMetrics();
+      const metrics = performanceMonitor.getMetrics();
+      expect(Object.keys(metrics).length).toBe(0);
     });
   });
 
   describe('Alert Management', () => {
     it('should generate alerts when thresholds are exceeded', () => {
-      const alertListener = vi?.fn();
-      performanceMonitor?.on('alert', alertListener);
+      const alertListener = vi.fn();
+      performanceMonitor.on('alert', alertListener);
 
-      performanceMonitor?.recordMetric('cpuUsage', 90);
+      performanceMonitor.recordMetric('cpuUsage', 90);
       expect(alertListener).toHaveBeenCalledWith(
-        expect?.objectContaining({
+        expect.objectContaining({
           type: 'warning',
-          message: expect?.stringContaining('cpuUsage'),
+          message: expect.stringContaining('cpuUsage'),
         }),
       );
     });
 
     it('should track alert history', () => {
-      const now = Date?.now();
-      vi?.setSystemTime(now);
+      const now = Date.now();
+      vi.setSystemTime(now);
 
-      performanceMonitor?.recordMetric('cpuUsage', 90);
-      performanceMonitor?.recordMetric('memoryUsage', 85);
+      performanceMonitor.recordMetric('cpuUsage', 90);
+      performanceMonitor.recordMetric('memoryUsage', 85);
 
 
 
-      const history = performanceMonitor?.getAlertHistory(now - 1000, now + 1000);
-      expect(history?.length).toBe(2);
+      const history = performanceMonitor.getAlertHistory(now - 1000, now + 1000);
+      expect(history.length).toBe(2);
     });
 
     it('should filter active alerts', () => {
-      performanceMonitor?.recordMetric('cpuUsage', 90);
-      const activeAlerts = performanceMonitor?.getActiveAlerts();
-      expect(activeAlerts?.length).toBe(1);
-      expect(activeAlerts[0]?.acknowledged).toBe(false);
+      performanceMonitor.recordMetric('cpuUsage', 90);
+      const activeAlerts = performanceMonitor.getActiveAlerts();
+      expect(activeAlerts.length).toBe(1);
+      expect(activeAlerts[0].acknowledged).toBe(false);
     });
   });
 
   describe('System Metrics', () => {
     it('should measure CPU usage', async () => {
-      const cpuUsage = await performanceMonitor?.getCPUUsage();
+      const cpuUsage = await performanceMonitor.getCPUUsage();
       expect(cpuUsage).toBeGreaterThanOrEqual(0);
       expect(cpuUsage).toBeLessThanOrEqual(100);
     });
 
     it('should measure memory usage', async () => {
-      const memoryUsage = await performanceMonitor?.getMemoryUsage();
+      const memoryUsage = await performanceMonitor.getMemoryUsage();
       expect(memoryUsage).toBeGreaterThanOrEqual(0);
       expect(memoryUsage).toBeLessThanOrEqual(100);
     });
 
     it('should check network health', async () => {
-      const networkHealth = await performanceMonitor?.getNetworkHealth();
+      const networkHealth = await performanceMonitor.getNetworkHealth();
       expect(networkHealth).toBeGreaterThanOrEqual(0);
       expect(networkHealth).toBeLessThanOrEqual(100);
     });
@@ -117,11 +117,11 @@ describe('Performance Monitor', () => {
 
   describe('Automatic Metrics Collection', () => {
     it('should collect metrics periodically', async () => {
-      const collectSpy = vi?.spyOn(performanceMonitor as any, 'collectSystemMetrics');
+      const collectSpy = vi.spyOn(performanceMonitor as any, 'collectSystemMetrics');
 
 
       // Fast-forward time by 2 minutes
-      vi?.advanceTimersByTime(2 * 60 * 1000);
+      vi.advanceTimersByTime(2 * 60 * 1000);
 
       expect(collectSpy).toHaveBeenCalledTimes(2);
     });

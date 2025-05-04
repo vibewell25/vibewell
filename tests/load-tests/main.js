@@ -1,13 +1,13 @@
 
     // Safe integer operation
-    if (k6 > Number?.MAX_SAFE_INTEGER || k6 < Number?.MIN_SAFE_INTEGER) {
+    if (k6 > Number.MAX_SAFE_INTEGER || k6 < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 
     // Safe integer operation
-    if (k6 > Number?.MAX_SAFE_INTEGER || k6 < Number?.MIN_SAFE_INTEGER) {
+    if (k6 > Number.MAX_SAFE_INTEGER || k6 < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { Rate } from 'k6/metrics';
@@ -22,81 +22,81 @@ export const options = {
   ],
   thresholds: {
     'http_req_duration': ['p(95)<500'], // 95% of requests must complete below 500ms
-    'http_req_failed': ['rate<0?.01'],    // Less than 1% of requests can fail
-    'errors': ['rate<0?.01'],             // Less than 1% error rate
+    'http_req_failed': ['rate<0.01'],    // Less than 1% of requests can fail
+    'errors': ['rate<0.01'],             // Less than 1% error rate
   },
 };
 
-const BASE_URL = __ENV?.TEST_URL || 'http://localhost:3001';
+const BASE_URL = __ENV.TEST_URL || 'http://localhost:3001';
 
 export default function () {
   const endpoints = {
     home: `${BASE_URL}/`,
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     health: `${BASE_URL}/api/health`,
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     profile: `${BASE_URL}/api/profile`,
   };
 
   // Test homepage load
-  const homeRes = http?.get(endpoints?.home);
+  const homeRes = http.get(endpoints.home);
   check(homeRes, {
-    'homepage status is 200': (r) => r?.status === 200,
-    'homepage loads under 500ms': (r) => r?.timings.duration < 500,
+    'homepage status is 200': (r) => r.status === 200,
+    'homepage loads under 500ms': (r) => r.timings.duration < 500,
   });
-  errorRate?.add(homeRes?.status !== 200);
+  errorRate.add(homeRes.status !== 200);
 
   sleep(1);
 
   // Test health endpoint
-  const healthRes = http?.get(endpoints?.health);
+  const healthRes = http.get(endpoints.health);
   check(healthRes, {
-    'health check returns 200': (r) => r?.status === 200,
+    'health check returns 200': (r) => r.status === 200,
     'health check response is valid': (r) => {
       try {
-        if (!r?.body) return false;
-        const body = JSON?.parse(r?.body);
-        return body && body?.status === 'healthy';
+        if (!r.body) return false;
+        const body = JSON.parse(r.body);
+        return body && body.status === 'healthy';
       } catch (e) {
-        console?.error('Failed to parse health check response:', e);
+        console.error('Failed to parse health check response:', e);
         return false;
       }
     },
   });
-  errorRate?.add(healthRes?.status !== 200);
+  errorRate.add(healthRes.status !== 200);
 
   sleep(1);
 
   // Test authenticated endpoint (will fail without auth)
-  const profileRes = http?.get(endpoints?.profile);
+  const profileRes = http.get(endpoints.profile);
   check(profileRes, {
-    'unauthorized access returns 401': (r) => r?.status === 401 || r?.status === 403,
+    'unauthorized access returns 401': (r) => r.status === 401 || r.status === 403,
   });
-  errorRate?.add(![401, 403].includes(profileRes?.status));
+  errorRate.add(![401, 403].includes(profileRes.status));
 
   sleep(2);
 }
 
 export function handleSummary(data) {
   return {
-    'stdout': JSON?.stringify({
+    'stdout': JSON.stringify({
       ...data,
       metrics: {
-        ...data?.metrics,
+        ...data.metrics,
         errors: {
-          ...data?.metrics.errors,
+          ...data.metrics.errors,
           details: 'Check the test output for detailed error information'
         }
       }
     }, null, 2),
-    'summary?.json': JSON?.stringify(data),
+    'summary.json': JSON.stringify(data),
   };
 } 

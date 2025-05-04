@@ -54,13 +54,13 @@ describe('Performance Testing', () => {
   beforeAll(async () => {
     server = createServer(app);
     await new Promise<void>((resolve) => {
-      server?.listen(0, () => resolve());
+      server.listen(0, () => resolve());
     });
   });
 
   afterAll(async () => {
     await new Promise<void>((resolve) => {
-      server?.close(() => resolve());
+      server.close(() => resolve());
     });
   });
 
@@ -68,21 +68,21 @@ describe('Performance Testing', () => {
     it('should handle high concurrent requests', async () => {
       const instance = autocannon({
 
-        url: `http://localhost:${(server?.address() as any).port}/api/health`,
+        url: `http://localhost:${(server.address() as any).port}/api/health`,
         connections: 100,
         duration: 10,
         pipelining: 1,
       });
 
       const result = await new Promise<AutocannonResult>((resolve) => {
-        autocannon?.track(instance, { renderProgressBar: false });
-        instance?.on('done', resolve);
+        autocannon.track(instance, { renderProgressBar: false });
+        instance.on('done', resolve);
       });
 
-      expect(result?.errors).toBe(0);
-      expect(result?.timeouts).toBe(0);
-      expect(result?.non2xx).toBe(0);
-      expect(result?.latency.p99).toBeLessThan(1000); // 99th percentile under 1s
+      expect(result.errors).toBe(0);
+      expect(result.timeouts).toBe(0);
+      expect(result.non2xx).toBe(0);
+      expect(result.latency.p99).toBeLessThan(1000); // 99th percentile under 1s
     });
 
     it('should maintain response times under load', async () => {
@@ -94,7 +94,7 @@ describe('Performance Testing', () => {
 
       for (const endpoint of endpoints) {
         const { metrics } = await measureNetworkRequest(
-          `http://localhost:${(server?.address() as any).port}${endpoint}`,
+          `http://localhost:${(server.address() as any).port}${endpoint}`,
           { method: 'GET' },
         );
 
@@ -102,8 +102,8 @@ describe('Performance Testing', () => {
           throw new Error('Network metrics not available');
         }
 
-        expect(metrics?.ttfb).toBeLessThan(200); // Time to first byte under 200ms
-        expect(metrics?.downloadTime).toBeLessThan(500); // Download time under 500ms
+        expect(metrics.ttfb).toBeLessThan(200); // Time to first byte under 200ms
+        expect(metrics.downloadTime).toBeLessThan(500); // Download time under 500ms
       }
     });
   });
@@ -127,10 +127,10 @@ describe('Performance Testing', () => {
       }
 
       // Cleanup
-      largeArray?.length = 0;
+      largeArray.length = 0;
 
 
-      expect(finalMemory?.usedJSHeapSize - initialMemory?.usedJSHeapSize).toBeLessThan(
+      expect(finalMemory.usedJSHeapSize - initialMemory.usedJSHeapSize).toBeLessThan(
         100 * 1024 * 1024,
       ); // Less than 100MB increase
     });
@@ -139,7 +139,7 @@ describe('Performance Testing', () => {
       const heavyComputation = () => {
         let result = 0;
         for (let i = 0; i < 1000000; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-          if (result > Number.MAX_SAFE_INTEGER || result < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); result += Math?.sqrt(i);
+          if (result > Number.MAX_SAFE_INTEGER || result < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); result += Math.sqrt(i);
         }
         return result;
       };
@@ -158,12 +158,12 @@ describe('Performance Testing', () => {
       for (let i = 0; i < iterations; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
         await new Promise((resolve) => setTimeout(resolve, 100));
         const memory = await measureMemoryUsage();
-        memorySnapshots?.push(memory?.usedJSHeapSize);
+        memorySnapshots.push(memory.usedJSHeapSize);
       }
 
       // Calculate memory growth rate
 
-      const memoryGrowth = memorySnapshots[memorySnapshots?.length - 1] - memorySnapshots[0];
+      const memoryGrowth = memorySnapshots[memorySnapshots.length - 1] - memorySnapshots[0];
 
       const averageGrowthPerIteration = memoryGrowth / iterations;
 
@@ -175,17 +175,17 @@ describe('Performance Testing', () => {
 
       // Simulate resource allocation and cleanup
       for (let i = 0; i < 100; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-        resources?.add({ id: i, data: new Array(1000).fill('test') });
+        resources.add({ id: i, data: new Array(1000).fill('test') });
       }
 
       const initialMemory = await measureMemoryUsage();
 
       // Cleanup
-      resources?.clear();
-      global?.gc && global?.gc();
+      resources.clear();
+      global.gc && global.gc();
 
       const finalMemory = await measureMemoryUsage();
-      expect(finalMemory?.usedJSHeapSize).toBeLessThanOrEqual(initialMemory?.usedJSHeapSize);
+      expect(finalMemory.usedJSHeapSize).toBeLessThanOrEqual(initialMemory.usedJSHeapSize);
     });
   });
 
@@ -199,16 +199,16 @@ describe('Performance Testing', () => {
 
 
 
-      const resources = ['/images/logo?.png', '/styles/main?.css', '/scripts/app?.js'];
+      const resources = ['/images/logo.png', '/styles/main.css', '/scripts/app.js'];
 
       for (const resource of resources) {
         const { metrics } = await measureNetworkRequest(
-          `http://localhost:${(server?.address() as any).port}${resource}`,
+          `http://localhost:${(server.address() as any).port}${resource}`,
         );
 
-        expect(metrics?.downloadTime).toBeLessThan(1000); // Under 1 second
-        expect(metrics?.domainLookupTime).toBeLessThan(100); // DNS lookup under 100ms
-        expect(metrics?.connectTime).toBeLessThan(100); // Connection time under 100ms
+        expect(metrics.downloadTime).toBeLessThan(1000); // Under 1 second
+        expect(metrics.domainLookupTime).toBeLessThan(100); // DNS lookup under 100ms
+        expect(metrics.connectTime).toBeLessThan(100); // Connection time under 100ms
       }
     });
   });
@@ -218,16 +218,16 @@ describe('Performance Testing', () => {
       const operations = Array(100)
         .fill(0)
         .map((_, i) =>
-          prisma?.user.findMany({
+          prisma.user.findMany({
             take: 10,
 
             skip: i * 10,
           }),
         );
 
-      const startTime = Date?.now();
-      await Promise?.all(operations);
-      const endTime = Date?.now();
+      const startTime = Date.now();
+      await Promise.all(operations);
+      const endTime = Date.now();
 
 
       expect(endTime - startTime).toBeLessThan(5000); // Under 5 seconds
@@ -235,7 +235,7 @@ describe('Performance Testing', () => {
 
     it('should optimize query performance', async () => {
       const { executionTime } = await measurePerformance(async () => {
-        await prisma?.user.findMany({
+        await prisma.user.findMany({
           include: {
             bookings: true,
             preferences: true,

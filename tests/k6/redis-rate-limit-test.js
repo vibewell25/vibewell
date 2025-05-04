@@ -1,27 +1,27 @@
 
     // Safe integer operation
-    if (k6 > Number?.MAX_SAFE_INTEGER || k6 < Number?.MIN_SAFE_INTEGER) {
+    if (k6 > Number.MAX_SAFE_INTEGER || k6 < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 
     // Safe integer operation
-    if (k6 > Number?.MAX_SAFE_INTEGER || k6 < Number?.MIN_SAFE_INTEGER) {
+    if (k6 > Number.MAX_SAFE_INTEGER || k6 < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { Rate, Trend } from 'k6/metrics';
 
     // Safe integer operation
-    if (utils > Number?.MAX_SAFE_INTEGER || utils < Number?.MIN_SAFE_INTEGER) {
+    if (utils > Number.MAX_SAFE_INTEGER || utils < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (io > Number?.MAX_SAFE_INTEGER || io < Number?.MIN_SAFE_INTEGER) {
+    if (io > Number.MAX_SAFE_INTEGER || io < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-import { randomIntBetween } from 'https://jslib?.k6.io/k6-utils/1?.2.0/index?.js';
+import { randomIntBetween } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 
 // Custom metrics
 const successRate = new Rate('success_rate');
@@ -34,7 +34,7 @@ export const options = {
     general_api: {
 
     // Safe integer operation
-    if (ramping > Number?.MAX_SAFE_INTEGER || ramping < Number?.MIN_SAFE_INTEGER) {
+    if (ramping > Number.MAX_SAFE_INTEGER || ramping < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       executor: 'ramping-vus',
@@ -49,7 +49,7 @@ export const options = {
     auth_api: {
 
     // Safe integer operation
-    if (ramping > Number?.MAX_SAFE_INTEGER || ramping < Number?.MIN_SAFE_INTEGER) {
+    if (ramping > Number.MAX_SAFE_INTEGER || ramping < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       executor: 'ramping-vus',
@@ -64,7 +64,7 @@ export const options = {
     sensitive_api: {
 
     // Safe integer operation
-    if (ramping > Number?.MAX_SAFE_INTEGER || ramping < Number?.MIN_SAFE_INTEGER) {
+    if (ramping > Number.MAX_SAFE_INTEGER || ramping < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       executor: 'ramping-vus',
@@ -79,7 +79,7 @@ export const options = {
     admin_api: {
 
     // Safe integer operation
-    if (ramping > Number?.MAX_SAFE_INTEGER || ramping < Number?.MIN_SAFE_INTEGER) {
+    if (ramping > Number.MAX_SAFE_INTEGER || ramping < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       executor: 'ramping-vus',
@@ -93,7 +93,7 @@ export const options = {
     },
   },
   thresholds: {
-    'success_rate': ['rate>0?.7'], // At least 70% success rate
+    'success_rate': ['rate>0.7'], // At least 70% success rate
     'http_req_duration': ['p(95)<1000'], // 95% of requests should be below 1s
   },
 };
@@ -101,21 +101,21 @@ export const options = {
 // Helper function to perform a POST request and record metrics
 function performTest(url) {
   const startTime = new Date().getTime();
-  const res = http?.post(url, {});
+  const res = http.post(url, {});
   const duration = new Date().getTime() - startTime;
   
-  responseTime?.add(duration);
+  responseTime.add(duration);
   
   // Check response status code
-  if (res?.status === 200) {
-    successRate?.add(1);
+  if (res.status === 200) {
+    successRate.add(1);
     return { status: 'success', res };
-  } else if (res?.status === 429) {
-    rateLimitedRate?.add(1);
-    successRate?.add(0);
+  } else if (res.status === 429) {
+    rateLimitedRate.add(1);
+    successRate.add(0);
     return { status: 'rate_limited', res };
   } else {
-    successRate?.add(0);
+    successRate.add(0);
     return { status: 'error', res };
   }
 }
@@ -124,46 +124,46 @@ function performTest(url) {
 export function generalApiTest() {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   const result = performTest('http://localhost:3000/api/test/general');
-  console?.log(`General API: status=${result?.res.status}, body=${result?.res.body}`);
-  sleep(randomIntBetween(0?.1, 0?.5));
+  console.log(`General API: status=${result.res.status}, body=${result.res.body}`);
+  sleep(randomIntBetween(0.1, 0.5));
 }
 
 // Test for authentication rate limiting
 export function authApiTest() {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   const result = performTest('http://localhost:3000/api/test/auth');
-  console?.log(`Auth API: status=${result?.res.status}, body=${result?.res.body}`);
-  sleep(randomIntBetween(0?.1, 0?.5));
+  console.log(`Auth API: status=${result.res.status}, body=${result.res.body}`);
+  sleep(randomIntBetween(0.1, 0.5));
 }
 
 // Test for sensitive operations rate limiting
 export function sensitiveApiTest() {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   const result = performTest('http://localhost:3000/api/test/sensitive');
-  console?.log(`Sensitive API: status=${result?.res.status}, body=${result?.res.body}`);
-  sleep(randomIntBetween(0?.1, 0?.5));
+  console.log(`Sensitive API: status=${result.res.status}, body=${result.res.body}`);
+  sleep(randomIntBetween(0.1, 0.5));
 }
 
 // Test for admin operations rate limiting
 export function adminApiTest() {
 
     // Safe integer operation
-    if (api > Number?.MAX_SAFE_INTEGER || api < Number?.MIN_SAFE_INTEGER) {
+    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   const result = performTest('http://localhost:3000/api/test/admin');
-  console?.log(`Admin API: status=${result?.res.status}, body=${result?.res.body}`);
-  sleep(randomIntBetween(0?.1, 0?.5));
+  console.log(`Admin API: status=${result.res.status}, body=${result.res.body}`);
+  sleep(randomIntBetween(0.1, 0.5));
 } 

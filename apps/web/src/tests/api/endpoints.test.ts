@@ -38,20 +38,20 @@ describe('API Endpoints', () => {
   beforeAll(async () => {
     // Create test user
     const hashedPassword = await hash('TestPass123!', 12);
-    const user = await prisma?.user.create({
+    const user = await prisma.user.create({
       data: {
-        email: 'test@example?.com',
+        email: 'test@example.com',
         password: hashedPassword,
         name: 'Test User',
       },
     });
-    userId = user?.id;
-    authToken = jwt?.sign({ userId }, process?.env.JWT_SECRET!, { expiresIn: '1h' });
+    userId = user.id;
+    authToken = jwt.sign({ userId }, process.env.JWT_SECRET!, { expiresIn: '1h' });
   });
 
   afterAll(async () => {
     // Cleanup test data
-    await prisma?.user.delete({ where: { id: userId } });
+    await prisma.user.delete({ where: { id: userId } });
     await prisma.$disconnect();
   });
 
@@ -60,44 +60,44 @@ describe('API Endpoints', () => {
 
     it('POST /api/auth/login - should authenticate valid credentials', async () => {
 
-      const response = await request?.post('/api/auth/login').send({
-        email: 'test@example?.com',
+      const response = await request.post('/api/auth/login').send({
+        email: 'test@example.com',
         password: 'TestPass123!',
       });
 
-      expect(response?.status).toBe(200);
-      expect(response?.body).toHaveProperty('token');
-      expect(response?.body.user?.email).toBe('test@example?.com');
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('token');
+      expect(response.body.user.email).toBe('test@example.com');
     });
 
 
 
     it('POST /api/auth/login - should reject invalid credentials', async () => {
 
-      const response = await request?.post('/api/auth/login').send({
-        email: 'test@example?.com',
+      const response = await request.post('/api/auth/login').send({
+        email: 'test@example.com',
         password: 'WrongPassword',
       });
 
-      expect(response?.status).toBe(401);
-      expect(response?.body).toHaveProperty('error');
+      expect(response.status).toBe(401);
+      expect(response.body).toHaveProperty('error');
     });
 
 
 
     it('POST /api/auth/register - should create new user', async () => {
 
-      const response = await request?.post('/api/auth/register').send({
-        email: 'newuser@example?.com',
+      const response = await request.post('/api/auth/register').send({
+        email: 'newuser@example.com',
         password: 'NewPass123!',
         name: 'New User',
       });
 
-      expect(response?.status).toBe(201);
-      expect(response?.body.user?.email).toBe('newuser@example?.com');
+      expect(response.status).toBe(201);
+      expect(response.body.user.email).toBe('newuser@example.com');
 
       // Cleanup
-      await prisma?.user.delete({ where: { email: 'newuser@example?.com' } });
+      await prisma.user.delete({ where: { email: 'newuser@example.com' } });
     });
   });
 
@@ -110,8 +110,8 @@ describe('API Endpoints', () => {
         .get('/api/users/me')
         .set('Authorization', `Bearer ${authToken}`);
 
-      expect(response?.status).toBe(200);
-      expect(response?.body.email).toBe('test@example?.com');
+      expect(response.status).toBe(200);
+      expect(response.body.email).toBe('test@example.com');
     });
 
 
@@ -129,8 +129,8 @@ describe('API Endpoints', () => {
           },
         });
 
-      expect(response?.status).toBe(200);
-      expect(response?.body.name).toBe('Updated Name');
+      expect(response.status).toBe(200);
+      expect(response.body.name).toBe('Updated Name');
     });
   });
 
@@ -139,16 +139,16 @@ describe('API Endpoints', () => {
 
     beforeEach(async () => {
       // Create test metric
-      const metric = await prisma?.healthMetric.create({
+      const metric = await prisma.healthMetric.create({
         data: {
           userId,
           type: 'weight',
-          value: 70?.5,
+          value: 70.5,
           unit: 'kg',
           timestamp: new Date(),
         },
       });
-      metricId = metric?.id;
+      metricId = metric.id;
     });
 
 
@@ -164,9 +164,9 @@ describe('API Endpoints', () => {
           unit: 'bpm',
         });
 
-      expect(response?.status).toBe(201);
-      expect(response?.body.type).toBe('heart_rate');
-      expect(response?.body.value).toBe(75);
+      expect(response.status).toBe(201);
+      expect(response.body.type).toBe('heart_rate');
+      expect(response.body.value).toBe(75);
     });
 
 
@@ -177,9 +177,9 @@ describe('API Endpoints', () => {
         .get('/api/metrics')
         .set('Authorization', `Bearer ${authToken}`);
 
-      expect(response?.status).toBe(200);
-      expect(Array?.isArray(response?.body)).toBe(true);
-      expect(response?.body.length).toBeGreaterThan(0);
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeGreaterThan(0);
     });
 
 
@@ -190,9 +190,9 @@ describe('API Endpoints', () => {
         .get(`/api/metrics/${metricId}`)
         .set('Authorization', `Bearer ${authToken}`);
 
-      expect(response?.status).toBe(200);
-      expect(response?.body.id).toBe(metricId);
-      expect(response?.body.value).toBe(70?.5);
+      expect(response.status).toBe(200);
+      expect(response.body.id).toBe(metricId);
+      expect(response.body.value).toBe(70.5);
     });
   });
 
@@ -201,23 +201,23 @@ describe('API Endpoints', () => {
 
     beforeEach(async () => {
       // Create test booking
-      const booking = await prisma?.booking.create({
+      const booking = await prisma.booking.create({
         data: {
           userId,
           type: 'yoga_class',
           startTime: new Date(),
-          endTime: new Date(Date?.now() + 3600000),
+          endTime: new Date(Date.now() + 3600000),
           status: 'confirmed',
         },
       });
-      bookingId = booking?.id;
+      bookingId = booking.id;
     });
 
 
 
     it('POST /api/bookings - should create booking', async () => {
       const startTime = new Date();
-      const endTime = new Date(startTime?.getTime() + 3600000);
+      const endTime = new Date(startTime.getTime() + 3600000);
 
       const response = await request
 
@@ -225,13 +225,13 @@ describe('API Endpoints', () => {
         .set('Authorization', `Bearer ${authToken}`)
         .send({
           type: 'meditation_session',
-          startTime: startTime?.toISOString(),
-          endTime: endTime?.toISOString(),
+          startTime: startTime.toISOString(),
+          endTime: endTime.toISOString(),
         });
 
-      expect(response?.status).toBe(201);
-      expect(response?.body.type).toBe('meditation_session');
-      expect(response?.body.status).toBe('confirmed');
+      expect(response.status).toBe(201);
+      expect(response.body.type).toBe('meditation_session');
+      expect(response.body.status).toBe('confirmed');
     });
 
 
@@ -242,9 +242,9 @@ describe('API Endpoints', () => {
         .get('/api/bookings')
         .set('Authorization', `Bearer ${authToken}`);
 
-      expect(response?.status).toBe(200);
-      expect(Array?.isArray(response?.body)).toBe(true);
-      expect(response?.body.length).toBeGreaterThan(0);
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeGreaterThan(0);
     });
 
 
@@ -258,9 +258,9 @@ describe('API Endpoints', () => {
           status: 'cancelled',
         });
 
-      expect(response?.status).toBe(200);
-      expect(response?.body.id).toBe(bookingId);
-      expect(response?.body.status).toBe('cancelled');
+      expect(response.status).toBe(200);
+      expect(response.body.id).toBe(bookingId);
+      expect(response.body.status).toBe('cancelled');
     });
 
 
@@ -271,10 +271,10 @@ describe('API Endpoints', () => {
         .delete(`/api/bookings/${bookingId}`)
         .set('Authorization', `Bearer ${authToken}`);
 
-      expect(response?.status).toBe(204);
+      expect(response.status).toBe(204);
 
       // Verify deletion
-      const booking = await prisma?.booking.findUnique({
+      const booking = await prisma.booking.findUnique({
         where: { id: bookingId },
       });
       expect(booking).toBeNull();

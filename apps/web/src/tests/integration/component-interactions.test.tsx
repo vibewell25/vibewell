@@ -7,21 +7,21 @@ import { Card } from '@/components/Card';
 describe('Component Interactions', () => {
   describe('Card with Button Integration', () => {
     it('should handle complex interactive scenarios accessibly', async () => {
-      const handleCardClick = jest?.fn();
-      const handleButtonClick = jest?.fn();
-      const user = userEvent?.setup();
+      const handleCardClick = jest.fn();
+      const handleButtonClick = jest.fn();
+      const user = userEvent.setup();
 
       const { container } = render(
         <Card clickable onClick={handleCardClick} aria-labelledby="card-title">
-          <Card?.Header>
+          <Card.Header>
             <h2 id="card-title">Interactive Card</h2>
-          </Card?.Header>
-          <Card?.Body>
+          </Card.Header>
+          <Card.Body>
             <p>Card content with interactive elements</p>
             <div className="space-y-4">
               <Button
                 onClick={(e) => {
-                  e?.stopPropagation();
+                  e.stopPropagation();
                   handleButtonClick();
                 }}
                 aria-label="Primary action"
@@ -29,7 +29,7 @@ describe('Component Interactions', () => {
                 Click Me
               </Button>
             </div>
-          </Card?.Body>
+          </Card.Body>
         </Card>,
       );
 
@@ -38,29 +38,29 @@ describe('Component Interactions', () => {
       expect(results).toHaveNoViolations();
 
       // Test button click without triggering card click
-      const button = screen?.getByRole('button', { name: /Primary action/i });
-      await user?.click(button);
+      const button = screen.getByRole('button', { name: /Primary action/i });
+      await user.click(button);
       expect(handleButtonClick).toHaveBeenCalledTimes(1);
-      expect(handleCardClick).not?.toHaveBeenCalled();
+      expect(handleCardClick).not.toHaveBeenCalled();
 
       // Test card click
-      const card = screen?.getByRole('button', { name: /Interactive Card/i });
-      await user?.click(card);
+      const card = screen.getByRole('button', { name: /Interactive Card/i });
+      await user.click(card);
       expect(handleCardClick).toHaveBeenCalledTimes(1);
     });
 
     it('should handle loading states correctly', async () => {
       const { container } = render(
         <Card>
-          <Card?.Body>
+          <Card.Body>
             <Button loading>Loading Button</Button>
-          </Card?.Body>
+          </Card.Body>
         </Card>,
       );
 
       // Test initial loading state
-      expect(screen?.getByTestId('loading-spinner')).toBeInTheDocument();
-      expect(screen?.getByRole('button')).toHaveAttribute('aria-busy', 'true');
+      expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+      expect(screen.getByRole('button')).toHaveAttribute('aria-busy', 'true');
 
       // Test accessibility in loading state
       let results = await axe(container);
@@ -69,13 +69,13 @@ describe('Component Interactions', () => {
       // Test card loading state
       render(
         <Card loading>
-          <Card?.Body>
+          <Card.Body>
             <Button>Button in Loading Card</Button>
-          </Card?.Body>
+          </Card.Body>
         </Card>,
       );
 
-      expect(screen?.getByTestId('card-skeleton')).toBeInTheDocument();
+      expect(screen.getByTestId('card-skeleton')).toBeInTheDocument();
 
       // Test accessibility in card loading state
       results = await axe(container);
@@ -83,57 +83,57 @@ describe('Component Interactions', () => {
     });
 
     it('should handle keyboard navigation correctly', async () => {
-      const handleCardClick = jest?.fn();
-      const handleButtonClick = jest?.fn();
+      const handleCardClick = jest.fn();
+      const handleButtonClick = jest.fn();
 
       render(
         <div>
           <Card clickable onClick={handleCardClick} aria-label="First card">
-            <Card?.Body>
+            <Card.Body>
               <Button onClick={handleButtonClick}>First Button</Button>
-            </Card?.Body>
+            </Card.Body>
           </Card>
           <Card clickable onClick={handleCardClick} aria-label="Second card">
-            <Card?.Body>
+            <Card.Body>
               <Button onClick={handleButtonClick}>Second Button</Button>
-            </Card?.Body>
+            </Card.Body>
           </Card>
         </div>,
       );
 
       // Get all interactive elements
-      const firstCard = screen?.getByRole('button', { name: /First card/i });
-      const secondCard = screen?.getByRole('button', { name: /Second card/i });
-      const firstButton = screen?.getByRole('button', { name: /First Button/i });
-      const secondButton = screen?.getByRole('button', { name: /Second Button/i });
+      const firstCard = screen.getByRole('button', { name: /First card/i });
+      const secondCard = screen.getByRole('button', { name: /Second card/i });
+      const firstButton = screen.getByRole('button', { name: /First Button/i });
+      const secondButton = screen.getByRole('button', { name: /Second Button/i });
 
       // Test tab order
-      firstCard?.focus();
+      firstCard.focus();
       expect(firstCard).toHaveFocus();
 
       // Tab to first button
-      fireEvent?.keyDown(firstCard, { key: 'Tab' });
+      fireEvent.keyDown(firstCard, { key: 'Tab' });
       expect(firstButton).toHaveFocus();
 
       // Tab to second card
-      fireEvent?.keyDown(firstButton, { key: 'Tab' });
+      fireEvent.keyDown(firstButton, { key: 'Tab' });
       expect(secondCard).toHaveFocus();
 
       // Tab to second button
-      fireEvent?.keyDown(secondCard, { key: 'Tab' });
+      fireEvent.keyDown(secondCard, { key: 'Tab' });
       expect(secondButton).toHaveFocus();
     });
 
     it('should handle error states accessibly', async () => {
-      const handleRetry = jest?.fn();
-      const user = userEvent?.setup();
+      const handleRetry = jest.fn();
+      const user = userEvent.setup();
 
       const { container } = render(
         <Card variant="outlined" className="error-card">
-          <Card?.Header>
+          <Card.Header>
             <h2 id="error-title">Error State</h2>
-          </Card?.Header>
-          <Card?.Body>
+          </Card.Header>
+          <Card.Body>
             <p id="error-message">An error occurred while loading the content</p>
             <Button
               variant="secondary"
@@ -142,7 +142,7 @@ describe('Component Interactions', () => {
             >
               Retry
             </Button>
-          </Card?.Body>
+          </Card.Body>
         </Card>,
       );
 
@@ -151,8 +151,8 @@ describe('Component Interactions', () => {
       expect(results).toHaveNoViolations();
 
       // Test error handling
-      const retryButton = screen?.getByRole('button', { name: /Retry/i });
-      await user?.click(retryButton);
+      const retryButton = screen.getByRole('button', { name: /Retry/i });
+      await user.click(retryButton);
       expect(handleRetry).toHaveBeenCalledTimes(1);
 
       // Verify ARIA relationships

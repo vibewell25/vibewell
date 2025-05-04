@@ -6,16 +6,16 @@ import { useAuth } from '@/hooks/useAuth';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 // Mocking modules
-vi?.mock('@/hooks/useAuth', () => ({
-  useAuth: vi?.fn(),
+vi.mock('@/hooks/useAuth', () => ({
+  useAuth: vi.fn(),
 }));
 
-vi?.mock('@/hooks/useLocalStorage', () => ({
-  useLocalStorage: vi?.fn(),
+vi.mock('@/hooks/useLocalStorage', () => ({
+  useLocalStorage: vi.fn(),
 }));
 
 // Mock fetch API
-global?.fetch = vi?.fn();
+global.fetch = vi.fn();
 
 // Test component that uses the preferences
 function TestComponent() {
@@ -25,8 +25,8 @@ function TestComponent() {
   return (
     <div>
       <div data-testid="loading-state">{isLoading ? 'Loading' : 'Loaded'}</div>
-      <div data-testid="theme-value">{preferences?.theme}</div>
-      <div data-testid="font-size-value">{preferences?.fontSize}</div>
+      <div data-testid="theme-value">{preferences.theme}</div>
+      <div data-testid="font-size-value">{preferences.fontSize}</div>
       <button data-testid="update-theme-btn" onClick={() => updatePreference('theme', 'dark')}>
         Set Dark Theme
       </button>
@@ -44,7 +44,7 @@ function TestComponent() {
 }
 
 describe('UserPreferencesContext', () => {
-  const mockLocalStorageSet = vi?.fn();
+  const mockLocalStorageSet = vi.fn();
   const defaultPrefs = {
     theme: 'system',
     fontSize: 'medium',
@@ -65,22 +65,22 @@ describe('UserPreferencesContext', () => {
   };
 
   beforeEach(() => {
-    vi?.resetAllMocks();
+    vi.resetAllMocks();
 
     // Mock user is not authenticated by default
-    vi?.mocked(useAuth).mockReturnValue({
+    vi.mocked(useAuth).mockReturnValue({
       user: null,
       isAuthenticated: false,
       isLoading: false,
     });
 
     // Mock localStorage return default preferences
-    vi?.mocked(useLocalStorage).mockReturnValue([defaultPrefs, mockLocalStorageSet]);
+    vi.mocked(useLocalStorage).mockReturnValue([defaultPrefs, mockLocalStorageSet]);
 
     // Mock fetch to return success
-    vi?.mocked(global?.fetch).mockResolvedValue({
+    vi.mocked(global.fetch).mockResolvedValue({
       ok: true,
-      json: () => Promise?.resolve({ preferences: {} }),
+      json: () => Promise.resolve({ preferences: {} }),
     } as Response);
   });
 
@@ -92,26 +92,26 @@ describe('UserPreferencesContext', () => {
     );
 
     await waitFor(() => {
-      expect(screen?.getByTestId('loading-state')).toHaveTextContent('Loaded');
+      expect(screen.getByTestId('loading-state')).toHaveTextContent('Loaded');
     });
 
-    expect(screen?.getByTestId('theme-value')).toHaveTextContent('system');
-    expect(screen?.getByTestId('font-size-value')).toHaveTextContent('medium');
+    expect(screen.getByTestId('theme-value')).toHaveTextContent('system');
+    expect(screen.getByTestId('font-size-value')).toHaveTextContent('medium');
   });
 
   it('should fetch preferences from API when authenticated', async () => {
     // Mock authentication state
-    vi?.mocked(useAuth).mockReturnValue({
-      user: { id: 'user-1', email: 'test@example?.com' },
+    vi.mocked(useAuth).mockReturnValue({
+      user: { id: 'user-1', email: 'test@example.com' },
       isAuthenticated: true,
       isLoading: false,
     });
 
     // Mock API response
-    vi?.mocked(global?.fetch).mockResolvedValue({
+    vi.mocked(global.fetch).mockResolvedValue({
       ok: true,
       json: () =>
-        Promise?.resolve({
+        Promise.resolve({
           preferences: {
             theme: 'dark',
             fontSize: 'large',
@@ -126,19 +126,19 @@ describe('UserPreferencesContext', () => {
     );
 
     await waitFor(() => {
-      expect(screen?.getByTestId('loading-state')).toHaveTextContent('Loaded');
+      expect(screen.getByTestId('loading-state')).toHaveTextContent('Loaded');
     });
 
     // Should call fetch to get user preferences
-    expect(global?.fetch).toHaveBeenCalledWith('/api/user/preferences');
+    expect(global.fetch).toHaveBeenCalledWith('/api/user/preferences');
 
     // Should display merged preferences
-    expect(screen?.getByTestId('theme-value')).toHaveTextContent('dark');
-    expect(screen?.getByTestId('font-size-value')).toHaveTextContent('large');
+    expect(screen.getByTestId('theme-value')).toHaveTextContent('dark');
+    expect(screen.getByTestId('font-size-value')).toHaveTextContent('large');
   });
 
   it('should update a single preference', async () => {
-    const user = userEvent?.setup();
+    const user = userEvent.setup();
 
     render(
       <UserPreferencesProvider>
@@ -147,28 +147,28 @@ describe('UserPreferencesContext', () => {
     );
 
     await waitFor(() => {
-      expect(screen?.getByTestId('loading-state')).toHaveTextContent('Loaded');
+      expect(screen.getByTestId('loading-state')).toHaveTextContent('Loaded');
     });
 
     // Initial state
-    expect(screen?.getByTestId('theme-value')).toHaveTextContent('system');
+    expect(screen.getByTestId('theme-value')).toHaveTextContent('system');
 
     // Update theme
-    await user?.click(screen?.getByTestId('update-theme-btn'));
+    await user.click(screen.getByTestId('update-theme-btn'));
 
     // Should update localStorage
     expect(mockLocalStorageSet).toHaveBeenCalledWith(
-      expect?.objectContaining({
+      expect.objectContaining({
         theme: 'dark',
       }),
     );
 
     // Should update the display
-    expect(screen?.getByTestId('theme-value')).toHaveTextContent('dark');
+    expect(screen.getByTestId('theme-value')).toHaveTextContent('dark');
   });
 
   it('should update multiple preferences at once', async () => {
-    const user = userEvent?.setup();
+    const user = userEvent.setup();
 
     render(
       <UserPreferencesProvider>
@@ -177,32 +177,32 @@ describe('UserPreferencesContext', () => {
     );
 
     await waitFor(() => {
-      expect(screen?.getByTestId('loading-state')).toHaveTextContent('Loaded');
+      expect(screen.getByTestId('loading-state')).toHaveTextContent('Loaded');
     });
 
     // Initial state
-    expect(screen?.getByTestId('font-size-value')).toHaveTextContent('medium');
+    expect(screen.getByTestId('font-size-value')).toHaveTextContent('medium');
 
     // Update multiple preferences
-    await user?.click(screen?.getByTestId('update-multiple-btn'));
+    await user.click(screen.getByTestId('update-multiple-btn'));
 
     // Should update localStorage with multiple values
     expect(mockLocalStorageSet).toHaveBeenCalledWith(
-      expect?.objectContaining({
+      expect.objectContaining({
         fontSize: 'large',
         reducedMotion: true,
       }),
     );
 
     // Should update the display
-    expect(screen?.getByTestId('font-size-value')).toHaveTextContent('large');
+    expect(screen.getByTestId('font-size-value')).toHaveTextContent('large');
   });
 
   it('should reset preferences to defaults', async () => {
-    const user = userEvent?.setup();
+    const user = userEvent.setup();
 
     // Start with modified preferences
-    vi?.mocked(useLocalStorage).mockReturnValue([
+    vi.mocked(useLocalStorage).mockReturnValue([
       { ...defaultPrefs, theme: 'dark', fontSize: 'large' },
       mockLocalStorageSet,
     ]);
@@ -214,19 +214,19 @@ describe('UserPreferencesContext', () => {
     );
 
     await waitFor(() => {
-      expect(screen?.getByTestId('loading-state')).toHaveTextContent('Loaded');
+      expect(screen.getByTestId('loading-state')).toHaveTextContent('Loaded');
     });
 
     // Initial modified state
-    expect(screen?.getByTestId('theme-value')).toHaveTextContent('dark');
-    expect(screen?.getByTestId('font-size-value')).toHaveTextContent('large');
+    expect(screen.getByTestId('theme-value')).toHaveTextContent('dark');
+    expect(screen.getByTestId('font-size-value')).toHaveTextContent('large');
 
     // Reset preferences
-    await user?.click(screen?.getByTestId('reset-btn'));
+    await user.click(screen.getByTestId('reset-btn'));
 
     // Should reset to defaults in localStorage
     expect(mockLocalStorageSet).toHaveBeenCalledWith(
-      expect?.objectContaining({
+      expect.objectContaining({
         theme: 'system',
         fontSize: 'medium',
       }),
@@ -234,11 +234,11 @@ describe('UserPreferencesContext', () => {
   });
 
   it('should save preferences to API when authenticated', async () => {
-    const user = userEvent?.setup();
+    const user = userEvent.setup();
 
     // Mock authentication state
-    vi?.mocked(useAuth).mockReturnValue({
-      user: { id: 'user-1', email: 'test@example?.com' },
+    vi.mocked(useAuth).mockReturnValue({
+      user: { id: 'user-1', email: 'test@example.com' },
       isAuthenticated: true,
       isLoading: false,
     });
@@ -250,45 +250,45 @@ describe('UserPreferencesContext', () => {
     );
 
     await waitFor(() => {
-      expect(screen?.getByTestId('loading-state')).toHaveTextContent('Loaded');
+      expect(screen.getByTestId('loading-state')).toHaveTextContent('Loaded');
     });
 
     // Update theme
-    await user?.click(screen?.getByTestId('update-theme-btn'));
+    await user.click(screen.getByTestId('update-theme-btn'));
 
     // Should call API to save preferences
-    expect(global?.fetch).toHaveBeenCalledWith(
+    expect(global.fetch).toHaveBeenCalledWith(
       '/api/user/preferences',
-      expect?.objectContaining({
+      expect.objectContaining({
         method: 'PUT',
-        headers: expect?.objectContaining({
+        headers: expect.objectContaining({
           'Content-Type': 'application/json',
         }),
-        body: expect?.any(String),
+        body: expect.any(String),
       }),
     );
 
     // Check the actual body sent
-    const callArgs = vi?.mocked(global?.fetch).mock?.calls[1];
-    const requestBody = JSON?.parse(callArgs[1]?.body as string);
+    const callArgs = vi.mocked(global.fetch).mock.calls[1];
+    const requestBody = JSON.parse(callArgs[1].body as string);
 
     expect(requestBody).toHaveProperty('preferences');
-    expect(requestBody?.preferences).toHaveProperty('theme', 'dark');
+    expect(requestBody.preferences).toHaveProperty('theme', 'dark');
   });
 
   it('should handle API errors gracefully', async () => {
     // Mock authentication state
-    vi?.mocked(useAuth).mockReturnValue({
-      user: { id: 'user-1', email: 'test@example?.com' },
+    vi.mocked(useAuth).mockReturnValue({
+      user: { id: 'user-1', email: 'test@example.com' },
       isAuthenticated: true,
       isLoading: false,
     });
 
     // Mock API error
-    vi?.mocked(global?.fetch).mockRejectedValueOnce(new Error('Network error'));
+    vi.mocked(global.fetch).mockRejectedValueOnce(new Error('Network error'));
 
-    // Mock console?.error
-    const mockConsoleError = vi?.spyOn(console, 'error').mockImplementation(() => {});
+    // Mock console.error
+    const mockConsoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     render(
       <UserPreferencesProvider>
@@ -297,15 +297,15 @@ describe('UserPreferencesContext', () => {
     );
 
     await waitFor(() => {
-      expect(screen?.getByTestId('loading-state')).toHaveTextContent('Loaded');
+      expect(screen.getByTestId('loading-state')).toHaveTextContent('Loaded');
     });
 
     // Should log error but not crash
     expect(mockConsoleError).toHaveBeenCalled();
 
     // Should still show preferences from localStorage
-    expect(screen?.getByTestId('theme-value')).toHaveTextContent('system');
+    expect(screen.getByTestId('theme-value')).toHaveTextContent('system');
 
-    mockConsoleError?.mockRestore();
+    mockConsoleError.mockRestore();
   });
 });

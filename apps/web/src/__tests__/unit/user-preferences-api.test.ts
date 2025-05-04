@@ -42,47 +42,47 @@ import { UserRole } from '@/contexts/unified-auth-context';
 // Mock the auth hooks
 
 
-vi?.mock('@/hooks/useAuth', () => ({
-  isAuthenticated: vi?.fn(),
-  getAuthState: vi?.fn(),
+vi.mock('@/hooks/useAuth', () => ({
+  isAuthenticated: vi.fn(),
+  getAuthState: vi.fn(),
 }));
 
 // Mock the prisma client
 
-vi?.mock('@/lib/prisma', () => ({
+vi.mock('@/lib/prisma', () => ({
   prisma: {
     userPreference: {
-      findMany: vi?.fn(),
-      deleteMany: vi?.fn(),
-      createMany: vi?.fn(),
+      findMany: vi.fn(),
+      deleteMany: vi.fn(),
+      createMany: vi.fn(),
     },
   },
 }));
 
 // Mock the logger
 
-vi?.mock('@/utils/logger', () => ({
+vi.mock('@/utils/logger', () => ({
   logger: {
-    info: vi?.fn(),
-    error: vi?.fn(),
-    warn: vi?.fn(),
+    info: vi.fn(),
+    error: vi.fn(),
+    warn: vi.fn(),
   },
 }));
 
 describe('User Preferences API endpoints', () => {
 
-  const mockUser = { id: 'user-1', email: 'user@example?.com' };
+  const mockUser = { id: 'user-1', email: 'user@example.com' };
 
   beforeEach(() => {
-    vi?.resetAllMocks();
+    vi.resetAllMocks();
 
     // Mock authentication to succeed by default with all required properties
-    vi?.mocked(authHooks?.isAuthenticated).mockResolvedValue(true);
-    vi?.mocked(authHooks?.getAuthState).mockResolvedValue({
+    vi.mocked(authHooks.isAuthenticated).mockResolvedValue(true);
+    vi.mocked(authHooks.getAuthState).mockResolvedValue({
       user: mockUser,
       isAuthenticated: true,
       session: {},
-      userRole: UserRole?.USER,
+      userRole: UserRole.USER,
     });
   });
 
@@ -90,23 +90,23 @@ describe('User Preferences API endpoints', () => {
 
   describe('GET /api/user/preferences', () => {
     it('returns 401 when not authenticated', async () => {
-      vi?.mocked(authHooks?.isAuthenticated).mockResolvedValue(false);
+      vi.mocked(authHooks.isAuthenticated).mockResolvedValue(false);
 
 
 
       const request = new NextRequest('http://localhost/api/user/preferences');
       const response = await getUserPreferencesRoute(request);
 
-      expect(response?.status).toBe(401);
-      expect(await response?.json()).toHaveProperty('error', 'Unauthorized');
+      expect(response.status).toBe(401);
+      expect(await response.json()).toHaveProperty('error', 'Unauthorized');
     });
 
     it('returns 404 when user not found', async () => {
-      vi?.mocked(authHooks?.getAuthState).mockResolvedValue({
+      vi.mocked(authHooks.getAuthState).mockResolvedValue({
         user: null,
         isAuthenticated: true,
         session: {},
-        userRole: UserRole?.USER,
+        userRole: UserRole.USER,
       });
 
 
@@ -114,46 +114,46 @@ describe('User Preferences API endpoints', () => {
       const request = new NextRequest('http://localhost/api/user/preferences');
       const response = await getUserPreferencesRoute(request);
 
-      expect(response?.status).toBe(404);
-      expect(await response?.json()).toHaveProperty('error', 'User not found');
+      expect(response.status).toBe(404);
+      expect(await response.json()).toHaveProperty('error', 'User not found');
     });
 
     it('returns empty preferences when none exist', async () => {
-      vi?.mocked(vi?.mocked(authHooks?.getAuthState).mock?.results[0].value?.user.id);
+      vi.mocked(vi.mocked(authHooks.getAuthState).mock.results[0].value.user.id);
 
 
 
       const request = new NextRequest('http://localhost/api/user/preferences');
       const response = await getUserPreferencesRoute(request);
-      const responseData = await response?.json();
+      const responseData = await response.json();
 
-      expect(response?.status).toBe(200);
+      expect(response.status).toBe(200);
       expect(responseData).toHaveProperty('preferences', {});
     });
 
     it('returns formatted preferences from database', async () => {
       const mockPreferences = [
-        { category: 'theme', weight: 1?.0 },
-        { category: 'fontSize', weight: 0?.5 },
-        { category: 'emailNotifications', weight: 1?.0 },
+        { category: 'theme', weight: 1.0 },
+        { category: 'fontSize', weight: 0.5 },
+        { category: 'emailNotifications', weight: 1.0 },
       ];
 
       // Use function form to access the mocked module
 
       const { prisma } = await import('@/lib/prisma');
-      vi?.mocked(prisma?.userPreference.findMany).mockResolvedValue(mockPreferences);
+      vi.mocked(prisma.userPreference.findMany).mockResolvedValue(mockPreferences);
 
 
 
       const request = new NextRequest('http://localhost/api/user/preferences');
       const response = await getUserPreferencesRoute(request);
-      const responseData = await response?.json();
+      const responseData = await response.json();
 
-      expect(response?.status).toBe(200);
+      expect(response.status).toBe(200);
       expect(responseData).toHaveProperty('preferences');
-      expect(responseData?.preferences).toHaveProperty('theme', 1?.0);
-      expect(responseData?.preferences).toHaveProperty('fontSize', 0?.5);
-      expect(responseData?.preferences).toHaveProperty('emailNotifications', 1?.0);
+      expect(responseData.preferences).toHaveProperty('theme', 1.0);
+      expect(responseData.preferences).toHaveProperty('fontSize', 0.5);
+      expect(responseData.preferences).toHaveProperty('emailNotifications', 1.0);
     });
   });
 
@@ -165,7 +165,7 @@ describe('User Preferences API endpoints', () => {
 
       const request = new NextRequest('http://localhost/api/user/preferences', {
         method: 'PUT',
-        body: JSON?.stringify({
+        body: JSON.stringify({
           preferences: {
 
             theme: 'invalid-theme', // Should be light, dark, or system
@@ -174,9 +174,9 @@ describe('User Preferences API endpoints', () => {
       });
 
       const response = await updateUserPreferencesRoute(request);
-      const responseData = await response?.json();
+      const responseData = await response.json();
 
-      expect(response?.status).toBe(400);
+      expect(response.status).toBe(400);
       expect(responseData).toHaveProperty('error', 'Invalid preferences data');
     });
 
@@ -191,7 +191,7 @@ describe('User Preferences API endpoints', () => {
 
       const request = new NextRequest('http://localhost/api/user/preferences', {
         method: 'PUT',
-        body: JSON?.stringify({
+        body: JSON.stringify({
           preferences: mockPreferencesData,
         }),
       });
@@ -199,26 +199,26 @@ describe('User Preferences API endpoints', () => {
       // Use function form to access the mocked module
 
       const { prisma } = await import('@/lib/prisma');
-      vi?.mocked(prisma?.userPreference.deleteMany).mockResolvedValue({ count: 3 });
-      vi?.mocked(prisma?.userPreference.createMany).mockResolvedValue({ count: 3 });
+      vi.mocked(prisma.userPreference.deleteMany).mockResolvedValue({ count: 3 });
+      vi.mocked(prisma.userPreference.createMany).mockResolvedValue({ count: 3 });
 
       const response = await updateUserPreferencesRoute(request);
-      const responseData = await response?.json();
+      const responseData = await response.json();
 
-      expect(response?.status).toBe(200);
+      expect(response.status).toBe(200);
       expect(responseData).toHaveProperty('success', true);
 
       // Should delete existing preferences first
-      expect(prisma?.userPreference.deleteMany).toHaveBeenCalledWith({
-        where: { userId: mockUser?.id },
+      expect(prisma.userPreference.deleteMany).toHaveBeenCalledWith({
+        where: { userId: mockUser.id },
       });
 
       // Should create new preferences
-      expect(prisma?.userPreference.createMany).toHaveBeenCalledWith({
-        data: expect?.arrayContaining([
-          expect?.objectContaining({ userId: mockUser?.id, category: 'theme' }),
-          expect?.objectContaining({ userId: mockUser?.id, category: 'fontSize' }),
-          expect?.objectContaining({ userId: mockUser?.id, category: 'emailNotifications' }),
+      expect(prisma.userPreference.createMany).toHaveBeenCalledWith({
+        data: expect.arrayContaining([
+          expect.objectContaining({ userId: mockUser.id, category: 'theme' }),
+          expect.objectContaining({ userId: mockUser.id, category: 'fontSize' }),
+          expect.objectContaining({ userId: mockUser.id, category: 'emailNotifications' }),
         ]),
       });
     });
@@ -233,7 +233,7 @@ describe('User Preferences API endpoints', () => {
 
       const request = new NextRequest('http://localhost/api/user/preferences', {
         method: 'PUT',
-        body: JSON?.stringify({
+        body: JSON.stringify({
           preferences: mockPreferencesData,
         }),
       });
@@ -241,23 +241,23 @@ describe('User Preferences API endpoints', () => {
       // Use function form to access the mocked module
 
       const { prisma } = await import('@/lib/prisma');
-      vi?.mocked(prisma?.userPreference.deleteMany).mockResolvedValue({ count: 2 });
-      vi?.mocked(prisma?.userPreference.createMany).mockResolvedValue({ count: 2 });
+      vi.mocked(prisma.userPreference.deleteMany).mockResolvedValue({ count: 2 });
+      vi.mocked(prisma.userPreference.createMany).mockResolvedValue({ count: 2 });
 
       await updateUserPreferencesRoute(request);
 
       // Check createMany was called with correct boolean weights
-      expect(prisma?.userPreference.createMany).toHaveBeenCalledWith({
-        data: expect?.arrayContaining([
-          expect?.objectContaining({
-            userId: mockUser?.id,
+      expect(prisma.userPreference.createMany).toHaveBeenCalledWith({
+        data: expect.arrayContaining([
+          expect.objectContaining({
+            userId: mockUser.id,
             category: 'reducedMotion',
-            weight: 1?.0, // true = 1?.0
+            weight: 1.0, // true = 1.0
           }),
-          expect?.objectContaining({
-            userId: mockUser?.id,
+          expect.objectContaining({
+            userId: mockUser.id,
             category: 'highContrast',
-            weight: 0?.0, // false = 0?.0
+            weight: 0.0, // false = 0.0
           }),
         ]),
       });
@@ -272,7 +272,7 @@ describe('User Preferences API endpoints', () => {
 
       const request = new NextRequest('http://localhost/api/user/preferences', {
         method: 'PUT',
-        body: JSON?.stringify({
+        body: JSON.stringify({
           preferences: mockPreferencesData,
         }),
       });
@@ -280,18 +280,18 @@ describe('User Preferences API endpoints', () => {
       // Use function form to access the mocked module
 
       const { prisma } = await import('@/lib/prisma');
-      vi?.mocked(prisma?.userPreference.deleteMany).mockResolvedValue({ count: 1 });
-      vi?.mocked(prisma?.userPreference.createMany).mockResolvedValue({ count: 1 });
+      vi.mocked(prisma.userPreference.deleteMany).mockResolvedValue({ count: 1 });
+      vi.mocked(prisma.userPreference.createMany).mockResolvedValue({ count: 1 });
 
       await updateUserPreferencesRoute(request);
 
       // Array preferences are stored with default weight
-      expect(prisma?.userPreference.createMany).toHaveBeenCalledWith({
-        data: expect?.arrayContaining([
-          expect?.objectContaining({
-            userId: mockUser?.id,
+      expect(prisma.userPreference.createMany).toHaveBeenCalledWith({
+        data: expect.arrayContaining([
+          expect.objectContaining({
+            userId: mockUser.id,
             category: 'contentCategories',
-            weight: 0?.5,
+            weight: 0.5,
           }),
         ]),
       });

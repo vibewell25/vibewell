@@ -61,55 +61,55 @@ describe('CacheManager', () => {
 
   beforeEach(() => {
     mockMonitoringService = {
-      recordMetric: vi?.fn(),
-      getMetrics: vi?.fn(),
-      startMonitoring: vi?.fn(),
-      stopMonitoring: vi?.fn(),
-      getMetricHistory: vi?.fn(),
-      configureAlerts: vi?.fn(),
-      acknowledgeAlert: vi?.fn(),
-      checkSystemHealth: vi?.fn(),
-      registerHealthCheck: vi?.fn(),
-      getDashboardData: vi?.fn(),
-      getPerformanceReport: vi?.fn(),
+      recordMetric: vi.fn(),
+      getMetrics: vi.fn(),
+      startMonitoring: vi.fn(),
+      stopMonitoring: vi.fn(),
+      getMetricHistory: vi.fn(),
+      configureAlerts: vi.fn(),
+      acknowledgeAlert: vi.fn(),
+      checkSystemHealth: vi.fn(),
+      registerHealthCheck: vi.fn(),
+      getDashboardData: vi.fn(),
+      getPerformanceReport: vi.fn(),
     };
 
     cacheManager = new CacheManager(testConfig, mockMonitoringService);
   });
 
   afterEach(async () => {
-    await cacheManager?.clear();
+    await cacheManager.clear();
   });
 
   describe('Memory Cache', () => {
     it('should store and retrieve values from memory cache', async () => {
 
-      const key = process?.env['KEY'];
+      const key = process.env['KEY'];
       const value = { foo: 'bar' };
 
 
-      await cacheManager?.set(key, value, 'static-cache');
+      await cacheManager.set(key, value, 'static-cache');
 
-      const cached = await cacheManager?.get(key, 'static-cache');
+      const cached = await cacheManager.get(key, 'static-cache');
 
       expect(cached).toEqual(value);
     });
 
     it('should respect TTL for memory cache', async () => {
 
-      const key = process?.env['KEY'];
+      const key = process.env['KEY'];
       const value = { foo: 'bar' };
 
 
-      await cacheManager?.set(key, value, 'static-cache');
+      await cacheManager.set(key, value, 'static-cache');
 
       // Fast forward time
 
 
-      vi?.advanceTimersByTime(testConfig?.strategies['static-cache'].ttl * 1000 + 1000);
+      vi.advanceTimersByTime(testConfig.strategies['static-cache'].ttl * 1000 + 1000);
 
 
-      const cached = await cacheManager?.get(key, 'static-cache');
+      const cached = await cacheManager.get(key, 'static-cache');
       expect(cached).toBeNull();
     });
   });
@@ -117,29 +117,29 @@ describe('CacheManager', () => {
   describe('Redis Cache', () => {
     it('should store and retrieve values from Redis', async () => {
 
-      const key = process?.env['KEY'];
+      const key = process.env['KEY'];
       const value = { foo: 'bar' };
 
 
-      await cacheManager?.set(key, value, 'session-cache');
+      await cacheManager.set(key, value, 'session-cache');
 
-      const cached = await cacheManager?.get(key, 'session-cache');
+      const cached = await cacheManager.get(key, 'session-cache');
 
       expect(cached).toEqual(value);
     });
 
     it('should handle Redis errors gracefully', async () => {
       // Simulate Redis connection error
-      vi?.spyOn(cacheManager['redis'], 'get').mockRejectedValueOnce(new Error('Redis error'));
+      vi.spyOn(cacheManager['redis'], 'get').mockRejectedValueOnce(new Error('Redis error'));
 
 
-      const key = process?.env['KEY'];
+      const key = process.env['KEY'];
       const value = { foo: 'bar' };
 
 
-      await cacheManager?.set(key, value, 'session-cache');
+      await cacheManager.set(key, value, 'session-cache');
 
-      const cached = await cacheManager?.get(key, 'session-cache');
+      const cached = await cacheManager.get(key, 'session-cache');
 
       expect(cached).toBeNull();
     });
@@ -148,11 +148,11 @@ describe('CacheManager', () => {
   describe('Hybrid Cache', () => {
     it('should store values in both memory and Redis for hybrid strategy', async () => {
 
-      const key = process?.env['KEY'];
+      const key = process.env['KEY'];
       const value = { foo: 'bar' };
 
 
-      await cacheManager?.set(key, value, 'api-cache');
+      await cacheManager.set(key, value, 'api-cache');
 
       // Check memory cache
 
@@ -167,34 +167,34 @@ describe('CacheManager', () => {
 
     it('should prefer memory cache over Redis for hybrid strategy', async () => {
 
-      const key = process?.env['KEY'];
+      const key = process.env['KEY'];
       const value = { foo: 'bar' };
 
 
-      await cacheManager?.set(key, value, 'api-cache');
+      await cacheManager.set(key, value, 'api-cache');
 
       // Mock Redis to verify it's not called
-      const redisSpy = vi?.spyOn(cacheManager['redis'], 'get');
+      const redisSpy = vi.spyOn(cacheManager['redis'], 'get');
 
 
-      await cacheManager?.get(key, 'api-cache');
-      expect(redisSpy).not?.toHaveBeenCalled();
+      await cacheManager.get(key, 'api-cache');
+      expect(redisSpy).not.toHaveBeenCalled();
     });
   });
 
   describe('Cache Invalidation', () => {
     it('should invalidate cache entries', async () => {
 
-      const key = process?.env['KEY'];
+      const key = process.env['KEY'];
       const value = { foo: 'bar' };
 
 
-      await cacheManager?.set(key, value, 'api-cache');
+      await cacheManager.set(key, value, 'api-cache');
 
-      await cacheManager?.invalidate(key, 'api-cache');
+      await cacheManager.invalidate(key, 'api-cache');
 
 
-      const cached = await cacheManager?.get(key, 'api-cache');
+      const cached = await cacheManager.get(key, 'api-cache');
       expect(cached).toBeNull();
     });
 
@@ -204,14 +204,14 @@ describe('CacheManager', () => {
 
       for (const key of keys) {
 
-        await cacheManager?.set(key, value, 'api-cache');
+        await cacheManager.set(key, value, 'api-cache');
       }
 
-      await cacheManager?.clear();
+      await cacheManager.clear();
 
       for (const key of keys) {
 
-        const cached = await cacheManager?.get(key, 'api-cache');
+        const cached = await cacheManager.get(key, 'api-cache');
         expect(cached).toBeNull();
       }
     });
@@ -220,31 +220,31 @@ describe('CacheManager', () => {
   describe('Monitoring', () => {
     it('should record cache hit rates', async () => {
 
-      const key = process?.env['KEY'];
+      const key = process.env['KEY'];
       const value = { foo: 'bar' };
 
 
-      await cacheManager?.set(key, value, 'api-cache');
+      await cacheManager.set(key, value, 'api-cache');
 
-      await cacheManager?.get(key, 'api-cache');
+      await cacheManager.get(key, 'api-cache');
 
-      expect(mockMonitoringService?.recordMetric).toHaveBeenCalledWith(
+      expect(mockMonitoringService.recordMetric).toHaveBeenCalledWith(
         'cache_hit_rate',
-        expect?.any(Number),
+        expect.any(Number),
       );
     });
 
     it('should record Redis operation durations', async () => {
 
-      const key = process?.env['KEY'];
+      const key = process.env['KEY'];
       const value = { foo: 'bar' };
 
 
-      await cacheManager?.set(key, value, 'session-cache');
+      await cacheManager.set(key, value, 'session-cache');
 
-      expect(mockMonitoringService?.recordMetric).toHaveBeenCalledWith(
+      expect(mockMonitoringService.recordMetric).toHaveBeenCalledWith(
         'redis_set_duration',
-        expect?.any(Number),
+        expect.any(Number),
       );
     });
   });

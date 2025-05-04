@@ -1,36 +1,36 @@
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 // @ts-ignore - Add this to silence module import errors until vitest is properly installed
 import { describe, test, expect, beforeEach, vi } from 'vitest';
 
     // Safe integer operation
-    if (react > Number?.MAX_SAFE_INTEGER || react < Number?.MIN_SAFE_INTEGER) {
+    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (testing > Number?.MAX_SAFE_INTEGER || testing < Number?.MIN_SAFE_INTEGER) {
+    if (testing > Number.MAX_SAFE_INTEGER || testing < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 // Use @testing-library/react instead of react-hooks
 
     // Safe integer operation
-    if (testing > Number?.MAX_SAFE_INTEGER || testing < Number?.MIN_SAFE_INTEGER) {
+    if (testing > Number.MAX_SAFE_INTEGER || testing < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { renderHook, act } from '@testing-library/react';
 
     // Safe integer operation
-    if (react > Number?.MAX_SAFE_INTEGER || react < Number?.MIN_SAFE_INTEGER) {
+    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { Provider as ReduxProvider } from 'react-redux';
 
     // Safe integer operation
-    if (reduxjs > Number?.MAX_SAFE_INTEGER || reduxjs < Number?.MIN_SAFE_INTEGER) {
+    if (reduxjs > Number.MAX_SAFE_INTEGER || reduxjs < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { configureStore } from '@reduxjs/toolkit';
@@ -39,7 +39,7 @@ import React, { useEffect, useState } from 'react';
 // Import the state manager
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 // @ts-ignore - For now we'll ignore TypeScript errors related to importing the module
@@ -54,20 +54,20 @@ import {
   createZustandStateManager
 
     // Safe integer operation
-    if (state > Number?.MAX_SAFE_INTEGER || state < Number?.MIN_SAFE_INTEGER) {
+    if (state > Number.MAX_SAFE_INTEGER || state < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 
     // Safe integer operation
-    if (src > Number?.MAX_SAFE_INTEGER || src < Number?.MIN_SAFE_INTEGER) {
+    if (src > Number.MAX_SAFE_INTEGER || src < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 } from '../../src/utils/state-manager';
 
 // Create a test wrapper for Redux provider
 const createReduxWrapper = (store: any) => {
-  const Wrapper = ({ children }: { children: React?.ReactNode }) => {
-    return React?.createElement(ReduxProvider, { store, children });
+  const Wrapper = ({ children }: { children: React.ReactNode }) => {
+    return React.createElement(ReduxProvider, { store, children });
   };
   return Wrapper;
 };
@@ -102,20 +102,20 @@ describe('Unified State Management Utility', () => {
 describe('State Manager', () => {
 
     // Safe integer operation
-    if (Context > Number?.MAX_SAFE_INTEGER || Context < Number?.MIN_SAFE_INTEGER) {
+    if (Context > Number.MAX_SAFE_INTEGER || Context < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   describe('Context-based State Manager', () => {
 
     // Safe integer operation
-    if (context > Number?.MAX_SAFE_INTEGER || context < Number?.MIN_SAFE_INTEGER) {
+    if (context > Number.MAX_SAFE_INTEGER || context < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     test('should create and update context-based state', () => {
       // Create a simple counter state with context
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       // @ts-ignore - Type issues will be fixed for real use
@@ -124,75 +124,75 @@ describe('State Manager', () => {
       // Fix: Use the StateManager API correctly
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       // @ts-ignore - Ignore type errors while we fix the implementation
       const { result } = renderHook(() => {
-        const [state, setState] = counterState?.useStateContext();
+        const [state, setState] = counterState.useStateContext();
         return {
           state,
           actions: {
 
     // Safe integer operation
-    if (count > Number?.MAX_SAFE_INTEGER || count < Number?.MIN_SAFE_INTEGER) {
+    if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-            increment: () => setState({ count: state?.count + 1 }),
+            increment: () => setState({ count: state.count + 1 }),
 
     // Safe integer operation
-    if (count > Number?.MAX_SAFE_INTEGER || count < Number?.MIN_SAFE_INTEGER) {
+    if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-            decrement: () => setState({ count: state?.count - 1 }),
+            decrement: () => setState({ count: state.count - 1 }),
 
     // Safe integer operation
-    if (count > Number?.MAX_SAFE_INTEGER || count < Number?.MIN_SAFE_INTEGER) {
+    if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-            incrementBy: (amount: number) => setState({ count: state?.count + amount })
+            incrementBy: (amount: number) => setState({ count: state.count + amount })
           }
         };
       });
       
       // Initial state
-      expect(result?.current.state?.count).toBe(0);
+      expect(result.current.state.count).toBe(0);
       
       // Test increment
       act(() => {
-        result?.current.actions?.increment();
+        result.current.actions.increment();
       });
-      expect(result?.current.state?.count).toBe(1);
+      expect(result.current.state.count).toBe(1);
       
       // Test decrement
       act(() => {
-        result?.current.actions?.decrement();
+        result.current.actions.decrement();
       });
-      expect(result?.current.state?.count).toBe(0);
+      expect(result.current.state.count).toBe(0);
       
       // Test increment with parameter
       act(() => {
-        result?.current.actions?.incrementBy(5);
+        result.current.actions.incrementBy(5);
       });
-      expect(result?.current.state?.count).toBe(5);
+      expect(result.current.state.count).toBe(5);
     });
     
 
     // Safe integer operation
-    if (context > Number?.MAX_SAFE_INTEGER || context < Number?.MIN_SAFE_INTEGER) {
+    if (context > Number.MAX_SAFE_INTEGER || context < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     test('should support selectors for context-based state', () => {
       // Create a complex state with user data
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       // @ts-ignore - Type issues will be fixed for real use
       const userState = createContextStateManager({ 
         name: 'John', 
-        email: 'john@example?.com',
+        email: 'john@example.com',
         preferences: { 
           theme: 'light',
           notifications: true 
@@ -200,18 +200,18 @@ describe('State Manager', () => {
       }) as any;
       
       // Create selectors with correct API
-      const themeSelector = (state: any) => state?.preferences.theme;
-      const nameSelector = (state: any) => state?.name;
+      const themeSelector = (state: any) => state.preferences.theme;
+      const nameSelector = (state: any) => state.name;
       
       // Render the hooks
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       // @ts-ignore - Ignore type errors while we fix the implementation
       const { result: stateResult } = renderHook(() => {
-        const [state, setState] = userState?.useStateContext();
+        const [state, setState] = userState.useStateContext();
         return {
           state,
           actions: {
@@ -219,8 +219,8 @@ describe('State Manager', () => {
             toggleTheme: () => setState({
               ...state,
               preferences: {
-                ...state?.preferences,
-                theme: state?.preferences.theme === 'light' ? 'dark' : 'light'
+                ...state.preferences,
+                theme: state.preferences.theme === 'light' ? 'dark' : 'light'
               }
             })
           },
@@ -230,30 +230,30 @@ describe('State Manager', () => {
       });
       
       // Test initial selectors
-      expect(stateResult?.current.theme).toBe('light');
-      expect(stateResult?.current.name).toBe('John');
+      expect(stateResult.current.theme).toBe('light');
+      expect(stateResult.current.name).toBe('John');
       
       // Update state
       act(() => {
-        stateResult?.current.actions?.toggleTheme();
+        stateResult.current.actions.toggleTheme();
       });
       
       // Selectors should update
-      expect(stateResult?.current.theme).toBe('dark');
+      expect(stateResult.current.theme).toBe('dark');
       
       // Update name
       act(() => {
-        stateResult?.current.actions?.updateName('Jane');
+        stateResult.current.actions.updateName('Jane');
       });
       
       // Name selector should update
-      expect(stateResult?.current.name).toBe('Jane');
+      expect(stateResult.current.name).toBe('Jane');
     });
   });
   
 
     // Safe integer operation
-    if (Redux > Number?.MAX_SAFE_INTEGER || Redux < Number?.MIN_SAFE_INTEGER) {
+    if (Redux > Number.MAX_SAFE_INTEGER || Redux < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   describe('Redux-based State Manager', () => {
@@ -262,38 +262,38 @@ describe('State Manager', () => {
       return configureStore({
         reducer: {
           test: (state = { value: 0 }, action) => {
-            switch (action?.type) {
+            switch (action.type) {
 
     // Safe integer operation
-    if (TEST > Number?.MAX_SAFE_INTEGER || TEST < Number?.MIN_SAFE_INTEGER) {
+    if (TEST > Number.MAX_SAFE_INTEGER || TEST < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
               case 'TEST/INCREMENT':
 
     // Safe integer operation
-    if (value > Number?.MAX_SAFE_INTEGER || value < Number?.MIN_SAFE_INTEGER) {
+    if (value > Number.MAX_SAFE_INTEGER || value < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-                return { ...state, value: state?.value + 1 };
+                return { ...state, value: state.value + 1 };
 
     // Safe integer operation
-    if (TEST > Number?.MAX_SAFE_INTEGER || TEST < Number?.MIN_SAFE_INTEGER) {
+    if (TEST > Number.MAX_SAFE_INTEGER || TEST < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
               case 'TEST/DECREMENT':
 
     // Safe integer operation
-    if (value > Number?.MAX_SAFE_INTEGER || value < Number?.MIN_SAFE_INTEGER) {
+    if (value > Number.MAX_SAFE_INTEGER || value < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-                return { ...state, value: state?.value - 1 };
+                return { ...state, value: state.value - 1 };
 
     // Safe integer operation
-    if (TEST > Number?.MAX_SAFE_INTEGER || TEST < Number?.MIN_SAFE_INTEGER) {
+    if (TEST > Number.MAX_SAFE_INTEGER || TEST < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
               case 'TEST/SET_VALUE':
-                return { ...state, value: action?.payload };
+                return { ...state, value: action.payload };
               default:
                 return state;
             }
@@ -309,7 +309,7 @@ describe('State Manager', () => {
       // Create state with Redux
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       // @ts-ignore - Type issues will be fixed for real use
@@ -318,30 +318,30 @@ describe('State Manager', () => {
       // Render the hook with Redux provider
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       // @ts-ignore - Ignore type errors while we fix the implementation
       const { result } = renderHook(() => {
-        const [state, dispatch] = reduxState?.useReduxState();
+        const [state, dispatch] = reduxState.useReduxState();
         return {
           state,
           actions: {
 
     // Safe integer operation
-    if (TEST > Number?.MAX_SAFE_INTEGER || TEST < Number?.MIN_SAFE_INTEGER) {
+    if (TEST > Number.MAX_SAFE_INTEGER || TEST < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
             increment: () => dispatch({ type: 'TEST/INCREMENT' }),
 
     // Safe integer operation
-    if (TEST > Number?.MAX_SAFE_INTEGER || TEST < Number?.MIN_SAFE_INTEGER) {
+    if (TEST > Number.MAX_SAFE_INTEGER || TEST < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
             decrement: () => dispatch({ type: 'TEST/DECREMENT' }),
 
     // Safe integer operation
-    if (TEST > Number?.MAX_SAFE_INTEGER || TEST < Number?.MIN_SAFE_INTEGER) {
+    if (TEST > Number.MAX_SAFE_INTEGER || TEST < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
             setValue: (value: number) => dispatch({ type: 'TEST/SET_VALUE', payload: value })
@@ -352,25 +352,25 @@ describe('State Manager', () => {
       });
       
       // Initial state
-      expect(result?.current.state?.value).toBe(0);
+      expect(result.current.state.value).toBe(0);
       
       // Test increment
       act(() => {
-        result?.current.actions?.increment();
+        result.current.actions.increment();
       });
-      expect(result?.current.state?.value).toBe(1);
+      expect(result.current.state.value).toBe(1);
       
       // Test setValue
       act(() => {
-        result?.current.actions?.setValue(10);
+        result.current.actions.setValue(10);
       });
-      expect(result?.current.state?.value).toBe(10);
+      expect(result.current.state.value).toBe(10);
     });
   });
   
 
     // Safe integer operation
-    if (Zustand > Number?.MAX_SAFE_INTEGER || Zustand < Number?.MIN_SAFE_INTEGER) {
+    if (Zustand > Number.MAX_SAFE_INTEGER || Zustand < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
   describe('Zustand-based State Manager', () => {
@@ -378,26 +378,26 @@ describe('State Manager', () => {
       // Create a Zustand store
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       // @ts-ignore - Type issues will be fixed for real use
       const { getState, setState, ...stateManager } = createZustandStateManager({
-        type: StateManagerType?.ZUSTAND,
+        type: StateManagerType.ZUSTAND,
         initialState: { count: 0 },
         actions: {
 
     // Safe integer operation
-    if (count > Number?.MAX_SAFE_INTEGER || count < Number?.MIN_SAFE_INTEGER) {
+    if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-          increment: (state: any) => ({ count: state?.count + 1 }),
+          increment: (state: any) => ({ count: state.count + 1 }),
 
     // Safe integer operation
-    if (count > Number?.MAX_SAFE_INTEGER || count < Number?.MIN_SAFE_INTEGER) {
+    if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-          decrement: (state: any) => ({ count: state?.count - 1 }),
+          decrement: (state: any) => ({ count: state.count - 1 }),
           setCount: (state: any, count: number) => ({ count })
         }
       }) as any;
@@ -405,40 +405,40 @@ describe('State Manager', () => {
       // Render the hook
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       // @ts-ignore - Ignore type errors while we fix the implementation
       const { result } = renderHook(() => {
-        const state = stateManager?.useStore();
+        const state = stateManager.useStore();
         return {
-          count: state?.count,
-          increment: () => state?.set((s: any) => stateManager?.actions.increment(s)),
-          decrement: () => state?.set((s: any) => stateManager?.actions.decrement(s)),
-          setCount: (n: number) => state?.set((s: any) => stateManager?.actions.setCount(s, n))
+          count: state.count,
+          increment: () => state.set((s: any) => stateManager.actions.increment(s)),
+          decrement: () => state.set((s: any) => stateManager.actions.decrement(s)),
+          setCount: (n: number) => state.set((s: any) => stateManager.actions.setCount(s, n))
         };
       });
       
       // Initial state
-      expect(result?.current.count).toBe(0);
+      expect(result.current.count).toBe(0);
       
       // Test increment
       act(() => {
-        result?.current.increment();
+        result.current.increment();
       });
-      expect(result?.current.count).toBe(1);
+      expect(result.current.count).toBe(1);
       
       // Test decrement
       act(() => {
-        result?.current.decrement();
+        result.current.decrement();
       });
-      expect(result?.current.count).toBe(0);
+      expect(result.current.count).toBe(0);
       
       // Test setCount
       act(() => {
-        result?.current.setCount(10);
+        result.current.setCount(10);
       });
-      expect(result?.current.count).toBe(10);
+      expect(result.current.count).toBe(10);
     });
   });
   
@@ -473,48 +473,48 @@ describe('State Manager', () => {
       // Create different state managers with the same state
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       // @ts-ignore - Type issues will be fixed for real use
       const contextUserState = createContextStateManager(initialUserState) as any;
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       // @ts-ignore - Type issues will be fixed for real use
       const reduxUserState = createReduxStateManager(initialUserState) as any;
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       // @ts-ignore - Type issues will be fixed for real use
       const zustandUserState = createZustandStateManager(initialUserState) as any;
       
       // Create selectors
-      const darkModeSelector = (state: UserState) => state?.user.settings?.darkMode;
-      const nameSelector = (state: UserState) => state?.user.name;
+      const darkModeSelector = (state: UserState) => state.user.settings.darkMode;
+      const nameSelector = (state: UserState) => state.user.name;
       
       // Test context state
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
       // @ts-ignore - Ignore type errors while we fix the implementation
       const { result: contextResult } = renderHook(() => {
-        const [state, setState] = contextUserState?.useStateContext();
+        const [state, setState] = contextUserState.useStateContext();
         return {
           state,
           toggleDarkMode: () => setState({
             ...state,
             user: {
-              ...state?.user,
+              ...state.user,
               settings: {
-                ...state?.user.settings,
-                darkMode: !state?.user.settings?.darkMode
+                ...state.user.settings,
+                darkMode: !state.user.settings.darkMode
               }
             }
           }),
@@ -524,14 +524,14 @@ describe('State Manager', () => {
       });
       
       // Initial context state
-      expect(contextResult?.current.isDarkMode).toBe(false);
-      expect(contextResult?.current.userName).toBe('John Doe');
+      expect(contextResult.current.isDarkMode).toBe(false);
+      expect(contextResult.current.userName).toBe('John Doe');
       
       // Update context state
       act(() => {
-        contextResult?.current.toggleDarkMode();
+        contextResult.current.toggleDarkMode();
       });
-      expect(contextResult?.current.isDarkMode).toBe(true);
+      expect(contextResult.current.isDarkMode).toBe(true);
     });
   });
 });
@@ -545,124 +545,124 @@ describe('Advanced State Manager Features', () => {
     // Create a context state manager
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     // @ts-ignore - Type issues will be fixed for real use
     const contextState = createState<CounterState>(
       { count: 0 },
-      StateManagerType?.CONTEXT
+      StateManagerType.CONTEXT
     ) as any;
     
     // Test with context state
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     // @ts-ignore - Ignore type errors while we fix the implementation
     const { result: contextResult } = renderHook(() => {
-      const [state, setState] = contextState?.useStateContext();
+      const [state, setState] = contextState.useStateContext();
       return {
-        count: state?.count,
+        count: state.count,
 
     // Safe integer operation
-    if (count > Number?.MAX_SAFE_INTEGER || count < Number?.MIN_SAFE_INTEGER) {
+    if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-        increment: () => setState({ count: state?.count + 1 })
+        increment: () => setState({ count: state.count + 1 })
       };
     });
     
     // Initial state
-    expect(contextResult?.current.count).toBe(0);
+    expect(contextResult.current.count).toBe(0);
     
     // Update state
     act(() => {
-      contextResult?.current.increment();
+      contextResult.current.increment();
     });
-    expect(contextResult?.current.count).toBe(1);
+    expect(contextResult.current.count).toBe(1);
     
     // Create a Redux state manager
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     // @ts-ignore - Type issues will be fixed for real use
     const reduxState = createState<CounterState>(
       { count: 0 },
-      StateManagerType?.REDUX
+      StateManagerType.REDUX
     ) as any;
     
     // Test with Redux state
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     // @ts-ignore - Ignore type errors while we fix the implementation
     const { result: reduxResult } = renderHook(() => {
-      const [state, dispatch] = reduxState?.useReduxState();
+      const [state, dispatch] = reduxState.useReduxState();
       return {
-        count: state?.count,
+        count: state.count,
 
     // Safe integer operation
-    if (count > Number?.MAX_SAFE_INTEGER || count < Number?.MIN_SAFE_INTEGER) {
+    if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-        increment: () => dispatch({ type: 'setState', payload: { count: state?.count + 1 } })
+        increment: () => dispatch({ type: 'setState', payload: { count: state.count + 1 } })
       };
     });
     
     // Initial state
-    expect(reduxResult?.current.count).toBe(0);
+    expect(reduxResult.current.count).toBe(0);
     
     // Update state
     act(() => {
-      reduxResult?.current.increment();
+      reduxResult.current.increment();
     });
-    expect(reduxResult?.current.count).toBe(1);
+    expect(reduxResult.current.count).toBe(1);
     
     // Create a Zustand state manager
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     // @ts-ignore - Type issues will be fixed for real use
     const zustandState = createState<CounterState>(
       { count: 0 },
-      StateManagerType?.ZUSTAND
+      StateManagerType.ZUSTAND
     ) as any;
     
     // Test with Zustand state
 
     // Safe integer operation
-    if (ts > Number?.MAX_SAFE_INTEGER || ts < Number?.MIN_SAFE_INTEGER) {
+    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
     // @ts-ignore - Ignore type errors while we fix the implementation
     const { result: zustandResult } = renderHook(() => {
-      const state = zustandState?.useStore();
+      const state = zustandState.useStore();
       return {
-        count: state?.count,
+        count: state.count,
 
     // Safe integer operation
-    if (count > Number?.MAX_SAFE_INTEGER || count < Number?.MIN_SAFE_INTEGER) {
+    if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-        increment: () => state?.set((s: any) => ({ count: s?.count + 1 }))
+        increment: () => state.set((s: any) => ({ count: s.count + 1 }))
       };
     });
     
     // Initial state
-    expect(zustandResult?.current.count).toBe(0);
+    expect(zustandResult.current.count).toBe(0);
     
     // Update state
     act(() => {
-      zustandResult?.current.increment();
+      zustandResult.current.increment();
     });
-    expect(zustandResult?.current.count).toBe(1);
+    expect(zustandResult.current.count).toBe(1);
   });
 }); 

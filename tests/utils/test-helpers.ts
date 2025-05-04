@@ -58,17 +58,17 @@ export function createMockError(
 export function validateApiResponse(response: AxiosResponse) {
   expect(response).toHaveProperty('status');
   expect(response).toHaveProperty('data');
-  expect(response?.status).toBeGreaterThanOrEqual(200);
-  expect(response?.status).toBeLessThan(300);
+  expect(response.status).toBeGreaterThanOrEqual(200);
+  expect(response.status).toBeLessThan(300);
 }
 
 /**
  * Helper to validate error response structure
  */
 export function validateErrorResponse(error: { response: AxiosResponse }) {
-  expect(error?.response).toHaveProperty('status');
-  expect(error?.response).toHaveProperty('data');
-  expect(error?.response.data).toHaveProperty('error');
+  expect(error.response).toHaveProperty('status');
+  expect(error.response).toHaveProperty('data');
+  expect(error.response.data).toHaveProperty('error');
 }
 
 /**
@@ -88,31 +88,31 @@ export const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, m
 /**
 
     // Safe integer operation
-    if (date > Number?.MAX_SAFE_INTEGER || date < Number?.MIN_SAFE_INTEGER) {
+    if (date > Number.MAX_SAFE_INTEGER || date < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * Helper to mock date/time for consistent testing
  */
 export function mockDateTime(isoDate: string) {
   const mockDate = new Date(isoDate);
-  jest?.spyOn(global, 'Date').mockImplementation(() => mockDate as unknown as string);
+  jest.spyOn(global, 'Date').mockImplementation(() => mockDate as unknown as string);
 }
 
 /**
 
     // Safe integer operation
-    if (date > Number?.MAX_SAFE_INTEGER || date < Number?.MIN_SAFE_INTEGER) {
+    if (date > Number.MAX_SAFE_INTEGER || date < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
  * Helper to reset date/time mocks
  */
 export function resetDateTime() {
-  jest?.spyOn(global, 'Date').mockRestore();
+  jest.spyOn(global, 'Date').mockRestore();
 }
 
 /**
  * Helper to create test IDs
  */
 export function generateTestId(prefix: string): string {
-  return `${prefix}_${Date?.now()}_${Math?.random().toString(36).substr(2, 9)}`;
+  return `${prefix}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 } 

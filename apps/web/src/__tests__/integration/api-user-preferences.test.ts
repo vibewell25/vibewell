@@ -30,20 +30,20 @@ import { getUserPreferences, updateUserPreferences } from '@/app/api/user-prefer
 
 // Mock the database client
 
-jest?.mock('@/lib/database/client', () => ({
+jest.mock('@/lib/database/client', () => ({
   prisma: {
     userPreferences: {
-      findUnique: jest?.fn(),
-      update: jest?.fn(),
-      create: jest?.fn(),
+      findUnique: jest.fn(),
+      update: jest.fn(),
+      create: jest.fn(),
     },
   },
 }));
 
 // Mock auth service
 
-jest?.mock('@/services/auth-service', () => ({
-  getCurrentUser: jest?.fn(),
+jest.mock('@/services/auth-service', () => ({
+  getCurrentUser: jest.fn(),
 }));
 
 
@@ -53,7 +53,7 @@ import { getCurrentUser } from '@/services/auth-service';
 
 describe('User Preferences API Integration Tests', () => {
   beforeEach(() => {
-    jest?.clearAllMocks();
+    jest.clearAllMocks();
   });
 
 
@@ -61,7 +61,7 @@ describe('User Preferences API Integration Tests', () => {
   describe('GET /api/user-preferences', () => {
     it('returns 401 if user is not authenticated', async () => {
       // Mock user as not authenticated
-      (getCurrentUser as jest?.Mock).mockResolvedValue(null);
+      (getCurrentUser as jest.Mock).mockResolvedValue(null);
 
       // Create a mock request
       const { req } = createMocks({
@@ -70,20 +70,20 @@ describe('User Preferences API Integration Tests', () => {
 
       // Call the API handler
       const response = await getUserPreferences(req as unknown as NextRequest);
-      const responseBody = await response?.json();
+      const responseBody = await response.json();
 
       // Assert response
-      expect(response?.status).toBe(401);
+      expect(response.status).toBe(401);
       expect(responseBody).toEqual({ error: 'Unauthorized' });
     });
 
     it('returns 404 if user preferences not found', async () => {
       // Mock user as authenticated
 
-      (getCurrentUser as jest?.Mock).mockResolvedValue({ id: 'user-123' });
+      (getCurrentUser as jest.Mock).mockResolvedValue({ id: 'user-123' });
 
       // Mock database response
-      (prisma?.userPreferences.findUnique as jest?.Mock).mockResolvedValue(null);
+      (prisma.userPreferences.findUnique as jest.Mock).mockResolvedValue(null);
 
       // Create a mock request
       const { req } = createMocks({
@@ -92,12 +92,12 @@ describe('User Preferences API Integration Tests', () => {
 
       // Call the API handler
       const response = await getUserPreferences(req as unknown as NextRequest);
-      const responseBody = await response?.json();
+      const responseBody = await response.json();
 
       // Assert response
-      expect(response?.status).toBe(404);
+      expect(response.status).toBe(404);
       expect(responseBody).toEqual({ error: 'User preferences not found' });
-      expect(prisma?.userPreferences.findUnique).toHaveBeenCalledWith({
+      expect(prisma.userPreferences.findUnique).toHaveBeenCalledWith({
 
         where: { userId: 'user-123' },
       });
@@ -106,7 +106,7 @@ describe('User Preferences API Integration Tests', () => {
     it('returns user preferences successfully', async () => {
       // Mock user as authenticated
 
-      (getCurrentUser as jest?.Mock).mockResolvedValue({ id: 'user-123' });
+      (getCurrentUser as jest.Mock).mockResolvedValue({ id: 'user-123' });
 
       // Mock database response
       const mockPreferences = {
@@ -124,7 +124,7 @@ describe('User Preferences API Integration Tests', () => {
         createdAt: new Date('2023-01-01'),
         updatedAt: new Date('2023-02-01'),
       };
-      (prisma?.userPreferences.findUnique as jest?.Mock).mockResolvedValue(mockPreferences);
+      (prisma.userPreferences.findUnique as jest.Mock).mockResolvedValue(mockPreferences);
 
       // Create a mock request
       const { req } = createMocks({
@@ -133,12 +133,12 @@ describe('User Preferences API Integration Tests', () => {
 
       // Call the API handler
       const response = await getUserPreferences(req as unknown as NextRequest);
-      const responseBody = await response?.json();
+      const responseBody = await response.json();
 
       // Assert response
-      expect(response?.status).toBe(200);
+      expect(response.status).toBe(200);
       expect(responseBody).toEqual(mockPreferences);
-      expect(prisma?.userPreferences.findUnique).toHaveBeenCalledWith({
+      expect(prisma.userPreferences.findUnique).toHaveBeenCalledWith({
 
         where: { userId: 'user-123' },
       });
@@ -150,7 +150,7 @@ describe('User Preferences API Integration Tests', () => {
   describe('PUT /api/user-preferences', () => {
     it('returns 401 if user is not authenticated', async () => {
       // Mock user as not authenticated
-      (getCurrentUser as jest?.Mock).mockResolvedValue(null);
+      (getCurrentUser as jest.Mock).mockResolvedValue(null);
 
       // Create a mock request
       const { req } = createMocks({
@@ -168,20 +168,20 @@ describe('User Preferences API Integration Tests', () => {
 
       // Call the API handler
       const response = await updateUserPreferences(req as unknown as NextRequest);
-      const responseBody = await response?.json();
+      const responseBody = await response.json();
 
       // Assert response
-      expect(response?.status).toBe(401);
+      expect(response.status).toBe(401);
       expect(responseBody).toEqual({ error: 'Unauthorized' });
     });
 
     it('creates new preferences if they do not exist', async () => {
       // Mock user as authenticated
 
-      (getCurrentUser as jest?.Mock).mockResolvedValue({ id: 'user-123' });
+      (getCurrentUser as jest.Mock).mockResolvedValue({ id: 'user-123' });
 
       // Mock database response for findUnique
-      (prisma?.userPreferences.findUnique as jest?.Mock).mockResolvedValue(null);
+      (prisma.userPreferences.findUnique as jest.Mock).mockResolvedValue(null);
 
       // Mock database response for create
       const newPreferences = {
@@ -199,7 +199,7 @@ describe('User Preferences API Integration Tests', () => {
         createdAt: new Date('2023-03-01'),
         updatedAt: new Date('2023-03-01'),
       };
-      (prisma?.userPreferences.create as jest?.Mock).mockResolvedValue(newPreferences);
+      (prisma.userPreferences.create as jest.Mock).mockResolvedValue(newPreferences);
 
       // Create a mock request with the update data
       const updateData = {
@@ -218,12 +218,12 @@ describe('User Preferences API Integration Tests', () => {
 
       // Call the API handler
       const response = await updateUserPreferences(req as unknown as NextRequest);
-      const responseBody = await response?.json();
+      const responseBody = await response.json();
 
       // Assert response
-      expect(response?.status).toBe(200);
+      expect(response.status).toBe(200);
       expect(responseBody).toEqual(newPreferences);
-      expect(prisma?.userPreferences.create).toHaveBeenCalledWith({
+      expect(prisma.userPreferences.create).toHaveBeenCalledWith({
         data: {
 
           userId: 'user-123',
@@ -235,7 +235,7 @@ describe('User Preferences API Integration Tests', () => {
     it('updates existing preferences', async () => {
       // Mock user as authenticated
 
-      (getCurrentUser as jest?.Mock).mockResolvedValue({ id: 'user-123' });
+      (getCurrentUser as jest.Mock).mockResolvedValue({ id: 'user-123' });
 
       // Mock existing preferences
       const existingPreferences = {
@@ -253,7 +253,7 @@ describe('User Preferences API Integration Tests', () => {
         createdAt: new Date('2023-01-01'),
         updatedAt: new Date('2023-02-01'),
       };
-      (prisma?.userPreferences.findUnique as jest?.Mock).mockResolvedValue(existingPreferences);
+      (prisma.userPreferences.findUnique as jest.Mock).mockResolvedValue(existingPreferences);
 
       // Mock updated preferences
       const updatedPreferences = {
@@ -267,7 +267,7 @@ describe('User Preferences API Integration Tests', () => {
         },
         updatedAt: new Date('2023-03-01'),
       };
-      (prisma?.userPreferences.update as jest?.Mock).mockResolvedValue(updatedPreferences);
+      (prisma.userPreferences.update as jest.Mock).mockResolvedValue(updatedPreferences);
 
       // Create a mock request with the update data
       const updateData = {
@@ -286,12 +286,12 @@ describe('User Preferences API Integration Tests', () => {
 
       // Call the API handler
       const response = await updateUserPreferences(req as unknown as NextRequest);
-      const responseBody = await response?.json();
+      const responseBody = await response.json();
 
       // Assert response
-      expect(response?.status).toBe(200);
+      expect(response.status).toBe(200);
       expect(responseBody).toEqual(updatedPreferences);
-      expect(prisma?.userPreferences.update).toHaveBeenCalledWith({
+      expect(prisma.userPreferences.update).toHaveBeenCalledWith({
 
         where: { userId: 'user-123' },
         data: updateData,
@@ -301,10 +301,10 @@ describe('User Preferences API Integration Tests', () => {
     it('handles database errors gracefully', async () => {
       // Mock user as authenticated
 
-      (getCurrentUser as jest?.Mock).mockResolvedValue({ id: 'user-123' });
+      (getCurrentUser as jest.Mock).mockResolvedValue({ id: 'user-123' });
 
       // Mock finding existing preferences
-      (prisma?.userPreferences.findUnique as jest?.Mock).mockResolvedValue({
+      (prisma.userPreferences.findUnique as jest.Mock).mockResolvedValue({
 
         id: 'pref-123',
 
@@ -312,7 +312,7 @@ describe('User Preferences API Integration Tests', () => {
       });
 
       // Mock database error
-      (prisma?.userPreferences.update as jest?.Mock).mockRejectedValue(new Error('Database error'));
+      (prisma.userPreferences.update as jest.Mock).mockRejectedValue(new Error('Database error'));
 
       // Create a mock request
       const { req } = createMocks({
@@ -324,10 +324,10 @@ describe('User Preferences API Integration Tests', () => {
 
       // Call the API handler
       const response = await updateUserPreferences(req as unknown as NextRequest);
-      const responseBody = await response?.json();
+      const responseBody = await response.json();
 
       // Assert response
-      expect(response?.status).toBe(500);
+      expect(response.status).toBe(500);
       expect(responseBody).toEqual({ error: 'Failed to update user preferences' });
     });
   });

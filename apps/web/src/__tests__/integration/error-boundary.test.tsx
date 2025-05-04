@@ -12,14 +12,14 @@ function BuggyComponent({ shouldThrow = true }: BuggyComponentProps) {
   return <div>Component rendered successfully</div>;
 }
 
-// Mock console?.error to avoid cluttering test output
-const originalConsoleError = console?.error;
+// Mock console.error to avoid cluttering test output
+const originalConsoleError = console.error;
 beforeAll(() => {
-  console?.error = jest?.fn();
+  console.error = jest.fn();
 });
 
 afterAll(() => {
-  console?.error = originalConsoleError;
+  console.error = originalConsoleError;
 });
 
 describe('ErrorBoundary', () => {
@@ -30,13 +30,13 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>,
     );
 
-    expect(screen?.getByText('No error here')).toBeInTheDocument();
+    expect(screen.getByText('No error here')).toBeInTheDocument();
   });
 
   test('renders fallback UI when an error occurs', () => {
     // We need to suppress the error boundary warning in the test
-    const spy = jest?.spyOn(console, 'error');
-    spy?.mockImplementation(() => {});
+    const spy = jest.spyOn(console, 'error');
+    spy.mockImplementation(() => {});
 
     render(
       <ErrorBoundary>
@@ -45,11 +45,11 @@ describe('ErrorBoundary', () => {
     );
 
     // Check that the fallback UI is rendered
-    expect(screen?.getByText(/something went wrong/i)).toBeInTheDocument();
-    expect(screen?.getByText(/test error/i)).toBeInTheDocument();
-    expect(screen?.getByText(/try again/i)).toBeInTheDocument();
+    expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
+    expect(screen.getByText(/test error/i)).toBeInTheDocument();
+    expect(screen.getByText(/try again/i)).toBeInTheDocument();
 
-    spy?.mockRestore();
+    spy.mockRestore();
   });
 
   test('renders custom fallback when provided', () => {
@@ -61,11 +61,11 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>,
     );
 
-    expect(screen?.getByText('Custom error UI')).toBeInTheDocument();
+    expect(screen.getByText('Custom error UI')).toBeInTheDocument();
   });
 
   test('calls onError when an error occurs', () => {
-    const handleError = jest?.fn();
+    const handleError = jest.fn();
 
     render(
       <ErrorBoundary onError={handleError}>
@@ -78,7 +78,7 @@ describe('ErrorBoundary', () => {
 
   test('resets the error state when "Try Again" is clicked', () => {
     let shouldThrow = true;
-    const onReset = jest?.fn(() => {
+    const onReset = jest.fn(() => {
       shouldThrow = false;
     });
 
@@ -89,10 +89,10 @@ describe('ErrorBoundary', () => {
     );
 
     // Check that the error UI is shown
-    expect(screen?.getByText(/something went wrong/i)).toBeInTheDocument();
+    expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
 
     // Click the reset button
-    fireEvent?.click(screen?.getByText(/try again/i));
+    fireEvent.click(screen.getByText(/try again/i));
 
     // Check that onReset was called
     expect(onReset).toHaveBeenCalled();
@@ -105,7 +105,7 @@ describe('ErrorBoundary', () => {
     );
 
     // Now the component should render successfully
-    expect(screen?.getByText('Component rendered successfully')).toBeInTheDocument();
+    expect(screen.getByText('Component rendered successfully')).toBeInTheDocument();
   });
 });
 
@@ -116,7 +116,7 @@ describe('withErrorBoundary HOC', () => {
     render(<WrappedBuggyComponent />);
 
     // Check that the fallback UI is rendered
-    expect(screen?.getByText(/something went wrong/i)).toBeInTheDocument();
+    expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
   });
 
   test('passes props to wrapped component', () => {
@@ -125,7 +125,7 @@ describe('withErrorBoundary HOC', () => {
     render(<WrappedBuggyComponent shouldThrow={false} />);
 
     // Check that the component rendered successfully
-    expect(screen?.getByText('Component rendered successfully')).toBeInTheDocument();
+    expect(screen.getByText('Component rendered successfully')).toBeInTheDocument();
   });
 
   test('passes error boundary props correctly', () => {
@@ -135,6 +135,6 @@ describe('withErrorBoundary HOC', () => {
     render(<WrappedBuggyComponent />);
 
     // Check that the custom fallback is rendered
-    expect(screen?.getByText('Custom error fallback')).toBeInTheDocument();
+    expect(screen.getByText('Custom error fallback')).toBeInTheDocument();
   });
 });

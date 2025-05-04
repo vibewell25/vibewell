@@ -7,7 +7,7 @@ export const mockServices = [
     id: 1,
     name: 'Haircut',
     duration: 30,
-    price: 50?.00,
+    price: 50.00,
     description: 'Professional haircut service',
     category: 'hair',
     available: true
@@ -16,7 +16,7 @@ export const mockServices = [
     id: 2,
     name: 'Massage',
     duration: 60,
-    price: 80?.00,
+    price: 80.00,
     description: 'Relaxing full body massage',
     category: 'wellness',
     available: true
@@ -45,7 +45,7 @@ export const mockBookings = [
 export const mockUsers = [
   {
     id: 'user_1',
-    email: 'test1@example?.com',
+    email: 'test1@example.com',
     name: 'Test User 1',
     role: 'client',
     preferences: {
@@ -55,7 +55,7 @@ export const mockUsers = [
   },
   {
     id: 'user_2',
-    email: 'test2@example?.com',
+    email: 'test2@example.com',
     name: 'Test User 2',
     role: 'provider',
     preferences: {
@@ -73,7 +73,7 @@ export const mockHealthResponse = {
     cache: 'available',
     storage: 'operational'
   },
-  version: '1?.0.0'
+  version: '1.0.0'
 };
 
 export const mockErrorResponses = {

@@ -1,28 +1,11 @@
 
-    // Safe integer operation
-    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (testing > Number.MAX_SAFE_INTEGER || testing < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { renderHook, act } from '@testing-library/react-hooks';
+    
+    import { renderHook, act } from '@testing-library/react-hooks';
 import { useOfflineData } from '../useOfflineData';
 
-    // Safe integer operation
-    if (utils > Number.MAX_SAFE_INTEGER || utils < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import OfflineStorage from '../../utils/offline-storage';
+    import OfflineStorage from '../../utils/offline-storage';
 
-
-    // Safe integer operation
-    if (utils > Number.MAX_SAFE_INTEGER || utils < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-jest.mock('../../utils/offline-storage');
+    jest.mock('../../utils/offline-storage');
 
 const mockOfflineStorage = {
   getData: jest.fn(),
@@ -52,11 +35,7 @@ describe('useOfflineData', () => {
 
     const { result, waitForNextUpdate } = renderHook(() =>
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      useOfflineData({ key: 'test-key' })
+          useOfflineData({ key: 'test-key' })
     );
 
     expect(result.current.isLoading).toBe(true);
@@ -73,23 +52,14 @@ describe('useOfflineData', () => {
     
     const { result } = renderHook(() =>
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      useOfflineData({ key: 'test-key', onSync })
+          useOfflineData({ key: 'test-key', onSync })
     );
 
     await act(async () => {
       await result.current.saveData(mockData);
     });
 
-
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    expect(mockOfflineStorage.getInstance().storeData).toHaveBeenCalledWith('test-key', mockData);
+        expect(mockOfflineStorage.getInstance().storeData).toHaveBeenCalledWith('test-key', mockData);
     expect(onSync).toHaveBeenCalledWith(mockData);
     expect(result.current.data).toEqual(mockData);
     expect(result.current.syncStatus).toBe('synced');
@@ -98,23 +68,14 @@ describe('useOfflineData', () => {
   it('should remove data successfully', async () => {
     const { result } = renderHook(() =>
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      useOfflineData({ key: 'test-key' })
+          useOfflineData({ key: 'test-key' })
     );
 
     await act(async () => {
       await result.current.removeData();
     });
 
-
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    expect(mockOfflineStorage.getInstance().removeData).toHaveBeenCalledWith('test-key');
+        expect(mockOfflineStorage.getInstance().removeData).toHaveBeenCalledWith('test-key');
     expect(result.current.data).toBeNull();
     expect(result.current.syncStatus).toBeNull();
   });
@@ -125,11 +86,7 @@ describe('useOfflineData', () => {
 
     const { result, waitForNextUpdate } = renderHook(() =>
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      useOfflineData({ key: 'test-key' })
+          useOfflineData({ key: 'test-key' })
     );
 
     await waitForNextUpdate();
@@ -144,11 +101,7 @@ describe('useOfflineData', () => {
 
     const { result } = renderHook(() =>
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      useOfflineData({ key: 'test-key' })
+          useOfflineData({ key: 'test-key' })
     );
 
     await act(async () => {

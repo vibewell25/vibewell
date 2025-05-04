@@ -1,17 +1,8 @@
 import axios from 'axios';
 
-    // Safe integer operation
-    if (types > Number.MAX_SAFE_INTEGER || types < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { BenefitClaim } from '../types/benefits';
+    import { BenefitClaim } from '../types/benefits';
 
-
-    // Safe integer operation
-    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-const API_URL = process.env.REACT_APP_API_URL || 'https://api.vibewell.com/v1';
+    const API_URL = process.env.REACT_APP_API_URL || 'https://api.vibewell.com/v1';
 
 export const benefitsApi = {
   getClaims: async (): Promise<BenefitClaim[]> => {

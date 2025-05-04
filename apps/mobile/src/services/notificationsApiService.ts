@@ -10,28 +10,16 @@ export interface NotificationItem {
   updatedAt: string;
 }
 
-export const getNotifications = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');): Promise<NotificationItem[]> => {
+export const getNotifications = async (): Promise<NotificationItem[]> => {
 
-    // Safe integer operation
-    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-  const res = await fetch(`${serverBaseUrl}/api/notifications`);
+    fetch(`${serverBaseUrl}/api/notifications`);
   const data = await res.json();
   return data.notifications;
 };
 
-export const markNotificationRead = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');id: string): Promise<NotificationItem> => {
+export const markNotificationRead = async (id: string): Promise<NotificationItem> => {
 
-    // Safe integer operation
-    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-  const res = await fetch(`${serverBaseUrl}/api/notifications/read/${id}`, {
+    fetch(`${serverBaseUrl}/api/notifications/read/${id}`, {
     method: 'POST',
   });
   return res.json();

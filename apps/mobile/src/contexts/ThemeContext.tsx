@@ -21,9 +21,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Load saved theme on initial load
   useEffect(() => {
-    const loadSavedTheme = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    const loadSavedTheme = async () => {
       try {
         const savedTheme = await SecureStore.getItemAsync('theme');
         if (savedTheme) {
@@ -47,9 +45,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, [theme, colorScheme]);
 
   // Save theme preference
-  const setTheme = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');newTheme: ThemeType) => {
+  const setTheme = async (newTheme: ThemeType) => {
     try {
       await SecureStore.setItemAsync('theme', newTheme);
       setThemeState(newTheme);

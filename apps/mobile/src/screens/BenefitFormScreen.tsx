@@ -16,9 +16,7 @@ const BenefitFormScreen: React.FC = () => {
   const [amount, setAmount] = useState<string>(claim.amount.toString() || '');
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSubmit = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleSubmit = async () => {
     if (!type.trim()) {
       Alert.alert('Error', 'Type is required.');
       return;

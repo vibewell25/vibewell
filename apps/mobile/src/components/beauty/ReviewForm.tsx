@@ -64,9 +64,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
   };
 
   // Handle review submission
-  const handleSubmit = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleSubmit = async () => {
     if (!comment.trim()) {
       Alert.alert('Error', 'Please enter a review comment');
       return;

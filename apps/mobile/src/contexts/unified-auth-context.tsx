@@ -35,9 +35,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Load token and user from storage
   useEffect(() => {
-    const restore = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    const restore = async () => {
       const token = await AsyncStorage.getItem(storageKeys.AUTH_TOKEN);
       if (token) {
         setAccessToken(token);
@@ -59,9 +57,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     restore();
   }, []);
 
-  const signIn = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');signup = false): Promise<boolean> => {
+  const signIn = async (signup = false): Promise<boolean> => {
     try {
       setIsLoading(true);
       // Construct Auth0 authorization URL
@@ -116,9 +112,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signOut = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');): Promise<void> => {
+  const signOut = async (): Promise<void> => {
     setIsLoading(true);
     await AsyncStorage.removeItem(storageKeys.AUTH_TOKEN);
     setUser(null);

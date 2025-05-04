@@ -46,9 +46,7 @@ const ProfileScreen: React.FC = () => {
     loadProfile();
   }, []);
 
-  const loadProfile = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const loadProfile = async () => {
     try {
       // In a real app, this would be an API call
       const savedProfile = await AsyncStorage.getItem('@vibewell/user_profile');
@@ -82,9 +80,7 @@ const ProfileScreen: React.FC = () => {
     }
   };
 
-  const handleImagePick = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleImagePick = async () => {
     try {
       const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (!permissionResult.granted) {
@@ -119,9 +115,7 @@ const ProfileScreen: React.FC = () => {
     }
   };
 
-  const handleLogout = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleLogout = async () => {
     Alert.alert(
       'Confirm Logout',
       'Are you sure you want to log out?',

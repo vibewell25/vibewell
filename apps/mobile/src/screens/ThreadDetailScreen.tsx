@@ -15,9 +15,7 @@ const ThreadDetailScreen: React.FC = () => {
   const [newContent, setNewContent] = useState('');
   const [loading, setLoading] = useState(true);
 
-  const loadData = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const loadData = async () => {
     setLoading(true);
     try {
       const data = await communityApi.getThreadById(id);
@@ -34,9 +32,7 @@ const ThreadDetailScreen: React.FC = () => {
 
   useEffect(() => { loadData(); }, [id]);
 
-  const handleAddPost = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleAddPost = async () => {
     if (!newContent.trim()) return;
     try {
       await communityApi.addThreadPost(id, newContent.trim());
@@ -48,9 +44,7 @@ const ThreadDetailScreen: React.FC = () => {
     }
   };
 
-  const handleDeleteThread = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleDeleteThread = async () => {
     try {
       await communityApi.deleteThread(id);
       navigation.goBack();

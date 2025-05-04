@@ -47,9 +47,7 @@ const BookingConfirmationScreen: React.FC<BookingConfirmationScreenProps> = ({
 
   // Send confirmation notification when screen loads
   useEffect(() => {
-    const sendConfirmation = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    const sendConfirmation = async () => {
       if (notificationSent) return;
       
       try {
@@ -87,9 +85,7 @@ const BookingConfirmationScreen: React.FC<BookingConfirmationScreenProps> = ({
   }, [bookingId, serviceTitle, amount, date, time, serviceId, userInfo, notificationSent]);
 
   // Share booking details
-  const shareBooking = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const shareBooking = async () => {
     try {
       const message = `I've booked a "${serviceTitle}" appointment with VibeWell! Booking reference: ${bookingId}`;
       await Share.share({
@@ -103,9 +99,7 @@ const BookingConfirmationScreen: React.FC<BookingConfirmationScreenProps> = ({
   };
   
   // Add to calendar
-  const addToCalendar = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const addToCalendar = async () => {
     setIsAddingToCalendar(true);
     try {
       // Verify calendar permissions

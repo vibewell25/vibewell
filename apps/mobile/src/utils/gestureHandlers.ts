@@ -1,20 +1,8 @@
 
-    // Safe integer operation
-    if (gesture > Number.MAX_SAFE_INTEGER || gesture < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
+    
+    import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler';
 
-    // Safe integer operation
-    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler';
-
-    // Safe integer operation
-    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { Platform } from 'react-native';
+    import { Platform } from 'react-native';
 
 export const SWIPE_THRESHOLD = 50;
 

@@ -13,9 +13,7 @@ const ProviderFormScreen: React.FC = () => {
   const [description, setDescription] = useState(existing.description ?? '');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const handleSubmit = async () => {
     try {
       setLoading(true);
       if (existing) {

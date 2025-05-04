@@ -65,9 +65,7 @@ const SecuritySettingsScreen: React.FC = () => {
     loadActiveSessions();
   }, []);
 
-  const checkBiometricSupport = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const checkBiometricSupport = async () => {
     try {
       const supported = await LocalAuthentication.hasHardwareAsync();
       const enrolled = await LocalAuthentication.isEnrolledAsync();
@@ -77,9 +75,7 @@ const SecuritySettingsScreen: React.FC = () => {
     }
   };
 
-  const loadPreferences = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const loadPreferences = async () => {
     try {
       const saved = await AsyncStorage.getItem('@vibewell/security_preferences');
       if (saved) {
@@ -93,9 +89,7 @@ const SecuritySettingsScreen: React.FC = () => {
     }
   };
 
-  const loadActiveSessions = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const loadActiveSessions = async () => {
     // Mock data for demonstration
     const mockSessions: ActiveSession[] = [
       {
@@ -123,9 +117,7 @@ const SecuritySettingsScreen: React.FC = () => {
     setActiveSessions(mockSessions);
   };
 
-  const savePreferences = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');newPreferences: SecurityPreferences) => {
+  const savePreferences = async (newPreferences: SecurityPreferences) => {
     try {
       await AsyncStorage.setItem(
         '@vibewell/security_preferences',
@@ -138,9 +130,7 @@ const SecuritySettingsScreen: React.FC = () => {
     }
   };
 
-  const handleToggle = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');key: keyof SecurityPreferences) => {
+  const handleToggle = async (key: keyof SecurityPreferences) => {
     if (key === 'biometricEnabled' && !preferences.biometricEnabled) {
       try {
         const result = await LocalAuthentication.authenticateAsync({

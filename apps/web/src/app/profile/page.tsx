@@ -77,7 +77,7 @@ function ProfileContent() {
     {
       id: 'google',
       provider: 'Google',
-      email: 'user@gmail?.com',
+      email: 'user@gmail.com',
       connectedAt: '2024-01-01',
       lastUsed: '2024-04-01',
     },
@@ -86,27 +86,27 @@ function ProfileContent() {
 
   useEffect(() => {
     if (!loading && !user) {
-      router?.push('/auth/signin');
+      router.push('/auth/signin');
     }
   }, [loading, user, router]);
 
   const handleNotificationToggle = (id: string, type: 'email' | 'push' | 'inApp') => {
     setNotificationPreferences((prev) =>
-      prev?.map((pref) => (pref?.id === id ? { ...pref, [type]: !pref[type] } : pref)),
+      prev.map((pref) => (pref.id === id ? { ...pref, [type]: !pref[type] } : pref)),
     );
-    toast?.success('Notification preferences updated');
+    toast.success('Notification preferences updated');
   };
 
   const handleDisconnectAccount = (id: string) => {
-    setConnectedAccounts((prev) => prev?.filter((account) => account?.id !== id));
-    toast?.success('Account disconnected');
+    setConnectedAccounts((prev) => prev.filter((account) => account.id !== id));
+    toast.success('Account disconnected');
   };
 
   const handleDeleteAccount = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (
-      !window?.confirm('Are you sure you want to delete your account? This action cannot be undone.')
+      !window.confirm('Are you sure you want to delete your account? This action cannot be undone.')
     ) {
       return;
     }
@@ -115,10 +115,10 @@ function ProfileContent() {
     try {
       // Add account deletion logic here
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
-      toast?.success('Account deleted successfully');
-      router?.push('/');
+      toast.success('Account deleted successfully');
+      router.push('/');
     } catch (error) {
-      toast?.error('Failed to delete account');
+      toast.error('Failed to delete account');
     } finally {
       setIsDeletingAccount(false);
     }
@@ -185,8 +185,8 @@ function ProfileContent() {
                 <CardContent>
                   <div className="mb-6 flex items-center gap-4">
                     <Avatar className="h-20 w-20">
-                      <AvatarImage src={user?.avatar} alt={user?.name} />
-                      <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
+                      <AvatarImage src={user.avatar} alt={user.name} />
+                      <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div>
                       <Button variant="outline">Change Photo</Button>
@@ -206,9 +206,9 @@ function ProfileContent() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {connectedAccounts?.map((account) => (
+                    {connectedAccounts.map((account) => (
                       <div
-                        key={account?.id}
+                        key={account.id}
                         className="flex items-center justify-between rounded-lg border p-4"
                       >
                         <div className="flex items-center gap-3">
@@ -216,18 +216,18 @@ function ProfileContent() {
                             <GlobeIcon className="h-5 w-5 text-gray-500" />
                           </div>
                           <div>
-                            <p className="font-medium">{account?.provider}</p>
-                            <p className="text-sm text-muted-foreground">{account?.email}</p>
+                            <p className="font-medium">{account.provider}</p>
+                            <p className="text-sm text-muted-foreground">{account.email}</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
                           <Badge variant="outline">
-                            Connected {new Date(account?.connectedAt).toLocaleDateString()}
+                            Connected {new Date(account.connectedAt).toLocaleDateString()}
                           </Badge>
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => handleDisconnectAccount(account?.id)}
+                            onClick={() => handleDisconnectAccount(account.id)}
                           >
                             Disconnect
                           </Button>
@@ -251,38 +251,38 @@ function ProfileContent() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  {notificationPreferences?.map((preference) => (
-                    <div key={preference?.id} className="space-y-4">
+                  {notificationPreferences.map((preference) => (
+                    <div key={preference.id} className="space-y-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h3 className="font-medium">{preference?.name}</h3>
-                          <p className="text-sm text-muted-foreground">{preference?.description}</p>
+                          <h3 className="font-medium">{preference.name}</h3>
+                          <p className="text-sm text-muted-foreground">{preference.description}</p>
                         </div>
                       </div>
                       <div className="grid grid-cols-3 gap-4">
                         <div className="flex items-center space-x-2">
                           <Switch
-                            id={`${preference?.id}-email`}
-                            checked={preference?.email}
-                            onCheckedChange={() => handleNotificationToggle(preference?.id, 'email')}
+                            id={`${preference.id}-email`}
+                            checked={preference.email}
+                            onCheckedChange={() => handleNotificationToggle(preference.id, 'email')}
                           />
-                          <Label htmlFor={`${preference?.id}-email`}>Email</Label>
+                          <Label htmlFor={`${preference.id}-email`}>Email</Label>
                         </div>
                         <div className="flex items-center space-x-2">
                           <Switch
-                            id={`${preference?.id}-push`}
-                            checked={preference?.push}
-                            onCheckedChange={() => handleNotificationToggle(preference?.id, 'push')}
+                            id={`${preference.id}-push`}
+                            checked={preference.push}
+                            onCheckedChange={() => handleNotificationToggle(preference.id, 'push')}
                           />
-                          <Label htmlFor={`${preference?.id}-push`}>Push</Label>
+                          <Label htmlFor={`${preference.id}-push`}>Push</Label>
                         </div>
                         <div className="flex items-center space-x-2">
                           <Switch
-                            id={`${preference?.id}-inApp`}
-                            checked={preference?.inApp}
-                            onCheckedChange={() => handleNotificationToggle(preference?.id, 'inApp')}
+                            id={`${preference.id}-inApp`}
+                            checked={preference.inApp}
+                            onCheckedChange={() => handleNotificationToggle(preference.id, 'inApp')}
                           />
-                          <Label htmlFor={`${preference?.id}-inApp`}>In-App</Label>
+                          <Label htmlFor={`${preference.id}-inApp`}>In-App</Label>
                         </div>
                       </div>
                       <Separator />

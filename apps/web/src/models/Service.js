@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
-const ServiceSchema = new mongoose?.Schema({
+const ServiceSchema = new mongoose.Schema({
   provider: {
-    type: mongoose?.Schema.Types?.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'ProviderProfile',
     required: true,
   },
@@ -49,7 +49,7 @@ const ServiceSchema = new mongoose?.Schema({
     min: [0, 'Discounted price must be positive'],
     validate: {
       validator: function (value) {
-        return !value || value < this?.price;
+        return !value || value < this.price;
       },
       message: 'Discounted price must be less than regular price',
     },
@@ -57,7 +57,7 @@ const ServiceSchema = new mongoose?.Schema({
   discountExpiry: Date,
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
   images: [String],
@@ -91,7 +91,7 @@ const ServiceSchema = new mongoose?.Schema({
   },
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
   tags: [String],
@@ -103,7 +103,7 @@ const ServiceSchema = new mongoose?.Schema({
   aftercareInstructions: String,
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
   restrictions: [String],
@@ -152,23 +152,23 @@ const ServiceSchema = new mongoose?.Schema({
   ],
   createdAt: {
     type: Date,
-    default: Date?.now,
+    default: Date.now,
   },
   updatedAt: {
     type: Date,
-    default: Date?.now,
+    default: Date.now,
   },
 });
 
 // Text index for search
-ServiceSchema?.index({ name: 'text', description: 'text', tags: 'text' });
+ServiceSchema.index({ name: 'text', description: 'text', tags: 'text' });
 
 // Update the updatedAt field on save
-ServiceSchema?.pre('save', function (next) {
-  this?.updatedAt = Date?.now();
+ServiceSchema.pre('save', function (next) {
+  this.updatedAt = Date.now();
   next();
 });
 
-const Service = mongoose?.model('Service', ServiceSchema);
+const Service = mongoose.model('Service', ServiceSchema);
 
 export default Service;

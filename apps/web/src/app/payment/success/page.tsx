@@ -17,15 +17,15 @@ import { CheckCircle } from 'lucide-react';
 // Component that uses useSearchParams
 function PaymentSuccessContent() {
   const searchParams = useSearchParams();
-  const paymentId = searchParams?.get('payment_id');
+  const paymentId = searchParams.get('payment_id');
   const [paymentDetails, setPaymentDetails] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); getPaymentDetails() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); getPaymentDetails() {
       if (!paymentId) {
         setError('Invalid payment information');
         setLoading(false);
@@ -39,16 +39,16 @@ function PaymentSuccessContent() {
 
         setPaymentDetails({
           id: paymentId,
-          amount: 49?.99,
+          amount: 49.99,
           currency: 'USD',
           date: new Date().toISOString(),
           status: 'succeeded',
           customerName: 'John Doe',
-          customerEmail: 'john@example?.com',
+          customerEmail: 'john@example.com',
         });
       } catch (err) {
         setError('Could not retrieve payment details');
-        console?.error('Error fetching payment details:', err);
+        console.error('Error fetching payment details:', err);
       } finally {
         setLoading(false);
       }
@@ -90,7 +90,7 @@ function PaymentSuccessContent() {
     );
   }
 
-  const formattedDate = new Date(paymentDetails?.date).toLocaleDateString('en-US', {
+  const formattedDate = new Date(paymentDetails.date).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -112,21 +112,21 @@ function PaymentSuccessContent() {
           <div className="space-y-4">
             <div className="flex justify-between border-b pb-2">
               <span className="text-gray-500">Payment ID:</span>
-              <span className="font-medium">{paymentDetails?.id}</span>
+              <span className="font-medium">{paymentDetails.id}</span>
             </div>
             <div className="flex justify-between border-b pb-2">
               <span className="text-gray-500">Amount:</span>
               <span className="font-medium">
-                {new Intl?.NumberFormat('en-US', {
+                {new Intl.NumberFormat('en-US', {
                   style: 'currency',
-                  currency: paymentDetails?.currency,
-                }).format(paymentDetails?.amount)}
+                  currency: paymentDetails.currency,
+                }).format(paymentDetails.amount)}
               </span>
             </div>
             <div className="flex justify-between border-b pb-2">
               <span className="text-gray-500">Status:</span>
               <span className="font-medium text-green-600">
-                {paymentDetails?.status.charAt(0).toUpperCase() + paymentDetails?.status.slice(1)}
+                {paymentDetails.status.charAt(0).toUpperCase() + paymentDetails.status.slice(1)}
               </span>
             </div>
             <div className="flex justify-between border-b pb-2">
@@ -135,11 +135,11 @@ function PaymentSuccessContent() {
             </div>
             <div className="flex justify-between border-b pb-2">
               <span className="text-gray-500">Name:</span>
-              <span className="font-medium">{paymentDetails?.customerName}</span>
+              <span className="font-medium">{paymentDetails.customerName}</span>
             </div>
             <div className="flex justify-between pb-2">
               <span className="text-gray-500">Email:</span>
-              <span className="font-medium">{paymentDetails?.customerEmail}</span>
+              <span className="font-medium">{paymentDetails.customerEmail}</span>
             </div>
           </div>
         </CardContent>

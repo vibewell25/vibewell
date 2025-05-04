@@ -23,7 +23,7 @@ import DashboardHeader from '@/components/DashboardHeader';
 
 export interface NotificationTypeConfig {
   label: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
   bgClass: string;
   textClass: string;
 }
@@ -39,7 +39,7 @@ const notificationTypeConfig: Record<NotificationType, NotificationTypeConfig> =
     label: 'Booking',
     icon: (
       <svg
-        xmlns="http://www?.w3.org/2000/svg"
+        xmlns="http://www.w3.org/2000/svg"
         width="20"
         height="20"
         viewBox="0 0 24 24"
@@ -62,7 +62,7 @@ const notificationTypeConfig: Record<NotificationType, NotificationTypeConfig> =
     label: 'Loyalty',
     icon: (
       <svg
-        xmlns="http://www?.w3.org/2000/svg"
+        xmlns="http://www.w3.org/2000/svg"
         width="20"
         height="20"
         viewBox="0 0 24 24"
@@ -72,7 +72,7 @@ const notificationTypeConfig: Record<NotificationType, NotificationTypeConfig> =
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <polygon points="12 2 15?.09 8?.26 22 9?.27 17 14?.14 18?.18 21?.02 12 17?.77 5?.82 21?.02 7 14?.14 2 9?.27 8?.91 8?.26 12 2"></polygon>
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
       </svg>
     ),
     bgClass: 'bg-purple-100',
@@ -82,7 +82,7 @@ const notificationTypeConfig: Record<NotificationType, NotificationTypeConfig> =
     label: 'Marketing',
     icon: (
       <svg
-        xmlns="http://www?.w3.org/2000/svg"
+        xmlns="http://www.w3.org/2000/svg"
         width="20"
         height="20"
         viewBox="0 0 24 24"
@@ -92,8 +92,8 @@ const notificationTypeConfig: Record<NotificationType, NotificationTypeConfig> =
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M21?.5 12H16c-.7 0-1?.4.5-1?.5 1?.2l-1 7?.8"></path>
-        <path d="M11?.3 8?.8L8.9 5?.3C8.4 4?.5 7?.4 4?.1 6?.5 4?.3L3.9 5c-1?.7.4-2?.7 2?.3-2?.3 4l3?.2 12?.5c.4 1?.7 2?.3 2?.7 4 2?.3l2.6-.7c?.9-.2 1?.6-1 1?.7-1?.9l.8-6?.7c.1-.7-.2-1?.5-.7-1?.9l-1?.9-1?.8z"></path>
+        <path d="M21.5 12H16c-.7 0-1.4.5-1.5 1.2l-1 7.8"></path>
+        <path d="M11.3 8.8L8.9 5.3C8.4 4.5 7.4 4.1 6.5 4.3L3.9 5c-1.7.4-2.7 2.3-2.3 4l3.2 12.5c.4 1.7 2.3 2.7 4 2.3l2.6-.7c.9-.2 1.6-1 1.7-1.9l.8-6.7c.1-.7-.2-1.5-.7-1.9l-1.9-1.8z"></path>
       </svg>
     ),
     bgClass: 'bg-green-100',
@@ -128,18 +128,18 @@ export default function NotificationsPage() {
   };
 
   const handleNotificationClick = (notification: Notification) => {
-    if (!notification?.read) {
-      markAsRead(notification?.id);
+    if (!notification.read) {
+      markAsRead(notification.id);
     }
 
-    if (notification?.linkUrl) {
-      router?.push(notification?.linkUrl);
+    if (notification.linkUrl) {
+      router.push(notification.linkUrl);
     }
   };
 
   const handleMarkAllRead = () => {
     markAllAsRead();
-    toast?.success('All notifications marked as read');
+    toast.success('All notifications marked as read');
   };
 
   return (
@@ -157,7 +157,7 @@ export default function NotificationsPage() {
             variant="default"
             size="sm"
             onClick={handleMarkAllRead}
-            disabled={counts?.unread === 0}
+            disabled={counts.unread === 0}
           >
             <CheckCheckIcon className="mr-2 h-4 w-4" />
             Mark All as Read
@@ -171,9 +171,9 @@ export default function NotificationsPage() {
             <div className="flex items-center justify-between">
               <CardTitle>Your Notifications</CardTitle>
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                <span>Unread: {counts?.unread}</span>
+                <span>Unread: {counts.unread}</span>
                 <Separator orientation="vertical" className="h-4" />
-                <span>Total: {counts?.total}</span>
+                <span>Total: {counts.total}</span>
               </div>
             </div>
           </CardHeader>
@@ -198,7 +198,7 @@ export default function NotificationsPage() {
                   <div className="flex items-center justify-center py-16">
                     <Loader2Icon className="text-primary h-8 w-8 animate-spin" />
                   </div>
-                ) : notifications?.length === 0 ? (
+                ) : notifications.length === 0 ? (
                   <div className="flex flex-col items-center justify-center py-16 text-center">
                     <BellIcon className="mb-4 h-16 w-16 text-muted-foreground/30" />
                     <h3 className="text-lg font-medium">No notifications</h3>
@@ -213,26 +213,26 @@ export default function NotificationsPage() {
                 ) : (
                   <>
                     <div className="space-y-4">
-                      {notifications?.map((notification: Notification) => {
-                        const typeConfig = notificationTypeConfig[notification?.type];
+                      {notifications.map((notification: Notification) => {
+                        const typeConfig = notificationTypeConfig[notification.type];
 
                         return (
                           <div
-                            key={notification?.id}
+                            key={notification.id}
                             className={cn(
                               'flex cursor-pointer items-start gap-4 rounded-lg border p-4 transition-colors',
-                              notification?.read ? 'bg-white' : 'border-blue-100 bg-blue-50',
+                              notification.read ? 'bg-white' : 'border-blue-100 bg-blue-50',
                             )}
                             onClick={() => handleNotificationClick(notification)}
                           >
                             <div
                               className={cn(
                                 'flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full',
-                                typeConfig?.bgClass || 'bg-gray-100',
-                                typeConfig?.textClass || 'text-gray-600',
+                                typeConfig.bgClass || 'bg-gray-100',
+                                typeConfig.textClass || 'text-gray-600',
                               )}
                             >
-                              {typeConfig?.icon || <BellIcon className="h-5 w-5" />}
+                              {typeConfig.icon || <BellIcon className="h-5 w-5" />}
                             </div>
 
                             <div className="min-w-0 flex-1">
@@ -241,31 +241,31 @@ export default function NotificationsPage() {
                                   <h4
                                     className={cn(
                                       'text-base',
-                                      notification?.read ? 'font-medium' : 'font-semibold',
+                                      notification.read ? 'font-medium' : 'font-semibold',
                                     )}
                                   >
-                                    {notification?.title}
+                                    {notification.title}
                                   </h4>
                                   <p className="mt-1 text-sm text-muted-foreground">
-                                    {notification?.message}
+                                    {notification.message}
                                   </p>
                                 </div>
                                 <div className="ml-4 flex items-center gap-2">
-                                  {!notification?.read && (
+                                  {!notification.read && (
                                     <Button
                                       variant="ghost"
                                       size="icon"
                                       className="h-8 w-8 text-blue-600"
                                       onClick={(e) => {
-                                        e?.stopPropagation();
-                                        markAsRead(notification?.id);
+                                        e.stopPropagation();
+                                        markAsRead(notification.id);
                                       }}
                                     >
                                       <MailOpenIcon className="h-4 w-4" />
                                       <span className="sr-only">Mark as read</span>
                                     </Button>
                                   )}
-                                  {notification?.linkUrl && (
+                                  {notification.linkUrl && (
                                     <ExternalLinkIcon className="h-4 w-4 text-muted-foreground" />
                                   )}
                                   <Button
@@ -273,8 +273,8 @@ export default function NotificationsPage() {
                                     size="icon"
                                     className="h-8 w-8 text-muted-foreground hover:text-destructive"
                                     onClick={(e) => {
-                                      e?.stopPropagation();
-                                      deleteNotification(notification?.id);
+                                      e.stopPropagation();
+                                      deleteNotification(notification.id);
                                     }}
                                   >
                                     <TrashIcon className="h-4 w-4" />
@@ -286,13 +286,13 @@ export default function NotificationsPage() {
                               <div className="mt-2 flex justify-between">
                                 <div className="flex items-center gap-2">
                                   <span className="text-xs text-muted-foreground">
-                                    {formatDistanceToNow(new Date(notification?.createdAt), {
+                                    {formatDistanceToNow(new Date(notification.createdAt), {
                                       addSuffix: true,
                                     })}
                                   </span>
                                   <span className="h-1 w-1 rounded-full bg-muted-foreground"></span>
                                   <span className="text-xs text-muted-foreground">
-                                    {typeConfig?.label || 'Notification'}
+                                    {typeConfig.label || 'Notification'}
                                   </span>
                                 </div>
                               </div>
@@ -302,15 +302,15 @@ export default function NotificationsPage() {
                       })}
                     </div>
 
-                    {pagination && pagination?.totalPages > 1 && (
+                    {pagination && pagination.totalPages > 1 && (
                       <div className="flex items-center justify-between pt-6">
                         <div className="text-sm text-muted-foreground">
                           Showing <span className="font-medium">{(page - 1) * pageSize + 1}</span>{' '}
                           to{' '}
                           <span className="font-medium">
-                            {Math?.min(page * pageSize, pagination?.totalItems)}
+                            {Math.min(page * pageSize, pagination.totalItems)}
                           </span>{' '}
-                          of <span className="font-medium">{pagination?.totalItems}</span>{' '}
+                          of <span className="font-medium">{pagination.totalItems}</span>{' '}
                           notifications
                         </div>
 
@@ -318,7 +318,7 @@ export default function NotificationsPage() {
                           <PaginationArrow
                             direction="left"
                             onClick={goToPrevPage}
-                            disabled={!pagination?.hasPrevPage}
+                            disabled={!pagination.hasPrevPage}
                           />
 
                           <div className="flex h-8 w-8 items-center justify-center">
@@ -328,7 +328,7 @@ export default function NotificationsPage() {
                           <PaginationArrow
                             direction="right"
                             onClick={goToNextPage}
-                            disabled={!pagination?.hasNextPage}
+                            disabled={!pagination.hasNextPage}
                           />
                         </div>
                       </div>

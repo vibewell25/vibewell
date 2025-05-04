@@ -31,48 +31,48 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (!isAdmin()) {
-      window?.location.href = '/';
+      window.location.href = '/';
       return;
     }
 
     fetchUsers();
-    analytics?.trackPageView('/admin');
+    analytics.trackPageView('/admin');
   }, []);
 
   const fetchUsers = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const response = await fetch('/api/admin/users');
-      const data = await response?.json();
+      const data = await response.json();
       setUsers(data);
     } catch (error) {
-      analytics?.trackError(error as Error);
-      console?.error('Error fetching users:', error);
+      analytics.trackError(error as Error);
+      console.error('Error fetching users:', error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleUserAction = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');userId: string, action: 'suspend' | 'activate' | 'delete') => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');userId: string, action: 'suspend' | 'activate' | 'delete') => {
     try {
       const response = await fetch(`/api/admin/users/${userId}/${action}`, {
         method: 'POST',
       });
 
-      if (response?.ok) {
+      if (response.ok) {
         fetchUsers();
-        analytics?.trackEvent({
+        analytics.trackEvent({
           name: `user_${action}d`,
           properties: { userId },
           category: 'user',
         });
       }
     } catch (error) {
-      analytics?.trackError(error as Error);
-      console?.error(`Error ${action}ing user:`, error);
+      analytics.trackError(error as Error);
+      console.error(`Error ${action}ing user:`, error);
     }
   };
 
@@ -93,17 +93,17 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Button
                 className="flex h-32 items-center justify-center text-lg"
-                onClick={() => router?.push('/admin/analytics')}
+                onClick={() => router.push('/admin/analytics')}
               >
-                <Icons?.activity className="mr-2 h-6 w-6" />
+                <Icons.activity className="mr-2 h-6 w-6" />
                 Analytics Dashboard
               </Button>
               <Button
                 className="flex h-32 items-center justify-center text-lg"
                 variant="outline"
-                onClick={() => router?.push('/admin/users')}
+                onClick={() => router.push('/admin/users')}
               >
-                <Icons?.user className="mr-2 h-6 w-6" />
+                <Icons.user className="mr-2 h-6 w-6" />
                 User Management
               </Button>
             </div>
@@ -116,9 +116,9 @@ export default function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <p>Total Users: {users?.length}</p>
-              <p>Active Users: {users?.filter((u) => u?.subscription?.status === 'active').length}</p>
-              <p>Premium Users: {users?.filter((u) => u?.subscription?.plan === 'premium').length}</p>
+              <p>Total Users: {users.length}</p>
+              <p>Active Users: {users.filter((u) => u.subscription.status === 'active').length}</p>
+              <p>Premium Users: {users.filter((u) => u.subscription.plan === 'premium').length}</p>
             </div>
           </CardContent>
         </Card>
@@ -132,10 +132,10 @@ export default function AdminDashboard() {
               <p>
                 New Users (24h):{' '}
                 {
-                  users?.filter((u) => {
-                    const created = new Date(u?.createdAt);
+                  users.filter((u) => {
+                    const created = new Date(u.createdAt);
                     const now = new Date();
-                    return now?.getTime() - created?.getTime() < 24 * 60 * 60 * 1000;
+                    return now.getTime() - created.getTime() < 24 * 60 * 60 * 1000;
                   }).length
                 }
               </p>
@@ -158,21 +158,21 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody>
-              {users?.map((user) => (
-                <tr key={user?.id} className="border-b">
-                  <td className="p-4">{user?.name}</td>
-                  <td className="p-4">{user?.email}</td>
-                  <td className="p-4">{user?.role}</td>
+              {users.map((user) => (
+                <tr key={user.id} className="border-b">
+                  <td className="p-4">{user.name}</td>
+                  <td className="p-4">{user.email}</td>
+                  <td className="p-4">{user.role}</td>
                   <td className="p-4">
-                    {user?.subscription ? (
+                    {user.subscription ? (
                       <span
                         className={`rounded px-2 py-1 ${
-                          user?.subscription.status === 'active'
+                          user.subscription.status === 'active'
                             ? 'bg-green-100 text-green-800'
                             : 'bg-red-100 text-red-800'
                         }`}
                       >
-                        {user?.subscription.plan} - {user?.subscription.status}
+                        {user.subscription.plan} - {user.subscription.status}
                       </span>
                     ) : (
                       'No subscription'
@@ -185,17 +185,17 @@ export default function AdminDashboard() {
                         size={deviceType === 'mobile' ? 'sm' : 'md'}
                         onClick={() =>
                           handleUserAction(
-                            user?.id,
-                            user?.subscription?.status === 'active' ? 'suspend' : 'activate',
+                            user.id,
+                            user.subscription.status === 'active' ? 'suspend' : 'activate',
                           )
                         }
                       >
-                        {user?.subscription?.status === 'active' ? 'Suspend' : 'Activate'}
+                        {user.subscription.status === 'active' ? 'Suspend' : 'Activate'}
                       </Button>
                       <Button
                         variant="destructive"
                         size={deviceType === 'mobile' ? 'sm' : 'md'}
-                        onClick={() => handleUserAction(user?.id, 'delete')}
+                        onClick={() => handleUserAction(user.id, 'delete')}
                       >
                         Delete
                       </Button>

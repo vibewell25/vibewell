@@ -51,7 +51,7 @@ interface UpcomingAppointment {
 const mockStats: DashboardStats = {
   revenue: {
     total: 15780,
-    trend: 12?.5,
+    trend: 12.5,
   },
   appointments: {
     total: 245,
@@ -88,7 +88,7 @@ const mockAppointments: UpcomingAppointment[] = [
     id: '1',
     client: {
       name: 'Emily Johnson',
-      avatar: '/avatars/emily?.jpg',
+      avatar: '/avatars/emily.jpg',
     },
     service: 'Haircut & Style',
     time: '10:00 AM',
@@ -124,9 +124,9 @@ export default function DashboardPage() {
               <CurrencyDollarIcon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">${stats?.revenue.total}</div>
+              <div className="text-2xl font-bold">${stats.revenue.total}</div>
               <p className="text-xs text-muted-foreground">
-                +{stats?.revenue.trend}% from last month
+                +{stats.revenue.trend}% from last month
               </p>
             </CardContent>
           </Card>
@@ -137,9 +137,9 @@ export default function DashboardPage() {
               <CalendarIcon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats?.appointments.total}</div>
+              <div className="text-2xl font-bold">{stats.appointments.total}</div>
               <p className="text-xs text-muted-foreground">
-                {stats?.appointments.completed} completed
+                {stats.appointments.completed} completed
               </p>
             </CardContent>
           </Card>
@@ -150,8 +150,8 @@ export default function DashboardPage() {
               <UserGroupIcon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats?.clients.total}</div>
-              <p className="text-xs text-muted-foreground">{stats?.clients.new} new this month</p>
+              <div className="text-2xl font-bold">{stats.clients.total}</div>
+              <p className="text-xs text-muted-foreground">{stats.clients.new} new this month</p>
             </CardContent>
           </Card>
 
@@ -161,9 +161,9 @@ export default function DashboardPage() {
               <ChartBarIcon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats?.services.popular[0].name}</div>
+              <div className="text-2xl font-bold">{stats.services.popular[0].name}</div>
               <p className="text-xs text-muted-foreground">
-                {stats?.services.popular[0].bookings} bookings
+                {stats.services.popular[0].bookings} bookings
               </p>
             </CardContent>
           </Card>
@@ -176,44 +176,44 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {appointments?.map((appointment) => (
+                {appointments.map((appointment) => (
                   <div
-                    key={appointment?.id}
+                    key={appointment.id}
                     className="flex items-center justify-between rounded-lg border p-4"
                   >
                     <div className="flex items-center gap-4">
                       <Avatar>
                         <AvatarImage
-                          src={appointment?.client.avatar}
-                          alt={appointment?.client.name}
+                          src={appointment.client.avatar}
+                          alt={appointment.client.name}
                         />
                         <AvatarFallback>
                           <UserIcon className="h-5 w-5" />
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <div className="font-medium">{appointment?.client.name}</div>
-                        <div className="text-sm text-gray-500">{appointment?.service}</div>
+                        <div className="font-medium">{appointment.client.name}</div>
+                        <div className="text-sm text-gray-500">{appointment.service}</div>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
                       <div className="text-right">
                         <div className="flex items-center">
                           <ClockIcon className="mr-1 h-4 w-4" />
-                          {appointment?.time}
+                          {appointment.time}
                         </div>
-                        <div className="text-sm text-gray-500">{appointment?.duration} min</div>
+                        <div className="text-sm text-gray-500">{appointment.duration} min</div>
                       </div>
                       <Badge
                         variant={
-                          appointment?.status === 'confirmed'
+                          appointment.status === 'confirmed'
                             ? 'success'
-                            : appointment?.status === 'pending'
+                            : appointment.status === 'pending'
                               ? 'warning'
                               : 'destructive'
                         }
                       >
-                        {appointment?.status}
+                        {appointment.status}
                       </Badge>
                     </div>
                   </div>

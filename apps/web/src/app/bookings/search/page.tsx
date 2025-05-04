@@ -12,21 +12,21 @@ const serviceCategories = [
   {
     id: 'hair',
     name: 'Hair Styling',
-    image: 'https://placehold?.co/200x200?text=Hair',
+    image: 'https://placehold.co/200x200?text=Hair',
     provider: 'Sndhardong',
     href: '/bookings/hair',
   },
   {
     id: 'skincare',
     name: 'Skincare',
-    image: 'https://placehold?.co/200x200?text=Skin',
+    image: 'https://placehold.co/200x200?text=Skin',
     provider: 'Cat Tral Ope',
     href: '/bookings/skincare',
   },
   {
     id: 'makeup',
     name: 'Makeup',
-    image: 'https://placehold?.co/200x200?text=Makeup',
+    image: 'https://placehold.co/200x200?text=Makeup',
     provider: 'Sondaice',
     href: '/bookings/makeup',
   },
@@ -39,14 +39,14 @@ export default function SearchServicesPage() {
         <h1 className="mb-6 text-2xl font-bold">Search Services</h1>
         <div className="relative mb-6">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <Icons?.MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+            <Icons.MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
           </div>
           <Input
             type="text"
             placeholder="Search"
             className="h-12 rounded-lg pl-10"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e?.target.value)}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           <div className="absolute inset-y-0 right-0 flex items-center pr-3">
             <Button variant="ghost" size="sm">
@@ -80,7 +80,7 @@ export default function SearchServicesPage() {
             <h2 className="text-lg font-semibold">Skincare</h2>
             <Button variant="ghost" size="sm" className="text-primary" asChild>
               <Link href="/bookings/skincare" className="flex items-center">
-                <Icons?.ChevronRightIcon className="h-5 w-5" />
+                <Icons.ChevronRightIcon className="h-5 w-5" />
               </Link>
             </Button>
           </div>

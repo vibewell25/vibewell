@@ -12,8 +12,8 @@ export default function SignInRedirect() {
 
   useEffect(() => {
     // Preserve any query parameters
-    const params = searchParams?.toString() ? `?${searchParams?.toString()}` : '';
-    router?.replace(`/auth/login${params}`);
+    const params = searchParams.toString() ? `?${searchParams.toString()}` : '';
+    router.replace(`/auth/login${params}`);
   }, [router, searchParams]);
 
   return (

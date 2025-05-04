@@ -26,14 +26,14 @@ const plans: SubscriptionPlan[] = [
   {
     id: 'basic',
     name: 'Basic',
-    price: 9?.99,
+    price: 9.99,
     interval: 'month',
     features: ['Access to basic workouts', 'Progress tracking', 'Community forum access'],
   },
   {
     id: 'premium',
     name: 'Premium',
-    price: 19?.99,
+    price: 19.99,
     interval: 'month',
     features: [
       'All Basic features',
@@ -46,7 +46,7 @@ const plans: SubscriptionPlan[] = [
   {
     id: 'pro',
     name: 'Professional',
-    price: 29?.99,
+    price: 29.99,
     interval: 'month',
     features: [
       'All Premium features',
@@ -67,30 +67,30 @@ export default function SubscriptionPage() {
 
   useEffect(() => {
     fetchSubscription();
-    analytics?.trackPageView('/settings/subscription');
+    analytics.trackPageView('/settings/subscription');
   }, []);
 
   const fetchSubscription = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const response = await fetch('/api/subscriptions/current');
-      const data = await response?.json();
+      const data = await response.json();
       setSubscription(data);
     } catch (error) {
-      analytics?.trackError(error as Error);
-      console?.error('Error fetching subscription:', error);
+      analytics.trackError(error as Error);
+      console.error('Error fetching subscription:', error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleSubscribe = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');planId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');planId: string) => {
     try {
       setProcessing(true);
-      analytics?.trackEvent({
+      analytics.trackEvent({
         name: 'subscription_started',
         properties: { planId },
         category: 'user',
@@ -101,41 +101,41 @@ export default function SubscriptionPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify({ planId }),
+        body: JSON.stringify({ planId }),
       });
 
-      const data = await response?.json();
+      const data = await response.json();
 
-      if (data?.url) {
-        window?.location.href = data?.url;
+      if (data.url) {
+        window.location.href = data.url;
       }
     } catch (error) {
-      analytics?.trackError(error as Error);
-      console?.error('Error creating subscription:', error);
+      analytics.trackError(error as Error);
+      console.error('Error creating subscription:', error);
     } finally {
       setProcessing(false);
     }
   };
 
   const handleCancel = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setProcessing(true);
       const response = await fetch('/api/subscriptions/cancel', {
         method: 'POST',
       });
 
-      if (response?.ok) {
-        analytics?.trackEvent({
+      if (response.ok) {
+        analytics.trackEvent({
           name: 'subscription_cancelled',
           category: 'user',
         });
         await fetchSubscription();
       }
     } catch (error) {
-      analytics?.trackError(error as Error);
-      console?.error('Error cancelling subscription:', error);
+      analytics.trackError(error as Error);
+      console.error('Error cancelling subscription:', error);
     } finally {
       setProcessing(false);
     }
@@ -153,7 +153,7 @@ export default function SubscriptionPage() {
         <Card className="mb-8">
           <CardHeader>
             <CardTitle>Current Subscription</CardTitle>
-            <CardDescription>Your {subscription?.plan} plan</CardDescription>
+            <CardDescription>Your {subscription.plan} plan</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -162,16 +162,16 @@ export default function SubscriptionPage() {
                   Status:{' '}
                   <span
                     className={`${
-                      subscription?.status === 'active' ? 'text-green-600' : 'text-red-600'
+                      subscription.status === 'active' ? 'text-green-600' : 'text-red-600'
                     }`}
                   >
-                    {subscription?.status}
+                    {subscription.status}
                   </span>
                 </p>
-                <p>Renews on: {new Date(subscription?.currentPeriodEnd).toLocaleDateString()}</p>
+                <p>Renews on: {new Date(subscription.currentPeriodEnd).toLocaleDateString()}</p>
               </div>
 
-              {subscription?.status === 'active' && !subscription?.cancelAtPeriodEnd && (
+              {subscription.status === 'active' && !subscription.cancelAtPeriodEnd && (
                 <Button variant="destructive" onClick={handleCancel} disabled={processing}>
                   Cancel Subscription
                 </Button>
@@ -182,20 +182,20 @@ export default function SubscriptionPage() {
       )}
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {plans?.map((plan) => (
+        {plans.map((plan) => (
           <Card
-            key={plan?.id}
-            className={`${subscription?.plan === plan?.id ? 'ring-primary ring-2' : ''}`}
+            key={plan.id}
+            className={`${subscription.plan === plan.id ? 'ring-primary ring-2' : ''}`}
           >
             <CardHeader>
-              <CardTitle>{plan?.name}</CardTitle>
+              <CardTitle>{plan.name}</CardTitle>
               <CardDescription>
-                ${plan?.price}/{plan?.interval}
+                ${plan.price}/{plan.interval}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <ul className="mb-6 space-y-2">
-                {plan?.features.map((feature, index) => (
+                {plan.features.map((feature, index) => (
                   <li key={index} className="flex items-center">
                     <svg
                       className="mr-2 h-4 w-4 text-green-500"
@@ -216,13 +216,13 @@ export default function SubscriptionPage() {
               </ul>
 
               <Button
-                variant={subscription?.plan === plan?.id ? 'secondary' : 'default'}
+                variant={subscription.plan === plan.id ? 'secondary' : 'default'}
                 className="w-full"
                 size={deviceType === 'mobile' ? 'sm' : 'default'}
-                disabled={processing || subscription?.plan === plan?.id}
-                onClick={() => handleSubscribe(plan?.id)}
+                disabled={processing || subscription.plan === plan.id}
+                onClick={() => handleSubscribe(plan.id)}
               >
-                {subscription?.plan === plan?.id ? 'Current Plan' : 'Subscribe'}
+                {subscription.plan === plan.id ? 'Current Plan' : 'Subscribe'}
               </Button>
             </CardContent>
           </Card>

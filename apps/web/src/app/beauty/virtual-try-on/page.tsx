@@ -33,8 +33,8 @@ const virtualStyles: VirtualStyle[] = [
     id: 'hair1',
     name: 'Long Wavy',
     category: 'hair',
-    thumbnail: '/virtual-styles/hair/long-wavy?.jpg',
-    intensity: 0?.5,
+    thumbnail: '/virtual-styles/hair/long-wavy.jpg',
+    intensity: 0.5,
     color: '#8B4513',
     variations: ['Straight', 'Wavy', 'Curly']
   },
@@ -42,8 +42,8 @@ const virtualStyles: VirtualStyle[] = [
     id: 'makeup1',
     name: 'Natural Glow',
     category: 'makeup',
-    thumbnail: '/virtual-styles/makeup/natural-glow?.jpg',
-    intensity: 0?.7,
+    thumbnail: '/virtual-styles/makeup/natural-glow.jpg',
+    intensity: 0.7,
     variations: ['Light', 'Medium', 'Full']
   },
   // Add more styles...
@@ -52,7 +52,7 @@ export default function VirtualTryOnPage() {
   const [activeTab, setActiveTab] = useState('hair');
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState<VirtualStyle | null>(null);
-  const [styleIntensity, setStyleIntensity] = useState(0?.5);
+  const [styleIntensity, setStyleIntensity] = useState(0.5);
   const [isMirrorMode, setIsMirrorMode] = useState(true);
   const [isARMode, setIsARMode] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -65,37 +65,37 @@ export default function VirtualTryOnPage() {
     }
   }, [isCameraActive]);
   const startCamera = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
-      const stream = await navigator?.mediaDevices.getUserMedia({ 
+      const stream = await navigator.mediaDevices.getUserMedia({ 
         video: { facingMode: 'user' } 
       });
-      if (videoRef?.current) {
-        videoRef?.current.srcObject = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
       }
     } catch (error) {
-      console?.error('Error accessing camera:', error);
+      console.error('Error accessing camera:', error);
     }
   };
   const stopCamera = () => {
-    if (videoRef?.current?.srcObject) {
-      const stream = videoRef?.current.srcObject as MediaStream;
-      stream?.getTracks().forEach(track => track?.stop());
-      videoRef?.current.srcObject = null;
+    if (videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject as MediaStream;
+      stream.getTracks().forEach(track => track.stop());
+      videoRef.current.srcObject = null;
     }
   };
   const handleStyleSelect = (style: VirtualStyle) => {
     setSelectedStyle(style);
-    setStyleIntensity(style?.intensity);
+    setStyleIntensity(style.intensity);
   };
   const handleCapture = () => {
-    if (canvasRef?.current && videoRef?.current) {
-      const context = canvasRef?.current.getContext('2d');
+    if (canvasRef.current && videoRef.current) {
+      const context = canvasRef.current.getContext('2d');
       if (context) {
-        canvasRef?.current.width = videoRef?.current.videoWidth;
-        canvasRef?.current.height = videoRef?.current.videoHeight;
-        context?.drawImage(videoRef?.current, 0, 0);
+        canvasRef.current.width = videoRef.current.videoWidth;
+        canvasRef.current.height = videoRef.current.videoHeight;
+        context.drawImage(videoRef.current, 0, 0);
         // Apply virtual style to the captured image
         // This would be handled by your AR/ML model
       }
@@ -123,14 +123,14 @@ export default function VirtualTryOnPage() {
                       size="icon"
                       onClick={() => setIsMirrorMode(!isMirrorMode)}
                     >
-                      <Icons?.ArrowPathIcon className="h-5 w-5" />
+                      <Icons.ArrowPathIcon className="h-5 w-5" />
                     </Button>
                     <Button
                       variant="outline"
                       size="icon"
                       onClick={() => setIsARMode(!isARMode)}
                     >
-                      <Icons?.SparklesIcon className="h-5 w-5" />
+                      <Icons.SparklesIcon className="h-5 w-5" />
                     </Button>
                   </div>
                 </CardTitle>
@@ -146,7 +146,7 @@ export default function VirtualTryOnPage() {
                     />
                   ) : (
                     <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
-                      <Icons?.CameraIcon className="h-12 w-12 mb-4" />
+                      <Icons.CameraIcon className="h-12 w-12 mb-4" />
                       <p>Camera is inactive</p>
                     </div>
                   )}
@@ -168,7 +168,7 @@ export default function VirtualTryOnPage() {
                     onClick={handleCapture}
                     disabled={!isCameraActive}
                   >
-                    <Icons?.PhotoIcon className="h-5 w-5 mr-2" />
+                    <Icons.PhotoIcon className="h-5 w-5 mr-2" />
                     Capture
                   </Button>
                 </div>
@@ -185,33 +185,33 @@ export default function VirtualTryOnPage() {
                 <Tabs value={activeTab} onValueChange={setActiveTab}>
                   <TabsList className="grid w-full grid-cols-3">
                     <TabsTrigger value="hair">
-                      <Icons?.ScissorsIcon className="h-5 w-5 mr-2" />
+                      <Icons.ScissorsIcon className="h-5 w-5 mr-2" />
                       Hair
                     </TabsTrigger>
                     <TabsTrigger value="makeup">
-                      <Icons?.PaintBrushIcon className="h-5 w-5 mr-2" />
+                      <Icons.PaintBrushIcon className="h-5 w-5 mr-2" />
                       Makeup
                     </TabsTrigger>
                     <TabsTrigger value="accessories">
-                      <Icons?.FaceSmileIcon className="h-5 w-5 mr-2" />
+                      <Icons.FaceSmileIcon className="h-5 w-5 mr-2" />
                       Accessories
                     </TabsTrigger>
                   </TabsList>
                   <TabsContent value="hair" className="mt-4">
                     <div className="grid grid-cols-2 gap-4">
                       {virtualStyles
-                        .filter(style => style?.category === 'hair')
+                        .filter(style => style.category === 'hair')
                         .map(style => (
                           <Card
-                            key={style?.id}
+                            key={style.id}
                             className={`cursor-pointer transition-all ${
-                              selectedStyle?.id === style?.id ? 'border-primary' : ''
+                              selectedStyle.id === style.id ? 'border-primary' : ''
                             }`}
                             onClick={() => handleStyleSelect(style)}
                           >
                             <CardContent className="p-4">
                               <div className="aspect-square bg-muted rounded-lg mb-2" />
-                              <p className="font-medium">{style?.name}</p>
+                              <p className="font-medium">{style.name}</p>
                             </CardContent>
                           </Card>
                         ))}
@@ -220,18 +220,18 @@ export default function VirtualTryOnPage() {
                   <TabsContent value="makeup" className="mt-4">
                     <div className="grid grid-cols-2 gap-4">
                       {virtualStyles
-                        .filter(style => style?.category === 'makeup')
+                        .filter(style => style.category === 'makeup')
                         .map(style => (
                           <Card
-                            key={style?.id}
+                            key={style.id}
                             className={`cursor-pointer transition-all ${
-                              selectedStyle?.id === style?.id ? 'border-primary' : ''
+                              selectedStyle.id === style.id ? 'border-primary' : ''
                             }`}
                             onClick={() => handleStyleSelect(style)}
                           >
                             <CardContent className="p-4">
                               <div className="aspect-square bg-muted rounded-lg mb-2" />
-                              <p className="font-medium">{style?.name}</p>
+                              <p className="font-medium">{style.name}</p>
                             </CardContent>
                           </Card>
                         ))}
@@ -253,10 +253,10 @@ export default function VirtualTryOnPage() {
                       onValueChange={([value]) => setStyleIntensity(value)}
                       min={0}
                       max={1}
-                      step={0?.1}
+                      step={0.1}
                     />
                   </div>
-                  {selectedStyle?.color && (
+                  {selectedStyle.color && (
                     <div>
                       <Label>Color</Label>
                       <div className="flex gap-2 mt-2">
@@ -270,11 +270,11 @@ export default function VirtualTryOnPage() {
                       </div>
                     </div>
                   )}
-                  {selectedStyle?.variations && (
+                  {selectedStyle.variations && (
                     <div>
                       <Label>Variations</Label>
                       <div className="flex gap-2 mt-2">
-                        {selectedStyle?.variations.map(variation => (
+                        {selectedStyle.variations.map(variation => (
                           <Button
                             key={variation}
                             variant="outline"
@@ -291,11 +291,11 @@ export default function VirtualTryOnPage() {
             )}
             <div className="flex gap-4">
               <Button className="flex-1" variant="outline">
-                <Icons?.ShareIcon className="h-5 w-5 mr-2" />
+                <Icons.ShareIcon className="h-5 w-5 mr-2" />
                 Share
               </Button>
               <Button className="flex-1" variant="outline">
-                <Icons?.BookmarkIcon className="h-5 w-5 mr-2" />
+                <Icons.BookmarkIcon className="h-5 w-5 mr-2" />
                 Save
               </Button>
             </div>

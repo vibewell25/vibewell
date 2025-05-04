@@ -53,67 +53,67 @@ It supports various visual styles, interactive states, and responsive behaviors.
 
 const Template: StoryFn<CardProps> = (args: CardProps) => <Card {...args} />;
 
-export const Default = Template?.bind({});
-Default?.args = {
+export const Default = Template.bind({});
+Default.args = {
   children: (
     <>
-      <Card?.Header>Card Header</Card?.Header>
-      <Card?.Body>Card Content</Card?.Body>
-      <Card?.Footer>Card Footer</Card?.Footer>
+      <Card.Header>Card Header</Card.Header>
+      <Card.Body>Card Content</Card.Body>
+      <Card.Footer>Card Footer</Card.Footer>
     </>
   ),
 };
 
-export const WithImage = Template?.bind({});
-WithImage?.args = {
+export const WithImage = Template.bind({});
+WithImage.args = {
   children: (
     <>
-      <Card?.Image src="https://source?.unsplash.com/random/800x400" alt="Random image" />
-      <Card?.Body>
+      <Card.Image src="https://source.unsplash.com/random/800x400" alt="Random image" />
+      <Card.Body>
         <h3 className="mb-2 text-xl font-semibold">Card with Image</h3>
         <p>This card includes an image at the top.</p>
-      </Card?.Body>
+      </Card.Body>
     </>
   ),
 };
 
-export const Interactive = Template?.bind({});
-Interactive?.args = {
+export const Interactive = Template.bind({});
+Interactive.args = {
   clickable: true,
   onClick: () => alert('Card clicked!'),
   children: (
-    <Card?.Body>
+    <Card.Body>
       <h3 className="mb-2 text-xl font-semibold">Clickable Card</h3>
       <p>Click me to trigger an action!</p>
-    </Card?.Body>
+    </Card.Body>
   ),
 };
 
-export const Loading = Template?.bind({});
-Loading?.args = {
+export const Loading = Template.bind({});
+Loading.args = {
   loading: true,
   children: (
     <>
-      <Card?.Header>This content is hidden while loading</Card?.Header>
-      <Card?.Body>Loading state shows a skeleton instead</Card?.Body>
+      <Card.Header>This content is hidden while loading</Card.Header>
+      <Card.Body>Loading state shows a skeleton instead</Card.Body>
     </>
   ),
 };
 
 export {};
 
-export const ComplexContent = Template?.bind({});
-ComplexContent?.args = {
+export const ComplexContent = Template.bind({});
+ComplexContent.args = {
   children: (
     <>
-      <Card?.Header>
+      <Card.Header>
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-semibold">Complex Layout</h3>
           <button className="text-primary-500">⋮</button>
         </div>
-      </Card?.Header>
-      <Card?.Image src="https://source?.unsplash.com/random/800x400" alt="Random image" />
-      <Card?.Body>
+      </Card.Header>
+      <Card.Image src="https://source.unsplash.com/random/800x400" alt="Random image" />
+      <Card.Body>
         <div className="space-y-4">
           <p>This card demonstrates a more complex content layout.</p>
           <div className="flex space-x-2">
@@ -125,8 +125,8 @@ ComplexContent?.args = {
             </span>
           </div>
         </div>
-      </Card?.Body>
-      <Card?.Footer>
+      </Card.Body>
+      <Card.Footer>
         <div className="flex items-center justify-between">
           <button className="text-primary-500">Learn More</button>
           <div className="flex space-x-2">
@@ -135,7 +135,7 @@ ComplexContent?.args = {
             <button className="rounded p-2 hover:bg-gray-100">Share</button>
           </div>
         </div>
-      </Card?.Footer>
+      </Card.Footer>
     </>
   ),
 };

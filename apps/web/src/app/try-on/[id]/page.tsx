@@ -28,11 +28,11 @@ export default function TryOnPage() {
 
   useEffect(() => {
     const loadProduct = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         setLoading(true);
-        const productId = Array?.isArray(id) ? id[0] : id;
+        const productId = Array.isArray(id) ? id[0] : id;
 
         if (!productId) {
           setError('Product ID is missing');
@@ -40,21 +40,21 @@ export default function TryOnPage() {
         }
 
         // Fetch product details
-        const productData = await productService?.getProduct(productId);
+        const productData = await productService.getProduct(productId);
 
         if (!productData) {
           setError('Product not found');
           return;
         }
 
-        if (!productData?.ar_compatible) {
+        if (!productData.ar_compatible) {
           setError('This product is not AR compatible');
           return;
         }
 
         setProduct(productData);
 
-        // Here you would initialize the AR experience using the product?.model_url
+        // Here you would initialize the AR experience using the product.model_url
         // For demonstration purposes, we'll just set a timeout to simulate loading
         setTimeout(() => {
           setModelLoaded(true);
@@ -62,17 +62,17 @@ export default function TryOnPage() {
         }, 2000);
 
         // Track this as a try-on session
-        if (user?.id) {
+        if (user.id) {
           try {
-            const newSessionId = await tryOnService?.startSession(user?.id, productId);
+            const newSessionId = await tryOnService.startSession(user.id, productId);
             setSessionId(newSessionId);
             setStartTime(new Date());
           } catch (err) {
-            console?.error('Failed to track try-on session:', err);
+            console.error('Failed to track try-on session:', err);
           }
         }
       } catch (err) {
-        console?.error('Error loading product for try-on:', err);
+        console.error('Error loading product for try-on:', err);
         setError('Failed to load product data');
       } finally {
         setLoading(false);
@@ -83,43 +83,43 @@ export default function TryOnPage() {
 
     // Clean up function to end the session
     return () => {
-      if (sessionId && user?.id && startTime) {
+      if (sessionId && user.id && startTime) {
         const endTime = new Date();
-        const durationSeconds = Math?.round((endTime?.getTime() - startTime?.getTime()) / 1000);
+        const durationSeconds = Math.round((endTime.getTime() - startTime.getTime()) / 1000);
 
         tryOnService
-          .completeSession(sessionId, user?.id, {
+          .completeSession(sessionId, user.id, {
             duration_seconds: durationSeconds,
           })
           .catch((err) => {
-            console?.error('Error completing try-on session:', err);
+            console.error('Error completing try-on session:', err);
           });
       }
     };
-  }, [id, user?.id]);
+  }, [id, user.id]);
 
   const handleShare = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
-      if (navigator?.share) {
-        await navigator?.share({
+      if (navigator.share) {
+        await navigator.share({
           title: 'Check out my virtual try-on!',
           text: 'I just tried on this product virtually at VibeWell!',
-          url: window?.location.href,
+          url: window.location.href,
         });
       } else {
-        await navigator?.clipboard.writeText(window?.location.href);
+        await navigator.clipboard.writeText(window.location.href);
         alert('Link copied to clipboard!');
       }
     } catch (err) {
-      console?.error('Error sharing try-on:', err);
+      console.error('Error sharing try-on:', err);
     }
   };
 
   const handleCapture = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     // This would take a screenshot of the current AR view
     alert('Capture feature coming soon!');
 
@@ -128,16 +128,16 @@ export default function TryOnPage() {
     // 2. Upload it to storage
     // 3. Update the session with the screenshot URL
 
-    if (sessionId && user?.id) {
+    if (sessionId && user.id) {
       try {
         // Mock screenshot URL for demonstration
-        const mockScreenshotUrl = `https://example?.com/screenshots/${sessionId}-${Date?.now()}.jpg`;
+        const mockScreenshotUrl = `https://example.com/screenshots/${sessionId}-${Date.now()}.jpg`;
 
-        await tryOnService?.completeSession(sessionId, user?.id, {
+        await tryOnService.completeSession(sessionId, user.id, {
           screenshots: [mockScreenshotUrl],
         });
       } catch (err) {
-        console?.error('Error saving screenshot:', err);
+        console.error('Error saving screenshot:', err);
       }
     }
   };
@@ -247,17 +247,17 @@ export default function TryOnPage() {
 
       <div className="mt-16">
         <h2 className="mb-4 text-2xl font-semibold">Similar Products to Try</h2>
-        <ProductRecommendations productId={Array?.isArray(id) ? id[0] : id} showTabs={false} />
+        <ProductRecommendations productId={Array.isArray(id) ? id[0] : id} showTabs={false} />
       </div>
 
       {/* Feedback Dialog */}
-      {user?.id && sessionId && product && (
+      {user.id && sessionId && product && (
         <FeedbackDialog
           isOpen={showFeedback}
           onClose={handleFeedbackClose}
           sessionId={sessionId}
-          userId={user?.id}
-          productName={product?.name}
+          userId={user.id}
+          productName={product.name}
         />
       )}
     </div>

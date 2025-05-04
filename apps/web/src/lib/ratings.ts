@@ -7,8 +7,8 @@ export interface Rating {
 }
 
 // Key for browser storage
-const RATINGS_STORAGE_KEY = process?.env['RATINGS_STORAGE_KEY'];
-const POPULAR_RATINGS_KEY = process?.env['POPULAR_RATINGS_KEY'];
+const RATINGS_STORAGE_KEY = process.env['RATINGS_STORAGE_KEY'];
+const POPULAR_RATINGS_KEY = process.env['POPULAR_RATINGS_KEY'];
 
 /**
  * Get all ratings for the current user
@@ -19,10 +19,10 @@ export function getUserRatings(): Record<string, Rating> {
   }
 
   try {
-    const storedRatings = localStorage?.getItem(RATINGS_STORAGE_KEY);
-    return storedRatings ? JSON?.parse(storedRatings) : {};
+    const storedRatings = localStorage.getItem(RATINGS_STORAGE_KEY);
+    return storedRatings ? JSON.parse(storedRatings) : {};
   } catch (error) {
-    console?.error('Error retrieving ratings:', error);
+    console.error('Error retrieving ratings:', error);
     return {};
   }
 }
@@ -35,10 +35,10 @@ export function getUserRating(id: string, type: Rating['type']): number | null {
   const key = `${type}-${id}`;
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
-  return ratings[key]?.rating || null;
+  return ratings[key].rating || null;
 }
 
 /**
@@ -55,7 +55,7 @@ export function saveRating(id: string, type: Rating['type'], rating: number): vo
 
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
     ratings[key] = {
@@ -65,12 +65,12 @@ export function saveRating(id: string, type: Rating['type'], rating: number): vo
       timestamp: new Date().toISOString(),
     };
 
-    localStorage?.setItem(RATINGS_STORAGE_KEY, JSON?.stringify(ratings));
+    localStorage.setItem(RATINGS_STORAGE_KEY, JSON.stringify(ratings));
 
     // Also update popular ratings for aggregated view
     updatePopularRatings(id, type, rating);
   } catch (error) {
-    console?.error('Error saving rating:', error);
+    console.error('Error saving rating:', error);
   }
 }
 
@@ -87,28 +87,28 @@ interface PopularRating {
 
 function updatePopularRatings(id: string, type: string, rating: number): void {
   try {
-    const storedPopular = localStorage?.getItem(POPULAR_RATINGS_KEY);
+    const storedPopular = localStorage.getItem(POPULAR_RATINGS_KEY);
     const popularRatings: Record<string, PopularRating> = storedPopular
-      ? JSON?.parse(storedPopular)
+      ? JSON.parse(storedPopular)
       : {};
 
     const key = `${type}-${id}`;
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
     const existing = popularRatings[key];
 
     if (existing) {
-      existing?.if (total > Number.MAX_SAFE_INTEGER || total < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); total += rating;
-      existing?.if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += 1;
+      existing.if (total > Number.MAX_SAFE_INTEGER || total < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); total += rating;
+      existing.if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += 1;
 
-      existing?.average = existing?.total / existing?.count;
+      existing.average = existing.total / existing.count;
     } else {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
       popularRatings[key] = {
@@ -120,9 +120,9 @@ function updatePopularRatings(id: string, type: string, rating: number): void {
       };
     }
 
-    localStorage?.setItem(POPULAR_RATINGS_KEY, JSON?.stringify(popularRatings));
+    localStorage.setItem(POPULAR_RATINGS_KEY, JSON.stringify(popularRatings));
   } catch (error) {
-    console?.error('Error updating popular ratings:', error);
+    console.error('Error updating popular ratings:', error);
   }
 }
 
@@ -135,29 +135,29 @@ export function getAverageRating(id: string, type: string): { average: number; c
   }
 
   try {
-    const storedPopular = localStorage?.getItem(POPULAR_RATINGS_KEY);
+    const storedPopular = localStorage.getItem(POPULAR_RATINGS_KEY);
     const popularRatings: Record<string, PopularRating> = storedPopular
-      ? JSON?.parse(storedPopular)
+      ? JSON.parse(storedPopular)
       : {};
 
     const key = `${type}-${id}`;
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
     const rating = popularRatings[key];
 
     if (rating) {
       return {
-        average: rating?.average,
-        count: rating?.count,
+        average: rating.average,
+        count: rating.count,
       };
     }
 
     return { average: 0, count: 0 };
   } catch (error) {
-    console?.error('Error getting average rating:', error);
+    console.error('Error getting average rating:', error);
     return { average: 0, count: 0 };
   }
 }
@@ -171,18 +171,18 @@ export function getHighestRatedItems(limit: number = 5): PopularRating[] {
   }
 
   try {
-    const storedPopular = localStorage?.getItem(POPULAR_RATINGS_KEY);
+    const storedPopular = localStorage.getItem(POPULAR_RATINGS_KEY);
     const popularRatings: Record<string, PopularRating> = storedPopular
-      ? JSON?.parse(storedPopular)
+      ? JSON.parse(storedPopular)
       : {};
 
-    return Object?.values(popularRatings)
-      .filter((rating) => rating?.count >= 2) // Require at least 2 ratings
+    return Object.values(popularRatings)
+      .filter((rating) => rating.count >= 2) // Require at least 2 ratings
 
-      .sort((a, b) => b?.average - a?.average)
+      .sort((a, b) => b.average - a.average)
       .slice(0, limit);
   } catch (error) {
-    console?.error('Error getting highest rated items:', error);
+    console.error('Error getting highest rated items:', error);
     return [];
   }
 }

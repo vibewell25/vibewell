@@ -15,10 +15,10 @@ interface BusinessProfileData {
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); fetchBusinessProfile(userId: string) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); fetchBusinessProfile(userId: string) {
   try {
-    const profile = await prisma?.businessProfile.findUnique({
+    const profile = await prisma.businessProfile.findUnique({
       where: {
         userId: userId,
       },
@@ -32,12 +32,12 @@ export async function {
     let logoUrl = null;
     let bannerImageUrl = null;
 
-    if (profile?.logoPath) {
-      logoUrl = await getSignedUrl(profile?.logoPath);
+    if (profile.logoPath) {
+      logoUrl = await getSignedUrl(profile.logoPath);
     }
 
-    if (profile?.bannerImagePath) {
-      bannerImageUrl = await getSignedUrl(profile?.bannerImagePath);
+    if (profile.bannerImagePath) {
+      bannerImageUrl = await getSignedUrl(profile.bannerImagePath);
     }
 
     return {
@@ -46,36 +46,36 @@ export async function {
       bannerImageUrl,
     };
   } catch (error) {
-    console?.error('Error fetching business profile:', error);
+    console.error('Error fetching business profile:', error);
     throw new Error('Failed to fetch business profile');
   }
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); updateBusinessProfile(userId: string, data: BusinessProfileData) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); updateBusinessProfile(userId: string, data: BusinessProfileData) {
   try {
     let logoPath = undefined;
     let bannerImagePath = undefined;
 
     // Upload logo if provided
-    if (data?.logoFile) {
+    if (data.logoFile) {
 
       const fileName = `business-profiles/${userId}/logo-${uuidv4()}`;
-      await uploadToS3(data?.logoFile, fileName);
+      await uploadToS3(data.logoFile, fileName);
       logoPath = fileName;
     }
 
     // Upload banner image if provided
-    if (data?.bannerImageFile) {
+    if (data.bannerImageFile) {
 
       const fileName = `business-profiles/${userId}/banner-${uuidv4()}`;
-      await uploadToS3(data?.bannerImageFile, fileName);
+      await uploadToS3(data.bannerImageFile, fileName);
       bannerImagePath = fileName;
     }
 
     // Check if profile exists
-    const existingProfile = await prisma?.businessProfile.findUnique({
+    const existingProfile = await prisma.businessProfile.findUnique({
       where: {
         userId: userId,
       },
@@ -83,16 +83,16 @@ export async function {
 
     if (existingProfile) {
       // Update existing profile
-      return await prisma?.businessProfile.update({
+      return await prisma.businessProfile.update({
         where: {
           userId: userId,
         },
         data: {
-          name: data?.name,
-          description: data?.description,
-          location: data?.location,
-          website: data?.website,
-          phone: data?.phone,
+          name: data.name,
+          description: data.description,
+          location: data.location,
+          website: data.website,
+          phone: data.phone,
           ...(logoPath && { logoPath }),
           ...(bannerImagePath && { bannerImagePath }),
           updatedAt: new Date(),
@@ -100,21 +100,21 @@ export async function {
       });
     } else {
       // Create new profile
-      return await prisma?.businessProfile.create({
+      return await prisma.businessProfile.create({
         data: {
           userId: userId,
-          name: data?.name,
-          description: data?.description,
-          location: data?.location,
-          website: data?.website,
-          phone: data?.phone,
+          name: data.name,
+          description: data.description,
+          location: data.location,
+          website: data.website,
+          phone: data.phone,
           ...(logoPath && { logoPath }),
           ...(bannerImagePath && { bannerImagePath }),
         },
       });
     }
   } catch (error) {
-    console?.error('Error updating business profile:', error);
+    console.error('Error updating business profile:', error);
     throw new Error('Failed to update business profile');
   }
 }

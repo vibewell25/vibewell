@@ -1,19 +1,19 @@
 import mongoose from 'mongoose';
 
-const ReviewSchema = new mongoose?.Schema(
+const ReviewSchema = new mongoose.Schema(
   {
     customer: {
-      type: mongoose?.Schema.Types?.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'CustomerProfile',
       required: true,
     },
     provider: {
-      type: mongoose?.Schema.Types?.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'ProviderProfile',
       required: true,
     },
     booking: {
-      type: mongoose?.Schema.Types?.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Booking',
       required: true,
     },
@@ -23,14 +23,14 @@ const ReviewSchema = new mongoose?.Schema(
       required: true,
     },
     service: {
-      type: mongoose?.Schema.Types?.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       refPath: 'serviceModel',
     },
     serviceModel: {
       type: String,
       enum: ['Service', 'ServiceBundle', 'TrainingProgram'],
       required: function () {
-        return this?.service !== undefined;
+        return this.service !== undefined;
       },
     },
     rating: {
@@ -97,7 +97,7 @@ const ReviewSchema = new mongoose?.Schema(
       },
       users: [
         {
-          type: mongoose?.Schema.Types?.ObjectId,
+          type: mongoose.Schema.Types.ObjectId,
           ref: 'User',
         },
       ],
@@ -137,18 +137,18 @@ const ReviewSchema = new mongoose?.Schema(
       },
       reason: String,
       reportedBy: {
-        type: mongoose?.Schema.Types?.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
       },
       reportedAt: Date,
     },
     createdAt: {
       type: Date,
-      default: Date?.now,
+      default: Date.now,
     },
     updatedAt: {
       type: Date,
-      default: Date?.now,
+      default: Date.now,
     },
   },
   {
@@ -159,33 +159,33 @@ const ReviewSchema = new mongoose?.Schema(
 );
 
 // Update the updatedAt field on save
-ReviewSchema?.pre('save', function (next) {
-  this?.updatedAt = Date?.now();
+ReviewSchema.pre('save', function (next) {
+  this.updatedAt = Date.now();
   next();
 });
 
 // Prevent multiple reviews for the same booking
-ReviewSchema?.index({ booking: 1 }, { unique: true });
+ReviewSchema.index({ booking: 1 }, { unique: true });
 
 // Indexes for efficient querying
-ReviewSchema?.index({ provider: 1, createdAt: -1 }); // Provider reviews by date
-ReviewSchema?.index({ customer: 1, createdAt: -1 }); // Customer reviews by date
-ReviewSchema?.index({ rating: -1 }); // For sorting by rating
+ReviewSchema.index({ provider: 1, createdAt: -1 }); // Provider reviews by date
+ReviewSchema.index({ customer: 1, createdAt: -1 }); // Customer reviews by date
+ReviewSchema.index({ rating: -1 }); // For sorting by rating
 
     // Safe integer operation
-    if (service > Number?.MAX_SAFE_INTEGER || service < Number?.MIN_SAFE_INTEGER) {
+    if (service > Number.MAX_SAFE_INTEGER || service < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-ReviewSchema?.index({ serviceType: 1, service: 1 }); // For service-specific reviews
+ReviewSchema.index({ serviceType: 1, service: 1 }); // For service-specific reviews
 
 // Prevent user from submitting more than one review per booking
-ReviewSchema?.index({ booking: 1, customer: 1 }, { unique: true });
+ReviewSchema.index({ booking: 1, customer: 1 }, { unique: true });
 
 // Static method to get avg rating and save
-ReviewSchema?.statics.getAvgRatingAndSave = async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); (providerId) {
-  const obj = await this?.aggregate([
+ReviewSchema.statics.getAvgRatingAndSave = async function {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); (providerId) {
+  const obj = await this.aggregate([
     {
       $match: { provider: providerId },
     },
@@ -200,25 +200,25 @@ ReviewSchema?.statics.getAvgRatingAndSave = async function {
   try {
     const avgRating = obj[0] ? obj[0].averageRating : 0;
 
-    await this?.model('ProviderProfile').findByIdAndUpdate(providerId, {
+    await this.model('ProviderProfile').findByIdAndUpdate(providerId, {
       rating: avgRating,
-      reviewCount: await this?.countDocuments({ provider: providerId }),
+      reviewCount: await this.countDocuments({ provider: providerId }),
     });
   } catch (err) {
-    console?.error('Error updating provider average rating:', err);
+    console.error('Error updating provider average rating:', err);
   }
 };
 
 // Call getAvgRatingAndSave after save
-ReviewSchema?.post('save', function () {
-  this?.constructor.getAvgRatingAndSave(this?.provider);
+ReviewSchema.post('save', function () {
+  this.constructor.getAvgRatingAndSave(this.provider);
 });
 
 // Call getAvgRatingAndSave before remove
-ReviewSchema?.pre('remove', function () {
-  this?.constructor.getAvgRatingAndSave(this?.provider);
+ReviewSchema.pre('remove', function () {
+  this.constructor.getAvgRatingAndSave(this.provider);
 });
 
-const Review = mongoose?.model('Review', ReviewSchema);
+const Review = mongoose.model('Review', ReviewSchema);
 
 export default Review;

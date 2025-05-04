@@ -72,10 +72,10 @@ function ClientAcquisitionContent() {
     },
   ];
   // Filter strategies based on selected category and difficulty
-  const filteredStrategies = strategies?.filter((strategy) => {
-    const matchesCategory = activeCategory === 'all' || strategy?.category === activeCategory;
+  const filteredStrategies = strategies.filter((strategy) => {
+    const matchesCategory = activeCategory === 'all' || strategy.category === activeCategory;
     const matchesDifficulty =
-      activeDifficulty === 'all' || strategy?.difficulty === activeDifficulty;
+      activeDifficulty === 'all' || strategy.difficulty === activeDifficulty;
     return matchesCategory && matchesDifficulty;
   });
   return (
@@ -103,15 +103,15 @@ function ClientAcquisitionContent() {
         <div className="mb-12">
           <h2 className="mb-6 text-2xl font-bold">Acquisition & Retention Strategies</h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {filteredStrategies?.map((strategy) => (
+            {filteredStrategies.map((strategy) => (
               <div
-                key={strategy?.id}
+                key={strategy.id}
                 className="rounded-lg border border-gray-100 bg-white p-6 shadow-md"
               >
-                <h3 className="mb-2 text-xl font-semibold">{strategy?.title}</h3>
-                <p className="mb-4 text-gray-600">{strategy?.description}</p>
+                <h3 className="mb-2 text-xl font-semibold">{strategy.title}</h3>
+                <p className="mb-4 text-gray-600">{strategy.description}</p>
                 <ol className="mb-4 list-decimal space-y-2 pl-5">
-                  {strategy?.steps.map((step, index) => (
+                  {strategy.steps.map((step, index) => (
                     <li key={index} className="text-sm text-gray-600">
                       {step}
                     </li>

@@ -34,9 +34,9 @@ export function DataCard({
         {description && <p className="text-xs text-muted-foreground">{description}</p>}
         {trend && (
           <div className="mt-1 flex items-center">
-            <span className={`text-xs ${trend?.isPositive ? 'text-green-500' : 'text-red-500'}`}>
-              {trend?.isPositive ? '+' : '-'}
-              {Math?.abs(trend?.value)}%
+            <span className={`text-xs ${trend.isPositive ? 'text-green-500' : 'text-red-500'}`}>
+              {trend.isPositive ? '+' : '-'}
+              {Math.abs(trend.value)}%
             </span>
             <span className="ml-1 text-xs text-muted-foreground">from last month</span>
           </div>

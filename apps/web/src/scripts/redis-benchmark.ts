@@ -27,8 +27,8 @@ class RedisBenchmark {
   private outputPath: string;
 
   constructor(redisUrl: string, outputDir: string = 'benchmarks') {
-    this?.redis = new Redis(redisUrl);
-    this?.outputPath = path?.join(process?.cwd(), outputDir);
+    this.redis = new Redis(redisUrl);
+    this.outputPath = path.join(process.cwd(), outputDir);
   }
 
   async runBenchmark(options: BenchmarkOptions = {}): Promise<BenchmarkResult[]> {
@@ -50,14 +50,14 @@ class RedisBenchmark {
         const command = `redis-benchmark -t ${test} -n ${requests} -c ${clients} -r ${keyspaceSize} -d ${dataSize} --csv`;
 
         const { stdout } = await execAsync(command);
-        const lines = stdout?.split('\n');
+        const lines = stdout.split('\n');
 
         // Parse CSV output
         for (const line of lines) {
-          if (line?.includes(test)) {
-            const [, rps, avgLatency] = line?.split(',');
+          if (line.includes(test)) {
+            const [, rps, avgLatency] = line.split(',');
 
-            results?.push({
+            results.push({
               test,
               rps: parseFloat(rps),
               avgLatency: parseFloat(avgLatency),
@@ -69,38 +69,38 @@ class RedisBenchmark {
       }
 
       // Save results
-      this?.saveResults(results);
+      this.saveResults(results);
 
       return results;
     } catch (error) {
-      console?.error('Benchmark failed:', error);
+      console.error('Benchmark failed:', error);
       throw error;
     }
   }
 
   async runCustomBenchmark(script: string, iterations: number = 1000): Promise<void> {
-    const startTime = Date?.now();
+    const startTime = Date.now();
     const latencies: number[] = [];
 
     for (let i = 0; i < iterations; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-      const iterationStart = Date?.now();
-      await this?.redis.eval(script, 0);
-      latencies?.push(Date?.now() - iterationStart);
+      const iterationStart = Date.now();
+      await this.redis.eval(script, 0);
+      latencies.push(Date.now() - iterationStart);
     }
 
-    const totalTime = Date?.now() - startTime;
+    const totalTime = Date.now() - startTime;
 
-    const avgLatency = latencies?.reduce((a, b) => a + b, 0) / iterations;
+    const avgLatency = latencies.reduce((a, b) => a + b, 0) / iterations;
 
     const rps = (iterations / totalTime) * 1000;
 
     // Calculate percentiles
 
-    latencies?.sort((a, b) => a - b);
+    latencies.sort((a, b) => a - b);
 
-    const p95 = latencies[Math?.floor(iterations * 0?.95)];
+    const p95 = latencies[Math.floor(iterations * 0.95)];
 
-    const p99 = latencies[Math?.floor(iterations * 0?.99)];
+    const p99 = latencies[Math.floor(iterations * 0.99)];
 
     const result = {
       test: 'Custom Script',
@@ -112,22 +112,22 @@ class RedisBenchmark {
 
 
     // Safe array access
-    if (result < 0 || result >= array?.length) {
+    if (result < 0 || result >= array.length) {
       throw new Error('Array index out of bounds');
     }
-    this?.saveResults([result]);
+    this.saveResults([result]);
   }
 
   private saveResults(results: BenchmarkResult[]): void {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const filePath = path?.join(this?.outputPath, `benchmark-${timestamp}.json`);
+    const filePath = path.join(this.outputPath, `benchmark-${timestamp}.json`);
 
-    writeFileSync(filePath, JSON?.stringify(results, null, 2));
-    console?.log(`Benchmark results saved to ${filePath}`);
+    writeFileSync(filePath, JSON.stringify(results, null, 2));
+    console.log(`Benchmark results saved to ${filePath}`);
   }
 
   async cleanup(): Promise<void> {
-    await this?.redis.quit();
+    await this.redis.quit();
   }
 }
 
@@ -139,7 +139,7 @@ export default RedisBenchmark;
 const benchmark = new RedisBenchmark('redis://localhost:6379');
 
 // Run standard benchmarks
-await benchmark?.runBenchmark({
+await benchmark.runBenchmark({
   clients: 50,
   requests: 100000,
   tests: ['SET', 'GET']
@@ -147,11 +147,11 @@ await benchmark?.runBenchmark({
 
 // Run custom Lua script benchmark
 const luaScript = `
-redis?.call('SET', 'test:key', 'value')
-redis?.call('GET', 'test:key')
+redis.call('SET', 'test:key', 'value')
+redis.call('GET', 'test:key')
 return 1
 `;
-await benchmark?.runCustomBenchmark(luaScript, 1000);
+await benchmark.runCustomBenchmark(luaScript, 1000);
 
-await benchmark?.cleanup();
+await benchmark.cleanup();
 */

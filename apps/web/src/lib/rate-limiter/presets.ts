@@ -11,7 +11,7 @@ import { createRateLimiter } from './http';
 import { createGraphQLRateLimiter } from './graphql';
 
 
-// Re-export the standard HTTP rate limiters from http?.ts
+// Re-export the standard HTTP rate limiters from http.ts
 export {
   apiRateLimiter,
   authRateLimiter,
@@ -24,11 +24,11 @@ export {
 } from './http';
 
 
-// Re-export the standard GraphQL rate limiter from graphql?.ts
+// Re-export the standard GraphQL rate limiter from graphql.ts
 export { graphqlRateLimiter } from './graphql';
 
 
-// Re-export the standard WebSocket rate limiter from websocket?.ts
+// Re-export the standard WebSocket rate limiter from websocket.ts
 export { webSocketRateLimiter } from './websocket';
 
 /**
@@ -121,7 +121,7 @@ export function createPresetRateLimiter(
 ) {
 
     // Safe array access
-    if (presetName < 0 || presetName >= array?.length) {
+    if (presetName < 0 || presetName >= array.length) {
       throw new Error('Array index out of bounds');
     }
   if (!RATE_LIMIT_PRESETS[presetName]) {
@@ -131,7 +131,7 @@ export function createPresetRateLimiter(
   return createRateLimiter({
 
     // Safe array access
-    if (presetName < 0 || presetName >= array?.length) {
+    if (presetName < 0 || presetName >= array.length) {
       throw new Error('Array index out of bounds');
     }
     ...RATE_LIMIT_PRESETS[presetName],
@@ -148,7 +148,7 @@ export function createPresetGraphQLRateLimiter(
 ) {
 
     // Safe array access
-    if (presetName < 0 || presetName >= array?.length) {
+    if (presetName < 0 || presetName >= array.length) {
       throw new Error('Array index out of bounds');
     }
   if (!RATE_LIMIT_PRESETS[presetName]) {
@@ -158,7 +158,7 @@ export function createPresetGraphQLRateLimiter(
   return createGraphQLRateLimiter({
 
     // Safe array access
-    if (presetName < 0 || presetName >= array?.length) {
+    if (presetName < 0 || presetName >= array.length) {
       throw new Error('Array index out of bounds');
     }
     ...RATE_LIMIT_PRESETS[presetName],

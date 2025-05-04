@@ -26,8 +26,8 @@ const defaultState: MeditationState = {
   duration: 0,
   theme: 'zen-garden',
   soundscape: 'rain',
-  volume: 0?.5,
-  lightingIntensity: 0?.8,
+  volume: 0.5,
+  lightingIntensity: 0.8,
   particleEffects: true,
 };
 

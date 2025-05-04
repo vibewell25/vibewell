@@ -27,87 +27,87 @@ const RATE_LIMIT = {
 };
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); POST(req: NextRequest) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
-      return NextResponse?.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!session.user.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await req?.json();
+    const body = await req.json();
     const { action, code } = body;
 
     switch (action) {
       case 'generate': {
         // Check rate limit for generation
-        const limited = await rateLimiter?.isRateLimited(
-          `recovery:generate:${session?.user.id}`,
-          RATE_LIMIT?.GENERATE,
+        const limited = await rateLimiter.isRateLimited(
+          `recovery:generate:${session.user.id}`,
+          RATE_LIMIT.GENERATE,
         );
         if (limited) {
-          return NextResponse?.json(
+          return NextResponse.json(
             { error: 'Too many recovery code generations' },
             { status: 429 },
           );
         }
 
-        const codes = await recoveryCodeService?.generateRecoveryCodes(session?.user.id);
-        return NextResponse?.json({ codes });
+        const codes = await recoveryCodeService.generateRecoveryCodes(session.user.id);
+        return NextResponse.json({ codes });
       }
 
       case 'verify': {
         if (!code) {
-          return NextResponse?.json({ error: 'Recovery code is required' }, { status: 400 });
+          return NextResponse.json({ error: 'Recovery code is required' }, { status: 400 });
         }
 
         // Check rate limit for verification
-        const limited = await rateLimiter?.isRateLimited(
-          `recovery:verify:${session?.user.id}`,
-          RATE_LIMIT?.VERIFY,
+        const limited = await rateLimiter.isRateLimited(
+          `recovery:verify:${session.user.id}`,
+          RATE_LIMIT.VERIFY,
         );
         if (limited) {
-          return NextResponse?.json({ error: 'Too many verification attempts' }, { status: 429 });
+          return NextResponse.json({ error: 'Too many verification attempts' }, { status: 429 });
         }
 
-        const isValid = await recoveryCodeService?.verifyRecoveryCode(session?.user.id, code);
+        const isValid = await recoveryCodeService.verifyRecoveryCode(session.user.id, code);
 
         if (!isValid) {
-          return NextResponse?.json({ error: 'Invalid recovery code' }, { status: 401 });
+          return NextResponse.json({ error: 'Invalid recovery code' }, { status: 401 });
         }
 
-        return NextResponse?.json({ success: true });
+        return NextResponse.json({ success: true });
       }
 
       case 'count': {
-        const count = await recoveryCodeService?.getRemainingCodeCount(session?.user.id);
-        return NextResponse?.json({ count });
+        const count = await recoveryCodeService.getRemainingCodeCount(session.user.id);
+        return NextResponse.json({ count });
       }
 
       default:
-        return NextResponse?.json({ error: 'Invalid action' }, { status: 400 });
+        return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
     }
   } catch (error) {
-    logger?.error('Recovery code operation failed', 'security', { error });
-    return NextResponse?.json({ error: 'Internal server error' }, { status: 500 });
+    logger.error('Recovery code operation failed', 'security', { error });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
 // Only allow POST requests
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); GET() {
-  return NextResponse?.json({ error: 'Method not allowed' }, { status: 405 });
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); GET() {
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); PUT() {
-  return NextResponse?.json({ error: 'Method not allowed' }, { status: 405 });
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); PUT() {
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); DELETE() {
-  return NextResponse?.json({ error: 'Method not allowed' }, { status: 405 });
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); DELETE() {
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
 }

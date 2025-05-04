@@ -55,8 +55,8 @@ function BusinessDirectoryContent() {
           description:
             'Luxury spa offering a range of massage and wellness treatments in a tranquil environment.',
           location: 'New York, NY',
-          image: 'https://images?.unsplash.com/photo-1540555700478-4be289fbecef',
-          rating: 4?.8,
+          image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef',
+          rating: 4.8,
           reviewCount: 127,
           isPremium: true,
           tags: ['Massage', 'Facial', 'Wellness'],
@@ -75,8 +75,8 @@ function BusinessDirectoryContent() {
           description:
             'Full-service beauty salon specializing in hair styling, makeup, and skincare treatments.',
           location: 'Los Angeles, CA',
-          image: 'https://images?.unsplash.com/photo-1560066984-138dadb4c035',
-          rating: 4?.6,
+          image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035',
+          rating: 4.6,
           reviewCount: 89,
           isPremium: true,
           tags: ['Hair', 'Makeup', 'Skincare'],
@@ -95,8 +95,8 @@ function BusinessDirectoryContent() {
           description:
             'Guided meditation sessions and mindfulness training for stress reduction and mental wellness.',
           location: 'San Francisco, CA',
-          image: 'https://images?.unsplash.com/photo-1506126613408-eca07ce68773',
-          rating: 4?.9,
+          image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773',
+          rating: 4.9,
           reviewCount: 64,
           isPremium: false,
           tags: ['Meditation', 'Mindfulness', 'Stress Relief'],
@@ -115,8 +115,8 @@ function BusinessDirectoryContent() {
           description:
             'Personalized fitness coaching and nutrition planning for achieving your health goals.',
           location: 'Chicago, IL',
-          image: 'https://images?.unsplash.com/photo-1571019613454-1cb2f99b2d8b',
-          rating: 4?.7,
+          image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b',
+          rating: 4.7,
           reviewCount: 52,
           isPremium: false,
           tags: ['Fitness', 'Nutrition', 'Personal Training'],
@@ -135,8 +135,8 @@ function BusinessDirectoryContent() {
           description:
             'Physical therapy and rehabilitation services for injury recovery and pain management.',
           location: 'Boston, MA',
-          image: 'https://images?.unsplash.com/photo-1573497620053-ea5300f94f21',
-          rating: 4?.5,
+          image: 'https://images.unsplash.com/photo-1573497620053-ea5300f94f21',
+          rating: 4.5,
           reviewCount: 38,
           isPremium: false,
           tags: ['Physical Therapy', 'Rehabilitation', 'Pain Management'],
@@ -154,8 +154,8 @@ function BusinessDirectoryContent() {
           subCategory: 'yoga',
           description: 'Yoga classes for all levels in a peaceful, zen-inspired environment.',
           location: 'Miami, FL',
-          image: 'https://images?.unsplash.com/photo-1545205597-3d9d02c29597',
-          rating: 4?.8,
+          image: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597',
+          rating: 4.8,
           reviewCount: 75,
           isPremium: true,
           tags: ['Yoga', 'Meditation', 'Wellness'],
@@ -174,40 +174,40 @@ function BusinessDirectoryContent() {
   }, []);
   // Apply filters
   useEffect(() => {
-    if (businesses?.length === 0) return;
+    if (businesses.length === 0) return;
     let filtered = [...businesses];
     // Search filter
     if (searchTerm) {
-      filtered = filtered?.filter(
+      filtered = filtered.filter(
         (business) =>
-          business?.name.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-          business?.description.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-          business?.tags.some((tag) => tag?.toLowerCase().includes(searchTerm?.toLowerCase())),
+          business.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          business.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          business.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase())),
       );
     }
     // Category filter
     if (category !== 'all') {
-      filtered = filtered?.filter((business) => business?.category === category);
+      filtered = filtered.filter((business) => business.category === category);
     }
     // Location filter
     if (location !== 'all') {
-      filtered = filtered?.filter((business) => business?.location.includes(location));
+      filtered = filtered.filter((business) => business.location.includes(location));
     }
     // Price range filter
-    filtered = filtered?.filter((business) => {
+    filtered = filtered.filter((business) => {
       const avgPrice =
-        business?.services.reduce((sum, service) => sum + service?.price, 0) /
-        business?.services.length;
+        business.services.reduce((sum, service) => sum + service.price, 0) /
+        business.services.length;
       return avgPrice >= priceRange[0] && avgPrice <= priceRange[1];
     });
     // Rating filter
     if (rating > 0) {
-      filtered = filtered?.filter((business) => business?.rating >= rating);
+      filtered = filtered.filter((business) => business.rating >= rating);
     }
     // Sort premium listings first
-    filtered?.sort((a, b) => {
-      if (a?.isPremium && !b?.isPremium) return -1;
-      if (!a?.isPremium && b?.isPremium) return 1;
+    filtered.sort((a, b) => {
+      if (a.isPremium && !b.isPremium) return -1;
+      if (!a.isPremium && b.isPremium) return 1;
       return 0;
     });
     setFilteredBusinesses(filtered);
@@ -224,7 +224,7 @@ function BusinessDirectoryContent() {
           <div className="mx-auto mb-8 max-w-4xl rounded-lg bg-gradient-to-r from-blue-100 to-purple-100 p-4 md:p-6">
             <div className="flex flex-col gap-4 md:flex-row">
               <h3 className="flex items-center text-lg font-semibold text-indigo-800">
-                <Icons?.SparklesSolid className="mr-2 h-5 w-5 text-indigo-600" />
+                <Icons.SparklesSolid className="mr-2 h-5 w-5 text-indigo-600" />
                 List Your Business
               </h3>
               <div className="flex-grow">
@@ -242,14 +242,14 @@ function BusinessDirectoryContent() {
           <div className="mx-auto max-w-4xl rounded-lg bg-white p-4 shadow">
             <div className="flex flex-col gap-4 md:flex-row">
               <div className="relative flex-grow">
-                <Icons?.MagnifyingGlassIcon className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
+                <Icons.MagnifyingGlassIcon className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
                 <Input
                   type="text"
                   placeholder="Search by name, service, or keyword..."
                   className="pl-10"
                   value={searchTerm}
-                  onChange={(e: React?.ChangeEvent<HTMLInputElement>) =>
-                    setSearchTerm(e?.target.value)
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setSearchTerm(e.target.value)
                   }
                 />
               </div>
@@ -258,7 +258,7 @@ function BusinessDirectoryContent() {
                 className="flex items-center"
                 onClick={() => setShowFilters(!showFilters)}
               >
-                <Icons?.AdjustmentsHorizontalIcon className="mr-2 h-5 w-5" />
+                <Icons.AdjustmentsHorizontalIcon className="mr-2 h-5 w-5" />
                 Filters
               </Button>
               <Select value={category} onValueChange={(value: string) => setCategory(value)}>
@@ -317,7 +317,7 @@ function BusinessDirectoryContent() {
                     Minimum Rating
                   </label>
                   <Select
-                    value={rating?.toString()}
+                    value={rating.toString()}
                     onValueChange={(value: string) => setRating(Number(value))}
                   >
                     <SelectTrigger>
@@ -327,7 +327,7 @@ function BusinessDirectoryContent() {
                       <SelectItem value="0">Any rating</SelectItem>
                       <SelectItem value="3">3+ stars</SelectItem>
                       <SelectItem value="4">4+ stars</SelectItem>
-                      <SelectItem value="4?.5">4?.5+ stars</SelectItem>
+                      <SelectItem value="4.5">4.5+ stars</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -353,46 +353,46 @@ function BusinessDirectoryContent() {
           </div>
         ) : (
           <>
-            <p className="mb-6 text-gray-600">{filteredBusinesses?.length} businesses found</p>
+            <p className="mb-6 text-gray-600">{filteredBusinesses.length} businesses found</p>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredBusinesses?.map((business) => (
+              {filteredBusinesses.map((business) => (
                 <div
-                  key={business?.id}
-                  className={`overflow-hidden rounded-lg bg-white shadow-md transition-all hover:shadow-lg ${business?.isPremium ? 'ring-2 ring-indigo-500 ring-opacity-50' : ''}`}
+                  key={business.id}
+                  className={`overflow-hidden rounded-lg bg-white shadow-md transition-all hover:shadow-lg ${business.isPremium ? 'ring-2 ring-indigo-500 ring-opacity-50' : ''}`}
                 >
                   <div className="relative h-48 w-full">
                     <Image
-                      src={business?.image}
-                      alt={business?.name}
+                      src={business.image}
+                      alt={business.name}
                       fill
                       className="object-cover"
                       unoptimized
                     />
-                    {business?.isPremium && (
+                    {business.isPremium && (
                       <div className="absolute right-2 top-2 flex items-center rounded-full bg-indigo-600 px-2 py-1 text-xs text-white">
-                        <Icons?.CheckBadgeSolid className="mr-1 h-3 w-3" />
+                        <Icons.CheckBadgeSolid className="mr-1 h-3 w-3" />
                         Premium
                       </div>
                     )}
                   </div>
                   <div className="p-4">
                     <div className="flex items-start justify-between">
-                      <h3 className="text-lg font-semibold">{business?.name}</h3>
+                      <h3 className="text-lg font-semibold">{business.name}</h3>
                       <div className="flex items-center">
-                        <Icons?.StarSolid className="h-4 w-4 text-yellow-400" />
-                        <span className="ml-1 text-sm text-gray-700">{business?.rating}</span>
-                        <span className="ml-1 text-xs text-gray-500">({business?.reviewCount})</span>
+                        <Icons.StarSolid className="h-4 w-4 text-yellow-400" />
+                        <span className="ml-1 text-sm text-gray-700">{business.rating}</span>
+                        <span className="ml-1 text-xs text-gray-500">({business.reviewCount})</span>
                       </div>
                     </div>
                     <div className="mb-3 flex items-center text-sm text-gray-500">
-                      <Icons?.MapPinSolid className="mr-1 h-4 w-4" />
-                      {business?.location}
+                      <Icons.MapPinSolid className="mr-1 h-4 w-4" />
+                      {business.location}
                     </div>
                     <p className="mb-4 line-clamp-3 text-sm text-gray-600">
-                      {business?.description}
+                      {business.description}
                     </p>
                     <div className="mb-4 flex flex-wrap gap-1">
-                      {business?.tags.map((tag) => (
+                      {business.tags.map((tag) => (
                         <Badge key={tag} variant="outline" className="bg-gray-100 text-xs">
                           {tag}
                         </Badge>
@@ -400,13 +400,13 @@ function BusinessDirectoryContent() {
                     </div>
                     <div className="mb-4 text-sm text-gray-500">
                       <span className="font-medium">Services from:</span> $
-                      {Math?.min(...business?.services.map((s) => s?.price))}
+                      {Math.min(...business.services.map((s) => s.price))}
                     </div>
                     <div className="mt-4 flex items-center justify-between">
                       <span className="text-sm text-gray-600">
-                        {business?.availableSlots} slots available
+                        {business.availableSlots} slots available
                       </span>
-                      <Link href={`/providers/${business?.id}`}>
+                      <Link href={`/providers/${business.id}`}>
                         <Button>View Profile</Button>
                       </Link>
                     </div>
@@ -414,7 +414,7 @@ function BusinessDirectoryContent() {
                 </div>
               ))}
             </div>
-            {filteredBusinesses?.length === 0 && (
+            {filteredBusinesses.length === 0 && (
               <div className="py-12 text-center">
                 <h3 className="mb-2 text-lg font-medium text-gray-900">No businesses found</h3>
                 <p className="mb-6 text-gray-500">Try adjusting your filters or search terms</p>
@@ -448,19 +448,19 @@ function BusinessDirectoryContent() {
                 </p>
                 <ul className="mb-6 space-y-2">
                   <li className="flex items-start">
-                    <Icons?.CheckBadgeSolid className="mr-2 mt-0?.5 h-5 w-5 text-green-500" />
+                    <Icons.CheckBadgeSolid className="mr-2 mt-0.5 h-5 w-5 text-green-500" />
                     <span>Priority placement at the top of search results</span>
                   </li>
                   <li className="flex items-start">
-                    <Icons?.CheckBadgeSolid className="mr-2 mt-0?.5 h-5 w-5 text-green-500" />
+                    <Icons.CheckBadgeSolid className="mr-2 mt-0.5 h-5 w-5 text-green-500" />
                     <span>Enhanced profile with photo gallery and featured services</span>
                   </li>
                   <li className="flex items-start">
-                    <Icons?.CheckBadgeSolid className="mr-2 mt-0?.5 h-5 w-5 text-green-500" />
+                    <Icons.CheckBadgeSolid className="mr-2 mt-0.5 h-5 w-5 text-green-500" />
                     <span>Verified badge to increase client trust</span>
                   </li>
                   <li className="flex items-start">
-                    <Icons?.CheckBadgeSolid className="mr-2 mt-0?.5 h-5 w-5 text-green-500" />
+                    <Icons.CheckBadgeSolid className="mr-2 mt-0.5 h-5 w-5 text-green-500" />
                     <span>Performance analytics and insights on profile views</span>
                   </li>
                 </ul>
@@ -475,24 +475,24 @@ function BusinessDirectoryContent() {
                 <div className="w-full max-w-xs rounded-lg bg-white p-6 shadow-lg">
                   <h3 className="mb-2 text-center text-xl font-bold">Premium Listing</h3>
                   <div className="mb-4 text-center">
-                    <span className="text-3xl font-bold">$19?.99</span>
+                    <span className="text-3xl font-bold">$19.99</span>
                     <span className="text-gray-500">/month</span>
                   </div>
                   <ul className="mb-6 space-y-2 text-sm">
                     <li className="flex items-center">
-                      <Icons?.CheckBadgeSolid className="mr-2 h-4 w-4 text-green-500" />
+                      <Icons.CheckBadgeSolid className="mr-2 h-4 w-4 text-green-500" />
                       <span>Top placement in search results</span>
                     </li>
                     <li className="flex items-center">
-                      <Icons?.CheckBadgeSolid className="mr-2 h-4 w-4 text-green-500" />
+                      <Icons.CheckBadgeSolid className="mr-2 h-4 w-4 text-green-500" />
                       <span>Premium badge</span>
                     </li>
                     <li className="flex items-center">
-                      <Icons?.CheckBadgeSolid className="mr-2 h-4 w-4 text-green-500" />
+                      <Icons.CheckBadgeSolid className="mr-2 h-4 w-4 text-green-500" />
                       <span>Photo gallery (up to 10 photos)</span>
                     </li>
                     <li className="flex items-center">
-                      <Icons?.CheckBadgeSolid className="mr-2 h-4 w-4 text-green-500" />
+                      <Icons.CheckBadgeSolid className="mr-2 h-4 w-4 text-green-500" />
                       <span>Business analytics dashboard</span>
                     </li>
                   </ul>

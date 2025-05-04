@@ -230,7 +230,7 @@ export interface Event {
   earlyBirdEndDate?: string;
   refundPolicy?: {
     allowedUntil: string; // ISO date string
-    percentageToRefund: number; // e?.g., 100 for full refund, 50 for 50% refund
+    percentageToRefund: number; // e.g., 100 for full refund, 50 for 50% refund
     description?: string;
   };
   paymentStatuses?: {

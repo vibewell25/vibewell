@@ -14,17 +14,17 @@ import {
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 
-const formSchema = z?.object({
-  username: z?.string().min(2, {
+const formSchema = z.object({
+  username: z.string().min(2, {
     message: 'Username must be at least 2 characters.',
   }),
-  email: z?.string().email({
+  email: z.string().email({
     message: 'Please enter a valid email address.',
   }),
 });
 
 const FormDemo = () => {
-  const form = useForm<z?.infer<typeof formSchema>>({
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: '',
@@ -32,15 +32,15 @@ const FormDemo = () => {
     },
   });
 
-  function onSubmit(values: z?.infer<typeof formSchema>) {
-    console?.log(values);
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form?.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
-          control={form?.control}
+          control={form.control}
           name="username"
           render={({ field }) => (
             <FormItem>
@@ -54,7 +54,7 @@ const FormDemo = () => {
           )}
         />
         <FormField
-          control={form?.control}
+          control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
@@ -124,9 +124,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/Input';
 
-const formSchema = z?.object({
-  username: z?.string().min(2),
-  email: z?.string().email(),
+const formSchema = z.object({
+  username: z.string().min(2),
+  email: z.string().email(),
 });
 
 function MyForm() {
@@ -139,14 +139,14 @@ function MyForm() {
   });
 
   function onSubmit(values) {
-    console?.log(values);
+    console.log(values);
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form?.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
-          control={form?.control}
+          control={form.control}
           name="username"
           render={({ field }) => (
             <FormItem>
@@ -186,7 +186,7 @@ export const Default: Story = {
 
 export const WithErrors = {
   render: () => {
-    const form = useForm<z?.infer<typeof formSchema>>({
+    const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
       defaultValues: {
         username: '',
@@ -198,7 +198,7 @@ export const WithErrors = {
       <Form {...form}>
         <form className="space-y-8">
           <FormField
-            control={form?.control}
+            control={form.control}
             name="username"
             render={({ field }) => (
               <FormItem>
@@ -212,7 +212,7 @@ export const WithErrors = {
             )}
           />
           <FormField
-            control={form?.control}
+            control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>

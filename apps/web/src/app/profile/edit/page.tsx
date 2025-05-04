@@ -15,26 +15,26 @@ export default function EditProfilePage() {
 
   useEffect(() => {
     async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); getUserSession() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); getUserSession() {
       try {
         setLoading(true);
         const {
           error: sessionError
-        } = await supabase?.auth.getSession();
+        } = await supabase.auth.getSession();
 
         if (sessionError) {
           throw sessionError;
         }
 
-        if (session?.user?.id) {
-          setUserId(session?.user.id);
+        if (session.user.id) {
+          setUserId(session.user.id);
         } else {
           setError('You must be logged in to edit your profile');
-          setTimeout(() => router?.push('/login'), 3000);
+          setTimeout(() => router.push('/login'), 3000);
         }
       } catch (err) {
-        console?.error('Error fetching session:', err);
+        console.error('Error fetching session:', err);
         setError('Failed to authenticate user');
       } finally {
         setLoading(false);
@@ -46,7 +46,7 @@ export default function EditProfilePage() {
 
   const handleProfileUpdateSuccess = () => {
     // Show success message or trigger any additional actions
-    setTimeout(() => router?.push('/profile'), 1500);
+    setTimeout(() => router.push('/profile'), 1500);
   };
 
   if (loading) {

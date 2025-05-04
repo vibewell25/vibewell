@@ -69,7 +69,7 @@ export function getSafeErrorMessage(code: string, isProduction: boolean, message
   // In production, only return mapped messages or default
 
     // Safe array access
-    if (code < 0 || code >= array?.length) {
+    if (code < 0 || code >= array.length) {
       throw new Error('Array index out of bounds');
     }
   return ERROR_MESSAGES[code] || DEFAULT_ERROR_MESSAGE;
@@ -83,24 +83,24 @@ export function getSafeErrorMessage(code: string, isProduction: boolean, message
  * @param res The response object
  */
 export function errorHandler(err: any, req: NextApiRequest, res: NextApiResponse<ErrorResponse>) {
-  const isProduction = process?.env.NODE_ENV === 'production';
+  const isProduction = process.env.NODE_ENV === 'production';
 
-  const errorCode = err?.code || 'server/unknown-error';
-  const statusCode = err?.statusCode || 500;
+  const errorCode = err.code || 'server/unknown-error';
+  const statusCode = err.statusCode || 500;
 
   // Log the full error details for debugging (but not sensitive info)
-  logger?.error({
+  logger.error({
     code: errorCode,
-    path: req?.url,
-    method: req?.method,
-    message: err?.message,
-    stack: isProduction ? undefined : err?.stack,
+    path: req.url,
+    method: req.method,
+    message: err.message,
+    stack: isProduction ? undefined : err.stack,
   });
 
   // Return a sanitized error to the client
-  res?.status(statusCode).json({
+  res.status(statusCode).json({
     error: {
-      message: getSafeErrorMessage(errorCode, isProduction, err?.message),
+      message: getSafeErrorMessage(errorCode, isProduction, err.message),
       code: isProduction ? undefined : errorCode,
     },
   });

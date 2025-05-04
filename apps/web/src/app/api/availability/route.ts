@@ -10,31 +10,31 @@ import { and, eq, gte, lte } from 'drizzle-orm';
 import { addMinutes, format, parse } from 'date-fns';
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); GET(request: Request) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); GET(request: Request) {
   try {
-    const { searchParams } = new URL(request?.url);
-    const providerId = searchParams?.get('providerId');
-    const date = searchParams?.get('date');
+    const { searchParams } = new URL(request.url);
+    const providerId = searchParams.get('providerId');
+    const date = searchParams.get('date');
 
     if (!providerId || !date) {
-      return NextResponse?.json({ error: 'Provider ID and date are required' }, { status: 400 });
+      return NextResponse.json({ error: 'Provider ID and date are required' }, { status: 400 });
     }
 
     const parsedDate = new Date(date);
     const startOfDay = new Date(parsedDate);
-    startOfDay?.setHours(0, 0, 0, 0);
+    startOfDay.setHours(0, 0, 0, 0);
     const endOfDay = new Date(parsedDate);
-    endOfDay?.setHours(23, 59, 59, 999);
+    endOfDay.setHours(23, 59, 59, 999);
 
     const providerAvailability = await db
       .select()
       .from(availability)
       .where(
         and(
-          eq(availability?.providerId, parseInt(providerId)),
-          gte(availability?.date, startOfDay),
-          lte(availability?.date, endOfDay),
+          eq(availability.providerId, parseInt(providerId)),
+          gte(availability.date, startOfDay),
+          lte(availability.date, endOfDay),
         ),
       );
 
@@ -42,39 +42,39 @@ export async function {
     const providerServices = await db
       .select()
       .from(services)
-      .where(eq(services?.providerId, parseInt(providerId)));
+      .where(eq(services.providerId, parseInt(providerId)));
 
     // Generate time slots
     const timeSlots = generateTimeSlots(parsedDate, providerAvailability);
 
-    return NextResponse?.json({
+    return NextResponse.json({
 
       date: format(parsedDate, 'yyyy-MM-dd'),
       slots: timeSlots,
       services: providerServices,
     });
   } catch (error) {
-    console?.error('Error fetching availability:', error);
-    return NextResponse?.json({ error: 'Failed to fetch availability' }, { status: 500 });
+    console.error('Error fetching availability:', error);
+    return NextResponse.json({ error: 'Failed to fetch availability' }, { status: 500 });
   }
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); POST(request: Request) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); POST(request: Request) {
   try {
-    const body = await request?.json();
+    const body = await request.json();
     const { providerId, date, time, serviceId } = body;
 
     if (!providerId || !date || !time || !serviceId) {
-      return NextResponse?.json({ error: 'Missing required fields' }, { status: 400 });
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
     // Get service duration
-    const service = await db?.select().from(services).where(eq(services?.id, serviceId)).limit(1);
+    const service = await db.select().from(services).where(eq(services.id, serviceId)).limit(1);
 
-    if (!service?.length) {
-      return NextResponse?.json({ error: 'Service not found' }, { status: 404 });
+    if (!service.length) {
+      return NextResponse.json({ error: 'Service not found' }, { status: 404 });
     }
 
     const serviceDuration = service[0].duration;
@@ -87,21 +87,21 @@ export async function {
       .from(availability)
       .where(
         and(
-          eq(availability?.providerId, providerId),
-          gte(availability?.startTime, startTime),
-          lte(availability?.endTime, endTime),
-          eq(availability?.isAvailable, false),
+          eq(availability.providerId, providerId),
+          gte(availability.startTime, startTime),
+          lte(availability.endTime, endTime),
+          eq(availability.isAvailable, false),
         ),
       );
 
-    if (existingSlots?.length > 0) {
-      return NextResponse?.json({ error: 'Time slot is not available' }, { status: 409 });
+    if (existingSlots.length > 0) {
+      return NextResponse.json({ error: 'Time slot is not available' }, { status: 409 });
     }
 
     // Create appointment
 
     // Safe array access
-    if (appointment < 0 || appointment >= array?.length) {
+    if (appointment < 0 || appointment >= array.length) {
       throw new Error('Array index out of bounds');
     }
     const [appointment] = await db
@@ -119,19 +119,19 @@ export async function {
     // Update availability
     await db
       .update(availability)
-      .set({ isAvailable: false, appointmentId: appointment?.id })
+      .set({ isAvailable: false, appointmentId: appointment.id })
       .where(
         and(
-          eq(availability?.providerId, providerId),
-          gte(availability?.startTime, startTime),
-          lte(availability?.endTime, endTime),
+          eq(availability.providerId, providerId),
+          gte(availability.startTime, startTime),
+          lte(availability.endTime, endTime),
         ),
       );
 
-    return NextResponse?.json({ success: true, appointment });
+    return NextResponse.json({ success: true, appointment });
   } catch (error) {
-    console?.error('Error creating appointment:', error);
-    return NextResponse?.json({ error: 'Failed to create appointment' }, { status: 500 });
+    console.error('Error creating appointment:', error);
+    return NextResponse.json({ error: 'Failed to create appointment' }, { status: 500 });
   }
 }
 
@@ -143,11 +143,11 @@ function generateTimeSlots(date: Date, availability: any[]) {
   let currentTime = startTime;
   while (currentTime <= endTime) {
     const slotTime = format(currentTime, 'HH:mm');
-    const isAvailable = !availability?.some(
-      (slot) => format(slot?.startTime, 'HH:mm') === slotTime && !slot?.isAvailable,
+    const isAvailable = !availability.some(
+      (slot) => format(slot.startTime, 'HH:mm') === slotTime && !slot.isAvailable,
     );
 
-    slots?.push({
+    slots.push({
       id: format(currentTime, 'HHmm'),
       time: slotTime,
       available: isAvailable,

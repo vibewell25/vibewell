@@ -10,11 +10,11 @@ export class ApiRequestError extends Error {
   public status: number;
 
   constructor(error: ApiError, status: number = 500) {
-    super(error?.message);
-    this?.name = 'ApiRequestError';
-    this?.code = error?.code;
-    this?.details = error?.details;
-    this?.status = status;
+    super(error.message);
+    this.name = 'ApiRequestError';
+    this.code = error.code;
+    this.details = error.details;
+    this.status = status;
   }
 }
 
@@ -26,8 +26,8 @@ export class NetworkError extends Error {
 
   constructor(message: string = 'Network error occurred', status: number = 0) {
     super(message);
-    this?.name = 'NetworkError';
-    this?.status = status;
+    this.name = 'NetworkError';
+    this.status = status;
   }
 }
 
@@ -37,7 +37,7 @@ export class NetworkError extends Error {
 export class TimeoutError extends Error {
   constructor(message: string = 'Request timed out') {
     super(message);
-    this?.name = 'TimeoutError';
+    this.name = 'TimeoutError';
   }
 }
 
@@ -47,31 +47,31 @@ export class TimeoutError extends Error {
 export function parseApiError(error: any): ApiError {
   if (error instanceof ApiRequestError) {
     return {
-      code: error?.code,
-      message: error?.message,
-      details: error?.details,
+      code: error.code,
+      message: error.message,
+      details: error.details,
     };
   }
 
   if (error instanceof NetworkError) {
     return {
       code: 'NETWORK_ERROR',
-      message: error?.message,
+      message: error.message,
     };
   }
 
   if (error instanceof TimeoutError) {
     return {
       code: 'TIMEOUT_ERROR',
-      message: error?.message,
+      message: error.message,
     };
   }
 
   // Handle unknown errors
   return {
     code: 'UNKNOWN_ERROR',
-    message: error?.message || 'An unknown error occurred',
-    details: error?.details,
+    message: error.message || 'An unknown error occurred',
+    details: error.details,
   };
 }
 
@@ -99,8 +99,8 @@ export function isApiError(error: any): error is ApiError {
     typeof error === 'object' &&
     'code' in error &&
     'message' in error &&
-    typeof error?.code === 'string' &&
-    typeof error?.message === 'string'
+    typeof error.code === 'string' &&
+    typeof error.message === 'string'
   );
 }
 

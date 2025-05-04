@@ -112,8 +112,8 @@ export default function Home() {
           name="description"
           content="VibeWell connects you with wellness services, events, and community. Book appointments, join events, and find your wellness path."
         />
-        <link rel="preconnect" href="https://fonts?.googleapis.com" />
-        <link rel="preconnect" href="https://images?.unsplash.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://images.unsplash.com" />
       </Head>
 
       <main className="min-h-screen">

@@ -15,17 +15,17 @@ function PerformanceContent() {
 
   useEffect(() => {
     const checkAuth = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       if (!user) {
-        router?.push('/auth/signin');
+        router.push('/auth/signin');
         return;
       }
 
       try {
         // Check if user is admin
         const response = await fetch('/api/users/currentRole');
-        const { role } = await response?.json();
+        const { role } = await response.json();
 
         if (role !== 'admin') {
           setIsAuthorized(false);
@@ -33,7 +33,7 @@ function PerformanceContent() {
           setIsAuthorized(true);
         }
       } catch (error) {
-        console?.error('Error checking user role:', error);
+        console.error('Error checking user role:', error);
         setIsAuthorized(false);
       }
     };

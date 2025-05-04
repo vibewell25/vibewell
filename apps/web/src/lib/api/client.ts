@@ -37,16 +37,16 @@ export class ApiClient {
   private defaultOptions: ApiClientOptions;
 
   constructor(options: ApiClientOptions = {}) {
-    this?.baseUrl = options?.baseUrl || API_CONFIG?.baseUrl;
-    this?.defaultOptions = {
+    this.baseUrl = options.baseUrl || API_CONFIG.baseUrl;
+    this.defaultOptions = {
       headers: {
-        ...API_CONFIG?.headers,
-        ...options?.headers,
+        ...API_CONFIG.headers,
+        ...options.headers,
       },
-      timeout: options?.timeout || API_CONFIG?.timeout,
-      retryAttempts: options?.retryAttempts || API_CONFIG?.retryAttempts,
-      retryDelay: options?.retryDelay || API_CONFIG?.retryDelay,
-      cache: options?.cache ?? API_CONFIG?.cache.enabled,
+      timeout: options.timeout || API_CONFIG.timeout,
+      retryAttempts: options.retryAttempts || API_CONFIG.retryAttempts,
+      retryDelay: options.retryDelay || API_CONFIG.retryDelay,
+      cache: options.cache ?? API_CONFIG.cache.enabled,
     };
   }
 
@@ -54,7 +54,7 @@ export class ApiClient {
    * Make a GET request
    */
   async get<T>(path: string, options: ApiClientOptions = {}): Promise<ApiResponse<T>> {
-    return this?.request<T>(path, {
+    return this.request<T>(path, {
       ...options,
       method: 'GET',
     });
@@ -64,7 +64,7 @@ export class ApiClient {
    * Make a POST request
    */
   async post<T>(path: string, data?: any, options: ApiClientOptions = {}): Promise<ApiResponse<T>> {
-    return this?.request<T>(path, {
+    return this.request<T>(path, {
       ...options,
       method: 'POST',
       body: data,
@@ -75,7 +75,7 @@ export class ApiClient {
    * Make a PUT request
    */
   async put<T>(path: string, data?: any, options: ApiClientOptions = {}): Promise<ApiResponse<T>> {
-    return this?.request<T>(path, {
+    return this.request<T>(path, {
       ...options,
       method: 'PUT',
       body: data,
@@ -86,7 +86,7 @@ export class ApiClient {
    * Make a DELETE request
    */
   async delete<T>(path: string, options: ApiClientOptions = {}): Promise<ApiResponse<T>> {
-    return this?.request<T>(path, {
+    return this.request<T>(path, {
       ...options,
       method: 'DELETE',
     });
@@ -100,7 +100,7 @@ export class ApiClient {
     data?: any,
     options: ApiClientOptions = {},
   ): Promise<ApiResponse<T>> {
-    return this?.request<T>(path, {
+    return this.request<T>(path, {
       ...options,
       method: 'PATCH',
       body: data,
@@ -111,45 +111,45 @@ export class ApiClient {
    * Make an HTTP request
    */
   private async request<T>(path: string, options: RequestOptions): Promise<ApiResponse<T>> {
-    const url = this?.buildUrl(path);
-    const mergedOptions = this?.mergeOptions(options);
+    const url = this.buildUrl(path);
+    const mergedOptions = this.mergeOptions(options);
     const controller = new AbortController();
-    const timeoutId = mergedOptions?.timeout
-      ? setTimeout(() => controller?.abort(), mergedOptions?.timeout)
+    const timeoutId = mergedOptions.timeout
+      ? setTimeout(() => controller.abort(), mergedOptions.timeout)
       : null;
 
     try {
       // Check cache for GET requests
-      if (options?.method === 'GET' && mergedOptions?.cache) {
-        const cached = apiCache?.get<T>(url);
+      if (options.method === 'GET' && mergedOptions.cache) {
+        const cached = apiCache.get<T>(url);
         if (cached) {
           return cached;
         }
       }
 
       const request = new Request(url, {
-        method: options?.method,
-        headers: mergedOptions?.headers,
-        body: options?.body ? JSON?.stringify(options?.body) : undefined,
-        signal: controller?.signal,
+        method: options.method,
+        headers: mergedOptions.headers,
+        body: options.body ? JSON.stringify(options.body) : undefined,
+        signal: controller.signal,
       });
 
       // Apply request interceptor
       const interceptedRequest = await requestInterceptor(request, mergedOptions);
 
       // Make the request with retry logic
-      const response = await this?.executeWithRetry(
+      const response = await this.executeWithRetry(
         () => fetch(interceptedRequest),
-        mergedOptions?.retryAttempts || 0,
-        mergedOptions?.retryDelay || 0,
+        mergedOptions.retryAttempts || 0,
+        mergedOptions.retryDelay || 0,
       );
 
       // Apply response interceptor
       const result = await responseInterceptor(response);
 
       // Cache successful GET responses
-      if (options?.method === 'GET' && mergedOptions?.cache && result?.success) {
-        apiCache?.set(url, result);
+      if (options.method === 'GET' && mergedOptions.cache && result.success) {
+        apiCache.set(url, result);
       }
 
       return result as ApiResponse<T>;
@@ -162,7 +162,7 @@ export class ApiClient {
         throw error;
       }
 
-      throw new NetworkError(error instanceof Error ? error?.message : 'Network request failed');
+      throw new NetworkError(error instanceof Error ? error.message : 'Network request failed');
     } finally {
       if (timeoutId) {
         clearTimeout(timeoutId);
@@ -174,7 +174,7 @@ export class ApiClient {
    * Build full URL from path
    */
   private buildUrl(path: string): string {
-    return `${this?.baseUrl}${path?.startsWith('/') ? path : `/${path}`}`;
+    return `${this.baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
   }
 
   /**
@@ -182,11 +182,11 @@ export class ApiClient {
    */
   private mergeOptions(options: RequestOptions): RequestOptions {
     return {
-      ...this?.defaultOptions,
+      ...this.defaultOptions,
       ...options,
       headers: {
-        ...this?.defaultOptions.headers,
-        ...options?.headers,
+        ...this.defaultOptions.headers,
+        ...options.headers,
       },
     };
   }
@@ -209,7 +209,7 @@ export class ApiClient {
       await new Promise((resolve) => setTimeout(resolve, delay));
 
 
-      return this?.executeWithRetry(fn, retries - 1, delay);
+      return this.executeWithRetry(fn, retries - 1, delay);
     }
   }
 }

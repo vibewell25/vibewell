@@ -3,7 +3,7 @@ import { logger } from '@/lib/logger';
 
 // Helper to check if the request is coming from an allowed IP
 function isAllowedIP(ip: string): boolean {
-  const allowedIPs = process.env['HEALTH_CHECK_ALLOWED_IPS']?.split(',') || ['127.0.0.1', '::1'];
+  const allowedIPs = process.env['HEALTH_CHECK_ALLOWED_IPS'].split(',') || ['127.0.0.1', '::1'];
   return allowedIPs.includes(ip);
 }
 

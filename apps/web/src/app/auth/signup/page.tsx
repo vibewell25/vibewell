@@ -22,21 +22,21 @@ export default function SignupPage() {
    * Handle form submission for signup
    */
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent) => {
-    e?.preventDefault();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
+    e.preventDefault();
     setError(null);
     setIsLoading(true);
 
     try {
       const { error } = await signUp(email, password, name);
       if (error) {
-        setError(error?.message);
+        setError(error.message);
       } else {
         setShowVerificationMessage(true);
       }
     } catch (err) {
-      setError(err instanceof Error ? err?.message : 'Failed to sign up. Please try again.');
+      setError(err instanceof Error ? err.message : 'Failed to sign up. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -46,7 +46,7 @@ export default function SignupPage() {
     return (
       <div className="container mx-auto max-w-md px-4 py-8">
         <div className="mb-8 flex flex-col items-center">
-          <Icons?.logo className="text-primary mb-4 h-12 w-12" />
+          <Icons.logo className="text-primary mb-4 h-12 w-12" />
           <h1 className="mb-2 text-2xl font-bold">Check your email</h1>
           <p className="text-center text-muted-foreground">
             We've sent a verification link to <strong>{email}</strong>. Please check your email and
@@ -63,7 +63,7 @@ export default function SignupPage() {
   return (
     <div className="container mx-auto max-w-md px-4 py-8">
       <div className="mb-8 flex flex-col items-center">
-        <Icons?.logo className="text-primary mb-4 h-12 w-12" />
+        <Icons.logo className="text-primary mb-4 h-12 w-12" />
         <h1 className="mb-2 text-2xl font-bold">Create an account</h1>
         <p className="text-center text-muted-foreground">
           Enter your details to create your VibeWell account
@@ -84,7 +84,7 @@ export default function SignupPage() {
             type="text"
             placeholder="John Doe"
             value={name}
-            onChange={(e) => setName(e?.target.value)}
+            onChange={(e) => setName(e.target.value)}
             required
             className="w-full rounded-md border p-2"
             disabled={isLoading}
@@ -98,9 +98,9 @@ export default function SignupPage() {
           <input
             id="email"
             type="email"
-            placeholder="name@example?.com"
+            placeholder="name@example.com"
             value={email}
-            onChange={(e) => setEmail(e?.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             required
             className="w-full rounded-md border p-2"
             disabled={isLoading}
@@ -116,7 +116,7 @@ export default function SignupPage() {
             type="password"
             placeholder="••••••••"
             value={password}
-            onChange={(e) => setPassword(e?.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             required
             minLength={8}
             className="w-full rounded-md border p-2"
@@ -151,21 +151,21 @@ export default function SignupPage() {
           onClick={() => signInWithGoogle()}
           className="flex items-center justify-center rounded-md border p-2 transition-colors hover:bg-muted"
         >
-          <Icons?.google className="h-5 w-5" />
+          <Icons.google className="h-5 w-5" />
         </button>
         <button
           type="button"
           onClick={() => signInWithFacebook()}
           className="flex items-center justify-center rounded-md border p-2 transition-colors hover:bg-muted"
         >
-          <Icons?.facebook className="h-5 w-5" />
+          <Icons.facebook className="h-5 w-5" />
         </button>
         <button
           type="button"
           onClick={() => signInWithApple()}
           className="flex items-center justify-center rounded-md border p-2 transition-colors hover:bg-muted"
         >
-          <Icons?.apple className="h-5 w-5" />
+          <Icons.apple className="h-5 w-5" />
         </button>
       </div>
 

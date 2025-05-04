@@ -6,8 +6,8 @@ interface ARState {
   isTracking: boolean;
   faceDetected: boolean;
   landmarks: any[];
-  cameraPosition?: THREE?.Vector3;
-  worldMatrix?: THREE?.Matrix4;
+  cameraPosition?: THREE.Vector3;
+  worldMatrix?: THREE.Matrix4;
   confidence: number;
   error?: string;
 }
@@ -28,7 +28,7 @@ const initialState: ARState = {
 
 const ARContext = createContext<ARContextValue | undefined>(undefined);
 
-export const ARProvider: React?.FC<{ children: React?.ReactNode }> = ({ children }) => {
+export const ARProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [arState, setARState] = useState<ARState>(initialState);
 
   const updateARState = useCallback((update: Partial<ARState>) => {
@@ -43,7 +43,7 @@ export const ARProvider: React?.FC<{ children: React?.ReactNode }> = ({ children
   }, []);
 
   return (
-    <ARContext?.Provider
+    <ARContext.Provider
       value={{
         arState,
         updateARState,
@@ -51,7 +51,7 @@ export const ARProvider: React?.FC<{ children: React?.ReactNode }> = ({ children
       }}
     >
       {children}
-    </ARContext?.Provider>
+    </ARContext.Provider>
   );
 };
 

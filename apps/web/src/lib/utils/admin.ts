@@ -7,17 +7,17 @@ import { prisma } from '@/lib/database/client';
  * @param role The role to set ('user' or 'admin')
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); setUserRole(userId: string, role: string) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); setUserRole(userId: string, role: string) {
   try {
-    const user = await prisma?.user.update({
+    const user = await prisma.user.update({
       where: { id: userId },
-      data: { role: role?.toUpperCase() },
+      data: { role: role.toUpperCase() },
     });
 
     return { success: true, user };
   } catch (error) {
-    console?.error('Error setting user role:', error);
+    console.error('Error setting user role:', error);
     return { success: false, error };
   }
 }
@@ -28,19 +28,19 @@ export async function {
  * @returns The user's role or null if not found
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); getUserRole(userId: string): Promise<'user' | 'admin' | null> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); getUserRole(userId: string): Promise<'user' | 'admin' | null> {
   try {
-    const user = await prisma?.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: { id: userId },
       select: { role: true },
     });
 
-    if (user?.role === 'ADMIN') return 'admin';
-    if (user?.role === 'USER') return 'user';
+    if (user.role === 'ADMIN') return 'admin';
+    if (user.role === 'USER') return 'user';
     return null;
   } catch (error) {
-    console?.error('Error getting user role:', error);
+    console.error('Error getting user role:', error);
     return null;
   }
 }
@@ -51,17 +51,17 @@ export async function {
  * @returns Boolean indicating if user is an admin
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); isAdmin(userId: string): Promise<boolean> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); isAdmin(userId: string): Promise<boolean> {
   try {
-    const user = await prisma?.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: { id: userId },
       select: { role: true },
     });
 
-    return user?.role === 'ADMIN';
+    return user.role === 'ADMIN';
   } catch (error) {
-    console?.error('Error checking admin status:', error);
+    console.error('Error checking admin status:', error);
     return false;
   }
 }
@@ -73,11 +73,11 @@ export async function {
  * @param userId The user's UUID to make admin
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); createFirstAdmin(userId: string) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); createFirstAdmin(userId: string) {
   try {
     // Check if any admin exists
-    const existingAdmin = await prisma?.user.findFirst({
+    const existingAdmin = await prisma.user.findFirst({
       where: { role: 'ADMIN' },
     });
 
@@ -86,13 +86,13 @@ export async function {
     }
 
     // Set the user as admin
-    const user = await prisma?.user.update({
+    const user = await prisma.user.update({
       where: { id: userId },
       data: { role: 'ADMIN' },
     });
 
     // Mark initial setup as completed
-    await prisma?.systemConfig.upsert({
+    await prisma.systemConfig.upsert({
       where: { key: 'initial_setup_completed' },
       update: { value: 'true' },
       create: {
@@ -103,20 +103,20 @@ export async function {
 
     return { success: true, firstAdmin: true, user };
   } catch (error) {
-    console?.error('Error creating first admin:', error);
+    console.error('Error creating first admin:', error);
     return { success: false, error };
   }
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); getAdminCount(): Promise<number> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); getAdminCount(): Promise<number> {
   try {
-    return await prisma?.user.count({
+    return await prisma.user.count({
       where: { role: 'ADMIN' },
     });
   } catch (error) {
-    console?.error('Error getting admin count:', error);
+    console.error('Error getting admin count:', error);
     return 0;
   }
 }

@@ -21,7 +21,7 @@ interface WebAuthnUser {
 
 export class WebAuthnService {
   private static readonly rpName = 'Vibewell';
-  private static readonly rpID = process?.env.NEXT_PUBLIC_DOMAIN ?? 'localhost';
+  private static readonly rpID = process.env.NEXT_PUBLIC_DOMAIN ?? 'localhost';
 
   public async startRegistration(user: WebAuthnUser): Promise<RegistrationResponseJSON> {
 
@@ -31,8 +31,8 @@ export class WebAuthnService {
 
 
       headers: { 'Content-Type': 'application/json' },
-      body: JSON?.stringify({ userId: user?.id, email: user?.email })
-    }).then(res => res?.json());
+      body: JSON.stringify({ userId: user.id, email: user.email })
+    }).then(res => res.json());
 
     return await startRegistration(options);
   }
@@ -45,9 +45,9 @@ export class WebAuthnService {
 
 
       headers: { 'Content-Type': 'application/json' },
-      body: JSON?.stringify(response)
+      body: JSON.stringify(response)
     });
-    return verificationResponse?.ok;
+    return verificationResponse.ok;
   }
 
   public async startAuthentication(email: string): Promise<AuthenticationResponseJSON> {
@@ -58,8 +58,8 @@ export class WebAuthnService {
 
 
       headers: { 'Content-Type': 'application/json' },
-      body: JSON?.stringify({ email })
-    }).then(res => res?.json());
+      body: JSON.stringify({ email })
+    }).then(res => res.json());
 
     return await startAuthentication(options);
   }
@@ -72,8 +72,8 @@ export class WebAuthnService {
 
 
       headers: { 'Content-Type': 'application/json' },
-      body: JSON?.stringify(response)
+      body: JSON.stringify(response)
     });
-    return verificationResponse?.ok;
+    return verificationResponse.ok;
   }
 } 

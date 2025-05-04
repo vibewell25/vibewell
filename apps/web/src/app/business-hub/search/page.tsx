@@ -52,8 +52,8 @@ function SearchLoadingSkeleton() {
 // Search page content that uses useSearchParams
 function SearchPageContent() {
   const searchParams = useSearchParams();
-  const initialQuery = searchParams?.get('q') || '';
-  const initialCategory = (searchParams?.get('category') || 'all') as any;
+  const initialQuery = searchParams.get('q') || '';
+  const initialCategory = (searchParams.get('category') || 'all') as any;
   const [query, setQuery] = useState(initialQuery);
   const [category, setCategory] = useState(initialCategory);
   const [results, setResults] = useState<SearchResult[]>([]);
@@ -75,15 +75,15 @@ function SearchPageContent() {
       // In a real app, this would send analytics data to your backend
       if (typeof window !== 'undefined') {
         try {
-          const searchHistory = JSON?.parse(localStorage?.getItem('search_history') || '[]');
-          searchHistory?.push({
+          const searchHistory = JSON.parse(localStorage.getItem('search_history') || '[]');
+          searchHistory.push({
             query,
             category,
             timestamp: new Date().toISOString(),
           });
-          localStorage?.setItem('search_history', JSON?.stringify(searchHistory?.slice(-20)));
+          localStorage.setItem('search_history', JSON.stringify(searchHistory.slice(-20)));
         } catch (e) {
-          console?.error('Failed to track search', e);
+          console.error('Failed to track search', e);
         }
       }
     }
@@ -92,8 +92,8 @@ function SearchPageContent() {
   // Check bookmarked status of results
   useEffect(() => {
     const bookmarked: Record<string, boolean> = {};
-    results?.forEach((result) => {
-      bookmarked[result?.id] = isBookmarked(result?.id, result?.type);
+    results.forEach((result) => {
+      bookmarked[result.id] = isBookmarked(result.id, result.type);
     });
     setBookmarkedItems(bookmarked);
   }, [results]);
@@ -113,7 +113,7 @@ function SearchPageContent() {
           type: 'resource',
           section: 'marketing',
           url: '/business-hub/marketing/resources/social-media-guide',
-          image: 'https://images?.unsplash.com/photo-1611162617213-7d7a39e9b1d7',
+          image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7',
           tags: ['social-media', 'marketing', 'instagram'],
           date: '2023-08-15',
           premium: false,
@@ -126,7 +126,7 @@ function SearchPageContent() {
           type: 'tool',
           section: 'financial',
           url: '/business-hub/financial-management/resources/financial-planning-template',
-          image: 'https://images?.unsplash.com/photo-1554224155-6726b3ff858f',
+          image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f',
           tags: ['finance', 'planning', 'template'],
           date: '2023-10-05',
           premium: true,
@@ -139,7 +139,7 @@ function SearchPageContent() {
           type: 'article',
           section: 'client-acquisition',
           url: '/business-hub/client-acquisition/strategies/beauty-business',
-          image: 'https://images?.unsplash.com/photo-1595247299149-85c93280604d',
+          image: 'https://images.unsplash.com/photo-1595247299149-85c93280604d',
           tags: ['clients', 'marketing', 'growth'],
           date: '2023-11-12',
           premium: false,
@@ -152,7 +152,7 @@ function SearchPageContent() {
           type: 'resource',
           section: 'staff-management',
           url: '/business-hub/staff-management/resources/onboarding-checklist',
-          image: 'https://images?.unsplash.com/photo-1551836022-d5d88e9218df',
+          image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df',
           tags: ['staff', 'onboarding', 'management'],
           date: '2024-01-18',
           premium: false,
@@ -165,7 +165,7 @@ function SearchPageContent() {
           type: 'tool',
           section: 'financial',
           url: '/business-hub/financial-management/tools/pricing-calculator',
-          image: 'https://images?.unsplash.com/photo-1553484771-371a605b060b',
+          image: 'https://images.unsplash.com/photo-1553484771-371a605b060b',
           tags: ['pricing', 'finance', 'calculator'],
           date: '2023-12-03',
           premium: true,
@@ -178,7 +178,7 @@ function SearchPageContent() {
           type: 'article',
           section: 'marketing',
           url: '/business-hub/marketing/webinars/instagram-reels',
-          image: 'https://images?.unsplash.com/photo-1611162616305-c69b3037f77d',
+          image: 'https://images.unsplash.com/photo-1611162616305-c69b3037f77d',
           tags: ['instagram', 'video', 'social-media'],
           date: '2024-02-22',
           premium: true,
@@ -186,18 +186,18 @@ function SearchPageContent() {
       ];
       // Filter by category if specified
       if (searchCategory && searchCategory !== 'all') {
-        mockResults = mockResults?.filter((result) => {
-          if (searchCategory === 'marketing') return result?.section === 'marketing';
-          if (searchCategory === 'financial') return result?.section === 'financial';
-          if (searchCategory === 'resources') return result?.type === 'resource';
-          if (searchCategory === 'tools') return result?.type === 'tool';
+        mockResults = mockResults.filter((result) => {
+          if (searchCategory === 'marketing') return result.section === 'marketing';
+          if (searchCategory === 'financial') return result.section === 'financial';
+          if (searchCategory === 'resources') return result.type === 'resource';
+          if (searchCategory === 'tools') return result.type === 'tool';
           return true;
         });
       }
       // Simulate relevance scoring - in a real app this would be done by the search engine
-      mockResults = mockResults?.map((result) => {
+      mockResults = mockResults.map((result) => {
         // Add the query to the result for highlighting in a real app
-        return { ...result, relevanceScore: Math?.random() * 10 };
+        return { ...result, relevanceScore: Math.random() * 10 };
       });
       setResults(mockResults);
       setIsLoading(false);
@@ -208,29 +208,29 @@ function SearchPageContent() {
     setQuery(newQuery);
     setCategory(newCategory);
     // Update URL to reflect search params without page reload
-    const url = new URL(window?.location.href);
-    url?.searchParams.set('q', newQuery);
-    url?.searchParams.set('category', newCategory);
-    window?.history.pushState({}, '', url?.toString());
+    const url = new URL(window.location.href);
+    url.searchParams.set('q', newQuery);
+    url.searchParams.set('category', newCategory);
+    window.history.pushState({}, '', url.toString());
   };
   // Toggle bookmark status
   const toggleBookmark = (result: SearchResult) => {
-    const currentStatus = bookmarkedItems[result?.id] || false;
+    const currentStatus = bookmarkedItems[result.id] || false;
     if (currentStatus) {
-      removeBookmark(result?.id, result?.type);
+      removeBookmark(result.id, result.type);
     } else {
       addBookmark({
-        id: result?.id,
-        type: result?.type,
-        title: result?.title,
-        description: result?.description,
-        url: result?.url,
-        category: result?.section,
+        id: result.id,
+        type: result.type,
+        title: result.title,
+        description: result.description,
+        url: result.url,
+        category: result.section,
       });
     }
     setBookmarkedItems((prev) => ({
       ...prev,
-      [result?.id]: !currentStatus,
+      [result.id]: !currentStatus,
     }));
   };
   // Toggle reviews visibility for a result
@@ -245,43 +245,43 @@ function SearchPageContent() {
     // Refresh average ratings after a review is added
     // In a real app, this might trigger a refetch of data
     setResults((currentResults) =>
-      currentResults?.map((result) => (result?.id === review?.resourceId ? { ...result } : result)),
+      currentResults.map((result) => (result.id === review.resourceId ? { ...result } : result)),
     );
   };
   // Filter results based on selected filters
-  const filteredResults = results?.filter((result) => {
-    const matchesType = selectedType === 'all' || result?.type === selectedType;
-    const matchesSection = selectedSection === 'all' || result?.section === selectedSection;
-    const matchesRating = getAverageRating(result?.id, result?.type).average >= minRating;
+  const filteredResults = results.filter((result) => {
+    const matchesType = selectedType === 'all' || result.type === selectedType;
+    const matchesSection = selectedSection === 'all' || result.section === selectedSection;
+    const matchesRating = getAverageRating(result.id, result.type).average >= minRating;
     return matchesType && matchesSection && matchesRating;
   });
   // Sort results based on selected sort option
   const sortedResults = [...filteredResults].sort((a, b) => {
     if (sortBy === 'date') {
-      return new Date(b?.date).getTime() - new Date(a?.date).getTime();
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
     } else if (sortBy === 'rating') {
-      const aRating = getAverageRating(a?.id, a?.type).average;
-      const bRating = getAverageRating(b?.id, b?.type).average;
+      const aRating = getAverageRating(a.id, a.type).average;
+      const bRating = getAverageRating(b.id, b.type).average;
       return bRating - aRating;
     } else {
       // Sort by relevance score (default)
-      return (b?.relevanceScore || 0) - (a?.relevanceScore || 0);
+      return (b.relevanceScore || 0) - (a.relevanceScore || 0);
     }
   });
   // Get unique sections and types for filters
-  const sections = [...new Set(results?.map((result) => result?.section))];
-  const types = [...new Set(results?.map((result) => result?.type))];
+  const sections = [...new Set(results.map((result) => result.section))];
+  const types = [...new Set(results.map((result) => result.type))];
   // Render icon based on result type
   const renderTypeIcon = (type: string) => {
     switch (type) {
       case 'resource':
-        return <Icons?.DocumentTextIcon className="h-5 w-5 text-blue-500" />;
+        return <Icons.DocumentTextIcon className="h-5 w-5 text-blue-500" />;
       case 'tool':
-        return <Icons?.CalculatorIcon className="h-5 w-5 text-green-500" />;
+        return <Icons.CalculatorIcon className="h-5 w-5 text-green-500" />;
       case 'article':
-        return <Icons?.NewspaperIcon className="h-5 w-5 text-purple-500" />;
+        return <Icons.NewspaperIcon className="h-5 w-5 text-purple-500" />;
       default:
-        return <Icons?.DocumentTextIcon className="h-5 w-5 text-gray-500" />;
+        return <Icons.DocumentTextIcon className="h-5 w-5 text-gray-500" />;
     }
   };
   return (
@@ -310,9 +310,9 @@ function SearchPageContent() {
               </div>
               <p className="mt-4 text-center text-gray-500">Searching for "{query}"...</p>
             </div>
-          ) : query && results?.length === 0 ? (
+          ) : query && results.length === 0 ? (
             <div className="rounded-lg bg-white p-8 text-center shadow-md">
-              <Icons?.MagnifyingGlassIcon className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+              <Icons.MagnifyingGlassIcon className="mx-auto mb-4 h-12 w-12 text-gray-400" />
               <h2 className="mb-2 text-xl font-semibold">No results found</h2>
               <p className="mb-6 text-gray-600">
                 We couldn't find any matches for "{query}". Try adjusting your search terms or
@@ -330,7 +330,7 @@ function SearchPageContent() {
                 <h2 className="text-xl font-semibold">
                   Search Results
                   <span className="ml-2 font-normal text-gray-500">
-                    {filteredResults?.length} {filteredResults?.length === 1 ? 'result' : 'results'}{' '}
+                    {filteredResults.length} {filteredResults.length === 1 ? 'result' : 'results'}{' '}
                     for "{query}"
                   </span>
                 </h2>
@@ -339,13 +339,13 @@ function SearchPageContent() {
                     <select
                       className="appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 pr-8 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                       value={sortBy}
-                      onChange={(e) => setSortBy(e?.target.value as any)}
+                      onChange={(e) => setSortBy(e.target.value as any)}
                     >
                       <option value="relevance">Sort by Relevance</option>
                       <option value="date">Sort by Date</option>
                       <option value="rating">Sort by Rating</option>
                     </select>
-                    <Icons?.ArrowsUpDownIcon className="pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
+                    <Icons.ArrowsUpDownIcon className="pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
                   </div>
                 </div>
               </div>
@@ -353,7 +353,7 @@ function SearchPageContent() {
                 {/* Filters Sidebar */}
                 <div className="h-fit rounded-lg bg-white p-4 shadow-md md:w-64">
                   <h3 className="mb-4 flex items-center font-semibold">
-                    <Icons?.FunnelIcon className="mr-2 h-4 w-4" /> Filters
+                    <Icons.FunnelIcon className="mr-2 h-4 w-4" /> Filters
                   </h3>
                   <div className="mb-6">
                     <h4 className="mb-2 text-sm font-medium">Content Type</h4>
@@ -368,7 +368,7 @@ function SearchPageContent() {
                         />
                         <span>All Types</span>
                       </label>
-                      {types?.map((type) => (
+                      {types.map((type) => (
                         <label key={type} className="flex items-center">
                           <input
                             type="radio"
@@ -395,7 +395,7 @@ function SearchPageContent() {
                         />
                         <span>All Sections</span>
                       </label>
-                      {sections?.map((section) => (
+                      {sections.map((section) => (
                         <label key={section} className="flex items-center">
                           <input
                             type="radio"
@@ -404,7 +404,7 @@ function SearchPageContent() {
                             onChange={() => setSelectedSection(section)}
                             className="mr-2"
                           />
-                          <span className="capitalize">{section?.replace('-', ' ')}</span>
+                          <span className="capitalize">{section.replace('-', ' ')}</span>
                         </label>
                       ))}
                     </div>
@@ -436,7 +436,7 @@ function SearchPageContent() {
                       ))}
                     </div>
                   </div>
-                  {filteredResults?.length !== results?.length && (
+                  {filteredResults.length !== results.length && (
                     <Button
                       variant="outline"
                       className="w-full"
@@ -451,7 +451,7 @@ function SearchPageContent() {
                 </div>
                 {/* Results List */}
                 <div className="flex-1">
-                  {sortedResults?.length === 0 ? (
+                  {sortedResults.length === 0 ? (
                     <div className="rounded-lg bg-white p-8 text-center shadow-md">
                       <p className="mb-4 text-gray-600">No results match your current filters.</p>
                       <Button
@@ -466,20 +466,20 @@ function SearchPageContent() {
                     </div>
                   ) : (
                     <div className="space-y-6">
-                      {sortedResults?.map((result) => (
+                      {sortedResults.map((result) => (
                         <div
-                          key={result?.id}
+                          key={result.id}
                           className="flex flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md md:flex-row"
                         >
-                          {result?.image && (
+                          {result.image && (
                             <div className="relative h-48 md:h-auto md:w-1/3">
                               <Image
-                                src={result?.image}
-                                alt={result?.title}
+                                src={result.image}
+                                alt={result.title}
                                 fill
                                 className="object-cover"
                               />
-                              {result?.premium && (
+                              {result.premium && (
                                 <div className="absolute right-2 top-2 rounded-full bg-indigo-600 px-2 py-1 text-xs text-white">
                                   Premium
                                 </div>
@@ -489,48 +489,48 @@ function SearchPageContent() {
                           <div className="flex-1 p-4">
                             <div className="flex items-start justify-between">
                               <div className="flex items-center">
-                                {renderTypeIcon(result?.type)}
+                                {renderTypeIcon(result.type)}
                                 <Badge variant="outline" className="ml-2 text-xs capitalize">
-                                  {result?.section.replace('-', ' ')}
+                                  {result.section.replace('-', ' ')}
                                 </Badge>
                                 <Badge className="ml-2 border-blue-200 bg-blue-100 text-xs capitalize text-blue-800">
-                                  {result?.type}
+                                  {result.type}
                                 </Badge>
                               </div>
                               <div className="flex items-center space-x-2">
                                 <button
-                                  onClick={() => toggleReviews(result?.id)}
+                                  onClick={() => toggleReviews(result.id)}
                                   className={`rounded-full p-1 text-gray-400 hover:text-gray-600`}
                                   title="View reviews"
                                 >
-                                  <Icons?.ChatBubbleLeftRightIcon className="h-5 w-5" />
+                                  <Icons.ChatBubbleLeftRightIcon className="h-5 w-5" />
                                 </button>
                                 <button
                                   onClick={() => toggleBookmark(result)}
                                   className={`rounded-full p-1 ${
-                                    bookmarkedItems[result?.id]
+                                    bookmarkedItems[result.id]
                                       ? 'text-yellow-500'
                                       : 'text-gray-400 hover:text-gray-600'
                                   }`}
                                   title={
-                                    bookmarkedItems[result?.id]
+                                    bookmarkedItems[result.id]
                                       ? 'Remove from bookmarks'
                                       : 'Add to bookmarks'
                                   }
                                 >
-                                  <Icons?.BookmarkIcon className="h-5 w-5" />
+                                  <Icons.BookmarkIcon className="h-5 w-5" />
                                 </button>
                               </div>
                             </div>
-                            <Link href={result?.url}>
+                            <Link href={result.url}>
                               <h3 className="mb-2 mt-2 text-xl font-semibold hover:text-blue-600">
-                                {result?.title}
+                                {result.title}
                               </h3>
                             </Link>
-                            <p className="mb-3 line-clamp-2 text-gray-600">{result?.description}</p>
+                            <p className="mb-3 line-clamp-2 text-gray-600">{result.description}</p>
                             <div className="mt-4 flex items-center justify-between">
                               <div className="flex flex-wrap gap-1">
-                                {result?.tags.map((tag) => (
+                                {result.tags.map((tag) => (
                                   <span
                                     key={tag}
                                     className="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-600"
@@ -542,31 +542,31 @@ function SearchPageContent() {
                               <div className="flex items-center text-sm text-gray-500">
                                 <div className="mr-4">
                                   <StarRating
-                                    initialRating={getAverageRating(result?.id, result?.type).average}
+                                    initialRating={getAverageRating(result.id, result.type).average}
                                     readonly={true}
                                     size="sm"
                                     showCount={true}
-                                    count={getAverageRating(result?.id, result?.type).count}
+                                    count={getAverageRating(result.id, result.type).count}
                                   />
                                 </div>
-                                <span>{new Date(result?.date).toLocaleDateString()}</span>
+                                <span>{new Date(result.date).toLocaleDateString()}</span>
                               </div>
                             </div>
                             {/* Reviews Section - Expandable */}
-                            {expandedReviews[result?.id] && (
+                            {expandedReviews[result.id] && (
                               <div className="mt-4 border-t pt-4">
                                 <div className="mb-3 flex items-center justify-between">
                                   <h4 className="font-semibold">Reviews & Ratings</h4>
                                   <button
-                                    onClick={() => toggleReviews(result?.id)}
+                                    onClick={() => toggleReviews(result.id)}
                                     className="text-gray-400 hover:text-gray-600"
                                   >
-                                    <Icons?.XMarkIcon className="h-5 w-5" />
+                                    <Icons.XMarkIcon className="h-5 w-5" />
                                   </button>
                                 </div>
                                 <ResourceReview
-                                  resourceId={result?.id}
-                                  resourceType={result?.type}
+                                  resourceId={result.id}
+                                  resourceType={result.type}
                                   onReviewAdded={handleReviewAdded}
                                 />
                               </div>

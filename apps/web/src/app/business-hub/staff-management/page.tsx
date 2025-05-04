@@ -29,7 +29,7 @@ interface StaffTool {
   id: string;
   title: string;
   description: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
   category: 'hiring' | 'training' | 'retention' | 'performance' | 'communication';
   url: string;
 }
@@ -51,7 +51,7 @@ export default function StaffManagementPage() {
       title: 'How to Hire the Perfect Stylist for Your Salon',
       description: 'A comprehensive guide to finding, interviewing, and assessing potential stylists based on skills, culture fit, and client compatibility.',
       category: 'hiring',
-      image: 'https://images?.unsplash.com/photo-1595867818082-083862f3aaf4',
+      image: 'https://images.unsplash.com/photo-1595867818082-083862f3aaf4',
       premium: false
     },
     {
@@ -59,7 +59,7 @@ export default function StaffManagementPage() {
       title: 'Effective Staff Training Program for Beauty Businesses',
       description: 'Learn how to develop and implement a training program that ensures consistent service quality and staff development.',
       category: 'training',
-      image: 'https://images?.unsplash.com/photo-1558403194-611308249627',
+      image: 'https://images.unsplash.com/photo-1558403194-611308249627',
       premium: false
     },
     {
@@ -67,7 +67,7 @@ export default function StaffManagementPage() {
       title: 'Setting Up Performance-Based Commission Structures',
       description: 'Design a fair and motivating commission structure that rewards performance and encourages growth.',
       category: 'performance',
-      image: 'https://images?.unsplash.com/photo-1554224155-8d04cb21ed6c',
+      image: 'https://images.unsplash.com/photo-1554224155-8d04cb21ed6c',
       premium: true
     },
     {
@@ -75,7 +75,7 @@ export default function StaffManagementPage() {
       title: 'Reducing Turnover: Staff Retention Strategies',
       description: 'Practical strategies to improve staff satisfaction, engagement, and long-term retention in beauty businesses.',
       category: 'retention',
-      image: 'https://images?.unsplash.com/photo-1600880292203-757bb62b4baf',
+      image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf',
       premium: false
     },
     {
@@ -83,7 +83,7 @@ export default function StaffManagementPage() {
       title: 'Effective Team Communication Frameworks',
       description: 'Establish clear communication channels and protocols to ensure your team stays aligned and informed.',
       category: 'communication',
-      image: 'https://images?.unsplash.com/photo-1573497161161-c3e73707e25c',
+      image: 'https://images.unsplash.com/photo-1573497161161-c3e73707e25c',
       premium: true
     },
     {
@@ -91,7 +91,7 @@ export default function StaffManagementPage() {
       title: 'Handling Staff Conflicts and Difficult Conversations',
       description: 'Learn how to address conflicts, provide constructive feedback, and have difficult conversations with staff members.',
       category: 'communication',
-      image: 'https://images?.unsplash.com/photo-1573497620053-ea5300f94f21',
+      image: 'https://images.unsplash.com/photo-1573497620053-ea5300f94f21',
       premium: false
     }
   ];
@@ -101,7 +101,7 @@ export default function StaffManagementPage() {
       id: 'employee-handbook',
       title: 'Employee Handbook Template',
       description: 'Customizable template for creating a comprehensive employee handbook for your beauty business.',
-      icon: <Icons?.DocumentTextIcon className="h-10 w-10 text-indigo-500" />,
+      icon: <Icons.DocumentTextIcon className="h-10 w-10 text-indigo-500" />,
       category: 'hiring',
       url: '/business-hub/staff-management/tools/employee-handbook'
     },
@@ -109,7 +109,7 @@ export default function StaffManagementPage() {
       id: 'performance-review',
       title: 'Performance Review Framework',
       description: 'Structured evaluation system for conducting fair and productive staff performance reviews.',
-      icon: <Icons?.ChartBarIcon className="h-10 w-10 text-teal-500" />,
+      icon: <Icons.ChartBarIcon className="h-10 w-10 text-teal-500" />,
       category: 'performance',
       url: '/business-hub/staff-management/tools/performance-review'
     },
@@ -117,7 +117,7 @@ export default function StaffManagementPage() {
       id: 'team-schedules',
       title: 'Team Scheduling Templates',
       description: 'Templates and tools for creating balanced staff schedules that optimize coverage and satisfaction.',
-      icon: <Icons?.CalendarIcon className="h-10 w-10 text-blue-500" />,
+      icon: <Icons.CalendarIcon className="h-10 w-10 text-blue-500" />,
       category: 'retention',
       url: '/business-hub/staff-management/tools/scheduling-templates'
     },
@@ -125,7 +125,7 @@ export default function StaffManagementPage() {
       id: 'one-on-one',
       title: 'One-on-One Meeting Guide',
       description: 'Framework for conducting effective individual meetings with staff members to improve engagement.',
-      icon: <Icons?.ChatBubbleLeftRightIcon className="h-10 w-10 text-purple-500" />,
+      icon: <Icons.ChatBubbleLeftRightIcon className="h-10 w-10 text-purple-500" />,
       category: 'communication',
       url: '/business-hub/staff-management/tools/one-on-one-meetings'
     },
@@ -133,7 +133,7 @@ export default function StaffManagementPage() {
       id: 'compensation-calculator',
       title: 'Compensation & Commission Calculator',
       description: 'Calculate fair and competitive compensation packages and commission structures for your team.',
-      icon: <Icons?.CurrencyDollarIcon className="h-10 w-10 text-green-500" />,
+      icon: <Icons.CurrencyDollarIcon className="h-10 w-10 text-green-500" />,
       category: 'performance',
       url: '/business-hub/staff-management/tools/compensation-calculator'
     },
@@ -141,7 +141,7 @@ export default function StaffManagementPage() {
       id: 'training-tracker',
       title: 'Staff Training Tracker',
       description: 'Track training progress, certifications, and skill development for each team member.',
-      icon: <Icons?.ClipboardDocumentCheckIcon className="h-10 w-10 text-orange-500" />,
+      icon: <Icons.ClipboardDocumentCheckIcon className="h-10 w-10 text-orange-500" />,
       category: 'training',
       url: '/business-hub/staff-management/tools/training-tracker'
     }
@@ -194,21 +194,21 @@ export default function StaffManagementPage() {
     }
   ];
   // Filter guides based on category and search
-  const filteredGuides = managementGuides?.filter(guide => {
-    const matchesCategory = selectedCategory === 'all' || guide?.category === selectedCategory;
+  const filteredGuides = managementGuides.filter(guide => {
+    const matchesCategory = selectedCategory === 'all' || guide.category === selectedCategory;
     const matchesSearch = !searchQuery || 
-      guide?.title.toLowerCase().includes(searchQuery?.toLowerCase()) || 
-      guide?.description.toLowerCase().includes(searchQuery?.toLowerCase());
+      guide.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      guide.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
   // Filter tools based on category
-  const filteredTools = staffTools?.filter(tool => 
-    selectedCategory === 'all' || tool?.category === selectedCategory
+  const filteredTools = staffTools.filter(tool => 
+    selectedCategory === 'all' || tool.category === selectedCategory
   );
   // Filter resources based on selected category
-  const filteredResources = trainingResources?.filter(resource => 
+  const filteredResources = trainingResources.filter(resource => 
     selectedCategory === 'all' || 
-    (selectedCategory === 'training' && ['onboarding', 'technical', 'customer-service', 'sales', 'management'].includes(resource?.category))
+    (selectedCategory === 'training' && ['onboarding', 'technical', 'customer-service', 'sales', 'management'].includes(resource.category))
   );
   // Categories for filtering
   const categories = [
@@ -235,11 +235,11 @@ export default function StaffManagementPage() {
               type="text" 
               placeholder="Search staff management resources..." 
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e?.target.value)}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="pr-10"
             />
             <button className="absolute inset-y-0 right-0 px-3 flex items-center">
-              <svg xmlns="http://www?.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </button>
@@ -250,13 +250,13 @@ export default function StaffManagementPage() {
       <div className="mb-8">
         <h2 className="text-lg font-semibold mb-4">Browse by Category</h2>
         <div className="flex flex-wrap gap-3">
-          {categories?.map(category => (
+          {categories.map(category => (
             <Button
-              key={category?.id}
-              variant={selectedCategory === category?.id ? 'default' : 'outline'}
-              onClick={() => setSelectedCategory(category?.id)}
+              key={category.id}
+              variant={selectedCategory === category.id ? 'default' : 'outline'}
+              onClick={() => setSelectedCategory(category.id)}
             >
-              {category?.name}
+              {category.name}
             </Button>
           ))}
         </div>
@@ -265,17 +265,17 @@ export default function StaffManagementPage() {
       <div className="mb-12">
         <h2 className="text-2xl font-bold mb-6">Staff Management Tools</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredTools?.map(tool => (
-            <div key={tool?.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
+          {filteredTools.map(tool => (
+            <div key={tool.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
               <div className="p-6">
                 <div className="flex items-center mb-4">
                   <div className="p-2 bg-blue-50 rounded-lg mr-3">
-                    {tool?.icon}
+                    {tool.icon}
                   </div>
-                  <h3 className="text-xl font-semibold">{tool?.title}</h3>
+                  <h3 className="text-xl font-semibold">{tool.title}</h3>
                 </div>
-                <p className="text-gray-600 mb-6">{tool?.description}</p>
-                <Link href={tool?.url}>
+                <p className="text-gray-600 mb-6">{tool.description}</p>
+                <Link href={tool.url}>
                   <Button className="w-full bg-blue-600 hover:bg-blue-700">
                     Access Tool
                   </Button>
@@ -289,16 +289,16 @@ export default function StaffManagementPage() {
       <div className="mb-12">
         <h2 className="text-2xl font-bold mb-6">Management Guides</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredGuides?.map(guide => (
-            <div key={guide?.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
+          {filteredGuides.map(guide => (
+            <div key={guide.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
               <div className="relative h-48">
                 <Image
-                  src={guide?.image}
-                  alt={guide?.title}
+                  src={guide.image}
+                  alt={guide.title}
                   fill
                   className="object-cover"
                 />
-                {guide?.premium && (
+                {guide.premium && (
                   <div className="absolute top-2 right-2 bg-amber-500 text-white text-xs px-2 py-1 rounded-full">
                     Premium
                   </div>
@@ -307,27 +307,27 @@ export default function StaffManagementPage() {
               <div className="p-5">
                 <div className="mb-2">
                   <Badge className={`
-                    ${guide?.category === 'hiring' ? 'bg-emerald-100 text-emerald-800' : ''}
-                    ${guide?.category === 'training' ? 'bg-blue-100 text-blue-800' : ''}
-                    ${guide?.category === 'retention' ? 'bg-purple-100 text-purple-800' : ''}
-                    ${guide?.category === 'performance' ? 'bg-amber-100 text-amber-800' : ''}
-                    ${guide?.category === 'communication' ? 'bg-red-100 text-red-800' : ''}
+                    ${guide.category === 'hiring' ? 'bg-emerald-100 text-emerald-800' : ''}
+                    ${guide.category === 'training' ? 'bg-blue-100 text-blue-800' : ''}
+                    ${guide.category === 'retention' ? 'bg-purple-100 text-purple-800' : ''}
+                    ${guide.category === 'performance' ? 'bg-amber-100 text-amber-800' : ''}
+                    ${guide.category === 'communication' ? 'bg-red-100 text-red-800' : ''}
                   `}>
-                    {guide?.category === 'hiring' && 'Hiring & Onboarding'}
-                    {guide?.category === 'training' && 'Training & Development'}
-                    {guide?.category === 'retention' && 'Staff Retention'}
-                    {guide?.category === 'performance' && 'Performance Management'}
-                    {guide?.category === 'communication' && 'Team Communication'}
+                    {guide.category === 'hiring' && 'Hiring & Onboarding'}
+                    {guide.category === 'training' && 'Training & Development'}
+                    {guide.category === 'retention' && 'Staff Retention'}
+                    {guide.category === 'performance' && 'Performance Management'}
+                    {guide.category === 'communication' && 'Team Communication'}
                   </Badge>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">{guide?.title}</h3>
-                <p className="text-gray-600 text-sm mb-4">{guide?.description}</p>
-                <Link href={`/business-hub/staff-management/guides/${guide?.id}`}>
+                <h3 className="text-lg font-semibold mb-2">{guide.title}</h3>
+                <p className="text-gray-600 text-sm mb-4">{guide.description}</p>
+                <Link href={`/business-hub/staff-management/guides/${guide.id}`}>
                   <Button 
-                    variant={guide?.premium ? 'outline' : 'default'}
-                    className={`w-full ${guide?.premium ? 'border-amber-500 text-amber-600' : 'bg-blue-600 hover:bg-blue-700'}`}
+                    variant={guide.premium ? 'outline' : 'default'}
+                    className={`w-full ${guide.premium ? 'border-amber-500 text-amber-600' : 'bg-blue-600 hover:bg-blue-700'}`}
                   >
-                    {guide?.premium ? 'Upgrade to Access' : 'Read Guide'}
+                    {guide.premium ? 'Upgrade to Access' : 'Read Guide'}
                   </Button>
                 </Link>
               </div>
@@ -347,25 +347,25 @@ export default function StaffManagementPage() {
             <ul className="space-y-2 mb-6">
               <li className="flex items-center">
                 <svg className="h-5 w-5 mr-2 text-indigo-200" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3?.707-9?.293a1 1 0 00-1?.414-1?.414L9 10?.586 7?.707 9?.293a1 1 0 00-1?.414 1?.414l2 2a1 1 0 001?.414 0l4-4z" clipRule="evenodd" />
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
                 <span>Complete staff recruitment system</span>
               </li>
               <li className="flex items-center">
                 <svg className="h-5 w-5 mr-2 text-indigo-200" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3?.707-9?.293a1 1 0 00-1?.414-1?.414L9 10?.586 7?.707 9?.293a1 1 0 00-1?.414 1?.414l2 2a1 1 0 001?.414 0l4-4z" clipRule="evenodd" />
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
                 <span>Training programs for all staff roles</span>
               </li>
               <li className="flex items-center">
                 <svg className="h-5 w-5 mr-2 text-indigo-200" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3?.707-9?.293a1 1 0 00-1?.414-1?.414L9 10?.586 7?.707 9?.293a1 1 0 00-1?.414 1?.414l2 2a1 1 0 001?.414 0l4-4z" clipRule="evenodd" />
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
                 <span>Performance management system</span>
               </li>
               <li className="flex items-center">
                 <svg className="h-5 w-5 mr-2 text-indigo-200" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3?.707-9?.293a1 1 0 00-1?.414-1?.414L9 10?.586 7?.707 9?.293a1 1 0 00-1?.414 1?.414l2 2a1 1 0 001?.414 0l4-4z" clipRule="evenodd" />
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
                 <span>Team culture development strategies</span>
               </li>
@@ -377,7 +377,7 @@ export default function StaffManagementPage() {
           <div className="md:w-1/3 relative">
             <div className="h-64 md:h-full">
               <Image
-                src="https://images?.unsplash.com/photo-1522202176988-66273c2fd55f"
+                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f"
                 alt="Team Success"
                 fill
                 className="object-cover"
@@ -390,31 +390,31 @@ export default function StaffManagementPage() {
       <div className="mb-12">
         <h2 className="text-2xl font-bold mb-6">Staff Training Resources</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredResources?.map(resource => (
-            <div key={resource?.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 flex flex-col">
+          {filteredResources.map(resource => (
+            <div key={resource.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 flex flex-col">
               <div className="p-6 flex-grow">
                 <div className="flex justify-between items-start mb-4">
                   <Badge className={`
-                    ${resource?.type === 'video' ? 'bg-red-100 text-red-800' : ''}
-                    ${resource?.type === 'template' ? 'bg-blue-100 text-blue-800' : ''}
-                    ${resource?.type === 'guide' ? 'bg-green-100 text-green-800' : ''}
-                    ${resource?.type === 'checklist' ? 'bg-amber-100 text-amber-800' : ''}
+                    ${resource.type === 'video' ? 'bg-red-100 text-red-800' : ''}
+                    ${resource.type === 'template' ? 'bg-blue-100 text-blue-800' : ''}
+                    ${resource.type === 'guide' ? 'bg-green-100 text-green-800' : ''}
+                    ${resource.type === 'checklist' ? 'bg-amber-100 text-amber-800' : ''}
                   `}>
-                    {resource?.type.charAt(0).toUpperCase() + resource?.type.slice(1)}
+                    {resource.type.charAt(0).toUpperCase() + resource.type.slice(1)}
                   </Badge>
-                  {resource?.duration && (
-                    <span className="text-xs text-gray-500">{resource?.duration}</span>
+                  {resource.duration && (
+                    <span className="text-xs text-gray-500">{resource.duration}</span>
                   )}
                 </div>
-                <h3 className="text-lg font-semibold mb-2">{resource?.title}</h3>
-                <p className="text-gray-600 text-sm mb-4">{resource?.description}</p>
+                <h3 className="text-lg font-semibold mb-2">{resource.title}</h3>
+                <p className="text-gray-600 text-sm mb-4">{resource.description}</p>
               </div>
               <div className="px-6 pb-6 mt-auto">
-                <Link href={`/business-hub/staff-management/training/${resource?.id}`}>
+                <Link href={`/business-hub/staff-management/training/${resource.id}`}>
                   <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                    {resource?.type === 'video' ? 'Watch Training' : 
-                     resource?.type === 'template' ? 'Download Template' : 
-                     resource?.type === 'guide' ? 'View Guide' : 'View Checklist'}
+                    {resource.type === 'video' ? 'Watch Training' : 
+                     resource.type === 'template' ? 'Download Template' : 
+                     resource.type === 'guide' ? 'View Guide' : 'View Checklist'}
                   </Button>
                 </Link>
               </div>
@@ -427,7 +427,7 @@ export default function StaffManagementPage() {
         <div className="flex flex-col md:flex-row items-center">
           <div className="md:w-2/3 md:pr-8">
             <div className="flex items-center mb-4">
-              <Icons?.UserGroupIcon className="h-8 w-8 text-blue-600 mr-3" />
+              <Icons.UserGroupIcon className="h-8 w-8 text-blue-600 mr-3" />
               <h2 className="text-2xl font-bold">Need Personalized Guidance?</h2>
             </div>
             <p className="text-gray-700 mb-4">
@@ -441,7 +441,7 @@ export default function StaffManagementPage() {
           </div>
           <div className="md:w-1/3 mt-6 md:mt-0 flex justify-center">
             <Image
-              src="https://images?.unsplash.com/photo-1531482615713-2afd69097998"
+              src="https://images.unsplash.com/photo-1531482615713-2afd69097998"
               alt="Staff Management Expert"
               width={300}
               height={200}

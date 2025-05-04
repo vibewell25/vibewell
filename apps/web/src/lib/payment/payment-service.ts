@@ -28,10 +28,10 @@ export class PaymentService {
    * Get singleton instance of the PaymentService
    */
   public static getInstance(): PaymentService {
-    if (!PaymentService?.instance) {
-      PaymentService?.instance = new PaymentService();
+    if (!PaymentService.instance) {
+      PaymentService.instance = new PaymentService();
     }
-    return PaymentService?.instance;
+    return PaymentService.instance;
   }
 
   /**
@@ -40,34 +40,34 @@ export class PaymentService {
   public async initialize(
     providerType: 'stripe' = 'stripe',
     config: any = {
-      apiKey: process?.env['NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY'] || 'pk_test_mock_key',
+      apiKey: process.env['NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY'] || 'pk_test_mock_key',
     },
   ): Promise<void> {
-    if (this?.provider) {
-      console?.log('Payment service already initialized');
+    if (this.provider) {
+      console.log('Payment service already initialized');
       return;
     }
 
     switch (providerType) {
       case 'stripe':
-        this?.provider = new StripePaymentProvider();
-        await this?.provider.initialize(config);
+        this.provider = new StripePaymentProvider();
+        await this.provider.initialize(config);
         break;
       default:
         throw new Error(`Unsupported payment provider: ${providerType}`);
     }
 
-    console?.log(`Payment service initialized with ${providerType} provider`);
+    console.log(`Payment service initialized with ${providerType} provider`);
   }
 
   /**
    * Create or retrieve a customer for the current user
    */
   public async getOrCreateCustomer(customerDetails: CustomerDetails): Promise<string> {
-    this?.ensureInitialized();
+    this.ensureInitialized();
 
-    if (this?.customerId) {
-      return this?.customerId;
+    if (this.customerId) {
+      return this.customerId;
     }
 
     try {
@@ -75,11 +75,11 @@ export class PaymentService {
       // already has a customer ID for this payment provider
 
       // For this simulation, we'll just create a new customer
-      const { id } = await this?.provider!.createCustomer(customerDetails);
-      this?.customerId = id;
+      const { id } = await this.provider!.createCustomer(customerDetails);
+      this.customerId = id;
       return id;
     } catch (error) {
-      console?.error('Error creating customer:', error);
+      console.error('Error creating customer:', error);
       throw error;
     }
   }
@@ -91,27 +91,27 @@ export class PaymentService {
     customerId: string,
     paymentMethodToken: string,
   ): Promise<PaymentMethod> {
-    this?.ensureInitialized();
+    this.ensureInitialized();
 
-    return this?.provider!.addPaymentMethod(customerId, paymentMethodToken);
+    return this.provider!.addPaymentMethod(customerId, paymentMethodToken);
   }
 
   /**
    * List payment methods for the current customer
    */
   public async listPaymentMethods(customerId: string): Promise<PaymentMethod[]> {
-    this?.ensureInitialized();
+    this.ensureInitialized();
 
-    return this?.provider!.listPaymentMethods(customerId);
+    return this.provider!.listPaymentMethods(customerId);
   }
 
   /**
    * Set default payment method for the current customer
    */
   public async setDefaultPaymentMethod(customerId: string, paymentMethodId: string): Promise<void> {
-    this?.ensureInitialized();
+    this.ensureInitialized();
 
-    return this?.provider!.setDefaultPaymentMethod(customerId, paymentMethodId);
+    return this.provider!.setDefaultPaymentMethod(customerId, paymentMethodId);
   }
 
   /**
@@ -121,9 +121,9 @@ export class PaymentService {
     customerId: string,
     paymentDetails: PaymentDetails,
   ): Promise<PaymentIntent> {
-    this?.ensureInitialized();
+    this.ensureInitialized();
 
-    return this?.provider!.createPaymentIntent(customerId, paymentDetails);
+    return this.provider!.createPaymentIntent(customerId, paymentDetails);
   }
 
   /**
@@ -133,19 +133,19 @@ export class PaymentService {
     paymentIntentId: string,
     paymentMethodId?: string,
   ): Promise<PaymentIntent> {
-    this?.ensureInitialized();
+    this.ensureInitialized();
 
-    return this?.provider!.confirmPaymentIntent(paymentIntentId, paymentMethodId);
+    return this.provider!.confirmPaymentIntent(paymentIntentId, paymentMethodId);
   }
 
   /**
    * Retrieve payment intent status
    */
   public async getPaymentIntentStatus(paymentIntentId: string): Promise<string | null> {
-    this?.ensureInitialized();
+    this.ensureInitialized();
 
-    const intent = await this?.provider!.retrievePaymentIntent(paymentIntentId);
-    return intent?.status || null;
+    const intent = await this.provider!.retrievePaymentIntent(paymentIntentId);
+    return intent.status || null;
   }
 
   /**
@@ -160,20 +160,20 @@ export class PaymentService {
     description: string,
     metadata?: Record<string, string>,
   ): Promise<{ success: boolean; paymentIntentId?: string; error?: string }> {
-    this?.ensureInitialized();
+    this.ensureInitialized();
 
     try {
       // Get or create customer ID
-      const customerId = await this?.getOrCreateCustomer({
+      const customerId = await this.getOrCreateCustomer({
         userId,
         email: userEmail,
         name: userName,
       });
 
       // Get customer's payment methods
-      const paymentMethods = await this?.listPaymentMethods(customerId);
+      const paymentMethods = await this.listPaymentMethods(customerId);
 
-      if (paymentMethods?.length === 0) {
+      if (paymentMethods.length === 0) {
         return {
           success: false,
           error: 'No payment method found. Please add a payment method first.',
@@ -181,10 +181,10 @@ export class PaymentService {
       }
 
       // Find default payment method or use the first one
-      const defaultMethod = paymentMethods?.find((m) => m?.isDefault) || paymentMethods[0];
+      const defaultMethod = paymentMethods.find((m) => m.isDefault) || paymentMethods[0];
 
       // Create payment intent
-      const paymentIntent = await this?.createPaymentIntent(customerId, {
+      const paymentIntent = await this.createPaymentIntent(customerId, {
         amount,
         currency,
         description,
@@ -192,35 +192,35 @@ export class PaymentService {
       });
 
       // Confirm the payment intent with the payment method
-      const confirmedIntent = await this?.confirmPaymentIntent(paymentIntent?.id, defaultMethod?.id);
+      const confirmedIntent = await this.confirmPaymentIntent(paymentIntent.id, defaultMethod.id);
 
-      if (confirmedIntent?.status === 'succeeded') {
+      if (confirmedIntent.status === 'succeeded') {
         return {
           success: true,
-          paymentIntentId: confirmedIntent?.id,
+          paymentIntentId: confirmedIntent.id,
         };
       } else if (
-        confirmedIntent?.status === 'requires_action' ||
-        confirmedIntent?.status === 'requires_confirmation'
+        confirmedIntent.status === 'requires_action' ||
+        confirmedIntent.status === 'requires_confirmation'
       ) {
         return {
           success: false,
-          paymentIntentId: confirmedIntent?.id,
+          paymentIntentId: confirmedIntent.id,
           error:
             'This payment requires additional authentication. Please complete the payment process.',
         };
       } else {
         return {
           success: false,
-          paymentIntentId: confirmedIntent?.id,
-          error: `Payment failed with status: ${confirmedIntent?.status}`,
+          paymentIntentId: confirmedIntent.id,
+          error: `Payment failed with status: ${confirmedIntent.status}`,
         };
       }
     } catch (error: any) {
-      console?.error('Error processing payment:', error);
+      console.error('Error processing payment:', error);
       return {
         success: false,
-        error: error?.message || 'An error occurred while processing payment.',
+        error: error.message || 'An error occurred while processing payment.',
       };
     }
   }
@@ -233,27 +233,27 @@ export class PaymentService {
     amount?: number,
     reason?: string,
   ): Promise<{ success: boolean; refundId?: string; error?: string }> {
-    this?.ensureInitialized();
+    this.ensureInitialized();
 
     try {
-      const refund = await this?.provider!.createRefund(paymentIntentId, amount, reason);
+      const refund = await this.provider!.createRefund(paymentIntentId, amount, reason);
 
       return {
-        success: refund?.status === 'succeeded',
-        refundId: refund?.id,
+        success: refund.status === 'succeeded',
+        refundId: refund.id,
       };
     } catch (error: any) {
-      console?.error('Error creating refund:', error);
+      console.error('Error creating refund:', error);
       return {
         success: false,
-        error: error?.message || 'An error occurred while processing refund.',
+        error: error.message || 'An error occurred while processing refund.',
       };
     }
   }
 
   // Ensure the service is initialized before use
   private ensureInitialized(): void {
-    if (!this?.provider) {
+    if (!this.provider) {
       throw new Error('Payment service not initialized. Call initialize() first.');
     }
   }

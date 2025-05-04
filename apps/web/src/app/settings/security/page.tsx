@@ -36,25 +36,25 @@ export default function SecuritySettingsPage() {
   const handleError = (error: Error) => {
     setMessage({
       type: 'error',
-      text: error?.message,
+      text: error.message,
     });
     setTimeout(() => setMessage(null), 5000);
   };
 
   const handleDelete = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');authenticatorId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');authenticatorId: string) => {
     try {
       const response = await fetch(`/api/auth/webauthn/authenticators?id=${authenticatorId}`, {
         method: 'DELETE',
       });
 
-      if (!response?.ok) {
-        const error = await response?.json();
+      if (!response.ok) {
+        const error = await response.json();
         throw new WebAuthnError(
-          error?.error || 'Failed to delete authenticator',
-          error?.code || 'UNKNOWN_ERROR',
-          error?.details,
+          error.error || 'Failed to delete authenticator',
+          error.code || 'UNKNOWN_ERROR',
+          error.details,
         );
       }
 
@@ -71,23 +71,23 @@ export default function SecuritySettingsPage() {
   };
 
   const handleRename = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');authenticatorId: string, name: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');authenticatorId: string, name: string) => {
     try {
       const response = await fetch('/api/auth/webauthn/authenticators', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify({ id: authenticatorId, name }),
+        body: JSON.stringify({ id: authenticatorId, name }),
       });
 
-      if (!response?.ok) {
-        const error = await response?.json();
+      if (!response.ok) {
+        const error = await response.json();
         throw new WebAuthnError(
-          error?.error || 'Failed to rename authenticator',
-          error?.code || 'UNKNOWN_ERROR',
-          error?.details,
+          error.error || 'Failed to rename authenticator',
+          error.code || 'UNKNOWN_ERROR',
+          error.details,
         );
       }
 
@@ -105,14 +105,14 @@ export default function SecuritySettingsPage() {
 
   const session = await getServerSession(authOptions);
 
-  if (!session?.user) {
+  if (!session.user) {
     redirect('/sign-in');
   }
 
   const authenticators = await prisma.$queryRaw<Authenticator[]>`
     SELECT id, "createdAt"
     FROM "WebAuthnAuthenticator"
-    WHERE "userId" = ${session?.user.id}
+    WHERE "userId" = ${session.user.id}
   `;
 
   return (
@@ -134,14 +134,14 @@ export default function SecuritySettingsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {authenticators?.length > 0 && (
+            {authenticators.length > 0 && (
               <div className="rounded-md bg-muted p-4">
                 <h4 className="mb-2 text-sm font-medium">Registered Authenticators</h4>
                 <ul className="space-y-2 text-sm">
-                  {authenticators?.map((auth) => (
-                    <li key={auth?.id} className="flex items-center justify-between">
+                  {authenticators.map((auth) => (
+                    <li key={auth.id} className="flex items-center justify-between">
                       <span>
-                        Authenticator registered on {new Date(auth?.createdAt).toLocaleDateString()}
+                        Authenticator registered on {new Date(auth.createdAt).toLocaleDateString()}
                       </span>
                     </li>
                   ))}
@@ -163,10 +163,10 @@ export default function SecuritySettingsPage() {
       {message && (
         <div
           className={`mb-6 rounded-lg p-4 ${
-            message?.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
+            message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
           }`}
         >
-          {message?.text}
+          {message.text}
         </div>
       )}
 

@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 // Create a custom instance of axios with some default settings
-export const api = axios?.create({
-  baseURL: process?.env.NEXT_PUBLIC_API_URL || '',
+export const api = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL || '',
   headers: {
 
 
@@ -11,31 +11,31 @@ export const api = axios?.create({
 });
 
 // Add a request interceptor to include auth token in requests
-api?.interceptors.request?.use((config) => {
+api.interceptors.request.use((config) => {
   // Get token from localStorage
   if (typeof window !== 'undefined') {
-    const token = localStorage?.getItem('token');
+    const token = localStorage.getItem('token');
     if (token) {
-      config?.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
   }
   return config;
 });
 
 // Add a response interceptor to handle auth errors
-api?.interceptors.response?.use(
+api.interceptors.response.use(
   (response) => response,
   async (error) => {
     // Handle 401 Unauthorized errors
-    if (error?.response && error?.response.status === 401) {
+    if (error.response && error.response.status === 401) {
       // Clear token and redirect to login
       if (typeof window !== 'undefined') {
-        localStorage?.removeItem('token');
+        localStorage.removeItem('token');
 
-        window?.location.href = '/auth/login';
+        window.location.href = '/auth/login';
       }
     }
-    return Promise?.reject(error);
+    return Promise.reject(error);
   },
 );
 

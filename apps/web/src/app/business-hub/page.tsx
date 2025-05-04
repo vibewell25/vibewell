@@ -36,7 +36,7 @@ interface MarketingTool {
   id: string;
   name: string;
   description: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
   premium: boolean;
   url: string;
 }
@@ -51,7 +51,7 @@ export default function BusinessHub() {
       name: 'Email Campaign Builder',
       description:
         'Create beautiful email templates and automated sequences to nurture client relationships.',
-      icon: <Icons?.MegaphoneIcon className="h-8 w-8 text-indigo-500" />,
+      icon: <Icons.MegaphoneIcon className="h-8 w-8 text-indigo-500" />,
       premium: false,
       url: '/business-hub/marketing/email-campaigns',
     },
@@ -59,7 +59,7 @@ export default function BusinessHub() {
       id: 'social-media',
       name: 'Social Media Toolkit',
       description: 'Pre-designed templates and scheduling tools for your social media marketing.',
-      icon: <Icons?.PhotoIcon className="h-10 w-10 text-purple-500" />,
+      icon: <Icons.PhotoIcon className="h-10 w-10 text-purple-500" />,
       url: '/business-hub/tools/social-media',
       premium: false,
     },
@@ -67,7 +67,7 @@ export default function BusinessHub() {
       id: 'email-templates',
       name: 'Email Campaign Builder',
       description: 'Create professional email campaigns to engage clients and promote offers.',
-      icon: <Icons?.EnvelopeSolid className="h-10 w-10 text-blue-500" />,
+      icon: <Icons.EnvelopeSolid className="h-10 w-10 text-blue-500" />,
       url: '/business-hub/tools/email-marketing',
       premium: true,
     },
@@ -75,7 +75,7 @@ export default function BusinessHub() {
       id: 'analytics',
       name: 'Performance Analytics',
       description: 'Track the effectiveness of your marketing efforts and customer engagement.',
-      icon: <Icons?.ChartBarIcon className="h-10 w-10 text-green-500" />,
+      icon: <Icons.ChartBarIcon className="h-10 w-10 text-green-500" />,
       url: '/business-hub/tools/analytics',
       premium: true,
     },
@@ -83,7 +83,7 @@ export default function BusinessHub() {
       id: 'reviews',
       name: 'Review Management',
       description: 'Tools to collect, manage, and showcase client reviews and testimonials.',
-      icon: <Icons?.StarSolid className="h-10 w-10 text-yellow-500" />,
+      icon: <Icons.StarSolid className="h-10 w-10 text-yellow-500" />,
       url: '/business-hub/tools/reviews',
       premium: false,
     },
@@ -91,7 +91,7 @@ export default function BusinessHub() {
       id: 'lead-gen',
       name: 'Lead Generation Tools',
       description: 'Create landing pages and promotional offers to attract new clients.',
-      icon: <Icons?.UsersSolid className="h-10 w-10 text-red-500" />,
+      icon: <Icons.UsersSolid className="h-10 w-10 text-red-500" />,
       url: '/business-hub/tools/lead-generation',
       premium: true,
     },
@@ -99,7 +99,7 @@ export default function BusinessHub() {
       id: 'content-calendar',
       name: 'Content Calendar',
       description: 'Plan and organize your marketing content across all channels.',
-      icon: <Icons?.CalendarIcon className="h-10 w-10 text-indigo-500" />,
+      icon: <Icons.CalendarIcon className="h-10 w-10 text-indigo-500" />,
       url: '/business-hub/tools/content-calendar',
       premium: false,
     },
@@ -111,7 +111,7 @@ export default function BusinessHub() {
       title: 'The Complete Guide to Social Media Marketing for Beauty Businesses',
       description:
         'Learn how to leverage Instagram, TikTok, and other platforms to showcase your services and attract new clients.',
-      image: 'https://images?.unsplash.com/photo-1611162617213-7d7a39e9b1d7',
+      image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7',
       type: 'guide',
       category: 'marketing',
       tags: ['social media', 'instagram', 'tiktok'],
@@ -124,12 +124,12 @@ export default function BusinessHub() {
       title: 'Email Templates for Client Retention',
       description:
         'Ready-to-use email templates for welcoming new clients, appointment reminders, follow-ups, and special offers.',
-      image: 'https://images?.unsplash.com/photo-1563986768609-322da13575f3',
+      image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3',
       type: 'template',
       category: 'client-retention',
       tags: ['email', 'templates', 'client retention'],
       premium: true,
-      downloadUrl: '/downloads/email-templates?.zip',
+      downloadUrl: '/downloads/email-templates.zip',
       viewUrl: '/business-hub/resources/email-templates',
       date: '2023-09-21',
     },
@@ -138,7 +138,7 @@ export default function BusinessHub() {
       title: 'How to Price Your Services for Maximum Profit',
       description:
         'A comprehensive guide to pricing strategies for wellness and beauty services, including cost analysis and market positioning.',
-      image: 'https://images?.unsplash.com/photo-1554224155-6726b3ff858f',
+      image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f',
       type: 'guide',
       category: 'business-strategy',
       tags: ['pricing', 'profitability', 'strategy'],
@@ -151,7 +151,7 @@ export default function BusinessHub() {
       title: 'Client Onboarding Process Walkthrough',
       description:
         'Watch how successful spa owners create a memorable first impression that turns new visitors into loyal clients.',
-      image: 'https://images?.unsplash.com/photo-1595247299149-85c93280604d',
+      image: 'https://images.unsplash.com/photo-1595247299149-85c93280604d',
       type: 'video',
       category: 'client-experience',
       tags: ['onboarding', 'client experience', 'loyalty'],
@@ -164,12 +164,12 @@ export default function BusinessHub() {
       title: 'Seasonal Promotion Calendar Template',
       description:
         'Plan your promotions around holidays, seasons, and local events with this customizable calendar.',
-      image: 'https://images?.unsplash.com/photo-1533090161767-e6ffed986c88',
+      image: 'https://images.unsplash.com/photo-1533090161767-e6ffed986c88',
       type: 'template',
       category: 'marketing',
       tags: ['promotions', 'seasonal', 'planning'],
       premium: false,
-      downloadUrl: '/downloads/seasonal-promotions?.xlsx',
+      downloadUrl: '/downloads/seasonal-promotions.xlsx',
       viewUrl: '/business-hub/resources/seasonal-promotions',
       date: '2023-12-03',
     },
@@ -178,7 +178,7 @@ export default function BusinessHub() {
       title: 'Converting Leads to Bookings: Sales Techniques for Service Providers',
       description:
         'Learn consultative selling approaches that help potential clients understand the value of your services.',
-      image: 'https://images?.unsplash.com/photo-1551836022-d5d88e9218df',
+      image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df',
       type: 'webinar',
       category: 'sales',
       tags: ['sales', 'conversion', 'communication'],
@@ -193,7 +193,7 @@ export default function BusinessHub() {
       id: '1',
       businessName: 'Glow Beauty Lounge',
       ownerName: 'Sarah Mitchell',
-      image: 'https://images?.unsplash.com/photo-1487412720507-e7ab37603c6f',
+      image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f',
       quote:
         "Using the email templates and social media toolkit, I've managed to increase my client retention by 45% in just three months.",
       achievement: '200% increase in Instagram following, 45% improvement in client retention',
@@ -203,7 +203,7 @@ export default function BusinessHub() {
       id: '2',
       businessName: 'Zen Wellness Center',
       ownerName: 'Michael Rodriguez',
-      image: 'https://images?.unsplash.com/photo-1507003211169-0a1dd7228f2d',
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d',
       quote:
         'The performance analytics tool helped me identify which services were most profitable, allowing me to restructure my offerings and increase revenue.',
       achievement: '35% increase in monthly revenue, optimized service menu',
@@ -213,7 +213,7 @@ export default function BusinessHub() {
       id: '3',
       businessName: 'Pure Skin Aesthetics',
       ownerName: 'Jennifer Lee',
-      image: 'https://images?.unsplash.com/photo-1580489944761-15a19d654956',
+      image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956',
       quote:
         'The lead generation tools transformed my business. I implemented the landing page templates and within weeks saw a dramatic increase in new client inquiries.',
       achievement: '68 new clients in 2 months, 320% ROI on marketing spending',
@@ -221,14 +221,14 @@ export default function BusinessHub() {
     },
   ];
   // Filter resources based on search, category, and type
-  const filteredResources = resources?.filter((resource) => {
+  const filteredResources = resources.filter((resource) => {
     const matchesSearch =
       searchTerm === '' ||
-      resource?.title.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-      resource?.description.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-      resource?.tags.some((tag) => tag?.toLowerCase().includes(searchTerm?.toLowerCase()));
-    const matchesCategory = selectedCategory === 'all' || resource?.category === selectedCategory;
-    const matchesType = resourceType === 'all' || resource?.type === resourceType;
+      resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      resource.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      resource.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchesCategory = selectedCategory === 'all' || resource.category === selectedCategory;
+    const matchesType = resourceType === 'all' || resource.type === resourceType;
     return matchesSearch && matchesCategory && matchesType;
   });
   return (
@@ -248,10 +248,10 @@ export default function BusinessHub() {
                   placeholder="Search for business resources..."
                   className="w-full rounded-lg border border-gray-300 px-4 py-3 pl-12 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e?.target.value)}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <div className="absolute left-4 top-3?.5 text-gray-400">
-                  <Icons?.MagnifyingGlassIcon className="h-5 w-5" />
+                <div className="absolute left-4 top-3.5 text-gray-400">
+                  <Icons.MagnifyingGlassIcon className="h-5 w-5" />
                 </div>
               </div>
               {/* Categories */}
@@ -268,7 +268,7 @@ export default function BusinessHub() {
                   ].map((category) => (
                     <button
                       key={category}
-                      className={`rounded-full px-3 py-1?.5 text-sm ${
+                      className={`rounded-full px-3 py-1.5 text-sm ${
                         selectedCategory === category
                           ? 'bg-blue-100 text-blue-800'
                           : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
@@ -294,10 +294,10 @@ export default function BusinessHub() {
                 Discover our newest tools to help your business grow
               </p>
               <div className="mb-6 space-y-4">
-                {marketingTools?.slice(0, 3).map((tool) => (
-                  <div key={tool?.name} className="rounded-lg bg-white/10 p-3 backdrop-blur-sm">
-                    <h3 className="font-medium text-white">{tool?.name}</h3>
-                    <p className="text-sm text-blue-100">{tool?.description}</p>
+                {marketingTools.slice(0, 3).map((tool) => (
+                  <div key={tool.name} className="rounded-lg bg-white/10 p-3 backdrop-blur-sm">
+                    <h3 className="font-medium text-white">{tool.name}</h3>
+                    <p className="text-sm text-blue-100">{tool.description}</p>
                   </div>
                 ))}
               </div>
@@ -344,26 +344,26 @@ export default function BusinessHub() {
             </Link>
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {marketingTools?.map((tool) => (
+            {marketingTools.map((tool) => (
               <div
-                key={tool?.id}
+                key={tool.id}
                 className="rounded-lg border border-gray-100 bg-white p-6 shadow-md"
               >
                 <div className="mb-4 flex items-start">
-                  <div className="mr-4 rounded-lg bg-gray-50 p-3">{tool?.icon}</div>
+                  <div className="mr-4 rounded-lg bg-gray-50 p-3">{tool.icon}</div>
                   <div>
-                    <h3 className="mb-1 text-xl font-semibold">{tool?.name}</h3>
-                    {tool?.premium && (
+                    <h3 className="mb-1 text-xl font-semibold">{tool.name}</h3>
+                    {tool.premium && (
                       <Badge variant="default" className="mb-2 bg-indigo-600 text-white">
                         Premium
                       </Badge>
                     )}
                   </div>
                 </div>
-                <p className="mb-4 text-gray-600">{tool?.description}</p>
-                <Link href={tool?.url}>
-                  <Button className="w-full" variant={tool?.premium ? 'outline' : 'default'}>
-                    {tool?.premium ? 'Upgrade to Access' : 'Use Tool'}
+                <p className="mb-4 text-gray-600">{tool.description}</p>
+                <Link href={tool.url}>
+                  <Button className="w-full" variant={tool.premium ? 'outline' : 'default'}>
+                    {tool.premium ? 'Upgrade to Access' : 'Use Tool'}
                   </Button>
                 </Link>
               </div>
@@ -375,13 +375,13 @@ export default function BusinessHub() {
           <div className="mb-8 flex items-center justify-between">
             <h2 className="text-2xl font-bold">Resources & Guides</h2>
             <div className="relative">
-              <Icons?.MagnifyingGlassIcon className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
+              <Icons.MagnifyingGlassIcon className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
               <Input
                 type="text"
                 placeholder="Search resources..."
                 className="w-64 pl-10"
                 value={searchTerm}
-                onChange={(e: React?.ChangeEvent<HTMLInputElement>) => setSearchTerm(e?.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
               />
             </div>
           </div>
@@ -481,30 +481,30 @@ export default function BusinessHub() {
             </Button>
           </div>
           {/* Resource Cards */}
-          {filteredResources?.length > 0 ? (
+          {filteredResources.length > 0 ? (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredResources?.map((resource) => (
+              {filteredResources.map((resource) => (
                 <div
-                  key={resource?.id}
+                  key={resource.id}
                   className="overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
                 >
                   <div className="relative h-48 w-full">
                     <Image
-                      src={resource?.image}
-                      alt={resource?.title}
+                      src={resource.image}
+                      alt={resource.title}
                       fill
                       className="object-cover"
                       unoptimized
                     />
-                    {resource?.premium && (
+                    {resource.premium && (
                       <div className="absolute right-2 top-2 rounded-full bg-indigo-600 px-2 py-1 text-xs text-white">
                         Premium
                       </div>
                     )}
-                    {resource?.type === 'video' && (
+                    {resource.type === 'video' && (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="rounded-full bg-black bg-opacity-40 p-3">
-                          <Icons?.PlayCircleIcon className="h-12 w-12 text-white" />
+                          <Icons.PlayCircleIcon className="h-12 w-12 text-white" />
                         </div>
                       </div>
                     )}
@@ -512,16 +512,16 @@ export default function BusinessHub() {
                   <div className="p-4">
                     <div className="mb-2 flex items-center gap-2">
                       <Badge variant="outline" className="text-xs capitalize">
-                        {resource?.type}
+                        {resource.type}
                       </Badge>
-                      <span className="text-sm text-gray-500">{resource?.date}</span>
+                      <span className="text-sm text-gray-500">{resource.date}</span>
                     </div>
-                    <h3 className="mb-2 text-lg font-semibold">{resource?.title}</h3>
+                    <h3 className="mb-2 text-lg font-semibold">{resource.title}</h3>
                     <p className="mb-4 line-clamp-2 text-sm text-gray-600">
-                      {resource?.description}
+                      {resource.description}
                     </p>
                     <div className="mb-4 flex flex-wrap gap-1">
-                      {resource?.tags.map((tag) => (
+                      {resource.tags.map((tag) => (
                         <Badge
                           key={tag}
                           variant="secondary"
@@ -532,20 +532,20 @@ export default function BusinessHub() {
                       ))}
                     </div>
                     <div className="flex gap-2">
-                      <Link href={resource?.viewUrl} className="flex-grow">
+                      <Link href={resource.viewUrl} className="flex-grow">
                         <Button
                           variant="default"
                           className="w-full"
-                          disabled={resource?.premium && resource?.type !== 'guide'}
+                          disabled={resource.premium && resource.type !== 'guide'}
                         >
-                          {resource?.premium && resource?.type !== 'guide'
+                          {resource.premium && resource.type !== 'guide'
                             ? 'Requires Premium'
                             : 'View Resource'}
                         </Button>
                       </Link>
-                      {resource?.downloadUrl && (
+                      {resource.downloadUrl && (
                         <Button variant="outline" className="px-3">
-                          <Icons?.BookmarkIcon className="h-5 w-5" />
+                          <Icons.BookmarkIcon className="h-5 w-5" />
                         </Button>
                       )}
                     </div>
@@ -591,7 +591,7 @@ export default function BusinessHub() {
               <div className="flex justify-center md:w-1/3">
                 <div className="w-full max-w-xs rounded-lg bg-white/10 p-6 backdrop-blur-sm">
                   <div className="mb-4 flex items-center gap-3">
-                    <Icons?.RocketLaunchSolid className="h-10 w-10 text-yellow-300" />
+                    <Icons.RocketLaunchSolid className="h-10 w-10 text-yellow-300" />
                     <div>
                       <h3 className="text-xl font-bold">Growth Accelerator</h3>
                       <p className="text-sm text-white/80">Premium Program</p>
@@ -599,25 +599,25 @@ export default function BusinessHub() {
                   </div>
                   <ul className="mb-6 space-y-2">
                     <li className="flex items-start">
-                      <div className="mr-2 mt-0?.5 flex h-5 w-5 items-center justify-center rounded-full bg-white/20">
+                      <div className="mr-2 mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-white/20">
                         <div className="h-2 w-2 rounded-full bg-white"></div>
                       </div>
                       <span>1:1 Business Coaching Sessions</span>
                     </li>
                     <li className="flex items-start">
-                      <div className="mr-2 mt-0?.5 flex h-5 w-5 items-center justify-center rounded-full bg-white/20">
+                      <div className="mr-2 mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-white/20">
                         <div className="h-2 w-2 rounded-full bg-white"></div>
                       </div>
                       <span>All Premium Tools & Resources</span>
                     </li>
                     <li className="flex items-start">
-                      <div className="mr-2 mt-0?.5 flex h-5 w-5 items-center justify-center rounded-full bg-white/20">
+                      <div className="mr-2 mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-white/20">
                         <div className="h-2 w-2 rounded-full bg-white"></div>
                       </div>
                       <span>Marketing Campaign Reviews</span>
                     </li>
                     <li className="flex items-start">
-                      <div className="mr-2 mt-0?.5 flex h-5 w-5 items-center justify-center rounded-full bg-white/20">
+                      <div className="mr-2 mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-white/20">
                         <div className="h-2 w-2 rounded-full bg-white"></div>
                       </div>
                       <span>Private Community Access</span>
@@ -636,34 +636,34 @@ export default function BusinessHub() {
         <section className="mb-16">
           <h2 className="mb-8 text-2xl font-bold">Success Stories</h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {successStories?.map((story) => (
+            {successStories.map((story) => (
               <div
-                key={story?.id}
+                key={story.id}
                 className="rounded-lg border border-gray-100 bg-white p-6 shadow-md"
               >
                 <div className="mb-4 flex items-center">
                   <div className="relative mr-3 h-12 w-12 overflow-hidden rounded-full">
                     <Image
-                      src={story?.image}
-                      alt={story?.ownerName}
+                      src={story.image}
+                      alt={story.ownerName}
                       fill
                       className="object-cover"
                       unoptimized
                     />
                   </div>
                   <div>
-                    <h3 className="font-semibold">{story?.businessName}</h3>
-                    <p className="text-sm text-gray-600">{story?.ownerName}</p>
+                    <h3 className="font-semibold">{story.businessName}</h3>
+                    <p className="text-sm text-gray-600">{story.ownerName}</p>
                   </div>
                 </div>
-                <blockquote className="mb-4 italic text-gray-700">"{story?.quote}"</blockquote>
+                <blockquote className="mb-4 italic text-gray-700">"{story.quote}"</blockquote>
                 <div className="mb-4 rounded-lg bg-indigo-50 p-3">
                   <p className="text-sm font-medium text-indigo-800">
-                    <span className="font-bold">Achievement:</span> {story?.achievement}
+                    <span className="font-bold">Achievement:</span> {story.achievement}
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-1">
-                  {story?.tags.map((tag) => (
+                  {story.tags.map((tag) => (
                     <Badge key={tag} variant="outline" className="text-xs">
                       {tag}
                     </Badge>
@@ -683,7 +683,7 @@ export default function BusinessHub() {
             <div className="flex flex-col md:flex-row">
               <div className="relative md:w-1/3">
                 <Image
-                  src="https://images?.unsplash.com/photo-1531482615713-2afd69097998"
+                  src="https://images.unsplash.com/photo-1531482615713-2afd69097998"
                   alt="Webinar banner"
                   width={500}
                   height={300}
@@ -711,7 +711,7 @@ export default function BusinessHub() {
                   <div className="mr-4 flex -space-x-2">
                     <div className="relative h-8 w-8 overflow-hidden rounded-full border-2 border-white">
                       <Image
-                        src="https://images?.unsplash.com/photo-1531123897727-8f129e1688ce"
+                        src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce"
                         alt="Speaker"
                         fill
                         className="object-cover"
@@ -720,7 +720,7 @@ export default function BusinessHub() {
                     </div>
                     <div className="relative h-8 w-8 overflow-hidden rounded-full border-2 border-white">
                       <Image
-                        src="https://images?.unsplash.com/photo-1580489944761-15a19d654956"
+                        src="https://images.unsplash.com/photo-1580489944761-15a19d654956"
                         alt="Speaker"
                         fill
                         className="object-cover"

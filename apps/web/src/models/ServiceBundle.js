@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
-const ServiceBundleSchema = new mongoose?.Schema({
+const ServiceBundleSchema = new mongoose.Schema({
   provider: {
-    type: mongoose?.Schema.Types?.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'ProviderProfile',
     required: true,
   },
@@ -19,7 +19,7 @@ const ServiceBundleSchema = new mongoose?.Schema({
   services: [
     {
       service: {
-        type: mongoose?.Schema.Types?.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Service',
         required: true,
       },
@@ -60,7 +60,7 @@ const ServiceBundleSchema = new mongoose?.Schema({
   },
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
   images: [String],
@@ -70,7 +70,7 @@ const ServiceBundleSchema = new mongoose?.Schema({
   },
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
   tags: [String],
@@ -97,65 +97,65 @@ const ServiceBundleSchema = new mongoose?.Schema({
   ],
   createdAt: {
     type: Date,
-    default: Date?.now,
+    default: Date.now,
   },
   updatedAt: {
     type: Date,
-    default: Date?.now,
+    default: Date.now,
   },
 });
 
 // Text index for search
-ServiceBundleSchema?.index({ name: 'text', description: 'text', tags: 'text' });
+ServiceBundleSchema.index({ name: 'text', description: 'text', tags: 'text' });
 
 // Calculate total value and discount percentage
-ServiceBundleSchema?.pre('save', async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); (next) {
-  this?.updatedAt = Date?.now();
+ServiceBundleSchema.pre('save', async function {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); (next) {
+  this.updatedAt = Date.now();
 
   // If totalValue was not manually set, calculate it
-  if (!this?.totalValue && this?.services.length > 0) {
+  if (!this.totalValue && this.services.length > 0) {
     try {
       // Populate services to get their prices
-      const populatedBundle = await this?.constructor
-        .findById(this?._id)
-        .populate('services?.service')
+      const populatedBundle = await this.constructor
+        .findById(this._id)
+        .populate('services.service')
         .exec();
 
       if (populatedBundle) {
         let totalValue = 0;
 
-        for (const serviceItem of populatedBundle?.services) {
-          if (serviceItem?.service && serviceItem?.service.price) {
+        for (const serviceItem of populatedBundle.services) {
+          if (serviceItem.service && serviceItem.service.price) {
 
     // Safe integer operation
-    if (price > Number?.MAX_SAFE_INTEGER || price < Number?.MIN_SAFE_INTEGER) {
+    if (price > Number.MAX_SAFE_INTEGER || price < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-            if (totalValue > Number?.MAX_SAFE_INTEGER || totalValue < Number?.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); totalValue += serviceItem?.service.price * serviceItem?.quantity;
+            if (totalValue > Number.MAX_SAFE_INTEGER || totalValue < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); totalValue += serviceItem.service.price * serviceItem.quantity;
           }
         }
 
-        this?.totalValue = totalValue;
+        this.totalValue = totalValue;
 
         // Calculate discount percentage if not set
-        if (!this?.discountPercentage && this?.price && totalValue > 0) {
+        if (!this.discountPercentage && this.price && totalValue > 0) {
 
     // Safe integer operation
-    if (totalValue > Number?.MAX_SAFE_INTEGER || totalValue < Number?.MIN_SAFE_INTEGER) {
+    if (totalValue > Number.MAX_SAFE_INTEGER || totalValue < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-          this?.discountPercentage = Math?.round(((totalValue - this?.price) / totalValue) * 100);
+          this.discountPercentage = Math.round(((totalValue - this.price) / totalValue) * 100);
         }
       }
     } catch (error) {
       // If error, just continue without calculating
-      console?.error('Error calculating bundle values:', error);
+      console.error('Error calculating bundle values:', error);
     }
   }
 
   next();
 });
 
-export default mongoose?.model('ServiceBundle', ServiceBundleSchema);
+export default mongoose.model('ServiceBundle', ServiceBundleSchema);

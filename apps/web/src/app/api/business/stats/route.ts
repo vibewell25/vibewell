@@ -10,17 +10,17 @@ import { prisma } from '@/lib/prisma';
 import { BookingStatus } from '@prisma/client';
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); GET(request: Request) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); GET(request: Request) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user) {
-      return NextResponse?.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!session.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get the user's business ID through their practitioner profile
-    const user = await prisma?.user.findUnique({
-      where: { id: session?.user.id },
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
       include: {
         practitioner: {
           select: {
@@ -31,29 +31,29 @@ export async function {
       },
     });
 
-    if (!user?.practitioner?.businessId) {
-      return NextResponse?.json({ error: 'Business not found' }, { status: 404 });
+    if (!user.practitioner.businessId) {
+      return NextResponse.json({ error: 'Business not found' }, { status: 404 });
     }
 
-    const businessId = user?.practitioner.businessId;
+    const businessId = user.practitioner.businessId;
 
     // Get total bookings (excluding cancelled)
-    const totalBookings = await prisma?.booking.count({
+    const totalBookings = await prisma.booking.count({
       where: {
         businessId,
         status: {
-          not: BookingStatus?.CANCELLED,
+          not: BookingStatus.CANCELLED,
         },
       },
     });
 
     // Calculate total revenue from completed bookings
-    const totalRevenue = await prisma?.payment.aggregate({
+    const totalRevenue = await prisma.payment.aggregate({
       where: {
         businessId,
         status: 'COMPLETED',
         booking: {
-          status: BookingStatus?.COMPLETED,
+          status: BookingStatus.COMPLETED,
         },
       },
       _sum: {
@@ -63,12 +63,12 @@ export async function {
 
     // Get active customers (customers with completed bookings in last 30 days)
     const thirtyDaysAgo = new Date();
-    thirtyDaysAgo?.setDate(thirtyDaysAgo?.getDate() - 30);
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-    const activeCustomers = await prisma?.booking.count({
+    const activeCustomers = await prisma.booking.count({
       where: {
         businessId,
-        status: BookingStatus?.COMPLETED,
+        status: BookingStatus.COMPLETED,
         startTime: {
           gte: thirtyDaysAgo,
         },
@@ -77,7 +77,7 @@ export async function {
     });
 
     // Calculate average rating from service reviews
-    const reviews = await prisma?.serviceReview.aggregate({
+    const reviews = await prisma.serviceReview.aggregate({
       where: {
         businessId,
       },
@@ -86,14 +86,14 @@ export async function {
       },
     });
 
-    return NextResponse?.json({
+    return NextResponse.json({
       totalBookings,
-      totalRevenue: totalRevenue?._sum?.amount || 0,
+      totalRevenue: totalRevenue._sum.amount || 0,
       activeCustomers,
-      averageRating: reviews?._avg?.rating || 0,
+      averageRating: reviews._avg.rating || 0,
     });
   } catch (error) {
-    console?.error('Error fetching business stats:', error);
-    return NextResponse?.json({ error: 'Failed to fetch business stats' }, { status: 500 });
+    console.error('Error fetching business stats:', error);
+    return NextResponse.json({ error: 'Failed to fetch business stats' }, { status: 500 });
   }
 }

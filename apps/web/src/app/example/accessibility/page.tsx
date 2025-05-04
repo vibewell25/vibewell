@@ -16,7 +16,7 @@ export default function AccessibilityExample() {
   // Handle font size change
   const handleFontSizeChange = (size: string) => {
     setFontSize(size);
-    document?.documentElement.style?.fontSize =
+    document.documentElement.style.fontSize =
       {
         small: '14px',
         medium: '16px',
@@ -29,9 +29,9 @@ export default function AccessibilityExample() {
   const toggleHighContrast = () => {
     setHighContrast(!highContrast);
     if (!highContrast) {
-      document?.documentElement.classList?.add('high-contrast');
+      document.documentElement.classList.add('high-contrast');
     } else {
-      document?.documentElement.classList?.remove('high-contrast');
+      document.documentElement.classList.remove('high-contrast');
     }
   };
 
@@ -39,46 +39,46 @@ export default function AccessibilityExample() {
   const toggleReduceMotion = () => {
     setReduceMotion(!reduceMotion);
     if (!reduceMotion) {
-      document?.documentElement.classList?.add('reduce-motion');
+      document.documentElement.classList.add('reduce-motion');
     } else {
-      document?.documentElement.classList?.remove('reduce-motion');
+      document.documentElement.classList.remove('reduce-motion');
     }
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="mb-6 text-2xl font-bold" tabIndex={0}>
-        {t('settings?.accessibility.title')}
+        {t('settings.accessibility.title')}
       </h1>
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {/* Theme and Language Settings */}
         <div className="rounded-lg bg-white p-6 shadow dark:bg-gray-800">
           <h2 className="mb-4 text-xl font-semibold" tabIndex={0}>
-            {t('settings?.theme.title')}
+            {t('settings.theme.title')}
           </h2>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <label htmlFor="theme-selector" className="block text-sm font-medium">
-                {t('profile?.darkMode')}
+                {t('profile.darkMode')}
               </label>
               <select
                 id="theme-selector"
                 value={theme}
-                onChange={(e) => setTheme(e?.target.value as 'light' | 'dark' | 'system')}
+                onChange={(e) => setTheme(e.target.value as 'light' | 'dark' | 'system')}
                 className="mt-1 block w-1/2 rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                aria-label={t('settings?.theme.title')}
+                aria-label={t('settings.theme.title')}
               >
-                <option value="light">{t('settings?.theme.light')}</option>
-                <option value="dark">{t('settings?.theme.dark')}</option>
-                <option value="system">{t('settings?.theme.system')}</option>
+                <option value="light">{t('settings.theme.light')}</option>
+                <option value="dark">{t('settings.theme.dark')}</option>
+                <option value="system">{t('settings.theme.system')}</option>
               </select>
             </div>
 
             <div className="flex items-center justify-between">
               <label htmlFor="language-selector" className="block text-sm font-medium">
-                {t('profile?.language')}
+                {t('profile.language')}
               </label>
               <div className="flex w-1/2 justify-end">
                 <LanguageSwitcher />
@@ -94,20 +94,20 @@ export default function AccessibilityExample() {
         {/* Accessibility Settings */}
         <div className="rounded-lg bg-white p-6 shadow dark:bg-gray-800">
           <h2 className="mb-4 text-xl font-semibold" tabIndex={0}>
-            {t('settings?.accessibility.title')}
+            {t('settings.accessibility.title')}
           </h2>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <label htmlFor="font-size-selector" className="block text-sm font-medium">
-                {t('settings?.accessibility.fontSize')}
+                {t('settings.accessibility.fontSize')}
               </label>
               <select
                 id="font-size-selector"
                 value={fontSize}
-                onChange={(e) => handleFontSizeChange(e?.target.value)}
+                onChange={(e) => handleFontSizeChange(e.target.value)}
                 className="mt-1 block w-1/2 rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                aria-label={t('settings?.accessibility.fontSize')}
+                aria-label={t('settings.accessibility.fontSize')}
               >
                 <option value="small">Small</option>
                 <option value="medium">Medium</option>
@@ -118,7 +118,7 @@ export default function AccessibilityExample() {
 
             <div className="flex items-center justify-between">
               <span className="block text-sm font-medium">
-                {t('settings?.accessibility.contrastMode')}
+                {t('settings.accessibility.contrastMode')}
               </span>
               <div className="relative mr-2 inline-block w-10 select-none align-middle">
                 <input
@@ -127,7 +127,7 @@ export default function AccessibilityExample() {
                   checked={highContrast}
                   onChange={toggleHighContrast}
                   className="sr-only"
-                  aria-label={t('settings?.accessibility.contrastMode')}
+                  aria-label={t('settings.accessibility.contrastMode')}
                 />
                 <label
                   htmlFor="toggle-contrast"
@@ -146,7 +146,7 @@ export default function AccessibilityExample() {
 
             <div className="flex items-center justify-between">
               <span className="block text-sm font-medium">
-                {t('settings?.accessibility.reduceMotion')}
+                {t('settings.accessibility.reduceMotion')}
               </span>
               <div className="relative mr-2 inline-block w-10 select-none align-middle">
                 <input
@@ -155,7 +155,7 @@ export default function AccessibilityExample() {
                   checked={reduceMotion}
                   onChange={toggleReduceMotion}
                   className="sr-only"
-                  aria-label={t('settings?.accessibility.reduceMotion')}
+                  aria-label={t('settings.accessibility.reduceMotion')}
                 />
                 <label
                   htmlFor="toggle-motion"

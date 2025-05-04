@@ -26,7 +26,7 @@ export const providers = pgTable('providers', {
 
 export const services = pgTable('services', {
   id: serial('id').primaryKey(),
-  providerId: integer('provider_id').references(() => providers?.id),
+  providerId: integer('provider_id').references(() => providers.id),
   name: text('name').notNull(),
   description: text('description'),
   duration: integer('duration').notNull(), // in minutes
@@ -37,8 +37,8 @@ export const services = pgTable('services', {
 
 export const appointments = pgTable('appointments', {
   id: serial('id').primaryKey(),
-  providerId: integer('provider_id').references(() => providers?.id),
-  serviceId: integer('service_id').references(() => services?.id),
+  providerId: integer('provider_id').references(() => providers.id),
+  serviceId: integer('service_id').references(() => services.id),
   userId: text('user_id').notNull(),
   startTime: timestamp('start_time').notNull(),
   endTime: timestamp('end_time').notNull(),
@@ -50,12 +50,12 @@ export const appointments = pgTable('appointments', {
 
 export const availability = pgTable('availability', {
   id: serial('id').primaryKey(),
-  providerId: integer('provider_id').references(() => providers?.id),
+  providerId: integer('provider_id').references(() => providers.id),
   date: timestamp('date').notNull(),
   startTime: timestamp('start_time').notNull(),
   endTime: timestamp('end_time').notNull(),
   isAvailable: boolean('is_available').notNull().default(true),
-  appointmentId: integer('appointment_id').references(() => appointments?.id),
+  appointmentId: integer('appointment_id').references(() => appointments.id),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
 });

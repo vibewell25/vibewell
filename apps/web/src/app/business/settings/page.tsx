@@ -5,15 +5,15 @@ import { prisma } from '@/lib/prisma';
 import { redirect } from 'next/navigation';
 
 export default async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); BusinessSettingsPage() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); BusinessSettingsPage() {
   const session = await auth();
   if (!session) {
     redirect('/login');
   }
 
-  const business = await prisma?.business.findFirst({
-    where: { id: session?.user.businessId },
+  const business = await prisma.business.findFirst({
+    where: { id: session.user.businessId },
   });
 
   if (!business) {
@@ -25,8 +25,8 @@ export default async function {
       <h1 className="mb-8 text-2xl font-bold">Business Settings</h1>
 
       <div className="space-y-8">
-        <BusinessHours businessId={business?.id} />
-        <ConsultationForms businessId={business?.id} />
+        <BusinessHours businessId={business.id} />
+        <ConsultationForms businessId={business.id} />
       </div>
     </div>
   );

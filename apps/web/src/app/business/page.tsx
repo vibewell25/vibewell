@@ -44,40 +44,40 @@ export default function BusinessDirectoryPage() {
   const [minRating, setMinRating] = useState(0);
   useEffect(() => {
     const checkAuth = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       const session = await getServerSession(authOptions);
       if (!session) {
-        router?.push('/login');
+        router.push('/login');
       }
     };
     checkAuth();
     const fetchBusinesses = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         const response = await fetch('/api/business');
-        if (!response?.ok) {
+        if (!response.ok) {
           throw new Error('Failed to fetch businesses');
         }
-        const data = await response?.json();
+        const data = await response.json();
         setBusinesses(data);
       } catch (error) {
-        console?.error('Error fetching businesses:', error);
-        toast?.error('Failed to load businesses');
+        console.error('Error fetching businesses:', error);
+        toast.error('Failed to load businesses');
       } finally {
         setLoading(false);
       }
     };
     fetchBusinesses();
   }, [router]);
-  const filteredBusinesses = businesses?.filter((business) => {
+  const filteredBusinesses = businesses.filter((business) => {
     const matchesSearch =
-      business?.name.toLowerCase().includes(searchQuery?.toLowerCase()) ||
-      business?.description.toLowerCase().includes(searchQuery?.toLowerCase());
+      business.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      business.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory =
-      selectedCategory === 'All Categories' || business?.category === selectedCategory;
-    const matchesRating = business?.rating >= minRating;
+      selectedCategory === 'All Categories' || business.category === selectedCategory;
+    const matchesRating = business.rating >= minRating;
     return matchesSearch && matchesCategory && matchesRating;
   });
   if (loading) {
@@ -105,7 +105,7 @@ export default function BusinessDirectoryPage() {
             <Input
               placeholder="Search businesses..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e?.target.value)}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="max-w-xs"
             />
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
@@ -113,7 +113,7 @@ export default function BusinessDirectoryPage() {
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                {CATEGORIES?.map((category) => (
+                {CATEGORIES.map((category) => (
                   <SelectItem key={category} value={category}>
                     {category}
                   </SelectItem>
@@ -123,42 +123,42 @@ export default function BusinessDirectoryPage() {
           </div>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filteredBusinesses?.map((business) => (
-            <Card key={business?.id} className="overflow-hidden">
+          {filteredBusinesses.map((business) => (
+            <Card key={business.id} className="overflow-hidden">
               <div className="relative aspect-video bg-gray-100">
                 <img
-                  src={business?.imageUrl}
-                  alt={business?.name}
+                  src={business.imageUrl}
+                  alt={business.name}
                   className="h-full w-full object-cover"
                 />
-                <Badge className="absolute right-2 top-2">{business?.category}</Badge>
+                <Badge className="absolute right-2 top-2">{business.category}</Badge>
               </div>
               <CardHeader>
-                <CardTitle>{business?.name}</CardTitle>
+                <CardTitle>{business.name}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="mb-2 flex items-center gap-2 text-muted-foreground">
-                  <Icons?.MapPinIcon className="h-4 w-4" />
-                  <span>{business?.location}</span>
+                  <Icons.MapPinIcon className="h-4 w-4" />
+                  <span>{business.location}</span>
                 </div>
                 <div className="mb-4 flex items-center gap-2">
-                  <Icons?.StarIcon className="h-5 w-5 text-yellow-400" />
-                  <span className="font-semibold">{business?.rating.toFixed(1)}</span>
-                  <span className="text-muted-foreground">({business?.reviewCount} reviews)</span>
+                  <Icons.StarIcon className="h-5 w-5 text-yellow-400" />
+                  <span className="font-semibold">{business.rating.toFixed(1)}</span>
+                  <span className="text-muted-foreground">({business.reviewCount} reviews)</span>
                 </div>
-                <p className="mb-4 text-muted-foreground">{business?.description}</p>
+                <p className="mb-4 text-muted-foreground">{business.description}</p>
                 <div className="mb-4 flex flex-wrap gap-2">
-                  {business?.services.map((service) => (
+                  {business.services.map((service) => (
                     <Badge key={service} variant="secondary">
                       {service}
                     </Badge>
                   ))}
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="outline" onClick={() => router?.push(`/business/${business?.id}`)}>
+                  <Button variant="outline" onClick={() => router.push(`/business/${business.id}`)}>
                     View Details
                   </Button>
-                  <Button onClick={() => router?.push(`/business/${business?.id}/book`)}>
+                  <Button onClick={() => router.push(`/business/${business.id}/book`)}>
                     Book Now
                   </Button>
                 </div>

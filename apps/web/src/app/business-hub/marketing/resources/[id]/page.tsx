@@ -14,7 +14,7 @@ const marketingResources: BaseResource[] = [
     date: '2023-09-10',
     readTime: '12 min',
     category: 'Social Media',
-    imageUrl: '/images/social-media-marketing?.jpg',
+    imageUrl: '/images/social-media-marketing.jpg',
     content: `
       <h2>Introduction to Social Media Marketing for Wellness</h2>
       <p>Social media has become an essential marketing channel for wellness professionals. This guide will help you develop an effective social media strategy tailored to the wellness industry.</p>
@@ -48,7 +48,7 @@ const marketingResources: BaseResource[] = [
     date: '2023-10-05',
     readTime: '15 min',
     category: 'Email Marketing',
-    imageUrl: '/images/email-marketing?.jpg',
+    imageUrl: '/images/email-marketing.jpg',
     content: `
       <h2>The Power of Email Marketing in the Wellness Industry</h2>
       <p>Email remains one of the most effective marketing channels with the highest ROI. Learn why it's particularly valuable for wellness businesses.</p>
@@ -83,7 +83,7 @@ const marketingResources: BaseResource[] = [
     date: '2023-11-12',
     readTime: '18 min',
     category: 'Content Marketing',
-    imageUrl: '/images/content-marketing?.jpg',
+    imageUrl: '/images/content-marketing.jpg',
     content: `
       <h2>The Value of Content Marketing for Wellness Brands</h2>
       <p>Content marketing allows wellness professionals to demonstrate expertise and build trust before a client ever books a service.</p>
@@ -113,13 +113,13 @@ const marketingResources: BaseResource[] = [
     relatedResources: ['1', '2'],
     type: 'resource',
     tags: ['content marketing', 'SEO', 'blogging'],
-    downloadUrl: '/downloads/content-strategy-template?.pdf',
+    downloadUrl: '/downloads/content-strategy-template.pdf',
   },
 ];
 
 // Fetch resource by ID
 const getResourceById = (id: string): BaseResource | undefined => {
-  return marketingResources?.find((resource) => resource?.id === id);
+  return marketingResources.find((resource) => resource.id === id);
 };
 
 export default function MarketingResourceDetailPage() {
@@ -128,15 +128,15 @@ export default function MarketingResourceDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (params?.id) {
+    if (params.id) {
       // In a real app, this would be an API call
-      const foundResource = getResourceById(params?.id as string);
+      const foundResource = getResourceById(params.id as string);
       if (foundResource) {
         setResource(foundResource);
       }
       setLoading(false);
     }
-  }, [params?.id]);
+  }, [params.id]);
 
   if (!loading && !resource) {
     notFound();
@@ -156,15 +156,15 @@ export default function MarketingResourceDetailPage() {
 
   // Handle download
   const handleDownload = (resource: BaseResource) => {
-    alert(`Downloading ${resource?.title}`);
+    alert(`Downloading ${resource.title}`);
     // In a real app, this would trigger the actual download
-    window?.open(resource?.downloadUrl, '_blank');
+    window.open(resource.downloadUrl, '_blank');
   };
 
   return (
     <ResourceDetailTemplate
       resource={resource}
-      resourceType={resource?.type}
+      resourceType={resource.type}
       sectionName="Marketing"
       sectionPath="/business-hub/marketing"
       relatedResources={marketingResources}

@@ -21,21 +21,21 @@ interface Appointment {
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); GET() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); GET() {
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session?.user?.id) {
-      return NextResponse?.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!session.user.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const now = new Date();
 
     // Get upcoming appointments
-    const appointments = await prisma?.serviceBooking.findMany({
+    const appointments = await prisma.serviceBooking.findMany({
       where: {
-        userId: session?.user.id,
+        userId: session.user.id,
         date: {
           gte: now,
         },
@@ -62,21 +62,21 @@ export async function {
     });
 
     // Format appointments for the response
-    const formattedAppointments = appointments?.map((appointment: Appointment) => ({
-      id: appointment?.id,
-      serviceName: appointment?.service.name,
-      date: appointment?.date.toISOString(),
-      time: appointment?.time,
-      providerName: appointment?.provider.name,
-      status: appointment?.status,
+    const formattedAppointments = appointments.map((appointment: Appointment) => ({
+      id: appointment.id,
+      serviceName: appointment.service.name,
+      date: appointment.date.toISOString(),
+      time: appointment.time,
+      providerName: appointment.provider.name,
+      status: appointment.status,
     }));
 
-    return NextResponse?.json({
+    return NextResponse.json({
       appointments: formattedAppointments,
-      count: appointments?.length,
+      count: appointments.length,
     });
   } catch (error) {
-    console?.error('Error fetching upcoming appointments:', error);
-    return NextResponse?.json({ error: 'Failed to fetch upcoming appointments' }, { status: 500 });
+    console.error('Error fetching upcoming appointments:', error);
+    return NextResponse.json({ error: 'Failed to fetch upcoming appointments' }, { status: 500 });
   }
 }

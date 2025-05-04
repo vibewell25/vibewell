@@ -17,9 +17,9 @@ import { authenticator } from 'otplib';
  */
 export function generateTOTPSecret(): string {
   // Generate 20 bytes of random data
-  const buffer = crypto?.randomBytes(20);
+  const buffer = crypto.randomBytes(20);
   // Convert to base32 for compatibility with authenticator apps
-  return authenticator?.encode(buffer?.toString('hex'));
+  return authenticator.encode(buffer.toString('hex'));
 }
 
 /**
@@ -28,7 +28,7 @@ export function generateTOTPSecret(): string {
  * @returns The 6-digit TOTP token
  */
 export function generateTOTP(secret: string): string {
-  return authenticator?.generate(secret);
+  return authenticator.generate(secret);
 }
 
 /**
@@ -39,9 +39,9 @@ export function generateTOTP(secret: string): string {
  */
 export function verifyTOTP(token: string, secret: string): boolean {
   try {
-    return authenticator?.verify({ token, secret });
+    return authenticator.verify({ token, secret });
   } catch (error) {
-    console?.error('Error verifying TOTP:', error);
+    console.error('Error verifying TOTP:', error);
     return false;
   }
 }
@@ -59,7 +59,7 @@ export function generateTOTPQRCodeURL(
   account: string,
   issuer: string = 'Vibewell',
 ): string {
-  return authenticator?.keyuri(account, issuer, secret);
+  return authenticator.keyuri(account, issuer, secret);
 }
 
 /**

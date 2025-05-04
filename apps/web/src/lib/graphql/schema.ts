@@ -48,7 +48,7 @@ export const typeDefs = gql`
     preferences: JSON
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
     permissions: [String]
@@ -66,13 +66,13 @@ export const typeDefs = gql`
     preferences: JSON
 
     // Safe array access
-    if (Booking < 0 || Booking >= array?.length) {
+    if (Booking < 0 || Booking >= array.length) {
       throw new Error('Array index out of bounds');
     }
     bookings: [Booking]
 
     // Safe array access
-    if (Review < 0 || Review >= array?.length) {
+    if (Review < 0 || Review >= array.length) {
       throw new Error('Array index out of bounds');
     }
     reviews: [Review]
@@ -90,7 +90,7 @@ export const typeDefs = gql`
     provider: Provider
 
     // Safe array access
-    if (Service < 0 || Service >= array?.length) {
+    if (Service < 0 || Service >= array.length) {
       throw new Error('Array index out of bounds');
     }
     services: [Service]
@@ -124,13 +124,13 @@ export const typeDefs = gql`
     address: String
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
     categories: [String]
 
     // Safe array access
-    if (BusinessHour < 0 || BusinessHour >= array?.length) {
+    if (BusinessHour < 0 || BusinessHour >= array.length) {
       throw new Error('Array index out of bounds');
     }
     businessHours: [BusinessHour]
@@ -158,13 +158,13 @@ export const typeDefs = gql`
     address: String
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
     categories: [String]
 
     // Safe array access
-    if (BusinessHourInput < 0 || BusinessHourInput >= array?.length) {
+    if (BusinessHourInput < 0 || BusinessHourInput >= array.length) {
       throw new Error('Array index out of bounds');
     }
     businessHours: [BusinessHourInput]
@@ -177,13 +177,13 @@ export const typeDefs = gql`
     address: String
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
     categories: [String]
 
     // Safe array access
-    if (BusinessHourInput < 0 || BusinessHourInput >= array?.length) {
+    if (BusinessHourInput < 0 || BusinessHourInput >= array.length) {
       throw new Error('Array index out of bounds');
     }
     businessHours: [BusinessHourInput]

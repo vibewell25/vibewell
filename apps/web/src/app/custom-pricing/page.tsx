@@ -130,7 +130,7 @@ function CustomPricingContent() {
       id: 'basic',
       name: 'Basic',
       description: 'Essential tools for small businesses',
-      price: 9?.99,
+      price: 9.99,
       features: ['business-profile', 'booking-management', 'review-management', 'basic-analytics'],
       popular: false,
     },
@@ -138,7 +138,7 @@ function CustomPricingContent() {
       id: 'professional',
       name: 'Professional',
       description: 'Everything you need to grow your business',
-      price: 24?.99,
+      price: 24.99,
       features: [
         'business-profile',
         'booking-management',
@@ -154,7 +154,7 @@ function CustomPricingContent() {
       id: 'enterprise',
       name: 'Enterprise',
       description: 'Advanced features for established businesses',
-      price: 49?.99,
+      price: 49.99,
       features: [
         'business-profile',
         'booking-management',
@@ -176,35 +176,35 @@ function CustomPricingContent() {
   const [annualBilling, setAnnualBilling] = useState<boolean>(false);
   // Set a predefined plan
   const selectPredefinedPlan = (planId: string) => {
-    const plan = predefinedPlans?.find((p) => p?.id === planId);
+    const plan = predefinedPlans.find((p) => p.id === planId);
     if (!plan) return;
     setSelectedPlan(planId);
     // Reset all features
-    const resetFeatures = featureOptions?.map((option) => ({
+    const resetFeatures = featureOptions.map((option) => ({
       ...option,
       included: false,
     }));
     // Set included features based on the plan
-    const updatedFeatures = resetFeatures?.map((option) => ({
+    const updatedFeatures = resetFeatures.map((option) => ({
       ...option,
-      included: plan?.features.includes(option?.id),
+      included: plan.features.includes(option.id),
     }));
     setFeatureOptions(updatedFeatures);
   };
   // Toggle feature selection
   const toggleFeature = (featureId: string) => {
     setSelectedPlan('custom');
-    const updatedFeatures = featureOptions?.map((option) =>
-      option?.id === featureId ? { ...option, included: !option?.included } : option,
+    const updatedFeatures = featureOptions.map((option) =>
+      option.id === featureId ? { ...option, included: !option.included } : option,
     );
     setFeatureOptions(updatedFeatures);
   };
   // Calculate price based on selected features
   useEffect(() => {
-    const basePrice = featureOptions?.find((f) => f?.id === 'business-profile')?.cost || 0;
+    const basePrice = featureOptions.find((f) => f.id === 'business-profile').cost || 0;
     const additionalCost = featureOptions
-      .filter((option) => option?.included && option?.id !== 'business-profile')
-      .reduce((sum, option) => sum + option?.cost, 0);
+      .filter((option) => option.included && option.id !== 'business-profile')
+      .reduce((sum, option) => sum + option.cost, 0);
     let calculatedPrice = basePrice + additionalCost;
     // Apply annual discount if selected
     if (annualBilling) {
@@ -228,43 +228,43 @@ function CustomPricingContent() {
             Start with a Template or Build from Scratch
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {predefinedPlans?.map((plan) => (
+            {predefinedPlans.map((plan) => (
               <div
-                key={plan?.id}
+                key={plan.id}
                 className={`rounded-lg border p-6 transition-all ${
-                  selectedPlan === plan?.id
+                  selectedPlan === plan.id
                     ? 'border-indigo-500 ring-2 ring-indigo-200'
                     : 'border-gray-200 hover:border-indigo-200'
-                } ${plan?.popular ? 'relative' : ''}`}
+                } ${plan.popular ? 'relative' : ''}`}
               >
-                {plan?.popular && (
+                {plan.popular && (
                   <div className="absolute right-0 top-0 rounded-bl-lg rounded-tr-lg bg-indigo-500 px-3 py-1 text-xs text-white">
                     Popular
                   </div>
                 )}
-                <h3 className="mb-2 text-xl font-bold">{plan?.name}</h3>
-                <p className="mb-4 text-gray-600">{plan?.description}</p>
+                <h3 className="mb-2 text-xl font-bold">{plan.name}</h3>
+                <p className="mb-4 text-gray-600">{plan.description}</p>
                 <div className="mb-6">
                   <span className="text-3xl font-bold">
-                    ${annualBilling ? (plan?.price * 10).toFixed(2) : plan?.price}
+                    ${annualBilling ? (plan.price * 10).toFixed(2) : plan.price}
                   </span>
                   <span className="text-gray-500">/{annualBilling ? 'year' : 'month'}</span>
                 </div>
                 <ul className="mb-6 space-y-2">
                   {featureOptions
-                    .filter((option) => plan?.features.includes(option?.id))
+                    .filter((option) => plan.features.includes(option.id))
                     .map((feature) => (
-                      <li key={feature?.id} className="flex items-start">
-                        <Icons?.CheckSolid className="mr-2 mt-0?.5 h-5 w-5 text-green-500" />
-                        <span>{feature?.name}</span>
+                      <li key={feature.id} className="flex items-start">
+                        <Icons.CheckSolid className="mr-2 mt-0.5 h-5 w-5 text-green-500" />
+                        <span>{feature.name}</span>
                       </li>
                     ))}
                 </ul>
                 <Button
-                  className={`w-full ${selectedPlan === plan?.id ? 'bg-indigo-700' : 'bg-indigo-600'}`}
-                  onClick={() => selectPredefinedPlan(plan?.id)}
+                  className={`w-full ${selectedPlan === plan.id ? 'bg-indigo-700' : 'bg-indigo-600'}`}
+                  onClick={() => selectPredefinedPlan(plan.id)}
                 >
-                  {selectedPlan === plan?.id ? 'Selected' : 'Select Plan'}
+                  {selectedPlan === plan.id ? 'Selected' : 'Select Plan'}
                 </Button>
               </div>
             ))}
@@ -283,7 +283,7 @@ function CustomPricingContent() {
                   className={`h-6 w-12 rounded-full transition-colors ${annualBilling ? 'bg-indigo-600' : 'bg-gray-300'}`}
                 ></div>
                 <div
-                  className={`absolute left-0?.5 top-0?.5 h-5 w-5 rounded-full bg-white transition-transform ${annualBilling ? 'translate-x-6 transform' : ''}`}
+                  className={`absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white transition-transform ${annualBilling ? 'translate-x-6 transform' : ''}`}
                 ></div>
               </div>
               <span className="ml-3 text-gray-700">Annual Billing (Save 16%)</span>
@@ -301,42 +301,42 @@ function CustomPricingContent() {
                   <h3 className="mb-4 text-lg font-medium capitalize">{category} Features</h3>
                   <div className="space-y-4">
                     {featureOptions
-                      .filter((option) => option?.category === category)
+                      .filter((option) => option.category === category)
                       .map((feature) => (
                         <div
-                          key={feature?.id}
+                          key={feature.id}
                           className={`cursor-pointer rounded-lg border p-4 transition-all ${
-                            feature?.included
+                            feature.included
                               ? 'border-indigo-500 bg-indigo-50'
                               : 'border-gray-200 hover:border-indigo-200'
                           }`}
                           onClick={() =>
-                            feature?.id !== 'business-profile' && toggleFeature(feature?.id)
+                            feature.id !== 'business-profile' && toggleFeature(feature.id)
                           }
                         >
                           <div className="flex items-start">
                             <div className="flex-grow">
                               <div className="flex items-center">
-                                <h4 className="font-medium">{feature?.name}</h4>
-                                {feature?.id === 'business-profile' && (
-                                  <span className="ml-2 rounded bg-indigo-100 px-2 py-0?.5 text-xs text-indigo-800">
+                                <h4 className="font-medium">{feature.name}</h4>
+                                {feature.id === 'business-profile' && (
+                                  <span className="ml-2 rounded bg-indigo-100 px-2 py-0.5 text-xs text-indigo-800">
                                     Required
                                   </span>
                                 )}
                               </div>
-                              <p className="text-sm text-gray-600">{feature?.description}</p>
+                              <p className="text-sm text-gray-600">{feature.description}</p>
                             </div>
                             <div className="ml-4 flex items-center">
                               <span className="mr-3 font-medium text-gray-700">
-                                {feature?.cost === 0 ? 'Free' : `$${feature?.cost}`}
+                                {feature.cost === 0 ? 'Free' : `$${feature.cost}`}
                               </span>
                               <div
                                 className={`flex h-5 w-5 items-center justify-center rounded-full ${
-                                  feature?.included ? 'bg-indigo-500' : 'border border-gray-300'
+                                  feature.included ? 'bg-indigo-500' : 'border border-gray-300'
                                 }`}
                               >
-                                {feature?.included && (
-                                  <Icons?.CheckSolid className="h-3 w-3 text-white" />
+                                {feature.included && (
+                                  <Icons.CheckSolid className="h-3 w-3 text-white" />
                                 )}
                               </div>
                             </div>
@@ -355,15 +355,15 @@ function CustomPricingContent() {
                   <div className="mb-2 flex justify-between">
                     <span className="text-gray-600">Base Price</span>
                     <span>
-                      ${featureOptions?.find((f) => f?.id === 'business-profile')?.cost || 0}
+                      ${featureOptions.find((f) => f.id === 'business-profile').cost || 0}
                     </span>
                   </div>
                   {featureOptions
-                    .filter((option) => option?.included && option?.id !== 'business-profile')
+                    .filter((option) => option.included && option.id !== 'business-profile')
                     .map((feature) => (
-                      <div key={feature?.id} className="mb-2 flex justify-between">
-                        <span className="text-gray-600">{feature?.name}</span>
-                        <span>${feature?.cost}</span>
+                      <div key={feature.id} className="mb-2 flex justify-between">
+                        <span className="text-gray-600">{feature.name}</span>
+                        <span>${feature.cost}</span>
                       </div>
                     ))}
                   <div className="my-4 border-t border-gray-200 pt-4">
@@ -379,7 +379,7 @@ function CustomPricingContent() {
                         </div>
                         <div className="mt-2 flex justify-between font-medium">
                           <span>Annual Total</span>
-                          <span>${customPrice?.toFixed(2)}</span>
+                          <span>${customPrice.toFixed(2)}</span>
                         </div>
                       </>
                     )}
@@ -395,11 +395,11 @@ function CustomPricingContent() {
                   <h4 className="mb-2 font-medium">Included Features:</h4>
                   <ul className="space-y-2">
                     {featureOptions
-                      .filter((option) => option?.included)
+                      .filter((option) => option.included)
                       .map((feature) => (
-                        <li key={feature?.id} className="flex items-start text-sm">
-                          <Icons?.CheckSolid className="mr-2 mt-0?.5 h-4 w-4 text-green-500" />
-                          <span>{feature?.name}</span>
+                        <li key={feature.id} className="flex items-start text-sm">
+                          <Icons.CheckSolid className="mr-2 mt-0.5 h-4 w-4 text-green-500" />
+                          <span>{feature.name}</span>
                         </li>
                       ))}
                   </ul>

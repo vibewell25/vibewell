@@ -1,5 +1,5 @@
 
-declare module 'face-api?.js' {
+declare module 'face-api.js' {
   export interface FaceDetection {
     score: number;
     box: Box;

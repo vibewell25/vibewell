@@ -22,8 +22,8 @@ export const routes = {
 } as const;
 
 export type AppRoutes = typeof routes;
-export type WellnessRoutes = typeof routes?.wellness;
-export type LegalRoutes = typeof routes?.legal;
+export type WellnessRoutes = typeof routes.wellness;
+export type LegalRoutes = typeof routes.legal;
 
 // Helper to ensure type safety for routes
 export {};

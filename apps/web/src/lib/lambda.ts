@@ -5,10 +5,10 @@ import { LambdaClient, InvokeCommand } from '@aws-sdk/client-lambda';
 // Initialize Lambda client
 const lambdaClient = new LambdaClient({
 
-  region: process?.env.AWS_REGION || 'us-east-1',
+  region: process.env.AWS_REGION || 'us-east-1',
   credentials: {
-    accessKeyId: process?.env.AWS_ACCESS_KEY_ID || '',
-    secretAccessKey: process?.env.AWS_SECRET_ACCESS_KEY || '',
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
   },
 });
 
@@ -26,7 +26,7 @@ export const invokeLambda = async <T, R>({
 }): Promise<R> => {
   try {
     // Convert the JavaScript object to a JSON string and then to a Uint8Array
-    const payloadBytes = new TextEncoder().encode(JSON?.stringify(payload));
+    const payloadBytes = new TextEncoder().encode(JSON.stringify(payload));
 
     const command = new InvokeCommand({
       FunctionName: functionName,
@@ -34,10 +34,10 @@ export const invokeLambda = async <T, R>({
       InvocationType: invocationType,
     });
 
-    const response = await lambdaClient?.send(command);
+    const response = await lambdaClient.send(command);
 
-    if (response?.FunctionError) {
-      throw new Error(`Lambda execution error: ${response?.FunctionError}`);
+    if (response.FunctionError) {
+      throw new Error(`Lambda execution error: ${response.FunctionError}`);
     }
 
     if (invocationType === 'Event') {
@@ -46,14 +46,14 @@ export const invokeLambda = async <T, R>({
     }
 
     // Parse the response payload
-    if (response?.Payload) {
-      const responseJson = new TextDecoder().decode(response?.Payload);
-      return JSON?.parse(responseJson) as R;
+    if (response.Payload) {
+      const responseJson = new TextDecoder().decode(response.Payload);
+      return JSON.parse(responseJson) as R;
     }
 
     throw new Error('No response payload received from Lambda');
   } catch (error) {
-    console?.error('Error invoking Lambda function:', error);
+    console.error('Error invoking Lambda function:', error);
     throw error;
   }
 };

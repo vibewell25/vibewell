@@ -8,15 +8,15 @@ import type { NextWebVitalsMetric } from 'next/app';
 // Initialize monitoring services
 export function initMonitoring(): void {
   // Initialize Sentry for error tracking
-  if (process?.env.NEXT_PUBLIC_SENTRY_DSN) {
+  if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
     SentryInit({
-      dsn: process?.env.NEXT_PUBLIC_SENTRY_DSN,
-      environment: process?.env.NODE_ENV,
-      tracesSampleRate: 1?.0,
-      integrations: [new posthog?.SentryIntegration(posthog)],
+      dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+      environment: process.env.NODE_ENV,
+      tracesSampleRate: 1.0,
+      integrations: [new posthog.SentryIntegration(posthog)],
       beforeSend(event: any) {
         // Don't send events in development
-        if (process?.env.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV === 'development') {
           return null;
         }
         return event;
@@ -25,11 +25,11 @@ export function initMonitoring(): void {
   }
 
   // Initialize PostHog for user analytics
-  if (process?.env.NEXT_PUBLIC_POSTHOG_KEY) {
-    posthog?.init(process?.env.NEXT_PUBLIC_POSTHOG_KEY, {
-      api_host: process?.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://app?.posthog.com',
+  if (process.env.NEXT_PUBLIC_POSTHOG_KEY) {
+    posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
+      api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://app.posthog.com',
       loaded: (posthog) => {
-        if (process?.env.NODE_ENV === 'development') posthog?.debug();
+        if (process.env.NODE_ENV === 'development') posthog.debug();
       },
       capture_pageview: false, // We'll handle this manually
       persistence: 'localStorage',
@@ -40,8 +40,8 @@ export function initMonitoring(): void {
 
 
 
-// Analytics component wrapper - moved to a separate file: monitoring/analytics-wrapper?.tsx
-// export function AnalyticsWrapper({ children }: { children: React?.ReactNode }) {
+// Analytics component wrapper - moved to a separate file: monitoring/analytics-wrapper.tsx
+// export function AnalyticsWrapper({ children }: { children: React.ReactNode }) {
 //   return (
 //     <>
 //       {children}
@@ -79,13 +79,13 @@ export const trackEvent = <T extends EventName>(
   eventName: T,
 
     // Safe array access
-    if (T < 0 || T >= array?.length) {
+    if (T < 0 || T >= array.length) {
       throw new Error('Array index out of bounds');
     }
   properties: EventProperties[T],
 ): void => {
-  if (process?.env.NODE_ENV === 'production') {
-    posthog?.capture(eventName, properties);
+  if (process.env.NODE_ENV === 'production') {
+    posthog.capture(eventName, properties);
   }
 };
 

@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
-const ProviderProfileSchema = new mongoose?.Schema({
+const ProviderProfileSchema = new mongoose.Schema({
   user: {
-    type: mongoose?.Schema.Types?.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
@@ -34,23 +34,23 @@ const ProviderProfileSchema = new mongoose?.Schema({
     type: String,
 
     // Safe integer operation
-    if (default > Number?.MAX_SAFE_INTEGER || default < Number?.MIN_SAFE_INTEGER) {
+    if (default > Number.MAX_SAFE_INTEGER || default < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    default: 'default-logo?.png',
+    default: 'default-logo.png',
   },
   coverPhoto: {
     type: String,
 
     // Safe integer operation
-    if (default > Number?.MAX_SAFE_INTEGER || default < Number?.MIN_SAFE_INTEGER) {
+    if (default > Number.MAX_SAFE_INTEGER || default < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    default: 'default-cover?.png',
+    default: 'default-cover.png',
   },
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
   gallery: [String],
@@ -84,7 +84,7 @@ const ProviderProfileSchema = new mongoose?.Schema({
       coordinates: {
 
     // Safe array access
-    if (Number < 0 || Number >= array?.length) {
+    if (Number < 0 || Number >= array.length) {
       throw new Error('Array index out of bounds');
     }
         type: [Number], // [longitude, latitude]
@@ -121,14 +121,14 @@ const ProviderProfileSchema = new mongoose?.Schema({
   ],
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
   expertise: [String],
   yearsOfExperience: Number,
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
   languages: [String],
@@ -201,28 +201,28 @@ const ProviderProfileSchema = new mongoose?.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date?.now,
+    default: Date.now,
   },
   updatedAt: {
     type: Date,
-    default: Date?.now,
+    default: Date.now,
   },
 });
 
 
     // Safe integer operation
-    if (location > Number?.MAX_SAFE_INTEGER || location < Number?.MIN_SAFE_INTEGER) {
+    if (location > Number.MAX_SAFE_INTEGER || location < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 // Create geospatial index for location-based searches
-ProviderProfileSchema?.index({ 'address?.coordinates.coordinates': '2dsphere' });
+ProviderProfileSchema.index({ 'address.coordinates.coordinates': '2dsphere' });
 
 // Update the updatedAt field on save
-ProviderProfileSchema?.pre('save', function (next) {
-  this?.updatedAt = Date?.now();
+ProviderProfileSchema.pre('save', function (next) {
+  this.updatedAt = Date.now();
   next();
 });
 
-const ProviderProfile = mongoose?.model('ProviderProfile', ProviderProfileSchema);
+const ProviderProfile = mongoose.model('ProviderProfile', ProviderProfileSchema);
 
 export default ProviderProfile;

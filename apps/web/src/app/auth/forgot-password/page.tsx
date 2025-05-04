@@ -21,23 +21,23 @@ export default function ForgotPasswordPage() {
    * Handle form submission for password reset request
    */
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent) => {
-    e?.preventDefault();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
+    e.preventDefault();
     setError(null);
     setIsLoading(true);
 
     try {
       const { error } = await resetPassword(email);
       if (error) {
-        setError(error?.message);
+        setError(error.message);
       } else {
         setIsSuccessful(true);
       }
     } catch (err) {
       setError(
         err instanceof Error
-          ? err?.message
+          ? err.message
           : 'Failed to send password reset email. Please try again.',
       );
     } finally {
@@ -49,7 +49,7 @@ export default function ForgotPasswordPage() {
     return (
       <div className="container mx-auto max-w-md px-4 py-8">
         <div className="mb-8 flex flex-col items-center">
-          <Icons?.logo className="text-primary mb-4 h-12 w-12" />
+          <Icons.logo className="text-primary mb-4 h-12 w-12" />
           <h1 className="mb-2 text-2xl font-bold">Check your email</h1>
           <p className="text-center text-muted-foreground">
             We've sent a password reset link to <strong>{email}</strong>. Please check your email
@@ -57,7 +57,7 @@ export default function ForgotPasswordPage() {
           </p>
         </div>
         <Link
-          href={ROUTES?.AUTH.LOGIN}
+          href={ROUTES.AUTH.LOGIN}
           className="text-primary mt-6 block text-center hover:underline"
         >
           Back to login
@@ -69,7 +69,7 @@ export default function ForgotPasswordPage() {
   return (
     <div className="container mx-auto max-w-md px-4 py-8">
       <div className="mb-8 flex flex-col items-center">
-        <Icons?.logo className="text-primary mb-4 h-12 w-12" />
+        <Icons.logo className="text-primary mb-4 h-12 w-12" />
         <h1 className="mb-2 text-2xl font-bold">Forgot your password?</h1>
         <p className="text-center text-muted-foreground">
           Enter your email address and we'll send you a link to reset your password.
@@ -88,9 +88,9 @@ export default function ForgotPasswordPage() {
           <input
             id="email"
             type="email"
-            placeholder="name@example?.com"
+            placeholder="name@example.com"
             value={email}
-            onChange={(e) => setEmail(e?.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             required
             className="w-full rounded-md border p-2"
             disabled={isLoading}
@@ -108,7 +108,7 @@ export default function ForgotPasswordPage() {
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
         Remember your password?{' '}
-        <Link href={ROUTES?.AUTH.LOGIN} className="text-primary hover:underline">
+        <Link href={ROUTES.AUTH.LOGIN} className="text-primary hover:underline">
           Back to login
         </Link>
       </p>

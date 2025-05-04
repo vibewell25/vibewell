@@ -47,7 +47,7 @@ const reviews: Review[] = [
     id: 'review1',
     user: {
       name: 'Emily Smith',
-      avatar: '/users/emily?.jpg'
+      avatar: '/users/emily.jpg'
     },
     provider: {
       name: 'Sarah Johnson',
@@ -65,7 +65,7 @@ const reviews: Review[] = [
   }
 ];
 const ratingStats = {
-  average: 4?.8,
+  average: 4.8,
   total: 128,
   distribution: {
     5: 85,
@@ -80,8 +80,8 @@ export default function ReviewsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedReview, setSelectedReview] = useState<Review | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const handleSubmitReview = (e: React?.FormEvent) => {
-    e?.preventDefault();
+  const handleSubmitReview = (e: React.FormEvent) => {
+    e.preventDefault();
     setIsSubmitting(true);
     // Handle review submission
     setTimeout(() => setIsSubmitting(false), 1000);
@@ -107,13 +107,13 @@ export default function ReviewsPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-center mb-4">
-                  <div className="text-4xl font-bold">{ratingStats?.average}</div>
+                  <div className="text-4xl font-bold">{ratingStats.average}</div>
                   <div className="flex justify-center gap-1 mt-2">
                     {[1, 2, 3, 4, 5].map((star) => (
-                      <Icons?.StarIcon
+                      <Icons.StarIcon
                         key={star}
                         className={`h-5 w-5 ${
-                          star <= Math?.round(ratingStats?.average)
+                          star <= Math.round(ratingStats.average)
                             ? 'text-yellow-500'
                             : 'text-muted'
                         }`}
@@ -121,11 +121,11 @@ export default function ReviewsPage() {
                     ))}
                   </div>
                   <p className="text-sm text-muted-foreground mt-2">
-                    Based on {ratingStats?.total} reviews
+                    Based on {ratingStats.total} reviews
                   </p>
                 </div>
                 <div className="space-y-2">
-                  {Object?.entries(ratingStats?.distribution)
+                  {Object.entries(ratingStats.distribution)
                     .sort((a, b) => Number(b[0]) - Number(a[0]))
                     .map(([rating, count]) => (
                       <div key={rating} className="flex items-center gap-2">
@@ -134,7 +134,7 @@ export default function ReviewsPage() {
                           <div
                             className="h-full bg-primary"
                             style={{
-                              width: `${(count / ratingStats?.total) * 100}%`
+                              width: `${(count / ratingStats.total) * 100}%`
                             }}
                           />
                         </div>
@@ -153,16 +153,16 @@ export default function ReviewsPage() {
                   <CardTitle>Reviews</CardTitle>
                   <div className="flex items-center gap-2">
                     <div className="relative">
-                      <Icons?.MagnifyingGlassIcon className="absolute left-2 top-2?.5 h-4 w-4 text-muted-foreground" />
+                      <Icons.MagnifyingGlassIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                       <Input
                         placeholder="Search reviews..."
                         className="pl-8"
                         value={searchQuery}
-                        onChange={(e) => setSearchQuery(e?.target.value)}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                       />
                     </div>
                     <Button variant="outline" size="icon">
-                      <Icons?.FunnelIcon className="h-4 w-4" />
+                      <Icons.FunnelIcon className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
@@ -177,24 +177,24 @@ export default function ReviewsPage() {
                   </TabsList>
                   <TabsContent value="all" className="mt-4">
                     <div className="space-y-4">
-                      {reviews?.map((review) => (
-                        <Card key={review?.id}>
+                      {reviews.map((review) => (
+                        <Card key={review.id}>
                           <CardContent className="p-4">
                             <div className="flex items-start justify-between">
                               <div className="flex items-center gap-4">
                                 <Avatar>
-                                  <AvatarImage src={review?.user.avatar} />
-                                  <AvatarFallback>{review?.user.name[0]}</AvatarFallback>
+                                  <AvatarImage src={review.user.avatar} />
+                                  <AvatarFallback>{review.user.name[0]}</AvatarFallback>
                                 </Avatar>
                                 <div>
-                                  <h3 className="font-medium">{review?.user.name}</h3>
+                                  <h3 className="font-medium">{review.user.name}</h3>
                                   <div className="flex items-center gap-2">
                                     <div className="flex items-center">
-                                      <Icons?.StarIcon className="h-4 w-4 text-yellow-500" />
-                                      <span className="ml-1">{review?.rating}</span>
+                                      <Icons.StarIcon className="h-4 w-4 text-yellow-500" />
+                                      <span className="ml-1">{review.rating}</span>
                                     </div>
                                     <span className="text-sm text-muted-foreground">
-                                      {review?.date}
+                                      {review.date}
                                     </span>
                                   </div>
                                 </div>
@@ -203,38 +203,38 @@ export default function ReviewsPage() {
                                 <Button
                                   variant="outline"
                                   size="icon"
-                                  onClick={() => handleModerateReview(review?.id, 'approve')}
+                                  onClick={() => handleModerateReview(review.id, 'approve')}
                                 >
-                                  <Icons?.CheckCircleIcon className="h-4 w-4" />
+                                  <Icons.CheckCircleIcon className="h-4 w-4" />
                                 </Button>
                                 <Button
                                   variant="outline"
                                   size="icon"
-                                  onClick={() => handleModerateReview(review?.id, 'reject')}
+                                  onClick={() => handleModerateReview(review.id, 'reject')}
                                 >
-                                  <Icons?.XCircleIcon className="h-4 w-4" />
+                                  <Icons.XCircleIcon className="h-4 w-4" />
                                 </Button>
                                 <Button variant="outline" size="icon">
-                                  <Icons?.FlagIcon className="h-4 w-4" />
+                                  <Icons.FlagIcon className="h-4 w-4" />
                                 </Button>
                               </div>
                             </div>
-                            <p className="mt-4 text-muted-foreground">{review?.comment}</p>
+                            <p className="mt-4 text-muted-foreground">{review.comment}</p>
                             <div className="mt-2">
-                              <Badge variant="outline">{review?.service}</Badge>
+                              <Badge variant="outline">{review.service}</Badge>
                             </div>
-                            {review?.response && (
+                            {review.response && (
                               <div className="mt-4 p-4 bg-muted rounded-lg">
                                 <div className="flex items-center gap-2 mb-2">
                                   <Avatar className="h-6 w-6">
-                                    <AvatarImage src={review?.provider.avatar} />
-                                    <AvatarFallback>{review?.provider.name[0]}</AvatarFallback>
+                                    <AvatarImage src={review.provider.avatar} />
+                                    <AvatarFallback>{review.provider.name[0]}</AvatarFallback>
                                   </Avatar>
-                                  <span className="font-medium">{review?.provider.name}</span>
+                                  <span className="font-medium">{review.provider.name}</span>
                                 </div>
-                                <p className="text-muted-foreground">{review?.response.text}</p>
+                                <p className="text-muted-foreground">{review.response.text}</p>
                                 <span className="text-xs text-muted-foreground">
-                                  {review?.response.date}
+                                  {review.response.date}
                                 </span>
                               </div>
                             )}
@@ -274,7 +274,7 @@ export default function ReviewsPage() {
                         size="icon"
                         className="h-10 w-10"
                       >
-                        <Icons?.StarIcon className="h-5 w-5" />
+                        <Icons.StarIcon className="h-5 w-5" />
                       </Button>
                     ))}
                   </div>

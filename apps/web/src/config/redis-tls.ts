@@ -19,53 +19,53 @@ class RedisTLSConfig {
   private ports: Map<number, PortConfig>;
 
   constructor(certsPath: string = 'certs') {
-    this?.certsPath = path?.join(process?.cwd(), certsPath);
-    this?.ports = new Map();
-    this?.ensureCertsDirectory();
+    this.certsPath = path.join(process.cwd(), certsPath);
+    this.ports = new Map();
+    this.ensureCertsDirectory();
   }
 
   private ensureCertsDirectory(): void {
-    if (!fs?.existsSync(this?.certsPath)) {
-      fs?.mkdirSync(this?.certsPath, { recursive: true });
+    if (!fs.existsSync(this.certsPath)) {
+      fs.mkdirSync(this.certsPath, { recursive: true });
     }
   }
 
   addPort(config: PortConfig): void {
-    this?.ports.set(config?.port, config);
+    this.ports.set(config.port, config);
   }
 
   removePort(port: number): void {
-    this?.ports.delete(port);
+    this.ports.delete(port);
   }
 
   getTLSConfig(port: number): Partial<RedisOptions> {
-    const portConfig = this?.ports.get(port);
+    const portConfig = this.ports.get(port);
 
-    if (!portConfig || !portConfig?.tls) {
+    if (!portConfig || !portConfig.tls) {
       return {};
     }
 
     try {
       const tlsConfig: TLSConfig = {
-        cert: fs?.readFileSync(path?.join(this?.certsPath, `redis-${port}.crt`), 'utf8'),
-        key: fs?.readFileSync(path?.join(this?.certsPath, `redis-${port}.key`), 'utf8'),
-        ca: fs?.readFileSync(path?.join(this?.certsPath, 'ca?.crt'), 'utf8'),
+        cert: fs.readFileSync(path.join(this.certsPath, `redis-${port}.crt`), 'utf8'),
+        key: fs.readFileSync(path.join(this.certsPath, `redis-${port}.key`), 'utf8'),
+        ca: fs.readFileSync(path.join(this.certsPath, 'ca.crt'), 'utf8'),
       };
 
       return {
         tls: {
           ...tlsConfig,
-          rejectUnauthorized: portConfig?.clientAuth ?? true,
+          rejectUnauthorized: portConfig.clientAuth ?? true,
         },
       };
     } catch (error) {
-      console?.error(`Failed to load TLS certificates for port ${port}:`, error);
+      console.error(`Failed to load TLS certificates for port ${port}:`, error);
       throw error;
     }
   }
 
   generateRedisConfig(port: number): string {
-    const portConfig = this?.ports.get(port);
+    const portConfig = this.ports.get(port);
     if (!portConfig) {
       throw new Error(`No configuration found for port ${port}`);
     }
@@ -81,17 +81,17 @@ class RedisTLSConfig {
       'tcp-keepalive 300',
     ];
 
-    if (portConfig?.tls) {
-      config?.push(
+    if (portConfig.tls) {
+      config.push(
 
         `tls-port ${port}`,
 
-        `tls-cert-file ${path?.join(this?.certsPath, `redis-${port}.crt`)}`,
+        `tls-cert-file ${path.join(this.certsPath, `redis-${port}.crt`)}`,
 
-        `tls-key-file ${path?.join(this?.certsPath, `redis-${port}.key`)}`,
+        `tls-key-file ${path.join(this.certsPath, `redis-${port}.key`)}`,
 
 
-        `tls-ca-cert-file ${path?.join(this?.certsPath, 'ca?.crt')}`,
+        `tls-ca-cert-file ${path.join(this.certsPath, 'ca.crt')}`,
 
         'tls-auth-clients no', // Can be 'yes', 'no', or 'optional'
 
@@ -100,23 +100,23 @@ class RedisTLSConfig {
         'tls-cluster yes',
       );
 
-      if (portConfig?.clientAuth) {
+      if (portConfig.clientAuth) {
 
-        config?.push('tls-auth-clients yes');
+        config.push('tls-auth-clients yes');
       }
     }
 
-    return config?.join('\n');
+    return config.join('\n');
   }
 
   async validateCertificates(): Promise<boolean> {
-    for (const [port, config] of this?.ports) {
-      if (config?.tls) {
-        const certPath = path?.join(this?.certsPath, `redis-${port}.crt`);
-        const keyPath = path?.join(this?.certsPath, `redis-${port}.key`);
-        const caPath = path?.join(this?.certsPath, 'ca?.crt');
+    for (const [port, config] of this.ports) {
+      if (config.tls) {
+        const certPath = path.join(this.certsPath, `redis-${port}.crt`);
+        const keyPath = path.join(this.certsPath, `redis-${port}.key`);
+        const caPath = path.join(this.certsPath, 'ca.crt');
 
-        if (!fs?.existsSync(certPath) || !fs?.existsSync(keyPath) || !fs?.existsSync(caPath)) {
+        if (!fs.existsSync(certPath) || !fs.existsSync(keyPath) || !fs.existsSync(caPath)) {
           throw new Error(`Missing certificates for port ${port}`);
         }
 
@@ -127,7 +127,7 @@ class RedisTLSConfig {
   }
 
   getPortConfigs(): Map<number, PortConfig> {
-    return new Map(this?.ports);
+    return new Map(this.ports);
   }
 }
 
@@ -142,21 +142,21 @@ const defaultPorts = {
 const redisTLSConfig = new RedisTLSConfig();
 
 // Configure standard port without TLS
-redisTLSConfig?.addPort({
-  port: defaultPorts?.standard,
+redisTLSConfig.addPort({
+  port: defaultPorts.standard,
   tls: false,
 });
 
 // Configure TLS port without client authentication
-redisTLSConfig?.addPort({
-  port: defaultPorts?.tls,
+redisTLSConfig.addPort({
+  port: defaultPorts.tls,
   tls: true,
   clientAuth: false,
 });
 
 // Configure TLS port with client authentication
-redisTLSConfig?.addPort({
-  port: defaultPorts?.tlsClientAuth,
+redisTLSConfig.addPort({
+  port: defaultPorts.tlsClientAuth,
   tls: true,
   clientAuth: true,
 });

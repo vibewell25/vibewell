@@ -12,6 +12,6 @@ export class WebAuthnError extends Error {
     public code: WebAuthnErrorCode,
   ) {
     super(message);
-    this?.name = 'WebAuthnError';
+    this.name = 'WebAuthnError';
   }
 }

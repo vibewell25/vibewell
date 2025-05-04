@@ -27,30 +27,30 @@ export function AnalyticsDashboard() {
               title="Total Users"
               value="2,543"
               description="Active users across the platform"
-              icon={<Icons?.user className="h-4 w-4" />}
-              trend={{ value: 12?.5, label: 'from last month', direction: 'up' }}
+              icon={<Icons.user className="h-4 w-4" />}
+              trend={{ value: 12.5, label: 'from last month', direction: 'up' }}
             />
             <StatCard
               title="Bookings"
               value="458"
               description="Total sessions booked this month"
-              icon={<Icons?.calendar className="h-4 w-4" />}
-              trend={{ value: 8?.2, label: 'from last month', direction: 'up' }}
+              icon={<Icons.calendar className="h-4 w-4" />}
+              trend={{ value: 8.2, label: 'from last month', direction: 'up' }}
               variant="primary"
             />
             <StatCard
               title="Messages"
               value="1,284"
               description="Total messages exchanged"
-              icon={<Icons?.message className="h-4 w-4" />}
-              trend={{ value: 4?.1, label: 'from last month', direction: 'up' }}
+              icon={<Icons.message className="h-4 w-4" />}
+              trend={{ value: 4.1, label: 'from last month', direction: 'up' }}
             />
             <StatCard
               title="Average Rating"
-              value="4?.8"
+              value="4.8"
               description="From 245 reviews"
-              icon={<Icons?.star className="h-4 w-4" />}
-              trend={{ value: 0?.3, label: 'from last month', direction: 'up' }}
+              icon={<Icons.star className="h-4 w-4" />}
+              trend={{ value: 0.3, label: 'from last month', direction: 'up' }}
               variant="success"
             />
           </div>
@@ -76,7 +76,7 @@ export function AnalyticsDashboard() {
                   {[1, 2, 3].map((i) => (
                     <div className="flex items-center" key={i}>
                       <div className="bg-primary/10 mr-4 rounded-full p-2">
-                        <Icons?.activity className="text-primary h-4 w-4" />
+                        <Icons.activity className="text-primary h-4 w-4" />
                       </div>
                       <div className="space-y-1">
                         <p className="text-sm font-medium leading-none">

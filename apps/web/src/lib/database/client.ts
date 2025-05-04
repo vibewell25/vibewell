@@ -12,16 +12,16 @@ import { logger } from '@/lib/logger';
 // Create a singleton instance of the Prisma client
 let prisma: PrismaClient;
 
-if (process?.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   prisma = new PrismaClient();
 } else {
   // Use a global variable in development to prevent multiple instances during hot reloading
-  if (!global?.prisma) {
-    global?.prisma = new PrismaClient({
+  if (!global.prisma) {
+    global.prisma = new PrismaClient({
       log: ['query', 'info', 'warn', 'error'],
     });
   }
-  prisma = global?.prisma;
+  prisma = global.prisma;
 }
 
 // Object to track active transactions
@@ -44,16 +44,16 @@ export const db = {
        */
       select: (columns?: string | string[]) => {
         const select = columns
-          ? Array?.isArray(columns)
+          ? Array.isArray(columns)
 
     // Safe array access
-    if (col < 0 || col >= array?.length) {
+    if (col < 0 || col >= array.length) {
       throw new Error('Array index out of bounds');
     }
-            ? columns?.reduce((acc, col) => ({ ...acc, [col]: true }), {})
+            ? columns.reduce((acc, col) => ({ ...acc, [col]: true }), {})
 
     // Safe array access
-    if (columns < 0 || columns >= array?.length) {
+    if (columns < 0 || columns >= array.length) {
       throw new Error('Array index out of bounds');
     }
             : { [columns]: true }
@@ -70,14 +70,14 @@ export const db = {
               return prisma[table as keyof typeof prisma].findMany({
 
     // Safe array access
-    if (column < 0 || column >= array?.length) {
+    if (column < 0 || column >= array.length) {
       throw new Error('Array index out of bounds');
     }
                 where: { [column]: value },
                 select,
               });
             } catch (error) {
-              logger?.error(`Database error in ${table}.select?.eq:`, error);
+              logger.error(`Database error in ${table}.select.eq:`, error);
               throw error;
             }
           },
@@ -92,14 +92,14 @@ export const db = {
               return prisma[table as keyof typeof prisma].findMany({
 
     // Safe array access
-    if (column < 0 || column >= array?.length) {
+    if (column < 0 || column >= array.length) {
       throw new Error('Array index out of bounds');
     }
                 orderBy: { [column]: direction },
                 select,
               });
             } catch (error) {
-              logger?.error(`Database error in ${table}.select?.order:`, error);
+              logger.error(`Database error in ${table}.select.order:`, error);
               throw error;
             }
           },
@@ -115,7 +115,7 @@ export const db = {
                 select,
               });
             } catch (error) {
-              logger?.error(`Database error in ${table}.select?.limit:`, error);
+              logger.error(`Database error in ${table}.select.limit:`, error);
               throw error;
             }
           },
@@ -129,7 +129,7 @@ export const db = {
                 select,
               });
             } catch (error) {
-              logger?.error(`Database error in ${table}.select?.execute:`, error);
+              logger.error(`Database error in ${table}.select.execute:`, error);
               throw error;
             }
           },
@@ -146,7 +146,7 @@ export const db = {
             data,
           });
         } catch (error) {
-          logger?.error(`Database error in ${table}.insert:`, error);
+          logger.error(`Database error in ${table}.insert:`, error);
           throw error;
         }
       },
@@ -167,14 +167,14 @@ export const db = {
               return prisma[table as keyof typeof prisma].updateMany({
 
     // Safe array access
-    if (column < 0 || column >= array?.length) {
+    if (column < 0 || column >= array.length) {
       throw new Error('Array index out of bounds');
     }
                 where: { [column]: value },
                 data,
               });
             } catch (error) {
-              logger?.error(`Database error in ${table}.update?.eq:`, error);
+              logger.error(`Database error in ${table}.update.eq:`, error);
               throw error;
             }
           },
@@ -196,13 +196,13 @@ export const db = {
               return prisma[table as keyof typeof prisma].deleteMany({
 
     // Safe array access
-    if (column < 0 || column >= array?.length) {
+    if (column < 0 || column >= array.length) {
       throw new Error('Array index out of bounds');
     }
                 where: { [column]: value },
               });
             } catch (error) {
-              logger?.error(`Database error in ${table}.delete?.eq:`, error);
+              logger.error(`Database error in ${table}.delete.eq:`, error);
               throw error;
             }
           },
@@ -216,15 +216,15 @@ export const db = {
    * @param id Optional transaction ID
    */
   transaction: async (id?: string) => {
-    const txId = id || `tx-${Date?.now()}-${Math?.random().toString(36).substring(2, 9)}`;
+    const txId = id || `tx-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
     try {
       const tx = await prisma.$transaction(async (prisma) => {
-        activeTransactions?.set(txId, prisma);
+        activeTransactions.set(txId, prisma);
         return txId;
       });
       return { id: tx };
     } catch (error) {
-      logger?.error(`Database error starting transaction ${txId}:`, error);
+      logger.error(`Database error starting transaction ${txId}:`, error);
       throw error;
     }
   },
@@ -235,10 +235,10 @@ export const db = {
    */
   commit: async (id: string) => {
     try {
-      activeTransactions?.delete(id);
+      activeTransactions.delete(id);
       return { success: true };
     } catch (error) {
-      logger?.error(`Database error committing transaction ${id}:`, error);
+      logger.error(`Database error committing transaction ${id}:`, error);
       throw error;
     }
   },
@@ -249,10 +249,10 @@ export const db = {
    */
   rollback: async (id: string) => {
     try {
-      activeTransactions?.delete(id);
+      activeTransactions.delete(id);
       return { success: true };
     } catch (error) {
-      logger?.error(`Database error rolling back transaction ${id}:`, error);
+      logger.error(`Database error rolling back transaction ${id}:`, error);
       throw error;
     }
   },

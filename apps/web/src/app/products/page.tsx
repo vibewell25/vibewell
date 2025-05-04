@@ -67,31 +67,31 @@ function ProductsContent() {
   useEffect(() => {
     if (searchParams) {
       // Get search term from URL
-      const q = searchParams?.get('q');
+      const q = searchParams.get('q');
       if (q) setSearchTerm(q);
 
       // Get page from URL
-      const page = searchParams?.get('page');
+      const page = searchParams.get('page');
       if (page) setCurrentPage(parseInt(page, 10));
 
       // Get category, brand, etc. filters from URL
-      const category = searchParams?.get('category');
-      const brand = searchParams?.get('brand');
-      const minPrice = searchParams?.get('minPrice');
-      const maxPrice = searchParams?.get('maxPrice');
+      const category = searchParams.get('category');
+      const brand = searchParams.get('brand');
+      const minPrice = searchParams.get('minPrice');
+      const maxPrice = searchParams.get('maxPrice');
 
       const newFilter: ProductFilter = {};
-      if (category) newFilter?.categories = [category];
-      if (brand) newFilter?.brands = [brand];
-      if (minPrice) newFilter?.minPrice = parseFloat(minPrice);
-      if (maxPrice) newFilter?.maxPrice = parseFloat(maxPrice);
+      if (category) newFilter.categories = [category];
+      if (brand) newFilter.brands = [brand];
+      if (minPrice) newFilter.minPrice = parseFloat(minPrice);
+      if (maxPrice) newFilter.maxPrice = parseFloat(maxPrice);
 
       setFilter(newFilter);
 
       // Get sort from URL
-      const sortParam = searchParams?.get('sort');
+      const sortParam = searchParams.get('sort');
       if (sortParam) {
-        const [field, direction] = sortParam?.split('-') as [any, any];
+        const [field, direction] = sortParam.split('-') as [any, any];
         setSort({ field, direction });
       }
     }
@@ -100,23 +100,23 @@ function ProductsContent() {
   // Fetch filter options on component mount
   useEffect(() => {
     async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); fetchFilterOptions() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); fetchFilterOptions() {
       try {
         // Fetch categories and subcategories
-        const { categories, subcategories } = await productService?.getProductCategories();
+        const { categories, subcategories } = await productService.getProductCategories();
         setCategories(categories);
         setSubcategories(subcategories);
 
         // Fetch brands
-        const brands = await productService?.getProductBrands();
+        const brands = await productService.getProductBrands();
         setBrands(brands);
 
         // Fetch tags
-        const tags = await productService?.getProductTags();
+        const tags = await productService.getProductTags();
         setTags(tags);
       } catch (error) {
-        console?.error('Error fetching filter options:', error);
+        console.error('Error fetching filter options:', error);
       }
     }
 
@@ -126,8 +126,8 @@ function ProductsContent() {
   // Fetch products based on filters, sort and pagination
   useEffect(() => {
     async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); fetchProducts() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); fetchProducts() {
       setLoading(true);
       setError(null);
 
@@ -136,7 +136,7 @@ function ProductsContent() {
         const searchFilter = { ...filter, searchTerm: searchTerm || undefined };
 
         // Fetch products
-        const { products, total } = await productService?.searchProducts(
+        const { products, total } = await productService.searchProducts(
           searchFilter,
           sort,
           currentPage,
@@ -146,7 +146,7 @@ function ProductsContent() {
         setProducts(products);
         setTotalProducts(total);
       } catch (error) {
-        console?.error('Error fetching products:', error);
+        console.error('Error fetching products:', error);
         setError('Failed to load products. Please try again later.');
       } finally {
         setLoading(false);
@@ -157,20 +157,20 @@ function ProductsContent() {
   }, [filter, sort, currentPage, limit, searchTerm]);
 
   // Handle search form submission
-  const handleSearch = (e: React?.FormEvent) => {
-    e?.preventDefault();
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
     // Reset to first page when searching
     setCurrentPage(1);
 
     // Update URL
-    const params = new URLSearchParams(searchParams?.toString());
+    const params = new URLSearchParams(searchParams.toString());
     if (searchTerm) {
-      params?.set('q', searchTerm);
+      params.set('q', searchTerm);
     } else {
-      params?.delete('q');
+      params.delete('q');
     }
-    params?.set('page', '1');
-    router?.push(`/products?${params?.toString()}`);
+    params.set('page', '1');
+    router.push(`/products?${params.toString()}`);
   };
 
   // Handle filter changes
@@ -179,46 +179,46 @@ function ProductsContent() {
     setCurrentPage(1); // Reset to first page when filter changes
 
     // Update URL
-    const params = new URLSearchParams(searchParams?.toString());
-    params?.set('page', '1');
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('page', '1');
 
     // Add filter params to URL
-    if (newFilter?.categories && newFilter?.categories.length > 0) {
-      params?.set('category', newFilter?.categories[0]);
+    if (newFilter.categories && newFilter.categories.length > 0) {
+      params.set('category', newFilter.categories[0]);
     } else {
-      params?.delete('category');
+      params.delete('category');
     }
 
-    if (newFilter?.brands && newFilter?.brands.length > 0) {
-      params?.set('brand', newFilter?.brands[0]);
+    if (newFilter.brands && newFilter.brands.length > 0) {
+      params.set('brand', newFilter.brands[0]);
     } else {
-      params?.delete('brand');
+      params.delete('brand');
     }
 
-    if (newFilter?.minPrice) {
-      params?.set('minPrice', newFilter?.minPrice.toString());
+    if (newFilter.minPrice) {
+      params.set('minPrice', newFilter.minPrice.toString());
     } else {
-      params?.delete('minPrice');
+      params.delete('minPrice');
     }
 
-    if (newFilter?.maxPrice) {
-      params?.set('maxPrice', newFilter?.maxPrice.toString());
+    if (newFilter.maxPrice) {
+      params.set('maxPrice', newFilter.maxPrice.toString());
     } else {
-      params?.delete('maxPrice');
+      params.delete('maxPrice');
     }
 
-    router?.push(`/products?${params?.toString()}`);
+    router.push(`/products?${params.toString()}`);
   };
 
   // Handle sort changes
   const handleSortChange = (value: string) => {
-    const [field, direction] = value?.split('-') as [any, any];
+    const [field, direction] = value.split('-') as [any, any];
     setSort({ field, direction });
 
     // Update URL
-    const params = new URLSearchParams(searchParams?.toString());
-    params?.set('sort', value);
-    router?.push(`/products?${params?.toString()}`);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('sort', value);
+    router.push(`/products?${params.toString()}`);
   };
 
   // Handle pagination
@@ -226,11 +226,11 @@ function ProductsContent() {
     setCurrentPage(page);
 
     // Update URL
-    const params = new URLSearchParams(searchParams?.toString());
-    params?.set('page', page?.toString());
-    router?.push(`/products?${params?.toString()}`);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('page', page.toString());
+    router.push(`/products?${params.toString()}`);
 
-    window?.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -242,7 +242,7 @@ function ProductsContent() {
           <Input
             placeholder="Search products..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e?.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="flex-1"
           />
           <Button type="submit" size="icon">
@@ -252,7 +252,7 @@ function ProductsContent() {
 
         <div className="flex items-center gap-2">
           <span className="whitespace-nowrap text-sm">Sort by:</span>
-          <Select value={`${sort?.field}-${sort?.direction}`} onValueChange={handleSortChange}>
+          <Select value={`${sort.field}-${sort.direction}`} onValueChange={handleSortChange}>
             <SelectTrigger className="min-w-[180px]">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
@@ -295,14 +295,14 @@ function ProductsContent() {
             <>
               {/* Results Summary */}
               <div className="mb-4 text-sm text-muted-foreground">
-                Showing {products?.length} of {totalProducts} products
+                Showing {products.length} of {totalProducts} products
               </div>
 
               {/* Products Grid */}
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {loading ? (
                   // Loading skeletons
-                  (Array?.from({ length: limit }).map((_, i) => (
+                  (Array.from({ length: limit }).map((_, i) => (
                     <div key={i} className="space-y-3">
                       <Skeleton className="h-40 w-full rounded-lg" />
                       <Skeleton className="h-4 w-2/3" />
@@ -310,7 +310,7 @@ function ProductsContent() {
                       <Skeleton className="h-4 w-1/3" />
                     </div>
                   )))
-                ) : products?.length === 0 ? (
+                ) : products.length === 0 ? (
                   <div className="col-span-full py-12 text-center">
                     <p className="mb-2 text-xl font-medium">No products found</p>
                     <p className="text-muted-foreground">
@@ -318,7 +318,7 @@ function ProductsContent() {
                     </p>
                   </div>
                 ) : (
-                  products?.map((product) => <ProductCard key={product?.id} product={product} />)
+                  products.map((product) => <ProductCard key={product.id} product={product} />)
                 )}
               </div>
 
@@ -327,7 +327,7 @@ function ProductsContent() {
                 <div className="mt-8 flex justify-center">
                   <Pagination
                     currentPage={currentPage}
-                    totalPages={Math?.ceil(totalProducts / limit)}
+                    totalPages={Math.ceil(totalProducts / limit)}
                     onPageChange={handlePageChange}
                   />
                 </div>

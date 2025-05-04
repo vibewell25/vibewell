@@ -3,15 +3,15 @@ import swaggerJsdoc from 'swagger-jsdoc';
 
 const options = {
   definition: {
-    openapi: '3?.0.0',
+    openapi: '3.0.0',
     info: {
       title: 'Vibewell API Documentation',
-      version: '1?.0.0',
+      version: '1.0.0',
       description: 'API documentation for Vibewell application',
     },
     servers: [
       {
-        url: process?.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+        url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
         description: 'Development server',
       },
     ],

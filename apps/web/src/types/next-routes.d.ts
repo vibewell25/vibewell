@@ -1,6 +1,6 @@
 /**
 
- * Type definitions for Next?.js App Router route handlers
+ * Type definitions for Next.js App Router route handlers
  * This helps TypeScript understand route handlers when imported into test files
  */
 

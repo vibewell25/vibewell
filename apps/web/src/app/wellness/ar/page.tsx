@@ -21,7 +21,7 @@ const ARWellnessPage = () => {
             theme="zen"
             lightingIntensity={1}
             customObjects={[]}
-            onCustomize={(updates) => console?.log('Room customized:', updates)}
+            onCustomize={(updates) => console.log('Room customized:', updates)}
           />
         </div>
       </section>
@@ -36,8 +36,8 @@ const ARWellnessPage = () => {
           <WorkoutFormCorrection
             exerciseType="squat"
             onFormUpdate={(score, feedback) => {
-              console?.log('Form score:', score);
-              console?.log('Feedback:', feedback);
+              console.log('Form score:', score);
+              console.log('Feedback:', feedback);
             }}
           />
         </div>
@@ -55,7 +55,7 @@ const ARWellnessPage = () => {
             soundscape="rain"
             lightingIntensity={1}
             particleEffects={true}
-            onStateChange={(state) => console?.log('Meditation state:', state)}
+            onStateChange={(state) => console.log('Meditation state:', state)}
           />
         </div>
       </section>
@@ -72,8 +72,8 @@ const ARWellnessPage = () => {
             difficulty="beginner"
             showGuideLines={true}
             onPoseUpdate={(score, feedback) => {
-              console?.log('Pose score:', score);
-              console?.log('Feedback:', feedback);
+              console.log('Pose score:', score);
+              console.log('Feedback:', feedback);
             }}
           />
         </div>

@@ -10,17 +10,17 @@ export class BackupCodeService {
 
   static async generateCodes(userId: string): Promise<string[]> {
     // Generate random backup codes
-    const codes = Array?.from({ length: this?.NUM_BACKUP_CODES }, () =>
-      randomBytes(4).toString('hex').slice(0, this?.BACKUP_CODE_LENGTH)
+    const codes = Array.from({ length: this.NUM_BACKUP_CODES }, () =>
+      randomBytes(4).toString('hex').slice(0, this.BACKUP_CODE_LENGTH)
     );
 
     // Hash and store the codes
     await prisma.$transaction(
-      codes?.map(code => 
-        prisma?.backupCode.create({
+      codes.map(code => 
+        prisma.backupCode.create({
           data: {
             userId,
-            code: bcrypt?.hashSync(code, this?.SALT_ROUNDS),
+            code: bcrypt.hashSync(code, this.SALT_ROUNDS),
             used: false
           }
         })
@@ -32,7 +32,7 @@ export class BackupCodeService {
 
   static async verifyCode(userId: string, code: string): Promise<boolean> {
     // Find all unused backup codes for the user
-    const backupCodes = await prisma?.backupCode.findMany({
+    const backupCodes = await prisma.backupCode.findMany({
       where: {
         userId,
         used: false
@@ -42,10 +42,10 @@ export class BackupCodeService {
 
     // Check each code using timing-safe comparison
     for (const backupCode of backupCodes) {
-      if (await bcrypt?.compare(code, backupCode?.code)) {
+      if (await bcrypt.compare(code, backupCode.code)) {
         // Mark the code as used
-        await prisma?.backupCode.update({
-          where: { id: backupCode?.id },
+        await prisma.backupCode.update({
+          where: { id: backupCode.id },
           data: {
             used: true,
             usedAt: new Date()
@@ -59,7 +59,7 @@ export class BackupCodeService {
   }
 
   static async getRemainingCodes(userId: string): Promise<number> {
-    return await prisma?.backupCode.count({
+    return await prisma.backupCode.count({
       where: {
         userId,
         used: false
@@ -68,7 +68,7 @@ export class BackupCodeService {
   }
 
   static async invalidateAllCodes(userId: string): Promise<void> {
-    await prisma?.backupCode.updateMany({
+    await prisma.backupCode.updateMany({
       where: {
         userId,
         used: false
@@ -81,8 +81,8 @@ export class BackupCodeService {
   }
 
   static async shouldGenerateNewCodes(userId: string): Promise<boolean> {
-    const remainingCodes = await this?.getRemainingCodes(userId);
+    const remainingCodes = await this.getRemainingCodes(userId);
 
-    return remainingCodes < this?.NUM_BACKUP_CODES / 2;
+    return remainingCodes < this.NUM_BACKUP_CODES / 2;
   }
 } 

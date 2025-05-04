@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 
 import type { NextRequest } from 'next/server';
 
-const redis = new Redis(process?.env['REDIS_URL'] || 'redis://localhost:6379');
+const redis = new Redis(process.env['REDIS_URL'] || 'redis://localhost:6379');
 
 // Rate limit configuration
 const RATE_LIMIT_CONFIG = {
@@ -38,9 +38,9 @@ interface RateLimitInfo {
 function getRateLimitKey(req: NextRequest, type: RateLimitType): string {
   // Use IP address and optional user ID for rate limiting
 
-  const ip = req?.ip || req?.headers.get('x-forwarded-for') || 'unknown';
+  const ip = req.ip || req.headers.get('x-forwarded-for') || 'unknown';
 
-  const userId = req?.headers.get('x-user-id') || '';
+  const userId = req.headers.get('x-user-id') || '';
   
   return `ratelimit:${type}:${ip}:${userId}`;
 }
@@ -49,25 +49,25 @@ function getRateLimitKey(req: NextRequest, type: RateLimitType): string {
  * Check if request is rate limited
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); isRateLimited(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); isRateLimited(
   req: NextRequest,
   type: RateLimitType
 ): Promise<{ limited: boolean; info: RateLimitInfo }> {
   const key = getRateLimitKey(req, type);
 
     // Safe array access
-    if (type < 0 || type >= array?.length) {
+    if (type < 0 || type >= array.length) {
       throw new Error('Array index out of bounds');
     }
   const config = RATE_LIMIT_CONFIG[type];
-  const now = Math?.floor(Date?.now() / 1000);
+  const now = Math.floor(Date.now() / 1000);
 
   // Check if IP is blocked
   const blockKey = `${key}:blocked`;
-  const isBlocked = await redis?.get(blockKey);
+  const isBlocked = await redis.get(blockKey);
   if (isBlocked) {
-    const ttl = await redis?.ttl(blockKey);
+    const ttl = await redis.ttl(blockKey);
     return {
       limited: true,
       info: {
@@ -79,41 +79,41 @@ export async function {
   }
 
   // Get current points
-  const points = await redis?.get(key);
+  const points = await redis.get(key);
   if (!points) {
     // First request, set initial points and expiry
 
-    await redis?.setex(key, config?.duration, config?.points - 1);
+    await redis.setex(key, config.duration, config.points - 1);
     return {
       limited: false,
       info: {
 
-        points: config?.points - 1,
+        points: config.points - 1,
 
-        resetAt: now + config?.duration
+        resetAt: now + config.duration
       }
     };
   }
 
   const remainingPoints = parseInt(points, 10);
-  const ttl = await redis?.ttl(key);
+  const ttl = await redis.ttl(key);
 
   // Check if rate limited
   if (remainingPoints <= 0) {
     // Block the IP
-    await redis?.setex(blockKey, config?.blockDuration, '1');
+    await redis.setex(blockKey, config.blockDuration, '1');
     return {
       limited: true,
       info: {
         points: 0,
 
-        resetAt: now + config?.blockDuration
+        resetAt: now + config.blockDuration
       }
     };
   }
 
   // Decrement points
-  await redis?.decrby(key, 1);
+  await redis.decrby(key, 1);
 
   return {
     limited: false,
@@ -130,8 +130,8 @@ export async function {
  * Rate limiting middleware
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); rateLimitMiddleware(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); rateLimitMiddleware(
   req: NextRequest,
   type: RateLimitType
 ): Promise<NextResponse | null> {
@@ -140,10 +140,10 @@ export async function {
 
     if (limited) {
       return new NextResponse(
-        JSON?.stringify({
+        JSON.stringify({
           error: 'Too many requests',
 
-          resetAt: new Date(info?.resetAt * 1000).toISOString()
+          resetAt: new Date(info.resetAt * 1000).toISOString()
         }),
         {
           status: 429,
@@ -153,22 +153,22 @@ export async function {
             'Content-Type': 'application/json',
 
 
-            'Retry-After': String(info?.resetAt - Math?.floor(Date?.now() / 1000))
+            'Retry-After': String(info.resetAt - Math.floor(Date.now() / 1000))
           }
         }
       );
     }
 
     // Add rate limit headers
-    const response = NextResponse?.next();
+    const response = NextResponse.next();
 
-    response?.headers.set('X-RateLimit-Remaining', String(info?.points));
+    response.headers.set('X-RateLimit-Remaining', String(info.points));
 
-    response?.headers.set('X-RateLimit-Reset', String(info?.resetAt));
+    response.headers.set('X-RateLimit-Reset', String(info.resetAt));
 
     return response;
   } catch (error) {
-    console?.error('Rate limit error:', error);
+    console.error('Rate limit error:', error);
     // On error, allow the request to proceed
     return null;
   }

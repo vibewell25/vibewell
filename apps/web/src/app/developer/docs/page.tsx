@@ -29,17 +29,17 @@ const examples = {
   "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
   "user": {
     "id": "user_123",
-    "email": "user@example?.com",
+    "email": "user@example.com",
     "name": "John Doe",
     "role": "customer"
   }
 }`,
   userProfile: `{
   "id": "user_123",
-  "email": "user@example?.com",
+  "email": "user@example.com",
   "name": "John Doe",
   "phone": "+1234567890",
-  "profileImage": "https://storage?.vibewell.com/avatars/user_123?.jpg",
+  "profileImage": "https://storage.vibewell.com/avatars/user_123.jpg",
   "role": "customer",
   "preferences": {
     "notifications": {
@@ -65,7 +65,7 @@ const examples = {
   "startTime": "14:00:00",
   "endTime": "15:00:00",
   "status": "confirmed",
-  "price": 75?.00,
+  "price": 75.00,
   "currency": "USD",
   "notes": "Please arrive 10 minutes early",
   "createdAt": "2023-03-20T10:15:00Z"
@@ -84,17 +84,17 @@ const endpoints = [
         path: '/auth/login',
         description: 'Authenticate a user and get JWT tokens',
         requestBody: `{
-  "email": "user@example?.com",
+  "email": "user@example.com",
   "password": "yourpassword"
 }`,
-        responseExample: examples?.auth,
+        responseExample: examples.auth,
       },
       {
         method: 'POST',
         path: '/auth/register',
         description: 'Register a new user account',
         requestBody: `{
-  "email": "user@example?.com",
+  "email": "user@example.com",
   "password": "yourpassword",
   "name": "John Doe"
 }`,
@@ -112,7 +112,7 @@ const endpoints = [
         path: '/auth/password/reset',
         description: 'Request a password reset',
         requestBody: `{
-  "email": "user@example?.com"
+  "email": "user@example.com"
 }`,
       },
     ],
@@ -126,7 +126,7 @@ const endpoints = [
         method: 'GET',
         path: '/users/me',
         description: "Get the current user's profile",
-        responseExample: examples?.userProfile,
+        responseExample: examples.userProfile,
       },
       {
         method: 'PATCH',
@@ -181,7 +181,7 @@ const endpoints = [
   "startTime": "11:00:00",
   "notes": "First-time client"
 }`,
-        responseExample: examples?.booking,
+        responseExample: examples.booking,
       },
       {
         method: 'POST',
@@ -303,17 +303,17 @@ function ApiDocumentationContent() {
 
   // Filter endpoints based on search query
   const filteredEndpoints =
-    searchQuery?.length > 0
+    searchQuery.length > 0
       ? endpoints
           .map((category) => ({
             ...category,
-            endpoints: category?.endpoints.filter(
+            endpoints: category.endpoints.filter(
               (endpoint) =>
-                endpoint?.path.toLowerCase().includes(searchQuery?.toLowerCase()) ||
-                endpoint?.description.toLowerCase().includes(searchQuery?.toLowerCase()),
+                endpoint.path.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                endpoint.description.toLowerCase().includes(searchQuery.toLowerCase()),
             ),
           }))
-          .filter((category) => category?.endpoints.length > 0)
+          .filter((category) => category.endpoints.length > 0)
       : endpoints;
 
   return (
@@ -354,7 +354,7 @@ function ApiDocumentationContent() {
                   placeholder="Search endpoints..."
                   className="w-full rounded-md border py-2 pl-10 pr-4"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e?.target.value)}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
 
@@ -364,7 +364,7 @@ function ApiDocumentationContent() {
                   <div>
                     <span className="text-muted-foreground">Production:</span>
                     <br />
-                    <code className="font-mono">https://api?.vibewell.com/v1</code>
+                    <code className="font-mono">https://api.vibewell.com/v1</code>
                   </div>
                   <div className="mt-2">
                     <span className="text-muted-foreground">Development:</span>
@@ -375,40 +375,40 @@ function ApiDocumentationContent() {
 
                 <div className="mb-2 font-medium">API Endpoints</div>
                 <nav className="mb-4 space-y-1">
-                  {filteredEndpoints?.map((category) => (
-                    <div key={category?.id} className="mb-2">
+                  {filteredEndpoints.map((category) => (
+                    <div key={category.id} className="mb-2">
                       <div className="mb-1 flex items-center text-sm font-medium">
-                        {category?.icon}
-                        <span className="ml-2">{category?.name}</span>
+                        {category.icon}
+                        <span className="ml-2">{category.name}</span>
                       </div>
 
                       <ul className="space-y-1 pl-7">
-                        {category?.endpoints.map((endpoint, index) => (
-                          <li key={`${category?.id}-${index}`}>
+                        {category.endpoints.map((endpoint, index) => (
+                          <li key={`${category.id}-${index}`}>
                             <button
                               className={`hover:text-primary flex w-full items-center py-1 text-left text-sm ${
-                                selectedEndpoint === `${category?.id}-${index}`
+                                selectedEndpoint === `${category.id}-${index}`
                                   ? 'text-primary font-medium'
                                   : 'text-muted-foreground'
                               }`}
-                              onClick={() => setSelectedEndpoint(`${category?.id}-${index}`)}
+                              onClick={() => setSelectedEndpoint(`${category.id}-${index}`)}
                             >
                               <span
                                 className={`inline-block w-12 font-mono ${
-                                  endpoint?.method === 'GET'
+                                  endpoint.method === 'GET'
                                     ? 'text-green-600'
-                                    : endpoint?.method === 'POST'
+                                    : endpoint.method === 'POST'
                                       ? 'text-blue-600'
-                                      : endpoint?.method === 'PATCH'
+                                      : endpoint.method === 'PATCH'
                                         ? 'text-yellow-600'
-                                        : endpoint?.method === 'DELETE'
+                                        : endpoint.method === 'DELETE'
                                           ? 'text-red-600'
                                           : ''
                                 }`}
                               >
-                                {endpoint?.method}
+                                {endpoint.method}
                               </span>
-                              <span className="truncate">{endpoint?.path}</span>
+                              <span className="truncate">{endpoint.path}</span>
                             </button>
                           </li>
                         ))}
@@ -531,19 +531,19 @@ function ApiDocumentationContent() {
 
             {/* Endpoint list and details */}
             <div className="space-y-8">
-              {filteredEndpoints?.map((category) => (
-                <div key={category?.id} className="mb-8">
+              {filteredEndpoints.map((category) => (
+                <div key={category.id} className="mb-8">
                   <h2 className="mb-4 flex items-center text-xl font-bold">
-                    {category?.icon}
-                    <span className="ml-2">{category?.name} API</span>
+                    {category.icon}
+                    <span className="ml-2">{category.name} API</span>
                   </h2>
 
-                  {category?.endpoints.map((endpoint, index) => (
+                  {category.endpoints.map((endpoint, index) => (
                     <div
-                      key={`${category?.id}-${index}`}
-                      id={`${category?.id}-${index}`}
+                      key={`${category.id}-${index}`}
+                      id={`${category.id}-${index}`}
                       className={`mb-4 rounded-md border ${
-                        selectedEndpoint === `${category?.id}-${index}`
+                        selectedEndpoint === `${category.id}-${index}`
                           ? 'border-primary ring-primary ring-1'
                           : ''
                       }`}
@@ -552,49 +552,49 @@ function ApiDocumentationContent() {
                         <div className="mb-2 flex items-center">
                           <span
                             className={`inline-block rounded-md px-2 py-1 text-xs font-medium ${
-                              endpoint?.method === 'GET'
+                              endpoint.method === 'GET'
                                 ? 'bg-green-100 text-green-800'
-                                : endpoint?.method === 'POST'
+                                : endpoint.method === 'POST'
                                   ? 'bg-blue-100 text-blue-800'
-                                  : endpoint?.method === 'PATCH'
+                                  : endpoint.method === 'PATCH'
                                     ? 'bg-yellow-100 text-yellow-800'
-                                    : endpoint?.method === 'DELETE'
+                                    : endpoint.method === 'DELETE'
                                       ? 'bg-red-100 text-red-800'
                                       : ''
                             }`}
                           >
-                            {endpoint?.method}
+                            {endpoint.method}
                           </span>
-                          <span className="ml-2 font-mono">{endpoint?.path}</span>
+                          <span className="ml-2 font-mono">{endpoint.path}</span>
                         </div>
 
-                        <p className="text-muted-foreground">{endpoint?.description}</p>
+                        <p className="text-muted-foreground">{endpoint.description}</p>
                       </div>
 
                       <div className="border-t">
                         <Tabs defaultValue="details">
                           <TabsList className="w-full rounded-none border-b px-4">
                             <TabsTrigger value="details">Details</TabsTrigger>
-                            {endpoint?.requestBody && (
+                            {endpoint.requestBody && (
                               <TabsTrigger value="request">Request</TabsTrigger>
                             )}
-                            {endpoint?.responseExample && (
+                            {endpoint.responseExample && (
                               <TabsTrigger value="response">Response</TabsTrigger>
                             )}
                           </TabsList>
 
                           <TabsContent value="details" className="p-4">
-                            {endpoint?.queryParams && endpoint?.queryParams.length > 0 && (
+                            {endpoint.queryParams && endpoint.queryParams.length > 0 && (
                               <div className="mb-4">
                                 <h4 className="mb-2 font-medium">Query Parameters</h4>
                                 <ul className="space-y-2">
-                                  {endpoint?.queryParams.map((param, i) => (
+                                  {endpoint.queryParams.map((param, i) => (
                                     <li key={i} className="flex">
                                       <span className="min-w-[100px] font-mono text-sm">
-                                        {param?.name}
+                                        {param.name}
                                       </span>
                                       <span className="text-sm text-muted-foreground">
-                                        {param?.description}
+                                        {param.description}
                                       </span>
                                     </li>
                                   ))}
@@ -602,9 +602,9 @@ function ApiDocumentationContent() {
                               </div>
                             )}
 
-                            {endpoint?.notes && (
+                            {endpoint.notes && (
                               <div className="rounded-md bg-muted p-3 text-sm">
-                                <strong>Note:</strong> {endpoint?.notes}
+                                <strong>Note:</strong> {endpoint.notes}
                               </div>
                             )}
 
@@ -617,11 +617,11 @@ function ApiDocumentationContent() {
                             </div>
                           </TabsContent>
 
-                          {endpoint?.requestBody && (
+                          {endpoint.requestBody && (
                             <TabsContent value="request" className="p-4">
                               <h4 className="mb-2 font-medium">Request Body</h4>
                               <div className="overflow-x-auto rounded-md bg-muted p-3 font-mono text-sm">
-                                <pre>{endpoint?.requestBody}</pre>
+                                <pre>{endpoint.requestBody}</pre>
                               </div>
 
                               <div className="mt-4 flex">
@@ -633,11 +633,11 @@ function ApiDocumentationContent() {
                             </TabsContent>
                           )}
 
-                          {endpoint?.responseExample && (
+                          {endpoint.responseExample && (
                             <TabsContent value="response" className="p-4">
                               <h4 className="mb-2 font-medium">Response Example</h4>
                               <div className="overflow-x-auto rounded-md bg-muted p-3 font-mono text-sm">
-                                <pre>{endpoint?.responseExample}</pre>
+                                <pre>{endpoint.responseExample}</pre>
                               </div>
 
                               <div className="mt-4 flex">
@@ -671,7 +671,7 @@ function ApiDocumentationContent() {
               <h3 className="mb-2 mt-4 text-lg font-semibold">Example webhook payload:</h3>
               <pre className="mb-4 rounded-md bg-muted p-3 font-mono text-sm">
                 {`{
-  "event": "booking?.created",
+  "event": "booking.created",
   "timestamp": "2023-03-25T14:20:00Z",
   "data": {
     "bookingId": "booking_123",
@@ -688,35 +688,35 @@ function ApiDocumentationContent() {
               <ul className="mb-4 grid grid-cols-1 gap-2 md:grid-cols-2">
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-                  <code className="font-mono text-sm">booking?.created</code>
+                  <code className="font-mono text-sm">booking.created</code>
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-                  <code className="font-mono text-sm">booking?.confirmed</code>
+                  <code className="font-mono text-sm">booking.confirmed</code>
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-                  <code className="font-mono text-sm">booking?.cancelled</code>
+                  <code className="font-mono text-sm">booking.cancelled</code>
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-                  <code className="font-mono text-sm">booking?.completed</code>
+                  <code className="font-mono text-sm">booking.completed</code>
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-                  <code className="font-mono text-sm">review?.created</code>
+                  <code className="font-mono text-sm">review.created</code>
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-                  <code className="font-mono text-sm">user?.registered</code>
+                  <code className="font-mono text-sm">user.registered</code>
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-                  <code className="font-mono text-sm">payment?.succeeded</code>
+                  <code className="font-mono text-sm">payment.succeeded</code>
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-                  <code className="font-mono text-sm">payment?.failed</code>
+                  <code className="font-mono text-sm">payment.failed</code>
                 </li>
               </ul>
 
@@ -728,7 +728,7 @@ function ApiDocumentationContent() {
             <div className="rounded-md border bg-card p-6">
               <h2 className="mb-4 text-2xl font-bold">API Versioning</h2>
               <p className="mb-4">
-                The API uses URL versioning (e?.g., <code className="font-mono">/v1/users</code>).
+                The API uses URL versioning (e.g., <code className="font-mono">/v1/users</code>).
                 When breaking changes are introduced, a new API version will be released.
               </p>
 

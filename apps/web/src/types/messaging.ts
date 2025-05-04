@@ -109,7 +109,7 @@ export interface MessageAttachment {
   mimeType?: string;
 
   /**
-   * Preview URL for the attachment (e?.g., thumbnail)
+   * Preview URL for the attachment (e.g., thumbnail)
    */
   previewUrl?: string;
 }

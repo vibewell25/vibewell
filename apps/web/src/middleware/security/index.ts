@@ -25,46 +25,46 @@ export const rateLimitConfig: RateLimitConfig = {
  * Check if a request should be rate limited
  *
 
- * @param req - Next?.js request
+ * @param req - Next.js request
  * @returns NextResponse with 429 status if rate limited, null otherwise
  */
 export function checkRateLimit(req: NextRequest): NextResponse | null {
 
 
-  const ip = req?.headers.get('x-forwarded-for') || req?.headers.get('x-real-ip') || 'unknown';
+  const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';
 
-  const now = Date?.now();
+  const now = Date.now();
 
-  const windowStart = now - rateLimitConfig?.windowMs;
+  const windowStart = now - rateLimitConfig.windowMs;
 
   // Clean old entries
-  if (rateLimitStore?.size > 10000) {
+  if (rateLimitStore.size > 10000) {
     // Prevent memory leak
     // Convert to array first to avoid iteration issues
-    Array?.from(rateLimitStore?.entries()).forEach(([key, data]) => {
-      if (data?.timestamp < windowStart) {
-        rateLimitStore?.delete(key);
+    Array.from(rateLimitStore.entries()).forEach(([key, data]) => {
+      if (data.timestamp < windowStart) {
+        rateLimitStore.delete(key);
       }
     });
   }
 
   // Get or create record
-  const record = rateLimitStore?.get(ip) || { count: 0, timestamp: now };
+  const record = rateLimitStore.get(ip) || { count: 0, timestamp: now };
 
   // Reset if window expired
-  if (record?.timestamp < windowStart) {
-    record?.count = 0;
-    record?.timestamp = now;
+  if (record.timestamp < windowStart) {
+    record.count = 0;
+    record.timestamp = now;
   }
 
   // Increment count
-  record?.if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += 1;
-  rateLimitStore?.set(ip, record);
+  record.if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += 1;
+  rateLimitStore.set(ip, record);
 
   // Check if over limit
-  if (record?.count > rateLimitConfig?.max) {
+  if (record.count > rateLimitConfig.max) {
     return new NextResponse(
-      JSON?.stringify({ error: 'Too many requests', message: rateLimitConfig?.message }),
+      JSON.stringify({ error: 'Too many requests', message: rateLimitConfig.message }),
       {
         status: 429,
         headers: {
@@ -73,7 +73,7 @@ export function checkRateLimit(req: NextRequest): NextResponse | null {
           'Content-Type': 'application/json',
 
 
-          'Retry-After': `${Math?.ceil(rateLimitConfig?.windowMs / 1000)}`,
+          'Retry-After': `${Math.ceil(rateLimitConfig.windowMs / 1000)}`,
         },
       },
     );
@@ -84,7 +84,7 @@ export function checkRateLimit(req: NextRequest): NextResponse | null {
 
 // CORS configuration
 export const corsOptions = {
-  origin: process?.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'],
+  origin: process.env.ALLOWED_ORIGINS.split(',') || ['http://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   credentials: true,
 
@@ -94,8 +94,8 @@ export const corsOptions = {
 
 // Security headers middleware
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); securityMiddleware(request: NextRequest) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); securityMiddleware(request: NextRequest) {
   // Check rate limit first
   const rateLimitResponse = checkRateLimit(request);
   if (rateLimitResponse) {
@@ -106,33 +106,33 @@ export async function {
   const csrfResponse = csrfMiddleware(request);
 
   // If CSRF validation failed, return the error response
-  if (csrfResponse?.status !== 200) {
+  if (csrfResponse.status !== 200) {
     return csrfResponse;
   }
 
-  const response = NextResponse?.next();
+  const response = NextResponse.next();
 
   // Security headers
 
 
-  response?.headers.set('X-DNS-Prefetch-Control', 'on');
+  response.headers.set('X-DNS-Prefetch-Control', 'on');
 
 
-  response?.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+  response.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
 
-  response?.headers.set('X-XSS-Protection', '1; mode=block');
+  response.headers.set('X-XSS-Protection', '1; mode=block');
 
-  response?.headers.set('X-Frame-Options', 'SAMEORIGIN');
-
-
-  response?.headers.set('X-Content-Type-Options', 'nosniff');
+  response.headers.set('X-Frame-Options', 'SAMEORIGIN');
 
 
+  response.headers.set('X-Content-Type-Options', 'nosniff');
 
-  response?.headers.set('Referrer-Policy', 'origin-when-cross-origin');
+
+
+  response.headers.set('Referrer-Policy', 'origin-when-cross-origin');
 
   // Content Security Policy
-  response?.headers.set(
+  response.headers.set(
 
     'Content-Security-Policy',
     `
@@ -150,7 +150,7 @@ export async function {
 
     font-src 'self';
 
-    connect-src 'self' ${process?.env.API_URL || ''};
+    connect-src 'self' ${process.env.API_URL || ''};
   `
       .replace(/\s+/g, ' ')
       .trim(),
@@ -164,24 +164,24 @@ export async function {
 import { createCipheriv, createDecipheriv, randomBytes } from 'crypto';
 
 export const fieldEncryption = {
-  encrypt: (text: string, key: string = process?.env.ENCRYPTION_KEY || ''): string => {
+  encrypt: (text: string, key: string = process.env.ENCRYPTION_KEY || ''): string => {
     const iv = randomBytes(16);
 
-    const cipher = createCipheriv('aes-256-cbc', Buffer?.from(key), iv);
-    let encrypted = cipher?.update(text);
-    encrypted = Buffer?.concat([encrypted, cipher?.final()]);
-    return `${iv?.toString('hex')}:${encrypted?.toString('hex')}`;
+    const cipher = createCipheriv('aes-256-cbc', Buffer.from(key), iv);
+    let encrypted = cipher.update(text);
+    encrypted = Buffer.concat([encrypted, cipher.final()]);
+    return `${iv.toString('hex')}:${encrypted.toString('hex')}`;
   },
 
-  decrypt: (text: string, key: string = process?.env.ENCRYPTION_KEY || ''): string => {
-    const [ivHex, encryptedHex] = text?.split(':');
-    const iv = Buffer?.from(ivHex, 'hex');
-    const encrypted = Buffer?.from(encryptedHex, 'hex');
+  decrypt: (text: string, key: string = process.env.ENCRYPTION_KEY || ''): string => {
+    const [ivHex, encryptedHex] = text.split(':');
+    const iv = Buffer.from(ivHex, 'hex');
+    const encrypted = Buffer.from(encryptedHex, 'hex');
 
-    const decipher = createDecipheriv('aes-256-cbc', Buffer?.from(key), iv);
-    let decrypted = decipher?.update(encrypted);
-    decrypted = Buffer?.concat([decrypted, decipher?.final()]);
-    return decrypted?.toString();
+    const decipher = createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
+    let decrypted = decipher.update(encrypted);
+    decrypted = Buffer.concat([decrypted, decipher.final()]);
+    return decrypted.toString();
   },
 };
 

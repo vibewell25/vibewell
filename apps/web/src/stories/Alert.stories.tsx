@@ -113,7 +113,7 @@ export const WithIcon: Story = {
     children: (
       <>
         <svg
-          xmlns="http://www?.w3.org/2000/svg"
+          xmlns="http://www.w3.org/2000/svg"
           width="24"
           height="24"
           viewBox="0 0 24 24"
@@ -124,9 +124,9 @@ export const WithIcon: Story = {
           strokeLinejoin="round"
           className="h-4 w-4"
         >
-          <path d="M10?.29 3?.86L1.82 18a2 2 0 0 0 1?.71 3h16?.94a2 2 0 0 0 1?.71-3L13?.71 3?.86a2 2 0 0 0-3?.42 0z" />
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
           <line x1="12" y1="9" x2="12" y2="13" />
-          <line x1="12" y1="17" x2="12?.01" y2="17" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
         </svg>
         <AlertTitle>With Icon</AlertTitle>
         <AlertDescription>This alert includes an icon for better visibility.</AlertDescription>
@@ -151,10 +151,10 @@ export const WithActions: Story = {
         <AlertDescription>
           Please take action on this alert.
           <div className="mt-4 flex space-x-4">
-            <button className="rounded-md bg-destructive px-3 py-1?.5 text-sm font-medium text-destructive-foreground hover:bg-destructive/90">
+            <button className="rounded-md bg-destructive px-3 py-1.5 text-sm font-medium text-destructive-foreground hover:bg-destructive/90">
               Delete
             </button>
-            <button className="bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-md px-3 py-1?.5 text-sm font-medium">
+            <button className="bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-md px-3 py-1.5 text-sm font-medium">
               Cancel
             </button>
           </div>

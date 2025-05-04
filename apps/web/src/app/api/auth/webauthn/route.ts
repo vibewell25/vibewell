@@ -10,7 +10,7 @@ import { prisma } from '../../../../lib/prisma';
 // Helper to get user ID from session
 async function getUserId(request: Request): Promise<string> {
   const session = await getSession();
-  if (!session?.user?.sub) {
+  if (!session.user.sub) {
     throw new WebAuthnError('Not authenticated', 'NOT_AUTHENTICATED');
   }
   const user = await prisma.user.findUnique({

@@ -9,7 +9,7 @@ import { Suspense } from 'react';
 function BookingsContent() {
   const searchParams = useSearchParams();
   const { user } = useAuth();
-  const bookingId = searchParams?.get('id');
+  const bookingId = searchParams.get('id');
 
   if (!user) {
     return (
@@ -23,8 +23,8 @@ function BookingsContent() {
     return (
       <BookingDetails
         bookingId={bookingId}
-        userId={user?.id}
-        role={user?.role as 'customer' | 'provider'}
+        userId={user.id}
+        role={user.role as 'customer' | 'provider'}
       />
     );
   }
@@ -32,7 +32,7 @@ function BookingsContent() {
   return (
     <div className="container mx-auto py-8">
       <h1 className="mb-8 text-3xl font-bold">My Bookings</h1>
-      <BookingList userId={user?.id} role={user?.role as 'customer' | 'provider'} />
+      <BookingList userId={user.id} role={user.role as 'customer' | 'provider'} />
     </div>
   );
 }

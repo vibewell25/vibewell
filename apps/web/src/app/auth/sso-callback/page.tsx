@@ -12,7 +12,7 @@ export default function SSOCallbackPage() {
   useEffect(() => {
     if (!loading && user) {
       // Redirect to dashboard after successful login
-      router?.push('/dashboard');
+      router.push('/dashboard');
     }
   }, [user, loading, router]);
 
@@ -36,7 +36,7 @@ export default function SSOCallbackPage() {
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
-                xmlns="http://www?.w3.org/2000/svg"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   strokeLinecap="round"
@@ -50,7 +50,7 @@ export default function SSOCallbackPage() {
               Sign in successful! Redirecting to your dashboard...
             </p>
             <Button
-              onClick={() => router?.push('/dashboard')}
+              onClick={() => router.push('/dashboard')}
               className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
             >
               Go to Dashboard
@@ -64,7 +64,7 @@ export default function SSOCallbackPage() {
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
-                xmlns="http://www?.w3.org/2000/svg"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   strokeLinecap="round"
@@ -78,7 +78,7 @@ export default function SSOCallbackPage() {
               There was a problem with your sign-in. Please try again.
             </p>
             <Button
-              onClick={() => router?.push('/auth/login')}
+              onClick={() => router.push('/auth/login')}
               className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
             >
               Return to Login

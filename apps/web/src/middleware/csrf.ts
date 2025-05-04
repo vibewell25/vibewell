@@ -36,7 +36,7 @@ const { generateToken, doubleCsrfProtection } = doubleCsrf({
     if (headerToken) return headerToken;
     
     // For multipart form data and traditional form submissions
-    const formToken = (req.body as any)?.['csrf-token'];
+    const formToken = (req.body as any).['csrf-token'];
     if (formToken) return formToken;
     
     // Last resort - URL query parameter (least secure, but sometimes necessary)

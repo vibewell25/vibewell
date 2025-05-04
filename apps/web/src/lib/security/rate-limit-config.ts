@@ -49,36 +49,36 @@ export const rateLimits: Record<string, RateLimitConfig> = {
 export const rateLimiters = new Map<string, RateLimiterRedis>();
 
 // Initialize rate limiters
-Object?.entries(rateLimits).forEach(([key, config]) => {
-  rateLimiters?.set(
+Object.entries(rateLimits).forEach(([key, config]) => {
+  rateLimiters.set(
     key,
     new RateLimiterRedis({
       storeClient: redisClient,
       keyPrefix: `ratelimit:${key}:`,
-      points: config?.points,
-      duration: config?.duration,
-      blockDuration: config?.blockDuration,
+      points: config.points,
+      duration: config.duration,
+      blockDuration: config.blockDuration,
     }),
   );
 });
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); checkRateLimit(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); checkRateLimit(
   key: string,
   identifier: string,
 ): Promise<{ success: boolean; remainingPoints?: number; msBeforeNext?: number }> {
-  const limiter = rateLimiters?.get(key);
+  const limiter = rateLimiters.get(key);
   if (!limiter) {
     return { success: true }; // No rate limit defined
   }
 
   try {
-    const rateLimitResult = await limiter?.consume(identifier);
+    const rateLimitResult = await limiter.consume(identifier);
     return {
       success: true,
-      remainingPoints: rateLimitResult?.remainingPoints,
-      msBeforeNext: rateLimitResult?.msBeforeNext,
+      remainingPoints: rateLimitResult.remainingPoints,
+      msBeforeNext: rateLimitResult.msBeforeNext,
     };
   } catch (error) {
     if (error instanceof Error) {
@@ -95,7 +95,7 @@ export async function {
 export function getRateLimitInfo(key: string): RateLimitConfig | undefined {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
   return rateLimits[key];

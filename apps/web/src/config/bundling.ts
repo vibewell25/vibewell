@@ -26,8 +26,8 @@ const PRIORITY = {
 export const splitChunksConfig: NonNullable<Configuration['optimization']>['splitChunks'] = {
   chunks: 'all',
   maxInitialRequests: 25,
-  minSize: CHUNK_SIZE_THRESHOLDS?.MIN,
-  maxSize: CHUNK_SIZE_THRESHOLDS?.MAX,
+  minSize: CHUNK_SIZE_THRESHOLDS.MIN,
+  maxSize: CHUNK_SIZE_THRESHOLDS.MAX,
   hidePathInfo: true, // Reduces bundle size by removing path info
   automaticNameDelimiter: '-',
   cacheGroups: {
@@ -40,7 +40,7 @@ export const splitChunksConfig: NonNullable<Configuration['optimization']>['spli
 
 
       test: /[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription)[\\/]/,
-      priority: PRIORITY?.FRAMEWORK,
+      priority: PRIORITY.FRAMEWORK,
       enforce: true,
       reuseExistingChunk: true,
     },
@@ -48,7 +48,7 @@ export const splitChunksConfig: NonNullable<Configuration['optimization']>['spli
       chunks: 'all',
       name: 'nextjs',
       test: /[\\/]node_modules[\\/](next|@next)[\\/]/,
-      priority: PRIORITY?.NEXTJS,
+      priority: PRIORITY.NEXTJS,
       enforce: true,
       reuseExistingChunk: true,
     },
@@ -60,7 +60,7 @@ export const splitChunksConfig: NonNullable<Configuration['optimization']>['spli
       test: /[\\/]node_modules[\\/](@mui|@emotion|@headlessui|@radix-ui|framer-motion|@chakra-ui|@material-ui)[\\/]/,
 
       name: 'ui-lib',
-      priority: PRIORITY?.UI,
+      priority: PRIORITY.UI,
       enforce: true,
       reuseExistingChunk: true,
     },
@@ -70,7 +70,7 @@ export const splitChunksConfig: NonNullable<Configuration['optimization']>['spli
       test: /[\\/]node_modules[\\/](@tanstack|swr|zustand|react-query|react-hook-form|@apollo|graphql)[\\/]/,
 
       name: 'data-lib',
-      priority: PRIORITY?.DATA,
+      priority: PRIORITY.DATA,
       enforce: true,
       reuseExistingChunk: true,
     },
@@ -78,7 +78,7 @@ export const splitChunksConfig: NonNullable<Configuration['optimization']>['spli
 
       test: /[\\/]node_modules[\\/](lodash|date-fns|zod|yup|formik|ramda|moment|axios|qs)[\\/]/,
       name: 'utils',
-      priority: PRIORITY?.UTILS,
+      priority: PRIORITY.UTILS,
       enforce: true,
       reuseExistingChunk: true,
     },
@@ -87,7 +87,7 @@ export const splitChunksConfig: NonNullable<Configuration['optimization']>['spli
       test: /[\\/]node_modules[\\/](@segment|@amplitude|@google-analytics|@sentry)[\\/]/,
       name: 'analytics',
 
-      priority: PRIORITY?.UTILS - 1,
+      priority: PRIORITY.UTILS - 1,
       enforce: true,
       reuseExistingChunk: true,
     },
@@ -95,20 +95,20 @@ export const splitChunksConfig: NonNullable<Configuration['optimization']>['spli
       chunks: 'all',
       name: 'commons',
       test: /[\\/]node_modules[\\/]/,
-      priority: PRIORITY?.COMMONS,
+      priority: PRIORITY.COMMONS,
       minChunks: 2,
       reuseExistingChunk: true,
     },
     lib: {
       test(module: any): boolean {
-        return (module?.size() > CHUNK_SIZE_THRESHOLDS?.LARGE && /node_modules[/\\]/.test(module?.identifier()));
+        return (module.size() > CHUNK_SIZE_THRESHOLDS.LARGE && /node_modules[/\\]/.test(module.identifier()));
       },
       name(module: any): string {
-        const hash = crypto?.createHash('sha1');
-        hash?.update(module?.identifier());
-        return 'lib-' + hash?.digest('hex').substring(0, 8);
+        const hash = crypto.createHash('sha1');
+        hash.update(module.identifier());
+        return 'lib-' + hash.digest('hex').substring(0, 8);
       },
-      priority: PRIORITY?.LIB,
+      priority: PRIORITY.LIB,
       minChunks: 1,
       reuseExistingChunk: true,
     },
@@ -117,19 +117,19 @@ export const splitChunksConfig: NonNullable<Configuration['optimization']>['spli
       test: /\.(css|scss|sass)$/,
       chunks: 'all',
       enforce: true,
-      priority: PRIORITY?.STYLES,
+      priority: PRIORITY.STYLES,
     },
     routes: {
       test: /[\\/]src[\\/]pages[\\/]/,
       name: 'routes',
-      priority: PRIORITY?.ROUTES,
+      priority: PRIORITY.ROUTES,
       enforce: true,
       reuseExistingChunk: true,
     },
     components: {
       test: /[\\/]src[\\/]components[\\/]/,
       name: 'components',
-      priority: PRIORITY?.COMPONENTS,
+      priority: PRIORITY.COMPONENTS,
       enforce: true,
       reuseExistingChunk: true,
       minSize: 10000,
@@ -137,13 +137,13 @@ export const splitChunksConfig: NonNullable<Configuration['optimization']>['spli
     shared: {
       chunks: 'async',
       name(module: any, chunks: any[]): string {
-        const hash = crypto?.createHash('sha1');
-        chunks?.forEach((chunk) => {
-          hash?.update(chunk?.name || '');
+        const hash = crypto.createHash('sha1');
+        chunks.forEach((chunk) => {
+          hash.update(chunk.name || '');
         });
-        return 'shared-' + hash?.digest('hex').substring(0, 8);
+        return 'shared-' + hash.digest('hex').substring(0, 8);
       },
-      priority: PRIORITY?.SHARED,
+      priority: PRIORITY.SHARED,
       minChunks: 2,
       reuseExistingChunk: true,
     },

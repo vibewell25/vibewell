@@ -3,31 +3,31 @@ import { PushNotificationProvider } from '../../providers/push-notification-prov
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 // Mock Firebase services
-vi?.mock('firebase/app', () => ({
-  initializeApp: vi?.fn(() => ({})),
+vi.mock('firebase/app', () => ({
+  initializeApp: vi.fn(() => ({})),
 }));
 
-vi?.mock('firebase/messaging', () => ({
-  getMessaging: vi?.fn(() => ({})),
-  getToken: vi?.fn(() => Promise?.resolve('mock-token')),
-  onMessage: vi?.fn((_, callback) => {
+vi.mock('firebase/messaging', () => ({
+  getMessaging: vi.fn(() => ({})),
+  getToken: vi.fn(() => Promise.resolve('mock-token')),
+  onMessage: vi.fn((_, callback) => {
     // Store callback for tests to trigger
     (global as any).firebaseMessageCallback = callback;
   }),
 }));
 
 // Mock the fetch API
-global?.fetch = vi?.fn(() =>
-  Promise?.resolve({
+global.fetch = vi.fn(() =>
+  Promise.resolve({
     ok: true,
-    json: () => Promise?.resolve({ success: true }),
+    json: () => Promise.resolve({ success: true }),
   }),
 ) as unknown as typeof fetch;
 
 // Mock the Notification API
 class NotificationMock {
   static permission = 'default';
-  static requestPermission = vi?.fn(() => Promise?.resolve('granted'));
+  static requestPermission = vi.fn(() => Promise.resolve('granted'));
 
   constructor(
     public title: string,
@@ -35,15 +35,15 @@ class NotificationMock {
   ) {}
 
   onclick: () => void = () => {};
-  close = vi?.fn();
+  close = vi.fn();
 }
 
 (global as any).Notification = NotificationMock;
 
 describe('PushNotificationProvider', () => {
   beforeEach(() => {
-    vi?.clearAllMocks();
-    (global as any).Notification?.permission = 'default';
+    vi.clearAllMocks();
+    (global as any).Notification.permission = 'default';
   });
 
   it('renders its children', () => {
@@ -53,7 +53,7 @@ describe('PushNotificationProvider', () => {
       </PushNotificationProvider>,
     );
 
-    expect(screen?.getByTestId('test-child')).toBeInTheDocument();
+    expect(screen.getByTestId('test-child')).toBeInTheDocument();
   });
 
   it('requests notification permission when triggered', async () => {
@@ -63,7 +63,7 @@ describe('PushNotificationProvider', () => {
           onClick={() => {
             // Access the provider's context in a real implementation
             // For test, we'll just directly call the global method
-            Notification?.requestPermission();
+            Notification.requestPermission();
           }}
         >
           Request Permission
@@ -71,18 +71,18 @@ describe('PushNotificationProvider', () => {
       </PushNotificationProvider>,
     );
 
-    fireEvent?.click(getByText('Request Permission'));
+    fireEvent.click(getByText('Request Permission'));
 
     await waitFor(() => {
-      expect(Notification?.requestPermission).toHaveBeenCalled();
+      expect(Notification.requestPermission).toHaveBeenCalled();
     });
   });
 
   it('shows a notification', async () => {
-    (global as any).Notification?.permission = 'granted';
+    (global as any).Notification.permission = 'granted';
 
     const oldNotification = (global as any).Notification;
-    const mockNotification = vi?.fn();
+    const mockNotification = vi.fn();
     (global as any).Notification = mockNotification;
 
     render(
@@ -104,7 +104,7 @@ describe('PushNotificationProvider', () => {
     await waitFor(() => {
       expect(mockNotification).toHaveBeenCalledWith(
         'Test Notification',
-        expect?.objectContaining({
+        expect.objectContaining({
           body: 'This is a test notification',
         }),
       );
@@ -115,7 +115,7 @@ describe('PushNotificationProvider', () => {
   });
 
   it('saves token to the database after permission is granted', async () => {
-    (global as any).Notification?.permission = 'granted';
+    (global as any).Notification.permission = 'granted';
 
     render(
       <PushNotificationProvider>
@@ -126,10 +126,10 @@ describe('PushNotificationProvider', () => {
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith(
         '/api/notifications/register-device',
-        expect?.objectContaining({
+        expect.objectContaining({
           method: 'POST',
-          headers: expect?.any(Object),
-          body: expect?.stringContaining('token'),
+          headers: expect.any(Object),
+          body: expect.stringContaining('token'),
         }),
       );
     });

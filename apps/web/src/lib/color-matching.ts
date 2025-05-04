@@ -20,17 +20,17 @@ export class ColorMatchingService {
    * Analyzes skin tone from an image region
    */
   public async analyzeSkinTone(imageData: ImageData): Promise<{
-    tone: keyof typeof ColorMatchingService?.SKIN_TONE_RANGES;
+    tone: keyof typeof ColorMatchingService.SKIN_TONE_RANGES;
     undertone: 'warm' | 'cool' | 'neutral';
   }> {
-    const lab = await ColorUtils?.rgbToLab(imageData);
+    const lab = await ColorUtils.rgbToLab(imageData);
     const { L, a, b } = lab;
 
     // Determine skin tone based on lightness
-    let tone: keyof typeof ColorMatchingService?.SKIN_TONE_RANGES = 'medium';
-    for (const [key, range] of Object?.entries(ColorMatchingService?.SKIN_TONE_RANGES)) {
-      if (L >= range?.minL && L <= range?.maxL) {
-        tone = key as keyof typeof ColorMatchingService?.SKIN_TONE_RANGES;
+    let tone: keyof typeof ColorMatchingService.SKIN_TONE_RANGES = 'medium';
+    for (const [key, range] of Object.entries(ColorMatchingService.SKIN_TONE_RANGES)) {
+      if (L >= range.minL && L <= range.maxL) {
+        tone = key as keyof typeof ColorMatchingService.SKIN_TONE_RANGES;
         break;
       }
     }
@@ -52,17 +52,17 @@ export class ColorMatchingService {
    * Matches foundation shades to skin tone
    */
   public async matchFoundation(
-    skinTone: keyof typeof ColorMatchingService?.SKIN_TONE_RANGES,
+    skinTone: keyof typeof ColorMatchingService.SKIN_TONE_RANGES,
     undertone: string,
     availableShades: string[],
   ): Promise<ColorMatch[]> {
     const matches: ColorMatch[] = [];
 
     for (const shade of availableShades) {
-      const lab = await ColorUtils?.hexToLab(shade);
-      const matchScore = this?.calculateMatchScore(skinTone, undertone, lab);
+      const lab = await ColorUtils.hexToLab(shade);
+      const matchScore = this.calculateMatchScore(skinTone, undertone, lab);
 
-      matches?.push({
+      matches.push({
         matchScore,
         colorHex: shade,
         undertone: undertone as 'warm' | 'cool' | 'neutral',
@@ -70,7 +70,7 @@ export class ColorMatchingService {
     }
 
 
-    return matches?.sort((a, b) => b?.matchScore - a?.matchScore);
+    return matches.sort((a, b) => b.matchScore - a.matchScore);
   }
 
   /**
@@ -81,38 +81,38 @@ export class ColorMatchingService {
     makeupColor: string,
     opacity: number,
   ): Promise<string> {
-    const base = await ColorUtils?.hexToRgb(baseColor);
-    const makeup = await ColorUtils?.hexToRgb(makeupColor);
+    const base = await ColorUtils.hexToRgb(baseColor);
+    const makeup = await ColorUtils.hexToRgb(makeupColor);
 
     const blended = {
 
-      r: Math?.round(base?.r * (1 - opacity) + makeup?.r * opacity),
+      r: Math.round(base.r * (1 - opacity) + makeup.r * opacity),
 
-      g: Math?.round(base?.g * (1 - opacity) + makeup?.g * opacity),
+      g: Math.round(base.g * (1 - opacity) + makeup.g * opacity),
 
-      b: Math?.round(base?.b * (1 - opacity) + makeup?.b * opacity),
+      b: Math.round(base.b * (1 - opacity) + makeup.b * opacity),
     };
 
-    return ColorUtils?.rgbToHex(blended);
+    return ColorUtils.rgbToHex(blended);
   }
 
   private calculateMatchScore(
-    skinTone: keyof typeof ColorMatchingService?.SKIN_TONE_RANGES,
+    skinTone: keyof typeof ColorMatchingService.SKIN_TONE_RANGES,
     undertone: string,
     lab: { L: number; a: number; b: number },
   ): number {
 
     // Safe array access
-    if (skinTone < 0 || skinTone >= array?.length) {
+    if (skinTone < 0 || skinTone >= array.length) {
       throw new Error('Array index out of bounds');
     }
-    const range = ColorMatchingService?.SKIN_TONE_RANGES[skinTone];
+    const range = ColorMatchingService.SKIN_TONE_RANGES[skinTone];
 
-    const lightnessDiff = Math?.abs((range?.maxL + range?.minL) / 2 - lab?.L);
+    const lightnessDiff = Math.abs((range.maxL + range.minL) / 2 - lab.L);
 
     // Calculate undertone match (a and b values in Lab color space)
     const undertoneMatch =
-      undertone === 'warm' ? lab?.a > 0 : undertone === 'cool' ? lab?.a < 0 : Math?.abs(lab?.a) < 2;
+      undertone === 'warm' ? lab.a > 0 : undertone === 'cool' ? lab.a < 0 : Math.abs(lab.a) < 2;
 
     // Weighted scoring
 
@@ -121,6 +121,6 @@ export class ColorMatchingService {
 
 
 
-    return lightnessScore * 0?.7 + undertoneScore * 0?.3; // 70% lightness, 30% undertone
+    return lightnessScore * 0.7 + undertoneScore * 0.3; // 70% lightness, 30% undertone
   }
 }

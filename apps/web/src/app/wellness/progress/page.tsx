@@ -48,26 +48,26 @@ export default function ProgressPage() {
   // Handle saving edits to a goal
   const handleSaveEdit = (editedGoal: Omit<Goal, 'id' | 'current' | 'status'>) => {
     if (goalToEdit) {
-      updateGoal(goalToEdit?.id, {
+      updateGoal(goalToEdit.id, {
         ...editedGoal,
         // Keep the current value and status from the original goal
-        current: goalToEdit?.current,
-        status: goalToEdit?.status,
+        current: goalToEdit.current,
+        status: goalToEdit.status,
       });
       setGoalToEdit(undefined);
     }
   };
   // Handle deleting a goal
   const handleDeleteGoal = (goalId: string) => {
-    const goal = goals?.find((g) => g?.id === goalId);
+    const goal = goals.find((g) => g.id === goalId);
     if (goal) {
-      setGoalToDelete({ id: goal?.id, title: goal?.title });
+      setGoalToDelete({ id: goal.id, title: goal.title });
     }
   };
   // Handle confirming goal deletion
   const handleConfirmDelete = () => {
     if (goalToDelete) {
-      deleteGoal(goalToDelete?.id);
+      deleteGoal(goalToDelete.id);
       setGoalToDelete(null);
     }
   };
@@ -119,7 +119,7 @@ export default function ProgressPage() {
               className="btn-primary flex items-center gap-1"
               onClick={() => setShowGoalCreationModal(true)}
             >
-              <Icons?.PlusIcon className="h-5 w-5" />
+              <Icons.PlusIcon className="h-5 w-5" />
               New Goal
             </button>
           </div>
@@ -180,7 +180,7 @@ export default function ProgressPage() {
             {/* Chart type selector */}
             <div className="mb-6 flex flex-wrap gap-3">
               <button
-                className={`rounded-full px-3 py-1?.5 text-sm ${
+                className={`rounded-full px-3 py-1.5 text-sm ${
                   selectedType === 'meditation'
                     ? 'bg-purple-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
@@ -190,7 +190,7 @@ export default function ProgressPage() {
                 Meditation
               </button>
               <button
-                className={`rounded-full px-3 py-1?.5 text-sm ${
+                className={`rounded-full px-3 py-1.5 text-sm ${
                   selectedType === 'workout'
                     ? 'bg-pink-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
@@ -200,7 +200,7 @@ export default function ProgressPage() {
                 Workout
               </button>
               <button
-                className={`rounded-full px-3 py-1?.5 text-sm ${
+                className={`rounded-full px-3 py-1.5 text-sm ${
                   selectedType === 'water'
                     ? 'bg-blue-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
@@ -210,7 +210,7 @@ export default function ProgressPage() {
                 Water
               </button>
               <button
-                className={`rounded-full px-3 py-1?.5 text-sm ${
+                className={`rounded-full px-3 py-1.5 text-sm ${
                   selectedType === 'sleep'
                     ? 'bg-indigo-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
@@ -220,7 +220,7 @@ export default function ProgressPage() {
                 Sleep
               </button>
               <button
-                className={`rounded-full px-3 py-1?.5 text-sm ${
+                className={`rounded-full px-3 py-1.5 text-sm ${
                   selectedType === 'steps'
                     ? 'bg-green-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
@@ -284,11 +284,11 @@ export default function ProgressPage() {
                     <span className="mb-1 block text-xl">🧘‍♂️</span>
                     <p className="font-medium">Meditation</p>
                     <p className="mt-1 text-2xl font-bold">
-                      {summary?.thisWeekProgress.meditation} min
+                      {summary.thisWeekProgress.meditation} min
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      {summary?.improvement.meditation > 0 ? '+' : ''}
-                      {summary?.improvement.meditation}% vs last week
+                      {summary.improvement.meditation > 0 ? '+' : ''}
+                      {summary.improvement.meditation}% vs last week
                     </p>
                   </div>
                 </div>
@@ -297,11 +297,11 @@ export default function ProgressPage() {
                     <span className="mb-1 block text-xl">🏋️‍♂️</span>
                     <p className="font-medium">Workout</p>
                     <p className="mt-1 text-2xl font-bold">
-                      {summary?.thisWeekProgress.workout} min
+                      {summary.thisWeekProgress.workout} min
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      {summary?.improvement.workout > 0 ? '+' : ''}
-                      {summary?.improvement.workout}% vs last week
+                      {summary.improvement.workout > 0 ? '+' : ''}
+                      {summary.improvement.workout}% vs last week
                     </p>
                   </div>
                 </div>
@@ -310,11 +310,11 @@ export default function ProgressPage() {
                     <span className="mb-1 block text-xl">💧</span>
                     <p className="font-medium">Water</p>
                     <p className="mt-1 text-2xl font-bold">
-                      {summary?.thisWeekProgress.water} glasses
+                      {summary.thisWeekProgress.water} glasses
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      {summary?.improvement.water > 0 ? '+' : ''}
-                      {summary?.improvement.water}% vs last week
+                      {summary.improvement.water > 0 ? '+' : ''}
+                      {summary.improvement.water}% vs last week
                     </p>
                   </div>
                 </div>
@@ -323,11 +323,11 @@ export default function ProgressPage() {
                     <span className="mb-1 block text-xl">😴</span>
                     <p className="font-medium">Sleep</p>
                     <p className="mt-1 text-2xl font-bold">
-                      {summary?.thisWeekProgress.sleep?.toFixed(1)} hrs
+                      {summary.thisWeekProgress.sleep.toFixed(1)} hrs
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      {summary?.improvement.sleep > 0 ? '+' : ''}
-                      {summary?.improvement.sleep}% vs last week
+                      {summary.improvement.sleep > 0 ? '+' : ''}
+                      {summary.improvement.sleep}% vs last week
                     </p>
                   </div>
                 </div>
@@ -347,7 +347,7 @@ export default function ProgressPage() {
           isOpen={!!goalToDelete}
           onClose={() => setGoalToDelete(null)}
           onConfirm={handleConfirmDelete}
-          itemName={goalToDelete?.title || ''}
+          itemName={goalToDelete.title || ''}
           itemType="goal"
         />
       </div>

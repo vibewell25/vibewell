@@ -3,21 +3,38 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "ui/*": ["../../packages/ui/*"],
-      "services/*": ["../../packages/services/*"],
-      "types/*": ["../../packages/types/*"],
-      "config/*": ["../../packages/config/*"],
-      "test-utils/*": ["../../packages/test-utils/*"]
+      "@/*": [
+        "src/*"
+      ],
+      "ui/*": [
+        "../../packages/ui/*"
+      ],
+      "services/*": [
+        "../../packages/services/*"
+      ],
+      "types/*": [
+        "../../packages/types/*"
+      ],
+      "config/*": [
+        "../../packages/config/*"
+      ],
+      "test-utils/*": [
+        "../../packages/test-utils/*"
+      ],
+      "@vibewell/services-types": [
+        "../../packages/services-types/src"
+      ]
     }
   },
   "include": [
+    "../../packages/services-types/src/**/*.ts",
+    "../../packages/types/**/*.d.ts",
     "next-env.d.ts",
     "src/**/*",
-    "../../packages/types/**/*.d.ts"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
     ".next"
   ]
-} 
+}

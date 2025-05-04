@@ -11,20 +11,20 @@ const initialState: NotificationState = {
 };
 
 // Action types
-const FETCH_NOTIFICATIONS_START = process?.env['FETCH_NOTIFICATIONS_START'];
-const FETCH_NOTIFICATIONS_SUCCESS = process?.env['FETCH_NOTIFICATIONS_SUCCESS'];
-const FETCH_NOTIFICATIONS_ERROR = process?.env['FETCH_NOTIFICATIONS_ERROR'];
-const ADD_NOTIFICATION = process?.env['ADD_NOTIFICATION'];
-const MARK_AS_READ = process?.env['MARK_AS_READ'];
-const DELETE_NOTIFICATION = process?.env['DELETE_NOTIFICATION'];
-const MARK_ALL_AS_READ = process?.env['MARK_ALL_AS_READ'];
+const FETCH_NOTIFICATIONS_START = process.env['FETCH_NOTIFICATIONS_START'];
+const FETCH_NOTIFICATIONS_SUCCESS = process.env['FETCH_NOTIFICATIONS_SUCCESS'];
+const FETCH_NOTIFICATIONS_ERROR = process.env['FETCH_NOTIFICATIONS_ERROR'];
+const ADD_NOTIFICATION = process.env['ADD_NOTIFICATION'];
+const MARK_AS_READ = process.env['MARK_AS_READ'];
+const DELETE_NOTIFICATION = process.env['DELETE_NOTIFICATION'];
+const MARK_ALL_AS_READ = process.env['MARK_ALL_AS_READ'];
 
 // Reducer
 const notificationReducer = (
   state: NotificationState,
   action: NotificationAction,
 ): NotificationState => {
-  switch (action?.type) {
+  switch (action.type) {
     case FETCH_NOTIFICATIONS_START:
       return {
         ...state,
@@ -34,8 +34,8 @@ const notificationReducer = (
     case FETCH_NOTIFICATIONS_SUCCESS:
       return {
         ...state,
-        notifications: action?.payload.notifications,
-        unreadCount: action?.payload.notifications?.filter((n: Notification) => !n?.isRead).length,
+        notifications: action.payload.notifications,
+        unreadCount: action.payload.notifications.filter((n: Notification) => !n.isRead).length,
         isLoading: false,
         error: null,
       };
@@ -43,34 +43,34 @@ const notificationReducer = (
       return {
         ...state,
         isLoading: false,
-        error: action?.payload.error,
+        error: action.payload.error,
       };
     case ADD_NOTIFICATION:
       return {
         ...state,
-        notifications: [action?.payload.notification, ...state?.notifications],
-        unreadCount: state?.unreadCount + 1,
+        notifications: [action.payload.notification, ...state.notifications],
+        unreadCount: state.unreadCount + 1,
       };
     case MARK_AS_READ:
       return {
         ...state,
-        notifications: state?.notifications.map((n) =>
-          n?.id === action?.payload.id ? { ...n, isRead: true } : n,
+        notifications: state.notifications.map((n) =>
+          n.id === action.payload.id ? { ...n, isRead: true } : n,
         ),
-        unreadCount: Math?.max(0, state?.unreadCount - 1),
+        unreadCount: Math.max(0, state.unreadCount - 1),
       };
     case DELETE_NOTIFICATION:
       return {
         ...state,
-        notifications: state?.notifications.filter((n) => n?.id !== action?.payload.id),
-        unreadCount: state?.notifications.find((n) => n?.id === action?.payload.id && !n?.isRead)
-          ? Math?.max(0, state?.unreadCount - 1)
-          : state?.unreadCount,
+        notifications: state.notifications.filter((n) => n.id !== action.payload.id),
+        unreadCount: state.notifications.find((n) => n.id === action.payload.id && !n.isRead)
+          ? Math.max(0, state.unreadCount - 1)
+          : state.unreadCount,
       };
     case MARK_ALL_AS_READ:
       return {
         ...state,
-        notifications: state?.notifications.map((n) => ({ ...n, isRead: true })),
+        notifications: state.notifications.map((n) => ({ ...n, isRead: true })),
         unreadCount: 0,
       };
     default:

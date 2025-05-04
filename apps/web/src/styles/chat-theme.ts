@@ -53,7 +53,7 @@ export const chatTheme = {
     },
     message: {
       fontSize: 14,
-      lineHeight: 1?.5,
+      lineHeight: 1.5,
     },
     input: {
       fontSize: 14,
@@ -61,7 +61,7 @@ export const chatTheme = {
   },
   animation: {
 
-    transition: 'all 0?.2s ease-in-out',
+    transition: 'all 0.2s ease-in-out',
     loading: {
       duration: '1s',
 
@@ -71,8 +71,8 @@ export const chatTheme = {
   shadows: {
 
 
-    chat: '0 4px 6px -1px rgba(0, 0, 0, 0?.1), 0 2px 4px -1px rgba(0, 0, 0, 0?.06)',
-    message: '0 1px 2px 0 rgba(0, 0, 0, 0?.05)',
+    chat: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+    message: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
   },
   zIndex: {
     chat: 50,
@@ -83,32 +83,32 @@ export const chatTheme = {
 export const muiTheme = createTheme({
   palette: {
     primary: {
-      main: chatTheme?.colors.primary?.main,
-      light: chatTheme?.colors.primary?.light,
-      dark: chatTheme?.colors.primary?.dark,
+      main: chatTheme.colors.primary.main,
+      light: chatTheme.colors.primary.light,
+      dark: chatTheme.colors.primary.dark,
     },
     background: {
-      default: chatTheme?.colors.background?.default,
-      paper: chatTheme?.colors.background?.paper,
+      default: chatTheme.colors.background.default,
+      paper: chatTheme.colors.background.paper,
     },
     text: {
-      primary: chatTheme?.colors.text?.primary,
-      secondary: chatTheme?.colors.text?.secondary,
+      primary: chatTheme.colors.text.primary,
+      secondary: chatTheme.colors.text.secondary,
     },
     error: {
-      main: chatTheme?.colors.error?.main,
-      light: chatTheme?.colors.error?.light,
+      main: chatTheme.colors.error.main,
+      light: chatTheme.colors.error.light,
     },
   },
   typography: {
-    fontFamily: chatTheme?.typography.fontFamily,
-    fontSize: chatTheme?.typography.fontSize,
+    fontFamily: chatTheme.typography.fontFamily,
+    fontSize: chatTheme.typography.fontSize,
   },
   components: {
     MuiCircularProgress: {
       styleOverrides: {
         root: {
-          color: chatTheme?.colors.primary?.main,
+          color: chatTheme.colors.primary.main,
         },
       },
     },
@@ -116,8 +116,8 @@ export const muiTheme = createTheme({
       styleOverrides: {
         root: {
           textTransform: 'none',
-          borderRadius: chatTheme?.spacing.message?.borderRadius,
-          transition: chatTheme?.animation.transition,
+          borderRadius: chatTheme.spacing.message.borderRadius,
+          transition: chatTheme.animation.transition,
         },
       },
     },

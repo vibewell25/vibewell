@@ -20,7 +20,7 @@ export default function GettingStartedGuides() {
     {
       id: 'account-setup',
       title: 'Creating Your Account',
-      icon: <Icons?.UserCircleIcon className="h-6 w-6" />,
+      icon: <Icons.UserCircleIcon className="h-6 w-6" />,
       description: 'Learn how to create and set up your Vibewell account, verify your email, and configure important security settings.',
       path: '/help/getting-started/account-setup',
       timeToRead: '5 min',
@@ -28,7 +28,7 @@ export default function GettingStartedGuides() {
     {
       id: 'profile-setup',
       title: 'Setting Up Your Profile',
-      icon: <Icons?.UserCircleIcon className="h-6 w-6" />,
+      icon: <Icons.UserCircleIcon className="h-6 w-6" />,
       description: 'Complete your profile with wellness goals, preferences, and customize your experience on Vibewell.',
       path: '/help/getting-started/profile-setup',
       timeToRead: '4 min',
@@ -36,7 +36,7 @@ export default function GettingStartedGuides() {
     {
       id: 'navigation',
       title: 'Navigating the App',
-      icon: <Icons?.DevicePhoneMobileIcon className="h-6 w-6" />,
+      icon: <Icons.DevicePhoneMobileIcon className="h-6 w-6" />,
       description: 'An overview of the Vibewell interface, main features, and how to navigate between different sections.',
       path: '/help/getting-started/navigation',
       timeToRead: '6 min',
@@ -44,7 +44,7 @@ export default function GettingStartedGuides() {
     {
       id: 'notification-setup',
       title: 'Setting Up Notifications',
-      icon: <Icons?.BellAlertIcon className="h-6 w-6" />,
+      icon: <Icons.BellAlertIcon className="h-6 w-6" />,
       description: 'Configure your notification preferences for appointments, wellness reminders, and app updates.',
       path: '/help/getting-started/notification-setup',
       timeToRead: '3 min',
@@ -52,7 +52,7 @@ export default function GettingStartedGuides() {
     {
       id: 'privacy-settings',
       title: 'Privacy & Security Settings',
-      icon: <Icons?.LockClosedIcon className="h-6 w-6" />,
+      icon: <Icons.LockClosedIcon className="h-6 w-6" />,
       description: 'Manage your privacy settings, learn about data protection, and set up two-factor authentication.',
       path: '/help/getting-started/privacy-settings',
       timeToRead: '7 min',
@@ -60,7 +60,7 @@ export default function GettingStartedGuides() {
     {
       id: 'preferences',
       title: 'Customizing Your Preferences',
-      icon: <Icons?.CogIcon className="h-6 w-6" />,
+      icon: <Icons.CogIcon className="h-6 w-6" />,
       description: 'Personalize your app experience by setting content preferences, theme options, and language settings.',
       path: '/help/getting-started/preferences',
       timeToRead: '4 min',
@@ -80,18 +80,18 @@ export default function GettingStartedGuides() {
           <ol className="flex items-center space-x-1">
             <li>
               <Link href="/" className="text-muted-foreground hover:text-foreground">
-                <Icons?.HomeIcon className="h-4 w-4" />
+                <Icons.HomeIcon className="h-4 w-4" />
                 <span className="sr-only">Home</span>
               </Link>
             </li>
             <li className="flex items-center">
-              <Icons?.ChevronRightIcon className="h-4 w-4 text-muted-foreground" />
+              <Icons.ChevronRightIcon className="h-4 w-4 text-muted-foreground" />
               <Link href="/help" className="ml-1 text-muted-foreground hover:text-foreground">
                 Help Center
               </Link>
             </li>
             <li className="flex items-center">
-              <Icons?.ChevronRightIcon className="h-4 w-4 text-muted-foreground" />
+              <Icons.ChevronRightIcon className="h-4 w-4 text-muted-foreground" />
               <span className="ml-1">Getting Started</span>
             </li>
           </ol>
@@ -99,7 +99,7 @@ export default function GettingStartedGuides() {
         <div className="mb-12">
           <div className="bg-gradient-to-r from-primary/10 to-primary/5 p-8 rounded-lg">
             <div className="flex items-center mb-4">
-              <Icons?.BookOpenIcon className="h-8 w-8 text-primary mr-3" />
+              <Icons.BookOpenIcon className="h-8 w-8 text-primary mr-3" />
               <h1 className="text-3xl font-bold">Getting Started with Vibewell</h1>
             </div>
             <p className="text-lg max-w-3xl mb-6">
@@ -109,7 +109,7 @@ export default function GettingStartedGuides() {
             <Button className="bg-primary hover:bg-primary/90" asChild>
               <Link href="/help/getting-started/account-setup" className="flex items-center">
                 Start with Account Setup
-                <Icons?.ArrowRightIcon className="h-4 w-4 ml-2" />
+                <Icons.ArrowRightIcon className="h-4 w-4 ml-2" />
               </Link>
             </Button>
           </div>
@@ -119,30 +119,30 @@ export default function GettingStartedGuides() {
           <div className="lg:col-span-2">
             <h2 className="text-2xl font-bold mb-6">All Getting Started Guides</h2>
             <div className="space-y-4">
-              {articles?.map((article) => (
+              {articles.map((article) => (
                 <Link 
-                  key={article?.id}
-                  href={article?.path}
+                  key={article.id}
+                  href={article.path}
                   className="block bg-card rounded-lg border p-6 hover:shadow-md transition-all"
                 >
                   <div className="flex items-start">
                     <div className="mr-4 p-2 bg-primary/10 rounded-md text-primary">
-                      {article?.icon}
+                      {article.icon}
                     </div>
                     <div className="flex-1">
                       <div className="flex justify-between items-start mb-2">
-                        <h3 className="text-xl font-semibold">{article?.title}</h3>
+                        <h3 className="text-xl font-semibold">{article.title}</h3>
                         <span className="text-sm text-muted-foreground">
-                          {article?.timeToRead} read
+                          {article.timeToRead} read
                         </span>
                       </div>
                       <p className="text-muted-foreground mb-3">
-                        {article?.description}
+                        {article.description}
                       </p>
                       <div className="flex justify-end">
                         <span className="text-primary flex items-center text-sm font-medium">
                           Read article
-                          <Icons?.ArrowRightIcon className="h-3 w-3 ml-1" />
+                          <Icons.ArrowRightIcon className="h-3 w-3 ml-1" />
                         </span>
                       </div>
                     </div>
@@ -218,21 +218,21 @@ export default function GettingStartedGuides() {
             <div className="bg-card rounded-lg border p-6">
               <h2 className="text-xl font-bold mb-4">Most Popular</h2>
               <ul className="space-y-4">
-                {popularArticles?.map((article) => (
-                  <li key={article?.id}>
+                {popularArticles.map((article) => (
+                  <li key={article.id}>
                     <Link 
-                      href={article?.path}
+                      href={article.path}
                       className="flex items-start group"
                     >
-                      <div className="mr-3 p-1?.5 bg-muted rounded-md text-muted-foreground group-hover:text-primary transition-colors">
-                        {article?.icon}
+                      <div className="mr-3 p-1.5 bg-muted rounded-md text-muted-foreground group-hover:text-primary transition-colors">
+                        {article.icon}
                       </div>
                       <div>
                         <h3 className="font-medium group-hover:text-primary transition-colors">
-                          {article?.title}
+                          {article.title}
                         </h3>
                         <p className="text-sm text-muted-foreground">
-                          {article?.timeToRead} read
+                          {article.timeToRead} read
                         </p>
                       </div>
                     </Link>

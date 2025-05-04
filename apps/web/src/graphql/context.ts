@@ -15,8 +15,8 @@ export interface GraphQLContext {
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); createContext({ req, res }): Promise<GraphQLContext> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); createContext({ req, res }): Promise<GraphQLContext> {
   // Get the user's session based on the request
   const session = await getServerSession(authOptions);
 
@@ -24,9 +24,9 @@ export async function {
   let user = null;
 
   // If the user is logged in, get their record from the database
-  if (session?.user?.id) {
-    user = await prisma?.user.findUnique({
-      where: { id: session?.user.id },
+  if (session.user.id) {
+    user = await prisma.user.findUnique({
+      where: { id: session.user.id },
     });
   }
 

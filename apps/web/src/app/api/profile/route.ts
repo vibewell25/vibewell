@@ -6,8 +6,8 @@ import { requireAuth, getUserId } from '@/lib/auth-helpers';
 import { prisma } from '@/lib/prisma';
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); GET(req: NextRequest) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); GET(req: NextRequest) {
   const session = await requireAuth(req);
   if (session instanceof NextResponse) {
     return session;
@@ -15,7 +15,7 @@ export async function {
 
   try {
     const userId = getUserId(session);
-    const profile = await prisma?.userProfile.findUnique({
+    const profile = await prisma.userProfile.findUnique({
       where: { userId },
       include: {
         preferences: true,
@@ -25,7 +25,7 @@ export async function {
 
     if (!profile) {
       return new NextResponse(
-        JSON?.stringify({ error: 'Profile not found' }),
+        JSON.stringify({ error: 'Profile not found' }),
 
 
         { status: 404, headers: { 'Content-Type': 'application/json' } }
@@ -33,15 +33,15 @@ export async function {
     }
 
     return new NextResponse(
-      JSON?.stringify(profile),
+      JSON.stringify(profile),
 
 
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console?.error('Error fetching profile:', error);
+    console.error('Error fetching profile:', error);
     return new NextResponse(
-      JSON?.stringify({ error: 'Internal Server Error' }),
+      JSON.stringify({ error: 'Internal Server Error' }),
 
 
       { status: 500, headers: { 'Content-Type': 'application/json' } }
@@ -50,8 +50,8 @@ export async function {
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); PUT(req: NextRequest) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); PUT(req: NextRequest) {
   const session = await requireAuth(req);
   if (session instanceof NextResponse) {
     return session;
@@ -59,9 +59,9 @@ export async function {
 
   try {
     const userId = getUserId(session);
-    const data = await req?.json();
+    const data = await req.json();
 
-    const updatedProfile = await prisma?.userProfile.update({
+    const updatedProfile = await prisma.userProfile.update({
       where: { userId },
       data,
       include: {
@@ -71,15 +71,15 @@ export async function {
     });
 
     return new NextResponse(
-      JSON?.stringify(updatedProfile),
+      JSON.stringify(updatedProfile),
 
 
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console?.error('Error updating profile:', error);
+    console.error('Error updating profile:', error);
     return new NextResponse(
-      JSON?.stringify({ error: 'Internal Server Error' }),
+      JSON.stringify({ error: 'Internal Server Error' }),
 
 
       { status: 500, headers: { 'Content-Type': 'application/json' } }

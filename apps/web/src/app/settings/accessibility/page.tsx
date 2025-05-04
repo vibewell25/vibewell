@@ -34,10 +34,10 @@ export default function AccessibilitySettingsPage() {
               If you encounter any accessibility issues or have suggestions for improvement, please
               contact us at{' '}
               <a
-                href="mailto:accessibility@vibewell?.com"
+                href="mailto:accessibility@vibewell.com"
                 className="text-primary font-medium underline underline-offset-4"
               >
-                accessibility@vibewell?.com
+                accessibility@vibewell.com
               </a>
               .
             </p>

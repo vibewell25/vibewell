@@ -22,24 +22,24 @@ interface SkinAnalysisResult {
 }
 
 export class SkinAnalysisService {
-  private model: tf?.LayersModel | null = null;
+  private model: tf.LayersModel | null = null;
 
-  private readonly MODEL_PATH = '/models/skin_analysis/model?.json';
+  private readonly MODEL_PATH = '/models/skin_analysis/model.json';
   private readonly IMAGE_SIZE = 224; // Input size for the model
 
   constructor() {
-    this?.initializeModel();
+    this.initializeModel();
   }
 
   /**
-   * Initializes the TensorFlow?.js model
+   * Initializes the TensorFlow.js model
    */
   private async initializeModel(): Promise<void> {
     try {
-      this?.model = await tf?.loadLayersModel(this?.MODEL_PATH);
-      logger?.info('Skin analysis model loaded successfully', 'SkinAnalysis');
+      this.model = await tf.loadLayersModel(this.MODEL_PATH);
+      logger.info('Skin analysis model loaded successfully', 'SkinAnalysis');
     } catch (error) {
-      logger?.error('Failed to load skin analysis model', 'SkinAnalysis', { error });
+      logger.error('Failed to load skin analysis model', 'SkinAnalysis', { error });
       throw error;
     }
   }
@@ -49,24 +49,24 @@ export class SkinAnalysisService {
    */
   public async analyzeSkin(imageData: ImageData): Promise<SkinAnalysisResult> {
     try {
-      if (!this?.model) {
+      if (!this.model) {
         throw new Error('Model not initialized');
       }
 
       // Preprocess image
-      const tensor = await this?.preprocessImage(imageData);
+      const tensor = await this.preprocessImage(imageData);
 
       // Run inference
-      const predictions = (await this?.model.predict(tensor)) as tf?.Tensor;
-      const results = await this?.processResults(predictions);
+      const predictions = (await this.model.predict(tensor)) as tf.Tensor;
+      const results = await this.processResults(predictions);
 
       // Cleanup
-      tensor?.dispose();
-      predictions?.dispose();
+      tensor.dispose();
+      predictions.dispose();
 
       return results;
     } catch (error) {
-      logger?.error('Failed to analyze skin', 'SkinAnalysis', { error });
+      logger.error('Failed to analyze skin', 'SkinAnalysis', { error });
       throw error;
     }
   }
@@ -74,18 +74,18 @@ export class SkinAnalysisService {
   /**
    * Preprocesses image for model input
    */
-  private async preprocessImage(imageData: ImageData): Promise<tf?.Tensor4D> {
-    return tf?.tidy(() => {
+  private async preprocessImage(imageData: ImageData): Promise<tf.Tensor4D> {
+    return tf.tidy(() => {
       // Convert ImageData to tensor
-      const tensor = tf?.browser
+      const tensor = tf.browser
         .fromPixels(imageData)
         // Resize
-        .resizeBilinear([this?.IMAGE_SIZE, this?.IMAGE_SIZE])
+        .resizeBilinear([this.IMAGE_SIZE, this.IMAGE_SIZE])
         // Normalize to [-1, 1]
         .toFloat()
-        .sub(127?.5)
-        .div(127?.5)
-        .expandDims(0) as tf?.Tensor4D; // Explicitly cast to Tensor4D
+        .sub(127.5)
+        .div(127.5)
+        .expandDims(0) as tf.Tensor4D; // Explicitly cast to Tensor4D
 
       return tensor;
     });
@@ -94,16 +94,16 @@ export class SkinAnalysisService {
   /**
    * Processes model predictions
    */
-  private async processResults(predictions: tf?.Tensor): Promise<SkinAnalysisResult> {
-    const [skinTypeProbs, concernProbs, healthScore] = await Promise?.all([
-      predictions?.slice([0, 0], [1, 4]).data(), // Skin type
-      predictions?.slice([0, 4], [1, 10]).data(), // Concerns
-      predictions?.slice([0, 14], [1, 1]).data(), // Overall health
+  private async processResults(predictions: tf.Tensor): Promise<SkinAnalysisResult> {
+    const [skinTypeProbs, concernProbs, healthScore] = await Promise.all([
+      predictions.slice([0, 0], [1, 4]).data(), // Skin type
+      predictions.slice([0, 4], [1, 10]).data(), // Concerns
+      predictions.slice([0, 14], [1, 1]).data(), // Overall health
     ]);
 
     // Determine skin type
     const skinTypes = ['dry', 'oily', 'combination', 'normal'] as const;
-    const skinType = skinTypes[tf?.argMax(skinTypeProbs).dataSync()[0]];
+    const skinType = skinTypes[tf.argMax(skinTypeProbs).dataSync()[0]];
 
     // Process concerns
     const concernTypes = [
@@ -120,18 +120,18 @@ export class SkinAnalysisService {
         type,
 
     // Safe array access
-    if (i < 0 || i >= array?.length) {
+    if (i < 0 || i >= array.length) {
       throw new Error('Array index out of bounds');
     }
         severity: concernProbs[i],
 
-        confidence: concernProbs[i + concernTypes?.length],
+        confidence: concernProbs[i + concernTypes.length],
         regions: [], // Would be populated by a separate detection model
       }))
-      .filter((concern) => concern?.confidence > 0?.5);
+      .filter((concern) => concern.confidence > 0.5);
 
     // Generate recommendations
-    const recommendations = await this?.generateRecommendations(skinType, concerns, healthScore[0]);
+    const recommendations = await this.generateRecommendations(skinType, concerns, healthScore[0]);
 
     return {
       skinType,
@@ -161,33 +161,33 @@ export class SkinAnalysisService {
     // Product recommendations based on skin type
     switch (skinType) {
       case 'dry':
-        recommendations?.products.push('Hydrating cleanser', 'Rich moisturizer', 'Facial oil');
+        recommendations.products.push('Hydrating cleanser', 'Rich moisturizer', 'Facial oil');
         break;
       case 'oily':
 
-        recommendations?.products.push('Oil-free cleanser', 'Light moisturizer', 'Clay mask');
+        recommendations.products.push('Oil-free cleanser', 'Light moisturizer', 'Clay mask');
         break;
       case 'combination':
 
-        recommendations?.products.push('Balanced cleanser', 'Zone-specific moisturizer', 'Toner');
+        recommendations.products.push('Balanced cleanser', 'Zone-specific moisturizer', 'Toner');
         break;
       case 'normal':
-        recommendations?.products.push('Gentle cleanser', 'Daily moisturizer', 'Sunscreen');
+        recommendations.products.push('Gentle cleanser', 'Daily moisturizer', 'Sunscreen');
         break;
     }
 
     // Treatment recommendations based on concerns
     for (const concern of concerns) {
-      if (concern?.severity > 0?.7) {
-        switch (concern?.type) {
+      if (concern.severity > 0.7) {
+        switch (concern.type) {
           case 'acne':
-            recommendations?.treatments.push('Salicylic acid treatment');
+            recommendations.treatments.push('Salicylic acid treatment');
             break;
           case 'wrinkles':
-            recommendations?.treatments.push('Retinol treatment');
+            recommendations.treatments.push('Retinol treatment');
             break;
           case 'pigmentation':
-            recommendations?.treatments.push('Vitamin C serum');
+            recommendations.treatments.push('Vitamin C serum');
             break;
           // Add more cases for other concerns
         }
@@ -195,8 +195,8 @@ export class SkinAnalysisService {
     }
 
     // Lifestyle recommendations based on overall health
-    if (healthScore < 0?.6) {
-      recommendations?.lifestyle.push(
+    if (healthScore < 0.6) {
+      recommendations.lifestyle.push(
         'Increase water intake',
         'Improve sleep quality',
         'Protect from sun exposure',
@@ -210,9 +210,9 @@ export class SkinAnalysisService {
    * Cleanup resources
    */
   public dispose(): void {
-    if (this?.model) {
-      this?.model.dispose();
-      this?.model = null;
+    if (this.model) {
+      this.model.dispose();
+      this.model = null;
     }
   }
 }

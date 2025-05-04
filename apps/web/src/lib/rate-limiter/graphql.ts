@@ -21,47 +21,47 @@ export function createGraphQLRateLimiter(options: RateLimitOptions = {}) {
   };
 
   return async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); graphqlRateLimiter(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); graphqlRateLimiter(
     context: GraphQLContext,
     fieldName: string,
   ): Promise<void> {
     // Skip rate limiting if specified
-    if (mergedOptions?.skip && mergedOptions?.skip({ context, fieldName })) {
+    if (mergedOptions.skip && mergedOptions.skip({ context, fieldName })) {
       return;
     }
 
     // Get identifier from IP in context
-    const keyPrefix = mergedOptions?.keyPrefix || DEFAULT_OPTIONS?.keyPrefix!;
-    const identifier = `${keyPrefix}graphql:${fieldName}:${context?.ip}`;
+    const keyPrefix = mergedOptions.keyPrefix || DEFAULT_OPTIONS.keyPrefix!;
+    const identifier = `${keyPrefix}graphql:${fieldName}:${context.ip}`;
 
     // Check rate limit
     const useRedis = shouldUseRedis();
     const result = await checkRateLimit(identifier, mergedOptions, useRedis);
 
     // Log the rate limit event
-    await logRateLimitEvent(identifier, fieldName, 'GRAPHQL', 'graphql', result, context?.userId);
+    await logRateLimitEvent(identifier, fieldName, 'GRAPHQL', 'graphql', result, context.userId);
 
     // If over limit, throw GraphQL error
-    if (!result?.success) {
-      const message = mergedOptions?.message || DEFAULT_OPTIONS?.message!;
-      const errorMessage = typeof message === 'string' ? message : JSON?.stringify(message);
+    if (!result.success) {
+      const message = mergedOptions.message || DEFAULT_OPTIONS.message!;
+      const errorMessage = typeof message === 'string' ? message : JSON.stringify(message);
 
       throw new GraphQLError(errorMessage, {
         extensions: {
           code: 'RATE_LIMITED',
           http: {
-            status: mergedOptions?.statusCode || DEFAULT_OPTIONS?.statusCode!,
+            status: mergedOptions.statusCode || DEFAULT_OPTIONS.statusCode!,
             headers: {
 
-              'Retry-After': String(result?.retryAfter || 60),
+              'Retry-After': String(result.retryAfter || 60),
 
-              'X-RateLimit-Limit': String(result?.limit),
+              'X-RateLimit-Limit': String(result.limit),
 
-              'X-RateLimit-Remaining': String(result?.remaining),
+              'X-RateLimit-Remaining': String(result.remaining),
 
 
-              'X-RateLimit-Reset': String(Math?.ceil(result?.resetTime / 1000)),
+              'X-RateLimit-Reset': String(Math.ceil(result.resetTime / 1000)),
             },
           },
         },
@@ -83,8 +83,8 @@ export function createGraphQLRateLimitMiddleware(options: RateLimitOptions = {})
           try {
             // Skip introspection queries
             if (
-              operation?.selectionSet.selections?.some((selection: any) => {
-                return selection?.name.value === '__schema' || selection?.name.value === '__type';
+              operation.selectionSet.selections.some((selection: any) => {
+                return selection.name.value === '__schema' || selection.name.value === '__type';
               })
             ) {
               return;
@@ -95,7 +95,7 @@ export function createGraphQLRateLimitMiddleware(options: RateLimitOptions = {})
           } catch (error) {
 
             // Log error but don't re-throw to allow the GraphQL error to be properly formatted
-            logger?.error(`GraphQL rate limit error: ${error}`, 'graphql', { error });
+            logger.error(`GraphQL rate limit error: ${error}`, 'graphql', { error });
           }
         },
       };
@@ -115,8 +115,8 @@ export function withGraphQLRateLimit(
   const rateLimiter = createGraphQLRateLimiter(options);
 
   return async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); rateLimit(...args: any[]) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); rateLimit(...args: any[]) {
     const [, , context] = args;
 
     // Apply rate limiting
@@ -136,22 +136,22 @@ export function calculateComplexity(operation: any): number {
   let complexity = 0;
 
   function countSelections(selectionSet: any, depth = 0): void {
-    if (!selectionSet || !selectionSet?.selections) return;
+    if (!selectionSet || !selectionSet.selections) return;
 
-    for (const selection of selectionSet?.selections) {
+    for (const selection of selectionSet.selections) {
       // Each field adds to complexity, with deeper fields adding more
       if (complexity > Number.MAX_SAFE_INTEGER || complexity < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); complexity += 1 + depth;
 
       // Recurse into nested selections
-      if (selection?.selectionSet) {
+      if (selection.selectionSet) {
 
-        countSelections(selection?.selectionSet, depth + 1);
+        countSelections(selection.selectionSet, depth + 1);
       }
     }
   }
 
-  if (operation && operation?.selectionSet) {
-    countSelections(operation?.selectionSet);
+  if (operation && operation.selectionSet) {
+    countSelections(operation.selectionSet);
   }
 
   return complexity;

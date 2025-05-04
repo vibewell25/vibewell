@@ -23,7 +23,7 @@ export default function ResponsiveTestPage() {
     setTouchEvents((prev) => {
       const updated = [gesture, ...prev];
       // Keep only the last 5 events
-      return updated?.slice(0, 5);
+      return updated.slice(0, 5);
     });
   };
 
@@ -80,15 +80,15 @@ export default function ResponsiveTestPage() {
 
             <TouchHandler
               onGesture={(gesture) => {
-                if (gesture?.type === 'swipe' && gesture?.direction) {
-                  handleGesture('Swipe', gesture?.direction);
-                } else if (gesture?.type === 'pinch' && gesture?.scale) {
-                  handleGesture('Pinch', `scale ${gesture?.scale.toFixed(2)}`);
-                } else if (gesture?.type === 'rotate' && gesture?.rotation) {
-                  handleGesture('Rotate', `${gesture?.rotation.toFixed(0)}°`);
-                } else if (gesture?.type === 'tap') {
+                if (gesture.type === 'swipe' && gesture.direction) {
+                  handleGesture('Swipe', gesture.direction);
+                } else if (gesture.type === 'pinch' && gesture.scale) {
+                  handleGesture('Pinch', `scale ${gesture.scale.toFixed(2)}`);
+                } else if (gesture.type === 'rotate' && gesture.rotation) {
+                  handleGesture('Rotate', `${gesture.rotation.toFixed(0)}°`);
+                } else if (gesture.type === 'tap') {
                   handleGesture('Tap');
-                } else if (gesture?.type === 'longpress') {
+                } else if (gesture.type === 'longpress') {
                   handleGesture('Long Press');
                 }
               }}
@@ -102,9 +102,9 @@ export default function ResponsiveTestPage() {
 
             <div>
               <h3 className="mb-2 font-medium">Recent Touch Events:</h3>
-              {touchEvents?.length > 0 ? (
+              {touchEvents.length > 0 ? (
                 <ul className="list-disc space-y-1 pl-5">
-                  {touchEvents?.map((event, index) => (
+                  {touchEvents.map((event, index) => (
                     <li key={index}>{event}</li>
                   ))}
                 </ul>
@@ -120,9 +120,9 @@ export default function ResponsiveTestPage() {
 
             <div className="overflow-hidden rounded-lg">
               <ResponsiveImage
-                src="https://images?.unsplash.com/photo-1607437817193-1892a4f1b1ec?w=1200"
-                mobileSrc="https://images?.unsplash.com/photo-1607437817193-1892a4f1b1ec?w=400"
-                tabletSrc="https://images?.unsplash.com/photo-1607437817193-1892a4f1b1ec?w=800"
+                src="https://images.unsplash.com/photo-1607437817193-1892a4f1b1ec?w=1200"
+                mobileSrc="https://images.unsplash.com/photo-1607437817193-1892a4f1b1ec?w=400"
+                tabletSrc="https://images.unsplash.com/photo-1607437817193-1892a4f1b1ec?w=800"
                 alt="Responsive test image"
                 width={1200}
                 height={800}

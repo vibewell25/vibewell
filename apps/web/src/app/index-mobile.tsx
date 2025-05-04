@@ -11,7 +11,7 @@ export default function MobileHomePage() {
         <div className="relative h-[65vh]">
           <div className="absolute inset-0">
             <Image
-              src="https://placehold?.co/500x800?text=Beauty+Model"
+              src="https://placehold.co/500x800?text=Beauty+Model"
               alt="Beauty and wellness"
               fill
               className="object-cover"

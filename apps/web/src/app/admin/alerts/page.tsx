@@ -66,7 +66,7 @@ function AlertsContent() {
     product_id: '',
     metric: 'rating',
     condition: 'above',
-    threshold: 3?.5,
+    threshold: 3.5,
     notification_methods: ['email'],
   });
 
@@ -78,55 +78,55 @@ function AlertsContent() {
   useEffect(() => {
     if (editingAlert) {
       setFormState({
-        name: editingAlert?.name,
-        description: editingAlert?.description || '',
-        is_active: editingAlert?.is_active,
-        product_id: editingAlert?.product_id,
-        metric: editingAlert?.metric,
-        condition: editingAlert?.condition,
-        threshold: editingAlert?.threshold,
-        notification_methods: editingAlert?.notification_methods,
+        name: editingAlert.name,
+        description: editingAlert.description || '',
+        is_active: editingAlert.is_active,
+        product_id: editingAlert.product_id,
+        metric: editingAlert.metric,
+        condition: editingAlert.condition,
+        threshold: editingAlert.threshold,
+        notification_methods: editingAlert.notification_methods,
       });
     }
   }, [editingAlert]);
 
   const fetchAlerts = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setIsLoading(true);
     try {
       const alertService = new AlertService();
-      const alertsData = await alertService?.getAllAlerts();
+      const alertsData = await alertService.getAllAlerts();
       setAlerts(alertsData);
     } catch (err) {
       setError('Failed to fetch alerts');
-      console?.error(err);
+      console.error(err);
     } finally {
       setIsLoading(false);
     }
   };
 
   const fetchProducts = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const productService = new ProductService();
-      const productsData = await productService?.getProducts(1, 50);
-      setProducts(productsData?.products);
+      const productsData = await productService.getProducts(1, 50);
+      setProducts(productsData.products);
     } catch (err) {
-      console?.error('Failed to fetch products:', err);
+      console.error('Failed to fetch products:', err);
     }
   };
 
   const handleCreateAlert = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const alertService = new AlertService();
-      if (editingAlert && editingAlert?.id) {
-        await alertService?.updateAlert(editingAlert?.id, formState as AlertThreshold);
+      if (editingAlert && editingAlert.id) {
+        await alertService.updateAlert(editingAlert.id, formState as AlertThreshold);
       } else {
-        await alertService?.createAlert(formState as AlertThreshold);
+        await alertService.createAlert(formState as AlertThreshold);
       }
       setShowDialog(false);
       setEditingAlert(null);
@@ -134,40 +134,40 @@ function AlertsContent() {
       fetchAlerts();
     } catch (err) {
       setError('Failed to save alert');
-      console?.error(err);
+      console.error(err);
     }
   };
 
   const handleDeleteAlert = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');alertId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');alertId: string) => {
     if (confirm('Are you sure you want to delete this alert?')) {
       try {
         const alertService = new AlertService();
-        await alertService?.deleteAlert(alertId);
+        await alertService.deleteAlert(alertId);
         fetchAlerts();
       } catch (err) {
         setError('Failed to delete alert');
-        console?.error(err);
+        console.error(err);
       }
     }
   };
 
   const handleToggleAlert = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');alert: AlertThreshold) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');alert: AlertThreshold) => {
     try {
       const alertService = new AlertService();
-      if (alert?.id) {
-        await alertService?.updateAlert(alert?.id, {
+      if (alert.id) {
+        await alertService.updateAlert(alert.id, {
           ...alert,
-          is_active: !alert?.is_active,
+          is_active: !alert.is_active,
         });
         fetchAlerts();
       }
     } catch (err) {
       setError('Failed to update alert');
-      console?.error(err);
+      console.error(err);
     }
   };
 
@@ -179,7 +179,7 @@ function AlertsContent() {
       product_id: '',
       metric: 'rating',
       condition: 'above',
-      threshold: 3?.5,
+      threshold: 3.5,
       notification_methods: ['email'],
     });
   };
@@ -195,16 +195,16 @@ function AlertsContent() {
     setShowDialog(true);
   };
 
-  const filteredAlerts = alerts?.filter((alert) => {
-    if (activeTab === 'active') return alert?.is_active;
-    if (activeTab === 'inactive') return !alert?.is_active;
-    if (activeTab === 'triggered') return alert?.last_triggered;
+  const filteredAlerts = alerts.filter((alert) => {
+    if (activeTab === 'active') return alert.is_active;
+    if (activeTab === 'inactive') return !alert.is_active;
+    if (activeTab === 'triggered') return alert.last_triggered;
     return true;
   });
 
   const getProductName = (productId: string) => {
-    const product = products?.find((p) => p?.id === productId);
-    return product ? product?.name : 'Unknown Product';
+    const product = products.find((p) => p.id === productId);
+    return product ? product.name : 'Unknown Product';
   };
 
   const formatDate = (dateString: string | undefined) => {
@@ -213,9 +213,9 @@ function AlertsContent() {
   };
 
   const getAlertStatus = (alert: AlertThreshold): AlertStatus => {
-    if (!alert?.is_active) return { label: 'Inactive', color: 'secondary' };
+    if (!alert.is_active) return { label: 'Inactive', color: 'secondary' };
     // @ts-expect-error - last_triggered might not be in the interface, but it's used in the code
-    if (alert?.last_triggered) return { label: 'Triggered', color: 'destructive' };
+    if (alert.last_triggered) return { label: 'Triggered', color: 'destructive' };
     return { label: 'Active', color: 'success' };
   };
 
@@ -247,7 +247,7 @@ function AlertsContent() {
 
       {isLoading ? (
         <div className="py-10 text-center">Loading alerts...</div>
-      ) : filteredAlerts?.length === 0 ? (
+      ) : filteredAlerts.length === 0 ? (
         <div className="rounded-lg border py-10 text-center">
           <AlertTriangleIcon className="mx-auto h-12 w-12 text-muted-foreground" />
           <h3 className="mt-4 text-lg font-medium">No alerts found</h3>
@@ -260,30 +260,30 @@ function AlertsContent() {
         </div>
       ) : (
         <div className="grid gap-4">
-          {filteredAlerts?.map((alert) => {
+          {filteredAlerts.map((alert) => {
             const status = getAlertStatus(alert);
             return (
-              <Card key={alert?.id} className="overflow-hidden">
+              <Card key={alert.id} className="overflow-hidden">
                 <CardHeader className="pb-2">
                   <div className="flex items-start justify-between">
                     <div>
                       <CardTitle className="flex items-center">
                         <BellIcon className="mr-2 h-5 w-5" />
-                        {alert?.name}
-                        <Badge variant={status?.color} className="ml-3">
-                          {status?.label}
+                        {alert.name}
+                        <Badge variant={status.color} className="ml-3">
+                          {status.label}
                         </Badge>
                       </CardTitle>
-                      <CardDescription>{alert?.description}</CardDescription>
+                      <CardDescription>{alert.description}</CardDescription>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Button
                         variant="ghost"
                         size="icon"
                         onClick={() => handleToggleAlert(alert)}
-                        title={alert?.is_active ? 'Deactivate' : 'Activate'}
+                        title={alert.is_active ? 'Deactivate' : 'Activate'}
                       >
-                        {alert?.is_active ? (
+                        {alert.is_active ? (
                           <XIcon className="h-4 w-4" />
                         ) : (
                           <CheckIcon className="h-4 w-4" />
@@ -299,7 +299,7 @@ function AlertsContent() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => alert?.id && handleDeleteAlert(alert?.id)}
+                        onClick={() => alert.id && handleDeleteAlert(alert.id)}
                       >
                         <TrashIcon className="h-4 w-4" />
                       </Button>
@@ -310,22 +310,22 @@ function AlertsContent() {
                   <div className="grid grid-cols-4 gap-4">
                     <div className="space-y-1">
                       <div className="text-sm text-muted-foreground">Product</div>
-                      <div className="font-medium">{getProductName(alert?.product_id)}</div>
+                      <div className="font-medium">{getProductName(alert.product_id)}</div>
                     </div>
                     <div className="space-y-1">
                       <div className="text-sm text-muted-foreground">Condition</div>
                       <div className="font-medium">
-                        {alert?.metric} {alert?.condition} {alert?.threshold}
+                        {alert.metric} {alert.condition} {alert.threshold}
                       </div>
                     </div>
                     <div className="space-y-1">
                       <div className="text-sm text-muted-foreground">Last Triggered</div>
                       {/* @ts-ignore - last_triggered might not be in the interface */}
-                      <div className="font-medium">{formatDate(alert?.last_triggered)}</div>
+                      <div className="font-medium">{formatDate(alert.last_triggered)}</div>
                     </div>
                     <div className="space-y-1">
                       <div className="text-sm text-muted-foreground">Notifications</div>
-                      <div className="font-medium">{alert?.notification_methods.join(', ')}</div>
+                      <div className="font-medium">{alert.notification_methods.join(', ')}</div>
                     </div>
                   </div>
                 </CardContent>
@@ -347,24 +347,24 @@ function AlertsContent() {
                 <FormLabel htmlFor="name">Alert Name</FormLabel>
                 <Input
                   id="name"
-                  value={formState?.name}
-                  onChange={(e) => setFormState({ ...formState, name: e?.target.value })}
+                  value={formState.name}
+                  onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                   placeholder="Critical Rating Drop"
                 />
               </div>
               <div className="space-y-2">
                 <FormLabel htmlFor="product">Product</FormLabel>
                 <Select
-                  value={formState?.product_id}
+                  value={formState.product_id}
                   onValueChange={(value) => setFormState({ ...formState, product_id: value })}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select product" />
                   </SelectTrigger>
                   <SelectContent>
-                    {products?.map((product) => (
-                      <SelectItem key={product?.id} value={product?.id}>
-                        {product?.name}
+                    {products.map((product) => (
+                      <SelectItem key={product.id} value={product.id}>
+                        {product.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -375,8 +375,8 @@ function AlertsContent() {
               <FormLabel htmlFor="description">Description</FormLabel>
               <Input
                 id="description"
-                value={formState?.description}
-                onChange={(e) => setFormState({ ...formState, description: e?.target.value })}
+                value={formState.description}
+                onChange={(e) => setFormState({ ...formState, description: e.target.value })}
                 placeholder="Alert when product rating drops below threshold"
               />
             </div>
@@ -384,7 +384,7 @@ function AlertsContent() {
               <div className="space-y-2">
                 <FormLabel htmlFor="metric">Metric</FormLabel>
                 <Select
-                  value={formState?.metric}
+                  value={formState.metric}
                   onValueChange={(value) =>
                     setFormState({
                       ...formState,
@@ -406,7 +406,7 @@ function AlertsContent() {
               <div className="space-y-2">
                 <FormLabel htmlFor="condition">Condition</FormLabel>
                 <Select
-                  value={formState?.condition}
+                  value={formState.condition}
                   onValueChange={(value) =>
                     setFormState({
                       ...formState,
@@ -429,11 +429,11 @@ function AlertsContent() {
                   <Input
                     id="threshold"
                     type="number"
-                    value={formState?.threshold}
+                    value={formState.threshold}
                     onChange={(e) =>
-                      setFormState({ ...formState, threshold: parseFloat(e?.target.value) })
+                      setFormState({ ...formState, threshold: parseFloat(e.target.value) })
                     }
-                    step={0?.1}
+                    step={0.1}
                     min={0}
                     max={5}
                   />
@@ -447,11 +447,11 @@ function AlertsContent() {
                   <input
                     type="checkbox"
                     id="email-notification"
-                    checked={formState?.notification_methods.includes('email')}
+                    checked={formState.notification_methods.includes('email')}
                     onChange={(e) => {
-                      const methods = e?.target.checked
-                        ? [...formState?.notification_methods, 'email']
-                        : formState?.notification_methods.filter((m) => m !== 'email');
+                      const methods = e.target.checked
+                        ? [...formState.notification_methods, 'email']
+                        : formState.notification_methods.filter((m) => m !== 'email');
                       setFormState({ ...formState, notification_methods: methods });
                     }}
                   />
@@ -461,11 +461,11 @@ function AlertsContent() {
                   <input
                     type="checkbox"
                     id="sms-notification"
-                    checked={formState?.notification_methods.includes('sms')}
+                    checked={formState.notification_methods.includes('sms')}
                     onChange={(e) => {
-                      const methods = e?.target.checked
-                        ? [...formState?.notification_methods, 'sms']
-                        : formState?.notification_methods.filter((m) => m !== 'sms');
+                      const methods = e.target.checked
+                        ? [...formState.notification_methods, 'sms']
+                        : formState.notification_methods.filter((m) => m !== 'sms');
                       setFormState({ ...formState, notification_methods: methods });
                     }}
                   />
@@ -475,11 +475,11 @@ function AlertsContent() {
                   <input
                     type="checkbox"
                     id="push-notification"
-                    checked={formState?.notification_methods.includes('push')}
+                    checked={formState.notification_methods.includes('push')}
                     onChange={(e) => {
-                      const methods = e?.target.checked
-                        ? [...formState?.notification_methods, 'push']
-                        : formState?.notification_methods.filter((m) => m !== 'push');
+                      const methods = e.target.checked
+                        ? [...formState.notification_methods, 'push']
+                        : formState.notification_methods.filter((m) => m !== 'push');
                       setFormState({ ...formState, notification_methods: methods });
                     }}
                   />
@@ -490,7 +490,7 @@ function AlertsContent() {
             <div className="flex items-center gap-2">
               <Switch
                 id="active"
-                checked={formState?.is_active}
+                checked={formState.is_active}
                 onCheckedChange={(checked) => setFormState({ ...formState, is_active: checked })}
               />
               <label htmlFor="active">Active</label>

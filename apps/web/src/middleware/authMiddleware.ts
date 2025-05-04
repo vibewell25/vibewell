@@ -102,7 +102,7 @@ export function withAuth(
  * @param role - The role to check
  */
 export function hasRole(session: Session | null, role: UserRole): boolean {
-  if (!session?.user) return false;
+  if (!session.user) return false;
   
   const extendedSession = session as ExtendedSession;
   const user = extendedSession.user;

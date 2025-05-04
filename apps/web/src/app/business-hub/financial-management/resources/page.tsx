@@ -28,7 +28,7 @@ const financialResources: ResourceType[] = [
     date: '2023-08-15',
     readTime: '15 min',
     category: 'Planning',
-    imageUrl: '/images/financial-planning?.jpg',
+    imageUrl: '/images/financial-planning.jpg',
     excerpt:
       'Financial planning is critical for the long-term success of any wellness business. This guide will walk you through the essential steps to create a robust financial plan.',
   },
@@ -39,7 +39,7 @@ const financialResources: ResourceType[] = [
     date: '2023-09-22',
     readTime: '12 min',
     category: 'Taxes',
-    imageUrl: '/images/tax-strategies?.jpg',
+    imageUrl: '/images/tax-strategies.jpg',
     excerpt:
       'Understanding the tax implications specific to wellness practitioners can save you significant money and prevent compliance issues.',
   },
@@ -50,7 +50,7 @@ const financialResources: ResourceType[] = [
     date: '2023-10-10',
     readTime: '10 min',
     category: 'Pricing',
-    imageUrl: '/images/pricing-strategies?.jpg',
+    imageUrl: '/images/pricing-strategies.jpg',
     excerpt:
       'Pricing wellness services requires a balance between perceived value, market rates, and your financial needs.',
   },
@@ -61,7 +61,7 @@ const financialResources: ResourceType[] = [
     date: '2023-11-05',
     readTime: '14 min',
     category: 'Cash Flow',
-    imageUrl: '/images/cash-flow?.jpg',
+    imageUrl: '/images/cash-flow.jpg',
     excerpt:
       'Cash flow management is particularly important in the wellness industry due to seasonal fluctuations and variable client attendance.',
   },
@@ -72,7 +72,7 @@ const financialResources: ResourceType[] = [
     date: '2023-12-12',
     readTime: '18 min',
     category: 'Reporting',
-    imageUrl: '/images/financial-metrics?.jpg',
+    imageUrl: '/images/financial-metrics.jpg',
     excerpt:
       'Identifying and tracking the right KPIs is essential for making informed business decisions.',
   },
@@ -83,7 +83,7 @@ const financialResources: ResourceType[] = [
     date: '2024-01-18',
     readTime: '8 min',
     category: 'Budgeting',
-    imageUrl: '/images/budgeting-templates?.jpg',
+    imageUrl: '/images/budgeting-templates.jpg',
     excerpt:
       'Understanding the key components of an effective budget for wellness practices and studios.',
   },
@@ -94,7 +94,7 @@ const financialResources: ResourceType[] = [
     date: '2024-02-22',
     readTime: '16 min',
     category: 'Profitability',
-    imageUrl: '/images/profit-maximization?.jpg',
+    imageUrl: '/images/profit-maximization.jpg',
     excerpt: 'Identifying the key factors that influence profitability in wellness businesses.',
   },
 ];
@@ -112,11 +112,11 @@ export default function FinancialResourcesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   // Filter resources based on search query and category
-  const filteredResources = financialResources?.filter((resource) => {
+  const filteredResources = financialResources.filter((resource) => {
     const matchesSearch =
-      resource?.title.toLowerCase().includes(searchQuery?.toLowerCase()) ||
-      resource?.excerpt.toLowerCase().includes(searchQuery?.toLowerCase());
-    const matchesCategory = selectedCategory === 'All' || resource?.category === selectedCategory;
+      resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      resource.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === 'All' || resource.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
   return (
@@ -140,21 +140,21 @@ export default function FinancialResourcesPage() {
             {/* Search Input */}
             <div className="relative max-w-md">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <Icons?.MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+                <Icons.MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
               </div>
               <Input
                 type="text"
                 placeholder="Search financial resources..."
                 className="pl-10"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e?.target.value)}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
           </div>
           {/* Category Filter */}
           <div className="mb-8">
             <div className="flex flex-wrap gap-2">
-              {categories?.map((category) => (
+              {categories.map((category) => (
                 <Button
                   key={category}
                   variant={selectedCategory === category ? 'default' : 'outline'}
@@ -170,7 +170,7 @@ export default function FinancialResourcesPage() {
             {/* Main content - Resources */}
             <div className="lg:col-span-3">
               {/* Resources Grid */}
-              {filteredResources?.length === 0 ? (
+              {filteredResources.length === 0 ? (
                 <div className="py-12 text-center">
                   <p className="text-lg text-gray-500">
                     No resources found matching your criteria.
@@ -188,29 +188,29 @@ export default function FinancialResourcesPage() {
                 </div>
               ) : (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {filteredResources?.map((resource) => (
+                  {filteredResources.map((resource) => (
                     <Link
-                      key={resource?.id}
-                      href={`/business-hub/financial-management/resources/${resource?.id}`}
+                      key={resource.id}
+                      href={`/business-hub/financial-management/resources/${resource.id}`}
                       className="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
                     >
                       <div className="relative h-48 bg-gray-200">
                         <div className="absolute right-2 top-2">
                           <Badge className="border-green-200 bg-green-100 text-green-800">
-                            {resource?.category}
+                            {resource.category}
                           </Badge>
                         </div>
                       </div>
                       <div className="p-6">
                         <h3 className="mb-2 line-clamp-2 text-xl font-semibold">
-                          {resource?.title}
+                          {resource.title}
                         </h3>
-                        <p className="mb-4 line-clamp-3 text-gray-600">{resource?.excerpt}</p>
+                        <p className="mb-4 line-clamp-3 text-gray-600">{resource.excerpt}</p>
                         <div className="flex items-center text-sm text-gray-500">
-                          <Icons?.UserIcon className="mr-1 h-4 w-4" />
-                          <span className="mr-4 truncate">{resource?.author}</span>
-                          <Icons?.ClockIcon className="mr-1 h-4 w-4" />
-                          <span>{resource?.readTime}</span>
+                          <Icons.UserIcon className="mr-1 h-4 w-4" />
+                          <span className="mr-4 truncate">{resource.author}</span>
+                          <Icons.ClockIcon className="mr-1 h-4 w-4" />
+                          <span>{resource.readTime}</span>
                         </div>
                       </div>
                     </Link>
@@ -230,7 +230,7 @@ export default function FinancialResourcesPage() {
                   className="mb-3 block rounded-lg bg-blue-50 p-3 transition-colors hover:bg-blue-100"
                 >
                   <div className="flex items-center">
-                    <Icons?.BookmarkIcon className="mr-2 h-5 w-5 text-blue-500" />
+                    <Icons.BookmarkIcon className="mr-2 h-5 w-5 text-blue-500" />
                     <span className="text-blue-700">Your Bookmarks</span>
                   </div>
                 </Link>
@@ -239,7 +239,7 @@ export default function FinancialResourcesPage() {
                   className="block rounded-lg bg-purple-50 p-3 transition-colors hover:bg-purple-100"
                 >
                   <div className="flex items-center">
-                    <Icons?.ClockIcon className="mr-2 h-5 w-5 text-purple-500" />
+                    <Icons.ClockIcon className="mr-2 h-5 w-5 text-purple-500" />
                     <span className="text-purple-700">Recently Viewed</span>
                   </div>
                 </Link>

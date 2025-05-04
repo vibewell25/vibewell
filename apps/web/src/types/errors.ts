@@ -1,14 +1,14 @@
 export class AuthError extends Error {
   constructor(message: string) {
     super(message);
-    this?.name = 'AuthError';
+    this.name = 'AuthError';
   }
 }
 
 export class ValidationError extends Error {
   constructor(message: string) {
     super(message);
-    this?.name = 'ValidationError';
+    this.name = 'ValidationError';
   }
 }
 
@@ -18,37 +18,37 @@ export class APIError extends Error {
 
   constructor(message: string, statusCode: number = 500, data?: any) {
     super(message);
-    this?.name = 'APIError';
-    this?.statusCode = statusCode;
-    this?.data = data;
+    this.name = 'APIError';
+    this.statusCode = statusCode;
+    this.data = data;
   }
 }
 
 export class NetworkError extends Error {
   constructor(message: string) {
     super(message);
-    this?.name = 'NetworkError';
+    this.name = 'NetworkError';
   }
 }
 
 export class PermissionError extends Error {
   constructor(message: string = 'Insufficient permissions') {
     super(message);
-    this?.name = 'PermissionError';
+    this.name = 'PermissionError';
   }
 }
 
 export class ConfigurationError extends Error {
   constructor(message: string) {
     super(message);
-    this?.name = 'ConfigurationError';
+    this.name = 'ConfigurationError';
   }
 }
 
 export class MFAError extends Error {
   constructor(message: string) {
     super(message);
-    this?.name = 'MFAError';
+    this.name = 'MFAError';
   }
 }
 
@@ -57,21 +57,21 @@ export class RateLimitError extends Error {
 
   constructor(message: string, retryAfter?: number) {
     super(message);
-    this?.name = 'RateLimitError';
-    this?.retryAfter = retryAfter;
+    this.name = 'RateLimitError';
+    this.retryAfter = retryAfter;
   }
 }
 
 export class SessionError extends Error {
   constructor(message: string = 'Invalid or expired session') {
     super(message);
-    this?.name = 'SessionError';
+    this.name = 'SessionError';
   }
 }
 
 export class TokenError extends Error {
   constructor(message: string = 'Invalid or expired token') {
     super(message);
-    this?.name = 'TokenError';
+    this.name = 'TokenError';
   }
 }

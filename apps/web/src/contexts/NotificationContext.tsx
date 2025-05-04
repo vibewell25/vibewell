@@ -29,9 +29,9 @@ const DUMMY_NOTIFICATIONS: Notification[] = [
     from: {
       id: 'user1',
       name: 'Emma Thompson',
-      avatar: '/avatar1?.png',
+      avatar: '/avatar1.png',
     },
-    createdAt: '2023-07-15T09:30:00?.000Z',
+    createdAt: '2023-07-15T09:30:00.000Z',
     read: false,
     actionUrl: '/social',
   },
@@ -42,9 +42,9 @@ const DUMMY_NOTIFICATIONS: Notification[] = [
     from: {
       id: 'user2',
       name: 'David Chen',
-      avatar: '/avatar2?.png',
+      avatar: '/avatar2.png',
     },
-    createdAt: '2023-07-14T14:45:00?.000Z',
+    createdAt: '2023-07-14T14:45:00.000Z',
     read: false,
     actionUrl: '/social',
   },
@@ -77,7 +77,7 @@ const NotificationContext = createContext<NotificationContextType>({
 export {};
 
 // Provider component
-export function NotificationProvider({ children }: { children: React?.ReactNode }) {
+export function NotificationProvider({ children }: { children: React.ReactNode }) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const { user } = useAuth();
 
@@ -94,13 +94,13 @@ export function NotificationProvider({ children }: { children: React?.ReactNode 
   }, [user]);
 
   // Calculate unread count
-  const unreadCount = notifications?.filter((notif) => !notif?.read).length;
+  const unreadCount = notifications.filter((notif) => !notif.read).length;
 
   // Add a new notification
   const addNotification = (notification: Omit<Notification, 'id' | 'createdAt' | 'read'>) => {
     const newNotification: Notification = {
       ...notification,
-      id: `notif${Date?.now()}`,
+      id: `notif${Date.now()}`,
       createdAt: new Date().toISOString(),
       read: false,
     };
@@ -111,20 +111,20 @@ export function NotificationProvider({ children }: { children: React?.ReactNode 
   // Mark notification as read
   const markAsRead = (id: string) => {
     setNotifications((prev) =>
-      prev?.map((notification) =>
-        notification?.id === id ? { ...notification, read: true } : notification,
+      prev.map((notification) =>
+        notification.id === id ? { ...notification, read: true } : notification,
       ),
     );
   };
 
   // Mark all notifications as read
   const markAllAsRead = () => {
-    setNotifications((prev) => prev?.map((notification) => ({ ...notification, read: true })));
+    setNotifications((prev) => prev.map((notification) => ({ ...notification, read: true })));
   };
 
   // Delete a notification
   const deleteNotification = (id: string) => {
-    setNotifications((prev) => prev?.filter((notification) => notification?.id !== id));
+    setNotifications((prev) => prev.filter((notification) => notification.id !== id));
   };
 
   // Clear all notifications
@@ -133,7 +133,7 @@ export function NotificationProvider({ children }: { children: React?.ReactNode 
   };
 
   return (
-    <NotificationContext?.Provider
+    <NotificationContext.Provider
       value={{
         notifications,
         unreadCount,
@@ -145,6 +145,6 @@ export function NotificationProvider({ children }: { children: React?.ReactNode 
       }}
     >
       {children}
-    </NotificationContext?.Provider>
+    </NotificationContext.Provider>
   );
 }

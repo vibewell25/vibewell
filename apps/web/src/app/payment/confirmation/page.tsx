@@ -15,13 +15,13 @@ export default function PaymentConfirmationPage() {
 
   useEffect(() => {
     const checkPaymentStatus = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       setIsLoading(true);
 
       // Check for payment_intent and payment_intent_client_secret in URL
-      const paymentIntentId = searchParams?.get('payment_intent');
-      const redirectStatus = searchParams?.get('redirect_status');
+      const paymentIntentId = searchParams.get('payment_intent');
+      const redirectStatus = searchParams.get('redirect_status');
 
       if (!paymentIntentId) {
         // No payment intent in URL, assume user was redirected from a completed payment
@@ -45,19 +45,19 @@ export default function PaymentConfirmationPage() {
 
         // Fetch payment details (in a real app)
         // const response = await fetch(`/api/payments/${paymentIntentId}`);
-        // const data = await response?.json();
+        // const data = await response.json();
         // setPaymentDetails(data);
 
         // For demo purposes:
         setPaymentDetails({
-          amount: 49?.99,
+          amount: 49.99,
           currency: 'USD',
           date: new Date().toLocaleDateString(),
           id: paymentIntentId,
           status: redirectStatus,
         });
       } catch (err) {
-        console?.error('Error getting payment status:', err);
+        console.error('Error getting payment status:', err);
         setStatus('error');
       } finally {
         setIsLoading(false);
@@ -98,16 +98,16 @@ export default function PaymentConfirmationPage() {
                       <h4 className="mb-2 font-medium">Receipt</h4>
                       <div className="grid grid-cols-2 gap-2 text-sm">
                         <span className="text-gray-600">Payment ID:</span>
-                        <span>{paymentDetails?.id}</span>
+                        <span>{paymentDetails.id}</span>
                         <span className="text-gray-600">Amount:</span>
                         <span>
-                          {new Intl?.NumberFormat('en-US', {
+                          {new Intl.NumberFormat('en-US', {
                             style: 'currency',
-                            currency: paymentDetails?.currency,
-                          }).format(paymentDetails?.amount)}
+                            currency: paymentDetails.currency,
+                          }).format(paymentDetails.amount)}
                         </span>
                         <span className="text-gray-600">Date:</span>
-                        <span>{paymentDetails?.date}</span>
+                        <span>{paymentDetails.date}</span>
                       </div>
                     </div>
                   )}

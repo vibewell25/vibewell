@@ -10,9 +10,9 @@ interface SharePageProps {
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); generateMetadata({ params }: SharePageProps): Promise<Metadata> {
-  const shareData = await getShareData(params?.id);
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); generateMetadata({ params }: SharePageProps): Promise<Metadata> {
+  const shareData = await getShareData(params.id);
 
   if (!shareData) {
     return {
@@ -21,8 +21,8 @@ export async function {
     };
   }
 
-  const title = `My ${shareData?.type} try-on look${shareData?.productName ? ` with ${shareData?.productName}` : ''}`;
-  const description = `Check out my ${shareData?.type} try-on look using VibeWell!${shareData?.productName ? ` I'm trying on ${shareData?.productName}.` : ''}`;
+  const title = `My ${shareData.type} try-on look${shareData.productName ? ` with ${shareData.productName}` : ''}`;
+  const description = `Check out my ${shareData.type} try-on look using VibeWell!${shareData.productName ? ` I'm trying on ${shareData.productName}.` : ''}`;
 
   return {
     title,
@@ -32,28 +32,28 @@ export async function {
       description,
       images: [
         {
-          url: shareData?.imageData,
+          url: shareData.imageData,
           width: 1200,
           height: 630,
           alt: title,
         },
       ],
       type: 'website',
-      url: `${process?.env.NEXT_PUBLIC_APP_URL}/share/${params?.id}`,
+      url: `${process.env.NEXT_PUBLIC_APP_URL}/share/${params.id}`,
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [shareData?.imageData],
+      images: [shareData.imageData],
     },
   };
 }
 
 export default async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); SharePage({ params }: SharePageProps) {
-  const shareData = await getShareData(params?.id);
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); SharePage({ params }: SharePageProps) {
+  const shareData = await getShareData(params.id);
 
   if (!shareData) {
     notFound();

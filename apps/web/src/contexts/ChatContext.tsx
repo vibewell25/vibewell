@@ -15,7 +15,7 @@ interface ChatContextValue {
 
 const ChatContext = createContext<ChatContextValue | undefined>(undefined);
 
-export const ChatProvider: React?.FC<{ children: React?.ReactNode }> = ({ children }) => {
+export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', content: 'Hi! How can I help you today?' },
   ]);
@@ -33,18 +33,18 @@ export const ChatProvider: React?.FC<{ children: React?.ReactNode }> = ({ childr
       const res = await fetch('/api/ai-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify({ messages: updatedMessages }),
+        body: JSON.stringify({ messages: updatedMessages }),
       });
 
-      if (!res?.ok) {
-        throw new Error(`HTTP error! status: ${res?.status}`);
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
       }
 
-      const { reply } = await res?.json();
+      const { reply } = await res.json();
       const assistantMessage: Message = { role: 'assistant', content: reply };
       setMessages([...updatedMessages, assistantMessage]);
     } catch (error) {
-      console?.error('Chat error:', error);
+      console.error('Chat error:', error);
       setError('Sorry, something went wrong. Please try again.');
       const errorMessage: Message = { 
         role: 'assistant', 
@@ -64,7 +64,7 @@ export const ChatProvider: React?.FC<{ children: React?.ReactNode }> = ({ childr
   }, []);
 
   return (
-    <ChatContext?.Provider
+    <ChatContext.Provider
       value={{
         messages,
         isLoading,
@@ -74,7 +74,7 @@ export const ChatProvider: React?.FC<{ children: React?.ReactNode }> = ({ childr
       }}
     >
       {children}
-    </ChatContext?.Provider>
+    </ChatContext.Provider>
   );
 };
 

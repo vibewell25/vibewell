@@ -7,11 +7,11 @@ import { redirect } from 'next/navigation';
 export {};
 
 export default async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); TrustedDevicesPage() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); TrustedDevicesPage() {
   const session = await getServerSession(authOptions);
 
-  if (!session?.user) {
+  if (!session.user) {
     redirect('/auth/login');
   }
 
@@ -25,7 +25,7 @@ export default async function {
         </p>
       </div>
 
-      <TrustedDeviceManager userId={session?.user.id} />
+      <TrustedDeviceManager userId={session.user.id} />
 
       <div className="mt-8 rounded-lg bg-gray-50 p-4">
         <h2 className="mb-2 text-lg font-semibold">About Device Trust</h2>

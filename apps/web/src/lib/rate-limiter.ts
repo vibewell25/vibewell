@@ -295,25 +295,25 @@ async function logRateLimitEvent(
 // #region HTTP API Rate Limiter
 
 /**
- * Create a rate limiter for Next?.js API routes (both App Router and Pages Router)
+ * Create a rate limiter for Next.js API routes (both App Router and Pages Router)
  */
 export function createRateLimiter(options: RateLimitOptions = {}) {
   const mergedOptions = { ...DEFAULT_OPTIONS, ...options };
 
   // Default identifier generator uses IP
   const identifierGenerator =
-    options?.identifierGenerator ||
+    options.identifierGenerator ||
     ((req: NextRequest | any) => {
       // Handle different request types
-      if (req?.headers.get) {
+      if (req.headers.get) {
         // NextRequest (App Router)
-        return req?.headers.get('x-forwarded-for') || req?.headers.get('x-real-ip') || 'unknown';
-      } else if (req?.headers) {
+        return req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';
+      } else if (req.headers) {
         // NextApiRequest (Pages Router)
         return String(
-          req?.headers['x-forwarded-for'] ||
-          req?.headers['x-real-ip'] ||
-          req?.socket?.remoteAddress ||
+          req.headers['x-forwarded-for'] ||
+          req.headers['x-real-ip'] ||
+          req.socket.remoteAddress ||
           'unknown',
         );
       }
@@ -322,7 +322,7 @@ export function createRateLimiter(options: RateLimitOptions = {}) {
     });
 
   // Skip function
-  const skipFn = options?.skip || (() => false);
+  const skipFn = options.skip || (() => false);
 
   // For App Router
   const appRouterHandler = async (req: NextRequest): Promise<NextResponse | null> => {
@@ -333,10 +333,10 @@ export function createRateLimiter(options: RateLimitOptions = {}) {
       }
 
       const identifier = identifierGenerator(req);
-      const path = req?.nextUrl.pathname;
-      const method = req?.method;
+      const path = req.nextUrl.pathname;
+      const method = req.method;
 
-      const userId = req?.headers.get('x-user-id');
+      const userId = req.headers.get('x-user-id');
 
       // Check if rate limited
       const result = await checkRateLimit(identifier, mergedOptions);
@@ -346,15 +346,15 @@ export function createRateLimiter(options: RateLimitOptions = {}) {
         identifier,
         path,
         method,
-        options?.keyPrefix || 'api',
+        options.keyPrefix || 'api',
         result,
         userId || undefined,
       );
 
       // If rate limited, return error response
       if (!result.success) {
-        return NextResponse?.json(mergedOptions?.message, {
-          status: mergedOptions?.statusCode,
+        return NextResponse.json(mergedOptions.message, {
+          status: mergedOptions.statusCode,
           headers: {
             'Retry-After': String(result.retryAfter),
             'X-RateLimit-Limit': String(result.limit),
@@ -382,10 +382,10 @@ export function createRateLimiter(options: RateLimitOptions = {}) {
       }
 
       const identifier = identifierGenerator(req);
-      const path = req?.url;
-      const method = req?.method;
+      const path = req.url;
+      const method = req.method;
 
-      const userId = req?.headers['x-user-id'];
+      const userId = req.headers['x-user-id'];
 
       // Check if rate limited
       const result = await checkRateLimit(identifier, mergedOptions);
@@ -395,20 +395,20 @@ export function createRateLimiter(options: RateLimitOptions = {}) {
         identifier,
         path,
         method,
-        options?.keyPrefix || 'api',
+        options.keyPrefix || 'api',
         result,
         userId || undefined,
       );
 
       // Set rate limit headers
-      res?.setHeader('X-RateLimit-Limit', String(result.limit));
-      res?.setHeader('X-RateLimit-Remaining', String(result.remaining));
-      res?.setHeader('X-RateLimit-Reset', String(Math.ceil(result.resetTime / 1000)));
+      res.setHeader('X-RateLimit-Limit', String(result.limit));
+      res.setHeader('X-RateLimit-Remaining', String(result.remaining));
+      res.setHeader('X-RateLimit-Reset', String(Math.ceil(result.resetTime / 1000)));
 
       // If rate limited, return error response
       if (!result.success) {
-        res?.setHeader('Retry-After', String(result.retryAfter));
-        res?.status(mergedOptions?.statusCode!).json(mergedOptions?.message);
+        res.setHeader('Retry-After', String(result.retryAfter));
+        res.status(mergedOptions.statusCode!).json(mergedOptions.message);
         return;
       }
 
@@ -450,7 +450,7 @@ export function createGraphQLRateLimiter(options: RateLimitOptions = {}) {
   const mergedOptions = {
     ...DEFAULT_OPTIONS,
     ...options,
-    keyPrefix: options?.keyPrefix || 'graphql:',
+    keyPrefix: options.keyPrefix || 'graphql:',
   };
 
   return async function graphqlRateLimiter(
@@ -459,8 +459,8 @@ export function createGraphQLRateLimiter(options: RateLimitOptions = {}) {
   ): Promise<void> {
     try {
       // Generate identifier from context
-      const identifier = context?.userId || context?.ip;
-      const key = `${mergedOptions?.keyPrefix}${fieldName}:${identifier}`;
+      const identifier = context.userId || context.ip;
+      const key = `${mergedOptions.keyPrefix}${fieldName}:${identifier}`;
 
       // Check if rate limited
       const result = await checkRateLimit(
@@ -473,9 +473,9 @@ export function createGraphQLRateLimiter(options: RateLimitOptions = {}) {
         identifier,
         fieldName,
         'GRAPHQL',
-        options?.keyPrefix || 'graphql',
+        options.keyPrefix || 'graphql',
         result,
-        context?.userId || undefined,
+        context.userId || undefined,
       );
 
       // If rate limited, throw GraphQL error
@@ -511,17 +511,17 @@ export function createGraphQLRateLimitMiddleware(options: RateLimitOptions = {})
     query: createGraphQLRateLimiter({
       ...options,
       keyPrefix: 'graphql:query:',
-      max: options?.max || 100, // 100 queries per minute by default
+      max: options.max || 100, // 100 queries per minute by default
     }),
     mutation: createGraphQLRateLimiter({
       ...options,
       keyPrefix: 'graphql:mutation:',
-      max: options?.max || 30, // 30 mutations per minute by default
+      max: options.max || 30, // 30 mutations per minute by default
     }),
     subscription: createGraphQLRateLimiter({
       ...options,
       keyPrefix: 'graphql:subscription:',
-      max: options?.max || 5, // 5 subscriptions per minute by default
+      max: options.max || 5, // 5 subscriptions per minute by default
     }),
   };
 
@@ -531,7 +531,7 @@ export function createGraphQLRateLimitMiddleware(options: RateLimitOptions = {})
         async didResolveOperation({ context, operationName, operation }: any) {
           if (!operation) return;
 
-          const operationType = operation?.operation.toLowerCase();
+          const operationType = operation.operation.toLowerCase();
           const rateLimiter = operationLimits[operationType as keyof typeof operationLimits];
 
           if (rateLimiter) {
@@ -593,19 +593,19 @@ export class WebSocketRateLimiter {
   constructor(options: WebSocketRateLimitOptions = {}) {
     this.options = {
       // Connection limits
-      maxConnectionsPerIP: options?.maxConnectionsPerIP || 10,
-      connectionWindowMs: options?.connectionWindowMs || 60 * 1000,
+      maxConnectionsPerIP: options.maxConnectionsPerIP || 10,
+      connectionWindowMs: options.connectionWindowMs || 60 * 1000,
 
       // Message limits
-      maxMessagesPerMinute: options?.maxMessagesPerMinute || 120,
-      maxMessageSizeBytes: options?.maxMessageSizeBytes || 8192,
+      maxMessagesPerMinute: options.maxMessagesPerMinute || 120,
+      maxMessageSizeBytes: options.maxMessageSizeBytes || 8192,
 
       // Burst handling
-      burstFactor: options?.burstFactor || 2,
-      burstDurationMs: options?.burstDurationMs || 5000,
+      burstFactor: options.burstFactor || 2,
+      burstDurationMs: options.burstDurationMs || 5000,
 
       // Key prefixes
-      keyPrefix: options?.keyPrefix || 'ws:',
+      keyPrefix: options.keyPrefix || 'ws:',
 
       ...options,
     };
@@ -822,14 +822,14 @@ export function withRateLimit(handler: any, limiter = apiRateLimiter) {
       return handler(req, res);
     } catch (error) {
       logger.error('Rate limiter error', 'rate-limit', { error });
-      return res?.status(500).json({ error: 'Internal server error' });
+      return res.status(500).json({ error: 'Internal server error' });
     }
   };
 }
 
 // #endregion
 
-// For backward compatibility with redis-rate-limiter?.ts
+// For backward compatibility with redis-rate-limiter.ts
 export {};
 export {};
 export {};
@@ -843,7 +843,7 @@ export class RateLimiter {
   private redis: Redis;
 
   constructor() {
-    this.redis = new Redis(env?.REDIS_URL);
+    this.redis = new Redis(env.REDIS_URL);
   }
 
   async checkLimit(key: string, limit: number, windowInSeconds: number): Promise<void> {

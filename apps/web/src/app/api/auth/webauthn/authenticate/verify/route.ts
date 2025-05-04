@@ -6,21 +6,21 @@ import type { AuthenticationResponseJSON } from '@simplewebauthn/typescript-type
 import { NextResponse } from 'next/server';
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); POST(request: Request) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); POST(request: Request) {
   try {
-    const body = await request?.json();
-    const response: AuthenticationResponseJSON = body?.response;
+    const body = await request.json();
+    const response: AuthenticationResponseJSON = body.response;
 
     if (!response) {
-      return NextResponse?.json({ error: 'Missing authentication response' }, { status: 400 });
+      return NextResponse.json({ error: 'Missing authentication response' }, { status: 400 });
     }
 
     // In a real application, you would:
-    // 1. Get the user's credential from your database using response?.id
+    // 1. Get the user's credential from your database using response.id
     // 2. Get the stored challenge from your database
     // 3. Get the user's public key from your database
-    const expectedChallenge = process?.env['EXPECTEDCHALLENGE'];
+    const expectedChallenge = process.env['EXPECTEDCHALLENGE'];
 
     let verification;
     try {
@@ -37,8 +37,8 @@ export async function {
         },
       });
     } catch (error) {
-      console?.error('Error verifying authentication:', error);
-      return NextResponse?.json({ error: 'Failed to verify authentication' }, { status: 400 });
+      console.error('Error verifying authentication:', error);
+      return NextResponse.json({ error: 'Failed to verify authentication' }, { status: 400 });
     }
 
     const { verified, authenticationInfo } = verification;
@@ -46,13 +46,13 @@ export async function {
     if (verified && authenticationInfo) {
       // In a real application, you would:
       // 1. Update the authenticator's counter in your database
-      // 2. Handle user sign in (e?.g., create a session)
-      return NextResponse?.json({ verified, authenticationInfo });
+      // 2. Handle user sign in (e.g., create a session)
+      return NextResponse.json({ verified, authenticationInfo });
     }
 
-    return NextResponse?.json({ error: 'Authentication verification failed' }, { status: 400 });
+    return NextResponse.json({ error: 'Authentication verification failed' }, { status: 400 });
   } catch (error) {
-    console?.error('Error processing authentication:', error);
-    return NextResponse?.json({ error: 'Failed to process authentication' }, { status: 500 });
+    console.error('Error processing authentication:', error);
+    return NextResponse.json({ error: 'Failed to process authentication' }, { status: 500 });
   }
 }

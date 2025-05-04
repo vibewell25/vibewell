@@ -10,7 +10,7 @@ const provider = {
   id: 'provider1',
   name: 'Hannah Palmer',
   title: 'Hi2Rio Fem',
-  image: 'https://placehold?.co/100x100?text=H',
+  image: 'https://placehold.co/100x100?text=H',
   service: 'Hair Styling',
   location: 'Cait Up & Ups · Chicago',
   price: '€00',
@@ -32,7 +32,7 @@ export default function BookingDetailsPage() {
         {/* Header with Back Button */}
         <div className="flex items-center border-b border-gray-200 bg-white px-5 py-4">
           <Link href="/bookings/search" className="mr-4">
-            <Icons?.ChevronLeftIcon className="h-5 w-5" />
+            <Icons.ChevronLeftIcon className="h-5 w-5" />
           </Link>
           <h1 className="text-xl font-semibold">Booking</h1>
         </div>
@@ -40,21 +40,21 @@ export default function BookingDetailsPage() {
         <div className="border-b border-gray-200 px-5 py-4">
           <h2 className="mb-3 text-lg font-medium">Availability</h2>
           <div className="mb-4 flex justify-between">
-            {availableDates?.map((date) => (
+            {availableDates.map((date) => (
               <button
-                key={date?.day}
+                key={date.day}
                 onClick={() => setSelectedDate(date)}
                 className={`flex h-12 w-12 flex-col items-center justify-center rounded-md ${
-                  date?.isSelected
+                  date.isSelected
                     ? 'bg-primary text-white'
-                    : date?.isAvailable
+                    : date.isAvailable
                       ? 'bg-gray-100 text-gray-700'
                       : 'bg-gray-100 text-gray-400'
                 }`}
-                disabled={!date?.isAvailable}
+                disabled={!date.isAvailable}
               >
-                <span className="text-xs">{date?.weekday}</span>
-                <span className="text-sm font-medium">{date?.day}</span>
+                <span className="text-xs">{date.weekday}</span>
+                <span className="text-sm font-medium">{date.day}</span>
               </button>
             ))}
           </div>
@@ -64,20 +64,20 @@ export default function BookingDetailsPage() {
           <h2 className="mb-3 text-lg font-medium">Availability</h2>
           <div className="flex items-center">
             <div className="relative mr-3 h-12 w-12 overflow-hidden rounded-full">
-              <Image src={provider?.image} alt={provider?.name} fill className="object-cover" />
+              <Image src={provider.image} alt={provider.name} fill className="object-cover" />
             </div>
             <div>
-              <h3 className="font-medium">{provider?.name}</h3>
-              <p className="text-sm text-gray-500">{provider?.title}</p>
+              <h3 className="font-medium">{provider.name}</h3>
+              <p className="text-sm text-gray-500">{provider.title}</p>
             </div>
           </div>
           <div className="mt-3">
-            <p className="font-medium">{provider?.service}</p>
-            <p className="text-sm text-gray-500">{provider?.location}</p>
+            <p className="font-medium">{provider.service}</p>
+            <p className="text-sm text-gray-500">{provider.location}</p>
           </div>
           <div className="mt-2 flex items-center justify-between">
             <p className="text-gray-500">Signing price</p>
-            <p className="font-medium">{provider?.price}</p>
+            <p className="font-medium">{provider.price}</p>
           </div>
         </div>
         {/* Time Slots */}
@@ -104,7 +104,7 @@ export default function BookingDetailsPage() {
             </div>
             <Link href="/bookings/subscription" className="text-primary flex items-center text-sm">
               <span>Subscription</span>
-              <Icons?.ChevronRightIcon className="ml-1 h-4 w-4" />
+              <Icons.ChevronRightIcon className="ml-1 h-4 w-4" />
             </Link>
           </div>
         </div>

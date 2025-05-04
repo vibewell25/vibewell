@@ -17,7 +17,7 @@ export function createMockApiResponse<T>(
     data: success ? data : undefined,
     error: success ? undefined : error,
     meta: {
-      version: API_CONFIG?.version,
+      version: API_CONFIG.version,
       timestamp: new Date().toISOString(),
     },
   };
@@ -28,32 +28,32 @@ export function createMockApiResponse<T>(
  */
 export function createMockApiClient(options: ApiClientOptions = {}) {
   const mockClient = {
-    get: jest?.fn(),
-    post: jest?.fn(),
-    put: jest?.fn(),
-    delete: jest?.fn(),
-    patch: jest?.fn(),
+    get: jest.fn(),
+    post: jest.fn(),
+    put: jest.fn(),
+    delete: jest.fn(),
+    patch: jest.fn(),
   };
 
   // Setup default successful responses
-  mockClient?.get.mockImplementation((path: string) =>
-    Promise?.resolve(createMockApiResponse({ path, method: 'GET' })),
+  mockClient.get.mockImplementation((path: string) =>
+    Promise.resolve(createMockApiResponse({ path, method: 'GET' })),
   );
 
-  mockClient?.post.mockImplementation((path: string, data: any) =>
-    Promise?.resolve(createMockApiResponse({ path, method: 'POST', data })),
+  mockClient.post.mockImplementation((path: string, data: any) =>
+    Promise.resolve(createMockApiResponse({ path, method: 'POST', data })),
   );
 
-  mockClient?.put.mockImplementation((path: string, data: any) =>
-    Promise?.resolve(createMockApiResponse({ path, method: 'PUT', data })),
+  mockClient.put.mockImplementation((path: string, data: any) =>
+    Promise.resolve(createMockApiResponse({ path, method: 'PUT', data })),
   );
 
-  mockClient?.delete.mockImplementation((path: string) =>
-    Promise?.resolve(createMockApiResponse({ path, method: 'DELETE' })),
+  mockClient.delete.mockImplementation((path: string) =>
+    Promise.resolve(createMockApiResponse({ path, method: 'DELETE' })),
   );
 
-  mockClient?.patch.mockImplementation((path: string, data: any) =>
-    Promise?.resolve(createMockApiResponse({ path, method: 'PATCH', data })),
+  mockClient.patch.mockImplementation((path: string, data: any) =>
+    Promise.resolve(createMockApiResponse({ path, method: 'PATCH', data })),
   );
 
   return mockClient;
@@ -98,34 +98,34 @@ export function createServiceTestWrapper<T extends { apiClient: ApiClient }>(
   const mockClient = createMockApiClient();
 
   // Override mock implementations with provided responses
-  Object?.entries(mockResponses).forEach(([path, response]) => {
-    const [method, ...pathParts] = path?.split(' ');
-    const actualPath = pathParts?.join(' ');
+  Object.entries(mockResponses).forEach(([path, response]) => {
+    const [method, ...pathParts] = path.split(' ');
+    const actualPath = pathParts.join(' ');
 
-    switch (method?.toUpperCase()) {
+    switch (method.toUpperCase()) {
       case 'GET':
-        mockClient?.get.mockImplementation((p: string) =>
-          p === actualPath ? Promise?.resolve(response) : Promise?.reject(),
+        mockClient.get.mockImplementation((p: string) =>
+          p === actualPath ? Promise.resolve(response) : Promise.reject(),
         );
         break;
       case 'POST':
-        mockClient?.post.mockImplementation((p: string) =>
-          p === actualPath ? Promise?.resolve(response) : Promise?.reject(),
+        mockClient.post.mockImplementation((p: string) =>
+          p === actualPath ? Promise.resolve(response) : Promise.reject(),
         );
         break;
       case 'PUT':
-        mockClient?.put.mockImplementation((p: string) =>
-          p === actualPath ? Promise?.resolve(response) : Promise?.reject(),
+        mockClient.put.mockImplementation((p: string) =>
+          p === actualPath ? Promise.resolve(response) : Promise.reject(),
         );
         break;
       case 'DELETE':
-        mockClient?.delete.mockImplementation((p: string) =>
-          p === actualPath ? Promise?.resolve(response) : Promise?.reject(),
+        mockClient.delete.mockImplementation((p: string) =>
+          p === actualPath ? Promise.resolve(response) : Promise.reject(),
         );
         break;
       case 'PATCH':
-        mockClient?.patch.mockImplementation((p: string) =>
-          p === actualPath ? Promise?.resolve(response) : Promise?.reject(),
+        mockClient.patch.mockImplementation((p: string) =>
+          p === actualPath ? Promise.resolve(response) : Promise.reject(),
         );
         break;
     }
@@ -138,7 +138,7 @@ export function createServiceTestWrapper<T extends { apiClient: ApiClient }>(
  * Wait for all pending API requests to complete
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); waitForApiRequests(): Promise<void> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); waitForApiRequests(): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, 0));
 }

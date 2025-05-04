@@ -77,16 +77,16 @@ export default function CreateAppointmentPage() {
   const [time, setTime] = useState<string>('');
   const [notes, setNotes] = useState<string>('');
   const [isNewClient, setIsNewClient] = useState(false);
-  const totalDuration = selectedServices?.reduce((sum, service) => sum + service?.duration, 0);
-  const totalPrice = selectedServices?.reduce((sum, service) => sum + service?.price, 0);
+  const totalDuration = selectedServices.reduce((sum, service) => sum + service.duration, 0);
+  const totalPrice = selectedServices.reduce((sum, service) => sum + service.price, 0);
   const handleServiceSelect = (serviceId: string) => {
-    const service = dummyServices?.find((s) => s?.id === serviceId);
-    if (service && !selectedServices?.find((s) => s?.id === serviceId)) {
+    const service = dummyServices.find((s) => s.id === serviceId);
+    if (service && !selectedServices.find((s) => s.id === serviceId)) {
       setSelectedServices([...selectedServices, service]);
     }
   };
   const handleServiceRemove = (serviceId: string) => {
-    setSelectedServices(selectedServices?.filter((s) => s?.id !== serviceId));
+    setSelectedServices(selectedServices.filter((s) => s.id !== serviceId));
   };
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -143,7 +143,7 @@ export default function CreateAppointmentPage() {
                       </div>
                       <div>
                         <Label>Email</Label>
-                        <Input type="email" placeholder="client@example?.com" />
+                        <Input type="email" placeholder="client@example.com" />
                       </div>
                       <div>
                         <Label>Phone</Label>
@@ -152,9 +152,9 @@ export default function CreateAppointmentPage() {
                     </div>
                   ) : (
                     <Select
-                      value={selectedClient?.id || ''}
+                      value={selectedClient.id || ''}
                       onValueChange={(value) => {
-                        const client = dummyClients?.find((c) => c?.id === value);
+                        const client = dummyClients.find((c) => c.id === value);
                         setSelectedClient(client || null);
                       }}
                     >
@@ -162,9 +162,9 @@ export default function CreateAppointmentPage() {
                         <SelectValue placeholder="Select a client" />
                       </SelectTrigger>
                       <SelectContent>
-                        {dummyClients?.map((client) => (
-                          <SelectItem key={client?.id} value={client?.id}>
-                            {client?.name}
+                        {dummyClients.map((client) => (
+                          <SelectItem key={client.id} value={client.id}>
+                            {client.name}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -182,44 +182,44 @@ export default function CreateAppointmentPage() {
               <CardContent>
                 <div className="space-y-4">
                   <Select
-                    value={selectedServices?.length > 0 ? selectedServices[0].id : ''}
+                    value={selectedServices.length > 0 ? selectedServices[0].id : ''}
                     onValueChange={handleServiceSelect}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select a service" />
                     </SelectTrigger>
                     <SelectContent>
-                      {dummyServices?.map((service) => (
-                        <SelectItem key={service?.id} value={service?.id}>
-                          {service?.name} (${service?.price})
+                      {dummyServices.map((service) => (
+                        <SelectItem key={service.id} value={service.id}>
+                          {service.name} (${service.price})
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                   <div className="space-y-2">
-                    {selectedServices?.map((service) => (
+                    {selectedServices.map((service) => (
                       <div
-                        key={service?.id}
+                        key={service.id}
                         className="flex items-center justify-between rounded-lg border p-3"
                       >
                         <div>
-                          <h3 className="font-medium">{service?.name}</h3>
+                          <h3 className="font-medium">{service.name}</h3>
                           <p className="text-sm text-muted-foreground">
-                            {service?.duration} minutes • ${service?.price}
+                            {service.duration} minutes • ${service.price}
                           </p>
                         </div>
                         <Button
                           type="button"
                           variant="ghost"
                           size="icon"
-                          onClick={() => handleServiceRemove(service?.id)}
+                          onClick={() => handleServiceRemove(service.id)}
                         >
                           <Icons.XMarkIcon className="h-5 w-5" />
                         </Button>
                       </div>
                     ))}
                   </div>
-                  {selectedServices?.length > 0 && (
+                  {selectedServices.length > 0 && (
                     <div className="border-t pt-4">
                       <div className="flex justify-between">
                         <span>Total Duration:</span>
@@ -261,7 +261,7 @@ export default function CreateAppointmentPage() {
                   </div>
                   <div>
                     <Label>Time</Label>
-                    <Input type="time" value={time} onChange={(e) => setTime(e?.target.value)} />
+                    <Input type="time" value={time} onChange={(e) => setTime(e.target.value)} />
                   </div>
                 </div>
               </CardContent>
@@ -276,7 +276,7 @@ export default function CreateAppointmentPage() {
                 <Textarea
                   placeholder="Add notes about the appointment..."
                   value={notes}
-                  onChange={(e) => setNotes(e?.target.value)}
+                  onChange={(e) => setNotes(e.target.value)}
                 />
               </CardContent>
             </Card>

@@ -18,10 +18,10 @@ const getContentData = (id: string, category: string) => {
       category: 'mindfulness',
       duration: '15 mins',
       level: 'beginner',
-      image: '/placeholder?.png',
+      image: '/placeholder.png',
       tags: ['meditation', 'mindfulness', 'beginner'],
       contentType: 'video' as ContentType,
-      videoUrl: 'https://example?.com/videos/intro-meditation?.mp4',
+      videoUrl: 'https://example.com/videos/intro-meditation.mp4',
       createdBy: 'Sarah Johnson',
       createdAt: '2023-05-15',
       content: `
@@ -51,10 +51,10 @@ const getContentData = (id: string, category: string) => {
       category: 'yoga',
       duration: '20 mins',
       level: 'intermediate',
-      image: '/placeholder?.png',
+      image: '/placeholder.png',
       tags: ['yoga', 'morning routine', 'energy'],
       contentType: 'video' as ContentType,
-      videoUrl: 'https://example?.com/videos/morning-yoga?.mp4',
+      videoUrl: 'https://example.com/videos/morning-yoga.mp4',
       createdBy: 'Emma Chen',
       createdAt: '2023-06-10',
       content: `
@@ -98,13 +98,13 @@ export default function ContentDetailPage() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   useEffect(() => {
     const fetchContent = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       setLoading(true);
       const contentData = getContentData(id, category);
       if (contentData) {
         setContent(contentData);
-        setContentType(contentData?.contentType);
+        setContentType(contentData.contentType);
       }
       setLoading(false);
     };
@@ -118,8 +118,8 @@ export default function ContentDetailPage() {
       // In a real app, this would be fetched from an API
       // Simulating that this content was started but not completed
       const userProgress: ContentProgress = {
-        contentId: content?.id,
-        contentType: content?.contentType,
+        contentId: content.id,
+        contentType: content.contentType,
         lastPosition: 180, // 3 minutes in
         completed: false,
       };
@@ -130,7 +130,7 @@ export default function ContentDetailPage() {
   const togglePlayback = () => {
     setIsPlaying(!isPlaying);
     // In a real app, this would control the actual video/audio player
-    console?.log(isPlaying ? 'Pausing content' : 'Playing content');
+    console.log(isPlaying ? 'Pausing content' : 'Playing content');
   };
   // Mark content as completed
   const markAsCompleted = () => {
@@ -143,38 +143,38 @@ export default function ContentDetailPage() {
     };
     setProgress(updatedProgress);
     // In a real app, this would be sent to an API
-    console?.log('Content marked as completed:', updatedProgress);
+    console.log('Content marked as completed:', updatedProgress);
   };
   // Handle saving/bookmarking
   const toggleSave = () => {
     setIsBookmarked(!isBookmarked);
     // In a real app, this would be sent to an API
-    console?.log(isBookmarked ? 'Content removed from saved items' : 'Content saved');
+    console.log(isBookmarked ? 'Content removed from saved items' : 'Content saved');
   };
   // Handle liking
   const toggleLike = () => {
     setIsLiked(!isLiked);
     // In a real app, this would be sent to an API
-    console?.log(isLiked ? 'Content unliked' : 'Content liked');
+    console.log(isLiked ? 'Content unliked' : 'Content liked');
   };
   // Calculate progress percentage
   const getProgressPercentage = () => {
     if (!progress || !content) return 0;
-    if (progress?.completed) return 100;
-    if (progress?.lastPosition) {
-      // Convert duration string (e?.g., "15 mins") to seconds
-      const durationMatch = content?.duration.match(/(\d+)/);
+    if (progress.completed) return 100;
+    if (progress.lastPosition) {
+      // Convert duration string (e.g., "15 mins") to seconds
+      const durationMatch = content.duration.match(/(\d+)/);
       if (durationMatch) {
         const durationMinutes = parseInt(durationMatch[1], 10);
         const durationSeconds = durationMinutes * 60;
-        return Math?.min(100, (progress?.lastPosition / durationSeconds) * 100);
+        return Math.min(100, (progress.lastPosition / durationSeconds) * 100);
       }
     }
     return 0;
   };
   const handleEditContent = (updatedContent: any) => {
     import { Icons } from '@/components/icons';
-    console?.log('Updating content:', updatedContent);
+    console.log('Updating content:', updatedContent);
     setIsEditModalOpen(false);
   };
   if (loading) {
@@ -211,11 +211,11 @@ export default function ContentDetailPage() {
         {/* Back button */}
         <div className="mb-8">
           <button
-            onClick={() => router?.back()}
+            onClick={() => router.back()}
             className="flex items-center text-muted-foreground transition-colors hover:text-foreground"
           >
-            <Icons?.ArrowLeftIcon className="mr-2 h-4 w-4" />
-            Back to {category?.charAt(0).toUpperCase() + category?.slice(1).replace('-', ' ')}
+            <Icons.ArrowLeftIcon className="mr-2 h-4 w-4" />
+            Back to {category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}
           </button>
         </div>
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
@@ -224,18 +224,18 @@ export default function ContentDetailPage() {
             <div className="card">
               {/* Content header */}
               <div className="mb-6">
-                <h1 className="mb-2 text-3xl font-bold">{content?.title}</h1>
-                <p className="text-muted-foreground">{content?.description}</p>
+                <h1 className="mb-2 text-3xl font-bold">{content.title}</h1>
+                <p className="text-muted-foreground">{content.description}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <span className="bg-primary/10 text-primary rounded-full px-2 py-1 text-xs">
-                    {content?.category.charAt(0).toUpperCase() + content?.category.slice(1)}
+                    {content.category.charAt(0).toUpperCase() + content.category.slice(1)}
                   </span>
                   <span className="rounded-full bg-muted px-2 py-1 text-xs text-muted-foreground">
-                    {content?.level.charAt(0).toUpperCase() + content?.level.slice(1)}
+                    {content.level.charAt(0).toUpperCase() + content.level.slice(1)}
                   </span>
                   <span className="flex items-center rounded-full bg-muted px-2 py-1 text-xs text-muted-foreground">
-                    <Icons?.ClockIcon className="mr-1 h-3 w-3" />
-                    {content?.duration}
+                    <Icons.ClockIcon className="mr-1 h-3 w-3" />
+                    {content.duration}
                   </span>
                 </div>
                 {/* Content Type Selector */}
@@ -258,9 +258,9 @@ export default function ContentDetailPage() {
                     onClick={togglePlayback}
                   >
                     {isPlaying ? (
-                      <Icons?.PauseIcon className="h-8 w-8" />
+                      <Icons.PauseIcon className="h-8 w-8" />
                     ) : (
-                      <Icons?.PlayIcon className="h-8 w-8" />
+                      <Icons.PlayIcon className="h-8 w-8" />
                     )}
                   </button>
                 </div>
@@ -282,9 +282,9 @@ export default function ContentDetailPage() {
                     onClick={toggleLike}
                   >
                     {isLiked ? (
-                      <Icons?.HeartIconSolid className="h-5 w-5 text-red-500" />
+                      <Icons.HeartIconSolid className="h-5 w-5 text-red-500" />
                     ) : (
-                      <Icons?.HeartIcon className="h-5 w-5" />
+                      <Icons.HeartIcon className="h-5 w-5" />
                     )}
                     <span>{isLiked ? 'Liked' : 'Like'}</span>
                   </button>
@@ -293,31 +293,31 @@ export default function ContentDetailPage() {
                     onClick={toggleSave}
                   >
                     {isBookmarked ? (
-                      <Icons?.BookmarkIconSolid className="text-primary h-5 w-5" />
+                      <Icons.BookmarkIconSolid className="text-primary h-5 w-5" />
                     ) : (
-                      <Icons?.BookmarkIcon className="h-5 w-5" />
+                      <Icons.BookmarkIcon className="h-5 w-5" />
                     )}
                     <span>{isBookmarked ? 'Saved' : 'Save'}</span>
                   </button>
                   <button className="flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground">
-                    <Icons?.ShareIcon className="h-5 w-5" />
+                    <Icons.ShareIcon className="h-5 w-5" />
                     <span>Share</span>
                   </button>
                 </div>
                 {/* Complete button */}
-                {progress && !progress?.completed && (
+                {progress && !progress.completed && (
                   <button
                     className="btn-primary flex items-center gap-1 text-sm"
                     onClick={markAsCompleted}
                   >
-                    <Icons?.CheckIcon className="h-4 w-4" />
+                    <Icons.CheckIcon className="h-4 w-4" />
                     Mark Complete
                   </button>
                 )}
                 {/* Completed badge */}
-                {progress && progress?.completed && (
+                {progress && progress.completed && (
                   <div className="flex items-center text-sm text-green-500">
-                    <Icons?.CheckIcon className="mr-1 h-5 w-5" />
+                    <Icons.CheckIcon className="mr-1 h-5 w-5" />
                     Completed
                   </div>
                 )}
@@ -325,14 +325,14 @@ export default function ContentDetailPage() {
               {/* Content */}
               <div
                 className="prose prose-sm dark:prose-invert max-w-none"
-                dangerouslySetInnerHTML={{ __html: content?.content }}
+                dangerouslySetInnerHTML={{ __html: content.content }}
               />
               {/* Tags */}
-              {content?.tags && content?.tags.length > 0 && (
+              {content.tags && content.tags.length > 0 && (
                 <div className="mt-8 border-t border-border pt-6">
                   <h3 className="mb-2 text-sm font-medium">Tags</h3>
                   <div className="flex flex-wrap gap-2">
-                    {content?.tags.map((tag: string) => (
+                    {content.tags.map((tag: string) => (
                       <Link
                         key={tag}
                         href={`/wellness?tag=${tag}`}
@@ -352,9 +352,9 @@ export default function ContentDetailPage() {
                     <span className="text-xs text-muted-foreground">Avatar</span>
                   </div>
                   <div>
-                    <div className="font-medium">{content?.createdBy}</div>
+                    <div className="font-medium">{content.createdBy}</div>
                     <div className="text-xs text-muted-foreground">
-                      Published on {new Date(content?.createdAt).toLocaleDateString()}
+                      Published on {new Date(content.createdAt).toLocaleDateString()}
                     </div>
                   </div>
                 </div>
@@ -386,7 +386,7 @@ export default function ContentDetailPage() {
                     <div className="mb-1 flex justify-between">
                       <span className="text-sm">Progress</span>
                       <span className="text-sm font-medium">
-                        {Math?.round(getProgressPercentage())}%
+                        {Math.round(getProgressPercentage())}%
                       </span>
                     </div>
                     <div className="h-2 overflow-hidden rounded-full bg-muted">
@@ -398,44 +398,44 @@ export default function ContentDetailPage() {
                   </div>
                   {/* Status */}
                   <div className="mb-4 rounded-md bg-muted px-3 py-2 text-sm">
-                    {progress?.completed ? (
+                    {progress.completed ? (
                       <div className="flex items-center text-green-500">
-                        <Icons?.CheckIcon className="mr-2 h-5 w-5" />
+                        <Icons.CheckIcon className="mr-2 h-5 w-5" />
                         <div>
                           <p>Completed</p>
-                          {progress?.completedDate && (
+                          {progress.completedDate && (
                             <p className="text-xs text-muted-foreground">
-                              on {new Date(progress?.completedDate).toLocaleDateString()}
+                              on {new Date(progress.completedDate).toLocaleDateString()}
                             </p>
                           )}
                         </div>
                       </div>
-                    ) : progress?.lastPosition ? (
+                    ) : progress.lastPosition ? (
                       <div className="flex items-center">
-                        <Icons?.ChartBarIcon className="text-primary mr-2 h-5 w-5" />
+                        <Icons.ChartBarIcon className="text-primary mr-2 h-5 w-5" />
                         <div>
                           <p>In Progress</p>
                           <p className="text-xs text-muted-foreground">
-                            {Math?.floor(progress?.lastPosition / 60)}:
-                            {(progress?.lastPosition % 60).toString().padStart(2, '0')} watched
+                            {Math.floor(progress.lastPosition / 60)}:
+                            {(progress.lastPosition % 60).toString().padStart(2, '0')} watched
                           </p>
                         </div>
                       </div>
                     ) : (
                       <div className="flex items-center">
-                        <Icons?.PlayIcon className="text-primary mr-2 h-5 w-5" />
+                        <Icons.PlayIcon className="text-primary mr-2 h-5 w-5" />
                         <p>Not started yet</p>
                       </div>
                     )}
                   </div>
                   {/* Actions */}
                   <div className="space-y-2">
-                    {!progress?.completed && (
+                    {!progress.completed && (
                       <button
                         className="btn-primary flex w-full items-center justify-center gap-1"
                         onClick={markAsCompleted}
                       >
-                        <Icons?.CheckIcon className="h-4 w-4" />
+                        <Icons.CheckIcon className="h-4 w-4" />
                         Mark as Completed
                       </button>
                     )}
@@ -443,7 +443,7 @@ export default function ContentDetailPage() {
                       href="/wellness/progress"
                       className="btn-secondary flex w-full items-center justify-center gap-1"
                     >
-                      <Icons?.ChartBarIcon className="h-4 w-4" />
+                      <Icons.ChartBarIcon className="h-4 w-4" />
                       View All Progress
                     </Link>
                   </div>
@@ -458,7 +458,7 @@ export default function ContentDetailPage() {
                   <div className="h-12 w-16 flex-shrink-0 rounded bg-muted" />
                   <div>
                     <h3 className="hover:text-primary text-sm font-medium">
-                      <Link href={`/wellness/${content?.category}/3`}>
+                      <Link href={`/wellness/${content.category}/3`}>
                         Advanced Meditation Techniques
                       </Link>
                     </h3>
@@ -469,7 +469,7 @@ export default function ContentDetailPage() {
                   <div className="h-12 w-16 flex-shrink-0 rounded bg-muted" />
                   <div>
                     <h3 className="hover:text-primary text-sm font-medium">
-                      <Link href={`/wellness/${content?.category}/4`}>
+                      <Link href={`/wellness/${content.category}/4`}>
                         Breathing Exercises for Focus
                       </Link>
                     </h3>
@@ -480,7 +480,7 @@ export default function ContentDetailPage() {
                   <div className="h-12 w-16 flex-shrink-0 rounded bg-muted" />
                   <div>
                     <h3 className="hover:text-primary text-sm font-medium">
-                      <Link href={`/wellness/${content?.category}/5`}>
+                      <Link href={`/wellness/${content.category}/5`}>
                         Mindfulness for Stress Relief
                       </Link>
                     </h3>

@@ -26,7 +26,7 @@ export default function Unauthorized() {
             {user ? (
               <div className="rounded-md bg-gray-50 p-4">
                 <p className="text-sm text-gray-600">
-                  You are currently logged in as <span className="font-medium">{user?.email}</span>
+                  You are currently logged in as <span className="font-medium">{user.email}</span>
                 </p>
               </div>
             ) : (

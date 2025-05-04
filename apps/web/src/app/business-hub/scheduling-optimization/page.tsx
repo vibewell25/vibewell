@@ -19,7 +19,7 @@ interface SchedulingStrategy {
   id: string;
   title: string;
   description: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
   category: 'efficiency' | 'no-shows' | 'capacity' | 'revenue';
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   timeToImplement: string;
@@ -46,7 +46,7 @@ export default function SchedulingOptimizationPage() {
       title: 'Strategic Buffer Times',
       description:
         'Add small buffers between appointments to prevent running behind and reduce stress.',
-      icon: <Icons?.ClockIcon className="h-10 w-10 text-blue-500" />,
+      icon: <Icons.ClockIcon className="h-10 w-10 text-blue-500" />,
       category: 'efficiency',
       difficulty: 'beginner',
       timeToImplement: 'Immediate',
@@ -64,7 +64,7 @@ export default function SchedulingOptimizationPage() {
       title: 'Service Batching',
       description:
         'Group similar services together on specific days to improve efficiency and reduce setup time.',
-      icon: <Icons?.ArrowPathIcon className="h-10 w-10 text-teal-500" />,
+      icon: <Icons.ArrowPathIcon className="h-10 w-10 text-teal-500" />,
       category: 'efficiency',
       difficulty: 'intermediate',
       timeToImplement: '1-2 weeks',
@@ -83,7 +83,7 @@ export default function SchedulingOptimizationPage() {
       title: 'Appointment Deposit System',
       description:
         'Require a deposit for bookings to reduce no-shows and last-minute cancellations.',
-      icon: <Icons?.CurrencyDollarIcon className="h-10 w-10 text-green-500" />,
+      icon: <Icons.CurrencyDollarIcon className="h-10 w-10 text-green-500" />,
       category: 'no-shows',
       difficulty: 'intermediate',
       timeToImplement: '1 week',
@@ -102,7 +102,7 @@ export default function SchedulingOptimizationPage() {
       title: 'Multi-Touch Reminder System',
       description:
         'Implement a series of appointment reminders across multiple channels to minimize no-shows.',
-      icon: <Icons?.BellAlertIcon className="h-10 w-10 text-purple-500" />,
+      icon: <Icons.BellAlertIcon className="h-10 w-10 text-purple-500" />,
       category: 'no-shows',
       difficulty: 'beginner',
       timeToImplement: '2-3 days',
@@ -121,7 +121,7 @@ export default function SchedulingOptimizationPage() {
       title: 'Peak Time Premium Pricing',
       description:
         'Charge more for high-demand time slots to maximize revenue during your busiest periods.',
-      icon: <Icons?.ChartBarIcon className="h-10 w-10 text-amber-500" />,
+      icon: <Icons.ChartBarIcon className="h-10 w-10 text-amber-500" />,
       category: 'revenue',
       difficulty: 'advanced',
       timeToImplement: '2-3 weeks',
@@ -141,7 +141,7 @@ export default function SchedulingOptimizationPage() {
       title: 'Capacity Utilization Analysis',
       description:
         'Analyze and optimize your schedule to maximize the number of clients you can serve.',
-      icon: <Icons?.UserGroupIcon className="h-10 w-10 text-indigo-500" />,
+      icon: <Icons.UserGroupIcon className="h-10 w-10 text-indigo-500" />,
       category: 'capacity',
       difficulty: 'advanced',
       timeToImplement: '2-4 weeks',
@@ -161,7 +161,7 @@ export default function SchedulingOptimizationPage() {
       title: 'Smart Waitlist Management',
       description:
         'Implement an effective waitlist system to quickly fill cancelled appointments and maximize bookings.',
-      icon: <Icons?.CalendarIcon className="h-10 w-10 text-red-500" />,
+      icon: <Icons.CalendarIcon className="h-10 w-10 text-red-500" />,
       category: 'capacity',
       difficulty: 'intermediate',
       timeToImplement: '1 week',
@@ -179,7 +179,7 @@ export default function SchedulingOptimizationPage() {
       id: 'cancellation-policy',
       title: 'Effective Cancellation Policy',
       description: 'Create and enforce a cancellation policy that protects your time and revenue.',
-      icon: <Icons?.ExclamationTriangleIcon className="h-10 w-10 text-orange-500" />,
+      icon: <Icons.ExclamationTriangleIcon className="h-10 w-10 text-orange-500" />,
       category: 'no-shows',
       difficulty: 'beginner',
       timeToImplement: '1 day',
@@ -202,7 +202,7 @@ export default function SchedulingOptimizationPage() {
       title: 'Schedule Efficiency Calculator',
       description:
         'Analyze your current booking patterns and identify opportunities to optimize your schedule for maximum productivity.',
-      image: 'https://images?.unsplash.com/photo-1506784365847-bbad939e9335',
+      image: 'https://images.unsplash.com/photo-1506784365847-bbad939e9335',
       category: 'efficiency',
       premium: false,
       url: '/business-hub/scheduling-optimization/efficiency-calculator',
@@ -212,7 +212,7 @@ export default function SchedulingOptimizationPage() {
       title: 'No-Show Rate Tracker',
       description:
         'Track and analyze your no-show and late cancellation rates to measure the effectiveness of your policies.',
-      image: 'https://images?.unsplash.com/photo-1586282391129-76a4ed808dcb',
+      image: 'https://images.unsplash.com/photo-1586282391129-76a4ed808dcb',
       category: 'no-shows',
       premium: false,
       url: '/business-hub/scheduling-optimization/no-show-tracker',
@@ -222,7 +222,7 @@ export default function SchedulingOptimizationPage() {
       title: 'Dynamic Pricing Template',
       description:
         'Implement time-based pricing with this customizable template that helps you maximize revenue during peak hours.',
-      image: 'https://images?.unsplash.com/photo-1526628953301-3e589a6a8b74',
+      image: 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74',
       category: 'revenue',
       premium: true,
       url: '/business-hub/scheduling-optimization/dynamic-pricing',
@@ -232,7 +232,7 @@ export default function SchedulingOptimizationPage() {
       title: 'Capacity Utilization Dashboard',
       description:
         'Visualize your schedule capacity utilization and identify opportunities to serve more clients.',
-      image: 'https://images?.unsplash.com/photo-1551288049-bebda4e38f71',
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71',
       category: 'capacity',
       premium: true,
       url: '/business-hub/scheduling-optimization/capacity-dashboard',
@@ -242,7 +242,7 @@ export default function SchedulingOptimizationPage() {
       title: 'Client Communication Templates',
       description:
         'Ready-to-use templates for communicating schedule changes, policies, and reminders to clients.',
-      image: 'https://images?.unsplash.com/photo-1577563908411-5077b6dc7624',
+      image: 'https://images.unsplash.com/photo-1577563908411-5077b6dc7624',
       category: 'no-shows',
       premium: false,
       url: '/business-hub/scheduling-optimization/communication-templates',
@@ -252,22 +252,22 @@ export default function SchedulingOptimizationPage() {
       title: 'Revenue Gap Analyzer',
       description:
         'Identify missed revenue opportunities in your current scheduling practices with this analytical tool.',
-      image: 'https://images?.unsplash.com/photo-1611174743420-3d7df880ce32',
+      image: 'https://images.unsplash.com/photo-1611174743420-3d7df880ce32',
       category: 'revenue',
       premium: true,
       url: '/business-hub/scheduling-optimization/revenue-analyzer',
     },
   ];
   // Filter strategies based on selected category and difficulty
-  const filteredStrategies = strategies?.filter((strategy) => {
-    const matchesCategory = selectedCategory === 'all' || strategy?.category === selectedCategory;
+  const filteredStrategies = strategies.filter((strategy) => {
+    const matchesCategory = selectedCategory === 'all' || strategy.category === selectedCategory;
     const matchesDifficulty =
-      selectedDifficulty === 'all' || strategy?.difficulty === selectedDifficulty;
+      selectedDifficulty === 'all' || strategy.difficulty === selectedDifficulty;
     return matchesCategory && matchesDifficulty;
   });
   // Filter tools based on selected category
-  const filteredTools = tools?.filter(
-    (tool) => selectedCategory === 'all' || tool?.category === selectedCategory,
+  const filteredTools = tools.filter(
+    (tool) => selectedCategory === 'all' || tool.category === selectedCategory,
   );
   // Categories for filtering
   const categories = [
@@ -301,7 +301,7 @@ export default function SchedulingOptimizationPage() {
               className="bg-indigo-600 hover:bg-indigo-700"
               onClick={() => setActiveTab('strategies')}
             >
-              <Icons?.CalendarIcon className="mr-2 h-5 w-5" />
+              <Icons.CalendarIcon className="mr-2 h-5 w-5" />
               Scheduling Strategies
             </Button>
             <Button
@@ -309,7 +309,7 @@ export default function SchedulingOptimizationPage() {
               className="border-indigo-600 text-indigo-600 hover:bg-indigo-50"
               onClick={() => setActiveTab('tools')}
             >
-              <Icons?.ChartBarIcon className="mr-2 h-5 w-5" />
+              <Icons.ChartBarIcon className="mr-2 h-5 w-5" />
               Optimization Tools
             </Button>
           </div>
@@ -320,7 +320,7 @@ export default function SchedulingOptimizationPage() {
         <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-md">
           <div className="mb-2 flex items-start">
             <div className="mr-4 rounded-lg bg-red-100 p-2">
-              <Icons?.ExclamationTriangleIcon className="h-8 w-8 text-red-600" />
+              <Icons.ExclamationTriangleIcon className="h-8 w-8 text-red-600" />
             </div>
             <div>
               <p className="text-sm text-gray-500">No-Show Impact</p>
@@ -335,7 +335,7 @@ export default function SchedulingOptimizationPage() {
         <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-md">
           <div className="mb-2 flex items-start">
             <div className="mr-4 rounded-lg bg-teal-100 p-2">
-              <Icons?.ClockIcon className="h-8 w-8 text-teal-600" />
+              <Icons.ClockIcon className="h-8 w-8 text-teal-600" />
             </div>
             <div>
               <p className="text-sm text-gray-500">Time Optimization</p>
@@ -349,7 +349,7 @@ export default function SchedulingOptimizationPage() {
         <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-md">
           <div className="mb-2 flex items-start">
             <div className="mr-4 rounded-lg bg-amber-100 p-2">
-              <Icons?.CurrencyDollarIcon className="h-8 w-8 text-amber-600" />
+              <Icons.CurrencyDollarIcon className="h-8 w-8 text-amber-600" />
             </div>
             <div>
               <p className="text-sm text-gray-500">Revenue Impact</p>
@@ -369,17 +369,17 @@ export default function SchedulingOptimizationPage() {
           <div>
             <p className="mb-2 text-sm font-medium text-gray-700">By Category:</p>
             <div className="flex flex-wrap gap-3">
-              {categories?.map((category) => (
+              {categories.map((category) => (
                 <Button
-                  key={category?.id}
-                  variant={selectedCategory === category?.id ? 'default' : 'outline'}
+                  key={category.id}
+                  variant={selectedCategory === category.id ? 'default' : 'outline'}
                   className={
-                    selectedCategory === category?.id ? 'bg-indigo-600 hover:bg-indigo-700' : ''
+                    selectedCategory === category.id ? 'bg-indigo-600 hover:bg-indigo-700' : ''
                   }
-                  onClick={() => setSelectedCategory(category?.id)}
+                  onClick={() => setSelectedCategory(category.id)}
                   size="sm"
                 >
-                  {category?.name}
+                  {category.name}
                 </Button>
               ))}
             </div>
@@ -387,17 +387,17 @@ export default function SchedulingOptimizationPage() {
           <div>
             <p className="mb-2 text-sm font-medium text-gray-700">By Difficulty:</p>
             <div className="flex flex-wrap gap-3">
-              {difficultyLevels?.map((level) => (
+              {difficultyLevels.map((level) => (
                 <Button
-                  key={level?.id}
-                  variant={selectedDifficulty === level?.id ? 'default' : 'outline'}
+                  key={level.id}
+                  variant={selectedDifficulty === level.id ? 'default' : 'outline'}
                   className={
-                    selectedDifficulty === level?.id ? 'bg-indigo-600 hover:bg-indigo-700' : ''
+                    selectedDifficulty === level.id ? 'bg-indigo-600 hover:bg-indigo-700' : ''
                   }
-                  onClick={() => setSelectedDifficulty(level?.id)}
+                  onClick={() => setSelectedDifficulty(level.id)}
                   size="sm"
                 >
-                  {level?.name}
+                  {level.name}
                 </Button>
               ))}
             </div>
@@ -412,56 +412,56 @@ export default function SchedulingOptimizationPage() {
         </TabsList>
         {/* Strategies Tab Content */}
         <TabsContent value="strategies">
-          {filteredStrategies?.length > 0 ? (
+          {filteredStrategies.length > 0 ? (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              {filteredStrategies?.map((strategy) => (
-                <Card key={strategy?.id}>
+              {filteredStrategies.map((strategy) => (
+                <Card key={strategy.id}>
                   <CardHeader className="pb-2">
                     <div className="mb-2 flex items-start justify-between">
                       <div className="flex items-center space-x-3">
-                        <div className="rounded-lg bg-gray-100 p-2">{strategy?.icon}</div>
-                        <CardTitle className="text-xl">{strategy?.title}</CardTitle>
+                        <div className="rounded-lg bg-gray-100 p-2">{strategy.icon}</div>
+                        <CardTitle className="text-xl">{strategy.title}</CardTitle>
                       </div>
                       <div className="flex space-x-2">
-                        {strategy?.difficulty === 'beginner' && (
+                        {strategy.difficulty === 'beginner' && (
                           <Badge className="border-green-200 bg-green-100 text-green-800">
                             Beginner
                           </Badge>
                         )}
-                        {strategy?.difficulty === 'intermediate' && (
+                        {strategy.difficulty === 'intermediate' && (
                           <Badge className="border-yellow-200 bg-yellow-100 text-yellow-800">
                             Intermediate
                           </Badge>
                         )}
-                        {strategy?.difficulty === 'advanced' && (
+                        {strategy.difficulty === 'advanced' && (
                           <Badge className="border-red-200 bg-red-100 text-red-800">Advanced</Badge>
                         )}
-                        {strategy?.impact === 'high' && (
+                        {strategy.impact === 'high' && (
                           <Badge className="border-purple-200 bg-purple-100 text-purple-800">
                             High Impact
                           </Badge>
                         )}
                       </div>
                     </div>
-                    <CardDescription className="text-base">{strategy?.description}</CardDescription>
+                    <CardDescription className="text-base">{strategy.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="mb-4 grid grid-cols-2 gap-4">
                       <div>
                         <p className="text-xs text-gray-500">Time to Implement</p>
-                        <p className="font-medium">{strategy?.timeToImplement}</p>
+                        <p className="font-medium">{strategy.timeToImplement}</p>
                       </div>
                       <div>
                         <p className="text-xs text-gray-500">Category</p>
                         <p className="font-medium capitalize">
-                          {strategy?.category.replace('-', ' ')}
+                          {strategy.category.replace('-', ' ')}
                         </p>
                       </div>
                     </div>
                     <div>
                       <p className="mb-2 text-sm font-medium">Implementation Steps:</p>
                       <ol className="list-decimal space-y-1 pl-5 text-sm text-gray-600">
-                        {strategy?.steps.map((step, index) => (
+                        {strategy.steps.map((step, index) => (
                           <li key={index}>{step}</li>
                         ))}
                       </ol>
@@ -469,7 +469,7 @@ export default function SchedulingOptimizationPage() {
                   </CardContent>
                   <CardFooter>
                     <Link
-                      href={`/business-hub/scheduling-optimization/strategies/${strategy?.id}`}
+                      href={`/business-hub/scheduling-optimization/strategies/${strategy.id}`}
                       className="w-full"
                     >
                       <Button className="w-full bg-indigo-600 hover:bg-indigo-700">
@@ -501,14 +501,14 @@ export default function SchedulingOptimizationPage() {
         {/* Tools Tab Content */}
         <TabsContent value="tools">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {filteredTools?.map((tool) => (
+            {filteredTools.map((tool) => (
               <Card
-                key={tool?.id}
-                className={`${tool?.premium ? 'border-purple-200' : 'border-gray-200'}`}
+                key={tool.id}
+                className={`${tool.premium ? 'border-purple-200' : 'border-gray-200'}`}
               >
                 <div className="relative aspect-video w-full overflow-hidden rounded-t-lg">
-                  <Image src={tool?.image} alt={tool?.title} fill style={{ objectFit: 'cover' }} />
-                  {tool?.premium && (
+                  <Image src={tool.image} alt={tool.title} fill style={{ objectFit: 'cover' }} />
+                  {tool.premium && (
                     <Badge
                       variant="secondary"
                       className="absolute left-2 top-2 bg-purple-100 text-purple-800"
@@ -517,22 +517,22 @@ export default function SchedulingOptimizationPage() {
                     </Badge>
                   )}
                   <Badge className="absolute right-2 top-2 bg-indigo-600">
-                    {tool?.category === 'efficiency' && 'Efficiency'}
-                    {tool?.category === 'no-shows' && 'No-Shows'}
-                    {tool?.category === 'capacity' && 'Capacity'}
-                    {tool?.category === 'revenue' && 'Revenue'}
+                    {tool.category === 'efficiency' && 'Efficiency'}
+                    {tool.category === 'no-shows' && 'No-Shows'}
+                    {tool.category === 'capacity' && 'Capacity'}
+                    {tool.category === 'revenue' && 'Revenue'}
                   </Badge>
                 </div>
                 <CardHeader>
-                  <CardTitle className="text-lg">{tool?.title}</CardTitle>
-                  <CardDescription>{tool?.description}</CardDescription>
+                  <CardTitle className="text-lg">{tool.title}</CardTitle>
+                  <CardDescription>{tool.description}</CardDescription>
                 </CardHeader>
                 <CardFooter>
-                  <Link href={tool?.url} className="w-full">
+                  <Link href={tool.url} className="w-full">
                     <Button
-                      className={`w-full ${tool?.premium ? 'bg-purple-600 hover:bg-purple-700' : 'bg-indigo-600 hover:bg-indigo-700'}`}
+                      className={`w-full ${tool.premium ? 'bg-purple-600 hover:bg-purple-700' : 'bg-indigo-600 hover:bg-indigo-700'}`}
                     >
-                      {tool?.premium ? 'Unlock Tool' : 'Access Tool'}
+                      {tool.premium ? 'Unlock Tool' : 'Access Tool'}
                     </Button>
                   </Link>
                 </CardFooter>
@@ -555,7 +555,7 @@ export default function SchedulingOptimizationPage() {
           </div>
           <div className="mt-6 flex justify-center md:mt-0 md:w-1/3">
             <Image
-              src="https://images?.unsplash.com/photo-1551288049-bebda4e38f71"
+              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71"
               alt="Schedule Analysis"
               width={300}
               height={200}

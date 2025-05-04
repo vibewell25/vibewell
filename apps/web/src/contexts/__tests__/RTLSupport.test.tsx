@@ -6,17 +6,17 @@ import { LanguageOption } from '../../hooks/useAccessibility';
 const mockLocalStorage = (() => {
   let store: Record<string, string> = {};
   return {
-    getItem: jest?.fn((key) => store[key] || null),
-    setItem: jest?.fn((key, value) => {
-      store[key] = value?.toString();
+    getItem: jest.fn((key) => store[key] || null),
+    setItem: jest.fn((key, value) => {
+      store[key] = value.toString();
     }),
-    clear: jest?.fn(() => {
+    clear: jest.fn(() => {
       store = {};
     }),
   };
 })();
 
-Object?.defineProperty(window, 'localStorage', {
+Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
 });
 
@@ -25,26 +25,26 @@ const RTLTestComponent = () => {
   const { preferences, setLanguage, supportedLanguages } = useAccessibilityContext();
 
   // Find the current language from the supported languages
-  const currentLanguageObj = supportedLanguages?.find(
-    (lang: LanguageOption) => lang?.code === preferences?.language,
+  const currentLanguageObj = supportedLanguages.find(
+    (lang: LanguageOption) => lang.code === preferences.language,
   );
 
   // Determine if the language is RTL (default to false if not found)
-  const isRTL = Boolean(currentLanguageObj && currentLanguageObj?.isRTL);
+  const isRTL = Boolean(currentLanguageObj && currentLanguageObj.isRTL);
 
   return (
     <div data-testid="rtl-test-component">
-      <div data-testid="current-language">{preferences?.language}</div>
+      <div data-testid="current-language">{preferences.language}</div>
       <div data-testid="is-rtl">{isRTL ? 'RTL' : 'LTR'}</div>
 
       <select
         data-testid="language-selector"
-        value={preferences?.language}
-        onChange={(e) => setLanguage(e?.target.value)}
+        value={preferences.language}
+        onChange={(e) => setLanguage(e.target.value)}
       >
-        {supportedLanguages?.map((lang: LanguageOption) => (
-          <option key={lang?.code} value={lang?.code}>
-            {lang?.name}
+        {supportedLanguages.map((lang: LanguageOption) => (
+          <option key={lang.code} value={lang.code}>
+            {lang.name}
           </option>
         ))}
       </select>
@@ -54,9 +54,9 @@ const RTLTestComponent = () => {
 
 describe('RTL Support', () => {
   beforeEach(() => {
-    mockLocalStorage?.clear();
-    document?.documentElement.removeAttribute('dir');
-    document?.documentElement.removeAttribute('lang');
+    mockLocalStorage.clear();
+    document.documentElement.removeAttribute('dir');
+    document.documentElement.removeAttribute('lang');
   });
 
   it('sets default language to English (LTR)', () => {
@@ -66,10 +66,10 @@ describe('RTL Support', () => {
       </AccessibilityProvider>,
     );
 
-    expect(screen?.getByTestId('current-language').textContent).toBe('en');
-    expect(screen?.getByTestId('is-rtl').textContent).toBe('LTR');
-    expect(document?.documentElement.getAttribute('dir')).toBe('ltr');
-    expect(document?.documentElement.getAttribute('lang')).toBe('en');
+    expect(screen.getByTestId('current-language').textContent).toBe('en');
+    expect(screen.getByTestId('is-rtl').textContent).toBe('LTR');
+    expect(document.documentElement.getAttribute('dir')).toBe('ltr');
+    expect(document.documentElement.getAttribute('lang')).toBe('en');
   });
 
   it('changes to RTL when Arabic is selected', () => {
@@ -80,19 +80,19 @@ describe('RTL Support', () => {
     );
 
     // Initial state should be LTR
-    expect(document?.documentElement.getAttribute('dir')).toBe('ltr');
+    expect(document.documentElement.getAttribute('dir')).toBe('ltr');
 
     // Change to Arabic (RTL language)
     act(() => {
-      const select = screen?.getByTestId('language-selector');
-      fireEvent?.change(select, { target: { value: 'ar' } });
+      const select = screen.getByTestId('language-selector');
+      fireEvent.change(select, { target: { value: 'ar' } });
     });
 
     // Check if RTL is applied
-    expect(screen?.getByTestId('current-language').textContent).toBe('ar');
-    expect(screen?.getByTestId('is-rtl').textContent).toBe('RTL');
-    expect(document?.documentElement.getAttribute('dir')).toBe('rtl');
-    expect(document?.documentElement.getAttribute('lang')).toBe('ar');
+    expect(screen.getByTestId('current-language').textContent).toBe('ar');
+    expect(screen.getByTestId('is-rtl').textContent).toBe('RTL');
+    expect(document.documentElement.getAttribute('dir')).toBe('rtl');
+    expect(document.documentElement.getAttribute('lang')).toBe('ar');
   });
 
   it('changes from RTL to LTR when language changes', () => {
@@ -105,24 +105,24 @@ describe('RTL Support', () => {
 
     // Change to Arabic first
     act(() => {
-      const select = screen?.getByTestId('language-selector');
-      fireEvent?.change(select, { target: { value: 'ar' } });
+      const select = screen.getByTestId('language-selector');
+      fireEvent.change(select, { target: { value: 'ar' } });
     });
 
     // Verify RTL is applied
-    expect(document?.documentElement.getAttribute('dir')).toBe('rtl');
+    expect(document.documentElement.getAttribute('dir')).toBe('rtl');
 
     // Change back to English
     act(() => {
-      const select = screen?.getByTestId('language-selector');
-      fireEvent?.change(select, { target: { value: 'en' } });
+      const select = screen.getByTestId('language-selector');
+      fireEvent.change(select, { target: { value: 'en' } });
     });
 
     // Check if LTR is applied again
-    expect(screen?.getByTestId('current-language').textContent).toBe('en');
-    expect(screen?.getByTestId('is-rtl').textContent).toBe('LTR');
-    expect(document?.documentElement.getAttribute('dir')).toBe('ltr');
-    expect(document?.documentElement.getAttribute('lang')).toBe('en');
+    expect(screen.getByTestId('current-language').textContent).toBe('en');
+    expect(screen.getByTestId('is-rtl').textContent).toBe('LTR');
+    expect(document.documentElement.getAttribute('dir')).toBe('ltr');
+    expect(document.documentElement.getAttribute('lang')).toBe('en');
   });
 
   it('persists language preference in localStorage', () => {
@@ -134,28 +134,28 @@ describe('RTL Support', () => {
 
     // Change to Arabic
     act(() => {
-      const select = screen?.getByTestId('language-selector');
-      fireEvent?.change(select, { target: { value: 'ar' } });
+      const select = screen.getByTestId('language-selector');
+      fireEvent.change(select, { target: { value: 'ar' } });
     });
 
     // Check if localStorage was updated
-    expect(mockLocalStorage?.setItem).toHaveBeenCalledWith(
+    expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
       'accessibility-preferences',
-      expect?.any(String),
+      expect.any(String),
     );
 
-    const savedPrefs = JSON?.parse(
-      mockLocalStorage?.setItem.mock?.calls[mockLocalStorage?.setItem.mock?.calls.length - 1][1],
+    const savedPrefs = JSON.parse(
+      mockLocalStorage.setItem.mock.calls[mockLocalStorage.setItem.mock.calls.length - 1][1],
     );
 
-    expect(savedPrefs?.language).toBe('ar');
+    expect(savedPrefs.language).toBe('ar');
   });
 
   it('loads RTL language preference from localStorage', () => {
     // Set up localStorage with Arabic language
-    mockLocalStorage?.setItem(
+    mockLocalStorage.setItem(
       'accessibility-preferences',
-      JSON?.stringify({
+      JSON.stringify({
         highContrast: false,
         largeText: false,
         reduceMotion: false,
@@ -171,17 +171,17 @@ describe('RTL Support', () => {
     );
 
     // Should load Arabic and apply RTL
-    expect(screen?.getByTestId('current-language').textContent).toBe('ar');
-    expect(screen?.getByTestId('is-rtl').textContent).toBe('RTL');
-    expect(document?.documentElement.getAttribute('dir')).toBe('rtl');
-    expect(document?.documentElement.getAttribute('lang')).toBe('ar');
+    expect(screen.getByTestId('current-language').textContent).toBe('ar');
+    expect(screen.getByTestId('is-rtl').textContent).toBe('RTL');
+    expect(document.documentElement.getAttribute('dir')).toBe('rtl');
+    expect(document.documentElement.getAttribute('lang')).toBe('ar');
   });
 
   it('resets to English when preferences are reset', () => {
     // Start with Arabic
-    mockLocalStorage?.setItem(
+    mockLocalStorage.setItem(
       'accessibility-preferences',
-      JSON?.stringify({
+      JSON.stringify({
         highContrast: false,
         largeText: false,
         reduceMotion: false,
@@ -207,17 +207,17 @@ describe('RTL Support', () => {
     );
 
     // Verify initially RTL
-    expect(document?.documentElement.getAttribute('dir')).toBe('rtl');
+    expect(document.documentElement.getAttribute('dir')).toBe('rtl');
 
     // Reset preferences
     act(() => {
-      fireEvent?.click(screen?.getByTestId('reset-button'));
+      fireEvent.click(screen.getByTestId('reset-button'));
     });
 
     // Should return to LTR English
-    expect(screen?.getByTestId('current-language').textContent).toBe('en');
-    expect(screen?.getByTestId('is-rtl').textContent).toBe('LTR');
-    expect(document?.documentElement.getAttribute('dir')).toBe('ltr');
-    expect(document?.documentElement.getAttribute('lang')).toBe('en');
+    expect(screen.getByTestId('current-language').textContent).toBe('en');
+    expect(screen.getByTestId('is-rtl').textContent).toBe('LTR');
+    expect(document.documentElement.getAttribute('dir')).toBe('ltr');
+    expect(document.documentElement.getAttribute('lang')).toBe('en');
   });
 });

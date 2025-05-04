@@ -323,7 +323,7 @@ export class OptimizedRedisClient extends EventEmitter {
    */
   public async set(key: string, value: string, options?: { ex?: number }): Promise<'OK'> {
     return this.executeCommand(async (client) => {
-      if (options?.ex) {
+      if (options.ex) {
         return client.set(key, value, 'EX', options.ex);
       }
       return client.set(key, value);

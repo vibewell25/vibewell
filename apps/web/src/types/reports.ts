@@ -166,7 +166,7 @@ export interface PerformanceReportData {
     os: string;
 
     /**
-     * Node?.js version
+     * Node.js version
      */
     node_version: string;
 

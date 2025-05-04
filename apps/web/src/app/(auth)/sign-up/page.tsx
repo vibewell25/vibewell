@@ -41,10 +41,10 @@ export default function SignUpPage() {
                     userId="temp-registration-id" // This will be replaced with actual user ID after initial registration
                     onSuccess={() => {
                       // Handle successful registration
-                      console?.log('WebAuthn registration successful');
+                      console.log('WebAuthn registration successful');
                     }}
                     onError={(error) => {
-                      console?.error('WebAuthn registration failed:', error);
+                      console.error('WebAuthn registration failed:', error);
                     }}
                   />
                 </div>

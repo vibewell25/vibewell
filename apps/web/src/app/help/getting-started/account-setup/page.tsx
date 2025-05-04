@@ -18,7 +18,7 @@ import { Icons } from '@/components/icons';
 export default function AccountSetupGuide() {
   // Function to handle printing the article
   const handlePrint = () => {
-    window?.print();
+    window.print();
   };
   // Related articles
   const relatedArticles = [
@@ -43,18 +43,18 @@ export default function AccountSetupGuide() {
           <ol className="flex items-center space-x-1">
             <li>
               <Link href="/" className="text-muted-foreground hover:text-foreground">
-                <Icons?.HomeIcon className="h-4 w-4" />
+                <Icons.HomeIcon className="h-4 w-4" />
                 <span className="sr-only">Home</span>
               </Link>
             </li>
             <li className="flex items-center">
-              <Icons?.ChevronRightIcon className="h-4 w-4 text-muted-foreground" />
+              <Icons.ChevronRightIcon className="h-4 w-4 text-muted-foreground" />
               <Link href="/help" className="ml-1 text-muted-foreground hover:text-foreground">
                 Help Center
               </Link>
             </li>
             <li className="flex items-center">
-              <Icons?.ChevronRightIcon className="h-4 w-4 text-muted-foreground" />
+              <Icons.ChevronRightIcon className="h-4 w-4 text-muted-foreground" />
               <Link 
                 href="/help/categories/getting-started" 
                 className="ml-1 text-muted-foreground hover:text-foreground"
@@ -63,7 +63,7 @@ export default function AccountSetupGuide() {
               </Link>
             </li>
             <li className="flex items-center">
-              <Icons?.ChevronRightIcon className="h-4 w-4 text-muted-foreground" />
+              <Icons.ChevronRightIcon className="h-4 w-4 text-muted-foreground" />
               <span className="ml-1">Creating Your Account</span>
             </li>
           </ol>
@@ -76,21 +76,21 @@ export default function AccountSetupGuide() {
                 <h1 className="text-3xl font-bold">Creating Your Account</h1>
                 <div className="flex space-x-2">
                   <Button variant="ghost" size="icon" onClick={handlePrint}>
-                    <Icons?.PrinterIcon className="h-5 w-5" />
+                    <Icons.PrinterIcon className="h-5 w-5" />
                     <span className="sr-only">Print</span>
                   </Button>
                   <Button variant="ghost" size="icon">
-                    <Icons?.BookmarkIcon className="h-5 w-5" />
+                    <Icons.BookmarkIcon className="h-5 w-5" />
                     <span className="sr-only">Bookmark</span>
                   </Button>
                   <Button variant="ghost" size="icon">
-                    <Icons?.ShareIcon className="h-5 w-5" />
+                    <Icons.ShareIcon className="h-5 w-5" />
                     <span className="sr-only">Share</span>
                   </Button>
                 </div>
               </div>
               <div className="flex items-center mb-6 text-sm text-muted-foreground">
-                <Icons?.ClockIcon className="h-4 w-4 mr-1" />
+                <Icons.ClockIcon className="h-4 w-4 mr-1" />
                 <span>5 min read</span>
                 <span className="mx-2">•</span>
                 <span>Last updated: June 15, 2023</span>
@@ -115,7 +115,7 @@ export default function AccountSetupGuide() {
                 </p>
                 <ul>
                   <li><strong>Mobile App:</strong> Download the Vibewell app from the App Store (iOS) or Google Play Store (Android)</li>
-                  <li><strong>Website:</strong> Visit <a href="https://vibewell?.com/signup" className="text-primary hover:underline">vibewell?.com/signup</a></li>
+                  <li><strong>Website:</strong> Visit <a href="https://vibewell.com/signup" className="text-primary hover:underline">vibewell.com/signup</a></li>
                 </ul>
                 <div className="my-6 bg-muted p-4 rounded-md">
                   <h3 className="text-base font-medium mb-2">💡 Pro Tip</h3>
@@ -183,7 +183,7 @@ export default function AccountSetupGuide() {
                   <li>Check your spam or junk folder</li>
                   <li>Verify you entered the correct email address</li>
                   <li>Click "Resend Verification Email" on the verification page</li>
-                  <li>Add noreply@vibewell?.com to your contacts or safe senders list</li>
+                  <li>Add noreply@vibewell.com to your contacts or safe senders list</li>
                 </ul>
                 <h4>I forgot my password</h4>
                 <p>
@@ -200,7 +200,7 @@ export default function AccountSetupGuide() {
                   If you encounter any issues while creating your account, please contact our support team:
                 </p>
                 <ul>
-                  <li>Email: support@vibewell?.com</li>
+                  <li>Email: support@vibewell.com</li>
                   <li>Live Chat: Available 24/7 in the app or website</li>
                   <li>Phone: 1-800-VIBEWELL (Available Monday-Friday, 9am-5pm EST)</li>
                 </ul>
@@ -216,7 +216,7 @@ export default function AccountSetupGuide() {
                       size="sm"
                       className="p-2"
                     >
-                      <Icons?.StarIcon className="h-5 w-5" />
+                      <Icons.StarIcon className="h-5 w-5" />
                       <span className="sr-only">Rate {rating} stars</span>
                     </Button>
                   ))}
@@ -233,14 +233,14 @@ export default function AccountSetupGuide() {
             <div className="flex justify-between">
               <Button variant="outline" asChild>
                 <Link href="/help" className="flex items-center">
-                  <Icons?.ArrowLeftIcon className="h-4 w-4 mr-2" />
+                  <Icons.ArrowLeftIcon className="h-4 w-4 mr-2" />
                   Back to Help Center
                 </Link>
               </Button>
               <Button variant="outline" asChild>
                 <Link href="/help/getting-started/profile-setup" className="flex items-center">
                   Next: Setting Up Your Profile
-                  <Icons?.ArrowRightIcon className="h-4 w-4 ml-2" />
+                  <Icons.ArrowRightIcon className="h-4 w-4 ml-2" />
                 </Link>
               </Button>
             </div>
@@ -299,13 +299,13 @@ export default function AccountSetupGuide() {
             <div className="bg-card rounded-lg border p-4">
               <h2 className="text-lg font-medium mb-3">Related Articles</h2>
               <ul className="space-y-3">
-                {relatedArticles?.map((article, index) => (
+                {relatedArticles.map((article, index) => (
                   <li key={index}>
                     <Link 
-                      href={article?.path}
+                      href={article.path}
                       className="text-primary hover:underline block"
                     >
-                      {article?.title}
+                      {article.title}
                     </Link>
                   </li>
                 ))}

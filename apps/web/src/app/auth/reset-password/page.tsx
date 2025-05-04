@@ -21,12 +21,12 @@ export default function ResetPasswordPage() {
   const { updatePassword } = useAuth();
 
   // Get the token from URL parameters
-  const token = searchParams?.get('token') ?? null;
+  const token = searchParams.get('token') ?? null;
 
   useEffect(() => {
     // Redirect if token is missing
     if (!token) {
-      router?.push('/auth/forgot-password');
+      router.push('/auth/forgot-password');
     }
   }, [token, router]);
 
@@ -34,9 +34,9 @@ export default function ResetPasswordPage() {
    * Handle form submission for password reset
    */
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent) => {
-    e?.preventDefault();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
+    e.preventDefault();
     setError(null);
 
     // Check if passwords match
@@ -46,7 +46,7 @@ export default function ResetPasswordPage() {
     }
 
     // Check password strength
-    if (password?.length < 8) {
+    if (password.length < 8) {
       setError('Password must be at least 8 characters long.');
       return;
     }
@@ -56,12 +56,12 @@ export default function ResetPasswordPage() {
     try {
       const { error } = await updatePassword(password);
       if (error) {
-        setError(error?.message);
+        setError(error.message);
       } else {
         setIsSuccessful(true);
       }
     } catch (err) {
-      setError(err instanceof Error ? err?.message : 'Failed to reset password. Please try again.');
+      setError(err instanceof Error ? err.message : 'Failed to reset password. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -71,7 +71,7 @@ export default function ResetPasswordPage() {
     return (
       <div className="container mx-auto max-w-md px-4 py-8">
         <div className="mb-8 flex flex-col items-center">
-          <Icons?.logo className="text-primary mb-4 h-12 w-12" />
+          <Icons.logo className="text-primary mb-4 h-12 w-12" />
           <h1 className="mb-2 text-2xl font-bold">Password reset successful</h1>
           <p className="text-center text-muted-foreground">
             Your password has been updated successfully. You can now log in with your new password.
@@ -90,7 +90,7 @@ export default function ResetPasswordPage() {
   return (
     <div className="container mx-auto max-w-md px-4 py-8">
       <div className="mb-8 flex flex-col items-center">
-        <Icons?.logo className="text-primary mb-4 h-12 w-12" />
+        <Icons.logo className="text-primary mb-4 h-12 w-12" />
         <h1 className="mb-2 text-2xl font-bold">Reset your password</h1>
         <p className="text-center text-muted-foreground">Enter your new password below.</p>
       </div>
@@ -109,7 +109,7 @@ export default function ResetPasswordPage() {
             type="password"
             placeholder="••••••••"
             value={password}
-            onChange={(e) => setPassword(e?.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             required
             minLength={8}
             className="w-full rounded-md border p-2"
@@ -129,7 +129,7 @@ export default function ResetPasswordPage() {
             type="password"
             placeholder="••••••••"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e?.target.value)}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             required
             className="w-full rounded-md border p-2"
             disabled={isLoading}

@@ -1,8 +1,8 @@
 
 import webpush from 'web-push';
 
-if (!process?.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || !process?.env.VAPID_PRIVATE_KEY) {
-  console?.error(
+if (!process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || !process.env.VAPID_PRIVATE_KEY) {
+  console.error(
     'VAPID keys are required for web push notifications. Generate them using:',
 
 
@@ -11,23 +11,23 @@ if (!process?.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || !process?.env.VAPID_PRIVATE_KE
 }
 
 const vapidDetails = {
-  publicKey: process?.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-  privateKey: process?.env.VAPID_PRIVATE_KEY!,
-  subject: `mailto:${process?.env.VAPID_EMAIL || 'webmaster@vibewell?.com'}`,
+  publicKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+  privateKey: process.env.VAPID_PRIVATE_KEY!,
+  subject: `mailto:${process.env.VAPID_EMAIL || 'webmaster@vibewell.com'}`,
 };
 
-webpush?.setVapidDetails(vapidDetails?.subject, vapidDetails?.publicKey, vapidDetails?.privateKey);
+webpush.setVapidDetails(vapidDetails.subject, vapidDetails.publicKey, vapidDetails.privateKey);
 
 export {};
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); sendPushNotification(subscription: PushSubscription, payload: any) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); sendPushNotification(subscription: PushSubscription, payload: any) {
   try {
-    await webpush?.sendNotification(subscription, JSON?.stringify(payload));
+    await webpush.sendNotification(subscription, JSON.stringify(payload));
     return true;
   } catch (error) {
-    console?.error('Error sending push notification:', error);
+    console.error('Error sending push notification:', error);
     return false;
   }
 }

@@ -27,13 +27,13 @@ export class GroupBookingService {
   private notificationService: NotificationService;
 
   constructor(notificationService: NotificationService) {
-    this?.notificationService = notificationService;
+    this.notificationService = notificationService;
   }
 
   async createGroupBooking(data: CreateGroupBookingDTO) {
     try {
-      const service = await prisma?.beautyService.findUnique({
-        where: { id: data?.serviceId },
+      const service = await prisma.beautyService.findUnique({
+        where: { id: data.serviceId },
         include: { business: true },
       });
 
@@ -43,33 +43,33 @@ export class GroupBookingService {
 
       // Validate participant limits
 
-      const participantCount = data?.participants.length + 1; // +1 for organizer
-      if (data?.minParticipants && participantCount < data?.minParticipants) {
+      const participantCount = data.participants.length + 1; // +1 for organizer
+      if (data.minParticipants && participantCount < data.minParticipants) {
         throw new Error('Minimum participants requirement not met');
       }
-      if (data?.maxParticipants && participantCount > data?.maxParticipants) {
+      if (data.maxParticipants && participantCount > data.maxParticipants) {
         throw new Error('Maximum participants limit exceeded');
       }
 
       // Create group booking
-      const groupBooking = await prisma?.groupBooking.create({
+      const groupBooking = await prisma.groupBooking.create({
         data: {
-          serviceId: data?.serviceId,
-          businessId: service?.businessId,
-          startTime: data?.startTime,
-          endTime: data?.endTime,
-          minParticipants: data?.minParticipants,
-          maxParticipants: data?.maxParticipants,
-          notes: data?.notes,
+          serviceId: data.serviceId,
+          businessId: service.businessId,
+          startTime: data.startTime,
+          endTime: data.endTime,
+          minParticipants: data.minParticipants,
+          maxParticipants: data.maxParticipants,
+          notes: data.notes,
           status: 'PENDING',
           participants: {
             create: [
               {
-                userId: data?.organizerId,
+                userId: data.organizerId,
                 role: 'ORGANIZER',
                 status: 'CONFIRMED',
               },
-              ...data?.participants.map((userId) => ({
+              ...data.participants.map((userId) => ({
                 userId,
                 role: 'PARTICIPANT',
                 status: 'PENDING',
@@ -87,30 +87,30 @@ export class GroupBookingService {
       });
 
       // Send notifications to participants
-      await Promise?.all(
-        groupBooking?.participants
-          .filter((p) => p?.role === 'PARTICIPANT')
+      await Promise.all(
+        groupBooking.participants
+          .filter((p) => p.role === 'PARTICIPANT')
           .map((participant) =>
-            this?.notificationService.sendNotification(participant?.userId, {
+            this.notificationService.sendNotification(participant.userId, {
               type: 'GROUP_BOOKING_INVITATION',
               title: 'Group Booking Invitation',
-              message: `You've been invited to a group booking for ${service?.name}`,
+              message: `You've been invited to a group booking for ${service.name}`,
               data: {
-                groupBookingId: groupBooking?.id,
-                serviceName: service?.name,
-                startTime: data?.startTime.toISOString(),
-                organizerName: groupBooking?.participants.find((p) => p?.role === 'ORGANIZER')?.user
+                groupBookingId: groupBooking.id,
+                serviceName: service.name,
+                startTime: data.startTime.toISOString(),
+                organizerName: groupBooking.participants.find((p) => p.role === 'ORGANIZER').user
                   .name,
               },
             }),
           ),
       );
 
-      logger?.info(`Created group booking`, { groupBookingId: groupBooking?.id });
+      logger.info(`Created group booking`, { groupBookingId: groupBooking.id });
       return groupBooking;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error(`Error creating group booking: ${errorMessage}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error(`Error creating group booking: ${errorMessage}`);
       throw error;
     }
   }
@@ -121,7 +121,7 @@ export class GroupBookingService {
     status: 'CONFIRMED' | 'DECLINED',
   ) {
     try {
-      const participant = await prisma?.groupBookingParticipant.update({
+      const participant = await prisma.groupBookingParticipant.update({
         where: {
           groupBookingId_userId: {
             groupBookingId,
@@ -140,38 +140,38 @@ export class GroupBookingService {
       });
 
       // Check if minimum participants requirement is met
-      const confirmedCount = participant?.groupBooking.participants?.filter(
-        (p) => p?.status === 'CONFIRMED',
+      const confirmedCount = participant.groupBooking.participants.filter(
+        (p) => p.status === 'CONFIRMED',
       ).length;
 
       if (
         status === 'CONFIRMED' &&
-        confirmedCount >= (participant?.groupBooking.minParticipants || 0)
+        confirmedCount >= (participant.groupBooking.minParticipants || 0)
       ) {
         // Update group booking status to confirmed
-        await prisma?.groupBooking.update({
+        await prisma.groupBooking.update({
           where: { id: groupBookingId },
           data: { status: 'CONFIRMED' },
         });
 
         // Notify all participants
-        await Promise?.all(
-          participant?.groupBooking.participants?.map((p) =>
-            this?.notificationService.sendNotification(p?.userId, {
+        await Promise.all(
+          participant.groupBooking.participants.map((p) =>
+            this.notificationService.sendNotification(p.userId, {
               type: 'GROUP_BOOKING_CONFIRMED',
               title: 'Group Booking Confirmed',
-              message: `The group booking for ${participant?.groupBooking.service?.name} has been confirmed`,
+              message: `The group booking for ${participant.groupBooking.service.name} has been confirmed`,
               data: {
                 groupBookingId,
-                serviceName: participant?.groupBooking.service?.name,
-                startTime: participant?.groupBooking.startTime?.toISOString(),
+                serviceName: participant.groupBooking.service.name,
+                startTime: participant.groupBooking.startTime.toISOString(),
               },
             }),
           ),
         );
       }
 
-      logger?.info(`Updated participant status`, {
+      logger.info(`Updated participant status`, {
         groupBookingId,
         userId,
         status,
@@ -179,15 +179,15 @@ export class GroupBookingService {
 
       return participant;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error(`Error updating participant status: ${errorMessage}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error(`Error updating participant status: ${errorMessage}`);
       throw error;
     }
   }
 
   async getGroupBooking(groupBookingId: string) {
     try {
-      const groupBooking = await prisma?.groupBooking.findUnique({
+      const groupBooking = await prisma.groupBooking.findUnique({
         where: { id: groupBookingId },
         include: {
           service: true,
@@ -205,15 +205,15 @@ export class GroupBookingService {
 
       return groupBooking;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error(`Error fetching group booking: ${errorMessage}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error(`Error fetching group booking: ${errorMessage}`);
       throw error;
     }
   }
 
   async cancelGroupBooking(groupBookingId: string, reason?: string) {
     try {
-      const groupBooking = await prisma?.groupBooking.update({
+      const groupBooking = await prisma.groupBooking.update({
         where: { id: groupBookingId },
         data: {
           status: 'CANCELLED',
@@ -230,32 +230,32 @@ export class GroupBookingService {
       });
 
       // Notify all participants
-      await Promise?.all(
-        groupBooking?.participants.map((participant) =>
-          this?.notificationService.sendNotification(participant?.userId, {
+      await Promise.all(
+        groupBooking.participants.map((participant) =>
+          this.notificationService.sendNotification(participant.userId, {
             type: 'GROUP_BOOKING_CANCELLED',
             title: 'Group Booking Cancelled',
-            message: `The group booking for ${groupBooking?.service.name} has been cancelled${
+            message: `The group booking for ${groupBooking.service.name} has been cancelled${
               reason ? `: ${reason}` : ''
             }`,
             data: {
               groupBookingId,
-              serviceName: groupBooking?.service.name,
-              startTime: groupBooking?.startTime.toISOString(),
+              serviceName: groupBooking.service.name,
+              startTime: groupBooking.startTime.toISOString(),
             },
           }),
         ),
       );
 
-      logger?.info(`Cancelled group booking`, {
+      logger.info(`Cancelled group booking`, {
         groupBookingId,
         reason,
       });
 
       return groupBooking;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error?.message : 'Unknown error';
-      logger?.error(`Error cancelling group booking: ${errorMessage}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error(`Error cancelling group booking: ${errorMessage}`);
       throw error;
     }
   }

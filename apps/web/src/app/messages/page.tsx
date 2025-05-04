@@ -44,23 +44,23 @@ function MessagesPageContent() {
   const searchParams = useSearchParams();
   // Fetch conversations
   const fetchConversations = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!user) return;
     try {
       setIsLoading(true);
       const response = await fetch('/api/messages');
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to fetch conversations');
       }
-      const data = await response?.json();
-      setConversations(data?.conversations || []);
+      const data = await response.json();
+      setConversations(data.conversations || []);
       // Reset any errors
       setError(null);
     } catch (err) {
-      console?.error('Error fetching conversations:', err);
+      console.error('Error fetching conversations:', err);
       setError('Failed to load conversations');
-      toast?.error('Failed to load conversations');
+      toast.error('Failed to load conversations');
     } finally {
       setIsLoading(false);
     }
@@ -72,55 +72,55 @@ function MessagesPageContent() {
   }, [user]);
   useEffect(() => {
     // Check if we have initiate parameters to start a new conversation
-    const initiateUserId = searchParams?.get('initiate');
-    const initiateUserName = searchParams?.get('name');
+    const initiateUserId = searchParams.get('initiate');
+    const initiateUserName = searchParams.get('name');
     if (initiateUserId && initiateUserName && user && !isLoading) {
       // Check if we already have a conversation with this user
-      const existingConversation = conversations?.find((conv) => {
-        const otherParticipant = conv?.participants.find((p) => p?.id !== user?.id);
-        return otherParticipant?.id === initiateUserId;
+      const existingConversation = conversations.find((conv) => {
+        const otherParticipant = conv.participants.find((p) => p.id !== user.id);
+        return otherParticipant.id === initiateUserId;
       });
       if (existingConversation) {
         // If we already have a conversation, select it
-        setSelectedConversation(existingConversation?.id);
+        setSelectedConversation(existingConversation.id);
       } else {
         // Create a new conversation by sending the first message
         handleSendInitialMessage(initiateUserId, initiateUserName);
       }
     }
     // If no initiate params or after handling them, default to first conversation if none selected
-    else if (conversations?.length > 0 && !selectedConversation && !isLoading) {
+    else if (conversations.length > 0 && !selectedConversation && !isLoading) {
       setSelectedConversation(conversations[0].id);
     }
   }, [conversations, selectedConversation, searchParams, user, isLoading]);
   // Send a message
   const handleSendMessage = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e?: React?.FormEvent) => {
-    if (e) e?.preventDefault();
-    if (!newMessage?.trim() || !selectedConversation || loading || !user) return;
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!newMessage.trim() || !selectedConversation || loading || !user) return;
     try {
       // Get the current conversation
-      const conversation = conversations?.find((c) => c?.id === selectedConversation);
+      const conversation = conversations.find((c) => c.id === selectedConversation);
       if (!conversation) return;
       // Get the recipient
-      const recipient = conversation?.participants.find((p) => p?.id !== user?.id);
+      const recipient = conversation.participants.find((p) => p.id !== user.id);
       if (!recipient) return;
       // Add optimistic update
       const optimisticMsg = {
-        id: `temp-${Date?.now()}`,
-        senderId: user?.id,
+        id: `temp-${Date.now()}`,
+        senderId: user.id,
         content: newMessage,
         timestamp: new Date().toISOString(),
         read: false,
       };
       // Update UI optimistically
       setConversations((prev) =>
-        prev?.map((conv) => {
-          if (conv?.id === selectedConversation) {
+        prev.map((conv) => {
+          if (conv.id === selectedConversation) {
             return {
               ...conv,
-              messages: [...conv?.messages, optimisticMsg],
+              messages: [...conv.messages, optimisticMsg],
             };
           }
           return conv;
@@ -134,26 +134,26 @@ function MessagesPageContent() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify({
-          recipientId: recipient?.id,
-          recipientName: recipient?.name,
+        body: JSON.stringify({
+          recipientId: recipient.id,
+          recipientName: recipient.name,
           content: newMessage,
         }),
       });
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to send message');
       }
       // Refresh conversations to get the latest state
       fetchConversations();
     } catch (err) {
-      console?.error('Error sending message:', err);
-      toast?.error('Failed to send message');
+      console.error('Error sending message:', err);
+      toast.error('Failed to send message');
     }
   };
   // Handler for initiating a new conversation
   const handleSendInitialMessage = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');recipientId: string, recipientName: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');recipientId: string, recipientName: string) => {
     if (!user) return;
     try {
       const response = await fetch('/api/messages', {
@@ -161,46 +161,46 @@ function MessagesPageContent() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify({
+        body: JSON.stringify({
           recipientId,
           recipientName,
           content: `Hello ${recipientName}, I'd like to connect with you!`,
         }),
       });
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to start conversation');
       }
-      const data = await response?.json();
+      const data = await response.json();
       // Refresh conversations and select the new one
       await fetchConversations();
-      setSelectedConversation(data?.conversation.id);
+      setSelectedConversation(data.conversation.id);
     } catch (err) {
-      console?.error('Error starting conversation:', err);
-      toast?.error('Failed to start conversation');
+      console.error('Error starting conversation:', err);
+      toast.error('Failed to start conversation');
     }
   };
   // Mark conversation as read
   const handleSelectConversation = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');conversationId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');conversationId: string) => {
     setSelectedConversation(conversationId);
     try {
       // Find the conversation
-      const conversation = conversations?.find((c) => c?.id === conversationId);
+      const conversation = conversations.find((c) => c.id === conversationId);
       if (!conversation || !user) return;
       // Check if there are unread messages from the other user
-      const unreadMessages = conversation?.messages.filter(
-        (msg) => msg?.senderId !== user?.id && !msg?.read,
+      const unreadMessages = conversation.messages.filter(
+        (msg) => msg.senderId !== user.id && !msg.read,
       );
-      if (unreadMessages?.length === 0) return;
+      if (unreadMessages.length === 0) return;
       // Mark messages as read optimistically
       setConversations((prev) =>
-        prev?.map((conv) => {
-          if (conv?.id === conversationId) {
+        prev.map((conv) => {
+          if (conv.id === conversationId) {
             return {
               ...conv,
-              messages: conv?.messages.map((msg) => {
-                if (msg?.senderId !== user?.id) {
+              messages: conv.messages.map((msg) => {
+                if (msg.senderId !== user.id) {
                   return { ...msg, read: true };
                 }
                 return msg;
@@ -215,19 +215,19 @@ function MessagesPageContent() {
         method: 'POST',
       });
     } catch (err) {
-      console?.error('Error marking conversation as read:', err);
+      console.error('Error marking conversation as read:', err);
     }
   };
   // Delete a conversation
   const handleDeleteConversation = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');conversationId: string) => {
-    if (!window?.confirm('Are you sure you want to delete this conversation?')) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');conversationId: string) => {
+    if (!window.confirm('Are you sure you want to delete this conversation?')) {
       return;
     }
     try {
       // Remove conversation from UI optimistically
-      setConversations((prev) => prev?.filter((c) => c?.id !== conversationId));
+      setConversations((prev) => prev.filter((c) => c.id !== conversationId));
       // Clear selected conversation if it was the deleted one
       if (selectedConversation === conversationId) {
         setSelectedConversation(null);
@@ -236,33 +236,33 @@ function MessagesPageContent() {
       await fetch(`/api/messages/${conversationId}`, {
         method: 'DELETE',
       });
-      toast?.success('Conversation deleted');
+      toast.success('Conversation deleted');
     } catch (err) {
-      console?.error('Error deleting conversation:', err);
-      toast?.error('Failed to delete conversation');
+      console.error('Error deleting conversation:', err);
+      toast.error('Failed to delete conversation');
       // Restore data on error
       fetchConversations();
     }
   };
   // Convert conversations to UI format
-  const uiConversations: UIConversation[] = conversations?.map((conv) => {
+  const uiConversations: UIConversation[] = conversations.map((conv) => {
     // Get other participant
-    const otherParticipant = conv?.participants.find((p) => p?.id !== user?.id) || {
+    const otherParticipant = conv.participants.find((p) => p.id !== user.id) || {
       id: 'unknown',
       name: 'Unknown User',
-      avatar: '/placeholder-avatar?.jpg',
+      avatar: '/placeholder-avatar.jpg',
     };
     // Count unread messages
     const unreadCount = user
-      ? conv?.messages.filter((m) => m?.senderId !== user?.id && !m?.read).length
+      ? conv.messages.filter((m) => m.senderId !== user.id && !m.read).length
       : 0;
     return {
-      id: conv?.id,
-      participants: conv?.participants.map((p) => ({
+      id: conv.id,
+      participants: conv.participants.map((p) => ({
         ...p,
-        avatar: p?.avatar || undefined,
+        avatar: p.avatar || undefined,
       })),
-      messages: conv?.messages,
+      messages: conv.messages,
       unreadCount,
     };
   });
@@ -287,7 +287,7 @@ function MessagesPageContent() {
             <div className="flex h-[60vh] items-center justify-center">
               <p>Loading conversations...</p>
             </div>
-          ) : conversations?.length === 0 ? (
+          ) : conversations.length === 0 ? (
             <div className="flex h-[40vh] flex-col items-center justify-center rounded-lg bg-muted/20">
               <h2 className="mb-2 text-xl font-bold">No conversations yet</h2>
               <p className="mb-6 text-muted-foreground">
@@ -300,7 +300,7 @@ function MessagesPageContent() {
           ) : (
             <Messaging
               conversations={uiConversations}
-              currentUserId={user?.id || ''}
+              currentUserId={user.id || ''}
               onSendMessage={(conversationId, content) => {
                 // Set the selected conversation and message content
                 setSelectedConversation(conversationId);

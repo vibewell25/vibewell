@@ -45,7 +45,7 @@ export const API_DOCUMENTATION: Record<string, ApiEndpointDoc> = {
 
     path: '/api/health',
     method: 'GET',
-    version: ApiVersion?.V1,
+    version: ApiVersion.V1,
     description: 'Check API health status',
     rateLimits: {
       requestsPerMinute: 60,
@@ -70,7 +70,7 @@ export const API_DOCUMENTATION: Record<string, ApiEndpointDoc> = {
 
     path: '/api/auth',
     method: 'POST',
-    version: ApiVersion?.V1,
+    version: ApiVersion.V1,
     description: 'Authenticate user and get access token',
     rateLimits: {
       requestsPerMinute: 5,
@@ -123,7 +123,7 @@ export const API_DOCUMENTATION: Record<string, ApiEndpointDoc> = {
 export function getEndpointDocs(path: string): ApiEndpointDoc | undefined {
 
     // Safe array access
-    if (path < 0 || path >= array?.length) {
+    if (path < 0 || path >= array.length) {
       throw new Error('Array index out of bounds');
     }
   return API_DOCUMENTATION[path];
@@ -140,12 +140,12 @@ export function getAllApiDocs(): Record<string, ApiEndpointDoc> {
  * Get documentation for endpoints of a specific version
  */
 export function getVersionDocs(version: ApiVersion): Record<string, ApiEndpointDoc> {
-  return Object?.entries(API_DOCUMENTATION).reduce(
+  return Object.entries(API_DOCUMENTATION).reduce(
     (acc, [key, doc]) => {
-      if (doc?.version === version) {
+      if (doc.version === version) {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
         acc[key] = doc;

@@ -3,9 +3,9 @@ import { prisma } from '@/lib/prisma';
 
 // Training Plan Management
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); getAllTrainingPlans() {
-  return prisma?.trainingPlan.findMany({
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); getAllTrainingPlans() {
+  return prisma.trainingPlan.findMany({
     include: {
       staff: true,
       modules: {
@@ -24,16 +24,16 @@ export async function {
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); assignTrainingPlan(planId: string, staffIds: string[]) {
-  const assignments = staffIds?.map((staffId) => ({
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); assignTrainingPlan(planId: string, staffIds: string[]) {
+  const assignments = staffIds.map((staffId) => ({
     staffId,
     planId,
   }));
 
   return prisma.$transaction(
-    assignments?.map((assignment) =>
-      prisma?.trainingPlan.create({
+    assignments.map((assignment) =>
+      prisma.trainingPlan.create({
         data: {
           ...assignment,
           status: 'ACTIVE',
@@ -45,11 +45,11 @@ export async function {
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); bulkUpdateModuleOrder(updates: { id: string; order: number }[]) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); bulkUpdateModuleOrder(updates: { id: string; order: number }[]) {
   return prisma.$transaction(
-    updates?.map(({ id, order }) =>
-      prisma?.trainingPlanModule.update({
+    updates.map(({ id, order }) =>
+      prisma.trainingPlanModule.update({
         where: { id },
         data: { order },
       }),
@@ -59,9 +59,9 @@ export async function {
 
 // Content Management
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); createModuleContent(moduleId: string, content: any) {
-  return await prisma?.trainingPlanModule.update({
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); createModuleContent(moduleId: string, content: any) {
+  return await prisma.trainingPlanModule.update({
     where: { id: moduleId },
     data: {
       content: content,
@@ -71,9 +71,9 @@ export async function {
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); updateModuleContent(moduleId: string, content: any) {
-  return await prisma?.trainingPlanModule.update({
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); updateModuleContent(moduleId: string, content: any) {
+  return await prisma.trainingPlanModule.update({
     where: { id: moduleId },
     data: {
       content: content,
@@ -83,21 +83,21 @@ export async function {
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); getModuleContent(moduleId: string) {
-  const module = await prisma?.trainingPlanModule.findUnique({
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); getModuleContent(moduleId: string) {
+  const module = await prisma.trainingPlanModule.findUnique({
     where: { id: moduleId },
     select: {
       content: true,
     },
   });
-  return module?.content;
+  return module.content;
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); deleteModuleContent(moduleId: string) {
-  return await prisma?.trainingPlanModule.update({
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); deleteModuleContent(moduleId: string) {
+  return await prisma.trainingPlanModule.update({
     where: { id: moduleId },
     data: {
       content: null,
@@ -108,9 +108,9 @@ export async function {
 
 // Progress Tracking & Analytics
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); getTeamProgress(teamId: string) {
-  const teamMembers = await prisma?.providerStaff.findMany({
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); getTeamProgress(teamId: string) {
+  const teamMembers = await prisma.providerStaff.findMany({
     where: { teamId },
     include: {
       trainingPlans: {
@@ -125,81 +125,81 @@ export async function {
     },
   });
 
-  return teamMembers?.map((member) => {
-    const plans = member?.trainingPlans;
+  return teamMembers.map((member) => {
+    const plans = member.trainingPlans;
 
-    const totalModules = plans?.reduce((acc, plan) => acc + plan?.modules.length, 0);
-    const completedModules = plans?.reduce(
+    const totalModules = plans.reduce((acc, plan) => acc + plan.modules.length, 0);
+    const completedModules = plans.reduce(
       (acc, plan) =>
 
         acc +
-        plan?.modules.filter((module) => module?.progress.some((p) => p?.status === 'COMPLETED'))
+        plan.modules.filter((module) => module.progress.some((p) => p.status === 'COMPLETED'))
           .length,
       0,
     );
 
     return {
-      staffId: member?.id,
-      name: member?.userId,
+      staffId: member.id,
+      name: member.userId,
 
       completionRate: totalModules ? (completedModules / totalModules) * 100 : 0,
-      plansAssigned: plans?.length,
-      lastActivity: member?.updatedAt,
+      plansAssigned: plans.length,
+      lastActivity: member.updatedAt,
     };
   });
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); getTrainingInsights() {
-  const [modules, progress] = await Promise?.all([
-    prisma?.trainingPlanModule.findMany({
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); getTrainingInsights() {
+  const [modules, progress] = await Promise.all([
+    prisma.trainingPlanModule.findMany({
       include: {
         progress: true,
       },
     }),
-    prisma?.moduleProgress.findMany({
+    prisma.moduleProgress.findMany({
       include: {
         module: true,
       },
     }),
   ]);
 
-  const moduleStats = modules?.map((module) => {
-    const moduleProgress = module?.progress;
+  const moduleStats = modules.map((module) => {
+    const moduleProgress = module.progress;
     const completionRate =
-      moduleProgress?.length > 0
+      moduleProgress.length > 0
 
-        ? (moduleProgress?.filter((p) => p?.status === 'COMPLETED').length / moduleProgress?.length) *
+        ? (moduleProgress.filter((p) => p.status === 'COMPLETED').length / moduleProgress.length) *
           100
         : 0;
     const averageScore =
-      moduleProgress?.reduce((acc, p) => acc + (p?.score || 0), 0) / moduleProgress?.length || 0;
+      moduleProgress.reduce((acc, p) => acc + (p.score || 0), 0) / moduleProgress.length || 0;
     const averageTimeSpent =
-      moduleProgress?.reduce((acc, p) => acc + (p?.timeSpent || 0), 0) / moduleProgress?.length || 0;
+      moduleProgress.reduce((acc, p) => acc + (p.timeSpent || 0), 0) / moduleProgress.length || 0;
 
     return {
-      moduleId: module?.id,
-      name: module?.name,
-      type: module?.type,
+      moduleId: module.id,
+      name: module.name,
+      type: module.type,
       completionRate,
       averageScore,
       averageTimeSpent,
-      totalAttempts: moduleProgress?.length,
+      totalAttempts: moduleProgress.length,
     };
   });
 
   const overallStats = {
-    totalModules: modules?.length,
-    totalProgress: progress?.length,
+    totalModules: modules.length,
+    totalProgress: progress.length,
     averageCompletionRate:
 
-      moduleStats?.reduce((acc, stat) => acc + stat?.completionRate, 0) / moduleStats?.length,
+      moduleStats.reduce((acc, stat) => acc + stat.completionRate, 0) / moduleStats.length,
 
-    mostChallenging: moduleStats?.sort((a, b) => a?.averageScore - b?.averageScore).slice(0, 3),
+    mostChallenging: moduleStats.sort((a, b) => a.averageScore - b.averageScore).slice(0, 3),
     mostTimeConsuming: moduleStats
 
-      .sort((a, b) => b?.averageTimeSpent - a?.averageTimeSpent)
+      .sort((a, b) => b.averageTimeSpent - a.averageTimeSpent)
       .slice(0, 3),
   };
 
@@ -211,47 +211,47 @@ export async function {
 
 // Certification Management
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); createCertification(data: {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); createCertification(data: {
   name: string;
   description?: string;
   validityPeriod?: number; // in months
   requiredModules: string[];
 }) {
-  return prisma?.certification.create({
+  return prisma.certification.create({
     data: {
       ...data,
       modules: {
-        connect: data?.requiredModules.map((id) => ({ id })),
+        connect: data.requiredModules.map((id) => ({ id })),
       },
     },
   });
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); issueCertification(data: {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); issueCertification(data: {
   certificationId: string;
   staffId: string;
   issueDate: Date;
   expiryDate?: Date;
 }) {
-  return prisma?.staffCertification.create({
+  return prisma.staffCertification.create({
     data,
   });
 }
 
 // Notification Management
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); sendTrainingReminders() {
-  const incompleteProgress = await prisma?.moduleProgress.findMany({
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); sendTrainingReminders() {
+  const incompleteProgress = await prisma.moduleProgress.findMany({
     where: {
       status: {
         not: 'COMPLETED',
       },
       startedAt: {
-        lt: new Date(Date?.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
+        lt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
       },
     },
     include: {
@@ -260,18 +260,18 @@ export async function {
     },
   });
 
-  const notifications = incompleteProgress?.map((progress) => ({
-    staffId: progress?.staffId,
+  const notifications = incompleteProgress.map((progress) => ({
+    staffId: progress.staffId,
     type: 'TRAINING_REMINDER',
-    message: `Don't forget to complete your "${progress?.module.name}" training module.`,
+    message: `Don't forget to complete your "${progress.module.name}" training module.`,
     data: {
-      moduleId: progress?.moduleId,
-      moduleName: progress?.module.name,
-      daysElapsed: Math?.floor((Date?.now() - progress?.startedAt.getTime()) / (24 * 60 * 60 * 1000)),
+      moduleId: progress.moduleId,
+      moduleName: progress.module.name,
+      daysElapsed: Math.floor((Date.now() - progress.startedAt.getTime()) / (24 * 60 * 60 * 1000)),
     },
   }));
 
-  return prisma?.notification.createMany({
+  return prisma.notification.createMany({
     data: notifications,
   });
 }

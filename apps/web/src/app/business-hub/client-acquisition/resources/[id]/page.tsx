@@ -14,7 +14,7 @@ const clientAcquisitionResources: BaseResource[] = [
     date: '2023-09-15',
     readTime: '15 min',
     category: 'Retention',
-    imageUrl: '/images/client-retention?.jpg',
+    imageUrl: '/images/client-retention.jpg',
     content: `
       <h2>The Value of Client Retention</h2>
       <p>It costs 5-25 times more to acquire a new client than to retain an existing one. This guide explores effective retention strategies specifically for wellness businesses.</p>
@@ -48,7 +48,7 @@ const clientAcquisitionResources: BaseResource[] = [
     date: '2023-10-20',
     readTime: '12 min',
     category: 'Referrals',
-    imageUrl: '/images/referral-marketing?.jpg',
+    imageUrl: '/images/referral-marketing.jpg',
     content: `
       <h2>Leveraging Your Existing Client Base</h2>
       <p>Your current clients can be your best source of new business. This guide outlines how to create and implement an effective referral program.</p>
@@ -75,7 +75,7 @@ const clientAcquisitionResources: BaseResource[] = [
     relatedResources: ['1', '3'],
     type: 'resource',
     tags: ['referrals', 'marketing', 'client acquisition'],
-    downloadUrl: '/downloads/referral-program-template?.pdf',
+    downloadUrl: '/downloads/referral-program-template.pdf',
   },
   {
     id: '3',
@@ -84,7 +84,7 @@ const clientAcquisitionResources: BaseResource[] = [
     date: '2023-11-08',
     readTime: '18 min',
     category: 'Conversion',
-    imageUrl: '/images/client-conversion?.jpg',
+    imageUrl: '/images/client-conversion.jpg',
     content: `
       <h2>The First Visit Experience</h2>
       <p>The first visit sets the tone for your relationship with a new client. Learn how to create an exceptional first-time experience that encourages rebooking.</p>
@@ -117,7 +117,7 @@ const clientAcquisitionResources: BaseResource[] = [
 
 // Fetch resource by ID
 const getResourceById = (id: string): BaseResource | undefined => {
-  return clientAcquisitionResources?.find((resource) => resource?.id === id);
+  return clientAcquisitionResources.find((resource) => resource.id === id);
 };
 
 export default function ClientAcquisitionResourceDetailPage() {
@@ -126,15 +126,15 @@ export default function ClientAcquisitionResourceDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (params?.id) {
+    if (params.id) {
       // In a real app, this would be an API call
-      const foundResource = getResourceById(params?.id as string);
+      const foundResource = getResourceById(params.id as string);
       if (foundResource) {
         setResource(foundResource);
       }
       setLoading(false);
     }
-  }, [params?.id]);
+  }, [params.id]);
 
   if (!loading && !resource) {
     notFound();
@@ -154,15 +154,15 @@ export default function ClientAcquisitionResourceDetailPage() {
 
   // Handle download
   const handleDownload = (resource: BaseResource) => {
-    alert(`Downloading ${resource?.title}`);
+    alert(`Downloading ${resource.title}`);
     // In a real app, this would trigger the actual download
-    window?.open(resource?.downloadUrl, '_blank');
+    window.open(resource.downloadUrl, '_blank');
   };
 
   return (
     <ResourceDetailTemplate
       resource={resource}
-      resourceType={resource?.type}
+      resourceType={resource.type}
       sectionName="Client Acquisition"
       sectionPath="/business-hub/client-acquisition"
       relatedResources={clientAcquisitionResources}

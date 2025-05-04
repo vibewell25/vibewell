@@ -30,14 +30,14 @@ export function MessageProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
 
   const calculateUnreadCount = (conversations: Conversation[]) => {
-    return conversations?.reduce((total, conversation) => {
-      return total + (conversation?.unreadCount || 0);
+    return conversations.reduce((total, conversation) => {
+      return total + (conversation.unreadCount || 0);
     }, 0);
   };
 
   const fetchConversations = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!user) {
       setLoading(false);
       return;
@@ -48,15 +48,15 @@ export function MessageProvider({ children }: { children: ReactNode }) {
       setLoading(true);
 
       const response = await fetch('/api/messages');
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to fetch conversations');
       }
 
-      const data = await response?.json();
-      setConversations(data?.conversations || []);
-      setUnreadCount(calculateUnreadCount(data?.conversations || []));
+      const data = await response.json();
+      setConversations(data.conversations || []);
+      setUnreadCount(calculateUnreadCount(data.conversations || []));
     } catch (err) {
-      console?.error('Error fetching conversations:', err);
+      console.error('Error fetching conversations:', err);
       setError('Failed to load conversations');
     } finally {
       setLoading(false);
@@ -64,18 +64,18 @@ export function MessageProvider({ children }: { children: ReactNode }) {
   };
 
   const markConversationAsRead = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');conversationId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');conversationId: string) => {
     if (!user) return;
 
     try {
       // Update optimistically
       setConversations((prev) =>
-        prev?.map((conv) => {
-          if (conv?.id === conversationId) {
+        prev.map((conv) => {
+          if (conv.id === conversationId) {
             const updatedConv = {
               ...conv,
-              messages: conv?.messages.map((msg) => ({ ...msg, read: true })),
+              messages: conv.messages.map((msg) => ({ ...msg, read: true })),
               unreadCount: 0,
             };
             return updatedConv;
@@ -86,7 +86,7 @@ export function MessageProvider({ children }: { children: ReactNode }) {
 
       // Update unread count
       setUnreadCount(
-        (prev) => prev - (conversations?.find((c) => c?.id === conversationId)?.unreadCount || 0),
+        (prev) => prev - (conversations.find((c) => c.id === conversationId).unreadCount || 0),
       );
 
       // Call API to update
@@ -94,28 +94,28 @@ export function MessageProvider({ children }: { children: ReactNode }) {
         method: 'PATCH',
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to mark conversation as read');
       }
     } catch (err) {
-      console?.error('Error marking conversation as read:', err);
+      console.error('Error marking conversation as read:', err);
       // Revert optimistic update on error by refetching
       fetchConversations();
     }
   };
 
   const deleteConversation = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');conversationId: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');conversationId: string) => {
     if (!user) return;
 
     try {
       // Get the unread count to update total
       const conversationUnreadCount =
-        conversations?.find((c) => c?.id === conversationId)?.unreadCount || 0;
+        conversations.find((c) => c.id === conversationId).unreadCount || 0;
 
       // Update optimistically
-      setConversations((prev) => prev?.filter((c) => c?.id !== conversationId));
+      setConversations((prev) => prev.filter((c) => c.id !== conversationId));
       setUnreadCount((prev) => prev - conversationUnreadCount);
 
       // Call API to delete
@@ -123,45 +123,45 @@ export function MessageProvider({ children }: { children: ReactNode }) {
         method: 'DELETE',
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to delete conversation');
       }
     } catch (err) {
-      console?.error('Error deleting conversation:', err);
+      console.error('Error deleting conversation:', err);
       // Revert optimistic update on error
       fetchConversations();
     }
   };
 
   const sendMessage = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');conversationId: string, content: string) => {
-    if (!user || !content?.trim()) return;
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');conversationId: string, content: string) => {
+    if (!user || !content.trim()) return;
 
     try {
       // Get the conversation
-      const conversation = conversations?.find((c) => c?.id === conversationId);
+      const conversation = conversations.find((c) => c.id === conversationId);
       if (!conversation) return;
 
       // Get the recipient
-      const recipient = conversation?.participants.find((p) => p?.id !== user?.id);
+      const recipient = conversation.participants.find((p) => p.id !== user.id);
       if (!recipient) return;
 
       // Add optimistic update
       const optimisticMsg = {
-        id: `temp-${Date?.now()}`,
-        senderId: user?.id,
+        id: `temp-${Date.now()}`,
+        senderId: user.id,
         content,
         timestamp: new Date().toISOString(),
         read: false,
       };
 
       setConversations((prev) =>
-        prev?.map((conv) => {
-          if (conv?.id === conversationId) {
+        prev.map((conv) => {
+          if (conv.id === conversationId) {
             return {
               ...conv,
-              messages: [...conv?.messages, optimisticMsg],
+              messages: [...conv.messages, optimisticMsg],
             };
           }
           return conv;
@@ -174,34 +174,34 @@ export function MessageProvider({ children }: { children: ReactNode }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify({
-          recipientId: recipient?.id,
-          recipientName: recipient?.name,
+        body: JSON.stringify({
+          recipientId: recipient.id,
+          recipientName: recipient.name,
           content,
         }),
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to send message');
       }
 
       // Refresh conversations to get the latest state
       await fetchConversations();
     } catch (err) {
-      console?.error('Error sending message:', err);
+      console.error('Error sending message:', err);
       // Revert optimistic update on error
       fetchConversations();
     }
   };
 
   const startNewConversation = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');
     recipientId: string,
     recipientName: string,
     content: string,
   ) => {
-    if (!user || !content?.trim()) return null;
+    if (!user || !content.trim()) return null;
 
     try {
       const response = await fetch('/api/messages', {
@@ -209,26 +209,26 @@ export function MessageProvider({ children }: { children: ReactNode }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify({
+        body: JSON.stringify({
           recipientId,
           recipientName,
           content,
         }),
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to start conversation');
       }
 
-      const data = await response?.json();
+      const data = await response.json();
 
       // Refresh conversations
       await fetchConversations();
 
       // Return the new conversation ID
-      return data?.conversation?.id || null;
+      return data.conversation.id || null;
     } catch (err) {
-      console?.error('Error starting conversation:', err);
+      console.error('Error starting conversation:', err);
       return null;
     }
   };
@@ -261,7 +261,7 @@ export function MessageProvider({ children }: { children: ReactNode }) {
     startNewConversation,
   };
 
-  return <MessageContext?.Provider value={value}>{children}</MessageContext?.Provider>;
+  return <MessageContext.Provider value={value}>{children}</MessageContext.Provider>;
 }
 
 export function useMessages() {

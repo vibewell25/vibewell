@@ -14,11 +14,11 @@ function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const { toast } = useToast();
 
-  const token = searchParams?.get('token') ?? null;
+  const token = searchParams.get('token') ?? null;
 
   const handleResendEmail = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setIsLoading(true);
     try {
       await resendVerificationEmail();
@@ -44,7 +44,7 @@ function VerifyEmailContent() {
           title: 'Success',
           description: 'Email verified successfully',
         });
-        router?.push('/dashboard');
+        router.push('/dashboard');
       })
       .catch((error) => {
         toast({

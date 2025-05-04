@@ -50,18 +50,18 @@ i18n
     },
   });
 
-export const isRtl = (language: string) => rtlLanguages?.includes(language);
+export const isRtl = (language: string) => rtlLanguages.includes(language);
 
-export const changeLanguage = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');language: string) => {
-  if (supportedLanguages?.includes(language)) {
-    await i18n?.changeLanguage(language);
-    document?.documentElement.lang = language;
-    document?.documentElement.dir = isRtl(language) ? 'rtl' : 'ltr';
+export const changeLanguage = async (language: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');
+  if (supportedLanguages.includes(language)) {
+    await i18n.changeLanguage(language);
+    document.documentElement.lang = language;
+    document.documentElement.dir = isRtl(language) ? 'rtl' : 'ltr';
 
     // Ensure translations are loaded
-    await Promise?.all(namespaces?.map((ns) => i18n?.loadNamespaces(ns)));
+    await Promise.all(namespaces.map((ns) => i18n.loadNamespaces(ns)));
   }
 };
 

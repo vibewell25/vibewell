@@ -15,7 +15,7 @@ interface AnalyticsCard {
   title: string;
   value: string;
   description: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
   change?: string;
 }
 
@@ -39,8 +39,8 @@ export function AnalyticsOverview() {
         />
         <StatCard
           title="Conversion Rate"
-          value="3?.2%"
-          description="↘︎ 0?.3% from yesterday"
+          value="3.2%"
+          description="↘︎ 0.3% from yesterday"
           icon={<BarChartIcon className="h-4 w-4 text-muted-foreground" />}
           trend="down"
         />
@@ -85,15 +85,15 @@ export function Overview() {
   const analyticsCards: AnalyticsCard[] = [
     {
       title: 'Total Revenue',
-      value: '$45,231?.89',
-      description: '+20?.1% from last month',
+      value: '$45,231.89',
+      description: '+20.1% from last month',
       icon: <DollarSign className="h-4 w-4 text-muted-foreground" />,
       change: 'increase',
     },
     {
       title: 'Subscriptions',
       value: '2,350',
-      description: '+180?.1% from last month',
+      description: '+180.1% from last month',
       icon: <Users className="h-4 w-4 text-muted-foreground" />,
       change: 'increase',
     },
@@ -114,18 +114,18 @@ export function Overview() {
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      {analyticsCards?.map((card) => (
-        <Card key={card?.title}>
+      {analyticsCards.map((card) => (
+        <Card key={card.title}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{card?.title}</CardTitle>
-            {card?.icon}
+            <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
+            {card.icon}
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{card?.value}</div>
+            <div className="text-2xl font-bold">{card.value}</div>
             <p
-              className={`text-xs ${card?.change === 'increase' ? 'text-green-500' : card?.change === 'decrease' ? 'text-red-500' : 'text-muted-foreground'}`}
+              className={`text-xs ${card.change === 'increase' ? 'text-green-500' : card.change === 'decrease' ? 'text-red-500' : 'text-muted-foreground'}`}
             >
-              {card?.description}
+              {card.description}
             </p>
           </CardContent>
         </Card>

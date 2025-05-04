@@ -7,8 +7,8 @@ function RegisterContent() {
   const router = useRouter();
 
   // Redirect to sign-up page
-  React?.useEffect(() => {
-    router?.replace('/auth/sign-up');
+  React.useEffect(() => {
+    router.replace('/auth/sign-up');
   }, [router]);
 
   return null;

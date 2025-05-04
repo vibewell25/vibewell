@@ -12,8 +12,8 @@ export default function SignUpRedirect() {
 
   useEffect(() => {
     // Preserve any query parameters
-    const params = searchParams?.toString() ? `?${searchParams?.toString()}` : '';
-    router?.replace(`/auth/signup${params}`);
+    const params = searchParams.toString() ? `?${searchParams.toString()}` : '';
+    router.replace(`/auth/signup${params}`);
   }, [router, searchParams]);
 
   return (

@@ -11,11 +11,11 @@ export default function RewardsPage() {
   const router = useRouter();
   useEffect(() => {
     const checkAuth = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       const session = await getServerSession(authOptions);
       if (!session) {
-        router?.push('/login');
+        router.push('/login');
       }
     };
     checkAuth();
@@ -25,8 +25,8 @@ export default function RewardsPage() {
       <div className="mx-auto max-w-4xl space-y-8">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold">Rewards & Loyalty</h1>
-          <Button onClick={() => router?.push('/rewards/catalog')}>
-            <Icons?.GiftIcon className="mr-2 h-5 w-5" />
+          <Button onClick={() => router.push('/rewards/catalog')}>
+            <Icons.GiftIcon className="mr-2 h-5 w-5" />
             View Rewards Catalog
           </Button>
         </div>
@@ -34,7 +34,7 @@ export default function RewardsPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Icons?.SparklesIcon className="h-5 w-5" />
+              <Icons.SparklesIcon className="h-5 w-5" />
               How to Earn Points
             </CardTitle>
           </CardHeader>

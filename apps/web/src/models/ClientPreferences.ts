@@ -1,7 +1,7 @@
 import { Schema, model, Document, Types } from 'mongoose';
 
 export interface ServicePreference {
-  serviceId: Types?.ObjectId;
+  serviceId: Types.ObjectId;
   rating: number;
   frequency: 'weekly' | 'monthly' | 'quarterly' | 'annually';
   preferredDuration: number;
@@ -10,7 +10,7 @@ export interface ServicePreference {
 }
 
 export interface PractitionerPreference {
-  practitionerId: Types?.ObjectId;
+  practitionerId: Types.ObjectId;
   rating: number;
   preferredCommunication: 'email' | 'sms' | 'app' | 'phone';
   notes: string;
@@ -45,7 +45,7 @@ export interface CommunicationPreference {
 }
 
 export interface ClientPreferences extends Document {
-  clientId: Types?.ObjectId;
+  clientId: Types.ObjectId;
   servicePreferences: ServicePreference[];
   practitionerPreferences: PractitionerPreference[];
   schedulingPreferences: SchedulingPreference;
@@ -64,7 +64,7 @@ export interface ClientPreferences extends Document {
 }
 
 export interface ClientBehavior extends Document {
-  clientId: Types?.ObjectId;
+  clientId: Types.ObjectId;
   bookingPatterns: {
     averageBookingFrequency: number; // days
     preferredBookingChannel: 'web' | 'mobile' | 'phone';
@@ -74,7 +74,7 @@ export interface ClientBehavior extends Document {
     lastMinuteBookingCount: number;
   };
   serviceHistory: {
-    serviceId: Types?.ObjectId;
+    serviceId: Types.ObjectId;
     bookingCount: number;
     lastBooked: Date;
     averageRating: number;
@@ -82,7 +82,7 @@ export interface ClientBehavior extends Document {
     notes: string;
   }[];
   practitionerHistory: {
-    practitionerId: Types?.ObjectId;
+    practitionerId: Types.ObjectId;
     bookingCount: number;
     lastBooked: Date;
     averageRating: number;
@@ -93,7 +93,7 @@ export interface ClientBehavior extends Document {
     totalSpendYTD: number;
     preferredPaymentMethod: string;
     productPurchaseHistory: {
-      productId: Types?.ObjectId;
+      productId: Types.ObjectId;
       purchaseCount: number;
       lastPurchased: Date;
     }[];
@@ -121,10 +121,10 @@ export interface ClientBehavior extends Document {
 }
 
 const clientPreferencesSchema = new Schema<ClientPreferences>({
-  clientId: { type: Schema?.Types.ObjectId, ref: 'Client', required: true },
+  clientId: { type: Schema.Types.ObjectId, ref: 'Client', required: true },
   servicePreferences: [
     {
-      serviceId: { type: Schema?.Types.ObjectId, ref: 'Service', required: true },
+      serviceId: { type: Schema.Types.ObjectId, ref: 'Service', required: true },
       rating: { type: Number, min: 1, max: 5 },
       frequency: {
         type: String,
@@ -132,25 +132,25 @@ const clientPreferencesSchema = new Schema<ClientPreferences>({
       },
       preferredDuration: Number,
       notes: String,
-      lastUpdated: { type: Date, default: Date?.now },
+      lastUpdated: { type: Date, default: Date.now },
     },
   ],
   practitionerPreferences: [
     {
-      practitionerId: { type: Schema?.Types.ObjectId, ref: 'Practitioner', required: true },
+      practitionerId: { type: Schema.Types.ObjectId, ref: 'Practitioner', required: true },
       rating: { type: Number, min: 1, max: 5 },
       preferredCommunication: {
         type: String,
         enum: ['email', 'sms', 'app', 'phone'],
       },
       notes: String,
-      lastUpdated: { type: Date, default: Date?.now },
+      lastUpdated: { type: Date, default: Date.now },
     },
   ],
   schedulingPreferences: {
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
     preferredDays: [String],
@@ -189,19 +189,19 @@ const clientPreferencesSchema = new Schema<ClientPreferences>({
   },
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
   specialRequirements: [String],
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
   allergies: [String],
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
   healthConditions: [String],
@@ -217,12 +217,12 @@ const clientPreferencesSchema = new Schema<ClientPreferences>({
       },
     },
   ],
-  createdAt: { type: Date, default: Date?.now },
-  updatedAt: { type: Date, default: Date?.now },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
 const clientBehaviorSchema = new Schema<ClientBehavior>({
-  clientId: { type: Schema?.Types.ObjectId, ref: 'Client', required: true },
+  clientId: { type: Schema.Types.ObjectId, ref: 'Client', required: true },
   bookingPatterns: {
     averageBookingFrequency: Number,
     preferredBookingChannel: {
@@ -236,7 +236,7 @@ const clientBehaviorSchema = new Schema<ClientBehavior>({
   },
   serviceHistory: [
     {
-      serviceId: { type: Schema?.Types.ObjectId, ref: 'Service' },
+      serviceId: { type: Schema.Types.ObjectId, ref: 'Service' },
       bookingCount: { type: Number, default: 0 },
       lastBooked: Date,
       averageRating: Number,
@@ -246,7 +246,7 @@ const clientBehaviorSchema = new Schema<ClientBehavior>({
   ],
   practitionerHistory: [
     {
-      practitionerId: { type: Schema?.Types.ObjectId, ref: 'Practitioner' },
+      practitionerId: { type: Schema.Types.ObjectId, ref: 'Practitioner' },
       bookingCount: { type: Number, default: 0 },
       lastBooked: Date,
       averageRating: Number,
@@ -259,7 +259,7 @@ const clientBehaviorSchema = new Schema<ClientBehavior>({
     preferredPaymentMethod: String,
     productPurchaseHistory: [
       {
-        productId: { type: Schema?.Types.ObjectId, ref: 'Product' },
+        productId: { type: Schema.Types.ObjectId, ref: 'Product' },
         purchaseCount: { type: Number, default: 0 },
         lastPurchased: Date,
       },
@@ -270,19 +270,19 @@ const clientBehaviorSchema = new Schema<ClientBehavior>({
     averageRating: Number,
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
     commonThemes: [String],
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
     improvements: [String],
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
     compliments: [String],
@@ -291,7 +291,7 @@ const clientBehaviorSchema = new Schema<ClientBehavior>({
     appUsage: {
       lastLogin: Date,
       loginFrequency: Number,
-      featureUsage: Schema?.Types.Mixed,
+      featureUsage: Schema.Types.Mixed,
     },
     marketingResponses: {
       emailOpenRate: Number,
@@ -299,27 +299,27 @@ const clientBehaviorSchema = new Schema<ClientBehavior>({
       promotionRedemptions: { type: Number, default: 0 },
     },
   },
-  updatedAt: { type: Date, default: Date?.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
 // Add indexes for better query performance
-clientPreferencesSchema?.index({ clientId: 1 });
-clientPreferencesSchema?.index({ 'servicePreferences?.serviceId': 1 });
-clientPreferencesSchema?.index({ 'practitionerPreferences?.practitionerId': 1 });
+clientPreferencesSchema.index({ clientId: 1 });
+clientPreferencesSchema.index({ 'servicePreferences.serviceId': 1 });
+clientPreferencesSchema.index({ 'practitionerPreferences.practitionerId': 1 });
 
-clientBehaviorSchema?.index({ clientId: 1 });
-clientBehaviorSchema?.index({ 'serviceHistory?.serviceId': 1 });
-clientBehaviorSchema?.index({ 'practitionerHistory?.practitionerId': 1 });
+clientBehaviorSchema.index({ clientId: 1 });
+clientBehaviorSchema.index({ 'serviceHistory.serviceId': 1 });
+clientBehaviorSchema.index({ 'practitionerHistory.practitionerId': 1 });
 
 
 // Add pre-save middleware to update timestamps
-clientPreferencesSchema?.pre('save', function (next) {
-  this?.updatedAt = new Date();
+clientPreferencesSchema.pre('save', function (next) {
+  this.updatedAt = new Date();
   next();
 });
 
-clientBehaviorSchema?.pre('save', function (next) {
-  this?.updatedAt = new Date();
+clientBehaviorSchema.pre('save', function (next) {
+  this.updatedAt = new Date();
   next();
 });
 

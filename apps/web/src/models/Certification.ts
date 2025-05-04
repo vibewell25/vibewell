@@ -36,8 +36,8 @@ export interface Certification extends Document {
 }
 
 export interface PractitionerCertification extends Document {
-  practitionerId: Types?.ObjectId;
-  certificationId: Types?.ObjectId;
+  practitionerId: Types.ObjectId;
+  certificationId: Types.ObjectId;
   status: 'pending' | 'in_progress' | 'completed' | 'expired';
   progress: CertificationProgress[];
   issueDate?: Date;
@@ -75,13 +75,13 @@ const certificationSchema = new Schema<Certification>({
     },
   ],
   isActive: { type: Boolean, default: true },
-  createdAt: { type: Date, default: Date?.now },
-  updatedAt: { type: Date, default: Date?.now },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
 const practitionerCertificationSchema = new Schema<PractitionerCertification>({
-  practitionerId: { type: Schema?.Types.ObjectId, ref: 'Practitioner', required: true },
-  certificationId: { type: Schema?.Types.ObjectId, ref: 'Certification', required: true },
+  practitionerId: { type: Schema.Types.ObjectId, ref: 'Practitioner', required: true },
+  certificationId: { type: Schema.Types.ObjectId, ref: 'Certification', required: true },
   status: {
     type: String,
     enum: ['pending', 'in_progress', 'completed', 'expired'],
@@ -108,28 +108,28 @@ const practitionerCertificationSchema = new Schema<PractitionerCertification>({
   expiryDate: Date,
   certificateNumber: String,
   verificationUrl: String,
-  createdAt: { type: Date, default: Date?.now },
-  updatedAt: { type: Date, default: Date?.now },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
 // Add indexes for better query performance
-certificationSchema?.index({ name: 1, provider: 1 }, { unique: true });
-certificationSchema?.index({ category: 1 });
-certificationSchema?.index({ level: 1 });
+certificationSchema.index({ name: 1, provider: 1 }, { unique: true });
+certificationSchema.index({ category: 1 });
+certificationSchema.index({ level: 1 });
 
-practitionerCertificationSchema?.index({ practitionerId: 1, certificationId: 1 }, { unique: true });
-practitionerCertificationSchema?.index({ status: 1 });
-practitionerCertificationSchema?.index({ expiryDate: 1 });
+practitionerCertificationSchema.index({ practitionerId: 1, certificationId: 1 }, { unique: true });
+practitionerCertificationSchema.index({ status: 1 });
+practitionerCertificationSchema.index({ expiryDate: 1 });
 
 
 // Add pre-save middleware to update timestamps
-certificationSchema?.pre('save', function (next) {
-  this?.updatedAt = new Date();
+certificationSchema.pre('save', function (next) {
+  this.updatedAt = new Date();
   next();
 });
 
-practitionerCertificationSchema?.pre('save', function (next) {
-  this?.updatedAt = new Date();
+practitionerCertificationSchema.pre('save', function (next) {
+  this.updatedAt = new Date();
   next();
 });
 

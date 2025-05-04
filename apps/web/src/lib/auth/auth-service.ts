@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { auth0 } from '@/lib/auth0';
 
 // Password validation schema
-const passwordSchema = z?.string()
+const passwordSchema = z.string()
   .min(8, 'Password must be at least 8 characters')
 
   .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
@@ -15,20 +15,20 @@ const passwordSchema = z?.string()
   .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character');
 
 // Email validation schema
-const emailSchema = z?.string().email('Invalid email format');
+const emailSchema = z.string().email('Invalid email format');
 
 // Login validation schema
-const loginSchema = z?.object({
+const loginSchema = z.object({
   email: emailSchema,
-  password: z?.string().min(6)
+  password: z.string().min(6)
 });
 
 // Signup validation schema
-const signupSchema = z?.object({
+const signupSchema = z.object({
   email: emailSchema,
   password: passwordSchema,
-  name: z?.string().min(2, 'Name must be at least 2 characters'),
-  role: z?.enum(['user', 'provider']).default('user')
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  role: z.enum(['user', 'provider']).default('user')
 });
 
 export class AuthService {
@@ -38,7 +38,7 @@ export class AuthService {
   static async login(email: string, password: string) {
     try {
       // Validate input
-      const validatedData = loginSchema?.parse({ email, password });
+      const validatedData = loginSchema.parse({ email, password });
 
 
       const response = await fetch('/api/auth/login', {
@@ -46,19 +46,19 @@ export class AuthService {
 
 
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify(validatedData),
+        body: JSON.stringify(validatedData),
         credentials: 'include' // Important for cookie handling
       });
 
-      if (!response?.ok) {
-        const error = await response?.json();
-        throw new Error(error?.message || 'Login failed');
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Login failed');
       }
 
-      return await response?.json();
+      return await response.json();
     } catch (error) {
-      if (error instanceof z?.ZodError) {
-        throw new Error(error?.errors[0]?.message || 'Invalid input');
+      if (error instanceof z.ZodError) {
+        throw new Error(error.errors[0].message || 'Invalid input');
       }
       throw error;
     }
@@ -75,7 +75,7 @@ export class AuthService {
   }) {
     try {
       // Validate input
-      const validatedData = signupSchema?.parse(data);
+      const validatedData = signupSchema.parse(data);
 
 
       const response = await fetch('/api/auth/signup', {
@@ -83,19 +83,19 @@ export class AuthService {
 
 
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify(validatedData),
+        body: JSON.stringify(validatedData),
         credentials: 'include'
       });
 
-      if (!response?.ok) {
-        const error = await response?.json();
-        throw new Error(error?.message || 'Signup failed');
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Signup failed');
       }
 
-      return await response?.json();
+      return await response.json();
     } catch (error) {
-      if (error instanceof z?.ZodError) {
-        throw new Error(error?.errors[0]?.message || 'Invalid input');
+      if (error instanceof z.ZodError) {
+        throw new Error(error.errors[0].message || 'Invalid input');
       }
       throw error;
     }
@@ -112,16 +112,16 @@ export class AuthService {
 
 
       headers: { 'Content-Type': 'application/json' },
-      body: JSON?.stringify({ method }),
+      body: JSON.stringify({ method }),
       credentials: 'include'
     });
 
-    if (!response?.ok) {
-      const error = await response?.json();
-      throw new Error(error?.message || 'MFA enrollment failed');
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'MFA enrollment failed');
     }
 
-    return await response?.json();
+    return await response.json();
   }
 
   /**
@@ -135,16 +135,16 @@ export class AuthService {
 
 
       headers: { 'Content-Type': 'application/json' },
-      body: JSON?.stringify({ method, code }),
+      body: JSON.stringify({ method, code }),
       credentials: 'include'
     });
 
-    if (!response?.ok) {
-      const error = await response?.json();
-      throw new Error(error?.message || 'MFA verification failed');
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'MFA verification failed');
     }
 
-    return await response?.json();
+    return await response.json();
   }
 
   /**
@@ -157,9 +157,9 @@ export class AuthService {
       credentials: 'include'
     });
 
-    if (!response?.ok) {
-      const error = await response?.json();
-      throw new Error(error?.message || 'Logout failed');
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Logout failed');
     }
 
     return true;
@@ -174,11 +174,11 @@ export class AuthService {
       credentials: 'include'
     });
 
-    if (!response?.ok) {
+    if (!response.ok) {
       return null;
     }
 
-    return await response?.json();
+    return await response.json();
   }
 
   /**
@@ -191,10 +191,10 @@ export class AuthService {
       credentials: 'include'
     });
 
-    if (!response?.ok) {
+    if (!response.ok) {
       throw new Error('Failed to refresh session');
     }
 
-    return await response?.json();
+    return await response.json();
   }
 } 

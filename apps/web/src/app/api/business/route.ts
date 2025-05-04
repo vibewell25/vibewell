@@ -8,15 +8,15 @@ import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); GET() {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); GET() {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
-      return NextResponse?.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!session.user.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const businesses = await prisma?.business.findMany({
+    const businesses = await prisma.business.findMany({
       where: {
         isActive: true,
       },
@@ -37,30 +37,30 @@ export async function {
       },
     });
 
-    const formattedBusinesses = businesses?.map((business) => {
-      const totalReviews = business?.reviews.length;
+    const formattedBusinesses = businesses.map((business) => {
+      const totalReviews = business.reviews.length;
       const averageRating =
         totalReviews > 0
 
-          ? business?.reviews.reduce((sum, review) => sum + review?.rating, 0) / totalReviews
+          ? business.reviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews
           : 0;
 
       return {
-        id: business?.id,
-        name: business?.name,
-        description: business?.description,
-        category: business?.category,
+        id: business.id,
+        name: business.name,
+        description: business.description,
+        category: business.category,
         rating: averageRating,
         reviewCount: totalReviews,
-        imageUrl: business?.imageUrl,
-        location: business?.location,
-        services: business?.services.map((service) => service?.name),
+        imageUrl: business.imageUrl,
+        location: business.location,
+        services: business.services.map((service) => service.name),
       };
     });
 
-    return NextResponse?.json(formattedBusinesses);
+    return NextResponse.json(formattedBusinesses);
   } catch (error) {
-    console?.error('Error fetching businesses:', error);
-    return NextResponse?.json({ error: 'Failed to fetch businesses' }, { status: 500 });
+    console.error('Error fetching businesses:', error);
+    return NextResponse.json({ error: 'Failed to fetch businesses' }, { status: 500 });
   }
 }

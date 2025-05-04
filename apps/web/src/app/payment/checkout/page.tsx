@@ -10,13 +10,13 @@ export default function CheckoutPage() {
   const { toast } = useToast();
 
   const handlePaymentSuccess = (paymentIntentId: string) => {
-    console?.log('Payment successful:', paymentIntentId);
+    console.log('Payment successful:', paymentIntentId);
     // In a real app, you would do something with this payment ID
     // like updating an order status in your database
   };
 
   const handlePaymentError = (error: any) => {
-    console?.error('Payment error:', error);
+    console.error('Payment error:', error);
   };
 
   return (
@@ -32,7 +32,7 @@ export default function CheckoutPage() {
         </div>
       ) : (
         <PaymentCheckout
-          amount={49?.99}
+          amount={49.99}
           currency="USD"
           description="Premium Membership Subscription"
           metadata={{

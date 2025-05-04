@@ -9,7 +9,7 @@ import { useSession } from 'next-auth/react';
 export default function TrainingPage() {
   const [activeTab, setActiveTab] = useState('dashboard');
 
-  if (!session?.user?.id) {
+  if (!session.user.id) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <p>Please sign in to access training.</p>
@@ -28,11 +28,11 @@ export default function TrainingPage() {
         </TabsList>
 
         <TabsContent value="dashboard">
-          <TrainingDashboard staffId={session?.user.id} />
+          <TrainingDashboard staffId={session.user.id} />
         </TabsContent>
 
         <TabsContent value="analytics">
-          <TrainingAnalytics staffId={session?.user.id} />
+          <TrainingAnalytics staffId={session.user.id} />
         </TabsContent>
       </Tabs>
     </div>

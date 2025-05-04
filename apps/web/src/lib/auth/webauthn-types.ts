@@ -36,7 +36,7 @@ export class WebAuthnError extends Error {
     public details?: Record<string, unknown>,
   ) {
     super(message);
-    this?.name = 'WebAuthnError';
+    this.name = 'WebAuthnError';
   }
 
   static userNotFound(userId: string): WebAuthnError {

@@ -18,21 +18,21 @@ interface ServiceWithReviews extends BeautyService {
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); GET(request: Request) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); GET(request: Request) {
   try {
-    const { searchParams } = new URL(request?.url);
-    const providerId = searchParams?.get('providerId');
+    const { searchParams } = new URL(request.url);
+    const providerId = searchParams.get('providerId');
 
     if (!providerId) {
-      return NextResponse?.json({ error: 'Provider ID is required' }, { status: 400 });
+      return NextResponse.json({ error: 'Provider ID is required' }, { status: 400 });
     }
 
     // Find the provider with all necessary data
-    const provider = await prisma?.user.findUnique({
+    const provider = await prisma.user.findUnique({
       where: {
         id: providerId,
-        role: Role?.PROVIDER,
+        role: Role.PROVIDER,
       },
       select: {
         id: true,
@@ -63,11 +63,11 @@ export async function {
     });
 
     if (!provider) {
-      return NextResponse?.json({ error: 'Provider not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Provider not found' }, { status: 404 });
     }
 
     // Get the services provided by this provider
-    const services = await prisma?.beautyService.findMany({
+    const services = await prisma.beautyService.findMany({
       where: {
         bookings: {
           some: {
@@ -91,55 +91,55 @@ export async function {
     });
 
     // Calculate average rating
-    const reviews = services?.flatMap((service) => service?.reviews);
+    const reviews = services.flatMap((service) => service.reviews);
     const averageRating =
-      reviews?.length > 0
+      reviews.length > 0
 
-        ? reviews?.reduce((sum, review) => sum + review?.rating, 0) / reviews?.length
+        ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
         : 0;
 
-    return NextResponse?.json({
+    return NextResponse.json({
       ...provider,
       services,
       averageRating,
-      totalReviews: reviews?.length,
+      totalReviews: reviews.length,
     });
   } catch (error) {
-    console?.error('Error fetching provider:', error);
-    return NextResponse?.json({ error: 'Failed to fetch provider' }, { status: 500 });
+    console.error('Error fetching provider:', error);
+    return NextResponse.json({ error: 'Failed to fetch provider' }, { status: 500 });
   }
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); PUT(request: Request) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); PUT(request: Request) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user) {
-      return NextResponse?.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!session.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { bio, specialties, experience, phone } = await request?.json();
+    const { bio, specialties, experience, phone } = await request.json();
 
     // Check if the user is a provider
-    const userIsProvider = await prisma?.user.findUnique({
+    const userIsProvider = await prisma.user.findUnique({
       where: {
-        id: session?.user.id,
-        role: Role?.PROVIDER,
+        id: session.user.id,
+        role: Role.PROVIDER,
       },
     });
 
     if (!userIsProvider) {
-      return NextResponse?.json(
+      return NextResponse.json(
         { error: 'Only providers can update their profile' },
         { status: 403 },
       );
     }
 
     // Update the provider profile with our new fields
-    const provider = await prisma?.user.update({
+    const provider = await prisma.user.update({
       where: {
-        id: session?.user.id,
+        id: session.user.id,
       },
       data: {
         bio,
@@ -159,9 +159,9 @@ export async function {
       },
     });
 
-    return NextResponse?.json(provider);
+    return NextResponse.json(provider);
   } catch (error) {
-    console?.error('Error updating provider:', error);
-    return NextResponse?.json({ error: 'Failed to update provider' }, { status: 500 });
+    console.error('Error updating provider:', error);
+    return NextResponse.json({ error: 'Failed to update provider' }, { status: 500 });
   }
 }

@@ -10,18 +10,18 @@ import { authOptions } from '@/lib/auth';
 const prisma = new PrismaClient();
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); POST(request: Request, { params }: { params: { id: string } }) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); POST(request: Request, { params }: { params: { id: string } }) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user) {
-      return NextResponse?.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!session.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { id } = params;
 
     // Check if event exists and has space
-    const event = await prisma?.event.findUnique({
+    const event = await prisma.event.findUnique({
       where: { id },
       include: {
         registrations: true,
@@ -29,36 +29,36 @@ export async function {
     });
 
     if (!event) {
-      return NextResponse?.json({ error: 'Event not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Event not found' }, { status: 404 });
     }
 
-    if (event?.currentAttendees >= event?.maxAttendees) {
-      return NextResponse?.json({ error: 'Event is full' }, { status: 400 });
+    if (event.currentAttendees >= event.maxAttendees) {
+      return NextResponse.json({ error: 'Event is full' }, { status: 400 });
     }
 
     // Check if user is already registered
-    const existingRegistration = await prisma?.eventRegistration.findUnique({
+    const existingRegistration = await prisma.eventRegistration.findUnique({
       where: {
         eventId_userId: {
           eventId: id,
-          userId: session?.user.id,
+          userId: session.user.id,
         },
       },
     });
 
     if (existingRegistration) {
-      return NextResponse?.json({ error: 'Already registered for this event' }, { status: 400 });
+      return NextResponse.json({ error: 'Already registered for this event' }, { status: 400 });
     }
 
     // Create registration and update attendee count
     const registration = await prisma.$transaction([
-      prisma?.eventRegistration.create({
+      prisma.eventRegistration.create({
         data: {
           eventId: id,
-          userId: session?.user.id,
+          userId: session.user.id,
         },
       }),
-      prisma?.event.update({
+      prisma.event.update({
         where: { id },
         data: {
           currentAttendees: {
@@ -68,9 +68,9 @@ export async function {
       }),
     ]);
 
-    return NextResponse?.json(registration);
+    return NextResponse.json(registration);
   } catch (error) {
-    console?.error('Error registering for event:', error);
-    return NextResponse?.json({ error: 'Failed to register for event' }, { status: 500 });
+    console.error('Error registering for event:', error);
+    return NextResponse.json({ error: 'Failed to register for event' }, { status: 500 });
   }
 }

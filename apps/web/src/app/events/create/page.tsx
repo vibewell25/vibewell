@@ -42,7 +42,7 @@ export default function CreateEventPage() {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   // Redirect if not logged in
   if (!authLoading && !user) {
-    router?.push('/auth/login?returnUrl=' + encodeURIComponent('/events/create'));
+    router.push('/auth/login?returnUrl=' + encodeURIComponent('/events/create'));
     return null;
   }
   // Available categories
@@ -60,14 +60,14 @@ export default function CreateEventPage() {
   ];
   // Add a tag
   const addTag = () => {
-    if (tagInput?.trim() && !tags?.includes(tagInput?.trim())) {
-      setTags([...tags, tagInput?.trim()]);
+    if (tagInput.trim() && !tags.includes(tagInput.trim())) {
+      setTags([...tags, tagInput.trim()]);
       setTagInput('');
     }
   };
   // Remove a tag
   const removeTag = (tagToRemove: string) => {
-    setTags(tags?.filter((tag) => tag !== tagToRemove));
+    setTags(tags.filter((tag) => tag !== tagToRemove));
   };
   // Update location fields
   const updateLocation = (field: string, value: string) => {
@@ -95,11 +95,11 @@ export default function CreateEventPage() {
   };
   // Handle form submission
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent) => {
-    e?.preventDefault();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
+    e.preventDefault();
     if (!user) {
-      router?.push('/auth/login?returnUrl=' + encodeURIComponent('/events/create'));
+      router.push('/auth/login?returnUrl=' + encodeURIComponent('/events/create'));
       return;
     }
 
@@ -112,12 +112,12 @@ export default function CreateEventPage() {
       endDate,
       endTime,
       ...(isVirtual
-        ? { meetingUrl: location?.meetingUrl }
+        ? { meetingUrl: location.meetingUrl }
         : {
-            address: location?.address,
-            city: location?.city,
-            state: location?.state,
-            zipCode: location?.zipCode,
+            address: location.address,
+            city: location.city,
+            state: location.state,
+            zipCode: location.zipCode,
           }),
     };
 
@@ -125,18 +125,18 @@ export default function CreateEventPage() {
     const validationResult = validateForm(formData);
 
     // Add custom validations for dates
-    if (validationResult?.isValid && startDate && endDate && startTime && endTime) {
+    if (validationResult.isValid && startDate && endDate && startTime && endTime) {
       const startDateTime = new Date(`${startDate}T${startTime}`);
       const endDateTime = new Date(`${endDate}T${endTime}`);
       if (endDateTime <= startDateTime) {
-        validationResult?.errors.endDate = 'End date/time must be after start date/time';
-        validationResult?.isValid = false;
+        validationResult.errors.endDate = 'End date/time must be after start date/time';
+        validationResult.isValid = false;
       }
     }
 
-    setErrors(validationResult?.errors);
+    setErrors(validationResult.errors);
 
-    if (!validationResult?.isValid) {
+    if (!validationResult.isValid) {
       return;
     }
 
@@ -151,29 +151,29 @@ export default function CreateEventPage() {
         description,
         shortDescription: shortDescription || undefined,
         category,
-        startDate: startDateTime?.toISOString(),
-        endDate: endDateTime?.toISOString(),
+        startDate: startDateTime.toISOString(),
+        endDate: endDateTime.toISOString(),
         location: {
           ...location,
           virtual: isVirtual,
         },
         organizer: {
-          id: user?.id,
-          name: user?.user_metadata?.full_name || 'Anonymous',
-          avatar: user?.user_metadata?.avatar_url,
+          id: user.id,
+          name: user.user_metadata.full_name || 'Anonymous',
+          avatar: user.user_metadata.avatar_url,
           isVerified: false,
         },
         capacity: capacity ? parseInt(capacity) : undefined,
         imageUrl: imageUrl || undefined,
-        tags: tags?.length > 0 ? tags : undefined,
+        tags: tags.length > 0 ? tags : undefined,
         isFeatured: false,
       };
       // Submit event
       const createdEvent = await createEvent(eventData);
       // Navigate to the created event
-      router?.push(`/events/${createdEvent?.id}`);
+      router.push(`/events/${createdEvent.id}`);
     } catch (err) {
-      console?.error('Error creating event:', err);
+      console.error('Error creating event:', err);
       setErrors({
         form: 'Failed to create event. Please try again.',
       });
@@ -185,9 +185,9 @@ export default function CreateEventPage() {
   const setDefaultDates = () => {
     if (!startDate || !startTime) {
       const now = new Date();
-      const roundedHours = Math?.ceil(now?.getHours() + now?.getMinutes() / 60) + 1;
+      const roundedHours = Math.ceil(now.getHours() + now.getMinutes() / 60) + 1;
       const startDateTime = new Date(now);
-      startDateTime?.setHours(roundedHours, 0, 0, 0);
+      startDateTime.setHours(roundedHours, 0, 0, 0);
       setStartDate(format(startDateTime, 'yyyy-MM-dd'));
       setStartTime(format(startDateTime, 'HH:mm'));
       // Default end time is 1 hour after start
@@ -201,10 +201,10 @@ export default function CreateEventPage() {
       <div className="container-app py-8">
         {/* Back button */}
         <button
-          onClick={() => router?.push('/events')}
+          onClick={() => router.push('/events')}
           className="mb-6 flex items-center text-gray-600 hover:text-gray-900"
         >
-          <Icons?.ArrowLeftIcon className="mr-1 h-4 w-4" />
+          <Icons.ArrowLeftIcon className="mr-1 h-4 w-4" />
           Back to Events
         </button>
         <div className="mx-auto max-w-3xl">
@@ -224,11 +224,11 @@ export default function CreateEventPage() {
                     type="text"
                     id="title"
                     value={title}
-                    onChange={(e) => setTitle(e?.target.value)}
-                    className={`w-full rounded-md border p-2 ${errors?.title ? 'border-red-500' : 'border-gray-300'}`}
+                    onChange={(e) => setTitle(e.target.value)}
+                    className={`w-full rounded-md border p-2 ${errors.title ? 'border-red-500' : 'border-gray-300'}`}
                     placeholder="Enter a descriptive title for your event"
                   />
-                  {errors?.title && <p className="mt-1 text-xs text-red-500">{errors?.title}</p>}
+                  {errors.title && <p className="mt-1 text-xs text-red-500">{errors.title}</p>}
                 </div>
                 {/* Short Description */}
                 <div>
@@ -242,7 +242,7 @@ export default function CreateEventPage() {
                     type="text"
                     id="shortDescription"
                     value={shortDescription}
-                    onChange={(e) => setShortDescription(e?.target.value)}
+                    onChange={(e) => setShortDescription(e.target.value)}
                     className="w-full rounded-md border border-gray-300 p-2"
                     placeholder="Brief description (for listings and previews)"
                   />
@@ -261,12 +261,12 @@ export default function CreateEventPage() {
                   <textarea
                     id="description"
                     value={description}
-                    onChange={(e) => setDescription(e?.target.value)}
-                    className={`h-40 w-full rounded-md border p-2 ${errors?.description ? 'border-red-500' : 'border-gray-300'}`}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className={`h-40 w-full rounded-md border p-2 ${errors.description ? 'border-red-500' : 'border-gray-300'}`}
                     placeholder="Describe your event in detail. What will participants experience or learn?"
                   />
-                  {errors?.description && (
-                    <p className="mt-1 text-xs text-red-500">{errors?.description}</p>
+                  {errors.description && (
+                    <p className="mt-1 text-xs text-red-500">{errors.description}</p>
                   )}
                   <p className="mt-1 text-xs text-gray-500">You can use HTML for formatting</p>
                 </div>
@@ -281,10 +281,10 @@ export default function CreateEventPage() {
                   <select
                     id="category"
                     value={category}
-                    onChange={(e) => setCategory(e?.target.value as EventCategory)}
+                    onChange={(e) => setCategory(e.target.value as EventCategory)}
                     className="w-full rounded-md border border-gray-300 p-2"
                   >
-                    {categories?.map((cat) => (
+                    {categories.map((cat) => (
                       <option key={cat} value={cat}>
                         {cat}
                       </option>
@@ -303,9 +303,9 @@ export default function CreateEventPage() {
                     type="url"
                     id="imageUrl"
                     value={imageUrl}
-                    onChange={(e) => setImageUrl(e?.target.value)}
+                    onChange={(e) => setImageUrl(e.target.value)}
                     className="w-full rounded-md border border-gray-300 p-2"
-                    placeholder="https://example?.com/image?.jpg"
+                    placeholder="https://example.com/image.jpg"
                   />
                   <p className="mt-1 text-xs text-gray-500">
                     Optional. URL to an image for your event
@@ -330,12 +330,12 @@ export default function CreateEventPage() {
                       type="date"
                       id="startDate"
                       value={startDate}
-                      onChange={(e) => setStartDate(e?.target.value)}
-                      className={`w-full rounded-md border p-2 ${errors?.startDate ? 'border-red-500' : 'border-gray-300'}`}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      className={`w-full rounded-md border p-2 ${errors.startDate ? 'border-red-500' : 'border-gray-300'}`}
                       onFocus={setDefaultDates}
                     />
-                    {errors?.startDate && (
-                      <p className="mt-1 text-xs text-red-500">{errors?.startDate}</p>
+                    {errors.startDate && (
+                      <p className="mt-1 text-xs text-red-500">{errors.startDate}</p>
                     )}
                   </div>
                   {/* Start Time */}
@@ -350,12 +350,12 @@ export default function CreateEventPage() {
                       type="time"
                       id="startTime"
                       value={startTime}
-                      onChange={(e) => setStartTime(e?.target.value)}
-                      className={`w-full rounded-md border p-2 ${errors?.startTime ? 'border-red-500' : 'border-gray-300'}`}
+                      onChange={(e) => setStartTime(e.target.value)}
+                      className={`w-full rounded-md border p-2 ${errors.startTime ? 'border-red-500' : 'border-gray-300'}`}
                       onFocus={setDefaultDates}
                     />
-                    {errors?.startTime && (
-                      <p className="mt-1 text-xs text-red-500">{errors?.startTime}</p>
+                    {errors.startTime && (
+                      <p className="mt-1 text-xs text-red-500">{errors.startTime}</p>
                     )}
                   </div>
                   {/* End Date */}
@@ -370,12 +370,12 @@ export default function CreateEventPage() {
                       type="date"
                       id="endDate"
                       value={endDate}
-                      onChange={(e) => setEndDate(e?.target.value)}
-                      className={`w-full rounded-md border p-2 ${errors?.endDate ? 'border-red-500' : 'border-gray-300'}`}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      className={`w-full rounded-md border p-2 ${errors.endDate ? 'border-red-500' : 'border-gray-300'}`}
                       onFocus={setDefaultDates}
                     />
-                    {errors?.endDate && (
-                      <p className="mt-1 text-xs text-red-500">{errors?.endDate}</p>
+                    {errors.endDate && (
+                      <p className="mt-1 text-xs text-red-500">{errors.endDate}</p>
                     )}
                   </div>
                   {/* End Time */}
@@ -390,12 +390,12 @@ export default function CreateEventPage() {
                       type="time"
                       id="endTime"
                       value={endTime}
-                      onChange={(e) => setEndTime(e?.target.value)}
-                      className={`w-full rounded-md border p-2 ${errors?.endTime ? 'border-red-500' : 'border-gray-300'}`}
+                      onChange={(e) => setEndTime(e.target.value)}
+                      className={`w-full rounded-md border p-2 ${errors.endTime ? 'border-red-500' : 'border-gray-300'}`}
                       onFocus={setDefaultDates}
                     />
-                    {errors?.endTime && (
-                      <p className="mt-1 text-xs text-red-500">{errors?.endTime}</p>
+                    {errors.endTime && (
+                      <p className="mt-1 text-xs text-red-500">{errors.endTime}</p>
                     )}
                   </div>
                 </div>
@@ -429,13 +429,13 @@ export default function CreateEventPage() {
                     <input
                       type="url"
                       id="meetingUrl"
-                      value={location?.meetingUrl || ''}
-                      onChange={(e) => updateLocation('meetingUrl', e?.target.value)}
-                      className={`w-full rounded-md border p-2 ${errors?.meetingUrl ? 'border-red-500' : 'border-gray-300'}`}
-                      placeholder="https://zoom?.us/j/example"
+                      value={location.meetingUrl || ''}
+                      onChange={(e) => updateLocation('meetingUrl', e.target.value)}
+                      className={`w-full rounded-md border p-2 ${errors.meetingUrl ? 'border-red-500' : 'border-gray-300'}`}
+                      placeholder="https://zoom.us/j/example"
                     />
-                    {errors?.meetingUrl && (
-                      <p className="mt-1 text-xs text-red-500">{errors?.meetingUrl}</p>
+                    {errors.meetingUrl && (
+                      <p className="mt-1 text-xs text-red-500">{errors.meetingUrl}</p>
                     )}
                     <p className="mt-1 text-xs text-gray-500">
                       Zoom, Google Meet, Microsoft Teams, etc.
@@ -454,13 +454,13 @@ export default function CreateEventPage() {
                       <input
                         type="text"
                         id="address"
-                        value={location?.address || ''}
-                        onChange={(e) => updateLocation('address', e?.target.value)}
-                        className={`w-full rounded-md border p-2 ${errors?.address ? 'border-red-500' : 'border-gray-300'}`}
+                        value={location.address || ''}
+                        onChange={(e) => updateLocation('address', e.target.value)}
+                        className={`w-full rounded-md border p-2 ${errors.address ? 'border-red-500' : 'border-gray-300'}`}
                         placeholder="123 Main St"
                       />
-                      {errors?.address && (
-                        <p className="mt-1 text-xs text-red-500">{errors?.address}</p>
+                      {errors.address && (
+                        <p className="mt-1 text-xs text-red-500">{errors.address}</p>
                       )}
                     </div>
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -475,12 +475,12 @@ export default function CreateEventPage() {
                         <input
                           type="text"
                           id="city"
-                          value={location?.city || ''}
-                          onChange={(e) => updateLocation('city', e?.target.value)}
-                          className={`w-full rounded-md border p-2 ${errors?.city ? 'border-red-500' : 'border-gray-300'}`}
+                          value={location.city || ''}
+                          onChange={(e) => updateLocation('city', e.target.value)}
+                          className={`w-full rounded-md border p-2 ${errors.city ? 'border-red-500' : 'border-gray-300'}`}
                           placeholder="City"
                         />
-                        {errors?.city && <p className="mt-1 text-xs text-red-500">{errors?.city}</p>}
+                        {errors.city && <p className="mt-1 text-xs text-red-500">{errors.city}</p>}
                       </div>
                       {/* State */}
                       <div>
@@ -493,13 +493,13 @@ export default function CreateEventPage() {
                         <input
                           type="text"
                           id="state"
-                          value={location?.state || ''}
-                          onChange={(e) => updateLocation('state', e?.target.value)}
-                          className={`w-full rounded-md border p-2 ${errors?.state ? 'border-red-500' : 'border-gray-300'}`}
+                          value={location.state || ''}
+                          onChange={(e) => updateLocation('state', e.target.value)}
+                          className={`w-full rounded-md border p-2 ${errors.state ? 'border-red-500' : 'border-gray-300'}`}
                           placeholder="State"
                         />
-                        {errors?.state && (
-                          <p className="mt-1 text-xs text-red-500">{errors?.state}</p>
+                        {errors.state && (
+                          <p className="mt-1 text-xs text-red-500">{errors.state}</p>
                         )}
                       </div>
                       {/* Zip Code */}
@@ -513,13 +513,13 @@ export default function CreateEventPage() {
                         <input
                           type="text"
                           id="zipCode"
-                          value={location?.zipCode || ''}
-                          onChange={(e) => updateLocation('zipCode', e?.target.value)}
-                          className={`w-full rounded-md border p-2 ${errors?.zipCode ? 'border-red-500' : 'border-gray-300'}`}
+                          value={location.zipCode || ''}
+                          onChange={(e) => updateLocation('zipCode', e.target.value)}
+                          className={`w-full rounded-md border p-2 ${errors.zipCode ? 'border-red-500' : 'border-gray-300'}`}
                           placeholder="12345"
                         />
-                        {errors?.zipCode && (
-                          <p className="mt-1 text-xs text-red-500">{errors?.zipCode}</p>
+                        {errors.zipCode && (
+                          <p className="mt-1 text-xs text-red-500">{errors.zipCode}</p>
                         )}
                       </div>
                     </div>
@@ -534,8 +534,8 @@ export default function CreateEventPage() {
                       <input
                         type="text"
                         id="country"
-                        value={location?.country || ''}
-                        onChange={(e) => updateLocation('country', e?.target.value)}
+                        value={location.country || ''}
+                        onChange={(e) => updateLocation('country', e.target.value)}
                         className="w-full rounded-md border border-gray-300 p-2"
                         placeholder="Country"
                       />
@@ -561,7 +561,7 @@ export default function CreateEventPage() {
                     id="capacity"
                     min="1"
                     value={capacity}
-                    onChange={(e) => setCapacity(e?.target.value)}
+                    onChange={(e) => setCapacity(e.target.value)}
                     className="w-full rounded-md border border-gray-300 p-2"
                     placeholder="Maximum number of participants"
                   />
@@ -579,8 +579,8 @@ export default function CreateEventPage() {
                       type="text"
                       id="tags"
                       value={tagInput}
-                      onChange={(e) => setTagInput(e?.target.value)}
-                      onKeyDown={(e) => e?.key === 'Enter' && (e?.preventDefault(), addTag())}
+                      onChange={(e) => setTagInput(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
                       className="w-full rounded-md rounded-r-none border border-gray-300 p-2"
                       placeholder="Add relevant tags"
                     />
@@ -595,9 +595,9 @@ export default function CreateEventPage() {
                   <p className="mt-1 text-xs text-gray-500">
                     Press Enter or click Add to add a tag
                   </p>
-                  {tags?.length > 0 && (
+                  {tags.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-2">
-                      {tags?.map((tag) => (
+                      {tags.map((tag) => (
                         <div
                           key={tag}
                           className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-sm"
@@ -608,7 +608,7 @@ export default function CreateEventPage() {
                             onClick={() => removeTag(tag)}
                             className="ml-1 text-gray-500 hover:text-gray-700"
                           >
-                            <Icons?.XMarkIcon className="h-4 w-4" />
+                            <Icons.XMarkIcon className="h-4 w-4" />
                           </button>
                         </div>
                       ))}
@@ -619,12 +619,12 @@ export default function CreateEventPage() {
             </div>
             {/* Submit */}
             <div className="flex justify-end">
-              {errors?.form && <p className="mr-auto text-sm text-red-500">{errors?.form}</p>}
+              {errors.form && <p className="mr-auto text-sm text-red-500">{errors.form}</p>}
               <Button
                 type="button"
                 variant="outline"
                 className="mr-2"
-                onClick={() => router?.push('/events')}
+                onClick={() => router.push('/events')}
               >
                 Cancel
               </Button>

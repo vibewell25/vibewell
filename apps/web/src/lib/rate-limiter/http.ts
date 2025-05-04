@@ -4,7 +4,7 @@
 
 
  * This module provides rate limiting adapters for HTTP/REST API routes
- * supporting both App Router and Pages Router in Next?.js.
+ * supporting both App Router and Pages Router in Next.js.
  */
 
 
@@ -14,7 +14,7 @@ import { DEFAULT_OPTIONS } from './types';
 import { checkRateLimit, logRateLimitEvent, shouldUseRedis, getIdentifier } from './core';
 import { Redis } from 'ioredis';
 
-const redis = new Redis(process?.env['REDIS_URL'] || 'redis://localhost:6379');
+const redis = new Redis(process.env['REDIS_URL'] || 'redis://localhost:6379');
 
 interface RateLimitConfig {
   windowMs: number;  // Time window in milliseconds
@@ -32,13 +32,13 @@ export function createRateLimiter(options: RateLimitOptions = {}) {
   };
 
   /**
-   * App Router handler (Next?.js App Router)
+   * App Router handler (Next.js App Router)
    */
   const appRouterHandler = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');req: NextRequest): Promise<NextResponse | null> => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');req: NextRequest): Promise<NextResponse | null> => {
     // Skip rate limiting if specified
-    if (mergedOptions?.skip && mergedOptions?.skip(req)) {
+    if (mergedOptions.skip && mergedOptions.skip(req)) {
       return null;
     }
 
@@ -51,41 +51,41 @@ export function createRateLimiter(options: RateLimitOptions = {}) {
     const result = await checkRateLimit(identifier, mergedOptions, useRedis);
 
     // Log the rate limit event
-    await logRateLimitEvent(identifier, req?.nextUrl.pathname, req?.method, 'http', result);
+    await logRateLimitEvent(identifier, req.nextUrl.pathname, req.method, 'http', result);
 
     // If within limit, allow the request
-    if (result?.success) {
+    if (result.success) {
       return null;
     }
 
     // If over limit, return rate limit response
-    const message = mergedOptions?.message || DEFAULT_OPTIONS?.message!;
-    const statusCode = mergedOptions?.statusCode || DEFAULT_OPTIONS?.statusCode!;
+    const message = mergedOptions.message || DEFAULT_OPTIONS.message!;
+    const statusCode = mergedOptions.statusCode || DEFAULT_OPTIONS.statusCode!;
 
-    return NextResponse?.json(typeof message === 'string' ? { error: message } : message, {
+    return NextResponse.json(typeof message === 'string' ? { error: message } : message, {
       status: statusCode,
       headers: {
 
-        'Retry-After': String(result?.retryAfter || 60),
+        'Retry-After': String(result.retryAfter || 60),
 
-        'X-RateLimit-Limit': String(result?.limit),
+        'X-RateLimit-Limit': String(result.limit),
 
-        'X-RateLimit-Remaining': String(result?.remaining),
+        'X-RateLimit-Remaining': String(result.remaining),
 
 
-        'X-RateLimit-Reset': String(Math?.ceil(result?.resetTime / 1000)),
+        'X-RateLimit-Reset': String(Math.ceil(result.resetTime / 1000)),
       },
     });
   };
 
   /**
-   * Pages Router handler (Next?.js Pages Router)
+   * Pages Router handler (Next.js Pages Router)
    */
   const pagesRouterHandler = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');req: any, res: any, next?: () => void) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');req: any, res: any, next?: () => void) => {
     // Skip rate limiting if specified
-    if (mergedOptions?.skip && mergedOptions?.skip(req)) {
+    if (mergedOptions.skip && mergedOptions.skip(req)) {
       return next ? next() : undefined;
     }
 
@@ -98,31 +98,31 @@ export function createRateLimiter(options: RateLimitOptions = {}) {
     const result = await checkRateLimit(identifier, mergedOptions, useRedis);
 
     // Log the rate limit event
-    await logRateLimitEvent(identifier, req?.url || '/', req?.method, 'http', result);
+    await logRateLimitEvent(identifier, req.url || '/', req.method, 'http', result);
 
     // Set rate limit headers
 
-    res?.setHeader('X-RateLimit-Limit', String(result?.limit));
+    res.setHeader('X-RateLimit-Limit', String(result.limit));
 
-    res?.setHeader('X-RateLimit-Remaining', String(result?.remaining));
+    res.setHeader('X-RateLimit-Remaining', String(result.remaining));
 
 
-    res?.setHeader('X-RateLimit-Reset', String(Math?.ceil(result?.resetTime / 1000)));
+    res.setHeader('X-RateLimit-Reset', String(Math.ceil(result.resetTime / 1000)));
 
     // If within limit, proceed
-    if (result?.success) {
+    if (result.success) {
       return next ? next() : undefined;
     }
 
     // If over limit, return rate limit response
-    const message = mergedOptions?.message || DEFAULT_OPTIONS?.message!;
-    const statusCode = mergedOptions?.statusCode || DEFAULT_OPTIONS?.statusCode!;
+    const message = mergedOptions.message || DEFAULT_OPTIONS.message!;
+    const statusCode = mergedOptions.statusCode || DEFAULT_OPTIONS.statusCode!;
 
-    res?.status(statusCode);
+    res.status(statusCode);
 
-    res?.setHeader('Retry-After', String(result?.retryAfter || 60));
+    res.setHeader('Retry-After', String(result.retryAfter || 60));
 
-    return res?.json(typeof message === 'string' ? { error: message } : message);
+    return res.json(typeof message === 'string' ? { error: message } : message);
   };
 
   /**
@@ -130,11 +130,11 @@ export function createRateLimiter(options: RateLimitOptions = {}) {
    */
   return function universalRateLimiter(req: any, res?: any, next?: any) {
     // App Router (NextRequest object)
-    if (req?.nextUrl && req?.cookies && !res) {
+    if (req.nextUrl && req.cookies && !res) {
       return appRouterHandler(req as NextRequest);
     }
     // Pages Router (req, res objects)
-    else if (req && res && res?.setHeader) {
+    else if (req && res && res.setHeader) {
       return pagesRouterHandler(req, res, next);
     }
     // Fallback for custom implementations
@@ -148,8 +148,8 @@ export function createRateLimiter(options: RateLimitOptions = {}) {
  * Apply rate limiting to a request using a specific limiter
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); applyRateLimit(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); applyRateLimit(
   req: NextRequest,
   limiter = apiRateLimiter,
 ): Promise<NextResponse | null> {
@@ -162,10 +162,10 @@ export async function {
  */
 export function withRateLimit(handler: any, limiter = apiRateLimiter) {
   return async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); rateLimit(req: any, res: any) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); rateLimit(req: any, res: any) {
     // App Router
-    if (req?.nextUrl) {
+    if (req.nextUrl) {
       const rateLimit = await limiter(req);
       if (rateLimit) return rateLimit;
       return handler(req);
@@ -200,8 +200,8 @@ export {};
 export {};
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); rateLimit(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); rateLimit(
   req: NextRequest,
   config: RateLimitConfig = {
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -210,21 +210,21 @@ export async function {
   }
 ): Promise<NextResponse | null> {
 
-  const ip = req?.headers.get('x-forwarded-for') || 'unknown';
-  const key = `${config?.keyPrefix}:${ip}`;
+  const ip = req.headers.get('x-forwarded-for') || 'unknown';
+  const key = `${config.keyPrefix}:${ip}`;
 
-  const multi = redis?.multi();
-  multi?.incr(key);
-  multi?.pttl(key);
+  const multi = redis.multi();
+  multi.incr(key);
+  multi.pttl(key);
 
-  const results = await multi?.exec();
+  const results = await multi.exec();
   if (!results) {
     // If Redis command failed, fail open
     return null;
   }
 
   // Ensure results[0] and results[1] exist and have valid values
-  if (!Array?.isArray(results[0]) || !Array?.isArray(results[1])) {
+  if (!Array.isArray(results[0]) || !Array.isArray(results[1])) {
     return null;
   }
 
@@ -233,16 +233,16 @@ export async function {
 
   // If this is the first request, set the expiry
   if (count === 1) {
-    await redis?.pexpire(key, config?.windowMs);
+    await redis.pexpire(key, config.windowMs);
   }
 
   // Check if the request exceeds the rate limit
-  if (count > config?.max) {
+  if (count > config.max) {
 
-    const retryAfter = Math?.ceil(ttl / 1000);
-    const resetTime = Date?.now() + ttl;
+    const retryAfter = Math.ceil(ttl / 1000);
+    const resetTime = Date.now() + ttl;
 
-    return NextResponse?.json(
+    return NextResponse.json(
       {
         error: 'Too many requests',
         retryAfter,
@@ -253,7 +253,7 @@ export async function {
 
           'Retry-After': String(retryAfter),
 
-          'X-RateLimit-Limit': String(config?.max),
+          'X-RateLimit-Limit': String(config.max),
 
           'X-RateLimit-Remaining': '0',
 

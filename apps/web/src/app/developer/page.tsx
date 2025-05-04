@@ -23,8 +23,8 @@ function DeveloperContent() {
   const [searchQuery, setSearchQuery] = useState('');
   // Function to simulate generating an API key
   const generateApiKey = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setIsGeneratingKey(true);
     // Simulate API call delay
     await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -32,9 +32,9 @@ function DeveloperContent() {
     let key = 'vw_';
     // Use Web Crypto API for secure random values in the browser
     const buffer = new Uint8Array(24); // 24 bytes = 48 hex chars
-    window?.crypto.getRandomValues(buffer);
-    if (key > Number.MAX_SAFE_INTEGER || key < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); key += Array?.from(buffer)
-      .map((b) => b?.toString(16).padStart(2, '0'))
+    window.crypto.getRandomValues(buffer);
+    if (key > Number.MAX_SAFE_INTEGER || key < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); key += Array.from(buffer)
+      .map((b) => b.toString(16).padStart(2, '0'))
       .join('')
       .substring(0, 32); // Limit to 32 chars for readability
     setApiKey(key);
@@ -45,42 +45,42 @@ function DeveloperContent() {
       id: 'documentation',
       title: 'API Documentation',
       description: 'Comprehensive guides and reference materials for the Vibewell API',
-      icon: <Icons?.BookOpenIcon className="h-8 w-8 text-indigo-500" />,
+      icon: <Icons.BookOpenIcon className="h-8 w-8 text-indigo-500" />,
       href: '/developer/docs',
     },
     {
       id: 'sdk',
       title: 'SDKs & Libraries',
       description: 'Official client libraries for various programming languages',
-      icon: <Icons?.CodeBracketIcon className="h-8 w-8 text-violet-500" />,
+      icon: <Icons.CodeBracketIcon className="h-8 w-8 text-violet-500" />,
       href: '/developer/sdk',
     },
     {
       id: 'playground',
       title: 'API Playground',
       description: 'Interactive environment to test API endpoints and explore responses',
-      icon: <Icons?.BeakerIcon className="h-8 w-8 text-blue-500" />,
+      icon: <Icons.BeakerIcon className="h-8 w-8 text-blue-500" />,
       href: '/developer/playground',
     },
     {
       id: 'components',
       title: 'UI Components',
       description: 'Pre-built components to rapidly build Vibewell-compatible interfaces',
-      icon: <Icons?.SquaresPlusIcon className="h-8 w-8 text-teal-500" />,
+      icon: <Icons.SquaresPlusIcon className="h-8 w-8 text-teal-500" />,
       href: '/developer/docs/components',
     },
     {
       id: 'webhooks',
       title: 'Webhooks',
       description: 'Configure event notifications for real-time updates',
-      icon: <Icons?.CursorArrowRaysIcon className="h-8 w-8 text-orange-500" />,
+      icon: <Icons.CursorArrowRaysIcon className="h-8 w-8 text-orange-500" />,
       href: '/developer/webhooks',
     },
     {
       id: 'keys',
       title: 'API Keys',
       description: 'Manage your application credentials and access tokens',
-      icon: <Icons?.KeyIcon className="h-8 w-8 text-red-500" />,
+      icon: <Icons.KeyIcon className="h-8 w-8 text-red-500" />,
       href: '/developer/api-keys',
     },
   ];
@@ -116,7 +116,7 @@ function DeveloperContent() {
         <div className="mb-12 grid grid-cols-1 gap-8 md:grid-cols-3">
           <Card>
             <CardHeader>
-              <Icons?.BookOpenIcon className="text-primary mb-2 h-8 w-8" />
+              <Icons.BookOpenIcon className="text-primary mb-2 h-8 w-8" />
               <CardTitle>Comprehensive Documentation</CardTitle>
               <CardDescription>
                 Detailed guides and reference material for all API endpoints
@@ -130,7 +130,7 @@ function DeveloperContent() {
           </Card>
           <Card>
             <CardHeader>
-              <Icons?.CodeBracketIcon className="text-primary mb-2 h-8 w-8" />
+              <Icons.CodeBracketIcon className="text-primary mb-2 h-8 w-8" />
               <CardTitle>SDK & Examples</CardTitle>
               <CardDescription>
                 Client libraries, code samples, and integration examples
@@ -144,7 +144,7 @@ function DeveloperContent() {
           </Card>
           <Card>
             <CardHeader>
-              <Icons?.ShieldCheckIcon className="text-primary mb-2 h-8 w-8" />
+              <Icons.ShieldCheckIcon className="text-primary mb-2 h-8 w-8" />
               <CardTitle>Authentication & Security</CardTitle>
               <CardDescription>
                 Learn about secure authentication and best practices
@@ -167,7 +167,7 @@ function DeveloperContent() {
             <Card>
               <CardContent className="pt-6">
                 <div className="mb-2 flex items-start">
-                  <Icons?.CodeBracketIcon className="text-primary mr-3 h-6 w-6" />
+                  <Icons.CodeBracketIcon className="text-primary mr-3 h-6 w-6" />
                   <div>
                     <h3 className="font-semibold">Breadcrumb</h3>
                     <p className="text-sm text-muted-foreground">
@@ -186,7 +186,7 @@ function DeveloperContent() {
             <Card>
               <CardContent className="pt-6">
                 <div className="mb-2 flex items-start">
-                  <Icons?.CodeBracketIcon className="text-primary mr-3 h-6 w-6" />
+                  <Icons.CodeBracketIcon className="text-primary mr-3 h-6 w-6" />
                   <div>
                     <h3 className="font-semibold">Button</h3>
                     <p className="text-sm text-muted-foreground">
@@ -204,7 +204,7 @@ function DeveloperContent() {
             <Card>
               <CardContent className="pt-6">
                 <div className="mb-2 flex items-start">
-                  <Icons?.CodeBracketIcon className="text-primary mr-3 h-6 w-6" />
+                  <Icons.CodeBracketIcon className="text-primary mr-3 h-6 w-6" />
                   <div>
                     <h3 className="font-semibold">Dialog</h3>
                     <p className="text-sm text-muted-foreground">
@@ -232,7 +232,7 @@ function DeveloperContent() {
             <Card>
               <CardContent className="pt-6">
                 <div className="mb-2 flex items-start">
-                  <Icons?.ServerIcon className="text-primary mr-3 h-6 w-6" />
+                  <Icons.ServerIcon className="text-primary mr-3 h-6 w-6" />
                   <div>
                     <h3 className="font-semibold">RESTful Endpoints</h3>
                     <p className="text-sm text-muted-foreground">
@@ -245,7 +245,7 @@ function DeveloperContent() {
             <Card>
               <CardContent className="pt-6">
                 <div className="mb-2 flex items-start">
-                  <Icons?.ArrowPathIcon className="text-primary mr-3 h-6 w-6" />
+                  <Icons.ArrowPathIcon className="text-primary mr-3 h-6 w-6" />
                   <div>
                     <h3 className="font-semibold">Rate Limiting</h3>
                     <p className="text-sm text-muted-foreground">
@@ -258,7 +258,7 @@ function DeveloperContent() {
             <Card>
               <CardContent className="pt-6">
                 <div className="mb-2 flex items-start">
-                  <Icons?.CubeIcon className="text-primary mr-3 h-6 w-6" />
+                  <Icons.CubeIcon className="text-primary mr-3 h-6 w-6" />
                   <div>
                     <h3 className="font-semibold">Webhook Events</h3>
                     <p className="text-sm text-muted-foreground">
@@ -271,7 +271,7 @@ function DeveloperContent() {
             <Card>
               <CardContent className="pt-6">
                 <div className="mb-2 flex items-start">
-                  <Icons?.CpuChipIcon className="text-primary mr-3 h-6 w-6" />
+                  <Icons.CpuChipIcon className="text-primary mr-3 h-6 w-6" />
                   <div>
                     <h3 className="font-semibold">Versioned API</h3>
                     <p className="text-sm text-muted-foreground">
@@ -302,8 +302,8 @@ function DeveloperContent() {
                   {user ? (
                     <div className="mb-6">
                       <div className="mb-2 flex items-center">
-                        <Icons?.CheckIcon className="mr-2 h-5 w-5 text-green-500" />
-                        <p className="font-medium">You're already signed in as {user?.email}</p>
+                        <Icons.CheckIcon className="mr-2 h-5 w-5 text-green-500" />
+                        <p className="font-medium">You're already signed in as {user.email}</p>
                       </div>
                       <div className="mt-4">
                         <h4 className="mb-2 font-medium">Your API Keys</h4>
@@ -368,7 +368,7 @@ function DeveloperContent() {
                 <div className="mb-4 overflow-x-auto rounded-md bg-muted p-4 font-mono text-sm">
                   <pre>{`POST /auth/sign-in
 {
-  "email": "user@example?.com",
+  "email": "user@example.com",
   "password": "yourpassword"
 }`}</pre>
                 </div>
@@ -384,19 +384,19 @@ function DeveloperContent() {
                 <div className="mb-6 overflow-x-auto rounded-md bg-muted p-4 font-mono text-sm">
                   <pre>{`// JavaScript example
 async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); getUserProfile() {
-  const response = await fetch('https://api?.vibewell.com/v1/users/me', {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); getUserProfile() {
+  const response = await fetch('https://api.vibewell.com/v1/users/me', {
     method: 'GET',
     headers: {
       'Authorization': \`Bearer \${jwtToken}\`,
       'Content-Type': 'application/json'
     }
   });
-  if (!response?.ok) {
-    throw new Error(\`API error: \${response?.status}\`);
+  if (!response.ok) {
+    throw new Error(\`API error: \${response.status}\`);
   }
-  return await response?.json();
+  return await response.json();
 }`}</pre>
                 </div>
                 <div className="flex flex-wrap gap-3">
@@ -423,17 +423,17 @@ async function {
               className="rounded-md border border-border bg-background p-4 transition-colors hover:bg-accent"
             >
               <h3 className="flex items-center font-semibold">
-                <Icons?.DocumentTextIcon className="text-primary mr-2 h-5 w-5" />
+                <Icons.DocumentTextIcon className="text-primary mr-2 h-5 w-5" />
                 FAQs
               </h3>
               <p className="mt-1 text-sm text-muted-foreground">Answers to common questions</p>
             </Link>
             <Link
-              href="https://github?.com/vibewell/api-examples"
+              href="https://github.com/vibewell/api-examples"
               className="rounded-md border border-border bg-background p-4 transition-colors hover:bg-accent"
             >
               <h3 className="flex items-center font-semibold">
-                <Icons?.CodeBracketIcon className="text-primary mr-2 h-5 w-5" />
+                <Icons.CodeBracketIcon className="text-primary mr-2 h-5 w-5" />
                 Sample Code
               </h3>
               <p className="mt-1 text-sm text-muted-foreground">Example projects and snippets</p>
@@ -443,7 +443,7 @@ async function {
               className="rounded-md border border-border bg-background p-4 transition-colors hover:bg-accent"
             >
               <h3 className="flex items-center font-semibold">
-                <Icons?.ClockIcon className="text-primary mr-2 h-5 w-5" />
+                <Icons.ClockIcon className="text-primary mr-2 h-5 w-5" />
                 Support
               </h3>
               <p className="mt-1 text-sm text-muted-foreground">

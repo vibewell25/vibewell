@@ -14,7 +14,7 @@ export default function MeditationPage() {
             lightingIntensity={1}
             particleEffects={true}
             onStateChange={(state) => {
-              console?.log('Environment state changed:', state);
+              console.log('Environment state changed:', state);
             }}
           />
         </div>

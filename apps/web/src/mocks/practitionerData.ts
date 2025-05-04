@@ -4,12 +4,12 @@ export const mockPractitioners = [
     user: {
       name: 'Sarah Johnson',
 
-      image: 'https://images?.unsplash.com/photo-1494790108377-be9c29b29330',
-      email: 'sarah?.j@example?.com',
+      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
+      email: 'sarah.j@example.com',
     },
     specialization: ['Hair Styling', 'Color Treatment', 'Hair Care'],
     experience: 8,
-    rating: 4?.8,
+    rating: 4.8,
     bio: 'Master hairstylist with over 8 years of experience in creating stunning looks. Specialized in modern cutting techniques and color treatments.',
     certifications: [
 
@@ -46,7 +46,7 @@ export const mockPractitioners = [
         title: 'Modern Bob Transformation',
         description: 'A classic bob with modern touches',
 
-        imageUrl: 'https://images?.unsplash.com/photo-1595476108010-b4d1f102b1b1',
+        imageUrl: 'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1',
         category: 'Haircut',
         tags: ['Bob', 'Modern', 'Styling'],
       },
@@ -57,7 +57,7 @@ export const mockPractitioners = [
 
         description: 'Natural-looking sun-kissed highlights',
 
-        imageUrl: 'https://images?.unsplash.com/photo-1600948836101-f9ffda59d250',
+        imageUrl: 'https://images.unsplash.com/photo-1600948836101-f9ffda59d250',
         category: 'Color',
         tags: ['Balayage', 'Highlights', 'Blonde'],
       },
@@ -69,12 +69,12 @@ export const mockPractitioners = [
     user: {
       name: 'Michael Chen',
 
-      image: 'https://images?.unsplash.com/photo-1507003211169-0a1dd7228f2d',
-      email: 'michael?.c@example?.com',
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d',
+      email: 'michael.c@example.com',
     },
     specialization: ['Massage Therapy', 'Aromatherapy', 'Deep Tissue'],
     experience: 12,
-    rating: 4?.9,
+    rating: 4.9,
     bio: 'Licensed massage therapist specializing in therapeutic and deep tissue massage. Focused on helping clients achieve wellness through targeted massage techniques.',
     certifications: [
       'Licensed Massage Therapist',
@@ -115,7 +115,7 @@ export const mockPractitioners = [
         title: 'Therapeutic Massage Session',
         description: 'Professional massage therapy setup',
 
-        imageUrl: 'https://images?.unsplash.com/photo-1519823551278-64ac92734fb1',
+        imageUrl: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1',
         category: 'Massage',
         tags: ['Therapeutic', 'Wellness', 'Relaxation'],
       },
@@ -127,13 +127,13 @@ export const mockPractitioners = [
     user: {
       name: 'Emma Rodriguez',
 
-      image: 'https://images?.unsplash.com/photo-1531123897727-8f129e1688ce',
-      email: 'emma?.r@example?.com',
+      image: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce',
+      email: 'emma.r@example.com',
     },
 
     specialization: ['Skincare', 'Facial Treatments', 'Anti-aging'],
     experience: 6,
-    rating: 4?.7,
+    rating: 4.7,
 
     bio: 'Licensed esthetician passionate about helping clients achieve their best skin. Specialized in advanced facial treatments and anti-aging procedures.',
     certifications: [
@@ -168,7 +168,7 @@ export const mockPractitioners = [
         title: 'Skin Transformation',
         description: 'Before and after acne treatment',
 
-        imageUrl: 'https://images?.unsplash.com/photo-1515377905703-c4788e51af15',
+        imageUrl: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15',
         category: 'Skincare',
 
         tags: ['Facial', 'Anti-aging', 'Transformation'],
@@ -181,12 +181,12 @@ export const mockPractitioners = [
     user: {
       name: 'David Kim',
 
-      image: 'https://images?.unsplash.com/photo-1500648767791-00dcc994a43e',
-      email: 'david?.k@example?.com',
+      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e',
+      email: 'david.k@example.com',
     },
     specialization: ['Nail Art', 'Manicure', 'Pedicure'],
     experience: 5,
-    rating: 4?.9,
+    rating: 4.9,
 
     bio: 'Award-winning nail artist specializing in creative designs and nail health. Known for innovative techniques and attention to detail.',
     certifications: [
@@ -220,7 +220,7 @@ export const mockPractitioners = [
         title: 'Abstract Nail Art',
         description: 'Custom geometric designs',
 
-        imageUrl: 'https://images?.unsplash.com/photo-1519014816548-bf5fe059798b',
+        imageUrl: 'https://images.unsplash.com/photo-1519014816548-bf5fe059798b',
         category: 'Nail Art',
         tags: ['Design', 'Gel', 'Abstract'],
       },
@@ -232,12 +232,12 @@ export const mockPractitioners = [
     user: {
       name: 'Sophia Patel',
 
-      image: 'https://images?.unsplash.com/photo-1573496359142-b8d87734a5a2',
-      email: 'sophia?.p@example?.com',
+      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2',
+      email: 'sophia.p@example.com',
     },
     specialization: ['Yoga', 'Meditation', 'Wellness Coaching'],
     experience: 10,
-    rating: 4?.8,
+    rating: 4.8,
 
     bio: 'Certified yoga instructor and wellness coach with a holistic approach to health and well-being. Specializes in personalized wellness programs.',
     certifications: [
@@ -279,7 +279,7 @@ export const mockPractitioners = [
         title: 'Yoga Journey',
         description: 'Group yoga session highlights',
 
-        imageUrl: 'https://images?.unsplash.com/photo-1545205597-3d9d02c29597',
+        imageUrl: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597',
         category: 'Yoga',
         tags: ['Wellness', 'Yoga', 'Meditation'],
       },

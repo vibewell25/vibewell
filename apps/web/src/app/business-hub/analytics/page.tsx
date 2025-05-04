@@ -24,7 +24,7 @@ interface MetricCard {
   value: string | number;
   change: number;
   changeType: 'increase' | 'decrease' | 'neutral';
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
 }
 interface PopularResource {
   id: string;
@@ -35,7 +35,7 @@ interface PopularResource {
   views: number;
   imageUrl?: string;
 }
-// Define the PopularRating interface from lib/ratings?.ts
+// Define the PopularRating interface from lib/ratings.ts
 interface PopularRating {
   id: string;
   type: string;
@@ -57,28 +57,28 @@ const getAnalyticsData = () => {
   }
   try {
     // Resource views
-    const viewData = JSON?.parse(localStorage?.getItem('resource_view_log') || '{}');
-    const resourceViews = Object?.values(viewData) as ViewData[];
-    const totalViews = resourceViews?.reduce((sum, item) => sum + item?.views, 0);
+    const viewData = JSON.parse(localStorage.getItem('resource_view_log') || '{}');
+    const resourceViews = Object.values(viewData) as ViewData[];
+    const totalViews = resourceViews.reduce((sum, item) => sum + item.views, 0);
     // Search history
-    const searchHistory = JSON?.parse(
-      localStorage?.getItem('search_history') || '[]',
+    const searchHistory = JSON.parse(
+      localStorage.getItem('search_history') || '[]',
     ) as SearchHistoryItem[];
     // Popular searches (count occurrences)
     const searchTerms = searchHistory
-      .map((item) => item?.query.toLowerCase().trim())
+      .map((item) => item.query.toLowerCase().trim())
       .filter(Boolean);
     const searchCounts: Record<string, number> = {};
-    searchTerms?.forEach((term) => {
+    searchTerms.forEach((term) => {
       searchCounts[term] = (searchCounts[term] || 0) + 1;
     });
-    const popularSearches = Object?.entries(searchCounts)
+    const popularSearches = Object.entries(searchCounts)
       .map(([term, count]) => ({ term, count }))
-      .sort((a, b) => b?.count - a?.count)
+      .sort((a, b) => b.count - a.count)
       .slice(0, 5);
     // Bookmarked resources count
-    const bookmarks = JSON?.parse(localStorage?.getItem('vibewell_bookmarks') || '{}');
-    const bookmarkedCount = Object?.keys(bookmarks).length;
+    const bookmarks = JSON.parse(localStorage.getItem('vibewell_bookmarks') || '{}');
+    const bookmarkedCount = Object.keys(bookmarks).length;
     // Top rated resources
     const topRated = getHighestRatedItems(5) as PopularRating[];
     return {
@@ -90,7 +90,7 @@ const getAnalyticsData = () => {
       topRated,
     };
   } catch (error) {
-    console?.error('Error fetching analytics data:', error);
+    console.error('Error fetching analytics data:', error);
     return {
       totalViews: 0,
       resourceViews: [],
@@ -110,7 +110,7 @@ const popularResources: PopularResource[] = [
     category: 'Marketing',
     url: '/business-hub/marketing/resources/1',
     views: 245,
-    imageUrl: '/images/social-media-marketing?.jpg',
+    imageUrl: '/images/social-media-marketing.jpg',
   },
   {
     id: '2',
@@ -119,7 +119,7 @@ const popularResources: PopularResource[] = [
     category: 'Financial',
     url: '/business-hub/financial-management/resources/1',
     views: 189,
-    imageUrl: '/images/financial-planning?.jpg',
+    imageUrl: '/images/financial-planning.jpg',
   },
   {
     id: '3',
@@ -128,7 +128,7 @@ const popularResources: PopularResource[] = [
     category: 'Client Acquisition',
     url: '/business-hub/client-acquisition/strategies/1',
     views: 173,
-    imageUrl: '/images/client-acquisition?.jpg',
+    imageUrl: '/images/client-acquisition.jpg',
   },
   {
     id: '4',
@@ -137,7 +137,7 @@ const popularResources: PopularResource[] = [
     category: 'Financial',
     url: '/business-hub/financial-management/tools/1',
     views: 162,
-    imageUrl: '/images/pricing-calculator?.jpg',
+    imageUrl: '/images/pricing-calculator.jpg',
   },
   {
     id: '5',
@@ -146,7 +146,7 @@ const popularResources: PopularResource[] = [
     category: 'Marketing',
     url: '/business-hub/marketing/resources/2',
     views: 157,
-    imageUrl: '/images/email-marketing?.jpg',
+    imageUrl: '/images/email-marketing.jpg',
   },
 ];
 export default function BusinessHubAnalyticsPage() {
@@ -175,31 +175,31 @@ export default function BusinessHubAnalyticsPage() {
   const metricCards: MetricCard[] = [
     {
       title: 'Total Resource Views',
-      value: analyticsData?.totalViews,
-      change: 12?.5,
+      value: analyticsData.totalViews,
+      change: 12.5,
       changeType: 'increase',
-      icon: <Icons?.ChartBarIcon className="h-6 w-6 text-blue-500" />,
+      icon: <Icons.ChartBarIcon className="h-6 w-6 text-blue-500" />,
     },
     {
       title: 'Resources Bookmarked',
-      value: analyticsData?.bookmarkedCount,
-      change: 8?.3,
+      value: analyticsData.bookmarkedCount,
+      change: 8.3,
       changeType: 'increase',
-      icon: <Icons?.BookmarkIcon className="h-6 w-6 text-yellow-500" />,
+      icon: <Icons.BookmarkIcon className="h-6 w-6 text-yellow-500" />,
     },
     {
       title: 'Search Queries',
-      value: analyticsData?.searchHistory.length,
-      change: 15?.2,
+      value: analyticsData.searchHistory.length,
+      change: 15.2,
       changeType: 'increase',
-      icon: <Icons?.MagnifyingGlassIcon className="h-6 w-6 text-purple-500" />,
+      icon: <Icons.MagnifyingGlassIcon className="h-6 w-6 text-purple-500" />,
     },
     {
       title: 'Resource Engagement',
       value: '42%',
-      change: 5?.7,
+      change: 5.7,
       changeType: 'increase',
-      icon: <Icons?.UserGroupIcon className="h-6 w-6 text-green-500" />,
+      icon: <Icons.UserGroupIcon className="h-6 w-6 text-green-500" />,
     },
   ];
   // Format date to readable format
@@ -238,33 +238,33 @@ export default function BusinessHubAnalyticsPage() {
                 </p>
                 {/* Metrics Overview */}
                 <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-                  {metricCards?.map((card, index) => (
+                  {metricCards.map((card, index) => (
                     <div
                       key={index}
                       className="rounded-lg border border-gray-100 bg-white p-4 shadow-sm"
                     >
                       <div className="flex items-start justify-between">
                         <div>
-                          <p className="text-sm text-gray-500">{card?.title}</p>
-                          <p className="mt-1 text-2xl font-bold">{card?.value}</p>
+                          <p className="text-sm text-gray-500">{card.title}</p>
+                          <p className="mt-1 text-2xl font-bold">{card.value}</p>
                         </div>
-                        <div className="rounded-lg bg-gray-50 p-2">{card?.icon}</div>
+                        <div className="rounded-lg bg-gray-50 p-2">{card.icon}</div>
                       </div>
                       <div
                         className={`mt-4 flex items-center text-sm ${
-                          card?.changeType === 'increase'
+                          card.changeType === 'increase'
                             ? 'text-green-600'
-                            : card?.changeType === 'decrease'
+                            : card.changeType === 'decrease'
                               ? 'text-red-600'
                               : 'text-gray-500'
                         }`}
                       >
-                        {card?.changeType === 'increase' ? (
-                          <Icons?.ArrowUpIcon className="mr-1 h-4 w-4" />
-                        ) : card?.changeType === 'decrease' ? (
-                          <Icons?.ArrowDownIcon className="mr-1 h-4 w-4" />
+                        {card.changeType === 'increase' ? (
+                          <Icons.ArrowUpIcon className="mr-1 h-4 w-4" />
+                        ) : card.changeType === 'decrease' ? (
+                          <Icons.ArrowDownIcon className="mr-1 h-4 w-4" />
                         ) : null}
-                        <span>{card?.change}% from last month</span>
+                        <span>{card.change}% from last month</span>
                       </div>
                     </div>
                   ))}
@@ -272,7 +272,7 @@ export default function BusinessHubAnalyticsPage() {
                 {/* Popular Resources */}
                 <div className="mb-8">
                   <h2 className="mb-4 flex items-center text-xl font-semibold">
-                    <Icons?.CircleStackIcon className="mr-2 h-5 w-5 text-blue-600" />
+                    <Icons.CircleStackIcon className="mr-2 h-5 w-5 text-blue-600" />
                     Most Viewed Resources
                   </h2>
                   <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
@@ -307,15 +307,15 @@ export default function BusinessHubAnalyticsPage() {
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200 bg-white">
-                          {popularResources?.map((resource) => (
-                            <tr key={resource?.id} className="hover:bg-gray-50">
+                          {popularResources.map((resource) => (
+                            <tr key={resource.id} className="hover:bg-gray-50">
                               <td className="whitespace-nowrap px-6 py-4">
                                 <div className="flex items-center">
-                                  {resource?.imageUrl && (
+                                  {resource.imageUrl && (
                                     <div className="mr-3 h-10 w-10 flex-shrink-0">
                                       <Image
-                                        src={resource?.imageUrl}
-                                        alt={resource?.title}
+                                        src={resource.imageUrl}
+                                        alt={resource.title}
                                         width={40}
                                         height={40}
                                         className="rounded-md object-cover"
@@ -324,28 +324,28 @@ export default function BusinessHubAnalyticsPage() {
                                   )}
                                   <div>
                                     <Link
-                                      href={resource?.url}
+                                      href={resource.url}
                                       className="text-sm font-medium text-gray-900 hover:text-blue-600"
                                     >
-                                      {resource?.title}
+                                      {resource.title}
                                     </Link>
                                   </div>
                                 </div>
                               </td>
                               <td className="whitespace-nowrap px-6 py-4">
                                 <span className="inline-flex text-xs font-semibold">
-                                  {resource?.category}
+                                  {resource.category}
                                 </span>
                               </td>
                               <td className="whitespace-nowrap px-6 py-4">
                                 <div className="flex items-center text-sm text-gray-900">
-                                  <Icons?.ArrowTrendingUpIcon className="mr-2 h-4 w-4 text-green-500" />
-                                  {resource?.views}
+                                  <Icons.ArrowTrendingUpIcon className="mr-2 h-4 w-4 text-green-500" />
+                                  {resource.views}
                                 </div>
                               </td>
                               <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                                 <Badge variant="outline" className="capitalize">
-                                  {resource?.type}
+                                  {resource.type}
                                 </Badge>
                               </td>
                             </tr>
@@ -360,31 +360,31 @@ export default function BusinessHubAnalyticsPage() {
                   {/* Recent Activity */}
                   <div>
                     <h2 className="mb-4 flex items-center text-lg font-semibold">
-                      <Icons?.ClockIcon className="mr-2 h-5 w-5 text-blue-600" />
+                      <Icons.ClockIcon className="mr-2 h-5 w-5 text-blue-600" />
                       Your Recent Activity
                     </h2>
                     <div className="rounded-lg border border-gray-200 bg-white p-4">
-                      {isClient && analyticsData?.resourceViews.length > 0 ? (
+                      {isClient && analyticsData.resourceViews.length > 0 ? (
                         <div className="space-y-4">
-                          {analyticsData?.resourceViews
+                          {analyticsData.resourceViews
                             .sort(
                               (a, b) =>
-                                new Date(b?.lastViewed).getTime() - new Date(a?.lastViewed).getTime(),
+                                new Date(b.lastViewed).getTime() - new Date(a.lastViewed).getTime(),
                             )
                             .slice(0, 5)
                             .map((item) => (
                               <div
-                                key={item?.id}
+                                key={item.id}
                                 className="flex items-start border-b border-gray-100 pb-4 last:border-0 last:pb-0"
                               >
                                 <div className="mr-3 rounded-md bg-blue-100 p-2">
-                                  <Icons?.ChartBarIcon className="h-5 w-5 text-blue-700" />
+                                  <Icons.ChartBarIcon className="h-5 w-5 text-blue-700" />
                                 </div>
                                 <div>
-                                  <p className="text-sm font-medium">Viewed: {item?.name}</p>
+                                  <p className="text-sm font-medium">Viewed: {item.name}</p>
                                   <p className="mt-1 text-xs text-gray-500">
-                                    {formatDate(item?.lastViewed)} • {item?.views}{' '}
-                                    {item?.views === 1 ? 'view' : 'views'}
+                                    {formatDate(item.lastViewed)} • {item.views}{' '}
+                                    {item.views === 1 ? 'view' : 'views'}
                                   </p>
                                 </div>
                               </div>
@@ -401,13 +401,13 @@ export default function BusinessHubAnalyticsPage() {
                   {/* Popular Searches */}
                   <div>
                     <h2 className="mb-4 flex items-center text-lg font-semibold">
-                      <Icons?.MagnifyingGlassIcon className="mr-2 h-5 w-5 text-blue-600" />
+                      <Icons.MagnifyingGlassIcon className="mr-2 h-5 w-5 text-blue-600" />
                       Popular Searches
                     </h2>
                     <div className="rounded-lg border border-gray-200 bg-white p-4">
-                      {isClient && analyticsData?.popularSearches.length > 0 ? (
+                      {isClient && analyticsData.popularSearches.length > 0 ? (
                         <div className="space-y-3">
-                          {analyticsData?.popularSearches.map((item, index) => (
+                          {analyticsData.popularSearches.map((item, index) => (
                             <div
                               key={index}
                               className="flex items-center justify-between border-b border-gray-100 py-2 last:border-0"
@@ -416,10 +416,10 @@ export default function BusinessHubAnalyticsPage() {
                                 <div className="mr-3 flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 text-xs font-medium">
                                   {index + 1}
                                 </div>
-                                <p className="text-sm">{item?.term}</p>
+                                <p className="text-sm">{item.term}</p>
                               </div>
                               <Badge variant="outline" className="text-xs">
-                                {item?.count} {item?.count === 1 ? 'search' : 'searches'}
+                                {item.count} {item.count === 1 ? 'search' : 'searches'}
                               </Badge>
                             </div>
                           ))}

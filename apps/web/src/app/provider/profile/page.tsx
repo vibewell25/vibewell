@@ -20,27 +20,27 @@ export default function ProviderProfilePage() {
   }, []);
 
   const checkUser = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const {
         data: { user },
-      } = await supabase?.auth.getUser();
+      } = await supabase.auth.getUser();
       if (!user) {
-        router?.push('/login');
+        router.push('/login');
         return;
       }
 
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
-        .eq('id', user?.id)
+        .eq('id', user.id)
         .single();
 
       if (error) throw error;
 
-      if (data?.role !== 'provider') {
-        router?.push('/');
+      if (data.role !== 'provider') {
+        router.push('/');
         return;
       }
 
@@ -50,14 +50,14 @@ export default function ProviderProfilePage() {
       const { data: businessProfile, error: businessError } = await supabase
         .from('business_profiles')
         .select('completed_setup')
-        .eq('provider_id', user?.id)
+        .eq('provider_id', user.id)
         .single();
 
       if (!businessError && businessProfile) {
-        setHasCompletedBusinessSetup(businessProfile?.completed_setup || false);
+        setHasCompletedBusinessSetup(businessProfile.completed_setup || false);
       }
     } catch (error) {
-      console?.error('Error checking user:', error);
+      console.error('Error checking user:', error);
     } finally {
       setIsLoading(false);
     }
@@ -115,13 +115,13 @@ export default function ProviderProfilePage() {
                   <div>
                     <h3 className="text-sm font-medium text-gray-500">Member Since</h3>
                     <p className="text-lg font-semibold">
-                      {new Date(profile?.created_at).toLocaleDateString()}
+                      {new Date(profile.created_at).toLocaleDateString()}
                     </p>
                   </div>
                   <div>
                     <h3 className="text-sm font-medium text-gray-500">Last Updated</h3>
                     <p className="text-lg font-semibold">
-                      {new Date(profile?.updated_at).toLocaleDateString()}
+                      {new Date(profile.updated_at).toLocaleDateString()}
                     </p>
                   </div>
                 </div>

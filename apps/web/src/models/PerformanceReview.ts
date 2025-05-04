@@ -25,7 +25,7 @@ export interface MetricEvaluation {
   score: number; // 1-5 scale
   notes: string;
   supportingData?: Record<string, any>;
-  evaluatorId: Types?.ObjectId;
+  evaluatorId: Types.ObjectId;
   evaluationDate: Date;
 }
 
@@ -52,7 +52,7 @@ export interface DevelopmentGoal {
 }
 
 export interface PerformanceReview extends Document {
-  practitionerId: Types?.ObjectId;
+  practitionerId: Types.ObjectId;
   reviewPeriod: {
     start: Date;
     end: Date;
@@ -71,7 +71,7 @@ export interface PerformanceReview extends Document {
       improvements: string[];
     };
     peerFeedback: {
-      reviewerId: Types?.ObjectId;
+      reviewerId: Types.ObjectId;
       rating: number;
       comments: string;
       date: Date;
@@ -94,11 +94,11 @@ export interface PerformanceReview extends Document {
     scheduledDate: Date;
     actualDate?: Date;
     duration: number;
-    attendees: Types?.ObjectId[];
+    attendees: Types.ObjectId[];
     notes: string;
     actionItems: {
       description: string;
-      assignedTo: Types?.ObjectId;
+      assignedTo: Types.ObjectId;
       dueDate: Date;
       status: 'pending' | 'completed';
     }[];
@@ -107,7 +107,7 @@ export interface PerformanceReview extends Document {
     name: string;
     type: string;
     url: string;
-    uploadedBy: Types?.ObjectId;
+    uploadedBy: Types.ObjectId;
     uploadDate: Date;
   }[];
   signatures: {
@@ -117,7 +117,7 @@ export interface PerformanceReview extends Document {
       comments?: string;
     };
     reviewer: {
-      userId: Types?.ObjectId;
+      userId: Types.ObjectId;
       signed: boolean;
       date?: Date;
       comments?: string;
@@ -128,7 +128,7 @@ export interface PerformanceReview extends Document {
 }
 
 const performanceReviewSchema = new Schema<PerformanceReview>({
-  practitionerId: { type: Schema?.Types.ObjectId, ref: 'Practitioner', required: true },
+  practitionerId: { type: Schema.Types.ObjectId, ref: 'Practitioner', required: true },
   reviewPeriod: {
     start: { type: Date, required: true },
     end: { type: Date, required: true },
@@ -149,20 +149,20 @@ const performanceReviewSchema = new Schema<PerformanceReview>({
       metricId: { type: String, required: true },
       score: { type: Number, required: true, min: 1, max: 5 },
       notes: String,
-      supportingData: Schema?.Types.Mixed,
-      evaluatorId: { type: Schema?.Types.ObjectId, ref: 'User', required: true },
-      evaluationDate: { type: Date, default: Date?.now },
+      supportingData: Schema.Types.Mixed,
+      evaluatorId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+      evaluationDate: { type: Date, default: Date.now },
     },
   ],
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
   strengths: [String],
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
   areasForImprovement: [String],
@@ -203,7 +203,7 @@ const performanceReviewSchema = new Schema<PerformanceReview>({
       ],
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
       notes: [String],
@@ -214,41 +214,41 @@ const performanceReviewSchema = new Schema<PerformanceReview>({
       averageRating: Number,
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
       testimonials: [String],
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
       improvements: [String],
     },
     peerFeedback: [
       {
-        reviewerId: { type: Schema?.Types.ObjectId, ref: 'User', required: true },
+        reviewerId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
         rating: { type: Number, required: true, min: 1, max: 5 },
         comments: String,
-        date: { type: Date, default: Date?.now },
+        date: { type: Date, default: Date.now },
       },
     ],
     selfAssessment: {
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
       strengths: [String],
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
       challenges: [String],
 
     // Safe array access
-    if (String < 0 || String >= array?.length) {
+    if (String < 0 || String >= array.length) {
       throw new Error('Array index out of bounds');
     }
       goals: [String],
@@ -267,12 +267,12 @@ const performanceReviewSchema = new Schema<PerformanceReview>({
       scheduledDate: { type: Date, required: true },
       actualDate: Date,
       duration: { type: Number, required: true }, // minutes
-      attendees: [{ type: Schema?.Types.ObjectId, ref: 'User' }],
+      attendees: [{ type: Schema.Types.ObjectId, ref: 'User' }],
       notes: String,
       actionItems: [
         {
           description: { type: String, required: true },
-          assignedTo: { type: Schema?.Types.ObjectId, ref: 'User', required: true },
+          assignedTo: { type: Schema.Types.ObjectId, ref: 'User', required: true },
           dueDate: { type: Date, required: true },
           status: {
             type: String,
@@ -288,8 +288,8 @@ const performanceReviewSchema = new Schema<PerformanceReview>({
       name: { type: String, required: true },
       type: String,
       url: { type: String, required: true },
-      uploadedBy: { type: Schema?.Types.ObjectId, ref: 'User', required: true },
-      uploadDate: { type: Date, default: Date?.now },
+      uploadedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+      uploadDate: { type: Date, default: Date.now },
     },
   ],
   signatures: {
@@ -299,25 +299,25 @@ const performanceReviewSchema = new Schema<PerformanceReview>({
       comments: String,
     },
     reviewer: {
-      userId: { type: Schema?.Types.ObjectId, ref: 'User', required: true },
+      userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
       signed: { type: Boolean, default: false },
       date: Date,
       comments: String,
     },
   },
-  createdAt: { type: Date, default: Date?.now },
-  updatedAt: { type: Date, default: Date?.now },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
 // Add indexes for better query performance
-performanceReviewSchema?.index({ practitionerId: 1, 'reviewPeriod?.start': 1 });
-performanceReviewSchema?.index({ status: 1 });
-performanceReviewSchema?.index({ 'reviewPeriod?.end': 1 });
+performanceReviewSchema.index({ practitionerId: 1, 'reviewPeriod.start': 1 });
+performanceReviewSchema.index({ status: 1 });
+performanceReviewSchema.index({ 'reviewPeriod.end': 1 });
 
 
 // Add pre-save middleware to update timestamps
-performanceReviewSchema?.pre('save', function (next) {
-  this?.updatedAt = new Date();
+performanceReviewSchema.pre('save', function (next) {
+  this.updatedAt = new Date();
   next();
 });
 

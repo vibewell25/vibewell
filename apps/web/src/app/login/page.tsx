@@ -14,15 +14,15 @@ function LoginContent() {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent) => {
-    e?.preventDefault();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
+    e.preventDefault();
     setLoading(true);
 
     // Simulate login
     setTimeout(() => {
       setLoading(false);
-      router?.push('/dashboard');
+      router.push('/dashboard');
     }, 1000);
   };
 
@@ -42,7 +42,7 @@ function LoginContent() {
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e?.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 className="h-12 w-full rounded-md"
                 placeholder="Enter your email"
                 required
@@ -57,7 +57,7 @@ function LoginContent() {
                 id="password"
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e?.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 className="h-12 w-full rounded-md"
                 placeholder="Enter your password"
                 required

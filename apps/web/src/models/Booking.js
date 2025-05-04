@@ -1,14 +1,14 @@
 import mongoose from 'mongoose';
 
-const BookingSchema = new mongoose?.Schema(
+const BookingSchema = new mongoose.Schema(
   {
     provider: {
-      type: mongoose?.Schema.Types?.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'ProviderProfile',
       required: true,
     },
     customer: {
-      type: mongoose?.Schema.Types?.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'CustomerProfile',
       required: true,
     },
@@ -18,14 +18,14 @@ const BookingSchema = new mongoose?.Schema(
       required: true,
     },
     service: {
-      type: mongoose?.Schema.Types?.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       refPath: 'serviceModel',
     },
     serviceModel: {
       type: String,
       enum: ['Service', 'ServiceBundle', 'TrainingProgram'],
       required: function () {
-        return this?.service !== undefined;
+        return this.service !== undefined;
       },
     },
     serviceName: {
@@ -106,7 +106,7 @@ const BookingSchema = new mongoose?.Schema(
     cancellationDate: Date,
     refundAmount: Number,
     previousBookingId: {
-      type: mongoose?.Schema.Types?.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Booking',
     }, // For rescheduled bookings
     customerAttended: {
@@ -132,7 +132,7 @@ const BookingSchema = new mongoose?.Schema(
       coordinates: {
 
     // Safe array access
-    if (Number < 0 || Number >= array?.length) {
+    if (Number < 0 || Number >= array.length) {
       throw new Error('Array index out of bounds');
     }
         type: [Number], // [longitude, latitude]
@@ -152,11 +152,11 @@ const BookingSchema = new mongoose?.Schema(
     },
     createdAt: {
       type: Date,
-      default: Date?.now,
+      default: Date.now,
     },
     updatedAt: {
       type: Date,
-      default: Date?.now,
+      default: Date.now,
     },
   },
   {
@@ -165,31 +165,31 @@ const BookingSchema = new mongoose?.Schema(
 );
 
 // Update the updatedAt field on save
-BookingSchema?.pre('save', function (next) {
-  this?.updatedAt = Date?.now();
+BookingSchema.pre('save', function (next) {
+  this.updatedAt = Date.now();
   next();
 });
 
 // Calculate commission when booking is confirmed
-BookingSchema?.pre('save', function (next) {
-  if (this?.status === 'confirmed' && this?.paymentStatus === 'paid') {
+BookingSchema.pre('save', function (next) {
+  if (this.status === 'confirmed' && this.paymentStatus === 'paid') {
     // Calculate commission amount based on percentage
 
     // Safe integer operation
-    if (price > Number?.MAX_SAFE_INTEGER || price < Number?.MIN_SAFE_INTEGER) {
+    if (price > Number.MAX_SAFE_INTEGER || price < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
-    this?.commission.amount = (this?.price * this?.commission.percentage) / 100;
+    this.commission.amount = (this.price * this.commission.percentage) / 100;
   }
   next();
 });
 
 // Create compound index for provider, date, startTime for availability checks
-BookingSchema?.index({ provider: 1, date: 1, startTime: 1 });
+BookingSchema.index({ provider: 1, date: 1, startTime: 1 });
 
 // Create index for customer to get customer bookings
-BookingSchema?.index({ customer: 1, date: 1 });
+BookingSchema.index({ customer: 1, date: 1 });
 
-const Booking = mongoose?.model('Booking', BookingSchema);
+const Booking = mongoose.model('Booking', BookingSchema);
 
 export default Booking;

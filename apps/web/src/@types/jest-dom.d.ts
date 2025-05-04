@@ -3,5 +3,5 @@
 /// <reference types="@testing-library/jest-dom" />
 
 declare namespace jest {
-  interface Matchers<R> extends jest?.Matchers<R> {}
+  interface Matchers<R> extends jest.Matchers<R> {}
 }

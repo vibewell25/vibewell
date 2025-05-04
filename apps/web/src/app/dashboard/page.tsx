@@ -12,7 +12,7 @@ export default function Dashboard() {
   useEffect(() => {
     // If not loading and no user, redirect to login
     if (!isLoading && !user) {
-      router?.push('/api/auth/login?returnTo=/dashboard');
+      router.push('/api/auth/login?returnTo=/dashboard');
     }
   }, [isLoading, user, router]);
 
@@ -46,29 +46,29 @@ export default function Dashboard() {
   }
 
   // Get user roles if available
-  const namespace = process?.env.NEXT_PUBLIC_AUTH0_NAMESPACE || 'https://vibewell?.com';
+  const namespace = process.env.NEXT_PUBLIC_AUTH0_NAMESPACE || 'https://vibewell.com';
   const userRoles = user[`${namespace}/roles`] || [];
-  const isAdmin = userRoles?.includes('admin');
-  const isProvider = userRoles?.includes('provider');
+  const isAdmin = userRoles.includes('admin');
+  const isProvider = userRoles.includes('provider');
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="rounded-lg bg-white p-6 shadow-sm">
           <div className="flex items-center space-x-4">
-            {user?.picture && (
+            {user.picture && (
               <img
-                src={user?.picture}
-                alt={user?.name || 'User'}
+                src={user.picture}
+                alt={user.name || 'User'}
                 className="h-16 w-16 rounded-full"
               />
             )}
             <div>
-              <h1 className="text-2xl font-bold">Welcome, {user?.name || 'User'}!</h1>
-              <p className="text-gray-600">{user?.email}</p>
-              {userRoles?.length > 0 && (
+              <h1 className="text-2xl font-bold">Welcome, {user.name || 'User'}!</h1>
+              <p className="text-gray-600">{user.email}</p>
+              {userRoles.length > 0 && (
                 <div className="mt-1 flex flex-wrap gap-1">
-                  {userRoles?.map((role) => (
+                  {userRoles.map((role) => (
                     <span
                       key={role}
                       className="rounded-full bg-indigo-100 px-2 py-1 text-xs text-indigo-800"

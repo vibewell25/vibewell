@@ -7,8 +7,8 @@ import { nanoid } from 'nanoid';
  * Track a try-on session in analytics
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); trackTryOnSession({
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); trackTryOnSession({
   userId,
   type,
   productId,
@@ -29,7 +29,7 @@ export async function {
 }) {
   try {
     const analyticsService = new AnalyticsService();
-    return await analyticsService?.trackTryOnSession({
+    return await analyticsService.trackTryOnSession({
       userId,
       type,
       productId,
@@ -41,7 +41,7 @@ export async function {
     });
   } catch (error) {
 
-    console?.error('Failed to track try-on session:', error);
+    console.error('Failed to track try-on session:', error);
     return null;
   }
 }
@@ -50,8 +50,8 @@ export async function {
  * Track a share event in analytics
  */
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); trackShare({
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); trackShare({
   userId,
   sessionId,
   platform,
@@ -68,7 +68,7 @@ export async function {
 }) {
   try {
     const analyticsService = new AnalyticsService();
-    return await analyticsService?.trackShare({
+    return await analyticsService.trackShare({
       userId,
       sessionId,
       platform,
@@ -77,7 +77,7 @@ export async function {
       error,
     });
   } catch (error) {
-    console?.error('Failed to track share event:', error);
+    console.error('Failed to track share event:', error);
     return null;
   }
 }
@@ -93,7 +93,7 @@ export function generateSessionId(): string {
  * Calculate session duration in seconds
  */
 export function calculateSessionDuration(startTime: number): number {
-  const endTime = Date?.now();
+  const endTime = Date.now();
 
-  return Math?.round((endTime - startTime) / 1000);
+  return Math.round((endTime - startTime) / 1000);
 }

@@ -6,7 +6,7 @@ export const AR_ROOM_THEMES = {
     backgroundColor: '#f5f9ff',
     fogColor: '#ffffff',
 
-    modelPath: '/models/zen-garden?.glb',
+    modelPath: '/models/zen-garden.glb',
   },
   forest: {
     name: 'Forest Retreat',
@@ -15,7 +15,7 @@ export const AR_ROOM_THEMES = {
     backgroundColor: '#2a3b13',
     fogColor: '#4a5d23',
 
-    modelPath: '/models/forest-retreat?.glb',
+    modelPath: '/models/forest-retreat.glb',
   },
   beach: {
     name: 'Coastal Calm',
@@ -24,7 +24,7 @@ export const AR_ROOM_THEMES = {
     backgroundColor: '#87ceeb',
     fogColor: '#ffffff',
 
-    modelPath: '/models/beach-scene?.glb',
+    modelPath: '/models/beach-scene.glb',
   },
   mountain: {
     name: 'Mountain Sanctuary',
@@ -33,7 +33,7 @@ export const AR_ROOM_THEMES = {
     backgroundColor: '#87ceeb',
     fogColor: '#ffffff',
 
-    modelPath: '/models/mountain-scene?.glb',
+    modelPath: '/models/mountain-scene.glb',
   },
 } as const;
 
@@ -146,29 +146,29 @@ export const MEDITATION_SOUNDSCAPES = {
     name: 'Gentle Rain',
     description: 'Soothing rainfall sounds for deep relaxation',
 
-    audioPath: '/sounds/rain?.mp3',
-    volume: 0?.5,
+    audioPath: '/sounds/rain.mp3',
+    volume: 0.5,
   },
   waves: {
     name: 'Ocean Waves',
     description: 'Calming ocean waves for peace and tranquility',
 
-    audioPath: '/sounds/waves?.mp3',
-    volume: 0?.5,
+    audioPath: '/sounds/waves.mp3',
+    volume: 0.5,
   },
   wind: {
     name: 'Forest Wind',
     description: 'Gentle breeze through trees for natural ambiance',
 
-    audioPath: '/sounds/wind?.mp3',
-    volume: 0?.4,
+    audioPath: '/sounds/wind.mp3',
+    volume: 0.4,
   },
   birds: {
     name: 'Morning Birds',
     description: 'Peaceful birdsong for a natural awakening',
 
-    audioPath: '/sounds/birds?.mp3',
-    volume: 0?.4,
+    audioPath: '/sounds/birds.mp3',
+    volume: 0.4,
   },
 } as const;
 

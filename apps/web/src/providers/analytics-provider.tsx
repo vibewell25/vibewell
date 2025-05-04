@@ -21,14 +21,14 @@ const AnalyticsContext = createContext<AnalyticsContextType>({
 });
 
 interface AnalyticsProviderProps {
-  children: React?.ReactNode;
+  children: React.ReactNode;
   trackingId?: string;
 }
 
 // The core analytics provider component that uses useSearchParams
 function AnalyticsProviderContent({
   children,
-  trackingId = process?.env.NEXT_PUBLIC_GA_TRACKING_ID,
+  trackingId = process.env.NEXT_PUBLIC_GA_TRACKING_ID,
 }: AnalyticsProviderProps) {
   const [gaInitialized, setGaInitialized] = useState(false);
   const pathname = usePathname();
@@ -39,11 +39,11 @@ function AnalyticsProviderContent({
     if (!trackingId || gaInitialized) return;
 
     try {
-      ReactGA?.initialize(trackingId);
+      ReactGA.initialize(trackingId);
       setGaInitialized(true);
-      console?.log('Google Analytics initialized');
+      console.log('Google Analytics initialized');
     } catch (error) {
-      console?.error('Failed to initialize Google Analytics:', error);
+      console.error('Failed to initialize Google Analytics:', error);
     }
   }, [trackingId, gaInitialized]);
 
@@ -52,17 +52,17 @@ function AnalyticsProviderContent({
     if (!gaInitialized) return;
 
     // Combine pathname and search params for full URL
-    const page = pathname + (searchParams?.toString() ? `?${searchParams?.toString()}` : '');
+    const page = pathname + (searchParams.toString() ? `?${searchParams.toString()}` : '');
 
     // Track page view
-    ReactGA?.pageview(page);
+    ReactGA.pageview(page);
   }, [pathname, searchParams, gaInitialized]);
 
   // Track events
   const trackEvent = (category: string, action: string, label?: string, value?: number) => {
     if (!gaInitialized) return;
 
-    ReactGA?.event({
+    ReactGA.event({
       category,
       action,
       label,
@@ -74,14 +74,14 @@ function AnalyticsProviderContent({
   const trackPageView = (path?: string) => {
     if (!gaInitialized) return;
 
-    ReactGA?.pageview(path || pathname || '');
+    ReactGA.pageview(path || pathname || '');
   };
 
   // Track timing
   const trackTiming = (category: string, variable: string, value: number, label?: string) => {
     if (!gaInitialized) return;
 
-    ReactGA?.timing({
+    ReactGA.timing({
       category,
       variable,
       value,
@@ -93,14 +93,14 @@ function AnalyticsProviderContent({
   const trackException = (description: string, fatal: boolean = false) => {
     if (!gaInitialized) return;
 
-    ReactGA?.exception({
+    ReactGA.exception({
       description,
       fatal,
     });
   };
 
   return (
-    <AnalyticsContext?.Provider
+    <AnalyticsContext.Provider
       value={{
         trackEvent,
         trackPageView,
@@ -110,7 +110,7 @@ function AnalyticsProviderContent({
       }}
     >
       {children}
-    </AnalyticsContext?.Provider>
+    </AnalyticsContext.Provider>
   );
 }
 

@@ -28,7 +28,7 @@ export default function MarketingResourcesPage() {
       description:
         'A 30-day content plan with post ideas, caption templates, and hashtag recommendations for Instagram, Facebook, and TikTok.',
       category: 'social-media',
-      image: 'https://images?.unsplash.com/photo-1611162617213-7d7a39e9b1d7',
+      image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7',
       downloadable: true,
       premium: false,
     },
@@ -38,7 +38,7 @@ export default function MarketingResourcesPage() {
       description:
         'A 5-part email sequence to nurture new clients from their first visit to becoming regular customers.',
       category: 'email',
-      image: 'https://images?.unsplash.com/photo-1563986768494-4dee2763ff3f',
+      image: 'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f',
       downloadable: true,
       premium: false,
     },
@@ -48,7 +48,7 @@ export default function MarketingResourcesPage() {
       description:
         'Step-by-step guide to improve your local search ranking and attract more nearby customers.',
       category: 'local-marketing',
-      image: 'https://images?.unsplash.com/photo-1553484771-371a605b060b',
+      image: 'https://images.unsplash.com/photo-1553484771-371a605b060b',
       downloadable: true,
       premium: false,
     },
@@ -58,7 +58,7 @@ export default function MarketingResourcesPage() {
       description:
         'Strategic guide for planning and executing seasonal promotions that drive bookings during peak and slow periods.',
       category: 'content',
-      image: 'https://images?.unsplash.com/photo-1533090161767-e6ffed986c88',
+      image: 'https://images.unsplash.com/photo-1533090161767-e6ffed986c88',
       downloadable: true,
       premium: true,
     },
@@ -68,7 +68,7 @@ export default function MarketingResourcesPage() {
       description:
         'Learn how to transform your website into a client-booking machine with these proven optimization techniques.',
       category: 'website',
-      image: 'https://images?.unsplash.com/photo-1551288049-bebda4e38f71',
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71',
       downloadable: true,
       premium: true,
     },
@@ -78,7 +78,7 @@ export default function MarketingResourcesPage() {
       description:
         '100+ proven subject line templates to improve your email open rates and engagement.',
       category: 'email',
-      image: 'https://images?.unsplash.com/photo-1466096115517-bceecbfb6fde',
+      image: 'https://images.unsplash.com/photo-1466096115517-bceecbfb6fde',
       downloadable: true,
       premium: false,
     },
@@ -88,7 +88,7 @@ export default function MarketingResourcesPage() {
       description:
         'Beautiful, pre-designed templates for creating professional social media graphics in minutes.',
       category: 'social-media',
-      image: 'https://images?.unsplash.com/photo-1611162618071-b39a2ec055fb',
+      image: 'https://images.unsplash.com/photo-1611162618071-b39a2ec055fb',
       downloadable: true,
       premium: true,
     },
@@ -98,18 +98,18 @@ export default function MarketingResourcesPage() {
       description:
         'Maximize your visibility in local searches by optimizing your Google Business Profile with this comprehensive guide.',
       category: 'local-marketing',
-      image: 'https://images?.unsplash.com/photo-1581362072978-214c264ac9ba',
+      image: 'https://images.unsplash.com/photo-1581362072978-214c264ac9ba',
       downloadable: true,
       premium: false,
     },
   ];
   // Filter resources based on category and search
-  const filteredResources = marketingResources?.filter((resource) => {
-    const matchesCategory = selectedCategory === 'all' || resource?.category === selectedCategory;
+  const filteredResources = marketingResources.filter((resource) => {
+    const matchesCategory = selectedCategory === 'all' || resource.category === selectedCategory;
     const matchesSearch =
       !searchQuery ||
-      resource?.title.toLowerCase().includes(searchQuery?.toLowerCase()) ||
-      resource?.description.toLowerCase().includes(searchQuery?.toLowerCase());
+      resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      resource.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
   return (
@@ -128,7 +128,7 @@ export default function MarketingResourcesPage() {
               type="text"
               placeholder="Search marketing resources..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e?.target.value)}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="pr-10"
             />
             <button className="absolute inset-y-0 right-0 flex items-center px-3">
@@ -191,27 +191,27 @@ export default function MarketingResourcesPage() {
       </div>
       {/* Marketing Resources */}
       <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {filteredResources?.map((resource) => (
+        {filteredResources.map((resource) => (
           <div
-            key={resource?.id}
+            key={resource.id}
             className="overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
           >
             <div className="relative h-48">
-              <Image src={resource?.image} alt={resource?.title} fill className="object-cover" />
-              {resource?.premium && (
+              <Image src={resource.image} alt={resource.title} fill className="object-cover" />
+              {resource.premium && (
                 <div className="absolute right-2 top-2 rounded-full bg-purple-600 px-2 py-1 text-xs text-white">
                   Premium
                 </div>
               )}
               <div className="absolute bottom-2 left-2 rounded bg-white px-2 py-1 text-xs font-medium capitalize">
-                {resource?.category.replace('-', ' ')}
+                {resource.category.replace('-', ' ')}
               </div>
             </div>
             <div className="p-5">
-              <h3 className="mb-2 text-lg font-semibold">{resource?.title}</h3>
-              <p className="mb-4 text-sm text-gray-600">{resource?.description}</p>
+              <h3 className="mb-2 text-lg font-semibold">{resource.title}</h3>
+              <p className="mb-4 text-sm text-gray-600">{resource.description}</p>
               <div className="flex items-center justify-between">
-                {resource?.downloadable ? (
+                {resource.downloadable ? (
                   <div className="flex items-center text-xs text-green-600">
                     <Download className="mr-1 h-4 w-4" />
                     <span>Downloadable</span>
@@ -219,12 +219,12 @@ export default function MarketingResourcesPage() {
                 ) : (
                   <span></span>
                 )}
-                <Link href={`/business-hub/marketing/resources/${resource?.id}`}>
+                <Link href={`/business-hub/marketing/resources/${resource.id}`}>
                   <Button
-                    variant={resource?.premium ? 'outline' : 'default'}
-                    className={`${resource?.premium ? 'border-purple-600 text-purple-600' : 'bg-purple-600 hover:bg-purple-700'}`}
+                    variant={resource.premium ? 'outline' : 'default'}
+                    className={`${resource.premium ? 'border-purple-600 text-purple-600' : 'bg-purple-600 hover:bg-purple-700'}`}
                   >
-                    {resource?.premium ? 'Upgrade to Access' : 'View Resource'}
+                    {resource.premium ? 'Upgrade to Access' : 'View Resource'}
                   </Button>
                 </Link>
               </div>
@@ -272,7 +272,7 @@ export default function MarketingResourcesPage() {
               <div className="mb-3 flex items-center">
                 <div className="mr-3">
                   <Image
-                    src="https://images?.unsplash.com/photo-1548142813-c348350df52b"
+                    src="https://images.unsplash.com/photo-1548142813-c348350df52b"
                     alt="Sophia's Salon"
                     width={60}
                     height={60}
@@ -363,7 +363,7 @@ export default function MarketingResourcesPage() {
                 >
                   <path
                     fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3?.707-9?.293a1 1 0 00-1?.414-1?.414L9 10?.586 7?.707 9?.293a1 1 0 00-1?.414 1?.414l2 2a1 1 0 001?.414 0l4-4z"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                     clipRule="evenodd"
                   />
                 </svg>
@@ -377,7 +377,7 @@ export default function MarketingResourcesPage() {
                 >
                   <path
                     fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3?.707-9?.293a1 1 0 00-1?.414-1?.414L9 10?.586 7?.707 9?.293a1 1 0 00-1?.414 1?.414l2 2a1 1 0 001?.414 0l4-4z"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                     clipRule="evenodd"
                   />
                 </svg>
@@ -391,7 +391,7 @@ export default function MarketingResourcesPage() {
                 >
                   <path
                     fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3?.707-9?.293a1 1 0 00-1?.414-1?.414L9 10?.586 7?.707 9?.293a1 1 0 00-1?.414 1?.414l2 2a1 1 0 001?.414 0l4-4z"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                     clipRule="evenodd"
                   />
                 </svg>
@@ -405,7 +405,7 @@ export default function MarketingResourcesPage() {
           <div className="relative md:w-1/3">
             <div className="h-64 md:h-full">
               <Image
-                src="https://images?.unsplash.com/photo-1551836022-d5d88e9218df"
+                src="https://images.unsplash.com/photo-1551836022-d5d88e9218df"
                 alt="Marketing Workshop"
                 fill
                 className="object-cover"

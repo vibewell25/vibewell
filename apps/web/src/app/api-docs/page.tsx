@@ -1,5 +1,5 @@
-'use client';;
-import SwaggerUI from 'swagger-ui-react';
+'use client';
+import { RedocStandalone } from 'redoc';
 import { spec } from '@/lib/swagger';
 
 export default function ApiDocs() {
@@ -7,7 +7,7 @@ export default function ApiDocs() {
     <div className="container mx-auto p-4">
       <h1 className="mb-4 text-2xl font-bold">API Documentation</h1>
       <div className="rounded-lg bg-white shadow">
-        <SwaggerUI spec={spec} />
+        <RedocStandalone spec={spec} />
       </div>
     </div>
   );

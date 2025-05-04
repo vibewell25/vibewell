@@ -19,10 +19,10 @@ const columns = [
     id: 'actions',
     cell: ({ row }) => (
       <div className="flex gap-2">
-        <Button variant="outline" size="sm" onClick={() => handleEdit(row?.original)}>
+        <Button variant="outline" size="sm" onClick={() => handleEdit(row.original)}>
           Edit
         </Button>
-        <Button variant="destructive" size="sm" onClick={() => handleDelete(row?.original)}>
+        <Button variant="destructive" size="sm" onClick={() => handleDelete(row.original)}>
           Delete
         </Button>
       </div>
@@ -33,14 +33,14 @@ const columns = [
 export default function AdminDashboard() {
   const { users, isLoading, error } = useUsers();
   const { user } = useAuth();
-  const [searchQuery, setSearchQuery] = React?.useState('');
+  const [searchQuery, setSearchQuery] = React.useState('');
 
   // Track page view
-  React?.useEffect(() => {
+  React.useEffect(() => {
     trackEvent('admin_dashboard_view');
   }, []);
 
-  if (!user?.isAdmin) {
+  if (!user.isAdmin) {
     return <div>Access denied. Admin privileges required.</div>;
   }
 
@@ -49,13 +49,13 @@ export default function AdminDashboard() {
   }
 
   if (error) {
-    return <div>Error: {error?.message}</div>;
+    return <div>Error: {error.message}</div>;
   }
 
-  const filteredUsers = users?.filter(
+  const filteredUsers = users.filter(
     (user) =>
-      user?.name.toLowerCase().includes(searchQuery?.toLowerCase()) ||
-      user?.email.toLowerCase().includes(searchQuery?.toLowerCase()),
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -75,7 +75,7 @@ export default function AdminDashboard() {
               <Input
                 placeholder="Search users..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e?.target.value)}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="max-w-sm"
               />
               <Button onClick={() => handleAddUser()}>Add User</Button>
@@ -105,12 +105,12 @@ export default function AdminDashboard() {
 
 // Handler functions
 const handleEdit = (user) => {
-  trackEvent('admin_edit_user', { userId: user?.id });
+  trackEvent('admin_edit_user', { userId: user.id });
   // Implement edit functionality
 };
 
 const handleDelete = (user) => {
-  trackEvent('admin_delete_user', { userId: user?.id });
+  trackEvent('admin_delete_user', { userId: user.id });
   // Implement delete functionality
 };
 

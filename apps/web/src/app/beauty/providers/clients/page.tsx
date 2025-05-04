@@ -53,9 +53,9 @@ const mockClients: Client[] = [
   {
     id: '1',
     name: 'Emily Johnson',
-    email: 'emily@example?.com',
+    email: 'emily@example.com',
     phone: '+1 (555) 123-4567',
-    avatar: '/users/emily?.jpg',
+    avatar: '/users/emily.jpg',
     lastVisit: '2024-03-15',
     totalVisits: 12,
     totalSpent: 850,
@@ -93,11 +93,11 @@ export default function ClientsPage() {
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [clients, setClients] = useState<Client[]>(mockClients);
 
-  const filteredClients = clients?.filter(
+  const filteredClients = clients.filter(
     (client) =>
-      client?.name.toLowerCase().includes(searchQuery?.toLowerCase()) ||
-      client?.email.toLowerCase().includes(searchQuery?.toLowerCase()) ||
-      client?.phone.includes(searchQuery),
+      client.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      client.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      client.phone.includes(searchQuery),
   );
 
   return (
@@ -113,20 +113,20 @@ export default function ClientsPage() {
             <CardContent className="pt-6">
               <div className="flex items-center gap-4">
                 <div className="relative flex-1">
-                  <Icons?.MagnifyingGlassIcon className="absolute left-3 top-2?.5 h-5 w-5 text-muted-foreground" />
+                  <Icons.MagnifyingGlassIcon className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
                   <Input
                     placeholder="Search clients..."
                     className="pl-10"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e?.target.value)}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
                 <Button variant="outline">
-                  <Icons?.FunnelIcon className="mr-2 h-5 w-5" />
+                  <Icons.FunnelIcon className="mr-2 h-5 w-5" />
                   Filter
                 </Button>
                 <Button>
-                  <Icons?.PlusIcon className="mr-2 h-5 w-5" />
+                  <Icons.PlusIcon className="mr-2 h-5 w-5" />
                   Add Client
                 </Button>
               </div>
@@ -139,27 +139,27 @@ export default function ClientsPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Clients</CardTitle>
-                  <CardDescription>{clients?.length} total clients</CardDescription>
+                  <CardDescription>{clients.length} total clients</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {filteredClients?.map((client) => (
+                    {filteredClients.map((client) => (
                       <div
-                        key={client?.id}
+                        key={client.id}
                         className={`cursor-pointer rounded-lg p-4 transition-colors ${
-                          selectedClient?.id === client?.id ? 'bg-primary/10' : 'hover:bg-muted'
+                          selectedClient.id === client.id ? 'bg-primary/10' : 'hover:bg-muted'
                         }`}
                         onClick={() => setSelectedClient(client)}
                       >
                         <div className="flex items-center gap-4">
                           <Avatar>
-                            <AvatarImage src={client?.avatar} />
-                            <AvatarFallback>{client?.name[0]}</AvatarFallback>
+                            <AvatarImage src={client.avatar} />
+                            <AvatarFallback>{client.name[0]}</AvatarFallback>
                           </Avatar>
                           <div>
-                            <h3 className="font-medium">{client?.name}</h3>
+                            <h3 className="font-medium">{client.name}</h3>
                             <p className="text-sm text-muted-foreground">
-                              Last visit: {client?.lastVisit}
+                              Last visit: {client.lastVisit}
                             </p>
                           </div>
                         </div>
@@ -179,23 +179,23 @@ export default function ClientsPage() {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
                           <Avatar className="h-16 w-16">
-                            <AvatarImage src={selectedClient?.avatar} />
-                            <AvatarFallback>{selectedClient?.name[0]}</AvatarFallback>
+                            <AvatarImage src={selectedClient.avatar} />
+                            <AvatarFallback>{selectedClient.name[0]}</AvatarFallback>
                           </Avatar>
                           <div>
-                            <CardTitle>{selectedClient?.name}</CardTitle>
+                            <CardTitle>{selectedClient.name}</CardTitle>
                             <CardDescription>
-                              {selectedClient?.totalVisits} visits • ${selectedClient?.totalSpent}{' '}
+                              {selectedClient.totalVisits} visits • ${selectedClient.totalSpent}{' '}
                               spent
                             </CardDescription>
                           </div>
                         </div>
                         <div className="flex gap-2">
                           <Button variant="outline" size="icon">
-                            <Icons?.PencilIcon className="h-5 w-5" />
+                            <Icons.PencilIcon className="h-5 w-5" />
                           </Button>
                           <Button variant="outline" size="icon">
-                            <Icons?.TrashIcon className="h-5 w-5" />
+                            <Icons.TrashIcon className="h-5 w-5" />
                           </Button>
                         </div>
                       </div>
@@ -204,19 +204,19 @@ export default function ClientsPage() {
                       <div className="grid gap-4 md:grid-cols-2">
                         <div>
                           <Label>Email</Label>
-                          <p>{selectedClient?.email}</p>
+                          <p>{selectedClient.email}</p>
                         </div>
                         <div>
                           <Label>Phone</Label>
-                          <p>{selectedClient?.phone}</p>
+                          <p>{selectedClient.phone}</p>
                         </div>
                         <div>
                           <Label>Last Visit</Label>
-                          <p>{selectedClient?.lastVisit}</p>
+                          <p>{selectedClient.lastVisit}</p>
                         </div>
                         <div>
                           <Label>Total Visits</Label>
-                          <p>{selectedClient?.totalVisits}</p>
+                          <p>{selectedClient.totalVisits}</p>
                         </div>
                       </div>
                     </CardContent>
@@ -225,15 +225,15 @@ export default function ClientsPage() {
                   <Tabs defaultValue="appointments">
                     <TabsList>
                       <TabsTrigger value="appointments">
-                        <Icons?.CalendarIcon className="mr-2 h-5 w-5" />
+                        <Icons.CalendarIcon className="mr-2 h-5 w-5" />
                         Appointments
                       </TabsTrigger>
                       <TabsTrigger value="preferences">
-                        <Icons?.StarIcon className="mr-2 h-5 w-5" />
+                        <Icons.StarIcon className="mr-2 h-5 w-5" />
                         Preferences
                       </TabsTrigger>
                       <TabsTrigger value="notes">
-                        <Icons?.ChatBubbleLeftIcon className="mr-2 h-5 w-5" />
+                        <Icons.ChatBubbleLeftIcon className="mr-2 h-5 w-5" />
                         Notes
                       </TabsTrigger>
                     </TabsList>
@@ -245,33 +245,33 @@ export default function ClientsPage() {
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-4">
-                            {mockAppointments?.map((appointment) => (
+                            {mockAppointments.map((appointment) => (
                               <div
-                                key={appointment?.id}
+                                key={appointment.id}
                                 className="flex items-center justify-between rounded-lg border p-4"
                               >
                                 <div>
-                                  <h3 className="font-medium">{appointment?.service}</h3>
+                                  <h3 className="font-medium">{appointment.service}</h3>
                                   <p className="text-sm text-muted-foreground">
-                                    {appointment?.date} at {appointment?.time}
+                                    {appointment.date} at {appointment.time}
                                   </p>
-                                  {appointment?.notes && (
-                                    <p className="mt-2 text-sm">{appointment?.notes}</p>
+                                  {appointment.notes && (
+                                    <p className="mt-2 text-sm">{appointment.notes}</p>
                                   )}
                                 </div>
                                 <div className="text-right">
                                   <Badge
                                     variant={
-                                      appointment?.status === 'completed'
+                                      appointment.status === 'completed'
                                         ? 'success'
-                                        : appointment?.status === 'cancelled'
+                                        : appointment.status === 'cancelled'
                                           ? 'destructive'
                                           : 'warning'
                                     }
                                   >
-                                    {appointment?.status}
+                                    {appointment.status}
                                   </Badge>
-                                  <p className="mt-2 font-medium">${appointment?.amount}</p>
+                                  <p className="mt-2 font-medium">${appointment.amount}</p>
                                 </div>
                               </div>
                             ))}
@@ -290,7 +290,7 @@ export default function ClientsPage() {
                             <div>
                               <Label>Favorite Services</Label>
                               <div className="mt-2 flex flex-wrap gap-2">
-                                {selectedClient?.favoriteServices.map((service) => (
+                                {selectedClient.favoriteServices.map((service) => (
                                   <Badge key={service} variant="outline">
                                     {service}
                                   </Badge>
@@ -300,7 +300,7 @@ export default function ClientsPage() {
                             <div>
                               <Label>Communication Preferences</Label>
                               <div className="mt-2 flex flex-wrap gap-2">
-                                {selectedClient?.preferences.communication?.map((pref) => (
+                                {selectedClient.preferences.communication.map((pref) => (
                                   <Badge key={pref} variant="outline">
                                     {pref}
                                   </Badge>
@@ -310,7 +310,7 @@ export default function ClientsPage() {
                             <div>
                               <Label>Allergies</Label>
                               <div className="mt-2 flex flex-wrap gap-2">
-                                {selectedClient?.preferences.allergies?.map((allergy) => (
+                                {selectedClient.preferences.allergies.map((allergy) => (
                                   <Badge key={allergy} variant="destructive">
                                     {allergy}
                                   </Badge>
@@ -320,7 +320,7 @@ export default function ClientsPage() {
                             <div>
                               <Label>Concerns</Label>
                               <div className="mt-2 flex flex-wrap gap-2">
-                                {selectedClient?.preferences.concerns?.map((concern) => (
+                                {selectedClient.preferences.concerns.map((concern) => (
                                   <Badge key={concern} variant="warning">
                                     {concern}
                                   </Badge>
@@ -339,13 +339,13 @@ export default function ClientsPage() {
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-4">
-                            {selectedClient?.notes.map((note, index) => (
+                            {selectedClient.notes.map((note, index) => (
                               <div key={index} className="rounded-lg border p-4">
                                 <p>{note}</p>
                               </div>
                             ))}
                             <Button variant="outline" className="w-full">
-                              <Icons?.PlusIcon className="mr-2 h-5 w-5" />
+                              <Icons.PlusIcon className="mr-2 h-5 w-5" />
                               Add Note
                             </Button>
                           </div>

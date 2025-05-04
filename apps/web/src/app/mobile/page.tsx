@@ -12,10 +12,10 @@ export default function MobilePage() {
 
   useEffect(() => {
     // Check if the device is mobile
-    const isMobile = window?.innerWidth <= 768;
+    const isMobile = window.innerWidth <= 768;
     if (!isMobile) {
       // Redirect to desktop version if not a mobile device
-      router?.push('/');
+      router.push('/');
     }
   }, [router]);
 
@@ -25,7 +25,7 @@ export default function MobilePage() {
         <div className="relative h-[65vh]">
           <div className="absolute inset-0">
             <Image
-              src="https://placehold?.co/500x800?text=Beauty+Model"
+              src="https://placehold.co/500x800?text=Beauty+Model"
               alt="Beauty and wellness"
               fill
               className="object-cover"

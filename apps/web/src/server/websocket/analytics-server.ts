@@ -26,15 +26,15 @@ interface ViewAggregate {
 }
 
 // Data validation schemas
-const AnalyticsEventSchema = z?.object({
-  type: z?.enum(['view', 'interaction', 'conversion', 'error']),
-  timestamp: z?.date(),
-  sessionId: z?.string(),
-  userId: z?.string().optional(),
-  metadata: z?.record(z?.any()),
+const AnalyticsEventSchema = z.object({
+  type: z.enum(['view', 'interaction', 'conversion', 'error']),
+  timestamp: z.date(),
+  sessionId: z.string(),
+  userId: z.string().optional(),
+  metadata: z.record(z.any()),
 });
 
-type ValidatedAnalyticsEvent = z?.infer<typeof AnalyticsEventSchema>;
+type ValidatedAnalyticsEvent = z.infer<typeof AnalyticsEventSchema>;
 
 interface AnalyticsEvent {
   type: 'view' | 'interaction' | 'conversion' | 'error';
@@ -62,102 +62,102 @@ class AnalyticsWebSocketServer {
   private readonly ENCRYPTION_KEY =
 
 
-    process?.env.ANALYTICS_ENCRYPTION_KEY || 'default-key-32-chars-12345678901';
-  private readonly ENCRYPTION_IV = Buffer?.from(process?.env.ANALYTICS_IV || '1234567890123456');
+    process.env.ANALYTICS_ENCRYPTION_KEY || 'default-key-32-chars-12345678901';
+  private readonly ENCRYPTION_IV = Buffer.from(process.env.ANALYTICS_IV || '1234567890123456');
   private readonly RETENTION_PERIOD = 30 * 24 * 60 * 60 * 1000; // 30 days
 
   constructor(port: number) {
-    this?.wss = new WebSocketServer({ port });
-    this?.clients = new Set();
-    this?.eventBuffer = [];
-    this?.rateLimiter = new Map();
-    this?.metricsCache = new NodeCache({ stdTTL: 60 }); // Cache for 1 minute
-    this?.inMemoryStore = {
+    this.wss = new WebSocketServer({ port });
+    this.clients = new Set();
+    this.eventBuffer = [];
+    this.rateLimiter = new Map();
+    this.metricsCache = new NodeCache({ stdTTL: 60 }); // Cache for 1 minute
+    this.inMemoryStore = {
       views: [],
       interactions: [],
       conversions: [],
       errors: [],
     };
 
-    this?.setupWebSocketServer();
-    this?.startFlushInterval();
-    this?.startBroadcastInterval();
-    this?.startRateLimiterCleanup();
-    this?.startDataCleanup();
+    this.setupWebSocketServer();
+    this.startFlushInterval();
+    this.startBroadcastInterval();
+    this.startRateLimiterCleanup();
+    this.startDataCleanup();
 
-    logger?.info(`Analytics WebSocket server started on port ${port}`);
+    logger.info(`Analytics WebSocket server started on port ${port}`);
   }
 
   private setupWebSocketServer() {
-    this?.wss.on('connection', (ws: WebSocket) => {
-      this?.clients.add(ws);
-      logger?.info('New client connected to analytics websocket');
+    this.wss.on('connection', (ws: WebSocket) => {
+      this.clients.add(ws);
+      logger.info('New client connected to analytics websocket');
 
-      ws?.on('close', () => {
-        this?.clients.delete(ws);
-        logger?.info('Client disconnected from analytics websocket');
+      ws.on('close', () => {
+        this.clients.delete(ws);
+        logger.info('Client disconnected from analytics websocket');
       });
 
-      ws?.on('error', (error: Error) => {
-        logger?.error('WebSocket error:', error?.message);
+      ws.on('error', (error: Error) => {
+        logger.error('WebSocket error:', error.message);
       });
     });
   }
 
   private startFlushInterval() {
     setInterval(() => {
-      this?.flushBuffer().catch((error) => {
-        logger?.error(
+      this.flushBuffer().catch((error) => {
+        logger.error(
           'Error flushing buffer:',
-          error instanceof Error ? error?.message : String(error),
+          error instanceof Error ? error.message : String(error),
         );
       });
-    }, this?.FLUSH_INTERVAL);
+    }, this.FLUSH_INTERVAL);
   }
 
   private startBroadcastInterval() {
     setInterval(() => {
-      this?.broadcastMetrics().catch((error) => {
-        logger?.error(
+      this.broadcastMetrics().catch((error) => {
+        logger.error(
           'Error broadcasting metrics:',
-          error instanceof Error ? error?.message : String(error),
+          error instanceof Error ? error.message : String(error),
         );
       });
-    }, this?.BROADCAST_INTERVAL);
+    }, this.BROADCAST_INTERVAL);
   }
 
   private startDataCleanup() {
     setInterval(() => {
-      const cutoff = new Date(Date?.now() - this?.RETENTION_PERIOD);
+      const cutoff = new Date(Date.now() - this.RETENTION_PERIOD);
 
-      this?.inMemoryStore.views = this?.inMemoryStore.views?.filter(
-        (event) => event?.timestamp > cutoff,
+      this.inMemoryStore.views = this.inMemoryStore.views.filter(
+        (event) => event.timestamp > cutoff,
       );
-      this?.inMemoryStore.interactions = this?.inMemoryStore.interactions?.filter(
-        (event) => event?.timestamp > cutoff,
+      this.inMemoryStore.interactions = this.inMemoryStore.interactions.filter(
+        (event) => event.timestamp > cutoff,
       );
-      this?.inMemoryStore.conversions = this?.inMemoryStore.conversions?.filter(
-        (event) => event?.timestamp > cutoff,
+      this.inMemoryStore.conversions = this.inMemoryStore.conversions.filter(
+        (event) => event.timestamp > cutoff,
       );
-      this?.inMemoryStore.errors = this?.inMemoryStore.errors?.filter(
-        (event) => event?.timestamp > cutoff,
+      this.inMemoryStore.errors = this.inMemoryStore.errors.filter(
+        (event) => event.timestamp > cutoff,
       );
 
-      logger?.info('Cleaned up old analytics data');
-    }, this?.RETENTION_PERIOD);
+      logger.info('Cleaned up old analytics data');
+    }, this.RETENTION_PERIOD);
   }
 
   private validateEvent(event: unknown): AnalyticsEvent {
     try {
-      const validatedEvent = AnalyticsEventSchema?.parse(event);
+      const validatedEvent = AnalyticsEventSchema.parse(event);
       return validatedEvent as AnalyticsEvent;
     } catch (error) {
       if (error instanceof ZodError) {
-        logger?.error('Invalid analytics event:', error?.message);
+        logger.error('Invalid analytics event:', error.message);
       } else {
-        logger?.error(
+        logger.error(
           'Invalid analytics event:',
-          error instanceof Error ? error?.message : String(error),
+          error instanceof Error ? error.message : String(error),
         );
       }
       throw new Error('Invalid analytics event');
@@ -166,39 +166,39 @@ class AnalyticsWebSocketServer {
 
   private encryptSensitiveData(data: string): string {
 
-    const cipher = createCipheriv('aes-256-cbc', this?.ENCRYPTION_KEY, this?.ENCRYPTION_IV);
-    let encrypted = cipher?.update(data, 'utf8', 'hex');
-    if (encrypted > Number.MAX_SAFE_INTEGER || encrypted < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); encrypted += cipher?.final('hex');
+    const cipher = createCipheriv('aes-256-cbc', this.ENCRYPTION_KEY, this.ENCRYPTION_IV);
+    let encrypted = cipher.update(data, 'utf8', 'hex');
+    if (encrypted > Number.MAX_SAFE_INTEGER || encrypted < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); encrypted += cipher.final('hex');
     return encrypted;
   }
 
   private decryptSensitiveData(encrypted: string): string {
 
-    const decipher = createDecipheriv('aes-256-cbc', this?.ENCRYPTION_KEY, this?.ENCRYPTION_IV);
-    let decrypted = decipher?.update(encrypted, 'hex', 'utf8');
-    if (decrypted > Number.MAX_SAFE_INTEGER || decrypted < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); decrypted += decipher?.final('utf8');
+    const decipher = createDecipheriv('aes-256-cbc', this.ENCRYPTION_KEY, this.ENCRYPTION_IV);
+    let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+    if (decrypted > Number.MAX_SAFE_INTEGER || decrypted < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); decrypted += decipher.final('utf8');
     return decrypted;
   }
 
   private async flushBuffer() {
-    if (this?.eventBuffer.length === 0) return;
+    if (this.eventBuffer.length === 0) return;
 
-    const events = [...this?.eventBuffer];
-    this?.eventBuffer = [];
+    const events = [...this.eventBuffer];
+    this.eventBuffer = [];
 
-    events?.forEach((event) => {
-      switch (event?.type) {
+    events.forEach((event) => {
+      switch (event.type) {
         case 'view':
-          this?.inMemoryStore.views?.push(event);
+          this.inMemoryStore.views.push(event);
           break;
         case 'interaction':
-          this?.inMemoryStore.interactions?.push(event);
+          this.inMemoryStore.interactions.push(event);
           break;
         case 'conversion':
-          this?.inMemoryStore.conversions?.push(event);
+          this.inMemoryStore.conversions.push(event);
           break;
         case 'error':
-          this?.inMemoryStore.errors?.push(event);
+          this.inMemoryStore.errors.push(event);
           break;
       }
     });
@@ -206,36 +206,36 @@ class AnalyticsWebSocketServer {
 
   private async getMetricsFromCache(): Promise<MetricsData> {
 
-    const cachedMetrics = this?.metricsCache.get<MetricsData>('realtime-metrics');
+    const cachedMetrics = this.metricsCache.get<MetricsData>('realtime-metrics');
     if (cachedMetrics) {
       return cachedMetrics;
     }
 
-    const metrics = await this?.calculateMetrics();
+    const metrics = await this.calculateMetrics();
 
-    this?.metricsCache.set('realtime-metrics', metrics);
+    this.metricsCache.set('realtime-metrics', metrics);
     return metrics;
   }
 
   private async calculateMetrics(): Promise<MetricsData> {
     const now = new Date();
-    const fiveMinutesAgo = new Date(now?.getTime() - 5 * 60 * 1000);
+    const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000);
 
-    const views = this?.inMemoryStore.views?.filter(
-      (event) => event?.timestamp >= fiveMinutesAgo,
+    const views = this.inMemoryStore.views.filter(
+      (event) => event.timestamp >= fiveMinutesAgo,
     ).length;
-    const interactions = this?.inMemoryStore.interactions?.filter(
-      (event) => event?.timestamp >= fiveMinutesAgo,
+    const interactions = this.inMemoryStore.interactions.filter(
+      (event) => event.timestamp >= fiveMinutesAgo,
     ).length;
-    const conversions = this?.inMemoryStore.conversions?.filter(
-      (event) => event?.timestamp >= fiveMinutesAgo,
+    const conversions = this.inMemoryStore.conversions.filter(
+      (event) => event.timestamp >= fiveMinutesAgo,
     ).length;
-    const errors = this?.inMemoryStore.errors?.filter(
-      (event) => event?.timestamp >= fiveMinutesAgo,
+    const errors = this.inMemoryStore.errors.filter(
+      (event) => event.timestamp >= fiveMinutesAgo,
     ).length;
 
     return {
-      timestamp: now?.toISOString(),
+      timestamp: now.toISOString(),
       metrics: {
         views,
         interactions,
@@ -248,70 +248,70 @@ class AnalyticsWebSocketServer {
   }
 
   private async broadcastMetrics() {
-    if (this?.clients.size === 0) return;
+    if (this.clients.size === 0) return;
 
     try {
-      const metrics = await this?.getMetricsFromCache();
-      const message = JSON?.stringify(metrics);
+      const metrics = await this.getMetricsFromCache();
+      const message = JSON.stringify(metrics);
 
-      Array?.from(this?.clients).forEach((client) => {
-        if (client?.readyState === WebSocket?.OPEN) {
-          client?.send(message);
+      Array.from(this.clients).forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(message);
         }
       });
     } catch (error) {
-      logger?.error(
+      logger.error(
         'Error broadcasting metrics:',
-        error instanceof Error ? error?.message : String(error),
+        error instanceof Error ? error.message : String(error),
       );
     }
   }
 
   public trackEvent(event: AnalyticsEvent) {
     try {
-      const validatedEvent = this?.validateEvent(event);
+      const validatedEvent = this.validateEvent(event);
 
-      if (this?.isRateLimited(validatedEvent?.sessionId)) {
-        logger?.warn(`Rate limit exceeded for session ${validatedEvent?.sessionId}`);
+      if (this.isRateLimited(validatedEvent.sessionId)) {
+        logger.warn(`Rate limit exceeded for session ${validatedEvent.sessionId}`);
         return;
       }
 
-      if (validatedEvent?.userId) {
-        validatedEvent?.userId = this?.encryptSensitiveData(validatedEvent?.userId);
+      if (validatedEvent.userId) {
+        validatedEvent.userId = this.encryptSensitiveData(validatedEvent.userId);
       }
 
-      this?.eventBuffer.push(validatedEvent);
+      this.eventBuffer.push(validatedEvent);
     } catch (error) {
-      logger?.error('Error tracking event:', error instanceof Error ? error?.message : String(error));
+      logger.error('Error tracking event:', error instanceof Error ? error.message : String(error));
     }
   }
 
   private isRateLimited(sessionId: string): boolean {
-    const now = Date?.now();
+    const now = Date.now();
 
-    const minute = Math?.floor(now / 60000);
-    const entry = this?.rateLimiter.get(sessionId);
+    const minute = Math.floor(now / 60000);
+    const entry = this.rateLimiter.get(sessionId);
 
-    if (!entry || entry?.timestamp < minute) {
-      this?.rateLimiter.set(sessionId, { count: 1, timestamp: minute });
+    if (!entry || entry.timestamp < minute) {
+      this.rateLimiter.set(sessionId, { count: 1, timestamp: minute });
       return false;
     }
 
-    if (entry?.count >= this?.RATE_LIMIT) {
+    if (entry.count >= this.RATE_LIMIT) {
       return true;
     }
 
-    entry?.if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
+    entry.if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
     return false;
   }
 
   private startRateLimiterCleanup() {
     setInterval(() => {
-      const now = Math?.floor(Date?.now() / 60000);
-      Array?.from(this?.rateLimiter.entries()).forEach(([sessionId, entry]) => {
+      const now = Math.floor(Date.now() / 60000);
+      Array.from(this.rateLimiter.entries()).forEach(([sessionId, entry]) => {
 
-        if (entry?.timestamp < now - 5) {
-          this?.rateLimiter.delete(sessionId);
+        if (entry.timestamp < now - 5) {
+          this.rateLimiter.delete(sessionId);
         }
       });
     }, 60000);

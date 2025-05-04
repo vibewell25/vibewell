@@ -41,10 +41,10 @@ export default function SignInPage() {
                     userId="current-user-id" // This will be replaced with actual user ID from the email input
                     onSuccess={() => {
                       // Handle successful authentication
-                      console?.log('WebAuthn authentication successful');
+                      console.log('WebAuthn authentication successful');
                     }}
                     onError={(error) => {
-                      console?.error('WebAuthn authentication failed:', error);
+                      console.error('WebAuthn authentication failed:', error);
                     }}
                   />
                 </div>

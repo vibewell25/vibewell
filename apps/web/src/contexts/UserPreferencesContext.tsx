@@ -99,7 +99,7 @@ export {};
 /**
  * User preferences provider component
  */
-export function UserPreferencesProvider({ children }: { children: React?.ReactNode }) {
+export function UserPreferencesProvider({ children }: { children: React.ReactNode }) {
   const { user, isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -125,12 +125,12 @@ export function UserPreferencesProvider({ children }: { children: React?.ReactNo
       setIsLoading(true);
       const response = await fetch('/api/user/preferences');
 
-      if (response?.ok) {
-        const data = await response?.json();
+      if (response.ok) {
+        const data = await response.json();
         // Merge API preferences with defaults for any missing properties
         const apiPreferences = {
           ...defaultPreferences,
-          ...data?.preferences,
+          ...data.preferences,
         };
         setPreferences(apiPreferences);
         // Update local storage with latest from API
@@ -140,7 +140,7 @@ export function UserPreferencesProvider({ children }: { children: React?.ReactNo
         setPreferences(localPreferences);
       }
     } catch (error) {
-      console?.error('Failed to load user preferences:', error);
+      console.error('Failed to load user preferences:', error);
       // Fallback to localStorage on error
       setPreferences(localPreferences);
     } finally {
@@ -164,14 +164,14 @@ export function UserPreferencesProvider({ children }: { children: React?.ReactNo
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON?.stringify({ preferences: newPreferences }),
+          body: JSON.stringify({ preferences: newPreferences }),
         });
 
-        if (!response?.ok) {
-          console?.error('Failed to save preferences to API');
+        if (!response.ok) {
+          console.error('Failed to save preferences to API');
         }
       } catch (error) {
-        console?.error('Error saving preferences:', error);
+        console.error('Error saving preferences:', error);
       } finally {
         setIsSaving(false);
       }
@@ -195,8 +195,8 @@ export function UserPreferencesProvider({ children }: { children: React?.ReactNo
 
   // Update multiple preferences at once
   const updatePreferences = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');newPrefs: Partial<UserPreferences>) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');newPrefs: Partial<UserPreferences>) => {
     const newPreferences = {
       ...preferences,
       ...newPrefs,
@@ -208,8 +208,8 @@ export function UserPreferencesProvider({ children }: { children: React?.ReactNo
 
   // Reset preferences to default
   const resetPreferences = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     setPreferences(defaultPreferences);
     await savePreferences(defaultPreferences);
   };
@@ -228,28 +228,28 @@ export function UserPreferencesProvider({ children }: { children: React?.ReactNo
 
     if (theme === 'system') {
       // Use system preference
-      const systemPrefersDark = window?.matchMedia('(prefers-color-scheme: dark)').matches;
-      document?.documentElement.classList?.toggle('dark', systemPrefersDark);
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.classList.toggle('dark', systemPrefersDark);
     } else {
       // Use user preference
-      document?.documentElement.classList?.toggle('dark', theme === 'dark');
+      document.documentElement.classList.toggle('dark', theme === 'dark');
     }
 
     // Apply font size
-    document?.documentElement.classList?.remove('text-sm', 'text-md', 'text-lg');
-    if (preferences?.fontSize === 'small') document?.documentElement.classList?.add('text-sm');
-    if (preferences?.fontSize === 'medium') document?.documentElement.classList?.add('text-md');
-    if (preferences?.fontSize === 'large') document?.documentElement.classList?.add('text-lg');
+    document.documentElement.classList.remove('text-sm', 'text-md', 'text-lg');
+    if (preferences.fontSize === 'small') document.documentElement.classList.add('text-sm');
+    if (preferences.fontSize === 'medium') document.documentElement.classList.add('text-md');
+    if (preferences.fontSize === 'large') document.documentElement.classList.add('text-lg');
 
     // Apply high contrast if enabled
-    document?.documentElement.classList?.toggle('high-contrast', preferences?.highContrast);
+    document.documentElement.classList.toggle('high-contrast', preferences.highContrast);
 
     // Apply reduced motion if enabled
-    document?.documentElement.classList?.toggle('reduced-motion', preferences?.reducedMotion);
+    document.documentElement.classList.toggle('reduced-motion', preferences.reducedMotion);
   }, [preferences]);
 
   return (
-    <UserPreferencesContext?.Provider
+    <UserPreferencesContext.Provider
       value={{
         preferences,
         isLoading,
@@ -260,6 +260,6 @@ export function UserPreferencesProvider({ children }: { children: React?.ReactNo
       }}
     >
       {children}
-    </UserPreferencesContext?.Provider>
+    </UserPreferencesContext.Provider>
   );
 }

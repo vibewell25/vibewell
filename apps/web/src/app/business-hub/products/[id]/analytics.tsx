@@ -7,7 +7,7 @@ import { useParams } from 'next/navigation';
 
 export default function ProductAnalytics() {
   const params = useParams();
-  const productId = params?.id as string;
+  const productId = params.id as string;
 
   if (!productId) {
     return (

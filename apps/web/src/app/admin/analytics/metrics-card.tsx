@@ -29,7 +29,7 @@ export function MetricsCard({
     <Card className={cn('overflow-hidden', className)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        <div className={cn('rounded-full p-2', iconColor?.replace('text-', 'bg-') + '/10')}>
+        <div className={cn('rounded-full p-2', iconColor.replace('text-', 'bg-') + '/10')}>
           <Icon className={cn('h-4 w-4', iconColor)} />
         </div>
       </CardHeader>
@@ -42,10 +42,10 @@ export function MetricsCard({
               <div
                 className={cn(
                   'flex items-center text-xs font-medium',
-                  trend?.isPositive ? 'text-green-500' : 'text-red-500',
+                  trend.isPositive ? 'text-green-500' : 'text-red-500',
                 )}
               >
-                {trend?.isPositive ? '↑' : '↓'} {Math?.abs(trend?.value)}%
+                {trend.isPositive ? '↑' : '↓'} {Math.abs(trend.value)}%
               </div>
             )}
           </div>

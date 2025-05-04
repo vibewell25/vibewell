@@ -53,13 +53,13 @@ export default function AdminReviewsPage() {
           customer: {
             id: 'u1',
             name: 'John Doe',
-            email: 'john@example?.com',
-            avatar_url: 'https://images?.unsplash.com/photo-1599566150163-29194dcaad36',
+            email: 'john@example.com',
+            avatar_url: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36',
           },
           provider: {
             id: 'p1',
             name: 'Sarah Johnson',
-            avatar_url: 'https://images?.unsplash.com/photo-1494790108377-be9c29b29330',
+            avatar_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
           },
         },
         {
@@ -72,13 +72,13 @@ export default function AdminReviewsPage() {
           customer: {
             id: 'u2',
             name: 'Jane Smith',
-            email: 'jane@example?.com',
-            avatar_url: 'https://images?.unsplash.com/photo-1527980965255-d3b416303d12',
+            email: 'jane@example.com',
+            avatar_url: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12',
           },
           provider: {
             id: 'p2',
             name: 'Michael Chen',
-            avatar_url: 'https://images?.unsplash.com/photo-1507003211169-0a1dd7228f2d',
+            avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d',
           },
         },
         {
@@ -91,20 +91,20 @@ export default function AdminReviewsPage() {
           customer: {
             id: 'u3',
             name: 'Amy Wilson',
-            email: 'amy@example?.com',
-            avatar_url: 'https://images?.unsplash.com/photo-1544005313-94ddf0286df2',
+            email: 'amy@example.com',
+            avatar_url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2',
           },
           provider: {
             id: 'p3',
             name: 'Jennifer Adams',
-            avatar_url: 'https://images?.unsplash.com/photo-1531746020798-e6953c6e8e04',
+            avatar_url: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04',
           },
           isReported: true,
           reportReason: 'Provider disputes the facts of this review',
           reportedBy: {
             id: 'p3',
             name: 'Jennifer Adams',
-            email: 'jennifer@example?.com',
+            email: 'jennifer@example.com',
           },
         },
         {
@@ -117,13 +117,13 @@ export default function AdminReviewsPage() {
           customer: {
             id: 'u4',
             name: 'Tom Brown',
-            email: 'tom@example?.com',
-            avatar_url: 'https://images?.unsplash.com/photo-1500048993953-d23a436266cf',
+            email: 'tom@example.com',
+            avatar_url: 'https://images.unsplash.com/photo-1500048993953-d23a436266cf',
           },
           provider: {
             id: 'p4',
             name: 'David Lee',
-            avatar_url: 'https://images?.unsplash.com/photo-1542909168-82c3e7fdca5c',
+            avatar_url: 'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c',
           },
           moderationNotes:
             'Review violates our community guidelines by using inflammatory language.',
@@ -134,35 +134,35 @@ export default function AdminReviewsPage() {
     }, 1000);
   }, []);
   // Filter reviews by status and search term
-  const filteredReviews = reviews?.filter((review) => {
-    const matchesStatus = review?.status === activeTab || activeTab === 'all';
+  const filteredReviews = reviews.filter((review) => {
+    const matchesStatus = review.status === activeTab || activeTab === 'all';
     const searchContent =
-      `${review?.title} ${review?.text} ${review?.customer.name} ${review?.provider.name}`.toLowerCase();
-    const matchesSearch = searchTerm === '' || searchContent?.includes(searchTerm?.toLowerCase());
+      `${review.title} ${review.text} ${review.customer.name} ${review.provider.name}`.toLowerCase();
+    const matchesSearch = searchTerm === '' || searchContent.includes(searchTerm.toLowerCase());
     return matchesStatus && matchesSearch;
   });
   // Approve a review
   const handleApproveReview = (reviewId: string) => {
     setReviews((prevReviews) =>
-      prevReviews?.map((review) =>
-        review?.id === reviewId ? { ...review, status: 'approved' } : review,
+      prevReviews.map((review) =>
+        review.id === reviewId ? { ...review, status: 'approved' } : review,
       ),
     );
   };
   // Reject a review
   const handleRejectReview = (reviewId: string) => {
-    if (selectedReview?.id === reviewId && !moderationNote) {
+    if (selectedReview.id === reviewId && !moderationNote) {
       alert('Please provide a reason for rejection');
       return;
     }
     setReviews((prevReviews) =>
-      prevReviews?.map((review) =>
-        review?.id === reviewId
+      prevReviews.map((review) =>
+        review.id === reviewId
           ? {
               ...review,
               status: 'rejected',
               moderationNotes:
-                selectedReview?.id === reviewId ? moderationNote : review?.moderationNotes,
+                selectedReview.id === reviewId ? moderationNote : review.moderationNotes,
             }
           : review,
       ),
@@ -172,21 +172,21 @@ export default function AdminReviewsPage() {
   };
   // Resolve a flagged review
   const handleResolveFlagged = (reviewId: string) => {
-    if (selectedReview?.id === reviewId && !moderationNote) {
+    if (selectedReview.id === reviewId && !moderationNote) {
       alert('Please provide resolution notes');
       return;
     }
     setReviews((prevReviews) =>
-      prevReviews?.map((review) =>
-        review?.id === reviewId
+      prevReviews.map((review) =>
+        review.id === reviewId
           ? {
               ...review,
               status: 'approved',
               isReported: false,
               moderationNotes:
-                selectedReview?.id === reviewId
-                  ? `${review?.moderationNotes || ''}\n${new Date().toISOString()}: Flag resolved - ${moderationNote}`
-                  : review?.moderationNotes,
+                selectedReview.id === reviewId
+                  ? `${review.moderationNotes || ''}\n${new Date().toISOString()}: Flag resolved - ${moderationNote}`
+                  : review.moderationNotes,
             }
           : review,
       ),
@@ -197,13 +197,13 @@ export default function AdminReviewsPage() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'pending':
-        return <Icons?.ExclamationTriangleIcon className="h-5 w-5 text-yellow-500" />;
+        return <Icons.ExclamationTriangleIcon className="h-5 w-5 text-yellow-500" />;
       case 'approved':
-        return <Icons?.CheckCircleIcon className="h-5 w-5 text-green-500" />;
+        return <Icons.CheckCircleIcon className="h-5 w-5 text-green-500" />;
       case 'rejected':
-        return <Icons?.XCircleIcon className="h-5 w-5 text-red-500" />;
+        return <Icons.XCircleIcon className="h-5 w-5 text-red-500" />;
       case 'flagged':
-        return <Icons?.FlagIcon className="h-5 w-5 text-orange-500" />;
+        return <Icons.FlagIcon className="h-5 w-5 text-orange-500" />;
       default:
         return null;
     }
@@ -214,23 +214,23 @@ export default function AdminReviewsPage() {
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-3xl font-bold">Review Management</h1>
           <div className="relative">
-            <Icons?.MagnifyingGlassIcon className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+            <Icons.MagnifyingGlassIcon className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
             <input
               type="text"
               placeholder="Search reviews..."
               className="rounded-md border border-gray-300 py-2 pl-10 pr-4 focus:border-indigo-500 focus:ring-indigo-500"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e?.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </div>
         <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="pending">
           <TabsList className="mb-8">
             <TabsTrigger value="pending">
-              Pending ({reviews?.filter((r) => r?.status === 'pending').length})
+              Pending ({reviews.filter((r) => r.status === 'pending').length})
             </TabsTrigger>
             <TabsTrigger value="flagged">
-              Flagged ({reviews?.filter((r) => r?.status === 'flagged').length})
+              Flagged ({reviews.filter((r) => r.status === 'flagged').length})
             </TabsTrigger>
             <TabsTrigger value="approved">Approved</TabsTrigger>
             <TabsTrigger value="rejected">Rejected</TabsTrigger>
@@ -253,7 +253,7 @@ export default function AdminReviewsPage() {
                   </div>
                 ))}
               </div>
-            ) : filteredReviews?.length === 0 ? (
+            ) : filteredReviews.length === 0 ? (
               <div className="rounded-lg bg-white p-8 text-center shadow">
                 <p className="mb-2 text-gray-500">No reviews found</p>
                 <p className="text-sm text-gray-400">
@@ -264,70 +264,70 @@ export default function AdminReviewsPage() {
               </div>
             ) : (
               <div className="space-y-6">
-                {filteredReviews?.map((review) => (
-                  <div key={review?.id} className="rounded-lg bg-white shadow">
+                {filteredReviews.map((review) => (
+                  <div key={review.id} className="rounded-lg bg-white shadow">
                     <div className="flex items-center justify-between rounded-t-lg border-b border-gray-200 bg-gray-50 px-6 py-4">
                       <div className="flex items-center">
-                        {getStatusIcon(review?.status)}
-                        <span className="ml-2 font-medium capitalize">{review?.status}</span>
-                        {review?.isReported && (
+                        {getStatusIcon(review.status)}
+                        <span className="ml-2 font-medium capitalize">{review.status}</span>
+                        {review.isReported && (
                           <span className="ml-2 rounded bg-red-100 px-2 py-1 text-xs text-red-800">
                             Reported
                           </span>
                         )}
                       </div>
                       <div className="text-sm text-gray-500">
-                        Submitted: {new Date(review?.created_at).toLocaleDateString()}
+                        Submitted: {new Date(review.created_at).toLocaleDateString()}
                       </div>
                     </div>
                     <div className="p-2">
                       <ReviewCard
-                        id={review?.id}
-                        title={review?.title}
-                        text={review?.text}
-                        rating={review?.rating}
-                        createdAt={review?.created_at}
+                        id={review.id}
+                        title={review.title}
+                        text={review.text}
+                        rating={review.rating}
+                        createdAt={review.created_at}
                         customer={{
-                          id: review?.customer.id,
-                          name: review?.customer.name,
-                          avatar_url: review?.customer.avatar_url,
+                          id: review.customer.id,
+                          name: review.customer.name,
+                          avatar_url: review.customer.avatar_url,
                         }}
                       />
                     </div>
                     <div className="flex flex-col border-t border-gray-100 p-4">
                       <div className="mb-3 flex items-center justify-between">
                         <div className="text-sm">
-                          <span className="text-gray-500">Customer:</span> {review?.customer.name} (
-                          {review?.customer.email})
+                          <span className="text-gray-500">Customer:</span> {review.customer.name} (
+                          {review.customer.email})
                         </div>
                         <div className="text-sm">
-                          <span className="text-gray-500">Provider:</span> {review?.provider.name}
+                          <span className="text-gray-500">Provider:</span> {review.provider.name}
                         </div>
                       </div>
-                      {review?.moderationNotes && (
+                      {review.moderationNotes && (
                         <div className="mb-3 rounded bg-gray-50 p-3 text-sm">
                           <div className="mb-1 font-medium text-gray-700">Moderation Notes:</div>
                           <div className="whitespace-pre-line text-gray-600">
-                            {review?.moderationNotes}
+                            {review.moderationNotes}
                           </div>
                         </div>
                       )}
-                      {review?.isReported && (
+                      {review.isReported && (
                         <div className="mb-3 rounded bg-red-50 p-3 text-sm">
                           <div className="mb-1 font-medium text-red-700">Report Reason:</div>
-                          <div className="text-red-600">{review?.reportReason}</div>
+                          <div className="text-red-600">{review.reportReason}</div>
                           <div className="mt-1 text-gray-500">
-                            Reported by: {review?.reportedBy?.name}
+                            Reported by: {review.reportedBy.name}
                           </div>
                         </div>
                       )}
-                      {selectedReview?.id === review?.id && (
+                      {selectedReview.id === review.id && (
                         <div className="mb-3">
                           <textarea
                             value={moderationNote}
-                            onChange={(e) => setModerationNote(e?.target.value)}
+                            onChange={(e) => setModerationNote(e.target.value)}
                             placeholder={
-                              review?.status === 'flagged'
+                              review.status === 'flagged'
                                 ? 'Enter resolution notes'
                                 : 'Enter reason for rejection'
                             }
@@ -337,7 +337,7 @@ export default function AdminReviewsPage() {
                         </div>
                       )}
                       <div className="flex justify-end space-x-2">
-                        {review?.status === 'pending' && (
+                        {review.status === 'pending' && (
                           <>
                             <Button
                               variant="outline"
@@ -347,16 +347,16 @@ export default function AdminReviewsPage() {
                                 setModerationNote('');
                               }}
                             >
-                              <Icons?.XCircleIcon className="mr-1 h-4 w-4" />
+                              <Icons.XCircleIcon className="mr-1 h-4 w-4" />
                               Reject
                             </Button>
-                            <Button onClick={() => handleApproveReview(review?.id)}>
-                              <Icons?.CheckCircleIcon className="mr-1 h-4 w-4" />
+                            <Button onClick={() => handleApproveReview(review.id)}>
+                              <Icons.CheckCircleIcon className="mr-1 h-4 w-4" />
                               Approve
                             </Button>
                           </>
                         )}
-                        {review?.status === 'flagged' && (
+                        {review.status === 'flagged' && (
                           <>
                             <Button
                               variant="outline"
@@ -366,7 +366,7 @@ export default function AdminReviewsPage() {
                                 setModerationNote('');
                               }}
                             >
-                              <Icons?.XCircleIcon className="mr-1 h-4 w-4" />
+                              <Icons.XCircleIcon className="mr-1 h-4 w-4" />
                               Reject
                             </Button>
                             <Button
@@ -375,12 +375,12 @@ export default function AdminReviewsPage() {
                                 setModerationNote('');
                               }}
                             >
-                              <Icons?.CheckCircleIcon className="mr-1 h-4 w-4" />
+                              <Icons.CheckCircleIcon className="mr-1 h-4 w-4" />
                               Resolve & Approve
                             </Button>
                           </>
                         )}
-                        {selectedReview?.id === review?.id && (
+                        {selectedReview.id === review.id && (
                           <>
                             <Button
                               variant="outline"
@@ -393,9 +393,9 @@ export default function AdminReviewsPage() {
                             </Button>
                             <Button
                               onClick={() =>
-                                review?.status === 'flagged'
-                                  ? handleResolveFlagged(review?.id)
-                                  : handleRejectReview(review?.id)
+                                review.status === 'flagged'
+                                  ? handleResolveFlagged(review.id)
+                                  : handleRejectReview(review.id)
                               }
                             >
                               Submit

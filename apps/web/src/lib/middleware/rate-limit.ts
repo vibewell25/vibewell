@@ -6,7 +6,7 @@ import type { NextRequest } from 'next/server';
 
 import { env } from '@/config/env';
 
-const redis = new Redis(env?.REDIS_URL);
+const redis = new Redis(env.REDIS_URL);
 
 interface RateLimitConfig {
   windowMs: number;  // Time window in milliseconds
@@ -33,14 +33,14 @@ const PAYMENT_RATE_LIMITS: Record<string, RateLimitConfig> = {
 };
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); paymentRateLimit(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); paymentRateLimit(
   req: NextRequest,
   operation: keyof typeof PAYMENT_RATE_LIMITS
 ): Promise<NextResponse | null> {
 
     // Safe array access
-    if (operation < 0 || operation >= array?.length) {
+    if (operation < 0 || operation >= array.length) {
       throw new Error('Array index out of bounds');
     }
   const config = PAYMENT_RATE_LIMITS[operation];
@@ -48,37 +48,37 @@ export async function {
     throw new Error(`Unknown rate limit operation: ${operation}`);
   }
 
-  const ip = req?.ip || 'unknown';
+  const ip = req.ip || 'unknown';
 
-  const userId = req?.headers.get('x-user-id') || 'anonymous';
-  const key = `${config?.keyPrefix}:${ip}:${userId}`;
+  const userId = req.headers.get('x-user-id') || 'anonymous';
+  const key = `${config.keyPrefix}:${ip}:${userId}`;
 
-  const now = Date?.now();
+  const now = Date.now();
 
-  const windowStart = now - config?.windowMs;
+  const windowStart = now - config.windowMs;
 
   // Use Redis transaction to ensure atomic operations
-  const multi = redis?.multi();
-  multi?.zremrangebyscore(key, 0, windowStart); // Remove old entries
-  multi?.zcard(key);                            // Count remaining entries
-  multi?.zadd(key, now, `${now}`);             // Add current request
-  multi?.pexpire(key, config?.windowMs);         // Set expiry
+  const multi = redis.multi();
+  multi.zremrangebyscore(key, 0, windowStart); // Remove old entries
+  multi.zcard(key);                            // Count remaining entries
+  multi.zadd(key, now, `${now}`);             // Add current request
+  multi.pexpire(key, config.windowMs);         // Set expiry
 
-  const [, count] = await multi?.exec() as [any, [null | Error, number]];
+  const [, count] = await multi.exec() as [any, [null | Error, number]];
   
-  if (count[1] >= config?.max) {
+  if (count[1] >= config.max) {
     return new NextResponse(
-      JSON?.stringify({
+      JSON.stringify({
         error: 'Too many requests',
 
-        retryAfter: Math?.ceil(config?.windowMs / 1000),
+        retryAfter: Math.ceil(config.windowMs / 1000),
       }),
       {
         status: 429,
         headers: {
 
 
-          'Retry-After': Math?.ceil(config?.windowMs / 1000).toString(),
+          'Retry-After': Math.ceil(config.windowMs / 1000).toString(),
 
 
           'Content-Type': 'application/json',

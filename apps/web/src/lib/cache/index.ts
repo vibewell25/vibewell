@@ -41,25 +41,25 @@ const cache = {
 
   // Shared utilities
   clearAll: async () => {
-    await apiCache?.clear();
-    await arModelCache?.clearCache();
+    await apiCache.clear();
+    await arModelCache.clearCache();
   },
 
   // Get storage usage statistics
   getStorageStats: async () => {
-    const arStats = await arModelCache?.getCacheStats();
+    const arStats = await arModelCache.getCacheStats();
 
     return {
       ar: {
-        totalSize: arStats?.totalSize,
-        modelCount: arStats?.modelCount,
-        percentUsed: arStats?.percentUsed,
+        totalSize: arStats.totalSize,
+        modelCount: arStats.modelCount,
+        percentUsed: arStats.percentUsed,
       },
       // API cache stats are approximate since localStorage doesn't provide size info
       api: {
         entryCount:
           typeof localStorage !== 'undefined'
-            ? Object?.keys(localStorage).filter((key) => key?.startsWith(apiCache?.getNamespace()))
+            ? Object.keys(localStorage).filter((key) => key.startsWith(apiCache.getNamespace()))
                 .length
             : 0,
       },

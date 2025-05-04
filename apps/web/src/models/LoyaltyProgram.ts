@@ -32,7 +32,7 @@ export interface LoyaltyTransaction {
 }
 
 export interface LoyaltyMember extends Document {
-  userId: Types?.ObjectId;
+  userId: Types.ObjectId;
   currentPoints: number;
   lifetimePoints: number;
   currentTier: string;
@@ -48,12 +48,12 @@ export interface LoyaltyMember extends Document {
 }
 
 const loyaltyMemberSchema = new Schema<LoyaltyMember>({
-  userId: { type: Schema?.Types.ObjectId, ref: 'User', required: true },
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   currentPoints: { type: Number, default: 0 },
   lifetimePoints: { type: Number, default: 0 },
   currentTier: { type: String, required: true, default: 'Bronze' },
-  joinDate: { type: Date, default: Date?.now },
-  lastActivityDate: { type: Date, default: Date?.now },
+  joinDate: { type: Date, default: Date.now },
+  lastActivityDate: { type: Date, default: Date.now },
   pointsHistory: [
     {
       id: { type: String, required: true },
@@ -62,13 +62,13 @@ const loyaltyMemberSchema = new Schema<LoyaltyMember>({
       description: { type: String, required: true },
       bookingId: { type: String },
       rewardId: { type: String },
-      createdAt: { type: Date, default: Date?.now },
+      createdAt: { type: Date, default: Date.now },
     },
   ],
   redeemedRewards: [
     {
       rewardId: { type: String, required: true },
-      redeemedAt: { type: Date, default: Date?.now },
+      redeemedAt: { type: Date, default: Date.now },
       expiresAt: { type: Date, required: true },
       status: { type: String, enum: ['active', 'used', 'expired'], default: 'active' },
     },

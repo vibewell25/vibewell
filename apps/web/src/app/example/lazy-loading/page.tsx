@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import { withLazyLoading } from '@/utils/lazyLoad';
 
 // Load these components lazily
-const LazyResourceDetail = React?.lazy(() => import('@/components/resource-detail-template'));
-const LazyEventCalendar = React?.lazy(() => import('@/components/events-calendar'));
+const LazyResourceDetail = React.lazy(() => import('@/components/resource-detail-template'));
+const LazyEventCalendar = React.lazy(() => import('@/components/events-calendar'));
 
 // Or using our HOC
 const LazyNotifications = withLazyLoading(
@@ -48,7 +48,7 @@ export default function LazyLoadingExample() {
         {showResourceDetail && (
           <div className="rounded border p-4 shadow-md">
             <h2 className="mb-4 text-xl font-semibold">Resource Detail (Lazy Loaded)</h2>
-            <React?.Suspense
+            <React.Suspense
               fallback={<div className="h-64 animate-pulse rounded bg-gray-200"></div>}
             >
               <LazyResourceDetail
@@ -58,18 +58,18 @@ export default function LazyLoadingExample() {
                 author="Jane Doe"
                 datePublished="2023-05-15"
               />
-            </React?.Suspense>
+            </React.Suspense>
           </div>
         )}
 
         {showEventCalendar && (
           <div className="rounded border p-4 shadow-md">
             <h2 className="mb-4 text-xl font-semibold">Event Calendar (Lazy Loaded)</h2>
-            <React?.Suspense
+            <React.Suspense
               fallback={<div className="h-64 animate-pulse rounded bg-gray-200"></div>}
             >
               <LazyEventCalendar />
-            </React?.Suspense>
+            </React.Suspense>
           </div>
         )}
 
@@ -90,7 +90,7 @@ export default function LazyLoadingExample() {
           <li>
             There are two ways to implement lazy loading shown here:
             <ol className="mt-2 list-decimal pl-5">
-              <li>Using React?.lazy directly with Suspense</li>
+              <li>Using React.lazy directly with Suspense</li>
               <li>Using our custom withLazyLoading HOC that handles Suspense for you</li>
             </ol>
           </li>

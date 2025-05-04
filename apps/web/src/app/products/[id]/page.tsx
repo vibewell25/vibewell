@@ -24,20 +24,20 @@ export default function ProductDetailPage() {
   const [inCart, setInCart] = useState(false);
   const [wishlisted, setWishlisted] = useState(false);
 
-  const productId = Array?.isArray(id) ? id[0] : id;
+  const productId = Array.isArray(id) ? id[0] : id;
   const productService = new ProductService();
   const recommendationService = new RecommendationService();
 
   // Fetch product details
   useEffect(() => {
     const fetchProduct = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       if (!productId) return;
 
       try {
         setLoading(true);
-        const fetchedProduct = await productService?.getProduct(productId);
+        const fetchedProduct = await productService.getProduct(productId);
 
         if (!fetchedProduct) {
           setError('Product not found');
@@ -47,15 +47,15 @@ export default function ProductDetailPage() {
         setProduct(fetchedProduct);
 
         // Track product view for logged in users
-        if (user?.id) {
+        if (user.id) {
           try {
-            await recommendationService?.trackProductView(user?.id, fetchedProduct?.id);
+            await recommendationService.trackProductView(user.id, fetchedProduct.id);
           } catch (err) {
-            console?.error('Failed to track product view:', err);
+            console.error('Failed to track product view:', err);
           }
         }
       } catch (err) {
-        console?.error('Error fetching product:', err);
+        console.error('Error fetching product:', err);
         setError('Failed to load product details');
       } finally {
         setLoading(false);
@@ -63,68 +63,68 @@ export default function ProductDetailPage() {
     };
 
     fetchProduct();
-  }, [productId, user?.id]);
+  }, [productId, user.id]);
 
   // Add to cart handler
   const handleAddToCart = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!product) return;
 
     try {
       // Implement cart functionality here
-      // await cartService?.addItem(product?.id, 1);
+      // await cartService.addItem(product.id, 1);
       setInCart(true);
 
       // Show a toast notification or feedback
     } catch (err) {
-      console?.error('Error adding to cart:', err);
+      console.error('Error adding to cart:', err);
     }
   };
 
   // Toggle wishlist handler
   const handleToggleWishlist = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-    if (!product || !user?.id) return;
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    if (!product || !user.id) return;
 
     try {
       // Implement wishlist functionality here
-      // await wishlistService?.toggleItem(user?.id, product?.id);
+      // await wishlistService.toggleItem(user.id, product.id);
       setWishlisted(!wishlisted);
 
       // Show a toast notification or feedback
     } catch (err) {
-      console?.error('Error updating wishlist:', err);
+      console.error('Error updating wishlist:', err);
     }
   };
 
   // Share product handler
   const handleShare = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!product) return;
 
     try {
-      if (navigator?.share) {
-        await navigator?.share({
-          title: product?.name,
-          text: `Check out ${product?.name} on VibeWell`,
-          url: window?.location.href,
+      if (navigator.share) {
+        await navigator.share({
+          title: product.name,
+          text: `Check out ${product.name} on VibeWell`,
+          url: window.location.href,
         });
       } else {
         // Fallback - copy to clipboard
-        await navigator?.clipboard.writeText(window?.location.href);
+        await navigator.clipboard.writeText(window.location.href);
         // Show a toast notification
       }
     } catch (err) {
-      console?.error('Error sharing product:', err);
+      console.error('Error sharing product:', err);
     }
   };
 
   // Format price with currency symbol
   const formatPrice = (price: number) => {
-    return new Intl?.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
     }).format(price);
@@ -190,10 +190,10 @@ export default function ProductDetailPage() {
         {/* Product Image */}
         <div className="relative">
           <div className="relative aspect-square overflow-hidden rounded-lg bg-muted">
-            {product?.image_url ? (
+            {product.image_url ? (
               <Image
-                src={product?.image_url}
-                alt={product?.name}
+                src={product.image_url}
+                alt={product.name}
                 fill
                 className="object-cover"
                 priority
@@ -207,17 +207,17 @@ export default function ProductDetailPage() {
 
           {/* Product badges */}
           <div className="absolute left-3 top-3 flex flex-col gap-2">
-            {product?.trending && (
+            {product.trending && (
               <Badge variant="secondary" className="bg-orange-600 text-white hover:bg-orange-700">
                 Trending
               </Badge>
             )}
-            {product?.featured && (
+            {product.featured && (
               <Badge variant="secondary" className="bg-blue-600 text-white hover:bg-blue-700">
                 Featured
               </Badge>
             )}
-            {product?.ar_compatible && (
+            {product.ar_compatible && (
               <Badge variant="secondary" className="bg-purple-600 text-white hover:bg-purple-700">
                 AR Ready
               </Badge>
@@ -229,41 +229,41 @@ export default function ProductDetailPage() {
         <div className="space-y-6">
           <div>
             <div className="flex items-center justify-between">
-              <h1 className="text-3xl font-bold">{product?.name}</h1>
+              <h1 className="text-3xl font-bold">{product.name}</h1>
             </div>
-            <p className="mt-2 text-xl font-semibold">{formatPrice(product?.price)}</p>
+            <p className="mt-2 text-xl font-semibold">{formatPrice(product.price)}</p>
 
             {/* Rating */}
             <div className="mt-2 flex items-center">
-              {Array?.from({ length: 5 }).map((_, i) => (
+              {Array.from({ length: 5 }).map((_, i) => (
                 <Star
                   key={i}
                   className={`h-5 w-5 ${
-                    i < Math?.floor(product?.rating)
+                    i < Math.floor(product.rating)
                       ? 'fill-yellow-500 text-yellow-500'
                       : 'text-gray-300'
                   }`}
                 />
               ))}
               <span className="ml-2 text-sm text-muted-foreground">
-                ({product?.review_count} reviews)
+                ({product.review_count} reviews)
               </span>
             </div>
 
             {/* Availability */}
             <div className="mt-2 flex items-center">
               <Badge
-                variant={product?.availability === 'in_stock' ? 'default' : 'secondary'}
-                className={product?.availability === 'in_stock' ? 'bg-green-600' : ''}
+                variant={product.availability === 'in_stock' ? 'default' : 'secondary'}
+                className={product.availability === 'in_stock' ? 'bg-green-600' : ''}
               >
-                {product?.availability === 'in_stock'
+                {product.availability === 'in_stock'
                   ? 'In Stock'
-                  : product?.availability === 'low_stock'
+                  : product.availability === 'low_stock'
                     ? 'Limited Stock'
                     : 'Out of Stock'}
               </Badge>
 
-              {product?.availability === 'in_stock' && (
+              {product.availability === 'in_stock' && (
                 <span className="ml-2 flex items-center text-sm text-muted-foreground">
                   <Clock className="mr-1 h-4 w-4" />
                   Fast Delivery
@@ -276,26 +276,26 @@ export default function ProductDetailPage() {
           <div className="mt-4 grid grid-cols-2 gap-3">
             <div className="text-sm">
               <span className="text-muted-foreground">Category:</span>{' '}
-              <span className="font-medium">{product?.category}</span>
+              <span className="font-medium">{product.category}</span>
             </div>
             <div className="text-sm">
               <span className="text-muted-foreground">Subcategory:</span>{' '}
-              <span className="font-medium">{product?.subcategory}</span>
+              <span className="font-medium">{product.subcategory}</span>
             </div>
             <div className="text-sm">
               <span className="text-muted-foreground">Brand:</span>{' '}
-              <span className="font-medium">{product?.brand}</span>
+              <span className="font-medium">{product.brand}</span>
             </div>
             <div className="text-sm">
               <span className="text-muted-foreground">Type:</span>{' '}
-              <span className="font-medium">{product?.type}</span>
+              <span className="font-medium">{product.type}</span>
             </div>
           </div>
 
           {/* Product tags */}
-          {product?.tags && product?.tags.length > 0 && (
+          {product.tags && product.tags.length > 0 && (
             <div className="mt-4 flex flex-wrap gap-2">
-              {product?.tags.map((tag) => (
+              {product.tags.map((tag) => (
                 <Badge key={tag} variant="outline">
                   {tag}
                 </Badge>
@@ -308,16 +308,16 @@ export default function ProductDetailPage() {
             <Button
               size="lg"
               className="flex-1"
-              disabled={product?.availability === 'out_of_stock' || inCart}
+              disabled={product.availability === 'out_of_stock' || inCart}
               onClick={handleAddToCart}
             >
               <ShoppingCart className="mr-2 h-4 w-4" />
               {inCart ? 'Added to Cart' : 'Add to Cart'}
             </Button>
 
-            {product?.ar_compatible && (
+            {product.ar_compatible && (
               <Button size="lg" variant="secondary" className="flex-1" asChild>
-                <Link href={`/try-on/${product?.id}`}>Try On</Link>
+                <Link href={`/try-on/${product.id}`}>Try On</Link>
               </Button>
             )}
 
@@ -347,13 +347,13 @@ export default function ProductDetailPage() {
           </TabsList>
           <TabsContent value="details" className="mt-6">
             <div className="prose max-w-none">
-              <p>{product?.description}</p>
+              <p>{product.description}</p>
 
               {/* Additional details could be added here */}
               <h3 className="mt-6 text-xl font-semibold">Features</h3>
               <ul>
-                {product?.meta && product?.meta.features ? (
-                  (product?.meta.features as string[]).map((feature: string, index: number) => (
+                {product.meta && product.meta.features ? (
+                  (product.meta.features as string[]).map((feature: string, index: number) => (
                     <li key={index}>{feature}</li>
                   ))
                 ) : (
@@ -372,14 +372,14 @@ export default function ProductDetailPage() {
             <div className="rounded-lg bg-muted p-6">
               <h3 className="mb-4 text-xl font-semibold">Technical Specifications</h3>
               <div className="grid grid-cols-1 gap-x-8 gap-y-4 md:grid-cols-2">
-                {/* Technical specs would come from product?.specifications or similar */}
+                {/* Technical specs would come from product.specifications or similar */}
                 <div className="flex justify-between border-b pb-2">
                   <span className="font-medium">Dimensions</span>
                   <span>10" x 8" x 2"</span>
                 </div>
                 <div className="flex justify-between border-b pb-2">
                   <span className="font-medium">Weight</span>
-                  <span>1?.2 lbs</span>
+                  <span>1.2 lbs</span>
                 </div>
                 <div className="flex justify-between border-b pb-2">
                   <span className="font-medium">Materials</span>
@@ -422,7 +422,7 @@ export default function ProductDetailPage() {
                       </div>
                     </div>
                     <div className="flex">
-                      {Array?.from({ length: 5 }).map((_, i) => (
+                      {Array.from({ length: 5 }).map((_, i) => (
                         <Star
                           key={i}
                           className={`h-4 w-4 ${i < 4 ? 'fill-yellow-500 text-yellow-500' : 'text-gray-300'}`}
@@ -448,7 +448,7 @@ export default function ProductDetailPage() {
                       </div>
                     </div>
                     <div className="flex">
-                      {Array?.from({ length: 5 }).map((_, i) => (
+                      {Array.from({ length: 5 }).map((_, i) => (
                         <Star
                           key={i}
                           className={`h-4 w-4 ${i < 5 ? 'fill-yellow-500 text-yellow-500' : 'text-gray-300'}`}
@@ -470,7 +470,7 @@ export default function ProductDetailPage() {
       {/* Product Recommendations */}
       <div className="mt-16">
         <ProductRecommendations
-          productId={product?.id}
+          productId={product.id}
           title="You May Also Like"
           showTabs={true}
           showFeedbackTab={true}

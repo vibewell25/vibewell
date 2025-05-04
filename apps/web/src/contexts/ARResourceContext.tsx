@@ -143,8 +143,8 @@ export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children
     if (size === 0) {
       if (type === 'texture' && resource instanceof THREE.Texture) {
         // Estimate texture size: width * height * 4 bytes (RGBA)
-        const width = resource.image?.width || 512;
-        const height = resource.image?.height || 512;
+        const width = resource.image.width || 512;
+        const height = resource.image.height || 512;
         estimatedSize = width * height * 4;
       } else if (type === 'geometry' && resource instanceof THREE.BufferGeometry) {
         // Estimate geometry size based on vertex count
@@ -276,8 +276,8 @@ export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children
           texture.needsUpdate = true;
           
           // Register the loaded texture
-          const textureWidth = texture.image?.width || 512;
-          const textureHeight = texture.image?.height || 512;
+          const textureWidth = texture.image.width || 512;
+          const textureHeight = texture.image.height || 512;
           const textureSize = textureWidth * textureHeight * 4; // RGBA
           
           registerResource(url, texture, 'texture', textureSize);

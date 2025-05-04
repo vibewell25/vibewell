@@ -60,8 +60,8 @@ export default function EventDetailPage() {
   // Fetch event data
   useEffect(() => {
     const fetchEvent = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
         setLoading(true);
         setError(null);
@@ -71,35 +71,35 @@ export default function EventDetailPage() {
         }
         setEvent(eventData);
         // Check if user is registered
-        if (typedUser?.id) {
-          setIsRegistered(isUserRegistered(eventId, typedUser?.id));
+        if (typedUser.id) {
+          setIsRegistered(isUserRegistered(eventId, typedUser.id));
           // If this is a paid event, fetch payment status
-          if (eventData?.isPaid) {
-            const status = await getEventPaymentStatus(eventId, typedUser?.id);
+          if (eventData.isPaid) {
+            const status = await getEventPaymentStatus(eventId, typedUser.id);
             setPaymentStatus(status);
           }
         }
       } catch (err) {
-        console?.error('Error fetching event:', err);
+        console.error('Error fetching event:', err);
         setError('Failed to load event details. Please try again later.');
       } finally {
         setLoading(false);
       }
     };
     fetchEvent();
-  }, [eventId, typedUser?.id]);
+  }, [eventId, typedUser.id]);
 
   // Handle event registration
   const handleRegistration = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!typedUser) {
-      router?.push('/auth/login?returnUrl=' + encodeURIComponent(`/events/${eventId}`));
+      router.push('/auth/login?returnUrl=' + encodeURIComponent(`/events/${eventId}`));
       return;
     }
 
     // For paid events that require payment
-    if (event?.isPaid && !isRegistered && paymentStatus?.status !== 'paid') {
+    if (event.isPaid && !isRegistered && paymentStatus.status !== 'paid') {
       setShowPaymentForm(true);
       return;
     }
@@ -109,7 +109,7 @@ export default function EventDetailPage() {
       setError(null);
       if (isRegistered) {
         // Cancel registration
-        const success = await cancelEventRegistration(eventId, typedUser?.id);
+        const success = await cancelEventRegistration(eventId, typedUser.id);
         if (success) {
           setIsRegistered(false);
           // Update the event data with the updated participant count
@@ -129,12 +129,12 @@ export default function EventDetailPage() {
         }
       } else {
         // Register for event
-        const userData = typedUser?.user_metadata || {};
+        const userData = typedUser.user_metadata || {};
         const success = await registerForEvent(
           eventId,
-          typedUser?.id,
-          (userData?.full_name as string) || 'Anonymous',
-          userData?.avatar_url as string,
+          typedUser.id,
+          (userData.full_name as string) || 'Anonymous',
+          userData.avatar_url as string,
         );
         if (success) {
           setIsRegistered(true);
@@ -155,7 +155,7 @@ export default function EventDetailPage() {
         }
       }
     } catch (err) {
-      console?.error('Error handling registration:', err);
+      console.error('Error handling registration:', err);
       setError('Failed to process your registration. Please try again.');
 
       toast({
@@ -171,24 +171,24 @@ export default function EventDetailPage() {
 
   // Handle payment completion
   const handlePaymentSuccess = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');paymentId: string, method: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');paymentId: string, method: string) => {
     try {
       // After successful payment, register the user
       if (!typedUser) return;
 
-      const userData = typedUser?.user_metadata || {};
+      const userData = typedUser.user_metadata || {};
       const success = await registerForEvent(
         eventId,
-        typedUser?.id,
-        (userData?.full_name as string) || 'Anonymous',
-        userData?.avatar_url as string,
+        typedUser.id,
+        (userData.full_name as string) || 'Anonymous',
+        userData.avatar_url as string,
       );
 
       if (success) {
         setIsRegistered(true);
         // Update payment status
-        const status = await getEventPaymentStatus(eventId, typedUser?.id);
+        const status = await getEventPaymentStatus(eventId, typedUser.id);
         setPaymentStatus(status);
 
         // Update the event data with the updated participant count
@@ -207,7 +207,7 @@ export default function EventDetailPage() {
         });
       }
     } catch (err) {
-      console?.error('Error after payment:', err);
+      console.error('Error after payment:', err);
       toast({
         title: 'Registration error',
         description: 'Payment was processed but there was an error completing registration.',
@@ -219,10 +219,10 @@ export default function EventDetailPage() {
 
   // Handle payment error
   const handlePaymentError = (error: Error) => {
-    console?.error('Payment error:', error);
+    console.error('Payment error:', error);
     toast({
       title: 'Payment failed',
-      description: error?.message || 'There was an error processing your payment.',
+      description: error.message || 'There was an error processing your payment.',
       type: 'error',
       duration: 5000,
     });
@@ -230,19 +230,19 @@ export default function EventDetailPage() {
 
   // Handle comment submission
   const handleCommentSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent) => {
-    e?.preventDefault();
-    if (!typedUser || !newComment?.trim() || submittingComment) return;
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
+    e.preventDefault();
+    if (!typedUser || !newComment.trim() || submittingComment) return;
     try {
       setSubmittingComment(true);
-      const userData = typedUser?.user_metadata || {};
+      const userData = typedUser.user_metadata || {};
       const comment = await addEventComment(
         eventId,
-        typedUser?.id,
-        (userData?.full_name as string) || 'Anonymous',
+        typedUser.id,
+        (userData.full_name as string) || 'Anonymous',
         newComment,
-        userData?.avatar_url as string,
+        userData.avatar_url as string,
       );
       if (comment) {
         setNewComment('');
@@ -255,7 +255,7 @@ export default function EventDetailPage() {
         throw new Error('Failed to add comment');
       }
     } catch (err) {
-      console?.error('Error adding comment:', err);
+      console.error('Error adding comment:', err);
       setError('Failed to add your comment. Please try again.');
     } finally {
       setSubmittingComment(false);
@@ -263,10 +263,10 @@ export default function EventDetailPage() {
   };
   // Handle check-in
   const handleCheckIn = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');code: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');code: string) => {
     if (!typedUser) {
-      router?.push('/auth/login?returnUrl=' + encodeURIComponent(`/events/${eventId}`));
+      router.push('/auth/login?returnUrl=' + encodeURIComponent(`/events/${eventId}`));
       return;
     }
 
@@ -277,13 +277,13 @@ export default function EventDetailPage() {
       // Import the checkInToEvent function when needed to avoid circular dependencies
       const { checkInToEvent } = await import('@/lib/api/events');
 
-      const userData = typedUser?.user_metadata || {};
+      const userData = typedUser.user_metadata || {};
       const success = await checkInToEvent(
         eventId,
-        typedUser?.id,
-        (userData?.full_name as string) || 'Anonymous',
+        typedUser.id,
+        (userData.full_name as string) || 'Anonymous',
         code,
-        userData?.avatar_url as string,
+        userData.avatar_url as string,
       );
 
       if (success) {
@@ -304,9 +304,9 @@ export default function EventDetailPage() {
         throw new Error('Failed to check in. Please verify the code and try again.');
       }
     } catch (err) {
-      console?.error('Error handling check-in:', err);
+      console.error('Error handling check-in:', err);
       const errorMessage =
-        err instanceof Error ? err?.message : 'Failed to check in. Please try again.';
+        err instanceof Error ? err.message : 'Failed to check in. Please try again.';
       setCheckInError(errorMessage);
 
       // Show error toast
@@ -323,10 +323,10 @@ export default function EventDetailPage() {
 
   // Handle feedback submission
   const handleFeedbackSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');rating: number, comment: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');rating: number, comment: string) => {
     if (!typedUser) {
-      router?.push('/auth/login?returnUrl=' + encodeURIComponent(`/events/${eventId}`));
+      router.push('/auth/login?returnUrl=' + encodeURIComponent(`/events/${eventId}`));
       return false;
     }
 
@@ -336,7 +336,7 @@ export default function EventDetailPage() {
       // Import the submitEventFeedback function when needed to avoid circular dependencies
       const { submitEventFeedback } = await import('@/lib/api/events');
 
-      const success = await submitEventFeedback(eventId, typedUser?.id, rating, comment);
+      const success = await submitEventFeedback(eventId, typedUser.id, rating, comment);
 
       if (success) {
         // Update the event data with the updated feedback
@@ -358,9 +358,9 @@ export default function EventDetailPage() {
         throw new Error('Failed to submit feedback.');
       }
     } catch (err) {
-      console?.error('Error submitting feedback:', err);
+      console.error('Error submitting feedback:', err);
       const errorMessage =
-        err instanceof Error ? err?.message : 'Failed to submit feedback. Please try again.';
+        err instanceof Error ? err.message : 'Failed to submit feedback. Please try again.';
 
       // Show error toast
       toast({
@@ -377,17 +377,17 @@ export default function EventDetailPage() {
   };
   // Share event
   const handleShare = () => {
-    if (navigator?.share) {
+    if (navigator.share) {
       navigator
         .share({
-          title: event?.title || 'Community Event',
-          text: event?.shortDescription || 'Check out this event!',
-          url: window?.location.href,
+          title: event.title || 'Community Event',
+          text: event.shortDescription || 'Check out this event!',
+          url: window.location.href,
         })
-        .catch((error) => console?.log('Error sharing', error));
+        .catch((error) => console.log('Error sharing', error));
     } else {
       // Fallback for browsers that don't support the Web Share API
-      alert(`Share this event: ${window?.location.href}`);
+      alert(`Share this event: ${window.location.href}`);
     }
   };
   if (loading) {
@@ -408,15 +408,15 @@ export default function EventDetailPage() {
           <div className="rounded-lg bg-white py-12 text-center shadow-sm">
             <h2 className="mb-2 text-xl font-semibold">Error Loading Event</h2>
             <p className="mb-4 text-gray-600">{error || 'Unable to load event details'}</p>
-            <Button onClick={() => router?.push('/events')}>Return to Events</Button>
+            <Button onClick={() => router.push('/events')}>Return to Events</Button>
           </div>
         </div>
       </Layout>
     );
   }
-  const startDate = parseISO(event?.startDate);
-  const endDate = parseISO(event?.endDate);
-  const isVirtual = event?.location.virtual;
+  const startDate = parseISO(event.startDate);
+  const endDate = parseISO(event.endDate);
+  const isVirtual = event.location.virtual;
   const eventPassed = isPast(endDate);
   const formattedStartDate = format(startDate, 'EEEE, MMMM d, yyyy');
   const formattedStartTime = format(startDate, 'h:mm a');
@@ -424,7 +424,7 @@ export default function EventDetailPage() {
 
   // Format price display
   const formatPrice = (price: number, currency: string = 'USD') => {
-    return new Intl?.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: currency,
     }).format(price);
@@ -432,16 +432,16 @@ export default function EventDetailPage() {
 
   // Determine current price (standard or early bird)
   const getCurrentPrice = () => {
-    if (!event?.isPaid) return 0;
+    if (!event.isPaid) return 0;
 
-    if (event?.earlyBirdPrice && event?.earlyBirdEndDate) {
-      const earlyBirdEnd = new Date(event?.earlyBirdEndDate);
+    if (event.earlyBirdPrice && event.earlyBirdEndDate) {
+      const earlyBirdEnd = new Date(event.earlyBirdEndDate);
       if (new Date() < earlyBirdEnd) {
-        return event?.earlyBirdPrice;
+        return event.earlyBirdPrice;
       }
     }
 
-    return event?.price || 0;
+    return event.price || 0;
   };
 
   const currentPrice = getCurrentPrice();
@@ -451,10 +451,10 @@ export default function EventDetailPage() {
       <div className="container-app py-8">
         {/* Back button */}
         <button
-          onClick={() => router?.push('/events')}
+          onClick={() => router.push('/events')}
           className="mb-6 flex items-center text-gray-600 hover:text-gray-900"
         >
-          <Icons?.arrowLeft className="mr-1 h-4 w-4" />
+          <Icons.arrowLeft className="mr-1 h-4 w-4" />
           Back to Events
         </button>
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
@@ -462,13 +462,13 @@ export default function EventDetailPage() {
           <div className="lg:col-span-2">
             {/* Event Header */}
             <div className="mb-6 overflow-hidden rounded-lg bg-white shadow-sm">
-              {event?.imageUrl ? (
+              {event.imageUrl ? (
                 <div className="relative h-64 w-full">
-                  <Image src={event?.imageUrl} alt={event?.title} fill className="object-cover" />
+                  <Image src={event.imageUrl} alt={event.title} fill className="object-cover" />
                 </div>
               ) : (
                 <div className="flex h-64 items-center justify-center bg-gradient-to-r from-blue-400 to-indigo-500 text-white">
-                  <Icons?.calendar className="h-16 w-16" />
+                  <Icons.calendar className="h-16 w-16" />
                 </div>
               )}
               <div className="p-6">
@@ -478,28 +478,28 @@ export default function EventDetailPage() {
                       eventPassed ? 'bg-gray-100 text-gray-700' : 'bg-green-100 text-green-800'
                     }
                   >
-                    {event?.category}
+                    {event.category}
                   </Badge>
                   {isVirtual && <Badge className="bg-blue-100 text-blue-800">Virtual</Badge>}
                   {eventPassed && <Badge className="bg-red-100 text-red-800">Past Event</Badge>}
-                  {event?.isPaid && (
+                  {event.isPaid && (
                     <Badge className="bg-yellow-100 text-yellow-800">
-                      {formatPrice(currentPrice, event?.currency)}
-                      {event?.earlyBirdPrice &&
-                        event?.earlyBirdEndDate &&
-                        new Date() < new Date(event?.earlyBirdEndDate) &&
+                      {formatPrice(currentPrice, event.currency)}
+                      {event.earlyBirdPrice &&
+                        event.earlyBirdEndDate &&
+                        new Date() < new Date(event.earlyBirdEndDate) &&
                         ' • Early Bird'}
                     </Badge>
                   )}
                 </div>
-                <h1 className="mb-2 text-2xl font-bold">{event?.title}</h1>
+                <h1 className="mb-2 text-2xl font-bold">{event.title}</h1>
                 <div className="mb-4 flex flex-col gap-2 text-gray-600 md:flex-row md:items-center md:gap-6">
                   <div className="flex items-center">
-                    <Icons?.calendar className="mr-2 h-5 w-5" />
+                    <Icons.calendar className="mr-2 h-5 w-5" />
                     <span>{formattedStartDate}</span>
                   </div>
                   <div className="flex items-center">
-                    <Icons?.clock className="mr-2 h-5 w-5" />
+                    <Icons.clock className="mr-2 h-5 w-5" />
                     <span>
                       {formattedStartTime} - {formattedEndTime}
                     </span>
@@ -509,17 +509,17 @@ export default function EventDetailPage() {
                   <div className="flex items-center">
                     {isVirtual ? (
                       <>
-                        <Icons?.videoCamera className="mr-2 h-5 w-5 text-blue-600" />
+                        <Icons.videoCamera className="mr-2 h-5 w-5 text-blue-600" />
                         <span>Online Event</span>
                       </>
                     ) : (
                       <>
-                        <Icons?.mapPin className="mr-2 h-5 w-5 text-red-600" />
+                        <Icons.mapPin className="mr-2 h-5 w-5 text-red-600" />
                         <span>
-                          {event?.location.address ? (
+                          {event.location.address ? (
                             <>
-                              {event?.location.address}, {event?.location.city},{' '}
-                              {event?.location.state} {event?.location.zipCode}
+                              {event.location.address}, {event.location.city},{' '}
+                              {event.location.state} {event.location.zipCode}
                             </>
                           ) : (
                             'Location details will be provided after registration'
@@ -530,12 +530,12 @@ export default function EventDetailPage() {
                   </div>
                 </div>
                 <div className="mb-4 flex items-center">
-                  <Icons?.users className="mr-2 h-5 w-5 text-gray-600" />
+                  <Icons.users className="mr-2 h-5 w-5 text-gray-600" />
                   <span>
-                    {event?.participantsCount} {event?.participantsCount === 1 ? 'person' : 'people'}{' '}
+                    {event.participantsCount} {event.participantsCount === 1 ? 'person' : 'people'}{' '}
                     participating
-                    {event?.capacity
-                      ? ` • ${event?.capacity - event?.participantsCount} spots left`
+                    {event.capacity
+                      ? ` • ${event.capacity - event.participantsCount} spots left`
                       : ''}
                   </span>
                 </div>
@@ -543,13 +543,13 @@ export default function EventDetailPage() {
                   <div className="flex items-center">
                     <Avatar className="mr-2 h-8 w-8">
                       <AvatarImage
-                        src={event?.organizer.avatar || '/images/avatar-placeholder?.png'}
-                        alt={event?.organizer.name}
+                        src={event.organizer.avatar || '/images/avatar-placeholder.png'}
+                        alt={event.organizer.name}
                       />
-                      <AvatarFallback>{event?.organizer.name?.charAt(0)}</AvatarFallback>
+                      <AvatarFallback>{event.organizer.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className="text-sm font-medium">{event?.organizer.name}</p>
+                      <p className="text-sm font-medium">{event.organizer.name}</p>
                       <p className="text-xs text-gray-500">Organizer</p>
                     </div>
                   </div>
@@ -561,45 +561,45 @@ export default function EventDetailPage() {
               <h2 className="mb-4 text-xl font-semibold">About this event</h2>
               <div
                 className="prose max-w-none"
-                dangerouslySetInnerHTML={{ __html: event?.description }}
+                dangerouslySetInnerHTML={{ __html: event.description }}
               />
 
               {/* Add pricing information for paid events */}
-              {event?.isPaid && (
+              {event.isPaid && (
                 <div className="mt-6 border-t border-gray-200 pt-6">
                   <h3 className="mb-2 text-lg font-semibold">Pricing Information</h3>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <span>Registration Fee</span>
                       <span className="font-semibold">
-                        {formatPrice(event?.price || 0, event?.currency)}
+                        {formatPrice(event.price || 0, event.currency)}
                       </span>
                     </div>
 
-                    {event?.earlyBirdPrice && event?.earlyBirdEndDate && (
+                    {event.earlyBirdPrice && event.earlyBirdEndDate && (
                       <div className="flex items-center justify-between">
                         <div>
                           <span>Early Bird Price</span>
-                          {new Date() < new Date(event?.earlyBirdEndDate) && (
+                          {new Date() < new Date(event.earlyBirdEndDate) && (
                             <Badge className="ml-2 bg-green-100 text-green-800">Active</Badge>
                           )}
                         </div>
                         <span className="font-semibold">
-                          {formatPrice(event?.earlyBirdPrice, event?.currency)}
+                          {formatPrice(event.earlyBirdPrice, event.currency)}
                           <span className="ml-2 text-sm font-normal text-gray-500">
-                            until {format(parseISO(event?.earlyBirdEndDate), 'MMM d, yyyy')}
+                            until {format(parseISO(event.earlyBirdEndDate), 'MMM d, yyyy')}
                           </span>
                         </span>
                       </div>
                     )}
 
-                    {event?.refundPolicy && (
+                    {event.refundPolicy && (
                       <div className="mt-4 rounded-md bg-gray-50 p-4">
                         <h4 className="mb-1 font-medium">Refund Policy</h4>
                         <p className="text-sm text-gray-600">
-                          {event?.refundPolicy.description ||
-                            `${event?.refundPolicy.percentageToRefund}% refund available until ${format(
-                              parseISO(event?.refundPolicy.allowedUntil),
+                          {event.refundPolicy.description ||
+                            `${event.refundPolicy.percentageToRefund}% refund available until ${format(
+                              parseISO(event.refundPolicy.allowedUntil),
                               'MMM d, yyyy',
                             )}`}
                         </p>
@@ -618,24 +618,24 @@ export default function EventDetailPage() {
                     <Avatar className="h-8 w-8">
                       <AvatarImage
                         src={
-                          typedUser?.user_metadata?.avatar_url || '/images/avatar-placeholder?.png'
+                          typedUser.user_metadata.avatar_url || '/images/avatar-placeholder.png'
                         }
-                        alt={typedUser?.user_metadata?.full_name || 'User'}
+                        alt={typedUser.user_metadata.full_name || 'User'}
                       />
                       <AvatarFallback>
-                        {(typedUser?.user_metadata?.full_name || 'User').charAt(0)}
+                        {(typedUser.user_metadata.full_name || 'User').charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
                       <Textarea
                         placeholder="Ask a question or share something about this event..."
                         value={newComment}
-                        onChange={(e) => setNewComment(e?.target.value)}
+                        onChange={(e) => setNewComment(e.target.value)}
                         className="mb-2"
                         required
                       />
                       <div className="flex justify-end">
-                        <Button type="submit" disabled={submittingComment || !newComment?.trim()}>
+                        <Button type="submit" disabled={submittingComment || !newComment.trim()}>
                           Post
                         </Button>
                       </div>
@@ -647,7 +647,7 @@ export default function EventDetailPage() {
                   <p className="mb-2">Sign in to join the discussion</p>
                   <Button
                     onClick={() =>
-                      router?.push(
+                      router.push(
                         '/auth/login?returnUrl=' + encodeURIComponent(`/events/${eventId}`),
                       )
                     }
@@ -656,25 +656,25 @@ export default function EventDetailPage() {
                   </Button>
                 </div>
               )}
-              {event?.comments && event?.comments.length > 0 ? (
+              {event.comments && event.comments.length > 0 ? (
                 <div className="space-y-4">
-                  {event?.comments.map((comment) => (
-                    <div key={comment?.id} className="flex gap-3">
+                  {event.comments.map((comment) => (
+                    <div key={comment.id} className="flex gap-3">
                       <Avatar className="h-8 w-8">
                         <AvatarImage
-                          src={comment?.user.avatar || '/images/avatar-placeholder?.png'}
-                          alt={comment?.user.name}
+                          src={comment.user.avatar || '/images/avatar-placeholder.png'}
+                          alt={comment.user.name}
                         />
-                        <AvatarFallback>{comment?.user.name?.charAt(0)}</AvatarFallback>
+                        <AvatarFallback>{comment.user.name.charAt(0)}</AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
                         <div className="flex justify-between">
-                          <p className="font-medium">{comment?.user.name}</p>
+                          <p className="font-medium">{comment.user.name}</p>
                           <p className="text-xs text-gray-500">
-                            {format(parseISO(comment?.createdAt), 'MMM d, yyyy • h:mm a')}
+                            {format(parseISO(comment.createdAt), 'MMM d, yyyy • h:mm a')}
                           </p>
                         </div>
-                        <p className="mt-1 text-gray-700">{comment?.content}</p>
+                        <p className="mt-1 text-gray-700">{comment.content}</p>
                       </div>
                     </div>
                   ))}
@@ -701,25 +701,25 @@ export default function EventDetailPage() {
                 </p>
 
                 {/* Show payment status if applicable */}
-                {event?.isPaid && paymentStatus && paymentStatus?.status !== 'none' && (
+                {event.isPaid && paymentStatus && paymentStatus.status !== 'none' && (
                   <div
                     className={`mt-2 rounded p-2 text-sm ${
-                      paymentStatus?.status === 'paid'
+                      paymentStatus.status === 'paid'
                         ? 'bg-green-50 text-green-700'
-                        : paymentStatus?.status === 'refunded'
+                        : paymentStatus.status === 'refunded'
                           ? 'bg-blue-50 text-blue-700'
                           : 'bg-yellow-50 text-yellow-700'
                     }`}
                   >
                     <div className="font-medium">
                       Payment status:{' '}
-                      {paymentStatus?.status.charAt(0).toUpperCase() + paymentStatus?.status.slice(1)}
+                      {paymentStatus.status.charAt(0).toUpperCase() + paymentStatus.status.slice(1)}
                     </div>
-                    {paymentStatus?.amount && (
-                      <div>Amount: {formatPrice(paymentStatus?.amount, event?.currency)}</div>
+                    {paymentStatus.amount && (
+                      <div>Amount: {formatPrice(paymentStatus.amount, event.currency)}</div>
                     )}
-                    {paymentStatus?.paymentDate && (
-                      <div>Date: {format(parseISO(paymentStatus?.paymentDate), 'MMM d, yyyy')}</div>
+                    {paymentStatus.paymentDate && (
+                      <div>Date: {format(parseISO(paymentStatus.paymentDate), 'MMM d, yyyy')}</div>
                     )}
                   </div>
                 )}
@@ -728,7 +728,7 @@ export default function EventDetailPage() {
               {/* Payment form or Register button */}
               {!eventPassed && (
                 <>
-                  {showPaymentForm && event?.isPaid && !isRegistered && typedUser ? (
+                  {showPaymentForm && event.isPaid && !isRegistered && typedUser ? (
                     <div className="mt-4">
                       <Card>
                         <CardHeader>
@@ -737,11 +737,11 @@ export default function EventDetailPage() {
                         <CardContent>
                           <PaymentMethodSelector
                             eventId={eventId}
-                            userId={typedUser?.id}
+                            userId={typedUser.id}
                             amount={currentPrice}
-                            currency={event?.currency || 'USD'}
-                            description={`Registration for ${event?.title}`}
-                            orderReference={`${eventId}-${typedUser?.id}`}
+                            currency={event.currency || 'USD'}
+                            description={`Registration for ${event.title}`}
+                            orderReference={`${eventId}-${typedUser.id}`}
                             onSuccess={handlePaymentSuccess}
                             onError={handlePaymentError}
                           />
@@ -765,8 +765,8 @@ export default function EventDetailPage() {
                         ? 'Processing...'
                         : isRegistered
                           ? 'Cancel Registration'
-                          : event?.isPaid && !isRegistered
-                            ? `Pay & Register (${formatPrice(currentPrice, event?.currency)})`
+                          : event.isPaid && !isRegistered
+                            ? `Pay & Register (${formatPrice(currentPrice, event.currency)})`
                             : 'Register Now'}
                     </Button>
                   )}
@@ -775,16 +775,16 @@ export default function EventDetailPage() {
 
               {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
 
-              {isRegistered && isVirtual && event?.location.meetingUrl && (
+              {isRegistered && isVirtual && event.location.meetingUrl && (
                 <div className="mt-4 rounded-md bg-blue-50 p-3">
                   <h4 className="font-medium text-blue-800">Meeting Link</h4>
                   <a
-                    href={event?.location.meetingUrl}
+                    href={event.location.meetingUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="break-words text-blue-600 hover:underline"
                   >
-                    {event?.location.meetingUrl}
+                    {event.location.meetingUrl}
                   </a>
                 </div>
               )}
@@ -797,16 +797,16 @@ export default function EventDetailPage() {
                 className="flex w-full items-center justify-center"
                 onClick={handleShare}
               >
-                <Icons?.share className="mr-2 h-5 w-5" />
+                <Icons.share className="mr-2 h-5 w-5" />
                 Share this Event
               </Button>
             </div>
             {/* Tags */}
-            {event?.tags && event?.tags.length > 0 && (
+            {event.tags && event.tags.length > 0 && (
               <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
                 <h3 className="mb-4 text-lg font-semibold">Tags</h3>
                 <div className="flex flex-wrap gap-2">
-                  {event?.tags.map((tag) => (
+                  {event.tags.map((tag) => (
                     <Badge key={tag} variant="outline">
                       {tag}
                     </Badge>
@@ -835,7 +835,7 @@ export default function EventDetailPage() {
       </div>
 
       {/* Event Organizer Dashboard - Only visible for event organizers */}
-      {user && event?.organizer?.id === typedUser?.id && (
+      {user && event.organizer.id === typedUser.id && (
         <div className="container mx-auto px-4 py-8">
           <EventOrganizerDashboard event={event} />
         </div>

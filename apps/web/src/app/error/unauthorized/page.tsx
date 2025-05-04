@@ -29,7 +29,7 @@ export default function UnauthorizedPage() {
           <div className="mb-6 flex justify-center">
             <div className="rounded-full bg-red-100 p-3">
               <svg
-                xmlns="http://www?.w3.org/2000/svg"
+                xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
@@ -42,7 +42,7 @@ export default function UnauthorizedPage() {
               >
                 <circle cx="12" cy="12" r="10" />
                 <line x1="12" y1="8" x2="12" y2="12" />
-                <line x1="12" y1="16" x2="12?.01" y2="16" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
               </svg>
             </div>
           </div>
@@ -52,10 +52,10 @@ export default function UnauthorizedPage() {
           </p>
         </CardContent>
         <CardFooter className="flex flex-col space-y-2">
-          <Button className="w-full" onClick={() => router?.push('/dashboard')}>
+          <Button className="w-full" onClick={() => router.push('/dashboard')}>
             Go to Dashboard
           </Button>
-          <Button variant="outline" className="w-full" onClick={() => router?.back()}>
+          <Button variant="outline" className="w-full" onClick={() => router.back()}>
             Go Back
           </Button>
           {isAuthenticated && (

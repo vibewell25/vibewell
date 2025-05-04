@@ -24,32 +24,32 @@ export default function RewardsCatalogPage() {
   const [userPoints, setUserPoints] = useState(0);
   useEffect(() => {
     const checkAuth = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       const session = await getServerSession(authOptions);
       if (!session) {
-        router?.push('/login');
+        router.push('/login');
       }
     };
     checkAuth();
     const fetchData = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
       try {
-        const [rewardsResponse, pointsResponse] = await Promise?.all([
+        const [rewardsResponse, pointsResponse] = await Promise.all([
           fetch('/api/rewards/catalog'),
           fetch('/api/rewards/points'),
         ]);
-        if (!rewardsResponse?.ok || !pointsResponse?.ok) {
+        if (!rewardsResponse.ok || !pointsResponse.ok) {
           throw new Error('Failed to fetch data');
         }
-        const rewardsData = await rewardsResponse?.json();
-        const pointsData = await pointsResponse?.json();
+        const rewardsData = await rewardsResponse.json();
+        const pointsData = await pointsResponse.json();
         setRewards(rewardsData);
-        setUserPoints(pointsData?.points);
+        setUserPoints(pointsData.points);
       } catch (error) {
-        console?.error('Error fetching data:', error);
-        toast?.error('Failed to load rewards catalog');
+        console.error('Error fetching data:', error);
+        toast.error('Failed to load rewards catalog');
       } finally {
         setLoading(false);
       }
@@ -57,10 +57,10 @@ export default function RewardsCatalogPage() {
     fetchData();
   }, [router]);
   const handleRedeem = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');rewardId: string, points: number) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');rewardId: string, points: number) => {
     if (userPoints < points) {
-      toast?.error('Not enough points to redeem this reward');
+      toast.error('Not enough points to redeem this reward');
       return;
     }
     try {
@@ -69,17 +69,17 @@ export default function RewardsCatalogPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify({ rewardId }),
+        body: JSON.stringify({ rewardId }),
       });
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to redeem reward');
       }
-      const data = await response?.json();
-      setUserPoints(data?.newPoints);
-      toast?.success('Reward redeemed successfully!');
+      const data = await response.json();
+      setUserPoints(data.newPoints);
+      toast.success('Reward redeemed successfully!');
     } catch (error) {
-      console?.error('Error redeeming reward:', error);
-      toast?.error('Failed to redeem reward');
+      console.error('Error redeeming reward:', error);
+      toast.error('Failed to redeem reward');
     }
   };
   if (loading) {
@@ -104,41 +104,41 @@ export default function RewardsCatalogPage() {
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold">Rewards Catalog</h1>
           <div className="flex items-center gap-2">
-            <Icons?.StarIcon className="h-5 w-5 text-yellow-400" />
+            <Icons.StarIcon className="h-5 w-5 text-yellow-400" />
             <span className="font-semibold">{userPoints} points</span>
           </div>
         </div>
         <div className="grid gap-6 md:grid-cols-2">
-          {rewards?.map((reward) => (
-            <Card key={reward?.id} className="overflow-hidden">
+          {rewards.map((reward) => (
+            <Card key={reward.id} className="overflow-hidden">
               <div className="relative aspect-video bg-gray-100">
                 <img
-                  src={reward?.imageUrl}
-                  alt={reward?.name}
+                  src={reward.imageUrl}
+                  alt={reward.name}
                   className="h-full w-full object-cover"
                 />
                 <Badge
-                  variant={reward?.available ? 'default' : 'secondary'}
+                  variant={reward.available ? 'default' : 'secondary'}
                   className="absolute right-2 top-2"
                 >
-                  {reward?.available ? 'Available' : 'Out of Stock'}
+                  {reward.available ? 'Available' : 'Out of Stock'}
                 </Badge>
               </div>
               <CardHeader>
-                <CardTitle>{reward?.name}</CardTitle>
+                <CardTitle>{reward.name}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="mb-4 text-muted-foreground">{reward?.description}</p>
+                <p className="mb-4 text-muted-foreground">{reward.description}</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Icons?.StarIcon className="h-5 w-5 text-yellow-400" />
-                    <span className="font-semibold">{reward?.points} points</span>
+                    <Icons.StarIcon className="h-5 w-5 text-yellow-400" />
+                    <span className="font-semibold">{reward.points} points</span>
                   </div>
                   <Button
-                    onClick={() => handleRedeem(reward?.id, reward?.points)}
-                    disabled={!reward?.available || userPoints < reward?.points}
+                    onClick={() => handleRedeem(reward.id, reward.points)}
+                    disabled={!reward.available || userPoints < reward.points}
                   >
-                    <Icons?.GiftIcon className="mr-2 h-5 w-5" />
+                    <Icons.GiftIcon className="mr-2 h-5 w-5" />
                     Redeem
                   </Button>
                 </div>

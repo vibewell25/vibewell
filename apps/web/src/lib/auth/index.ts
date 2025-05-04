@@ -16,7 +16,7 @@ declare module '@auth0/nextjs-auth0' {
  * Helper function to check if a user has a specific role
  */
 export function hasRole(user: User | null | undefined, role: string): boolean {
-  if (!user?.roles) return false;
+  if (!user.roles) return false;
   return user.roles.includes(role);
 }
 
@@ -24,7 +24,7 @@ export function hasRole(user: User | null | undefined, role: string): boolean {
  * Helper function to check if a session is valid and has a user
  */
 export function isAuthenticated(session: Session | null): session is Session & { user: User } {
-  return !!session?.user;
+  return !!session.user;
 }
 
 /**

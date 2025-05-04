@@ -31,8 +31,8 @@ export interface ResourceForCollection {
 }
 
 // Key for browser storage
-const COLLECTIONS_STORAGE_KEY = process?.env['COLLECTIONS_STORAGE_KEY'];
-const COLLECTION_ITEMS_KEY = process?.env['COLLECTION_ITEMS_KEY'];
+const COLLECTIONS_STORAGE_KEY = process.env['COLLECTIONS_STORAGE_KEY'];
+const COLLECTION_ITEMS_KEY = process.env['COLLECTION_ITEMS_KEY'];
 
 /**
  * Get all collections for the current user
@@ -43,10 +43,10 @@ export function getUserCollections(): Collection[] {
   }
 
   try {
-    const storedCollections = localStorage?.getItem(COLLECTIONS_STORAGE_KEY);
-    return storedCollections ? JSON?.parse(storedCollections) : [];
+    const storedCollections = localStorage.getItem(COLLECTIONS_STORAGE_KEY);
+    return storedCollections ? JSON.parse(storedCollections) : [];
   } catch (error) {
-    console?.error('Error retrieving collections:', error);
+    console.error('Error retrieving collections:', error);
     return [];
   }
 }
@@ -56,7 +56,7 @@ export function getUserCollections(): Collection[] {
  */
 export function getCollectionById(id: string): Collection | null {
   const collections = getUserCollections();
-  return collections?.find((collection) => collection?.id === id) || null;
+  return collections.find((collection) => collection.id === id) || null;
 }
 
 /**
@@ -87,12 +87,12 @@ export function createCollection(
       isPublic,
     };
 
-    collections?.push(newCollection);
-    localStorage?.setItem(COLLECTIONS_STORAGE_KEY, JSON?.stringify(collections));
+    collections.push(newCollection);
+    localStorage.setItem(COLLECTIONS_STORAGE_KEY, JSON.stringify(collections));
 
     return newCollection;
   } catch (error) {
-    console?.error('Error creating collection:', error);
+    console.error('Error creating collection:', error);
     throw error;
   }
 }
@@ -110,7 +110,7 @@ export function updateCollection(
 
   try {
     const collections = getUserCollections();
-    const index = collections?.findIndex((c) => c?.id === id);
+    const index = collections.findIndex((c) => c.id === id);
 
     if (index === -1) {
       return null;
@@ -119,7 +119,7 @@ export function updateCollection(
     const updatedCollection = {
 
     // Safe array access
-    if (index < 0 || index >= array?.length) {
+    if (index < 0 || index >= array.length) {
       throw new Error('Array index out of bounds');
     }
       ...collections[index],
@@ -129,15 +129,15 @@ export function updateCollection(
 
 
     // Safe array access
-    if (index < 0 || index >= array?.length) {
+    if (index < 0 || index >= array.length) {
       throw new Error('Array index out of bounds');
     }
     collections[index] = updatedCollection;
-    localStorage?.setItem(COLLECTIONS_STORAGE_KEY, JSON?.stringify(collections));
+    localStorage.setItem(COLLECTIONS_STORAGE_KEY, JSON.stringify(collections));
 
     return updatedCollection;
   } catch (error) {
-    console?.error('Error updating collection:', error);
+    console.error('Error updating collection:', error);
     throw error;
   }
 }
@@ -152,20 +152,20 @@ export function deleteCollection(id: string): boolean {
 
   try {
     const collections = getUserCollections();
-    const filteredCollections = collections?.filter((c) => c?.id !== id);
+    const filteredCollections = collections.filter((c) => c.id !== id);
 
-    if (filteredCollections?.length === collections?.length) {
+    if (filteredCollections.length === collections.length) {
       return false; // Collection not found
     }
 
-    localStorage?.setItem(COLLECTIONS_STORAGE_KEY, JSON?.stringify(filteredCollections));
+    localStorage.setItem(COLLECTIONS_STORAGE_KEY, JSON.stringify(filteredCollections));
 
     // Also remove any collection items
     removeCollectionItems(id);
 
     return true;
   } catch (error) {
-    console?.error('Error deleting collection:', error);
+    console.error('Error deleting collection:', error);
     throw error;
   }
 }
@@ -181,7 +181,7 @@ export function addToCollection(collectionId: string, resource: ResourceForColle
   try {
     // Get the collection
     const collections = getUserCollections();
-    const collectionIndex = collections?.findIndex((c) => c?.id === collectionId);
+    const collectionIndex = collections.findIndex((c) => c.id === collectionId);
 
     if (collectionIndex === -1) {
       return false; // Collection not found
@@ -193,50 +193,50 @@ export function addToCollection(collectionId: string, resource: ResourceForColle
     // Add the resource ID to the collection if not already there
 
     // Safe array access
-    if (collectionIndex < 0 || collectionIndex >= array?.length) {
+    if (collectionIndex < 0 || collectionIndex >= array.length) {
       throw new Error('Array index out of bounds');
     }
     const collection = collections[collectionIndex];
-    if (!collection?.resourceIds.includes(resource?.id)) {
-      collection?.resourceIds.push(resource?.id);
+    if (!collection.resourceIds.includes(resource.id)) {
+      collection.resourceIds.push(resource.id);
 
     // Safe array access
-    if (collectionIndex < 0 || collectionIndex >= array?.length) {
+    if (collectionIndex < 0 || collectionIndex >= array.length) {
       throw new Error('Array index out of bounds');
     }
       collections[collectionIndex] = {
         ...collection,
         updatedAt: new Date().toISOString(),
       };
-      localStorage?.setItem(COLLECTIONS_STORAGE_KEY, JSON?.stringify(collections));
+      localStorage.setItem(COLLECTIONS_STORAGE_KEY, JSON.stringify(collections));
     }
 
     // Add the resource details to collection items if not already there
-    const itemKey = `${collectionId}:${resource?.id}`;
+    const itemKey = `${collectionId}:${resource.id}`;
 
     // Safe array access
-    if (itemKey < 0 || itemKey >= array?.length) {
+    if (itemKey < 0 || itemKey >= array.length) {
       throw new Error('Array index out of bounds');
     }
     if (!collectionItems[itemKey]) {
 
     // Safe array access
-    if (itemKey < 0 || itemKey >= array?.length) {
+    if (itemKey < 0 || itemKey >= array.length) {
       throw new Error('Array index out of bounds');
     }
       collectionItems[itemKey] = {
         collectionId,
-        resourceId: resource?.id,
-        resourceType: resource?.type,
+        resourceId: resource.id,
+        resourceType: resource.type,
         addedAt: new Date().toISOString(),
         ...resource,
       };
-      localStorage?.setItem(COLLECTION_ITEMS_KEY, JSON?.stringify(collectionItems));
+      localStorage.setItem(COLLECTION_ITEMS_KEY, JSON.stringify(collectionItems));
     }
 
     return true;
   } catch (error) {
-    console?.error('Error adding to collection:', error);
+    console.error('Error adding to collection:', error);
     throw error;
   }
 }
@@ -252,7 +252,7 @@ export function removeFromCollection(collectionId: string, resourceId: string): 
   try {
     // Update the collection's resource IDs
     const collections = getUserCollections();
-    const collectionIndex = collections?.findIndex((c) => c?.id === collectionId);
+    const collectionIndex = collections.findIndex((c) => c.id === collectionId);
 
     if (collectionIndex === -1) {
       return false; // Collection not found
@@ -260,19 +260,19 @@ export function removeFromCollection(collectionId: string, resourceId: string): 
 
 
     // Safe array access
-    if (collectionIndex < 0 || collectionIndex >= array?.length) {
+    if (collectionIndex < 0 || collectionIndex >= array.length) {
       throw new Error('Array index out of bounds');
     }
     const collection = collections[collectionIndex];
-    const updatedResourceIds = collection?.resourceIds.filter((id) => id !== resourceId);
+    const updatedResourceIds = collection.resourceIds.filter((id) => id !== resourceId);
 
-    if (updatedResourceIds?.length === collection?.resourceIds.length) {
+    if (updatedResourceIds.length === collection.resourceIds.length) {
       return false; // Resource not in collection
     }
 
 
     // Safe array access
-    if (collectionIndex < 0 || collectionIndex >= array?.length) {
+    if (collectionIndex < 0 || collectionIndex >= array.length) {
       throw new Error('Array index out of bounds');
     }
     collections[collectionIndex] = {
@@ -281,7 +281,7 @@ export function removeFromCollection(collectionId: string, resourceId: string): 
       updatedAt: new Date().toISOString(),
     };
 
-    localStorage?.setItem(COLLECTIONS_STORAGE_KEY, JSON?.stringify(collections));
+    localStorage.setItem(COLLECTIONS_STORAGE_KEY, JSON.stringify(collections));
 
     // Remove from collection items
     const collectionItems = getCollectionItems();
@@ -289,22 +289,22 @@ export function removeFromCollection(collectionId: string, resourceId: string): 
 
 
     // Safe array access
-    if (itemKey < 0 || itemKey >= array?.length) {
+    if (itemKey < 0 || itemKey >= array.length) {
       throw new Error('Array index out of bounds');
     }
     if (collectionItems[itemKey]) {
 
     // Safe array access
-    if (itemKey < 0 || itemKey >= array?.length) {
+    if (itemKey < 0 || itemKey >= array.length) {
       throw new Error('Array index out of bounds');
     }
       delete collectionItems[itemKey];
-      localStorage?.setItem(COLLECTION_ITEMS_KEY, JSON?.stringify(collectionItems));
+      localStorage.setItem(COLLECTION_ITEMS_KEY, JSON.stringify(collectionItems));
     }
 
     return true;
   } catch (error) {
-    console?.error('Error removing from collection:', error);
+    console.error('Error removing from collection:', error);
     throw error;
   }
 }
@@ -326,31 +326,31 @@ export function getCollectionResources(collectionId: string): ResourceForCollect
     const collectionItems = getCollectionItems();
     const resources: ResourceForCollection[] = [];
 
-    collection?.resourceIds.forEach((resourceId) => {
+    collection.resourceIds.forEach((resourceId) => {
       const itemKey = `${collectionId}:${resourceId}`;
 
     // Safe array access
-    if (itemKey < 0 || itemKey >= array?.length) {
+    if (itemKey < 0 || itemKey >= array.length) {
       throw new Error('Array index out of bounds');
     }
       const item = collectionItems[itemKey];
 
       if (item) {
-        resources?.push({
-          id: item?.resourceId,
-          type: item?.resourceType,
-          title: item?.title,
-          description: item?.description,
-          url: item?.url,
-          category: item?.category,
-          imageUrl: item?.imageUrl,
+        resources.push({
+          id: item.resourceId,
+          type: item.resourceType,
+          title: item.title,
+          description: item.description,
+          url: item.url,
+          category: item.category,
+          imageUrl: item.imageUrl,
         });
       }
     });
 
     return resources;
   } catch (error) {
-    console?.error('Error getting collection resources:', error);
+    console.error('Error getting collection resources:', error);
     return [];
   }
 }
@@ -360,7 +360,7 @@ export function getCollectionResources(collectionId: string): ResourceForCollect
  */
 export function isInCollection(collectionId: string, resourceId: string): boolean {
   const collection = getCollectionById(collectionId);
-  return collection ? collection?.resourceIds.includes(resourceId) : false;
+  return collection ? collection.resourceIds.includes(resourceId) : false;
 }
 
 /**
@@ -368,7 +368,7 @@ export function isInCollection(collectionId: string, resourceId: string): boolea
  */
 export function getResourceCollections(resourceId: string): Collection[] {
   const collections = getUserCollections();
-  return collections?.filter((collection) => collection?.resourceIds.includes(resourceId));
+  return collections.filter((collection) => collection.resourceIds.includes(resourceId));
 }
 
 /**
@@ -376,10 +376,10 @@ export function getResourceCollections(resourceId: string): Collection[] {
  */
 function getCollectionItems(): Record<string, CollectionItem & Partial<ResourceForCollection>> {
   try {
-    const storedItems = localStorage?.getItem(COLLECTION_ITEMS_KEY);
-    return storedItems ? JSON?.parse(storedItems) : {};
+    const storedItems = localStorage.getItem(COLLECTION_ITEMS_KEY);
+    return storedItems ? JSON.parse(storedItems) : {};
   } catch (error) {
-    console?.error('Error retrieving collection items:', error);
+    console.error('Error retrieving collection items:', error);
     return {};
   }
 }
@@ -392,19 +392,19 @@ function removeCollectionItems(collectionId: string): void {
     const collectionItems = getCollectionItems();
     const updatedItems: Record<string, CollectionItem & Partial<ResourceForCollection>> = {};
 
-    Object?.entries(collectionItems).forEach(([key, item]) => {
-      if (item?.collectionId !== collectionId) {
+    Object.entries(collectionItems).forEach(([key, item]) => {
+      if (item.collectionId !== collectionId) {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
         updatedItems[key] = item;
       }
     });
 
-    localStorage?.setItem(COLLECTION_ITEMS_KEY, JSON?.stringify(updatedItems));
+    localStorage.setItem(COLLECTION_ITEMS_KEY, JSON.stringify(updatedItems));
   } catch (error) {
-    console?.error('Error removing collection items:', error);
+    console.error('Error removing collection items:', error);
   }
 }

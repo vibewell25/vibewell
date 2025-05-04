@@ -21,7 +21,7 @@ interface FinancialTool {
   id: string;
   title: string;
   description: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
   category: 'budgeting' | 'pricing' | 'tax' | 'reporting' | 'cash-flow';
   premium: boolean;
   url: string;
@@ -44,7 +44,7 @@ export default function FinancialManagementPage() {
       title: 'Service Profit Calculator',
       description:
         'Calculate the true profit margin for each of your services, including all direct and indirect costs.',
-      icon: <Icons?.CalculatorIcon className="h-10 w-10 text-green-500" />,
+      icon: <Icons.CalculatorIcon className="h-10 w-10 text-green-500" />,
       category: 'pricing',
       premium: false,
       url: '/business-hub/financial-management/tools/profit-calculator',
@@ -54,7 +54,7 @@ export default function FinancialManagementPage() {
       title: 'Pricing Strategy Builder',
       description:
         'Develop a strategic pricing structure that maximizes profitability while remaining competitive.',
-      icon: <Icons?.CurrencyDollarIcon className="h-10 w-10 text-indigo-500" />,
+      icon: <Icons.CurrencyDollarIcon className="h-10 w-10 text-indigo-500" />,
       category: 'pricing',
       premium: true,
       url: '/business-hub/financial-management/tools/pricing-strategy',
@@ -64,7 +64,7 @@ export default function FinancialManagementPage() {
       title: 'Tax Planning & Deduction Tracker',
       description:
         'Stay organized throughout the year to maximize deductions and minimize tax liability.',
-      icon: <Icons?.DocumentTextIcon className="h-10 w-10 text-red-500" />,
+      icon: <Icons.DocumentTextIcon className="h-10 w-10 text-red-500" />,
       category: 'tax',
       premium: false,
       url: '/business-hub/financial-management/tools/tax-planner',
@@ -74,7 +74,7 @@ export default function FinancialManagementPage() {
       title: 'Cash Flow Forecasting Tool',
       description:
         'Predict and manage your business cash flow to ensure you always have sufficient operating funds.',
-      icon: <Icons?.ArrowTrendingUpIcon className="h-10 w-10 text-blue-500" />,
+      icon: <Icons.ArrowTrendingUpIcon className="h-10 w-10 text-blue-500" />,
       category: 'cash-flow',
       premium: true,
       url: '/business-hub/financial-management/tools/cash-flow',
@@ -84,7 +84,7 @@ export default function FinancialManagementPage() {
       title: 'Salon & Spa Budget Template',
       description:
         'A comprehensive budgeting template designed specifically for beauty and wellness businesses.',
-      icon: <Icons?.ClipboardDocumentCheckIcon className="h-10 w-10 text-orange-500" />,
+      icon: <Icons.ClipboardDocumentCheckIcon className="h-10 w-10 text-orange-500" />,
       category: 'budgeting',
       premium: false,
       url: '/business-hub/financial-management/tools/budget-template',
@@ -94,7 +94,7 @@ export default function FinancialManagementPage() {
       title: 'Financial KPI Dashboard',
       description:
         'Track key financial metrics and performance indicators specific to service-based businesses.',
-      icon: <Icons?.ChartBarIcon className="h-10 w-10 text-purple-500" />,
+      icon: <Icons.ChartBarIcon className="h-10 w-10 text-purple-500" />,
       category: 'reporting',
       premium: true,
       url: '/business-hub/financial-management/tools/financial-dashboard',
@@ -164,12 +164,12 @@ export default function FinancialManagementPage() {
     },
   ];
   // Filter tools based on category
-  const filteredTools = financialTools?.filter(
-    (tool) => selectedCategory === 'all' || tool?.category === selectedCategory,
+  const filteredTools = financialTools.filter(
+    (tool) => selectedCategory === 'all' || tool.category === selectedCategory,
   );
   // Filter resources based on category
-  const filteredResources = financialResources?.filter(
-    (resource) => selectedCategory === 'all' || resource?.category === selectedCategory,
+  const filteredResources = financialResources.filter(
+    (resource) => selectedCategory === 'all' || resource.category === selectedCategory,
   );
   return (
     <Layout>
@@ -197,7 +197,7 @@ export default function FinancialManagementPage() {
                 className="bg-green-600 hover:bg-green-700"
                 onClick={() => setActiveTab('tools')}
               >
-                <Icons?.CalculatorIcon className="mr-2 h-5 w-5" />
+                <Icons.CalculatorIcon className="mr-2 h-5 w-5" />
                 Financial Tools
               </Button>
               <Button
@@ -205,7 +205,7 @@ export default function FinancialManagementPage() {
                 className="border-green-600 text-green-600 hover:bg-green-50"
                 onClick={() => setActiveTab('resources')}
               >
-                <Icons?.DocumentTextIcon className="mr-2 h-5 w-5" />
+                <Icons.DocumentTextIcon className="mr-2 h-5 w-5" />
                 Resources & Guides
               </Button>
             </div>
@@ -274,26 +274,26 @@ export default function FinancialManagementPage() {
           {/* Tools Tab Content */}
           <TabsContent value="tools">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredTools?.map((tool) => (
-                <Card key={tool?.id}>
+              {filteredTools.map((tool) => (
+                <Card key={tool.id}>
                   <CardHeader>
                     <div className="mb-2 flex items-center space-x-3">
-                      <div className="rounded-lg bg-gray-100 p-2">{tool?.icon}</div>
-                      {tool?.premium && (
+                      <div className="rounded-lg bg-gray-100 p-2">{tool.icon}</div>
+                      {tool.premium && (
                         <Badge className="border-amber-200 bg-amber-100 text-amber-800">
                           Premium
                         </Badge>
                       )}
                     </div>
-                    <CardTitle className="text-xl">{tool?.title}</CardTitle>
-                    <CardDescription>{tool?.description}</CardDescription>
+                    <CardTitle className="text-xl">{tool.title}</CardTitle>
+                    <CardDescription>{tool.description}</CardDescription>
                   </CardHeader>
                   <CardFooter>
-                    <Link href={tool?.url} className="w-full">
+                    <Link href={tool.url} className="w-full">
                       <Button
-                        className={`w-full ${tool?.premium ? 'bg-amber-600 hover:bg-amber-700' : 'bg-green-600 hover:bg-green-700'}`}
+                        className={`w-full ${tool.premium ? 'bg-amber-600 hover:bg-amber-700' : 'bg-green-600 hover:bg-green-700'}`}
                       >
-                        {tool?.premium ? 'Upgrade to Access' : 'Use Tool'}
+                        {tool.premium ? 'Upgrade to Access' : 'Use Tool'}
                       </Button>
                     </Link>
                   </CardFooter>
@@ -304,31 +304,31 @@ export default function FinancialManagementPage() {
           {/* Resources Tab Content */}
           <TabsContent value="resources">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredResources?.map((resource) => (
-                <Card key={resource?.id}>
+              {filteredResources.map((resource) => (
+                <Card key={resource.id}>
                   <CardHeader>
                     <div className="mb-2 flex items-start justify-between">
                       <Badge
-                        className={` ${resource?.type === 'guide' ? 'bg-blue-100 text-blue-800' : ''} ${resource?.type === 'template' ? 'bg-purple-100 text-purple-800' : ''} ${resource?.type === 'calculator' ? 'bg-green-100 text-green-800' : ''} ${resource?.type === 'checklist' ? 'bg-orange-100 text-orange-800' : ''} `}
+                        className={` ${resource.type === 'guide' ? 'bg-blue-100 text-blue-800' : ''} ${resource.type === 'template' ? 'bg-purple-100 text-purple-800' : ''} ${resource.type === 'calculator' ? 'bg-green-100 text-green-800' : ''} ${resource.type === 'checklist' ? 'bg-orange-100 text-orange-800' : ''} `}
                       >
-                        {resource?.type.charAt(0).toUpperCase() + resource?.type.slice(1)}
+                        {resource.type.charAt(0).toUpperCase() + resource.type.slice(1)}
                       </Badge>
-                      {resource?.premium && (
+                      {resource.premium && (
                         <Badge className="bg-amber-100 text-amber-800">Premium</Badge>
                       )}
                     </div>
-                    <CardTitle className="text-xl">{resource?.title}</CardTitle>
-                    <CardDescription>{resource?.description}</CardDescription>
+                    <CardTitle className="text-xl">{resource.title}</CardTitle>
+                    <CardDescription>{resource.description}</CardDescription>
                   </CardHeader>
                   <CardFooter>
                     <Link
-                      href={`/business-hub/financial-management/resources/${resource?.id}`}
+                      href={`/business-hub/financial-management/resources/${resource.id}`}
                       className="w-full"
                     >
                       <Button
-                        className={`w-full ${resource?.premium ? 'bg-amber-600 hover:bg-amber-700' : 'bg-green-600 hover:bg-green-700'}`}
+                        className={`w-full ${resource.premium ? 'bg-amber-600 hover:bg-amber-700' : 'bg-green-600 hover:bg-green-700'}`}
                       >
-                        {resource?.premium ? 'Upgrade to Access' : 'View Resource'}
+                        {resource.premium ? 'Upgrade to Access' : 'View Resource'}
                       </Button>
                     </Link>
                   </CardFooter>
@@ -356,7 +356,7 @@ export default function FinancialManagementPage() {
                   >
                     <path
                       fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3?.707-9?.293a1 1 0 00-1?.414-1?.414L9 10?.586 7?.707 9?.293a1 1 0 00-1?.414 1?.414l2 2a1 1 0 001?.414 0l4-4z"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                       clipRule="evenodd"
                     />
                   </svg>
@@ -370,7 +370,7 @@ export default function FinancialManagementPage() {
                   >
                     <path
                       fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3?.707-9?.293a1 1 0 00-1?.414-1?.414L9 10?.586 7?.707 9?.293a1 1 0 00-1?.414 1?.414l2 2a1 1 0 001?.414 0l4-4z"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                       clipRule="evenodd"
                     />
                   </svg>
@@ -384,7 +384,7 @@ export default function FinancialManagementPage() {
                   >
                     <path
                       fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3?.707-9?.293a1 1 0 00-1?.414-1?.414L9 10?.586 7?.707 9?.293a1 1 0 00-1?.414 1?.414l2 2a1 1 0 001?.414 0l4-4z"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                       clipRule="evenodd"
                     />
                   </svg>
@@ -397,7 +397,7 @@ export default function FinancialManagementPage() {
             </div>
             <div className="mt-6 flex justify-center md:mt-0 md:w-1/3">
               <Image
-                src="https://images?.unsplash.com/photo-1554224155-6726b3ff858f"
+                src="https://images.unsplash.com/photo-1554224155-6726b3ff858f"
                 alt="Financial Analysis"
                 width={300}
                 height={250}
@@ -469,13 +469,13 @@ export default function FinancialManagementPage() {
                 <ul className="space-y-2">
                   <li className="flex items-start">
                     <svg
-                      className="mr-2 mt-0?.5 h-5 w-5 text-red-500"
+                      className="mr-2 mt-0.5 h-5 w-5 text-red-500"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
                       <path
                         fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8?.707 7?.293a1 1 0 00-1?.414 1?.414L8.586 10l-1?.293 1?.293a1 1 0 101?.414 1?.414L10 11?.414l1.293 1?.293a1 1 0 001?.414-1?.414L11.414 10l1?.293-1?.293a1 1 0 00-1?.414-1?.414L10 8?.586 8?.707 7?.293z"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
                         clipRule="evenodd"
                       />
                     </svg>
@@ -483,13 +483,13 @@ export default function FinancialManagementPage() {
                   </li>
                   <li className="flex items-start">
                     <svg
-                      className="mr-2 mt-0?.5 h-5 w-5 text-red-500"
+                      className="mr-2 mt-0.5 h-5 w-5 text-red-500"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
                       <path
                         fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8?.707 7?.293a1 1 0 00-1?.414 1?.414L8.586 10l-1?.293 1?.293a1 1 0 101?.414 1?.414L10 11?.414l1.293 1?.293a1 1 0 001?.414-1?.414L11.414 10l1?.293-1?.293a1 1 0 00-1?.414-1?.414L10 8?.586 8?.707 7?.293z"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
                         clipRule="evenodd"
                       />
                     </svg>
@@ -497,13 +497,13 @@ export default function FinancialManagementPage() {
                   </li>
                   <li className="flex items-start">
                     <svg
-                      className="mr-2 mt-0?.5 h-5 w-5 text-red-500"
+                      className="mr-2 mt-0.5 h-5 w-5 text-red-500"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
                       <path
                         fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8?.707 7?.293a1 1 0 00-1?.414 1?.414L8.586 10l-1?.293 1?.293a1 1 0 101?.414 1?.414L10 11?.414l1.293 1?.293a1 1 0 001?.414-1?.414L11.414 10l1?.293-1?.293a1 1 0 00-1?.414-1?.414L10 8?.586 8?.707 7?.293z"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
                         clipRule="evenodd"
                       />
                     </svg>
@@ -511,13 +511,13 @@ export default function FinancialManagementPage() {
                   </li>
                   <li className="flex items-start">
                     <svg
-                      className="mr-2 mt-0?.5 h-5 w-5 text-red-500"
+                      className="mr-2 mt-0.5 h-5 w-5 text-red-500"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
                       <path
                         fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8?.707 7?.293a1 1 0 00-1?.414 1?.414L8.586 10l-1?.293 1?.293a1 1 0 101?.414 1?.414L10 11?.414l1.293 1?.293a1 1 0 001?.414-1?.414L11.414 10l1?.293-1?.293a1 1 0 00-1?.414-1?.414L10 8?.586 8?.707 7?.293z"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
                         clipRule="evenodd"
                       />
                     </svg>
@@ -554,7 +554,7 @@ export default function FinancialManagementPage() {
                   >
                     <path
                       fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3?.707-9?.293a1 1 0 00-1?.414-1?.414L9 10?.586 7?.707 9?.293a1 1 0 00-1?.414 1?.414l2 2a1 1 0 001?.414 0l4-4z"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                       clipRule="evenodd"
                     />
                   </svg>
@@ -568,7 +568,7 @@ export default function FinancialManagementPage() {
                   >
                     <path
                       fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3?.707-9?.293a1 1 0 00-1?.414-1?.414L9 10?.586 7?.707 9?.293a1 1 0 00-1?.414 1?.414l2 2a1 1 0 001?.414 0l4-4z"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                       clipRule="evenodd"
                     />
                   </svg>
@@ -582,7 +582,7 @@ export default function FinancialManagementPage() {
                   >
                     <path
                       fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3?.707-9?.293a1 1 0 00-1?.414-1?.414L9 10?.586 7?.707 9?.293a1 1 0 00-1?.414 1?.414l2 2a1 1 0 001?.414 0l4-4z"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                       clipRule="evenodd"
                     />
                   </svg>
@@ -596,7 +596,7 @@ export default function FinancialManagementPage() {
             <div className="relative md:w-1/3">
               <div className="h-64 md:h-full">
                 <Image
-                  src="https://images?.unsplash.com/photo-1434626881859-194d67b2b86f"
+                  src="https://images.unsplash.com/photo-1434626881859-194d67b2b86f"
                   alt="Financial Workshop"
                   fill
                   className="object-cover"

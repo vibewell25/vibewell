@@ -16,12 +16,12 @@ function ProfileMobileContent() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const defaultTab = searchParams?.get('tab') || 'activity';
+  const defaultTab = searchParams.get('tab') || 'activity';
   const [activeTab, setActiveTab] = useState(defaultTab);
 
   useEffect(() => {
     if (!loading && !user) {
-      router?.push('/auth/login');
+      router.push('/auth/login');
     }
   }, [user, loading, router]);
 
@@ -30,9 +30,9 @@ function ProfileMobileContent() {
     setActiveTab(tab);
 
     // Update URL without page reload
-    const newParams = new URLSearchParams(searchParams?.toString());
-    newParams?.set('tab', tab);
-    router?.push(`/profile/mobile?${newParams?.toString()}`);
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.set('tab', tab);
+    router.push(`/profile/mobile?${newParams.toString()}`);
   };
 
   if (loading) {
@@ -55,18 +55,18 @@ function ProfileMobileContent() {
         {/* Profile Header */}
         <div className="flex flex-col items-center border-b border-border bg-card px-4 pb-4 pt-6">
           <Avatar className="mb-3 h-20 w-20">
-            <AvatarImage src={user?.avatarUrl || ''} alt={user?.fullName || 'User'} />
-            <AvatarFallback>{user?.fullName?.charAt(0) || 'U'}</AvatarFallback>
+            <AvatarImage src={user.avatarUrl || ''} alt={user.fullName || 'User'} />
+            <AvatarFallback>{user.fullName.charAt(0) || 'U'}</AvatarFallback>
           </Avatar>
-          <h1 className="mb-1 text-xl font-semibold">{user?.fullName || 'User'}</h1>
-          <p className="mb-3 text-sm text-muted-foreground">{user?.email}</p>
+          <h1 className="mb-1 text-xl font-semibold">{user.fullName || 'User'}</h1>
+          <p className="mb-3 text-sm text-muted-foreground">{user.email}</p>
 
           <div className="mb-3 flex space-x-2">
             <Badge variant="outline" className="px-2 py-1 text-xs">
-              {user?.role || 'Customer'}
+              {user.role || 'Customer'}
             </Badge>
             <Badge variant="outline" className="px-2 py-1 text-xs">
-              Member since {format(new Date(user?.createdAt || Date?.now()), 'MMM yyyy')}
+              Member since {format(new Date(user.createdAt || Date.now()), 'MMM yyyy')}
             </Badge>
           </div>
 
@@ -165,7 +165,7 @@ function ProfileMobileContent() {
                     <h3 className="font-medium">Serenity Spa</h3>
                     <p className="text-sm text-muted-foreground">Massage, Facials</p>
                     <div className="mt-1 flex items-center">
-                      <span className="mr-1 text-sm">4?.8</span>
+                      <span className="mr-1 text-sm">4.8</span>
                       <span className="text-yellow-500">★★★★★</span>
                     </div>
                   </div>
@@ -179,7 +179,7 @@ function ProfileMobileContent() {
                     <h3 className="font-medium">Modern Cuts Salon</h3>
                     <p className="text-sm text-muted-foreground">Haircuts, Styling</p>
                     <div className="mt-1 flex items-center">
-                      <span className="mr-1 text-sm">4?.6</span>
+                      <span className="mr-1 text-sm">4.6</span>
                       <span className="text-yellow-500">★★★★★</span>
                     </div>
                   </div>
@@ -193,7 +193,7 @@ function ProfileMobileContent() {
                     <h3 className="font-medium">Glow Beauty Lounge</h3>
                     <p className="text-sm text-muted-foreground">Facials, Makeup</p>
                     <div className="mt-1 flex items-center">
-                      <span className="mr-1 text-sm">4?.7</span>
+                      <span className="mr-1 text-sm">4.7</span>
                       <span className="text-yellow-500">★★★★★</span>
                     </div>
                   </div>

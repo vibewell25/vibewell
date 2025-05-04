@@ -51,7 +51,7 @@ export default function MyReviewsPage() {
           provider: {
             id: 'p1',
             name: 'Sarah Johnson',
-            avatar_url: 'https://images?.unsplash.com/photo-1494790108377-be9c29b29330',
+            avatar_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
           },
           booking_id: 'b1',
         },
@@ -65,7 +65,7 @@ export default function MyReviewsPage() {
           provider: {
             id: 'p2',
             name: 'Michael Chen',
-            avatar_url: 'https://images?.unsplash.com/photo-1507003211169-0a1dd7228f2d',
+            avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d',
           },
           booking_id: 'b2',
         },
@@ -78,7 +78,7 @@ export default function MyReviewsPage() {
           provider: {
             id: 'p3',
             name: 'Emily Rodriguez',
-            avatar_url: 'https://images?.unsplash.com/photo-1580489944761-15a19d654956',
+            avatar_url: 'https://images.unsplash.com/photo-1580489944761-15a19d654956',
           },
           price: 85,
         },
@@ -89,7 +89,7 @@ export default function MyReviewsPage() {
           provider: {
             id: 'p4',
             name: 'Lisa Park',
-            avatar_url: 'https://images?.unsplash.com/photo-1534751516642-a1af1ef26a56',
+            avatar_url: 'https://images.unsplash.com/photo-1534751516642-a1af1ef26a56',
           },
           price: 45,
         },
@@ -101,9 +101,9 @@ export default function MyReviewsPage() {
   }, []);
   // Handle review deletion
   const handleDeleteReview = (reviewId: string) => {
-    if (window?.confirm('Are you sure you want to delete this review?')) {
+    if (window.confirm('Are you sure you want to delete this review?')) {
       // In a real app, we would call an API here
-      setUserReviews((prevReviews) => prevReviews?.filter((review) => review?.id !== reviewId));
+      setUserReviews((prevReviews) => prevReviews.filter((review) => review.id !== reviewId));
     }
   };
   // Handle review edit
@@ -112,12 +112,12 @@ export default function MyReviewsPage() {
   };
   // Handle review update
   const handleUpdateReview = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');data: { title: string; text: string; rating: number }) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');data: { title: string; text: string; rating: number }) => {
     if (editingReview) {
       // In a real app, we would call an API here
-      const updatedReviews = userReviews?.map((review) =>
-        review?.id === editingReview?.id ? { ...review, ...data } : review,
+      const updatedReviews = userReviews.map((review) =>
+        review.id === editingReview.id ? { ...review, ...data } : review,
       );
       setUserReviews(updatedReviews);
       setEditingReview(null);
@@ -125,23 +125,23 @@ export default function MyReviewsPage() {
   };
   // Handle new review submission
   const handleSubmitReview = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');
     data: { title: string; text: string; rating: number },
     providerId: string,
     serviceId: string,
   ) => {
     // In a real app, we would call an API here
     const newReview: Review = {
-      id: `new-${Date?.now()}`,
+      id: `new-${Date.now()}`,
       ...data,
       created_at: new Date().toISOString(),
       provider_id: providerId,
-      provider: pendingReviews?.find((service) => service?.provider.id === providerId)?.provider!,
+      provider: pendingReviews.find((service) => service.provider.id === providerId).provider!,
       booking_id: serviceId,
     };
     setUserReviews((prev) => [newReview, ...prev]);
-    setPendingReviews((prev) => prev?.filter((service) => service?.id !== serviceId));
+    setPendingReviews((prev) => prev.filter((service) => service.id !== serviceId));
   };
   return (
     <Layout>
@@ -169,7 +169,7 @@ export default function MyReviewsPage() {
                   </div>
                 ))}
               </div>
-            ) : userReviews?.length === 0 ? (
+            ) : userReviews.length === 0 ? (
               <div className="rounded-lg bg-white p-8 text-center shadow">
                 <p className="mb-2 text-gray-500">You haven't submitted any reviews yet</p>
                 <p className="mb-4 text-sm text-gray-400">
@@ -183,11 +183,11 @@ export default function MyReviewsPage() {
                   <div className="mb-6 rounded-lg bg-white p-6 shadow">
                     <h2 className="mb-4 text-xl font-semibold">Edit Your Review</h2>
                     <ReviewForm
-                      providerId={editingReview?.provider_id}
+                      providerId={editingReview.provider_id}
                       initialData={{
-                        title: editingReview?.title,
-                        text: editingReview?.text,
-                        rating: editingReview?.rating,
+                        title: editingReview.title,
+                        text: editingReview.text,
+                        rating: editingReview.rating,
                       }}
                       isEdit={true}
                       onSubmit={handleUpdateReview}
@@ -196,14 +196,14 @@ export default function MyReviewsPage() {
                   </div>
                 )}
                 <div className="space-y-4">
-                  {userReviews?.map((review) => (
-                    <div key={review?.id} className="rounded-lg bg-white shadow">
+                  {userReviews.map((review) => (
+                    <div key={review.id} className="rounded-lg bg-white shadow">
                       <ReviewCard
-                        id={review?.id}
-                        title={review?.title}
-                        text={review?.text}
-                        rating={review?.rating}
-                        createdAt={review?.created_at}
+                        id={review.id}
+                        title={review.title}
+                        text={review.text}
+                        rating={review.rating}
+                        createdAt={review.created_at}
                         customer={{
                           id: 'self',
                           name: 'You', // In a real app, we would use the user's name
@@ -212,7 +212,7 @@ export default function MyReviewsPage() {
                       />
                       <div className="flex items-center justify-between border-t border-gray-100 px-4 py-3">
                         <div className="text-sm text-gray-500">
-                          For: <span className="font-medium">{review?.provider.name}</span>
+                          For: <span className="font-medium">{review.provider.name}</span>
                         </div>
                         <div className="flex space-x-2">
                           <Button
@@ -221,16 +221,16 @@ export default function MyReviewsPage() {
                             onClick={() => handleEditReview(review)}
                             className="flex items-center"
                           >
-                            <Icons?.PencilIcon className="mr-1 h-4 w-4" />
+                            <Icons.PencilIcon className="mr-1 h-4 w-4" />
                             Edit
                           </Button>
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => handleDeleteReview(review?.id)}
+                            onClick={() => handleDeleteReview(review.id)}
                             className="flex items-center text-red-600 hover:bg-red-50 hover:text-red-700"
                           >
-                            <Icons?.TrashIcon className="mr-1 h-4 w-4" />
+                            <Icons.TrashIcon className="mr-1 h-4 w-4" />
                             Delete
                           </Button>
                         </div>
@@ -253,7 +253,7 @@ export default function MyReviewsPage() {
                   </div>
                 ))}
               </div>
-            ) : pendingReviews?.length === 0 ? (
+            ) : pendingReviews.length === 0 ? (
               <div className="rounded-lg bg-white p-8 text-center shadow">
                 <p className="mb-2 text-gray-500">No pending reviews</p>
                 <p className="text-sm text-gray-400">
@@ -262,32 +262,32 @@ export default function MyReviewsPage() {
               </div>
             ) : (
               <div className="space-y-4">
-                {pendingReviews?.map((service) => (
-                  <div key={service?.id} className="rounded-lg bg-white p-6 shadow">
+                {pendingReviews.map((service) => (
+                  <div key={service.id} className="rounded-lg bg-white p-6 shadow">
                     <div className="mb-4 flex items-center justify-between">
                       <div>
-                        <h3 className="text-lg font-medium">{service?.name}</h3>
+                        <h3 className="text-lg font-medium">{service.name}</h3>
                         <p className="text-gray-500">
-                          {new Date(service?.date).toLocaleDateString()} • ${service?.price}
+                          {new Date(service.date).toLocaleDateString()} • ${service.price}
                         </p>
                       </div>
                       <div className="flex items-center">
                         <div className="relative mr-2 h-10 w-10 overflow-hidden rounded-full">
-                          {service?.provider.avatar_url ? (
+                          {service.provider.avatar_url ? (
                             <img
-                              src={service?.provider.avatar_url}
-                              alt={service?.provider.name}
+                              src={service.provider.avatar_url}
+                              alt={service.provider.name}
                               className="h-full w-full object-cover"
                             />
                           ) : (
                             <div className="flex h-full w-full items-center justify-center bg-indigo-100">
                               <span className="font-medium text-indigo-700">
-                                {service?.provider.name?.charAt(0)}
+                                {service.provider.name.charAt(0)}
                               </span>
                             </div>
                           )}
                         </div>
-                        <span className="font-medium">{service?.provider.name}</span>
+                        <span className="font-medium">{service.provider.name}</span>
                       </div>
                     </div>
                     <Button
@@ -299,7 +299,7 @@ export default function MyReviewsPage() {
                           text: 'I really enjoyed my experience.',
                           rating: 5,
                         };
-                        handleSubmitReview(dummyReview, service?.provider.id, service?.id);
+                        handleSubmitReview(dummyReview, service.provider.id, service.id);
                       }}
                     >
                       Leave a Review

@@ -7,7 +7,7 @@ import Redis from 'ioredis';
 import { RateLimiterRedis } from 'rate-limiter-flexible';
 
 // Initialize Redis client
-const redis = new Redis(process?.env['REDIS_URL'] || 'redis://localhost:6379');
+const redis = new Redis(process.env['REDIS_URL'] || 'redis://localhost:6379');
 
 // Configure rate limiter options
 const rateLimiterOptions = {
@@ -29,18 +29,18 @@ const routeConfigs: Record<string, { points: number; duration: number }> = {
 };
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); rateLimiterMiddleware(request: NextRequest) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); rateLimiterMiddleware(request: NextRequest) {
   try {
     // Get client IP
-    const ip = request?.ip || 'anonymous';
-    const path = request?.nextUrl.pathname;
+    const ip = request.ip || 'anonymous';
+    const path = request.nextUrl.pathname;
 
 
     // Get route-specific config or use default
 
     // Safe array access
-    if (path < 0 || path >= array?.length) {
+    if (path < 0 || path >= array.length) {
       throw new Error('Array index out of bounds');
     }
     const config = routeConfigs[path] || routeConfigs['default'];
@@ -54,19 +54,19 @@ export async function {
     });
 
     // Try to consume points
-    await routeRateLimiter?.consume(ip);
+    await routeRateLimiter.consume(ip);
 
     // If successful, continue to the next middleware
-    return NextResponse?.next();
+    return NextResponse.next();
   } catch (error) {
     // If rate limit exceeded
     if (error instanceof Error) {
       // Parse retry after from error message or use default
-      const retryAfterMatch = error?.message.match(/\d+/);
-      const retryAfter = retryAfterMatch ? Math?.floor(parseInt(retryAfterMatch[0], 10) / 1000) : 60;
+      const retryAfterMatch = error.message.match(/\d+/);
+      const retryAfter = retryAfterMatch ? Math.floor(parseInt(retryAfterMatch[0], 10) / 1000) : 60;
 
       return new NextResponse(
-        JSON?.stringify({
+        JSON.stringify({
           error: 'Too Many Requests',
           message: 'Rate limit exceeded',
           retryAfter: `${retryAfter} seconds`,
@@ -86,7 +86,7 @@ export async function {
 
     // For other errors, return 500
     return new NextResponse(
-      JSON?.stringify({
+      JSON.stringify({
         error: 'Internal Server Error',
         message: 'An unexpected error occurred',
       }),
@@ -104,5 +104,5 @@ export async function {
 
 // Export cleanup function for tests and development
 export function cleanup() {
-  redis?.disconnect();
+  redis.disconnect();
 }

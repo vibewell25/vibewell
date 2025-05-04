@@ -114,19 +114,19 @@ export default function ProviderProfilePage() {
           <div className="flex-1">
             <div className="mb-4 flex items-center gap-4">
               <Avatar className="h-24 w-24">
-                <AvatarImage src={provider?.avatar} alt={provider?.name} />
+                <AvatarImage src={provider.avatar} alt={provider.name} />
                 <AvatarFallback>
                   <UserIcon className="h-12 w-12" />
                 </AvatarFallback>
               </Avatar>
               <div>
-                <h1 className="text-4xl font-bold">{provider?.name}</h1>
+                <h1 className="text-4xl font-bold">{provider.name}</h1>
                 <div className="mt-1 flex items-center gap-2">
                   <div className="flex items-center">
                     <StarIcon className="h-5 w-5 text-yellow-500" />
-                    <span className="ml-1 font-medium">{provider?.rating}</span>
+                    <span className="ml-1 font-medium">{provider.rating}</span>
                   </div>
-                  <span className="text-muted-foreground">({provider?.reviewCount} reviews)</span>
+                  <span className="text-muted-foreground">({provider.reviewCount} reviews)</span>
                 </div>
                 <div className="mt-2 flex gap-2">{/* Add specialty badges here */}</div>
               </div>
@@ -158,11 +158,11 @@ export default function ProviderProfilePage() {
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-2">
                   <MapPinIcon className="h-5 w-5 text-muted-foreground" />
-                  <span>{provider?.location}</span>
+                  <span>{provider.location}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <PhoneIcon className="h-5 w-5 text-muted-foreground" />
-                  <span>{provider?.phone}</span>
+                  <span>{provider.phone}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <EnvelopeIcon className="h-5 w-5 text-muted-foreground" />
@@ -204,20 +204,20 @@ export default function ProviderProfilePage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {provider?.services.slice(0, 3).map((service) => (
+                    {provider.services.slice(0, 3).map((service) => (
                       <div
-                        key={service?.id}
+                        key={service.id}
                         className="flex items-center justify-between rounded-lg border p-4"
                       >
                         <div>
-                          <h3 className="font-medium">{service?.name}</h3>
+                          <h3 className="font-medium">{service.name}</h3>
                           <div className="flex items-center text-sm text-gray-500">
                             <ClockIcon className="mr-1 h-4 w-4" />
-                            {service?.duration} min
+                            {service.duration} min
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className="font-medium">${service?.price}</div>
+                          <div className="font-medium">${service.price}</div>
                           <Button variant="outline" size="sm">
                             Book Now
                           </Button>
@@ -232,17 +232,17 @@ export default function ProviderProfilePage() {
           {/* Services Tab */}
           <TabsContent value="services" className="mt-6">
             <div className="grid gap-4">
-              {provider?.services.map((service) => (
-                <Card key={service?.id}>
+              {provider.services.map((service) => (
+                <Card key={service.id}>
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between">
                       <div>
-                        <h3 className="font-medium">{service?.name}</h3>
-                        <p className="text-sm text-muted-foreground">{service?.description}</p>
+                        <h3 className="font-medium">{service.name}</h3>
+                        <p className="text-sm text-muted-foreground">{service.description}</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-medium">${service?.price}</p>
-                        <p className="text-sm text-muted-foreground">{service?.duration} min</p>
+                        <p className="font-medium">${service.price}</p>
+                        <p className="text-sm text-muted-foreground">{service.duration} min</p>
                       </div>
                     </div>
                   </CardContent>

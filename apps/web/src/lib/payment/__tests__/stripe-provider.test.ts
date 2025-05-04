@@ -27,31 +27,31 @@ import Stripe from 'stripe';
 // jest globals (describe, it, expect, beforeEach) are automatically available
 
 // Mock the Stripe module
-jest?.mock('stripe', () => {
+jest.mock('stripe', () => {
   return {
-    default: jest?.fn().mockImplementation(() => ({
+    default: jest.fn().mockImplementation(() => ({
       customers: {
-        create: jest?.fn().mockResolvedValue({
+        create: jest.fn().mockResolvedValue({
           id: 'cus_mock123',
-          email: 'test@example?.com',
+          email: 'test@example.com',
           name: 'Test User',
           metadata: { userId: 'user123' },
         }),
-        retrieve: jest?.fn().mockResolvedValue({
+        retrieve: jest.fn().mockResolvedValue({
           id: 'cus_mock123',
-          email: 'test@example?.com',
+          email: 'test@example.com',
           name: 'Test User',
           metadata: { userId: 'user123' },
           deleted: false,
           invoice_settings: { default_payment_method: 'pm_default' },
         }),
-        update: jest?.fn().mockResolvedValue({
+        update: jest.fn().mockResolvedValue({
           id: 'cus_mock123',
           invoice_settings: { default_payment_method: 'pm_123' },
         }),
       },
       paymentMethods: {
-        attach: jest?.fn().mockResolvedValue({
+        attach: jest.fn().mockResolvedValue({
           id: 'pm_123',
           type: 'card',
           card: {
@@ -61,7 +61,7 @@ jest?.mock('stripe', () => {
             exp_year: 2025,
           },
         }),
-        list: jest?.fn().mockResolvedValue({
+        list: jest.fn().mockResolvedValue({
           data: [
             {
               id: 'pm_123',
@@ -77,45 +77,45 @@ jest?.mock('stripe', () => {
         }),
       },
       paymentIntents: {
-        create: jest?.fn().mockResolvedValue({
+        create: jest.fn().mockResolvedValue({
           id: 'pi_123',
           amount: 1000,
           currency: 'usd',
           status: 'requires_payment_method',
           client_secret: 'pi_123_secret_456',
-          created: Date?.now() / 1000,
+          created: Date.now() / 1000,
           metadata: { order_id: '12345' },
         }),
-        confirm: jest?.fn().mockResolvedValue({
+        confirm: jest.fn().mockResolvedValue({
           id: 'pi_123',
           amount: 1000,
           currency: 'usd',
           status: 'succeeded',
           payment_method: 'pm_123',
-          created: Date?.now() / 1000,
+          created: Date.now() / 1000,
           metadata: { order_id: '12345' },
         }),
-        retrieve: jest?.fn().mockResolvedValue({
+        retrieve: jest.fn().mockResolvedValue({
           id: 'pi_123',
           amount: 1000,
           currency: 'usd',
           status: 'succeeded',
           payment_method: 'pm_123',
-          created: Date?.now() / 1000,
+          created: Date.now() / 1000,
           metadata: { order_id: '12345' },
         }),
-        cancel: jest?.fn().mockResolvedValue({
+        cancel: jest.fn().mockResolvedValue({
           id: 'pi_123',
           amount: 1000,
           currency: 'usd',
           status: 'canceled',
           payment_method: 'pm_123',
-          created: Date?.now() / 1000,
+          created: Date.now() / 1000,
           metadata: { order_id: '12345' },
         }),
       },
       refunds: {
-        create: jest?.fn().mockResolvedValue({
+        create: jest.fn().mockResolvedValue({
           id: 're_123',
           payment_intent: 'pi_123',
           amount: 1000,
@@ -131,7 +131,7 @@ describe('StripePaymentProvider', () => {
 
   beforeEach(async () => {
     provider = new StripePaymentProvider();
-    await provider?.initialize({ apiKey: 'sk_test_12345' });
+    await provider.initialize({ apiKey: 'sk_test_12345' });
   });
 
   it('initializes with the Stripe API key', () => {
@@ -139,14 +139,14 @@ describe('StripePaymentProvider', () => {
       apiVersion: '2023-10-16',
       appInfo: {
         name: 'VibeWell Platform',
-        version: '1?.0.0',
+        version: '1.0.0',
       },
     });
   });
 
   it('creates a customer', async () => {
-    const result = await provider?.createCustomer({
-      email: 'test@example?.com',
+    const result = await provider.createCustomer({
+      email: 'test@example.com',
       name: 'Test User',
       userId: 'user123',
     });
@@ -155,18 +155,18 @@ describe('StripePaymentProvider', () => {
   });
 
   it('retrieves a customer', async () => {
-    const result = await provider?.getCustomer('cus_mock123');
+    const result = await provider.getCustomer('cus_mock123');
 
     expect(result).toEqual({
       id: 'cus_mock123',
-      email: 'test@example?.com',
+      email: 'test@example.com',
       name: 'Test User',
       metadata: { userId: 'user123' },
     });
   });
 
   it('adds a payment method', async () => {
-    const result = await provider?.addPaymentMethod('cus_mock123', 'pm_token_123');
+    const result = await provider.addPaymentMethod('cus_mock123', 'pm_token_123');
 
     expect(result).toEqual({
       id: 'pm_123',
@@ -180,7 +180,7 @@ describe('StripePaymentProvider', () => {
   });
 
   it('lists payment methods', async () => {
-    const result = await provider?.listPaymentMethods('cus_mock123');
+    const result = await provider.listPaymentMethods('cus_mock123');
 
     expect(result).toEqual([
       {
@@ -196,14 +196,14 @@ describe('StripePaymentProvider', () => {
   });
 
   it('sets a default payment method', async () => {
-    await provider?.setDefaultPaymentMethod('cus_mock123', 'pm_123');
+    await provider.setDefaultPaymentMethod('cus_mock123', 'pm_123');
 
     // Since we're using mocks, we can't assert much beyond that it doesn't throw
     expect(true).toBeTruthy();
   });
 
   it('creates a payment intent', async () => {
-    const result = await provider?.createPaymentIntent('cus_mock123', {
+    const result = await provider.createPaymentIntent('cus_mock123', {
       amount: 10,
       currency: 'usd',
       description: 'Test payment',
@@ -216,13 +216,13 @@ describe('StripePaymentProvider', () => {
       currency: 'usd',
       status: 'requires_payment_method',
       clientSecret: 'pi_123_secret_456',
-      created: expect?.any(Number),
+      created: expect.any(Number),
       metadata: { order_id: '12345' },
     });
   });
 
   it('confirms a payment intent', async () => {
-    const result = await provider?.confirmPaymentIntent('pi_123', 'pm_123');
+    const result = await provider.confirmPaymentIntent('pi_123', 'pm_123');
 
     expect(result).toEqual({
       id: 'pi_123',
@@ -230,13 +230,13 @@ describe('StripePaymentProvider', () => {
       currency: 'usd',
       status: 'succeeded',
       paymentMethod: 'pm_123',
-      created: expect?.any(Number),
+      created: expect.any(Number),
       metadata: { order_id: '12345' },
     });
   });
 
   it('retrieves a payment intent', async () => {
-    const result = await provider?.retrievePaymentIntent('pi_123');
+    const result = await provider.retrievePaymentIntent('pi_123');
 
     expect(result).toEqual({
       id: 'pi_123',
@@ -244,13 +244,13 @@ describe('StripePaymentProvider', () => {
       currency: 'usd',
       status: 'succeeded',
       paymentMethod: 'pm_123',
-      created: expect?.any(Number),
+      created: expect.any(Number),
       metadata: { order_id: '12345' },
     });
   });
 
   it('cancels a payment intent', async () => {
-    const result = await provider?.cancelPaymentIntent('pi_123');
+    const result = await provider.cancelPaymentIntent('pi_123');
 
     expect(result).toEqual({
       id: 'pi_123',
@@ -258,13 +258,13 @@ describe('StripePaymentProvider', () => {
       currency: 'usd',
       status: 'canceled',
       paymentMethod: 'pm_123',
-      created: expect?.any(Number),
+      created: expect.any(Number),
       metadata: { order_id: '12345' },
     });
   });
 
   it('creates a refund', async () => {
-    const result = await provider?.createRefund('pi_123', 10, 'requested_by_customer');
+    const result = await provider.createRefund('pi_123', 10, 'requested_by_customer');
 
     expect(result).toEqual({
       id: 're_123',

@@ -7,7 +7,7 @@ interface MetricCardProps {
   title: string;
   value: string;
   description: string;
-  icon: React?.ReactNode;
+  icon: React.ReactNode;
   change?: {
     value: string;
     type: 'increase' | 'decrease';
@@ -26,13 +26,13 @@ function MetricCard({ title, value, description, icon, change }: MetricCardProps
         <p className="text-xs text-muted-foreground">{description}</p>
         {change && (
           <div className="mt-2 flex items-center text-xs">
-            {change?.type === 'increase' ? (
+            {change.type === 'increase' ? (
               <ArrowUpIcon className="mr-1 h-3 w-3 text-green-500" />
             ) : (
               <ArrowDownIcon className="mr-1 h-3 w-3 text-red-500" />
             )}
-            <span className={change?.type === 'increase' ? 'text-green-500' : 'text-red-500'}>
-              {change?.value}
+            <span className={change.type === 'increase' ? 'text-green-500' : 'text-red-500'}>
+              {change.value}
             </span>
           </div>
         )}
@@ -46,11 +46,11 @@ export function Metrics() {
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <MetricCard
         title="Total Revenue"
-        value="$45,231?.89"
+        value="$45,231.89"
         description="Monthly revenue"
         icon={<CreditCard className="h-4 w-4" />}
         change={{
-          value: '+20?.1% from last month',
+          value: '+20.1% from last month',
           type: 'increase',
         }}
       />
@@ -60,7 +60,7 @@ export function Metrics() {
         description="Active this month"
         icon={<Users className="h-4 w-4" />}
         change={{
-          value: '+12?.5% from last month',
+          value: '+12.5% from last month',
           type: 'increase',
         }}
       />
@@ -70,17 +70,17 @@ export function Metrics() {
         description="This week"
         icon={<Calendar className="h-4 w-4" />}
         change={{
-          value: '-3?.2% from last week',
+          value: '-3.2% from last week',
           type: 'decrease',
         }}
       />
       <MetricCard
         title="Conversion Rate"
-        value="3?.2%"
+        value="3.2%"
         description="Visitor to booking"
         icon={<BarChart3 className="h-4 w-4" />}
         change={{
-          value: '+1?.1% from last month',
+          value: '+1.1% from last month',
           type: 'increase',
         }}
       />

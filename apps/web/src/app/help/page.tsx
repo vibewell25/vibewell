@@ -12,7 +12,7 @@ export default function HelpCenter() {
     {
       id: 'getting-started',
       title: 'Getting Started',
-      icon: <Icons?.BookOpenIcon className="h-8 w-8" />,
+      icon: <Icons.BookOpenIcon className="h-8 w-8" />,
       description: 'New to Vibewell? Learn the basics and set up your account.',
       path: '/help/getting-started',
       articles: [
@@ -24,7 +24,7 @@ export default function HelpCenter() {
     {
       id: 'account',
       title: 'Account Management',
-      icon: <Icons?.UserCircleIcon className="h-8 w-8" />,
+      icon: <Icons.UserCircleIcon className="h-8 w-8" />,
       description: 'Manage your profile, privacy settings, and subscription details.',
       path: '/help/account',
       articles: [
@@ -36,7 +36,7 @@ export default function HelpCenter() {
     {
       id: 'features',
       title: 'Features & Functionality',
-      icon: <Icons?.SparklesIcon className="h-8 w-8" />,
+      icon: <Icons.SparklesIcon className="h-8 w-8" />,
       description: 'Discover how to use Vibewell features and get the most out of the platform.',
       path: '/help/features',
       articles: [
@@ -48,7 +48,7 @@ export default function HelpCenter() {
     {
       id: 'troubleshooting',
       title: 'Troubleshooting',
-      icon: <Icons?.ArrowPathIcon className="h-8 w-8" />,
+      icon: <Icons.ArrowPathIcon className="h-8 w-8" />,
       description: 'Having issues? Find solutions to common problems and technical support.',
       path: '/help/troubleshooting',
       articles: [
@@ -104,14 +104,14 @@ export default function HelpCenter() {
             </p>
             <div className="relative mx-auto max-w-2xl">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <Icons?.MagnifyingGlassIcon className="h-5 w-5 text-muted-foreground" />
+                <Icons.MagnifyingGlassIcon className="h-5 w-5 text-muted-foreground" />
               </div>
               <Input
                 type="text"
                 placeholder="Search for help articles..."
                 className="h-12 w-full rounded-md pl-10"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e?.target.value)}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
               <Button className="absolute right-0 top-0 h-12 rounded-l-none">Search</Button>
             </div>
@@ -121,35 +121,35 @@ export default function HelpCenter() {
         <div className="mb-16">
           <h2 className="mb-8 text-3xl font-bold">Browse Help Categories</h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {categories?.map((category) => (
+            {categories.map((category) => (
               <div
-                key={category?.id}
+                key={category.id}
                 className="rounded-lg border bg-card p-6 transition-all hover:shadow-md"
               >
                 <div className="mb-4 flex items-start">
                   <div className="bg-primary/10 text-primary mr-4 rounded-md p-2">
-                    {category?.icon}
+                    {category.icon}
                   </div>
                   <div>
-                    <h3 className="mb-2 text-xl font-bold">{category?.title}</h3>
-                    <p className="text-muted-foreground">{category?.description}</p>
+                    <h3 className="mb-2 text-xl font-bold">{category.title}</h3>
+                    <p className="text-muted-foreground">{category.description}</p>
                   </div>
                 </div>
                 <ul className="mb-4 space-y-2 border-l-2 border-muted pl-4">
-                  {category?.articles.map((article, index) => (
+                  {category.articles.map((article, index) => (
                     <li key={index}>
                       <Link
-                        href={article?.path}
+                        href={article.path}
                         className="text-primary flex items-center hover:underline"
                       >
                         <span className="mr-2">•</span>
-                        {article?.title}
+                        {article.title}
                       </Link>
                     </li>
                   ))}
                 </ul>
                 <Button variant="outline" asChild className="w-full">
-                  <Link href={category?.path}>View all {category?.title} articles</Link>
+                  <Link href={category.path}>View all {category.title} articles</Link>
                 </Button>
               </div>
             ))}
@@ -159,16 +159,16 @@ export default function HelpCenter() {
         <div className="mb-16">
           <h2 className="mb-8 text-3xl font-bold">Frequently Asked Questions</h2>
           <div className="space-y-4">
-            {faqs?.map((faq, index) => (
+            {faqs.map((faq, index) => (
               <div key={index} className="rounded-lg border bg-card p-6">
                 <h3 className="mb-2 flex items-start text-xl font-semibold">
-                  <Icons?.QuestionMarkCircleIcon className="text-primary mr-2 h-6 w-6 flex-shrink-0" />
-                  <span>{faq?.question}</span>
+                  <Icons.QuestionMarkCircleIcon className="text-primary mr-2 h-6 w-6 flex-shrink-0" />
+                  <span>{faq.question}</span>
                 </h3>
-                <p className="mb-3 ml-8 text-muted-foreground">{faq?.answer}</p>
+                <p className="mb-3 ml-8 text-muted-foreground">{faq.answer}</p>
                 <div className="ml-8">
                   <Link
-                    href={faq?.path}
+                    href={faq.path}
                     className="text-primary inline-flex items-center text-sm hover:underline"
                   >
                     Read more
@@ -177,7 +177,7 @@ export default function HelpCenter() {
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
-                      xmlns="http://www?.w3.org/2000/svg"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         strokeLinecap="round"
@@ -198,7 +198,7 @@ export default function HelpCenter() {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <div className="rounded-lg border bg-card p-6 transition-all hover:shadow-md">
               <div className="text-primary mb-4">
-                <Icons?.AcademicCapIcon className="h-10 w-10" />
+                <Icons.AcademicCapIcon className="h-10 w-10" />
               </div>
               <h3 className="mb-2 text-xl font-bold">Video Tutorials</h3>
               <p className="mb-4 text-muted-foreground">
@@ -210,7 +210,7 @@ export default function HelpCenter() {
             </div>
             <div className="rounded-lg border bg-card p-6 transition-all hover:shadow-md">
               <div className="text-primary mb-4">
-                <Icons?.DocumentTextIcon className="h-10 w-10" />
+                <Icons.DocumentTextIcon className="h-10 w-10" />
               </div>
               <h3 className="mb-2 text-xl font-bold">User Manual</h3>
               <p className="mb-4 text-muted-foreground">
@@ -222,7 +222,7 @@ export default function HelpCenter() {
             </div>
             <div className="rounded-lg border bg-card p-6 transition-all hover:shadow-md">
               <div className="text-primary mb-4">
-                <Icons?.ShieldExclamationIcon className="h-10 w-10" />
+                <Icons.ShieldExclamationIcon className="h-10 w-10" />
               </div>
               <h3 className="mb-2 text-xl font-bold">Privacy & Terms</h3>
               <p className="mb-4 text-muted-foreground">

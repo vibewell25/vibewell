@@ -5,24 +5,24 @@ import { performance } from 'perf_hooks';
 import winston from 'winston';
 
 // Configure Winston logger
-const logger = winston?.createLogger({
+const logger = winston.createLogger({
   level: 'info',
-  format: winston?.format.combine(
-    winston?.format.timestamp(),
-    winston?.format.json(),
-    winston?.format.errors({ stack: true })
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json(),
+    winston.format.errors({ stack: true })
   ),
   defaultMeta: { service: 'vibewell-web' },
   transports: [
-    new winston?.transports.File({ filename: 'logs/error?.log', level: 'error' }),
-    new winston?.transports.File({ filename: 'logs/combined?.log' }),
+    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
+    new winston.transports.File({ filename: 'logs/combined.log' }),
   ],
 });
 
 // Add console logging in development
-if (process?.env.NODE_ENV !== 'production') {
-  logger?.add(new winston?.transports.Console({
-    format: winston?.format.simple(),
+if (process.env.NODE_ENV !== 'production') {
+  logger.add(new winston.transports.Console({
+    format: winston.format.simple(),
   }));
 }
 
@@ -127,7 +127,7 @@ export function endTransaction(name: string, transaction?: Span | null) {
 
 // API monitoring
 export function monitorAPICall(endpoint: string, duration: number, status: number) {
-  logger?.info('API call completed', {
+  logger.info('API call completed', {
     endpoint,
     duration,
     status,
@@ -135,7 +135,7 @@ export function monitorAPICall(endpoint: string, duration: number, status: numbe
   });
   
   if (status >= 400) {
-    Sentry?.addBreadcrumb({
+    Sentry.addBreadcrumb({
       category: 'api',
       message: `API call failed: ${endpoint}`,
       level: 'error',

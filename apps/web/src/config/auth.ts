@@ -6,14 +6,14 @@ import type { NextApiRequest, NextApiResponse } from 'next';
  * These settings are used across the application for consistent auth behavior
 
 
- * @see https://auth0?.github.io/nextjs-auth0/modules/config?.html
+ * @see https://auth0.github.io/nextjs-auth0/modules/config.html
  */
 export const authConfig = {
-  baseURL: process?.env['AUTH0_BASE_URL'],
-  clientID: process?.env['AUTH0_CLIENT_ID'],
-  clientSecret: process?.env['AUTH0_CLIENT_SECRET'],
-  issuerBaseURL: process?.env['AUTH0_ISSUER_BASE_URL'],
-  secret: process?.env['AUTH0_SECRET'],
+  baseURL: process.env['AUTH0_BASE_URL'],
+  clientID: process.env['AUTH0_CLIENT_ID'],
+  clientSecret: process.env['AUTH0_CLIENT_SECRET'],
+  issuerBaseURL: process.env['AUTH0_ISSUER_BASE_URL'],
+  secret: process.env['AUTH0_SECRET'],
   routes: {
 
     callback: '/api/auth/callback',
@@ -32,21 +32,21 @@ export const authConfig = {
   authorizationParams: {
     response_type: 'code',
     scope: 'openid profile email',
-    audience: process?.env['AUTH0_AUDIENCE']
+    audience: process.env['AUTH0_AUDIENCE']
   },
   hooks: {
     async afterCallback(req, res, session) {
-      if (session?.user) {
+      if (session.user) {
         // Get the user's roles from the Auth0 token
-        const namespace = process?.env['AUTH0_NAMESPACE'] || 'https://vibewell?.com';
-        const roles = session?.user[`${namespace}/roles`] as string[] || [];
+        const namespace = process.env['AUTH0_NAMESPACE'] || 'https://vibewell.com';
+        const roles = session.user[`${namespace}/roles`] as string[] || [];
         
 
         // Add roles and role-based flags to the user object
-        session?.user.roles = roles;
-        session?.user.isAdmin = roles?.includes('admin');
-        session?.user.isProvider = roles?.includes('provider');
-        session?.user.isUser = roles?.includes('user');
+        session.user.roles = roles;
+        session.user.isAdmin = roles.includes('admin');
+        session.user.isProvider = roles.includes('provider');
+        session.user.isUser = roles.includes('user');
       }
       return session;
     }

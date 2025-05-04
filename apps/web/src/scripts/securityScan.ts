@@ -52,8 +52,8 @@ const securityChecks: SecurityCheck[] = [
     description: 'Check if .env file is gitignored',
     check: async () => {
 
-      const gitignore = await fs?.promises.readFile('.gitignore', 'utf-8');
-      return gitignore?.includes('.env');
+      const gitignore = await fs.promises.readFile('.gitignore', 'utf-8');
+      return gitignore.includes('.env');
     },
   },
   {
@@ -74,10 +74,10 @@ const securityChecks: SecurityCheck[] = [
       const files = await getAllFiles('src');
       for (const file of files) {
 
-        const content = await fs?.promises.readFile(file, 'utf-8');
+        const content = await fs.promises.readFile(file, 'utf-8');
         for (const pattern of secretPatterns) {
-          if (pattern?.test(content)) {
-            console?.log(chalk?.red(`Potential secret found in ${file}`));
+          if (pattern.test(content)) {
+            console.log(chalk.red(`Potential secret found in ${file}`));
             return false;
           }
         }
@@ -92,8 +92,8 @@ const securityChecks: SecurityCheck[] = [
     description: 'Check if TypeScript strict mode is enabled',
     check: async () => {
 
-      const tsConfig = JSON?.parse(await fs?.promises.readFile('tsconfig?.json', 'utf-8'));
-      return tsConfig?.compilerOptions?.strict === true;
+      const tsConfig = JSON.parse(await fs.promises.readFile('tsconfig.json', 'utf-8'));
+      return tsConfig.compilerOptions.strict === true;
     },
   },
   {
@@ -105,8 +105,8 @@ const securityChecks: SecurityCheck[] = [
     check: async () => {
       try {
 
-        const eslintConfig = JSON?.parse(await fs?.promises.readFile('.eslintrc?.json', 'utf-8'));
-        return eslintConfig?.plugins?.includes('security');
+        const eslintConfig = JSON.parse(await fs.promises.readFile('.eslintrc.json', 'utf-8'));
+        return eslintConfig.plugins.includes('security');
       } catch {
         return false;
       }
@@ -116,13 +116,13 @@ const securityChecks: SecurityCheck[] = [
 
     name: 'helmet-check',
     severity: 'HIGH',
-    description: 'Check if Helmet?.js is used for security headers',
+    description: 'Check if Helmet.js is used for security headers',
     check: async () => {
       const files = await getAllFiles('src');
       for (const file of files) {
 
-        const content = await fs?.promises.readFile(file, 'utf-8');
-        if (content?.includes('import helmet') || content?.includes('import Helmet')) {
+        const content = await fs.promises.readFile(file, 'utf-8');
+        if (content.includes('import helmet') || content.includes('import Helmet')) {
           return true;
         }
       }
@@ -132,17 +132,17 @@ const securityChecks: SecurityCheck[] = [
 ];
 
 async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); getAllFiles(dir: string): Promise<string[]> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); getAllFiles(dir: string): Promise<string[]> {
   const files: string[] = [];
-  const items = await fs?.promises.readdir(dir, { withFileTypes: true });
+  const items = await fs.promises.readdir(dir, { withFileTypes: true });
 
   for (const item of items) {
-    const fullPath = path?.join(dir, item?.name);
-    if (item?.isDirectory()) {
-      files?.push(...(await getAllFiles(fullPath)));
-    } else if (item?.isFile() && /\.(ts|js|tsx|jsx)$/.test(item?.name)) {
-      files?.push(fullPath);
+    const fullPath = path.join(dir, item.name);
+    if (item.isDirectory()) {
+      files.push(...(await getAllFiles(fullPath)));
+    } else if (item.isFile() && /\.(ts|js|tsx|jsx)$/.test(item.name)) {
+      files.push(fullPath);
     }
   }
 
@@ -150,29 +150,29 @@ async function {
 }
 
 async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); runSecurityScan(): Promise<SecurityReport> {
-  console?.log(chalk?.blue('Starting security scan...'));
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); runSecurityScan(): Promise<SecurityReport> {
+  console.log(chalk.blue('Starting security scan...'));
 
-  const results = await Promise?.all(
-    securityChecks?.map(async (check) => {
-      process?.stdout.write(chalk?.yellow(`Running ${check?.name}... `));
-      const passed = await check?.check();
-      console?.log(passed ? chalk?.green('✓') : chalk?.red('✗'));
+  const results = await Promise.all(
+    securityChecks.map(async (check) => {
+      process.stdout.write(chalk.yellow(`Running ${check.name}... `));
+      const passed = await check.check();
+      console.log(passed ? chalk.green('✓') : chalk.red('✗'));
       return {
-        name: check?.name,
+        name: check.name,
         passed,
-        severity: check?.severity,
-        description: check?.description,
+        severity: check.severity,
+        description: check.description,
       };
     }),
   );
 
   const summary = {
-    total: results?.length,
-    passed: results?.filter((r) => r?.passed).length,
-    failed: results?.filter((r) => !r?.passed).length,
-    highSeverityFailed: results?.filter((r) => !r?.passed && r?.severity === 'HIGH').length,
+    total: results.length,
+    passed: results.filter((r) => r.passed).length,
+    failed: results.filter((r) => !r.passed).length,
+    highSeverityFailed: results.filter((r) => !r.passed && r.severity === 'HIGH').length,
   };
 
   const report: SecurityReport = {
@@ -182,34 +182,34 @@ async function {
   };
 
   // Print report
-  console?.log('\nSecurity Scan Report:');
-  console?.log('===================\n');
+  console.log('\nSecurity Scan Report:');
+  console.log('===================\n');
 
-  results?.forEach((result) => {
-    const icon = result?.passed ? chalk?.green('✓') : chalk?.red('✗');
-    const severity = chalk?.yellow(`[${result?.severity}]`);
-    console?.log(`${icon} ${severity} ${result?.name}: ${result?.description}`);
+  results.forEach((result) => {
+    const icon = result.passed ? chalk.green('✓') : chalk.red('✗');
+    const severity = chalk.yellow(`[${result.severity}]`);
+    console.log(`${icon} ${severity} ${result.name}: ${result.description}`);
   });
 
-  console?.log('\nSummary:');
-  console?.log('========');
-  console?.log(`Total checks: ${summary?.total}`);
-  console?.log(`Passed: ${chalk?.green(summary?.passed)}`);
-  console?.log(`Failed: ${chalk?.red(summary?.failed)}`);
-  console?.log(`High severity failed: ${chalk?.red(summary?.highSeverityFailed)}`);
+  console.log('\nSummary:');
+  console.log('========');
+  console.log(`Total checks: ${summary.total}`);
+  console.log(`Passed: ${chalk.green(summary.passed)}`);
+  console.log(`Failed: ${chalk.red(summary.failed)}`);
+  console.log(`High severity failed: ${chalk.red(summary.highSeverityFailed)}`);
 
   // Save report to file
 
-  const reportPath = path?.join('reports', 'security-scan?.json');
-  await fs?.promises.mkdir('reports', { recursive: true });
-  await fs?.promises.writeFile(reportPath, JSON?.stringify(report, null, 2));
-  console?.log(`\nDetailed report saved to: ${reportPath}`);
+  const reportPath = path.join('reports', 'security-scan.json');
+  await fs.promises.mkdir('reports', { recursive: true });
+  await fs.promises.writeFile(reportPath, JSON.stringify(report, null, 2));
+  console.log(`\nDetailed report saved to: ${reportPath}`);
 
   return report;
 }
 
 // Run the security scan
 runSecurityScan().catch((error) => {
-  console?.error(chalk?.red('Error running security scan:'), error);
-  process?.exit(1);
+  console.error(chalk.red('Error running security scan:'), error);
+  process.exit(1);
 });

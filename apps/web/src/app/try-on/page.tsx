@@ -44,33 +44,33 @@ export default function TryOnPage() {
 
   // Handle sharing
   const handleShare = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');imageUrl: string) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');imageUrl: string) => {
     try {
-      if (navigator?.share) {
+      if (navigator.share) {
         // Web Share API is supported
-        const blob = await fetch(imageUrl).then((r) => r?.blob());
-        const file = new File([blob], 'vibewell-try-on?.png', { type: 'image/png' });
+        const blob = await fetch(imageUrl).then((r) => r.blob());
+        const file = new File([blob], 'vibewell-try-on.png', { type: 'image/png' });
 
-        await navigator?.share({
-          title: `Vibewell - Try On ${selectedProduct?.name || 'Product'}`,
+        await navigator.share({
+          title: `Vibewell - Try On ${selectedProduct.name || 'Product'}`,
           text: 'Check out how this looks on me using Vibewell virtual try-on!',
           files: [file],
         });
       } else {
         // Web Share API not supported - fallback to clipboard
         // Create a textarea element to copy the URL to clipboard
-        const textarea = document?.createElement('textarea');
-        textarea?.value = imageUrl;
-        document?.body.appendChild(textarea);
-        textarea?.select();
-        document?.execCommand('copy');
-        document?.body.removeChild(textarea);
+        const textarea = document.createElement('textarea');
+        textarea.value = imageUrl;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
 
         alert('Image URL copied to clipboard!');
       }
     } catch (error) {
-      console?.error('Error sharing:', error);
+      console.error('Error sharing:', error);
       alert('Failed to share. Try downloading the image instead.');
     }
   };
@@ -96,9 +96,9 @@ export default function TryOnPage() {
               // Try on viewer
               (<div className="flex-grow">
                 <TryOnViewer
-                  productId={selectedProduct?.id}
-                  productName={selectedProduct?.name}
-                  productType={selectedProduct?.productType}
+                  productId={selectedProduct.id}
+                  productName={selectedProduct.name}
+                  productType={selectedProduct.productType}
                   onCapture={handleCapture}
                   onShare={handleShare}
                   onBack={handleBackToProducts}

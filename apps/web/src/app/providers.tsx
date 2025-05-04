@@ -26,9 +26,9 @@ export function Providers({ children, initialState }: ProvidersProps) {
     <RootErrorBoundary>
       <RecoilRoot
         initializeState={({ set }) => {
-          set({ key: 'deviceType', value: initialState?.isMobile ? 'mobile' : 'desktop' });
-          set({ key: 'theme', value: initialState?.theme });
-          set({ key: 'language', value: initialState?.language });
+          set({ key: 'deviceType', value: initialState.isMobile ? 'mobile' : 'desktop' });
+          set({ key: 'theme', value: initialState.theme });
+          set({ key: 'language', value: initialState.language });
         }}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

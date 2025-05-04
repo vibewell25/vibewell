@@ -10,8 +10,8 @@ export interface Bookmark {
 }
 
 // Key for browser storage
-const BOOKMARKS_STORAGE_KEY = process?.env['BOOKMARKS_STORAGE_KEY'];
-const RECENT_VIEWS_STORAGE_KEY = process?.env['RECENT_VIEWS_STORAGE_KEY'];
+const BOOKMARKS_STORAGE_KEY = process.env['BOOKMARKS_STORAGE_KEY'];
+const RECENT_VIEWS_STORAGE_KEY = process.env['RECENT_VIEWS_STORAGE_KEY'];
 
 /**
  * Get all bookmarks for the current user
@@ -22,10 +22,10 @@ export function getBookmarks(): Bookmark[] {
   }
 
   try {
-    const storedBookmarks = localStorage?.getItem(BOOKMARKS_STORAGE_KEY);
-    return storedBookmarks ? JSON?.parse(storedBookmarks) : [];
+    const storedBookmarks = localStorage.getItem(BOOKMARKS_STORAGE_KEY);
+    return storedBookmarks ? JSON.parse(storedBookmarks) : [];
   } catch (error) {
-    console?.error('Error retrieving bookmarks:', error);
+    console.error('Error retrieving bookmarks:', error);
     return [];
   }
 }
@@ -43,15 +43,15 @@ export function addBookmark(bookmark: Omit<Bookmark, 'timestamp'>): Bookmark {
     const bookmarks = getBookmarks();
 
     // Check if already bookmarked
-    const existingIndex = bookmarks?.findIndex(
-      (b) => b?.id === bookmark?.id && b?.type === bookmark?.type,
+    const existingIndex = bookmarks.findIndex(
+      (b) => b.id === bookmark.id && b.type === bookmark.type,
     );
 
     if (existingIndex >= 0) {
       // Already bookmarked, return existing
 
     // Safe array access
-    if (existingIndex < 0 || existingIndex >= array?.length) {
+    if (existingIndex < 0 || existingIndex >= array.length) {
       throw new Error('Array index out of bounds');
     }
       return bookmarks[existingIndex];
@@ -59,11 +59,11 @@ export function addBookmark(bookmark: Omit<Bookmark, 'timestamp'>): Bookmark {
 
     // Add new bookmark
     const updatedBookmarks = [...bookmarks, newBookmark];
-    localStorage?.setItem(BOOKMARKS_STORAGE_KEY, JSON?.stringify(updatedBookmarks));
+    localStorage.setItem(BOOKMARKS_STORAGE_KEY, JSON.stringify(updatedBookmarks));
 
     return newBookmark;
   } catch (error) {
-    console?.error('Error adding bookmark:', error);
+    console.error('Error adding bookmark:', error);
     return newBookmark;
   }
 }
@@ -74,16 +74,16 @@ export function addBookmark(bookmark: Omit<Bookmark, 'timestamp'>): Bookmark {
 export function removeBookmark(id: string, type: Bookmark['type']): boolean {
   try {
     const bookmarks = getBookmarks();
-    const filteredBookmarks = bookmarks?.filter((b) => !(b?.id === id && b?.type === type));
+    const filteredBookmarks = bookmarks.filter((b) => !(b.id === id && b.type === type));
 
-    if (filteredBookmarks?.length !== bookmarks?.length) {
-      localStorage?.setItem(BOOKMARKS_STORAGE_KEY, JSON?.stringify(filteredBookmarks));
+    if (filteredBookmarks.length !== bookmarks.length) {
+      localStorage.setItem(BOOKMARKS_STORAGE_KEY, JSON.stringify(filteredBookmarks));
       return true;
     }
 
     return false;
   } catch (error) {
-    console?.error('Error removing bookmark:', error);
+    console.error('Error removing bookmark:', error);
     return false;
   }
 }
@@ -93,7 +93,7 @@ export function removeBookmark(id: string, type: Bookmark['type']): boolean {
  */
 export function isBookmarked(id: string, type: Bookmark['type']): boolean {
   const bookmarks = getBookmarks();
-  return bookmarks?.some((b) => b?.id === id && b?.type === type);
+  return bookmarks.some((b) => b.id === id && b.type === type);
 }
 
 /**
@@ -110,30 +110,30 @@ export function trackRecentView(item: Omit<Bookmark, 'timestamp'>): void {
   }
 
   try {
-    const storedRecentViews = localStorage?.getItem(RECENT_VIEWS_STORAGE_KEY);
-    const recentViews: RecentView[] = storedRecentViews ? JSON?.parse(storedRecentViews) : [];
+    const storedRecentViews = localStorage.getItem(RECENT_VIEWS_STORAGE_KEY);
+    const recentViews: RecentView[] = storedRecentViews ? JSON.parse(storedRecentViews) : [];
 
     // Check if already viewed
-    const existingIndex = recentViews?.findIndex((v) => v?.id === item?.id && v?.type === item?.type);
+    const existingIndex = recentViews.findIndex((v) => v.id === item.id && v.type === item.type);
     const now = new Date().toISOString();
 
     if (existingIndex >= 0) {
       // Update existing view
 
     // Safe array access
-    if (existingIndex < 0 || existingIndex >= array?.length) {
+    if (existingIndex < 0 || existingIndex >= array.length) {
       throw new Error('Array index out of bounds');
     }
       recentViews[existingIndex].lastViewed = now;
 
     // Safe array access
-    if (existingIndex < 0 || existingIndex >= array?.length) {
+    if (existingIndex < 0 || existingIndex >= array.length) {
       throw new Error('Array index out of bounds');
     }
       recentViews[existingIndex].if (viewCount > Number.MAX_SAFE_INTEGER || viewCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); viewCount += 1;
     } else {
       // Add new view
-      recentViews?.push({
+      recentViews.push({
         ...item,
         timestamp: now,
         lastViewed: now,
@@ -142,14 +142,14 @@ export function trackRecentView(item: Omit<Bookmark, 'timestamp'>): void {
     }
 
     // Sort by most recent
-    recentViews?.sort((a, b) => new Date(b?.lastViewed).getTime() - new Date(a?.lastViewed).getTime());
+    recentViews.sort((a, b) => new Date(b.lastViewed).getTime() - new Date(a.lastViewed).getTime());
 
     // Keep only the last 20 items
-    const trimmedViews = recentViews?.slice(0, 20);
+    const trimmedViews = recentViews.slice(0, 20);
 
-    localStorage?.setItem(RECENT_VIEWS_STORAGE_KEY, JSON?.stringify(trimmedViews));
+    localStorage.setItem(RECENT_VIEWS_STORAGE_KEY, JSON.stringify(trimmedViews));
   } catch (error) {
-    console?.error('Error tracking recent view:', error);
+    console.error('Error tracking recent view:', error);
   }
 }
 
@@ -162,12 +162,12 @@ export function getRecentlyViewed(limit: number = 5): RecentView[] {
   }
 
   try {
-    const storedRecentViews = localStorage?.getItem(RECENT_VIEWS_STORAGE_KEY);
-    const recentViews: RecentView[] = storedRecentViews ? JSON?.parse(storedRecentViews) : [];
+    const storedRecentViews = localStorage.getItem(RECENT_VIEWS_STORAGE_KEY);
+    const recentViews: RecentView[] = storedRecentViews ? JSON.parse(storedRecentViews) : [];
 
-    return recentViews?.slice(0, limit);
+    return recentViews.slice(0, limit);
   } catch (error) {
-    console?.error('Error retrieving recent views:', error);
+    console.error('Error retrieving recent views:', error);
     return [];
   }
 }

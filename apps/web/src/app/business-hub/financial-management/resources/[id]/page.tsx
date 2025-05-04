@@ -25,7 +25,7 @@ const financialResources = [
     date: '2023-08-15',
     readTime: '15 min',
     category: 'Planning',
-    imageUrl: '/images/financial-planning?.jpg',
+    imageUrl: '/images/financial-planning.jpg',
     content: `
       <h2>Introduction to Financial Planning for Wellness Businesses</h2>
       <p>Financial planning is critical for the long-term success of any wellness business. This guide will walk you through the essential steps to create a robust financial plan tailored to the wellness industry.</p>
@@ -61,7 +61,7 @@ const financialResources = [
     date: '2023-09-22',
     readTime: '12 min',
     category: 'Taxes',
-    imageUrl: '/images/tax-strategies?.jpg',
+    imageUrl: '/images/tax-strategies.jpg',
     content: `
       <h2>Tax Considerations for Wellness Professionals</h2>
       <p>Understanding the tax implications specific to wellness practitioners can save you significant money and prevent compliance issues.</p>
@@ -90,7 +90,7 @@ const financialResources = [
     date: '2023-10-10',
     readTime: '10 min',
     category: 'Pricing',
-    imageUrl: '/images/pricing-strategies?.jpg',
+    imageUrl: '/images/pricing-strategies.jpg',
     content: `
       <h2>The Psychology of Pricing in Wellness</h2>
       <p>Pricing wellness services requires a balance between perceived value, market rates, and your financial needs.</p>
@@ -112,7 +112,7 @@ const financialResources = [
     date: '2023-11-05',
     readTime: '14 min',
     category: 'Cash Flow',
-    imageUrl: '/images/cash-flow?.jpg',
+    imageUrl: '/images/cash-flow.jpg',
     content: `
       <h2>Understanding Cash Flow in the Wellness Industry</h2>
       <p>Cash flow management is particularly important in the wellness industry due to seasonal fluctuations and variable client attendance.</p>
@@ -134,7 +134,7 @@ const financialResources = [
     date: '2023-12-12',
     readTime: '18 min',
     category: 'Reporting',
-    imageUrl: '/images/financial-metrics?.jpg',
+    imageUrl: '/images/financial-metrics.jpg',
     content: `
       <h2>Key Performance Indicators for Wellness Businesses</h2>
       <p>Identifying and tracking the right KPIs is essential for making informed business decisions.</p>
@@ -156,7 +156,7 @@ const financialResources = [
     date: '2024-01-18',
     readTime: '8 min',
     category: 'Budgeting',
-    imageUrl: '/images/budgeting-templates?.jpg',
+    imageUrl: '/images/budgeting-templates.jpg',
     content: `
       <h2>Budgeting Fundamentals for Wellness Businesses</h2>
       <p>Understanding the key components of an effective budget for wellness practices and studios.</p>
@@ -178,7 +178,7 @@ const financialResources = [
     date: '2024-02-22',
     readTime: '16 min',
     category: 'Profitability',
-    imageUrl: '/images/profit-maximization?.jpg',
+    imageUrl: '/images/profit-maximization.jpg',
     content: `
       <h2>Understanding Profit Levers in Wellness Businesses</h2>
       <p>Identifying the key factors that influence profitability in wellness businesses.</p>
@@ -200,26 +200,26 @@ const trackResourceView = (resourceId: string, resourceName: string) => {
   if (typeof window !== 'undefined') {
     const now = new Date().toISOString();
     try {
-      const viewData = JSON?.parse(localStorage?.getItem('resource_view_log') || '{}');
+      const viewData = JSON.parse(localStorage.getItem('resource_view_log') || '{}');
       viewData[resourceId] = {
         id: resourceId,
         name: resourceName,
         lastViewed: now,
-        views: (viewData[resourceId]?.views || 0) + 1,
+        views: (viewData[resourceId].views || 0) + 1,
       };
-      localStorage?.setItem('resource_view_log', JSON?.stringify(viewData));
+      localStorage.setItem('resource_view_log', JSON.stringify(viewData));
       // Also update a "popular resources" counter
-      const popularResources = JSON?.parse(localStorage?.getItem('popular_resources') || '{}');
+      const popularResources = JSON.parse(localStorage.getItem('popular_resources') || '{}');
       popularResources[resourceId] = (popularResources[resourceId] || 0) + 1;
-      localStorage?.setItem('popular_resources', JSON?.stringify(popularResources));
+      localStorage.setItem('popular_resources', JSON.stringify(popularResources));
     } catch (e) {
-      console?.error('Failed to track resource view', e);
+      console.error('Failed to track resource view', e);
     }
   }
 };
 export default function ResourceDetailPage() {
   const params = useParams();
-  const resourceId = params?.id as string;
+  const resourceId = params.id as string;
   const [resource, setResource] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -252,26 +252,26 @@ export default function ResourceDetailPage() {
     // Fetch the resource by ID - in a real app, this would be an API call
     setLoading(true);
     try {
-      const foundResource = financialResources?.find((r) => r?.id === resourceId);
+      const foundResource = financialResources.find((r) => r.id === resourceId);
       if (foundResource) {
         setResource(foundResource);
         // Track this view for analytics and recently viewed
-        trackResourceView(resourceId, foundResource?.title);
+        trackResourceView(resourceId, foundResource.title);
         // Track in recently viewed
         trackRecentView({
           id: resourceId,
           type: 'resource',
-          title: foundResource?.title,
-          description: foundResource?.content.substring(0, 100) + '...',
+          title: foundResource.title,
+          description: foundResource.content.substring(0, 100) + '...',
           url: `/business-hub/financial-management/resources/${resourceId}`,
-          category: foundResource?.category,
+          category: foundResource.category,
         });
       } else {
         setError('Resource not found');
       }
     } catch (err) {
       setError('Failed to load resource');
-      console?.error(err);
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -288,10 +288,10 @@ export default function ResourceDetailPage() {
       addBookmark({
         id: resourceId,
         type: 'resource',
-        title: resource?.title,
-        description: resource?.content.substring(0, 100) + '...',
+        title: resource.title,
+        description: resource.content.substring(0, 100) + '...',
         url: `/business-hub/financial-management/resources/${resourceId}`,
-        category: resource?.category,
+        category: resource.category,
       });
       setIsBookmarked(true);
     }
@@ -353,7 +353,7 @@ export default function ResourceDetailPage() {
   }
   // Find related resources
   const relatedResources = financialResources
-    .filter((item) => resource?.relatedResources.includes(item?.id))
+    .filter((item) => resource.relatedResources.includes(item.id))
     .slice(0, 3);
   return (
     <Layout>
@@ -370,17 +370,17 @@ export default function ResourceDetailPage() {
           href="/business-hub/financial-management"
           className="mb-6 inline-flex items-center text-blue-600 hover:text-blue-800"
         >
-          <Icons?.ArrowLeftIcon className="mr-2 h-4 w-4" />
+          <Icons.ArrowLeftIcon className="mr-2 h-4 w-4" />
           Back to Financial Management
         </Link>
         <article className="mx-auto max-w-4xl overflow-hidden rounded-lg bg-white shadow-md">
           <div className="flex justify-between p-4">
             <div className="flex items-center">
               <StarRating
-                initialRating={averageRating?.average}
+                initialRating={averageRating.average}
                 readonly={true}
                 showCount={true}
-                count={averageRating?.count}
+                count={averageRating.count}
               />
             </div>
             <button
@@ -388,61 +388,61 @@ export default function ResourceDetailPage() {
               className={`rounded-full p-2 ${isBookmarked ? 'text-yellow-500' : 'text-gray-400 hover:text-gray-600'}`}
               title={isBookmarked ? 'Remove from bookmarks' : 'Add to bookmarks'}
             >
-              <Icons?.BookmarkIcon className="h-6 w-6" />
+              <Icons.BookmarkIcon className="h-6 w-6" />
             </button>
           </div>
-          {resource?.imageUrl && (
+          {resource.imageUrl && (
             <div className="relative h-64 w-full bg-gray-200">
               <div
                 className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url(${resource?.imageUrl})` }}
+                style={{ backgroundImage: `url(${resource.imageUrl})` }}
               />
               <div className="absolute inset-0 bg-black bg-opacity-30"></div>
               <div className="absolute bottom-0 left-0 p-6 text-white">
                 <div className="mb-2 inline-block rounded-md bg-blue-600 px-3 py-1 text-sm font-medium text-white">
-                  {resource?.category}
+                  {resource.category}
                 </div>
-                <h1 className="text-3xl font-bold">{resource?.title}</h1>
+                <h1 className="text-3xl font-bold">{resource.title}</h1>
               </div>
             </div>
           )}
           <div className="p-6">
             <div className="mb-6 flex items-center text-sm text-gray-500">
-              <Icons?.UserIcon className="mr-1 h-4 w-4" />
-              <span className="mr-4">{resource?.author}</span>
-              <Icons?.CalendarIcon className="mr-1 h-4 w-4" />
-              <span className="mr-4">{new Date(resource?.date).toLocaleDateString()}</span>
-              <Icons?.ClockIcon className="mr-1 h-4 w-4" />
-              <span>{resource?.readTime}</span>
+              <Icons.UserIcon className="mr-1 h-4 w-4" />
+              <span className="mr-4">{resource.author}</span>
+              <Icons.CalendarIcon className="mr-1 h-4 w-4" />
+              <span className="mr-4">{new Date(resource.date).toLocaleDateString()}</span>
+              <Icons.ClockIcon className="mr-1 h-4 w-4" />
+              <span>{resource.readTime}</span>
             </div>
             <div
               className="prose prose-blue prose-headings:text-gray-800 max-w-none"
-              dangerouslySetInnerHTML={{ __html: resource?.content }}
+              dangerouslySetInnerHTML={{ __html: resource.content }}
             />
           </div>
           <div className="px-6 pb-6">
             <ResourceReview resourceId={resourceId} resourceType="resource" />
           </div>
         </article>
-        {relatedResources?.length > 0 && (
+        {relatedResources.length > 0 && (
           <div className="mx-auto mt-12 max-w-4xl">
             <h2 className="mb-4 text-xl font-bold">Related Resources</h2>
             <div className="grid gap-6 md:grid-cols-3">
-              {relatedResources?.map((related) => (
+              {relatedResources.map((related) => (
                 <Link
-                  key={related?.id}
-                  href={`/business-hub/financial-management/resources/${related?.id}`}
+                  key={related.id}
+                  href={`/business-hub/financial-management/resources/${related.id}`}
                   className="block rounded-lg border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md"
                 >
                   <div className="p-4">
                     <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-gray-900">
-                      {related?.title}
+                      {related.title}
                     </h3>
                     <div className="flex items-center text-sm text-gray-500">
-                      <Icons?.DocumentTextIcon className="mr-1 h-4 w-4" />
-                      <span className="mr-2">{related?.category}</span>
-                      <Icons?.ClockIcon className="mr-1 h-4 w-4" />
-                      <span>{related?.readTime}</span>
+                      <Icons.DocumentTextIcon className="mr-1 h-4 w-4" />
+                      <span className="mr-2">{related.category}</span>
+                      <Icons.ClockIcon className="mr-1 h-4 w-4" />
+                      <span>{related.readTime}</span>
                     </div>
                   </div>
                 </Link>

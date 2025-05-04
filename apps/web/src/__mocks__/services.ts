@@ -1,5 +1,5 @@
 export class ProductService {
-  getProductById = jest?.fn().mockResolvedValue({
+  getProductById = jest.fn().mockResolvedValue({
     data: {
       id: '1',
       name: 'Test Product',
@@ -12,7 +12,7 @@ export class ProductService {
 }
 
 export class FeedbackService {
-  getProductFeedbackStats = jest?.fn().mockResolvedValue({
+  getProductFeedbackStats = jest.fn().mockResolvedValue({
     ratingDistribution: {
       '1': 5,
       '2': 10,
@@ -24,6 +24,6 @@ export class FeedbackService {
 }
 
 export class AnalyticsService {
-  trackEvent = jest?.fn();
-  trackTryOnSession = jest?.fn();
+  trackEvent = jest.fn();
+  trackTryOnSession = jest.fn();
 }

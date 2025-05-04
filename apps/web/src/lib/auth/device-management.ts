@@ -15,7 +15,7 @@ export interface DeviceInfo {
 
 export class DeviceManagementService {
   static async listDevices(userId: string): Promise<DeviceInfo[]> {
-    const devices = await prisma?.authenticator.findMany({
+    const devices = await prisma.authenticator.findMany({
       where: { userId },
       orderBy: { lastUsed: 'desc' },
       select: {
@@ -27,17 +27,17 @@ export class DeviceManagementService {
       }
     });
 
-    return devices?.map(device => ({
-      id: device?.id,
-      credentialID: device?.credentialID,
-      lastUsed: device?.lastUsed,
-      createdAt: device?.createdAt,
-      transports: device?.transports
+    return devices.map(device => ({
+      id: device.id,
+      credentialID: device.credentialID,
+      lastUsed: device.lastUsed,
+      createdAt: device.createdAt,
+      transports: device.transports
     }));
   }
 
   static async renameDevice(userId: string, deviceId: string, newName: string): Promise<void> {
-    await prisma?.authenticator.updateMany({
+    await prisma.authenticator.updateMany({
       where: {
         id: deviceId,
         userId // Ensure user owns the device
@@ -54,7 +54,7 @@ export class DeviceManagementService {
     requestInfo: { ipAddress: string; userAgent: string }
   ): Promise<void> {
     // First verify the user owns the device
-    const device = await prisma?.authenticator.findFirst({
+    const device = await prisma.authenticator.findFirst({
       where: {
         id: deviceId,
         userId
@@ -66,18 +66,18 @@ export class DeviceManagementService {
     }
 
     // Delete the device
-    await prisma?.authenticator.delete({
+    await prisma.authenticator.delete({
       where: { id: deviceId }
     });
 
     // Log the revocation
-    await WebAuthnAuditLogger?.log({
+    await WebAuthnAuditLogger.log({
       userId,
       action: 'revoke',
       deviceId,
       success: true,
-      ipAddress: requestInfo?.ipAddress,
-      userAgent: requestInfo?.userAgent
+      ipAddress: requestInfo.ipAddress,
+      userAgent: requestInfo.userAgent
     });
   }
 
@@ -86,40 +86,40 @@ export class DeviceManagementService {
     requestInfo: { ipAddress: string; userAgent: string }
   ): Promise<void> {
     // Get all devices first for logging
-    const devices = await prisma?.authenticator.findMany({
+    const devices = await prisma.authenticator.findMany({
       where: { userId },
       select: { id: true }
     });
 
     // Delete all devices
-    await prisma?.authenticator.deleteMany({
+    await prisma.authenticator.deleteMany({
       where: { userId }
     });
 
     // Log each revocation
-    await Promise?.all(
-      devices?.map(device =>
-        WebAuthnAuditLogger?.log({
+    await Promise.all(
+      devices.map(device =>
+        WebAuthnAuditLogger.log({
           userId,
           action: 'revoke',
-          deviceId: device?.id,
+          deviceId: device.id,
           success: true,
-          ipAddress: requestInfo?.ipAddress,
-          userAgent: requestInfo?.userAgent
+          ipAddress: requestInfo.ipAddress,
+          userAgent: requestInfo.userAgent
         })
       )
     );
   }
 
   static async updateDeviceLastUsed(deviceId: string): Promise<void> {
-    await prisma?.authenticator.update({
+    await prisma.authenticator.update({
       where: { id: deviceId },
       data: { lastUsed: new Date() }
     });
   }
 
   static async getDeviceCount(userId: string): Promise<number> {
-    return await prisma?.authenticator.count({
+    return await prisma.authenticator.count({
       where: { userId }
     });
   }

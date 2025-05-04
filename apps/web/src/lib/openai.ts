@@ -96,7 +96,7 @@ export async function secureChatCompletion(
       userId,
       messageCount: validatedData.messages.length,
       modelUsed: validatedData.model,
-      firstUserMessagePreview: validatedData.messages.find(m => m.role === 'user')?.content.substring(0, 20) + '...',
+      firstUserMessagePreview: validatedData.messages.find(m => m.role === 'user').content.substring(0, 20) + '...',
     };
     
     // Log the request (without full content)
@@ -113,7 +113,7 @@ export async function secureChatCompletion(
     // Log completion (without full content)
     logger.info('AI chat completed', {
       userId,
-      tokens: response.usage?.total_tokens,
+      tokens: response.usage.total_tokens,
       modelUsed: response.model,
     });
     

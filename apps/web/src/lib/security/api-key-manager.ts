@@ -14,8 +14,8 @@ export class ApiKeyManager {
 
   async generateNewKey(userId: string): Promise<string> {
     const newKey = randomBytes(32).toString('hex');
-    const hash = this?.hashKey(newKey);
-    const expiresAt = Date?.now() + this?.rotationInterval;
+    const hash = this.hashKey(newKey);
+    const expiresAt = Date.now() + this.rotationInterval;
 
     const apiKey: ApiKey = {
       key: hash,
@@ -24,45 +24,45 @@ export class ApiKeyManager {
     };
 
     // Store new key
-    await redisClient?.set(
-      `${this?.keyPrefix}${userId}:${hash}`,
-      JSON?.stringify(apiKey),
+    await redisClient.set(
+      `${this.keyPrefix}${userId}:${hash}`,
+      JSON.stringify(apiKey),
       'EX',
 
-      Math?.ceil(this?.rotationInterval / 1000),
+      Math.ceil(this.rotationInterval / 1000),
     );
 
     // Keep track of active keys
-    await redisClient?.sadd(`${this?.keyPrefix}${userId}:active`, hash);
+    await redisClient.sadd(`${this.keyPrefix}${userId}:active`, hash);
 
     return newKey;
   }
 
   async validateKey(userId: string, key: string): Promise<boolean> {
-    const hash = this?.hashKey(key);
-    const keyData = await redisClient?.get(`${this?.keyPrefix}${userId}:${hash}`);
+    const hash = this.hashKey(key);
+    const keyData = await redisClient.get(`${this.keyPrefix}${userId}:${hash}`);
 
     if (!keyData) return false;
 
-    const apiKey: ApiKey = JSON?.parse(keyData);
-    return apiKey?.isActive && apiKey?.expiresAt > Date?.now();
+    const apiKey: ApiKey = JSON.parse(keyData);
+    return apiKey.isActive && apiKey.expiresAt > Date.now();
   }
 
   async rotateKey(userId: string): Promise<string> {
     // Generate new key
-    const newKey = await this?.generateNewKey(userId);
+    const newKey = await this.generateNewKey(userId);
 
     // Deactivate old keys after a grace period (24 hours)
     setTimeout(
       async () => {
-        const activeKeys = await redisClient?.smembers(`${this?.keyPrefix}${userId}:active`);
+        const activeKeys = await redisClient.smembers(`${this.keyPrefix}${userId}:active`);
         for (const hash of activeKeys) {
-          const keyData = await redisClient?.get(`${this?.keyPrefix}${userId}:${hash}`);
+          const keyData = await redisClient.get(`${this.keyPrefix}${userId}:${hash}`);
           if (keyData) {
-            const apiKey: ApiKey = JSON?.parse(keyData);
-            if (apiKey?.expiresAt < Date?.now()) {
-              await redisClient?.srem(`${this?.keyPrefix}${userId}:active`, hash);
-              await redisClient?.del(`${this?.keyPrefix}${userId}:${hash}`);
+            const apiKey: ApiKey = JSON.parse(keyData);
+            if (apiKey.expiresAt < Date.now()) {
+              await redisClient.srem(`${this.keyPrefix}${userId}:active`, hash);
+              await redisClient.del(`${this.keyPrefix}${userId}:${hash}`);
             }
           }
         }

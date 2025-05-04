@@ -72,9 +72,9 @@ export default function LazyLoadingDemo() {
 
             <TabsContent value="ar-viewer" className="rounded-lg border p-4">
               <h2 className="mb-4 text-xl font-semibold">AR Viewer Component</h2>
-              <p className="mb-4">This component uses Three?.js to render 3D models:</p>
+              <p className="mb-4">This component uses Three.js to render 3D models:</p>
               <ARViewerLazy
-                modelUrl="https://market-assets?.fra1.cdn?.digitaloceanspaces.com/market-assets/models/vase-09/model?.gltf"
+                modelUrl="https://market-assets.fra1.cdn.digitaloceanspaces.com/market-assets/models/vase-09/model.gltf"
                 autoRotate={true}
               />
             </TabsContent>
@@ -84,7 +84,7 @@ export default function LazyLoadingDemo() {
               <p className="mb-4">This calendar component handles events and date selection:</p>
               <EventCalendarLazy
                 events={events}
-                onEventClick={(event) => alert(`Event clicked: ${event?.title}`)}
+                onEventClick={(event) => alert(`Event clicked: ${event.title}`)}
               />
             </TabsContent>
           </Tabs>

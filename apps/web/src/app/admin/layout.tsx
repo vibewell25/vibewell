@@ -9,7 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { AlertTriangle } from 'lucide-react';
 
 interface AdminLayoutProps {
-  children: React?.ReactNode;
+  children: React.ReactNode;
 }
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
@@ -18,9 +18,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   useEffect(() => {
     if (!isLoading && !user) {
-      router?.push('/login');
+      router.push('/login');
     } else if (!isLoading && !isAdmin) {
-      router?.push('/');
+      router.push('/');
     }
   }, [isLoading, user, isAdmin, router]);
 

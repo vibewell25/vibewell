@@ -4,14 +4,14 @@ import { generateAuthenticationOptions } from '@simplewebauthn/server';
 import { NextResponse } from 'next/server';
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); POST(request: Request) {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); POST(request: Request) {
   try {
-    const body = await request?.json();
+    const body = await request.json();
     const { userId } = body;
 
     if (!userId) {
-      return NextResponse?.json({ error: 'Missing required fields' }, { status: 400 });
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
     // In a real application, you would:
@@ -20,7 +20,7 @@ export async function {
     const options = await generateAuthenticationOptions({
       rpID: 'localhost',
       // allowCredentials: [{
-      //   id: base64url?.decode(credentialID),
+      //   id: base64url.decode(credentialID),
 
       //   type: 'public-key',
       //   transports: ['internal'],
@@ -29,12 +29,12 @@ export async function {
     });
 
     // In a real application, you would save the challenge in your database
-    // await saveChallenge(userId, options?.challenge);
+    // await saveChallenge(userId, options.challenge);
 
-    return NextResponse?.json(options);
+    return NextResponse.json(options);
   } catch (error) {
-    console?.error('Error generating authentication options:', error);
-    return NextResponse?.json(
+    console.error('Error generating authentication options:', error);
+    return NextResponse.json(
       { error: 'Failed to generate authentication options' },
       { status: 500 },
     );

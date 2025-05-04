@@ -88,10 +88,10 @@ export default function TryOnAnalytics() {
     const end = new Date();
     let start = new Date();
 
-    if (dateRangeType === 'custom' && customDateRange?.from && customDateRange?.to) {
+    if (dateRangeType === 'custom' && customDateRange.from && customDateRange.to) {
       return {
-        start: customDateRange?.from,
-        end: customDateRange?.to,
+        start: customDateRange.from,
+        end: customDateRange.to,
       };
     }
 
@@ -116,58 +116,58 @@ export default function TryOnAnalytics() {
   };
 
   const fetchData = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setLoading(true);
       const { start, end } = getDateRange();
 
       // Fetch analytics data
-      const analytics = await tryOnService?.getAnalytics(start, end);
+      const analytics = await tryOnService.getAnalytics(start, end);
 
-      setTotalSessions(analytics?.totalSessions);
-      setCompletedSessions(analytics?.completedSessions);
-      setAverageDuration(analytics?.averageDuration);
+      setTotalSessions(analytics.totalSessions);
+      setCompletedSessions(analytics.completedSessions);
+      setAverageDuration(analytics.averageDuration);
 
       // Process product breakdown
-      const productIds = Object?.keys(analytics?.productBreakdown);
+      const productIds = Object.keys(analytics.productBreakdown);
 
       // Fetch product info
       const productsInfo: Record<string, ProductInfo> = {};
       for (const id of productIds) {
         try {
-          const product = await productService?.getProduct(id);
+          const product = await productService.getProduct(id);
           if (product) {
             productsInfo[id] = {
-              id: product?.id,
-              name: product?.name,
-              category: product?.category,
+              id: product.id,
+              name: product.name,
+              category: product.category,
             };
           }
         } catch (err) {
-          console?.error(`Error fetching product ${id}:`, err);
+          console.error(`Error fetching product ${id}:`, err);
         }
       }
 
       setProductInfo(productsInfo);
 
       // Create data for charts
-      const breakdown = productIds?.map((id) => ({
+      const breakdown = productIds.map((id) => ({
         id,
-        name: productsInfo[id]?.name || `Product ${id?.substring(0, 8)}`,
-        category: productsInfo[id]?.category || 'Unknown',
-        value: analytics?.productBreakdown[id],
+        name: productsInfo[id].name || `Product ${id.substring(0, 8)}`,
+        category: productsInfo[id].category || 'Unknown',
+        value: analytics.productBreakdown[id],
       }));
 
       setProductBreakdown(breakdown);
 
       // Get all sessions to analyze feedback
-      const sessions = await tryOnService?.getAllSessions(start, end);
+      const sessions = await tryOnService.getAllSessions(start, end);
 
       // Process feedback data
       processFeedbackData(sessions);
     } catch (err) {
-      console?.error('Error fetching try-on analytics:', err);
+      console.error('Error fetching try-on analytics:', err);
       setError('Failed to load analytics data');
     } finally {
       setLoading(false);
@@ -176,9 +176,9 @@ export default function TryOnAnalytics() {
 
   const processFeedbackData = (sessions: any[]) => {
     // Filter sessions with feedback
-    const sessionsWithFeedback = sessions?.filter((s) => s?.feedback);
+    const sessionsWithFeedback = sessions.filter((s) => s.feedback);
 
-    if (sessionsWithFeedback?.length === 0) {
+    if (sessionsWithFeedback.length === 0) {
       setFeedbackStats({
         averageRating: 0,
         wouldTryRealLifePercentage: 0,
@@ -190,71 +190,71 @@ export default function TryOnAnalytics() {
     }
 
     // Calculate average rating
-    const totalRating = sessionsWithFeedback?.reduce((sum, session) => {
-      return sum + (session?.feedback.rating || 0);
+    const totalRating = sessionsWithFeedback.reduce((sum, session) => {
+      return sum + (session.feedback.rating || 0);
     }, 0);
 
     // Count would try in real life responses
-    const wouldTryRealLife = sessionsWithFeedback?.filter(
-      (session) => session?.feedback.would_try_in_real_life,
+    const wouldTryRealLife = sessionsWithFeedback.filter(
+      (session) => session.feedback.would_try_in_real_life,
     ).length;
 
     // Count sessions with comments
-    const withComments = sessionsWithFeedback?.filter(
-      (session) => session?.feedback.comment && session?.feedback.comment?.trim() !== '',
+    const withComments = sessionsWithFeedback.filter(
+      (session) => session.feedback.comment && session.feedback.comment.trim() !== '',
     ).length;
 
     // Calculate rating distribution
     const ratingCounts = [0, 0, 0, 0, 0]; // For ratings 1-5
 
-    sessionsWithFeedback?.forEach((session) => {
-      const rating = session?.feedback.rating;
+    sessionsWithFeedback.forEach((session) => {
+      const rating = session.feedback.rating;
       if (rating >= 1 && rating <= 5) {
         ratingCounts[rating - 1]++;
       }
     });
 
-    const ratingDistribution = ratingCounts?.map((count, i) => ({
+    const ratingDistribution = ratingCounts.map((count, i) => ({
       rating: i + 1,
       count,
     }));
 
     setFeedbackStats({
-      averageRating: totalRating / sessionsWithFeedback?.length,
-      wouldTryRealLifePercentage: (wouldTryRealLife / sessionsWithFeedback?.length) * 100,
-      feedbackCount: sessionsWithFeedback?.length,
+      averageRating: totalRating / sessionsWithFeedback.length,
+      wouldTryRealLifePercentage: (wouldTryRealLife / sessionsWithFeedback.length) * 100,
+      feedbackCount: sessionsWithFeedback.length,
       commentCount: withComments,
       ratingDistribution,
     });
   };
 
   const exportToCsv = () => {
-    if (!productBreakdown?.length) return;
+    if (!productBreakdown.length) return;
 
     // Prepare CSV data
     const headers = ['Product ID', 'Product Name', 'Category', 'Try-On Sessions'];
-    const rows = productBreakdown?.map((product) => [
-      product?.id,
-      product?.name,
-      product?.category,
-      product?.value,
+    const rows = productBreakdown.map((product) => [
+      product.id,
+      product.name,
+      product.category,
+      product.value,
     ]);
 
     // Create CSV content
-    const csvContent = [headers?.join(','), ...rows?.map((row) => row?.join(','))].join('\n');
+    const csvContent = [headers.join(','), ...rows.map((row) => row.join(','))].join('\n');
 
     // Create download link
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL?.createObjectURL(blob);
-    const link = document?.createElement('a');
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
     const { start, end } = getDateRange();
     const fileName = `try-on-analytics-${format(start, 'yyyy-MM-dd')}-to-${format(end, 'yyyy-MM-dd')}.csv`;
 
-    link?.href = url;
-    link?.setAttribute('download', fileName);
-    document?.body.appendChild(link);
-    link?.click();
-    document?.body.removeChild(link);
+    link.href = url;
+    link.setAttribute('download', fileName);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   if (loading) {
@@ -271,8 +271,8 @@ export default function TryOnAnalytics() {
 
   // Format duration in minutes and seconds
   const formatDuration = (seconds: number) => {
-    const minutes = Math?.floor(seconds / 60);
-    const remainingSeconds = Math?.round(seconds % 60);
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.round(seconds % 60);
     return `${minutes}m ${remainingSeconds}s`;
   };
 
@@ -309,18 +309,18 @@ export default function TryOnAnalytics() {
                     variant="outline"
                     className={cn(
                       'justify-start text-left font-normal',
-                      !customDateRange?.from && 'text-muted-foreground',
+                      !customDateRange.from && 'text-muted-foreground',
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {customDateRange?.from ? (
-                      customDateRange?.to ? (
+                    {customDateRange.from ? (
+                      customDateRange.to ? (
                         <>
-                          {format(customDateRange?.from, 'MMM d')} -{' '}
-                          {format(customDateRange?.to, 'MMM d, yyyy')}
+                          {format(customDateRange.from, 'MMM d')} -{' '}
+                          {format(customDateRange.to, 'MMM d, yyyy')}
                         </>
                       ) : (
-                        format(customDateRange?.from, 'MMM d, yyyy')
+                        format(customDateRange.from, 'MMM d, yyyy')
                       )
                     ) : (
                       <span>Pick a date range</span>
@@ -331,15 +331,15 @@ export default function TryOnAnalytics() {
                   <Calendar
                     initialFocus
                     mode="range"
-                    defaultMonth={customDateRange?.from}
+                    defaultMonth={customDateRange.from}
                     selected={{
-                      from: customDateRange?.from,
-                      to: customDateRange?.to,
+                      from: customDateRange.from,
+                      to: customDateRange.to,
                     }}
                     onSelect={(range) => {
                       setCustomDateRange({
-                        from: range?.from,
-                        to: range?.to,
+                        from: range.from,
+                        to: range.to,
                       });
                     }}
                     numberOfMonths={2}
@@ -353,7 +353,7 @@ export default function TryOnAnalytics() {
             onClick={exportToCsv}
             variant="outline"
             size="icon"
-            disabled={!productBreakdown?.length}
+            disabled={!productBreakdown.length}
           >
             <Download className="h-4 w-4" />
           </Button>
@@ -382,7 +382,7 @@ export default function TryOnAnalytics() {
             <div className="text-2xl font-bold">{completedSessions}</div>
             <Progress value={completionRate} className="mt-2 h-2" />
             <p className="mt-1 text-xs text-muted-foreground">
-              {completionRate?.toFixed(1)}% completion rate
+              {completionRate.toFixed(1)}% completion rate
             </p>
           </CardContent>
         </Card>
@@ -401,10 +401,10 @@ export default function TryOnAnalytics() {
             <CardTitle className="text-sm font-medium">Feedback Collected</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{feedbackStats?.feedbackCount}</div>
+            <div className="text-2xl font-bold">{feedbackStats.feedbackCount}</div>
             <p className="mt-1 text-xs text-muted-foreground">
-              {feedbackStats?.feedbackCount > 0
-                ? `${((feedbackStats?.feedbackCount / completedSessions) * 100).toFixed(1)}% of completed sessions`
+              {feedbackStats.feedbackCount > 0
+                ? `${((feedbackStats.feedbackCount / completedSessions) * 100).toFixed(1)}% of completed sessions`
                 : 'No feedback collected yet'}
             </p>
           </CardContent>
@@ -424,7 +424,7 @@ export default function TryOnAnalytics() {
               <CardDescription>Distribution of try-on sessions across products</CardDescription>
             </CardHeader>
             <CardContent className="h-80">
-              {productBreakdown?.length > 0 ? (
+              {productBreakdown.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -438,8 +438,8 @@ export default function TryOnAnalytics() {
                       nameKey="name"
                       label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(1)}%`}
                     >
-                      {productBreakdown?.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS?.length]} />
+                      {productBreakdown.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
                     <Tooltip formatter={(value) => [`${value} sessions`, 'Count']} />
@@ -462,10 +462,10 @@ export default function TryOnAnalytics() {
             <CardContent>
               <div className="space-y-2">
                 {productBreakdown
-                  .sort((a, b) => b?.value - a?.value)
+                  .sort((a, b) => b.value - a.value)
                   .slice(0, 5)
                   .map((product, index) => (
-                    <div key={product?.id} className="flex items-center justify-between">
+                    <div key={product.id} className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Badge
                           variant="outline"
@@ -473,9 +473,9 @@ export default function TryOnAnalytics() {
                         >
                           {index + 1}
                         </Badge>
-                        <span className="truncate font-medium">{product?.name}</span>
+                        <span className="truncate font-medium">{product.name}</span>
                       </div>
-                      <span className="font-medium">{product?.value}</span>
+                      <span className="font-medium">{product.value}</span>
                     </div>
                   ))}
               </div>
@@ -494,29 +494,29 @@ export default function TryOnAnalytics() {
                 <div className="flex items-center justify-center py-6">
                   <div className="text-center">
                     <div className="mb-2 text-5xl font-bold">
-                      {feedbackStats?.averageRating.toFixed(1)}
+                      {feedbackStats.averageRating.toFixed(1)}
                     </div>
                     <div className="flex items-center justify-center gap-1">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <svg
                           key={star}
-                          xmlns="http://www?.w3.org/2000/svg"
+                          xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 24 24"
                           fill={
-                            star <= Math?.round(feedbackStats?.averageRating) ? '#FFB800' : '#E2E8F0'
+                            star <= Math.round(feedbackStats.averageRating) ? '#FFB800' : '#E2E8F0'
                           }
                           className="h-4 w-4"
                         >
                           <path
                             fillRule="evenodd"
-                            d="M10?.788 3?.21c.448-1?.077 1?.976-1?.077 2?.424 0l2?.082 5?.007 5?.404.433c1?.164.093 1?.636 1?.545.749 2?.305l-4?.117 3?.527 1?.257 5?.273c.271 1?.136-.964 2?.033-1?.96 1?.425L12 18?.354 7?.373 21?.18c-.996?.608-2?.231-.29-1?.96-1?.425l1.257-5?.273-4?.117-3?.527c-.887-.76-.415-2?.212.749-2?.305l5.404-.433 2?.082-5?.006z"
+                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
                             clipRule="evenodd"
                           />
                         </svg>
                       ))}
                     </div>
                     <p className="mt-2 text-sm text-muted-foreground">
-                      Based on {feedbackStats?.feedbackCount} ratings
+                      Based on {feedbackStats.feedbackCount} ratings
                     </p>
                   </div>
                 </div>
@@ -534,12 +534,12 @@ export default function TryOnAnalytics() {
                 <div className="flex h-40 items-center justify-center">
                   <div className="text-center">
                     <div className="mb-2 text-5xl font-bold">
-                      {feedbackStats?.wouldTryRealLifePercentage.toFixed(1)}%
+                      {feedbackStats.wouldTryRealLifePercentage.toFixed(1)}%
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      {feedbackStats?.wouldTryRealLifePercentage > 75
+                      {feedbackStats.wouldTryRealLifePercentage > 75
                         ? 'Excellent conversion potential!'
-                        : feedbackStats?.wouldTryRealLifePercentage > 50
+                        : feedbackStats.wouldTryRealLifePercentage > 50
                           ? 'Good conversion potential'
                           : 'Room for improvement'}
                     </p>
@@ -554,10 +554,10 @@ export default function TryOnAnalytics() {
                 <CardDescription>Breakdown of ratings from customer feedback</CardDescription>
               </CardHeader>
               <CardContent className="h-80">
-                {feedbackStats?.ratingDistribution.length > 0 ? (
+                {feedbackStats.ratingDistribution.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
-                      data={feedbackStats?.ratingDistribution}
+                      data={feedbackStats.ratingDistribution}
                       margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                     >
                       <CartesianGrid strokeDasharray="3 3" />
@@ -591,14 +591,14 @@ export default function TryOnAnalytics() {
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div className="flex flex-col">
                   <span className="text-sm font-medium">Total feedback received</span>
-                  <span className="text-2xl font-bold">{feedbackStats?.feedbackCount}</span>
+                  <span className="text-2xl font-bold">{feedbackStats.feedbackCount}</span>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-sm font-medium">Comments received</span>
-                  <span className="text-2xl font-bold">{feedbackStats?.commentCount}</span>
+                  <span className="text-2xl font-bold">{feedbackStats.commentCount}</span>
                   <span className="text-xs text-muted-foreground">
-                    {feedbackStats?.feedbackCount
-                      ? `${((feedbackStats?.commentCount / feedbackStats?.feedbackCount) * 100).toFixed(1)}% provided comments`
+                    {feedbackStats.feedbackCount
+                      ? `${((feedbackStats.commentCount / feedbackStats.feedbackCount) * 100).toFixed(1)}% provided comments`
                       : 'No comments yet'}
                   </span>
                 </div>

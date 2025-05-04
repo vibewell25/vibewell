@@ -22,19 +22,19 @@ export default function LoginPage() {
    * Handle form submission for email/password login
    */
   const handleSubmit = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');e: React?.FormEvent) => {
-    e?.preventDefault();
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
+    e.preventDefault();
     setError(null);
     setIsLoading(true);
 
     try {
       const { error } = await signIn(email, password);
       if (error) {
-        setError(error?.message);
+        setError(error.message);
       }
     } catch (err) {
-      setError(err instanceof Error ? err?.message : 'Failed to sign in. Please try again.');
+      setError(err instanceof Error ? err.message : 'Failed to sign in. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -50,7 +50,7 @@ export default function LoginPage() {
       footerText="Don't have an account?"
       footerLink={{
         text: 'Sign up',
-        href: ROUTES?.AUTH.SIGNUP,
+        href: ROUTES.AUTH.SIGNUP,
       }}
     >
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -58,9 +58,9 @@ export default function LoginPage() {
           id="email"
           label="Email"
           type="email"
-          placeholder="name@example?.com"
+          placeholder="name@example.com"
           value={email}
-          onChange={(e) => setEmail(e?.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           required
           disabled={isLoading}
         />
@@ -71,12 +71,12 @@ export default function LoginPage() {
           type="password"
           placeholder="••••••••"
           value={password}
-          onChange={(e) => setPassword(e?.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           required
           disabled={isLoading}
           rightElement={
             <Link
-              href={ROUTES?.AUTH.FORGOT_PASSWORD}
+              href={ROUTES.AUTH.FORGOT_PASSWORD}
               className="text-primary text-sm hover:underline"
             >
               Forgot password?
@@ -102,21 +102,21 @@ export default function LoginPage() {
           onClick={() => signInWithGoogle()}
           className="flex items-center justify-center rounded-md border p-2 transition-colors hover:bg-muted"
         >
-          <Icons?.google className="h-5 w-5" />
+          <Icons.google className="h-5 w-5" />
         </button>
         <button
           type="button"
           onClick={() => signInWithFacebook()}
           className="flex items-center justify-center rounded-md border p-2 transition-colors hover:bg-muted"
         >
-          <Icons?.facebook className="h-5 w-5" />
+          <Icons.facebook className="h-5 w-5" />
         </button>
         <button
           type="button"
           onClick={() => signInWithApple()}
           className="flex items-center justify-center rounded-md border p-2 transition-colors hover:bg-muted"
         >
-          <Icons?.apple className="h-5 w-5" />
+          <Icons.apple className="h-5 w-5" />
         </button>
       </div>
     </AuthForm>

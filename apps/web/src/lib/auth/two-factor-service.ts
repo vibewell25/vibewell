@@ -8,13 +8,13 @@ const prisma = new PrismaClient();
 export class TwoFactorService {
   // Generate a new 2FA secret for a user
   async generateSecret(userId: string): Promise<string> {
-    const secret = authenticator?.generateSecret();
+    const secret = authenticator.generateSecret();
 
-    await prisma?.twoFactorAuth.create({
+    await prisma.twoFactorAuth.create({
       data: {
         userId,
         secret,
-        backupCodes: this?.generateBackupCodes(),
+        backupCodes: this.generateBackupCodes(),
       },
     });
 
@@ -23,7 +23,7 @@ export class TwoFactorService {
 
   // Enable 2FA for a user
   async enable2FA(userId: string, token: string): Promise<boolean> {
-    const twoFactorAuth = await prisma?.twoFactorAuth.findUnique({
+    const twoFactorAuth = await prisma.twoFactorAuth.findUnique({
       where: { userId },
     });
 
@@ -31,13 +31,13 @@ export class TwoFactorService {
       throw new Error('2FA secret not found');
     }
 
-    const isValid = authenticator?.verify({
+    const isValid = authenticator.verify({
       token,
-      secret: twoFactorAuth?.secret,
+      secret: twoFactorAuth.secret,
     });
 
     if (isValid) {
-      await prisma?.user.update({
+      await prisma.user.update({
         where: { id: userId },
         data: { twoFactorEnabled: true },
       });
@@ -49,7 +49,7 @@ export class TwoFactorService {
 
   // Verify a 2FA token
   async verify2FA(userId: string, token: string): Promise<boolean> {
-    const twoFactorAuth = await prisma?.twoFactorAuth.findUnique({
+    const twoFactorAuth = await prisma.twoFactorAuth.findUnique({
       where: { userId },
     });
 
@@ -57,29 +57,29 @@ export class TwoFactorService {
       throw new Error('2FA not enabled for this user');
     }
 
-    return authenticator?.verify({
+    return authenticator.verify({
       token,
-      secret: twoFactorAuth?.secret,
+      secret: twoFactorAuth.secret,
     });
   }
 
   // Verify a backup code
   async verifyBackupCode(userId: string, code: string): Promise<boolean> {
-    const twoFactorAuth = await prisma?.twoFactorAuth.findUnique({
+    const twoFactorAuth = await prisma.twoFactorAuth.findUnique({
       where: { userId },
     });
 
-    if (!twoFactorAuth || !twoFactorAuth?.backupCodes) {
+    if (!twoFactorAuth || !twoFactorAuth.backupCodes) {
       return false;
     }
 
-    const backupCodes = twoFactorAuth?.backupCodes as string[];
-    const isValid = backupCodes?.includes(code);
+    const backupCodes = twoFactorAuth.backupCodes as string[];
+    const isValid = backupCodes.includes(code);
 
     if (isValid) {
       // Remove the used backup code
-      const updatedBackupCodes = backupCodes?.filter((c) => c !== code);
-      await prisma?.twoFactorAuth.update({
+      const updatedBackupCodes = backupCodes.filter((c) => c !== code);
+      await prisma.twoFactorAuth.update({
         where: { userId },
         data: { backupCodes: updatedBackupCodes },
       });
@@ -90,12 +90,12 @@ export class TwoFactorService {
 
   // Disable 2FA for a user
   async disable2FA(userId: string): Promise<void> {
-    await prisma?.user.update({
+    await prisma.user.update({
       where: { id: userId },
       data: { twoFactorEnabled: false },
     });
 
-    await prisma?.twoFactorAuth.delete({
+    await prisma.twoFactorAuth.delete({
       where: { userId },
     });
   }
@@ -104,8 +104,8 @@ export class TwoFactorService {
   private generateBackupCodes(count = 8): string[] {
     const codes: string[] = [];
     for (let i = 0; i < count; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
-      const code = crypto?.randomBytes(4).toString('hex');
-      codes?.push(code);
+      const code = crypto.randomBytes(4).toString('hex');
+      codes.push(code);
     }
     return codes;
   }

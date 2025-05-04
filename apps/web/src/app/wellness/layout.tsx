@@ -1,40 +1,46 @@
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, redirect } from 'next/navigation';
 import { routes, createTypedLink } from '@/lib/routes';
+import type { ReactNode } from 'react';
 
-const WellnessLayout = ({ children }: { children: React?.ReactNode }) => {
+export default function WellnessLayout({ children }: { children: ReactNode }) {
+  redirect('/services');
+  return null;
+}
+
+const WellnessLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   const navigation = [
     {
       name: 'Dashboard',
-      ...createTypedLink(routes?.wellness.root),
+      ...createTypedLink(routes.wellness.root),
       icon: '📊',
     },
     {
       name: 'AR Experience',
-      ...createTypedLink(routes?.wellness.ar),
+      ...createTypedLink(routes.wellness.ar),
       icon: '🎯',
     },
     {
       name: 'Workouts',
-      ...createTypedLink(routes?.wellness.workouts),
+      ...createTypedLink(routes.wellness.workouts),
       icon: '💪',
     },
     {
       name: 'Meditation',
-      ...createTypedLink(routes?.wellness.meditation),
+      ...createTypedLink(routes.wellness.meditation),
       icon: '🧘',
     },
     {
       name: 'Progress',
-      ...createTypedLink(routes?.wellness.progress),
+      ...createTypedLink(routes.wellness.progress),
       icon: '📈',
     },
     {
       name: 'Community',
-      ...createTypedLink(routes?.wellness.community),
+      ...createTypedLink(routes.wellness.community),
       icon: '👥',
     },
   ] as const;
@@ -46,25 +52,25 @@ const WellnessLayout = ({ children }: { children: React?.ReactNode }) => {
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center">
-              <Link {...createTypedLink(routes?.wellness.root)} className="flex items-center">
+              <Link {...createTypedLink(routes.wellness.root)} className="flex items-center">
                 <span className="mr-2 text-2xl">🌿</span>
                 <span className="text-xl font-semibold">Vibewell</span>
               </Link>
             </div>
 
             <div className="hidden items-center space-x-4 md:flex">
-              {navigation?.map((item) => (
+              {navigation.map((item) => (
                 <Link
-                  key={item?.name}
+                  key={item.name}
                   {...item}
                   className={`rounded-md px-3 py-2 text-sm font-medium ${
-                    pathname === item?.href
+                    pathname === item.href
                       ? 'bg-primary text-white'
                       : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
-                  <span className="mr-2">{item?.icon}</span>
-                  {item?.name}
+                  <span className="mr-2">{item.icon}</span>
+                  {item.name}
                 </Link>
               ))}
             </div>
@@ -90,16 +96,16 @@ const WellnessLayout = ({ children }: { children: React?.ReactNode }) => {
       {/* Mobile Navigation Menu */}
       <div className="md:hidden">
         <div className="space-y-1 px-2 pb-3 pt-2">
-          {navigation?.map((item) => (
+          {navigation.map((item) => (
             <Link
-              key={item?.name}
+              key={item.name}
               {...item}
               className={`block rounded-md px-3 py-2 text-base font-medium ${
-                pathname === item?.href ? 'bg-primary text-white' : 'text-gray-600 hover:bg-gray-100'
+                pathname === item.href ? 'bg-primary text-white' : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
-              <span className="mr-2">{item?.icon}</span>
-              {item?.name}
+              <span className="mr-2">{item.icon}</span>
+              {item.name}
             </Link>
           ))}
         </div>
@@ -117,19 +123,19 @@ const WellnessLayout = ({ children }: { children: React?.ReactNode }) => {
             <div className="text-sm text-gray-600">© 2024 Vibewell. All rights reserved.</div>
             <div className="flex space-x-6">
               <Link
-                {...createTypedLink(routes?.legal.privacy)}
+                {...createTypedLink(routes.legal.privacy)}
                 className="text-sm text-gray-600 hover:text-gray-900"
               >
                 Privacy Policy
               </Link>
               <Link
-                {...createTypedLink(routes?.legal.terms)}
+                {...createTypedLink(routes.legal.terms)}
                 className="text-sm text-gray-600 hover:text-gray-900"
               >
                 Terms of Service
               </Link>
               <Link
-                {...createTypedLink(routes?.legal.contact)}
+                {...createTypedLink(routes.legal.contact)}
                 className="text-sm text-gray-600 hover:text-gray-900"
               >
                 Contact Us
@@ -140,6 +146,4 @@ const WellnessLayout = ({ children }: { children: React?.ReactNode }) => {
       </footer>
     </div>
   );
-};
-
-export default WellnessLayout;
+}

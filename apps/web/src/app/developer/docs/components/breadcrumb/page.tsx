@@ -9,7 +9,7 @@ import { useSearchParams } from 'next/navigation';
 function BreadcrumbDocumentationContent() {
   const [copied, setCopied] = useState(false);
   const copyToClipboard = (code: string) => {
-    navigator?.clipboard.writeText(code);
+    navigator.clipboard.writeText(code);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -37,7 +37,7 @@ export function MyBreadcrumb() {
       href="/" 
       className="text-primary hover:text-primary/80 flex items-center"
     >
-      <Icons?.HomeIcon className="h-4 w-4 mr-1" />
+      <Icons.HomeIcon className="h-4 w-4 mr-1" />
       Home
     </BreadcrumbLink>
   </BreadcrumbItem>
@@ -76,11 +76,11 @@ export function MyBreadcrumb() {
           <div className="mt-4 md:mt-0">
             <Button variant="outline" asChild>
               <a
-                href="https://github?.com/vibewell/components/blob/main/src/components/ui/breadcrumb?.tsx"
+                href="https://github.com/vibewell/components/blob/main/src/components/ui/breadcrumb.tsx"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Icons?.CodeBracketIcon className="mr-2 h-4 w-4" />
+                <Icons.CodeBracketIcon className="mr-2 h-4 w-4" />
                 View Source
               </a>
             </Button>
@@ -151,12 +151,12 @@ export function MyBreadcrumb() {
                     >
                       {copied ? (
                         <>
-                          <Icons?.ClipboardDocumentCheckIcon className="h-4 w-4" />
+                          <Icons.ClipboardDocumentCheckIcon className="h-4 w-4" />
                           Copied
                         </>
                       ) : (
                         <>
-                          <Icons?.ClipboardIcon className="h-4 w-4" />
+                          <Icons.ClipboardIcon className="h-4 w-4" />
                           Copy
                         </>
                       )}
@@ -199,12 +199,12 @@ export function MyBreadcrumb() {
                     >
                       {copied ? (
                         <>
-                          <Icons?.ClipboardDocumentCheckIcon className="h-4 w-4" />
+                          <Icons.ClipboardDocumentCheckIcon className="h-4 w-4" />
                           Copied
                         </>
                       ) : (
                         <>
-                          <Icons?.ClipboardIcon className="h-4 w-4" />
+                          <Icons.ClipboardIcon className="h-4 w-4" />
                           Copy
                         </>
                       )}
@@ -220,7 +220,7 @@ export function MyBreadcrumb() {
                           href="/"
                           className="text-primary hover:text-primary/80 flex items-center"
                         >
-                          <Icons?.HomeIcon className="mr-1 h-4 w-4" />
+                          <Icons.HomeIcon className="mr-1 h-4 w-4" />
                           Home
                         </BreadcrumbLink>
                       </BreadcrumbItem>

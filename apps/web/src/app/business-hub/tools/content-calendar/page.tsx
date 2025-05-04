@@ -24,10 +24,10 @@ export default function ContentCalendarPage() {
     { id: '7', name: 'Email', color: '#6200EA' },
   ]);
   const [teamMembers, setTeamMembers] = useState<ContentTeamMember[]>([
-    { id: '1', name: 'Sarah Johnson', avatar: '/images/team/sarah?.jpg', role: 'Content Manager' },
-    { id: '2', name: 'Mike Chen', avatar: '/images/team/mike?.jpg', role: 'Graphic Designer' },
-    { id: '3', name: 'Alex Wong', avatar: '/images/team/alex?.jpg', role: 'Copywriter' },
-    { id: '4', name: 'Taylor Swift', avatar: '/images/team/taylor?.jpg', role: 'SEO Specialist' },
+    { id: '1', name: 'Sarah Johnson', avatar: '/images/team/sarah.jpg', role: 'Content Manager' },
+    { id: '2', name: 'Mike Chen', avatar: '/images/team/mike.jpg', role: 'Graphic Designer' },
+    { id: '3', name: 'Alex Wong', avatar: '/images/team/alex.jpg', role: 'Copywriter' },
+    { id: '4', name: 'Taylor Swift', avatar: '/images/team/taylor.jpg', role: 'SEO Specialist' },
   ]);
   const statuses: ContentStatus[] = [
     { id: 'idea', name: 'Idea', color: '#9E9E9E' },
@@ -47,7 +47,7 @@ export default function ContentCalendarPage() {
         title: 'Spring Collection Launch',
         description: 'Announcing our new spring collection with special offers',
         status: 'planning',
-        dueDate: new Date(Date?.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+        dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
         assignedTo: '1',
         platformIds: ['1', '2', '6'],
         contentType: 'promotion',
@@ -67,7 +67,7 @@ export default function ContentCalendarPage() {
         title: 'Customer Success Story: Emma',
         description: "Highlighting Emma's transformation with our services",
         status: 'creating',
-        dueDate: new Date(Date?.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
+        dueDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
         assignedTo: '3',
         platformIds: ['1', '3', '4'],
         contentType: 'testimonial',
@@ -80,7 +80,7 @@ export default function ContentCalendarPage() {
         title: 'Wellness Tips Newsletter',
         description: 'Monthly newsletter with wellness tips and product highlights',
         status: 'reviewing',
-        dueDate: new Date(Date?.now() + 1 * 24 * 60 * 60 * 1000).toISOString(),
+        dueDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(),
         assignedTo: '3',
         platformIds: ['7'],
         contentType: 'newsletter',
@@ -93,7 +93,7 @@ export default function ContentCalendarPage() {
         title: 'Behind-the-Scenes Video',
         description: 'Video showing our team at work and product creation process',
         status: 'approved',
-        dueDate: new Date(Date?.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+        dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
         assignedTo: '2',
         platformIds: ['1', '5', '2'],
         contentType: 'video',
@@ -106,7 +106,7 @@ export default function ContentCalendarPage() {
         title: 'Summer Self-Care Guide',
         description: 'Blog post with tips for summer self-care routines',
         status: 'scheduled',
-        dueDate: new Date(Date?.now() + 21 * 24 * 60 * 60 * 1000).toISOString(),
+        dueDate: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000).toISOString(),
         assignedTo: '4',
         platformIds: ['6', '2', '4'],
         contentType: 'blog',
@@ -120,7 +120,7 @@ export default function ContentCalendarPage() {
   // Handle drag and drop between columns
   const handleDragAndDrop = (itemId: string, newStatus: string) => {
     setContentItems((prevItems) =>
-      prevItems?.map((item) => (item?.id === itemId ? { ...item, status: newStatus } : item)),
+      prevItems.map((item) => (item.id === itemId ? { ...item, status: newStatus } : item)),
     );
   };
   // Handle creating a new content item
@@ -130,12 +130,12 @@ export default function ContentCalendarPage() {
   // Handle editing a content item
   const handleEditContentItem = (updatedItem: ContentItem) => {
     setContentItems((prevItems) =>
-      prevItems?.map((item) => (item?.id === updatedItem?.id ? updatedItem : item)),
+      prevItems.map((item) => (item.id === updatedItem.id ? updatedItem : item)),
     );
   };
   // Handle deleting a content item
   const handleDeleteContentItem = (itemId: string) => {
-    setContentItems((prevItems) => prevItems?.filter((item) => item?.id !== itemId));
+    setContentItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
   };
   return (
     <Layout>
@@ -150,18 +150,18 @@ export default function ContentCalendarPage() {
               </p>
             </div>
             <div className="flex items-center gap-4">
-              <Button variant="outline" onClick={() => console?.log('Implement filters')}>
+              <Button variant="outline" onClick={() => console.log('Implement filters')}>
                 Filter
               </Button>
               <Button
                 onClick={() => {
-                  const newId = (contentItems?.length + 1).toString();
+                  const newId = (contentItems.length + 1).toString();
                   handleCreateContentItem({
                     id: newId,
                     title: 'New Content Item',
                     description: '',
                     status: 'idea',
-                    dueDate: new Date(Date?.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
                     assignedTo: '',
                     platformIds: [],
                     contentType: 'other',
@@ -171,7 +171,7 @@ export default function ContentCalendarPage() {
                   });
                 }}
               >
-                <Icons?.PlusIcon className="mr-2 h-5 w-5" />
+                <Icons.PlusIcon className="mr-2 h-5 w-5" />
                 Create Content
               </Button>
             </div>
@@ -184,15 +184,15 @@ export default function ContentCalendarPage() {
           >
             <TabsList className="mb-8 grid w-full max-w-md grid-cols-3">
               <TabsTrigger value="board">
-                <Icons?.ListBulletIcon className="mr-2 h-5 w-5" />
+                <Icons.ListBulletIcon className="mr-2 h-5 w-5" />
                 Board
               </TabsTrigger>
               <TabsTrigger value="calendar">
-                <Icons?.CalendarDaysIcon className="mr-2 h-5 w-5" />
+                <Icons.CalendarDaysIcon className="mr-2 h-5 w-5" />
                 Calendar
               </TabsTrigger>
               <TabsTrigger value="team">
-                <Icons?.UsersIcon className="mr-2 h-5 w-5" />
+                <Icons.UsersIcon className="mr-2 h-5 w-5" />
                 Team
               </TabsTrigger>
             </TabsList>
@@ -249,44 +249,44 @@ export default function ContentCalendarPage() {
                   <div className="rounded-lg border bg-card p-6 shadow-sm">
                     <h2 className="mb-4 text-xl font-semibold">Team Overview</h2>
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                      {teamMembers?.map((member) => (
+                      {teamMembers.map((member) => (
                         <div
-                          key={member?.id}
+                          key={member.id}
                           className="flex items-start space-x-4 rounded-md border p-4"
                         >
                           <Avatar className="h-12 w-12">
-                            <AvatarImage src={member?.avatar} alt={member?.name} />
+                            <AvatarImage src={member.avatar} alt={member.name} />
                             <AvatarFallback>
-                              {member?.name.substring(0, 2).toUpperCase()}
+                              {member.name.substring(0, 2).toUpperCase()}
                             </AvatarFallback>
                           </Avatar>
                           <div>
-                            <h3 className="font-medium">{member?.name}</h3>
-                            <p className="text-sm text-muted-foreground">{member?.role}</p>
+                            <h3 className="font-medium">{member.name}</h3>
+                            <p className="text-sm text-muted-foreground">{member.role}</p>
                             <div className="mt-2">
                               <p className="text-sm">
                                 Assigned Items:{' '}
                                 {
-                                  contentItems?.filter((item) => item?.assignedTo === member?.id)
+                                  contentItems.filter((item) => item.assignedTo === member.id)
                                     .length
                                 }
                               </p>
                               <div className="mt-1 flex gap-1">
-                                {statuses?.map((status) => {
-                                  const count = contentItems?.filter(
+                                {statuses.map((status) => {
+                                  const count = contentItems.filter(
                                     (item) =>
-                                      item?.assignedTo === member?.id && item?.status === status?.id,
+                                      item.assignedTo === member.id && item.status === status.id,
                                   ).length;
                                   if (count > 0) {
                                     return (
                                       <Badge
-                                        key={status?.id}
+                                        key={status.id}
                                         style={{
-                                          backgroundColor: `${status?.color}20`,
-                                          color: status?.color,
+                                          backgroundColor: `${status.color}20`,
+                                          color: status.color,
                                         }}
                                       >
-                                        {status?.name}: {count}
+                                        {status.name}: {count}
                                       </Badge>
                                     );
                                   }

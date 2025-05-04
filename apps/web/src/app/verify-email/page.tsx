@@ -16,9 +16,9 @@ export default function VerifyEmailPage() {
 
   useEffect(() => {
     const verifyEmail = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');) => {
-      const token = searchParams?.get('token');
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+      const token = searchParams.get('token');
       
       if (!token) {
         toast({
@@ -26,17 +26,17 @@ export default function VerifyEmailPage() {
           description: 'Verification token is missing',
           variant: 'destructive',
         });
-        router?.push('/auth/login?error=missing_token');
+        router.push('/auth/login?error=missing_token');
         return;
       }
 
       try {
         setIsVerifying(true);
         const response = await fetch(`/api/auth/verify-email?token=${token}`);
-        const data = await response?.json();
+        const data = await response.json();
 
-        if (!response?.ok) {
-          throw new Error(data?.error || 'Verification failed');
+        if (!response.ok) {
+          throw new Error(data.error || 'Verification failed');
         }
 
         setIsSuccess(true);
@@ -47,16 +47,16 @@ export default function VerifyEmailPage() {
         
         // Redirect to dashboard after a short delay
         setTimeout(() => {
-          router?.push('/dashboard');
+          router.push('/dashboard');
         }, 2000);
       } catch (error) {
-        console?.error('Error verifying email:', error);
+        console.error('Error verifying email:', error);
         toast({
           title: 'Error',
-          description: error instanceof Error ? error?.message : 'Failed to verify email',
+          description: error instanceof Error ? error.message : 'Failed to verify email',
           variant: 'destructive',
         });
-        router?.push('/auth/login?error=verification_failed');
+        router.push('/auth/login?error=verification_failed');
       } finally {
         setIsVerifying(false);
       }

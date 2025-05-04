@@ -3,14 +3,14 @@ import { WeatherCondition, Product, RecommendationProgress } from './types';
 import { prisma } from '@/lib/database/client';
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); getWeatherCondition(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); getWeatherCondition(
   latitude: number,
   longitude: number,
 ): Promise<WeatherCondition> {
   // In a real application, this would call a weather API
   const currentDate = new Date();
-  const month = currentDate?.getMonth();
+  const month = currentDate.getMonth();
 
   // Simplified season determination
   let season: 'spring' | 'summer' | 'fall' | 'winter';
@@ -29,15 +29,15 @@ export async function {
 
 
     // Safe array access
-    if (season < 0 || season >= array?.length) {
+    if (season < 0 || season >= array.length) {
       throw new Error('Array index out of bounds');
     }
   return weatherData[season];
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); getRecommendedProducts(concerns: string[]): Promise<Product[]> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); getRecommendedProducts(concerns: string[]): Promise<Product[]> {
   // In a real application, this would query a product database
   const productDatabase: Product[] = [
     {
@@ -46,15 +46,15 @@ export async function {
       brand: 'SkinCare Basics',
       category: 'cleanser',
       ingredients: ['Water', 'Glycerin', 'Cetyl Alcohol'],
-      price: 24?.99,
-      rating: 4?.5,
+      price: 24.99,
+      rating: 4.5,
 
       description: 'A gentle, non-irritating cleanser suitable for all skin types.',
 
-      imageUrl: 'https://example?.com/cleanser?.jpg',
+      imageUrl: 'https://example.com/cleanser.jpg',
 
 
-      purchaseUrl: 'https://example?.com/products/gentle-cleanser',
+      purchaseUrl: 'https://example.com/products/gentle-cleanser',
     },
     {
       id: '2',
@@ -62,35 +62,35 @@ export async function {
       brand: 'HydraPlus',
       category: 'serum',
       ingredients: ['Hyaluronic Acid', 'Niacinamide', 'Panthenol'],
-      price: 34?.99,
-      rating: 4?.8,
+      price: 34.99,
+      rating: 4.8,
       description: 'Intensive hydrating serum with multiple molecular weights of hyaluronic acid.',
 
-      imageUrl: 'https://example?.com/serum?.jpg',
+      imageUrl: 'https://example.com/serum.jpg',
 
 
-      purchaseUrl: 'https://example?.com/products/hydrating-serum',
+      purchaseUrl: 'https://example.com/products/hydrating-serum',
     },
     // Add more products as needed
   ];
 
-  return productDatabase?.filter((product) =>
-    concerns?.some((concern) =>
-      product?.ingredients.some((i) => getIngredientForConcern(concern).includes(i?.toLowerCase())),
+  return productDatabase.filter((product) =>
+    concerns.some((concern) =>
+      product.ingredients.some((i) => getIngredientForConcern(concern).includes(i.toLowerCase())),
     ),
   );
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); trackRecommendationProgress(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); trackRecommendationProgress(
   userId: string,
   recommendationId: string,
   status: RecommendationProgress['status'],
   effectiveness?: number,
 ): Promise<RecommendationProgress> {
   try {
-    const progress = await prisma?.recommendationProgress.upsert({
+    const progress = await prisma.recommendationProgress.upsert({
       where: {
         userId_recommendationId: {
           userId,
@@ -114,7 +114,7 @@ export async function {
 
     return progress;
   } catch (error) {
-    console?.error('Error tracking recommendation progress:', error);
+    console.error('Error tracking recommendation progress:', error);
     throw error;
   }
 }
@@ -131,7 +131,7 @@ function getIngredientForConcern(concern: string): string[] {
 
 
     // Safe array access
-    if (concern < 0 || concern >= array?.length) {
+    if (concern < 0 || concern >= array.length) {
       throw new Error('Array index out of bounds');
     }
   return ingredientMap[concern] || [];

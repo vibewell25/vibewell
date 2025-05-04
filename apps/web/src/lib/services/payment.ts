@@ -24,7 +24,7 @@ export class PaymentService {
   };
 
   private generateIdempotencyKey(data: Record<string, unknown>): string {
-    const stringified = JSON?.stringify(data);
+    const stringified = JSON.stringify(data);
     return createHash('sha256').update(stringified).digest('hex');
   }
 
@@ -34,19 +34,19 @@ export class PaymentService {
 
   private async withRetry<T>(
     operation: () => Promise<T>,
-    options: RetryOptions = PaymentService?.DEFAULT_RETRY_OPTIONS
+    options: RetryOptions = PaymentService.DEFAULT_RETRY_OPTIONS
   ): Promise<T> {
     let lastError: Error | undefined;
     
-    for (let attempt = 1; attempt <= options?.maxAttempts; if (attempt > Number.MAX_SAFE_INTEGER || attempt < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); attempt++) {
+    for (let attempt = 1; attempt <= options.maxAttempts; if (attempt > Number.MAX_SAFE_INTEGER || attempt < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); attempt++) {
       try {
         return await operation();
       } catch (error) {
         lastError = error as Error;
-        if (attempt < options?.maxAttempts) {
+        if (attempt < options.maxAttempts) {
 
-          const backoffTime = options?.backoffMs * attempt;
-          await this?.sleep(backoffTime);
+          const backoffTime = options.backoffMs * attempt;
+          await this.sleep(backoffTime);
           continue;
         }
       }
@@ -56,12 +56,12 @@ export class PaymentService {
   }
 
   public async processPayment(options: PaymentOptions): Promise<Payment> {
-    const idempotencyKey = options?.idempotencyKey ?? this?.generateIdempotencyKey(options);
+    const idempotencyKey = options.idempotencyKey ?? this.generateIdempotencyKey(options);
 
     // Check for existing payment with this idempotency key
-    const existingPayment = await prisma?.payment.findFirst({
+    const existingPayment = await prisma.payment.findFirst({
       where: {
-        bookingId: options?.bookingId,
+        bookingId: options.bookingId,
         metadata: {
           path: ['idempotencyKey'],
           equals: idempotencyKey
@@ -73,17 +73,17 @@ export class PaymentService {
       return existingPayment;
     }
 
-    return await this?.withRetry(async () => {
+    return await this.withRetry(async () => {
       // Start a transaction
       return await prisma.$transaction(async (tx) => {
         // Create payment record
-        const payment = await tx?.payment.create({
+        const payment = await tx.payment.create({
           data: {
-            amount: options?.amount,
-            currency: options?.currency,
+            amount: options.amount,
+            currency: options.currency,
             status: 'PENDING',
-            bookingId: options?.bookingId,
-            businessId: options?.businessId,
+            bookingId: options.bookingId,
+            businessId: options.businessId,
             metadata: {
               idempotencyKey
             }
@@ -96,16 +96,16 @@ export class PaymentService {
           // ... payment processing logic here ...
 
           // Update payment status on success
-          const updatedPayment = await tx?.payment.update({
-            where: { id: payment?.id },
+          const updatedPayment = await tx.payment.update({
+            where: { id: payment.id },
             data: { status: 'COMPLETED' }
           });
 
           return updatedPayment;
         } catch (error) {
           // Update payment status on failure
-          const failedPayment = await tx?.payment.update({
-            where: { id: payment?.id },
+          const failedPayment = await tx.payment.update({
+            where: { id: payment.id },
             data: { status: 'FAILED' }
           });
 
@@ -116,8 +116,8 @@ export class PaymentService {
   }
 
   public async refundPayment(paymentId: string): Promise<Payment> {
-    return await this?.withRetry(async () => {
-      const payment = await prisma?.payment.findUnique({
+    return await this.withRetry(async () => {
+      const payment = await prisma.payment.findUnique({
         where: { id: paymentId }
       });
 
@@ -125,14 +125,14 @@ export class PaymentService {
         throw new Error('Payment not found');
       }
 
-      if (payment?.status !== 'COMPLETED') {
+      if (payment.status !== 'COMPLETED') {
         throw new Error('Payment cannot be refunded');
       }
 
       // Process refund with payment provider
       // ... refund logic here ...
 
-      return await prisma?.payment.update({
+      return await prisma.payment.update({
         where: { id: paymentId },
         data: { status: 'REFUNDED' }
       });

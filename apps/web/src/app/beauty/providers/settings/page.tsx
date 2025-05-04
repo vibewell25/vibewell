@@ -68,19 +68,19 @@ export default function SettingsPage() {
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="business">
-              <Icons?.BuildingOfficeIcon className="h-5 w-5 mr-2" />
+              <Icons.BuildingOfficeIcon className="h-5 w-5 mr-2" />
               Business
             </TabsTrigger>
             <TabsTrigger value="hours">
-              <Icons?.ClockIcon className="h-5 w-5 mr-2" />
+              <Icons.ClockIcon className="h-5 w-5 mr-2" />
               Hours
             </TabsTrigger>
             <TabsTrigger value="payments">
-              <Icons?.CreditCardIcon className="h-5 w-5 mr-2" />
+              <Icons.CreditCardIcon className="h-5 w-5 mr-2" />
               Payments
             </TabsTrigger>
             <TabsTrigger value="notifications">
-              <Icons?.BellIcon className="h-5 w-5 mr-2" />
+              <Icons.BellIcon className="h-5 w-5 mr-2" />
               Notifications
             </TabsTrigger>
           </TabsList>
@@ -102,7 +102,7 @@ export default function SettingsPage() {
                     </div>
                     <div>
                       <Label>Business Type</Label>
-                      <Input placeholder="e?.g., Salon, Spa, Clinic" />
+                      <Input placeholder="e.g., Salon, Spa, Clinic" />
                     </div>
                   </div>
                   <div>
@@ -116,7 +116,7 @@ export default function SettingsPage() {
                     </div>
                     <div>
                       <Label>Email</Label>
-                      <Input type="email" placeholder="business@example?.com" />
+                      <Input type="email" placeholder="business@example.com" />
                     </div>
                   </div>
                   <div>
@@ -147,7 +147,7 @@ export default function SettingsPage() {
                     <Label>Logo</Label>
                     <div className="mt-2 flex items-center gap-4">
                       <div className="h-20 w-20 rounded-lg bg-muted flex items-center justify-center">
-                        <Icons?.PhotoIcon className="h-8 w-8 text-muted-foreground" />
+                        <Icons.PhotoIcon className="h-8 w-8 text-muted-foreground" />
                       </div>
                       <Button variant="outline">Upload Logo</Button>
                     </div>
@@ -174,33 +174,33 @@ export default function SettingsPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {businessHours?.map((day, index) => (
-                    <div key={day?.day} className="flex items-center gap-4">
+                  {businessHours.map((day, index) => (
+                    <div key={day.day} className="flex items-center gap-4">
                       <div className="w-24">
-                        <Label>{day?.day}</Label>
+                        <Label>{day.day}</Label>
                       </div>
                       <div className="flex items-center gap-2">
                         <Input
                           type="time"
-                          value={day?.open}
-                          onChange={(e) => handleBusinessHoursChange(index, 'open', e?.target.value)}
-                          disabled={day?.isClosed}
+                          value={day.open}
+                          onChange={(e) => handleBusinessHoursChange(index, 'open', e.target.value)}
+                          disabled={day.isClosed}
                         />
                         <span>to</span>
                         <Input
                           type="time"
-                          value={day?.close}
-                          onChange={(e) => handleBusinessHoursChange(index, 'close', e?.target.value)}
-                          disabled={day?.isClosed}
+                          value={day.close}
+                          onChange={(e) => handleBusinessHoursChange(index, 'close', e.target.value)}
+                          disabled={day.isClosed}
                         />
                       </div>
                       <div className="flex items-center gap-2">
                         <Switch
-                          checked={!day?.isClosed}
+                          checked={!day.isClosed}
                           onCheckedChange={(checked: boolean) => handleBusinessHoursChange(index, 'isClosed', !checked)}
                         />
                         <span className="text-sm text-muted-foreground">
-                          {day?.isClosed ? 'Closed' : 'Open'}
+                          {day.isClosed ? 'Closed' : 'Open'}
                         </span>
                       </div>
                     </div>
@@ -222,21 +222,21 @@ export default function SettingsPage() {
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Icons?.CreditCardIcon className="h-5 w-5" />
+                      <Icons.CreditCardIcon className="h-5 w-5" />
                       <span>Credit/Debit Cards</span>
                     </div>
                     <Switch defaultChecked />
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Icons?.GlobeAltIcon className="h-5 w-5" />
+                      <Icons.GlobeAltIcon className="h-5 w-5" />
                       <span>Online Payment</span>
                     </div>
                     <Switch defaultChecked />
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Icons?.ShieldCheckIcon className="h-5 w-5" />
+                      <Icons.ShieldCheckIcon className="h-5 w-5" />
                       <span>Cash</span>
                     </div>
                     <Switch defaultChecked />
@@ -280,31 +280,31 @@ export default function SettingsPage() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Icons?.BellIcon className="h-5 w-5" />
+                      <Icons.BellIcon className="h-5 w-5" />
                       <span>Email Notifications</span>
                     </div>
                     <Switch
-                      checked={notifications?.email}
+                      checked={notifications.email}
                       onCheckedChange={() => handleNotificationToggle('email')}
                     />
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Icons?.BellIcon className="h-5 w-5" />
+                      <Icons.BellIcon className="h-5 w-5" />
                       <span>SMS Notifications</span>
                     </div>
                     <Switch
-                      checked={notifications?.sms}
+                      checked={notifications.sms}
                       onCheckedChange={() => handleNotificationToggle('sms')}
                     />
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Icons?.BellIcon className="h-5 w-5" />
+                      <Icons.BellIcon className="h-5 w-5" />
                       <span>Push Notifications</span>
                     </div>
                     <Switch
-                      checked={notifications?.push}
+                      checked={notifications.push}
                       onCheckedChange={() => handleNotificationToggle('push')}
                     />
                   </div>
@@ -313,31 +313,31 @@ export default function SettingsPage() {
                   <h3 className="font-medium">Notification Types</h3>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Icons?.UserGroupIcon className="h-5 w-5" />
+                      <Icons.UserGroupIcon className="h-5 w-5" />
                       <span>Appointment Reminders</span>
                     </div>
                     <Switch
-                      checked={notifications?.appointmentReminders}
+                      checked={notifications.appointmentReminders}
                       onCheckedChange={() => handleNotificationToggle('appointmentReminders')}
                     />
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Icons?.UserGroupIcon className="h-5 w-5" />
+                      <Icons.UserGroupIcon className="h-5 w-5" />
                       <span>New Reviews</span>
                     </div>
                     <Switch
-                      checked={notifications?.newReviews}
+                      checked={notifications.newReviews}
                       onCheckedChange={() => handleNotificationToggle('newReviews')}
                     />
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Icons?.UserGroupIcon className="h-5 w-5" />
+                      <Icons.UserGroupIcon className="h-5 w-5" />
                       <span>Appointment Cancellations</span>
                     </div>
                     <Switch
-                      checked={notifications?.cancellations}
+                      checked={notifications.cancellations}
                       onCheckedChange={() => handleNotificationToggle('cancellations')}
                     />
                   </div>

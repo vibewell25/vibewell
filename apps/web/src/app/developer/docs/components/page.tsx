@@ -33,7 +33,7 @@ function ComponentsDocumentationContent() {
     {
       name: 'Layout',
       description: 'Components for structuring your application layout',
-      icon: <Icons?.ArrowsPointingOutIcon className="h-6 w-6" />,
+      icon: <Icons.ArrowsPointingOutIcon className="h-6 w-6" />,
       components: [
         { name: 'Container', path: '/developer/docs/components/container' },
         { name: 'Grid', path: '/developer/docs/components/grid' },
@@ -45,7 +45,7 @@ function ComponentsDocumentationContent() {
     {
       name: 'Navigation',
       description: 'Components for navigating between pages and content',
-      icon: <Icons?.ChevronDoubleRightIcon className="h-6 w-6" />,
+      icon: <Icons.ChevronDoubleRightIcon className="h-6 w-6" />,
       components: [
         { name: 'Breadcrumb', path: '/developer/docs/components/breadcrumb' },
         { name: 'Pagination', path: '/developer/docs/components/pagination' },
@@ -56,7 +56,7 @@ function ComponentsDocumentationContent() {
     {
       name: 'Forms',
       description: 'Components for collecting user input and data entry',
-      icon: <Icons?.DocumentTextIcon className="h-6 w-6" />,
+      icon: <Icons.DocumentTextIcon className="h-6 w-6" />,
       components: [
         { name: 'Button', path: '/developer/docs/components/button' },
         { name: 'Input', path: '/developer/docs/components/input' },
@@ -70,7 +70,7 @@ function ComponentsDocumentationContent() {
     {
       name: 'Feedback',
       description: 'Components for providing feedback to users',
-      icon: <Icons?.ChatBubbleLeftRightIcon className="h-6 w-6" />,
+      icon: <Icons.ChatBubbleLeftRightIcon className="h-6 w-6" />,
       components: [
         { name: 'Alert', path: '/developer/docs/components/alert' },
         { name: 'Toast', path: '/developer/docs/components/toast' },
@@ -81,7 +81,7 @@ function ComponentsDocumentationContent() {
     {
       name: 'Overlays',
       description: 'Components that overlay on the main content',
-      icon: <Icons?.SquaresPlusIcon className="h-6 w-6" />,
+      icon: <Icons.SquaresPlusIcon className="h-6 w-6" />,
       components: [
         { name: 'Dialog', path: '/developer/docs/components/dialog' },
         { name: 'Drawer', path: '/developer/docs/components/drawer' },
@@ -92,7 +92,7 @@ function ComponentsDocumentationContent() {
     {
       name: 'Data Display',
       description: 'Components for displaying data in structured formats',
-      icon: <Icons?.FolderIcon className="h-6 w-6" />,
+      icon: <Icons.FolderIcon className="h-6 w-6" />,
       components: [
         { name: 'Table', path: '/developer/docs/components/table' },
         { name: 'Avatar', path: '/developer/docs/components/avatar' },
@@ -103,12 +103,12 @@ function ComponentsDocumentationContent() {
   ];
   // Filter components based on search query
   const filteredCategories = searchQuery 
-    ? componentCategories?.map(category => ({
+    ? componentCategories.map(category => ({
         ...category,
-        components: category?.components.filter(component => 
-          component?.name.toLowerCase().includes(searchQuery?.toLowerCase())
+        components: category.components.filter(component => 
+          component.name.toLowerCase().includes(searchQuery.toLowerCase())
         )
-      })).filter(category => category?.components.length > 0)
+      })).filter(category => category.components.length > 0)
     : componentCategories;
   return (
     <Layout>
@@ -137,40 +137,40 @@ function ComponentsDocumentationContent() {
         {/* Search box */}
         <div className="relative max-w-md mb-8">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Icons?.MagnifyingGlassIcon className="h-5 w-5 text-muted-foreground" />
+            <Icons.MagnifyingGlassIcon className="h-5 w-5 text-muted-foreground" />
           </div>
           <Input
             type="text"
             placeholder="Search components..."
             className="pl-10"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e?.target.value)}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         {/* Component categories */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-          {filteredCategories?.map((category, index) => (
+          {filteredCategories.map((category, index) => (
             <div key={index} className="border rounded-lg p-6 bg-card">
               <div className="flex items-start mb-4">
                 <div className="p-2 bg-primary/10 rounded-md text-primary mr-4">
-                  {category?.icon}
+                  {category.icon}
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold mb-1">{category?.name}</h2>
-                  <p className="text-muted-foreground">{category?.description}</p>
+                  <h2 className="text-xl font-bold mb-1">{category.name}</h2>
+                  <p className="text-muted-foreground">{category.description}</p>
                 </div>
               </div>
               <div className="mt-4 space-y-3">
-                {category?.components.map((component, compIndex) => (
+                {category.components.map((component, compIndex) => (
                   <Link
                     key={compIndex}
-                    href={component?.path}
+                    href={component.path}
                     className="flex items-center p-2 hover:bg-muted rounded-md group transition-colors"
                   >
                     <span className="font-medium group-hover:text-primary transition-colors">
-                      {component?.name}
+                      {component.name}
                     </span>
-                    <Icons?.ChevronRightIcon className="h-4 w-4 ml-auto text-muted-foreground group-hover:text-primary transition-colors" />
+                    <Icons.ChevronRightIcon className="h-4 w-4 ml-auto text-muted-foreground group-hover:text-primary transition-colors" />
                   </Link>
                 ))}
               </div>
@@ -183,7 +183,7 @@ function ComponentsDocumentationContent() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h3 className="text-lg font-semibold mb-2 flex items-center">
-                <Icons?.CheckCircleIcon className="h-5 w-5 mr-2 text-primary" />
+                <Icons.CheckCircleIcon className="h-5 w-5 mr-2 text-primary" />
                 Accessibility
               </h3>
               <p className="text-muted-foreground">
@@ -193,7 +193,7 @@ function ComponentsDocumentationContent() {
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-2 flex items-center">
-                <Icons?.ArrowPathIcon className="h-5 w-5 mr-2 text-primary" />
+                <Icons.ArrowPathIcon className="h-5 w-5 mr-2 text-primary" />
                 Composability
               </h3>
               <p className="text-muted-foreground">
@@ -203,7 +203,7 @@ function ComponentsDocumentationContent() {
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-2 flex items-center">
-                <Icons?.PaintBrushIcon className="h-5 w-5 mr-2 text-primary" />
+                <Icons.PaintBrushIcon className="h-5 w-5 mr-2 text-primary" />
                 Customization
               </h3>
               <p className="text-muted-foreground">
@@ -213,7 +213,7 @@ function ComponentsDocumentationContent() {
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-2 flex items-center">
-                <Icons?.CogIcon className="h-5 w-5 mr-2 text-primary" />
+                <Icons.CogIcon className="h-5 w-5 mr-2 text-primary" />
                 Consistency
               </h3>
               <p className="text-muted-foreground">
@@ -285,12 +285,12 @@ function ComponentsDocumentationContent() {
                     </Link>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <span className="inline-flex items-center px-2?.5 py-0?.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                       Stable
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
-                    v1?.2.0
+                    v1.2.0
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
                     2 months ago
@@ -303,12 +303,12 @@ function ComponentsDocumentationContent() {
                     </Link>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <span className="inline-flex items-center px-2?.5 py-0?.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                       Stable
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
-                    v1?.0.0
+                    v1.0.0
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
                     Today
@@ -321,12 +321,12 @@ function ComponentsDocumentationContent() {
                     </Link>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <span className="inline-flex items-center px-2?.5 py-0?.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                       Stable
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
-                    v1?.1.0
+                    v1.1.0
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
                     1 month ago
@@ -339,12 +339,12 @@ function ComponentsDocumentationContent() {
                     </Link>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <span className="inline-flex items-center px-2?.5 py-0?.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                       Beta
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
-                    v0?.9.0
+                    v0.9.0
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
                     2 weeks ago
@@ -357,12 +357,12 @@ function ComponentsDocumentationContent() {
                     </Link>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <span className="inline-flex items-center px-2?.5 py-0?.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                       Stable
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
-                    v1?.0.0
+                    v1.0.0
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
                     3 months ago

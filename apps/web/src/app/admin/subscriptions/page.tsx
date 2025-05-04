@@ -15,7 +15,7 @@ const columns: Column[] = [
     accessorKey: 'amount',
     header: 'Amount',
     cell: ({ row: { original } }: { row: { original: Subscription } }) =>
-      formatCurrency(original?.amount),
+      formatCurrency(original.amount),
   },
   { accessorKey: 'status', header: 'Status' },
   { accessorKey: 'nextBillingDate', header: 'Next Billing' },
@@ -38,14 +38,14 @@ const columns: Column[] = [
 export default function SubscriptionManagement() {
   const { subscriptions, isLoading, error } = useSubscriptions();
   const { user } = useAuth();
-  const [selectedPlan, setSelectedPlan] = React?.useState<string | null>(null);
+  const [selectedPlan, setSelectedPlan] = React.useState<string | null>(null);
 
   // Track page view
-  React?.useEffect(() => {
+  React.useEffect(() => {
     trackEvent('subscription_management_view');
   }, []);
 
-  if (!user?.isAdmin) {
+  if (!user.isAdmin) {
     return <div>Access denied. Admin privileges required.</div>;
   }
 
@@ -54,16 +54,16 @@ export default function SubscriptionManagement() {
   }
 
   if (error) {
-    return <div>Error: {error?.message}</div>;
+    return <div>Error: {error.message}</div>;
   }
 
   const subscriptionStats = {
-    total: subscriptions?.length,
-    active: subscriptions?.filter((s) => s?.status === 'active').length,
-    cancelled: subscriptions?.filter((s) => s?.status === 'cancelled').length,
+    total: subscriptions.length,
+    active: subscriptions.filter((s) => s.status === 'active').length,
+    cancelled: subscriptions.filter((s) => s.status === 'cancelled').length,
     revenue: subscriptions
-      .filter((s) => s?.status === 'active')
-      .reduce((acc, curr) => acc + curr?.amount, 0),
+      .filter((s) => s.status === 'active')
+      .reduce((acc, curr) => acc + curr.amount, 0),
   };
 
   return (
@@ -73,19 +73,19 @@ export default function SubscriptionManagement() {
       <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-4">
         <Card className="p-6">
           <h3 className="mb-2 text-lg font-semibold">Total Subscriptions</h3>
-          <p className="text-3xl">{subscriptionStats?.total}</p>
+          <p className="text-3xl">{subscriptionStats.total}</p>
         </Card>
         <Card className="p-6">
           <h3 className="mb-2 text-lg font-semibold">Active Subscriptions</h3>
-          <p className="text-3xl">{subscriptionStats?.active}</p>
+          <p className="text-3xl">{subscriptionStats.active}</p>
         </Card>
         <Card className="p-6">
           <h3 className="mb-2 text-lg font-semibold">Cancelled</h3>
-          <p className="text-3xl">{subscriptionStats?.cancelled}</p>
+          <p className="text-3xl">{subscriptionStats.cancelled}</p>
         </Card>
         <Card className="p-6">
           <h3 className="mb-2 text-lg font-semibold">Monthly Revenue</h3>
-          <p className="text-3xl">{formatCurrency(subscriptionStats?.revenue)}</p>
+          <p className="text-3xl">{formatCurrency(subscriptionStats.revenue)}</p>
         </Card>
       </div>
 
@@ -103,14 +103,14 @@ export default function SubscriptionManagement() {
 
 // Handler functions
 const handleManage = (subscription: Subscription) => {
-  trackEvent('subscription_manage', { subscriptionId: subscription?.id });
+  trackEvent('subscription_manage', { subscriptionId: subscription.id });
   // Implement subscription management functionality
 };
 
 const handleCancel = async ( {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout');subscription: Subscription) => {
-  trackEvent('subscription_cancel', { subscriptionId: subscription?.id });
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout');subscription: Subscription) => {
+  trackEvent('subscription_cancel', { subscriptionId: subscription.id });
   // Implement subscription cancellation functionality
 };
 

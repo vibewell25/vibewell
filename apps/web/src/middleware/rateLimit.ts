@@ -8,14 +8,14 @@ import { logger } from '@/lib/logger';
 
 // Initialize Redis with error handling
 const initRedis = () => {
-  const redis = new Redis(process?.env['REDIS_URL'] || '');
+  const redis = new Redis(process.env['REDIS_URL'] || '');
   
-  redis?.on('error', (err: Error) => {
-    logger?.error('Redis connection error', { error: err?.message });
+  redis.on('error', (err: Error) => {
+    logger.error('Redis connection error', { error: err.message });
   });
 
-  redis?.on('connect', () => {
-    logger?.info('Redis connected successfully');
+  redis.on('connect', () => {
+    logger.info('Redis connected successfully');
   });
 
   return redis;
@@ -41,44 +41,44 @@ const defaultConfig: Required<RateLimitConfig> = {
 };
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); rateLimit(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); rateLimit(
   req: Request,
   config: Partial<RateLimitConfig> = {},
 ): Promise<NextResponse | null> {
   const finalConfig: Required<RateLimitConfig> = { ...defaultConfig, ...config };
-  const ip = getClientIp({ headers: Object?.fromEntries([...req?.headers]) }) || 'unknown';
-  const key = `${finalConfig?.keyPrefix}:${ip}`;
+  const ip = getClientIp({ headers: Object.fromEntries([...req.headers]) }) || 'unknown';
+  const key = `${finalConfig.keyPrefix}:${ip}`;
 
   try {
-    const [current, ttl] = await Promise?.all([
-      redis?.incr(key),
-      redis?.ttl(key),
+    const [current, ttl] = await Promise.all([
+      redis.incr(key),
+      redis.ttl(key),
     ]);
 
     // Set expiry only if this is the first request in the window
     if (current === 1) {
 
-      await redis?.expire(key, finalConfig?.windowMs / 1000);
+      await redis.expire(key, finalConfig.windowMs / 1000);
     }
 
     // Add rate limit headers
     const headers = new Headers({
 
-      'X-RateLimit-Limit': String(finalConfig?.max),
+      'X-RateLimit-Limit': String(finalConfig.max),
 
 
-      'X-RateLimit-Remaining': String(Math?.max(0, finalConfig?.max - current)),
+      'X-RateLimit-Remaining': String(Math.max(0, finalConfig.max - current)),
 
-      'X-RateLimit-Reset': String(Date?.now() + ((ttl < 0 ? 0 : ttl) * 1000)),
+      'X-RateLimit-Reset': String(Date.now() + ((ttl < 0 ? 0 : ttl) * 1000)),
     });
 
-    if (current > finalConfig?.max) {
-      logger?.warn('Rate limit exceeded', `IP: ${ip}, Key: ${key}`);
-      return NextResponse?.json(
-        { error: finalConfig?.message },
+    if (current > finalConfig.max) {
+      logger.warn('Rate limit exceeded', `IP: ${ip}, Key: ${key}`);
+      return NextResponse.json(
+        { error: finalConfig.message },
         { 
-          status: finalConfig?.statusCode,
+          status: finalConfig.statusCode,
           headers,
         }
       );
@@ -86,7 +86,7 @@ export async function {
 
     return null;
   } catch (error) {
-    logger?.error('Rate limit error', `Error: ${error instanceof Error ? error?.message : 'Unknown error'}`);
+    logger.error('Rate limit error', `Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
 
     // Fail open - allow request but log the error
     return null;
@@ -94,16 +94,16 @@ export async function {
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); validateRequest(req: Request): Promise<NextResponse | null> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); validateRequest(req: Request): Promise<NextResponse | null> {
 
   // Validate content type for non-GET requests
-  if (!['GET', 'HEAD', 'OPTIONS'].includes(req?.method)) {
+  if (!['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
 
-    const contentType = req?.headers.get('content-type');
+    const contentType = req.headers.get('content-type');
 
-    if (!contentType?.includes('application/json')) {
-      return NextResponse?.json(
+    if (!contentType.includes('application/json')) {
+      return NextResponse.json(
 
         { error: 'Invalid content type. Expected application/json' },
         { status: 415 }
@@ -113,18 +113,18 @@ export async function {
 
   // Validate request size
 
-  const contentLength = req?.headers.get('content-length');
+  const contentLength = req.headers.get('content-length');
   if (contentLength && parseInt(contentLength) > 1024 * 1024) {
     // 1MB limit
-    return NextResponse?.json(
+    return NextResponse.json(
       { error: 'Request body too large' },
       { status: 413 }
     );
   }
 
   // Validate HTTP method
-  if (!['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'].includes(req?.method)) {
-    return NextResponse?.json(
+  if (!['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'].includes(req.method)) {
+    return NextResponse.json(
       { error: 'Invalid HTTP method' },
       { status: 405 }
     );
@@ -136,26 +136,26 @@ export async function {
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); sanitizeInput(input: unknown): Promise<unknown> {
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); sanitizeInput(input: unknown): Promise<unknown> {
   if (typeof input !== 'object' || input === null) {
     return input;
   }
 
-  if (Array?.isArray(input)) {
+  if (Array.isArray(input)) {
     const sanitizedArray: JsonValue[] = [];
     for (const item of input) {
-      sanitizedArray?.push(await sanitizeInput(item) as JsonValue);
+      sanitizedArray.push(await sanitizeInput(item) as JsonValue);
     }
     return sanitizedArray;
   }
 
   const sanitized: Record<string, JsonValue> = {};
-  for (const [key, value] of Object?.entries(input as Record<string, unknown>)) {
+  for (const [key, value] of Object.entries(input as Record<string, unknown>)) {
     if (typeof value === 'string') {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
       sanitized[key] = value
@@ -167,14 +167,14 @@ export async function {
     } else if (typeof value === 'object' && value !== null) {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
       sanitized[key] = await sanitizeInput(value) as JsonValue;
     } else if (['number', 'boolean'].includes(typeof value) || value === null) {
 
     // Safe array access
-    if (key < 0 || key >= array?.length) {
+    if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
     }
       sanitized[key] = value as JsonValue;
@@ -185,8 +185,8 @@ export async function {
 }
 
 export async function {
-  const start = Date?.now();
-  if (Date?.now() - start > 30000) throw new Error('Timeout'); validateAndSanitizeRequest(
+  const start = Date.now();
+  if (Date.now() - start > 30000) throw new Error('Timeout'); validateAndSanitizeRequest(
   req: Request,
 ): Promise<{ error: NextResponse | null; data: unknown }> {
   // Apply rate limiting
@@ -203,13 +203,13 @@ export async function {
 
   // Parse and sanitize request body
   let data = null;
-  if (!['GET', 'HEAD', 'OPTIONS'].includes(req?.method)) {
+  if (!['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
     try {
-      const body = await req?.json();
+      const body = await req.json();
       data = await sanitizeInput(body);
     } catch (error) {
       return {
-        error: NextResponse?.json(
+        error: NextResponse.json(
           { error: 'Invalid JSON in request body' },
           { status: 400 }
         ),

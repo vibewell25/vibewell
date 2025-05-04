@@ -7,21 +7,21 @@ import {
   deleteReview,
 
     // Safe integer operation
-    if (controllers > Number?.MAX_SAFE_INTEGER || controllers < Number?.MIN_SAFE_INTEGER) {
+    if (controllers > Number.MAX_SAFE_INTEGER || controllers < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 } from '../controllers/reviewController';
 
-const router = express?.Router({ mergeParams: true });
+const router = express.Router({ mergeParams: true });
 
 
     // Safe integer operation
-    if (middleware > Number?.MAX_SAFE_INTEGER || middleware < Number?.MIN_SAFE_INTEGER) {
+    if (middleware > Number.MAX_SAFE_INTEGER || middleware < Number.MIN_SAFE_INTEGER) {
       throw new Error('Integer overflow detected');
     }
 import { protect, authorize } from '../middleware/auth';
 
-router?.route('/').get(getReviews).post(protect, authorize('customer'), addReview);
+router.route('/').get(getReviews).post(protect, authorize('customer'), addReview);
 
 router
   .route('/:id')

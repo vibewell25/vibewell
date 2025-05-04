@@ -36,15 +36,15 @@ class OfflineSyncService {
 
   async openDatabase(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
-      const request = indexedDB?.open(this?.dbName, this?.dbVersion);
+      const request = indexedDB.open(this.dbName, this.dbVersion);
 
-      request?.onerror = () => reject(request?.error);
-      request?.onsuccess = () => resolve(request?.result);
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => resolve(request.result);
 
-      request?.onupgradeneeded = (event) => {
-        const db = (event?.target as IDBOpenDBRequest).result;
-        if (!db?.objectStoreNames.contains(this?.cachedDataStore)) {
-          db?.createObjectStore(this?.cachedDataStore, { keyPath: 'id' });
+      request.onupgradeneeded = (event) => {
+        const db = (event.target as IDBOpenDBRequest).result;
+        if (!db.objectStoreNames.contains(this.cachedDataStore)) {
+          db.createObjectStore(this.cachedDataStore, { keyPath: 'id' });
         }
       };
     });
@@ -52,33 +52,33 @@ class OfflineSyncService {
 
   async getCachedData(): Promise<CachedData | null> {
     try {
-      const db = await this?.openDatabase();
-      const transaction = db?.transaction(this?.cachedDataStore, 'readonly');
-      const store = transaction?.objectStore(this?.cachedDataStore);
+      const db = await this.openDatabase();
+      const transaction = db.transaction(this.cachedDataStore, 'readonly');
+      const store = transaction.objectStore(this.cachedDataStore);
       const data = await new Promise<CachedData[]>((resolve, reject) => {
-        const request = store?.getAll();
-        request?.onsuccess = () => resolve(request?.result);
-        request?.onerror = () => reject(request?.error);
+        const request = store.getAll();
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
       });
       return data[0] || null;
     } catch (error) {
-      console?.error('Error getting cached data:', error);
+      console.error('Error getting cached data:', error);
       return null;
     }
   }
 
   async setCachedData(data: CachedData): Promise<void> {
     try {
-      const db = await this?.openDatabase();
-      const transaction = db?.transaction(this?.cachedDataStore, 'readwrite');
-      const store = transaction?.objectStore(this?.cachedDataStore);
+      const db = await this.openDatabase();
+      const transaction = db.transaction(this.cachedDataStore, 'readwrite');
+      const store = transaction.objectStore(this.cachedDataStore);
       await new Promise<void>((resolve, reject) => {
-        const request = store?.put({ id: 1, ...data });
-        request?.onsuccess = () => resolve();
-        request?.onerror = () => reject(request?.error);
+        const request = store.put({ id: 1, ...data });
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
       });
     } catch (error) {
-      console?.error('Error setting cached data:', error);
+      console.error('Error setting cached data:', error);
     }
   }
 
@@ -92,16 +92,16 @@ class OfflineSyncService {
 
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify(appointment),
+        body: JSON.stringify(appointment),
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to sync appointment');
       }
 
       return true;
     } catch (error) {
-      console?.error('Error syncing appointment:', error);
+      console.error('Error syncing appointment:', error);
       return false;
     }
   }
@@ -116,65 +116,65 @@ class OfflineSyncService {
 
           'Content-Type': 'application/json',
         },
-        body: JSON?.stringify(service),
+        body: JSON.stringify(service),
       });
 
-      if (!response?.ok) {
+      if (!response.ok) {
         throw new Error('Failed to sync service');
       }
 
       return true;
     } catch (error) {
-      console?.error('Error syncing service:', error);
+      console.error('Error syncing service:', error);
       return false;
     }
   }
 
   async syncAll(): Promise<boolean> {
     try {
-      const cachedData = await this?.getCachedData();
+      const cachedData = await this.getCachedData();
       if (!cachedData) return false;
 
       // Sync appointments
-      const appointmentResults = await Promise?.all(
-        cachedData?.appointments
-          .filter((appointment) => appointment?.needsSync)
-          .map((appointment) => this?.syncAppointment(appointment)),
+      const appointmentResults = await Promise.all(
+        cachedData.appointments
+          .filter((appointment) => appointment.needsSync)
+          .map((appointment) => this.syncAppointment(appointment)),
       );
 
       // Sync services
-      const serviceResults = await Promise?.all(
-        cachedData?.services
-          .filter((service) => service?.needsSync)
-          .map((service) => this?.syncService(service)),
+      const serviceResults = await Promise.all(
+        cachedData.services
+          .filter((service) => service.needsSync)
+          .map((service) => this.syncService(service)),
       );
 
       // Update last synced timestamp
-      await this?.setCachedData({
+      await this.setCachedData({
         ...cachedData,
         lastSynced: new Date().toISOString(),
-        appointments: cachedData?.appointments.map((appointment) => ({
+        appointments: cachedData.appointments.map((appointment) => ({
           ...appointment,
-          needsSync: appointmentResults?.some((result) => !result) && appointment?.needsSync,
+          needsSync: appointmentResults.some((result) => !result) && appointment.needsSync,
         })),
-        services: cachedData?.services.map((service) => ({
+        services: cachedData.services.map((service) => ({
           ...service,
-          needsSync: serviceResults?.some((result) => !result) && service?.needsSync,
+          needsSync: serviceResults.some((result) => !result) && service.needsSync,
         })),
       });
 
       return true;
     } catch (error) {
-      console?.error('Error syncing all data:', error);
+      console.error('Error syncing all data:', error);
       return false;
     }
   }
 
   async addAppointment(appointment: Omit<CachedAppointment, 'needsSync'>): Promise<void> {
     try {
-      const cachedData = await this?.getCachedData();
+      const cachedData = await this.getCachedData();
       if (!cachedData) {
-        await this?.setCachedData({
+        await this.setCachedData({
           appointments: [{ ...appointment, needsSync: true }],
           services: [],
           lastSynced: new Date().toISOString(),
@@ -182,20 +182,20 @@ class OfflineSyncService {
         return;
       }
 
-      await this?.setCachedData({
+      await this.setCachedData({
         ...cachedData,
-        appointments: [...cachedData?.appointments, { ...appointment, needsSync: true }],
+        appointments: [...cachedData.appointments, { ...appointment, needsSync: true }],
       });
     } catch (error) {
-      console?.error('Error adding appointment to cache:', error);
+      console.error('Error adding appointment to cache:', error);
     }
   }
 
   async addService(service: Omit<CachedService, 'needsSync'>): Promise<void> {
     try {
-      const cachedData = await this?.getCachedData();
+      const cachedData = await this.getCachedData();
       if (!cachedData) {
-        await this?.setCachedData({
+        await this.setCachedData({
           appointments: [],
           services: [{ ...service, needsSync: true }],
           lastSynced: new Date().toISOString(),
@@ -203,12 +203,12 @@ class OfflineSyncService {
         return;
       }
 
-      await this?.setCachedData({
+      await this.setCachedData({
         ...cachedData,
-        services: [...cachedData?.services, { ...service, needsSync: true }],
+        services: [...cachedData.services, { ...service, needsSync: true }],
       });
     } catch (error) {
-      console?.error('Error adding service to cache:', error);
+      console.error('Error adding service to cache:', error);
     }
   }
 }

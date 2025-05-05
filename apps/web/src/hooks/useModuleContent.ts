@@ -1,20 +1,17 @@
 import { useState } from 'react';
-import { toast } from 'sonner';
+import { toast } from '@/lib/toast';
 
-import { CreateModuleContentInput, UpdateModuleContentInput } from '@/types/module';
+import { CreateModuleContentInput, UpdateModuleContentInput, ModuleContent } from '@/types/module';
 
 export function useModuleContent(moduleId: string) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [content, setContent] = useState<ModuleContent[]>([]);
 
-  const getContent = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const getContent = async () => {
     try {
       setIsLoading(true);
       setError(null);
-
 
       const response = await fetch(`/api/training/module/${moduleId}/content`);
       if (!response.ok) {
@@ -32,19 +29,14 @@ export function useModuleContent(moduleId: string) {
     }
   };
 
-  const createContent = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');data: CreateModuleContentInput) => {
+  const createContent = async (data: CreateModuleContentInput) => {
     try {
       setIsLoading(true);
       setError(null);
 
-
       const response = await fetch(`/api/training/module/${moduleId}/content`, {
         method: 'POST',
         headers: {
-
-
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
@@ -68,19 +60,14 @@ export function useModuleContent(moduleId: string) {
     }
   };
 
-  const updateContent = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');data: UpdateModuleContentInput) => {
+  const updateContent = async (data: UpdateModuleContentInput) => {
     try {
       setIsLoading(true);
       setError(null);
 
-
       const response = await fetch(`/api/training/module/${moduleId}/content`, {
         method: 'PUT',
         headers: {
-
-
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
@@ -106,13 +93,10 @@ export function useModuleContent(moduleId: string) {
     }
   };
 
-  const deleteContent = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const deleteContent = async () => {
     try {
       setIsLoading(true);
       setError(null);
-
 
       const response = await fetch(`/api/training/module/${moduleId}/content`, {
         method: 'DELETE',

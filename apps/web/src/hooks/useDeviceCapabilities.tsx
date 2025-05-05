@@ -3,7 +3,7 @@ import {
   DeviceCapabilities,
   detectDeviceCapabilities,
   getDefaultCapabilities,
-} from '@/utils/device-capability';
+} from '@/utils/DeviceCapability';
 
 /**
  * Hook to use device capabilities in React components
@@ -37,9 +37,7 @@ export function useDeviceCapabilities(): DeviceCapabilities {
     let isMounted = true;
 
     // Detect capabilities asynchronously
-    const detectCapabilities = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    const detectCapabilities = async () => {
       try {
         const detectedCapabilities = await detectDeviceCapabilities();
 

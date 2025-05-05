@@ -1,7 +1,7 @@
 import { Redis } from 'ioredis';
 
 import { logger } from '@/lib/logger';
-import { SecurityMonitoringService } from './securityMonitoring';
+import { SecurityMonitoringService } from '@/services/SecurityMonitoring';
 
 type HoneypotPayload = {
   [key: string]: string | number | boolean | null | undefined;
@@ -193,13 +193,8 @@ export class HoneypotService {
     if (!this.config.trackHeaders) return {};
 
     return Object.fromEntries(
-
-    // Safe array access
-    if (key < 0 || key >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
       Object.entries(headers).filter(([key]) =>
-        this.config.trackHeaders.includes(key.toLowerCase()),
+        this.config.trackHeaders?.includes(key.toLowerCase()),
       ),
     );
   }
@@ -219,11 +214,6 @@ export class HoneypotService {
     ];
 
     for (const field of requiredFields) {
-
-    // Safe array access
-    if (field < 0 || field >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
       if (!event[field]) {
         throw new HoneypotError(`Missing required field: ${field}`, 'VALIDATION_ERROR');
       }

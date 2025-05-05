@@ -4,22 +4,17 @@ import { render as rtlRender, screen, fireEvent, RenderOptions } from '@testing-
 
 
 import userEvent from '@testing-library/user-event';
-import { vi } from 'vitest';
 
 import * as THREE from 'three';
 
 interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
   route?: string;
-}
-
 interface CustomRenderResult {
   user: ReturnType<typeof userEvent.setup>;
   container: HTMLElement;
   rerender: (ui: React.ReactElement) => void;
   unmount: () => void;
   asFragment: () => DocumentFragment;
-}
-
 const customRender = (
   ui: React.ReactElement,
   options?: CustomRenderOptions,
@@ -31,9 +26,6 @@ const customRender = (
     user,
     ...result,
     rerender: (newUi: React.ReactElement) => rtlRender(newUi, { container: result.container }),
-  };
-};
-
 // Mock analytics hook
 
 vi.mock('@/hooks/use-analytics', () => ({
@@ -41,8 +33,8 @@ vi.mock('@/hooks/use-analytics', () => ({
     trackEvent: vi.fn(),
     trackPageView: vi.fn(),
     trackError: vi.fn(),
-  }),
-}));
+),
+));
 
 // Mock WebGL context
 const mockWebGLContext = {
@@ -54,10 +46,8 @@ const mockWebGLContext = {
       precision: 1,
       rangeMin: 1,
       rangeMax: 1,
-    }),
-  }),
-};
-
+),
+),
 // Mock canvas
 HTMLCanvasElement.prototype.getContext = () => mockWebGLContext.getContext();
 
@@ -70,7 +60,7 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
   unobserve: vi.fn(),
   disconnect: vi.fn(),
-}));
+));
 
 // Mock Three.js
 vi.mock('three', async () => {
@@ -84,10 +74,7 @@ vi.mock('three', async () => {
       shadowMap: {},
       domElement: document.createElement('canvas'),
       capabilities: { isWebGL2: true },
-    })),
-  };
-});
-
+)),
 // Mock React Three Fiber
 
 vi.mock('@react-three/fiber', async () => {
@@ -104,10 +91,7 @@ vi.mock('@react-three/fiber', async () => {
       scene: new THREE.Scene(),
       camera: new THREE.PerspectiveCamera(),
       gl: { setPixelRatio: vi.fn() },
-    })),
-  };
-});
-
+)),
 // Mock React Three Drei
 
 vi.mock('@react-three/drei', async () => {
@@ -122,10 +106,6 @@ vi.mock('@react-three/drei', async () => {
     Sphere: vi.fn((props) => React.createElement('mesh', props)),
     Cylinder: vi.fn((props) => React.createElement('mesh', props)),
     TransformControls: vi.fn((props) => React.createElement('group', props)),
-  };
-});
-
-
 // re-export everything
 
 

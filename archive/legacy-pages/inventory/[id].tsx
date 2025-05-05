@@ -24,10 +24,8 @@ const InventoryDetail: NextPage = () => {
       setName(data.name);
       setDescription(data.description);
       setQuantity(data.quantity);
-    };
-    
-    fetchInventoryItem();
-  }, [id]);
+fetchInventoryItem();
+[id]);
 
   const handleUpdate = async (e: FormEvent) => {
     e.preventDefault();
@@ -35,13 +33,9 @@ const InventoryDetail: NextPage = () => {
       method: 'PUT', 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, description, quantity })
-    });
-    if (router) {
+if (router) {
       router.back();
-    }
-  };
-
-  return (
+return (
     <div className="max-w-md mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Edit Inventory Item</h1>
       <form onSubmit={handleUpdate} className="space-y-4">
@@ -54,7 +48,4 @@ const InventoryDetail: NextPage = () => {
         </div>
       </form>
     </div>
-  );
-};
-
 export default InventoryDetail;

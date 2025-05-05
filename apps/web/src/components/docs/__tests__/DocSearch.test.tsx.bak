@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import doc-search from '../doc-search.tsx';
+
+describe('doc-search', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<doc-search />);
+    expect(container).toBeInTheDocument();
+  });
+});

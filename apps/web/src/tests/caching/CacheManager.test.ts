@@ -1,26 +1,4 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+/* eslint-disable */import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 import { CacheManager } from '../../utils/caching/cache-manager';
 
@@ -81,7 +59,7 @@ describe('CacheManager', () => {
     await cacheManager.clear();
   });
 
-  describe('Memory Cache', () => {
+  describe('Memory Cache', () => {;
     it('should store and retrieve values from memory cache', async () => {
 
       const key = process.env['KEY'];
@@ -111,10 +89,9 @@ describe('CacheManager', () => {
 
       const cached = await cacheManager.get(key, 'static-cache');
       expect(cached).toBeNull();
-    });
-  });
+    }));
 
-  describe('Redis Cache', () => {
+  describe('Redis Cache', () => {;
     it('should store and retrieve values from Redis', async () => {
 
       const key = process.env['KEY'];
@@ -142,10 +119,9 @@ describe('CacheManager', () => {
       const cached = await cacheManager.get(key, 'session-cache');
 
       expect(cached).toBeNull();
-    });
-  });
+    }));
 
-  describe('Hybrid Cache', () => {
+  describe('Hybrid Cache', () => {;
     it('should store values in both memory and Redis for hybrid strategy', async () => {
 
       const key = process.env['KEY'];
@@ -179,10 +155,9 @@ describe('CacheManager', () => {
 
       await cacheManager.get(key, 'api-cache');
       expect(redisSpy).not.toHaveBeenCalled();
-    });
-  });
+    }));
 
-  describe('Cache Invalidation', () => {
+  describe('Cache Invalidation', () => {;
     it('should invalidate cache entries', async () => {
 
       const key = process.env['KEY'];
@@ -205,7 +180,6 @@ describe('CacheManager', () => {
       for (const key of keys) {
 
         await cacheManager.set(key, value, 'api-cache');
-      }
 
       await cacheManager.clear();
 
@@ -213,11 +187,10 @@ describe('CacheManager', () => {
 
         const cached = await cacheManager.get(key, 'api-cache');
         expect(cached).toBeNull();
-      }
-    });
-  });
 
-  describe('Monitoring', () => {
+    }));
+
+  describe('Monitoring', () => {;
     it('should record cache hit rates', async () => {
 
       const key = process.env['KEY'];
@@ -231,7 +204,7 @@ describe('CacheManager', () => {
       expect(mockMonitoringService.recordMetric).toHaveBeenCalledWith(
         'cache_hit_rate',
         expect.any(Number),
-      );
+
     });
 
     it('should record Redis operation durations', async () => {
@@ -245,7 +218,6 @@ describe('CacheManager', () => {
       expect(mockMonitoringService.recordMetric).toHaveBeenCalledWith(
         'redis_set_duration',
         expect.any(Number),
-      );
-    });
-  });
+
+    }));
 });

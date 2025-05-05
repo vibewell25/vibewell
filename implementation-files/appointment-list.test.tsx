@@ -6,7 +6,7 @@ import { updateAppointmentStatus } from '../implementation-files/appointments-cr
 // Mock the API functions
 jest.mock('../implementation-files/appointments-create-logic', () => ({
   updateAppointmentStatus: jest.fn(),
-}));
+));
 
 describe('AppointmentList Component', () => {
   const mockAppointments = [
@@ -19,8 +19,7 @@ describe('AppointmentList Component', () => {
       status: 'confirmed',
       clientName: 'John Smith',
       clientEmail: 'john@example.com',
-    },
-    {
+{
       id: 'appt-2',
       serviceName: 'Manicure',
       providerName: 'Alice Johnson',
@@ -29,14 +28,11 @@ describe('AppointmentList Component', () => {
       status: 'pending',
       clientName: 'Sarah Brown',
       clientEmail: 'sarah@example.com',
-    },
-  ];
+];
 
   beforeEach(() => {
     jest.clearAllMocks();
-  });
-
-  it('renders the appointment list correctly', () => {
+it('renders the appointment list correctly', () => {
     render(<AppointmentList appointments={mockAppointments} />);
     
     expect(screen.getByText('Haircut')).toBeInTheDocument();
@@ -45,9 +41,7 @@ describe('AppointmentList Component', () => {
     expect(screen.getByText('Manicure')).toBeInTheDocument();
     expect(screen.getByText('Alice Johnson')).toBeInTheDocument();
     expect(screen.getByText('Sarah Brown')).toBeInTheDocument();
-  });
-
-  it('handles status updates correctly', async () => {
+it('handles status updates correctly', async () => {
     (updateAppointmentStatus as jest.Mock).mockResolvedValue({ id: 'appt-2', status: 'confirmed' });
     
     render(<AppointmentList appointments={mockAppointments} />);
@@ -60,10 +54,7 @@ describe('AppointmentList Component', () => {
     
     await waitFor(() => {
       expect(updateAppointmentStatus).toHaveBeenCalledWith('appt-2', 'confirmed');
-    });
-  });
-
-  it('filters appointments by status', () => {
+it('filters appointments by status', () => {
     render(<AppointmentList appointments={mockAppointments} />);
     
     const filterButton = screen.getByText('Filter');
@@ -74,9 +65,7 @@ describe('AppointmentList Component', () => {
     
     expect(screen.getByText('Haircut')).toBeInTheDocument();
     expect(screen.queryByText('Manicure')).not.toBeInTheDocument();
-  });
-
-  it('sorts appointments by date', () => {
+it('sorts appointments by date', () => {
     render(<AppointmentList appointments={mockAppointments} />);
     
     const sortButton = screen.getByText('Sort');
@@ -88,5 +77,3 @@ describe('AppointmentList Component', () => {
     const appointments = screen.getAllByTestId('appointment-item');
     expect(appointments[0]).toHaveTextContent('Manicure');
     expect(appointments[1]).toHaveTextContent('Haircut');
-  });
-});

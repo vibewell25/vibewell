@@ -825,20 +825,20 @@ import { z } from <span class="cstat-no" title="statement not covered" >'zod';</
 const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
 &nbsp;
 // Validation schemas
-const supplierConfigSchema = <span class="cstat-no" title="statement not covered" >z?.object({</span>
-  apiKey: z?.string(),
-  apiEndpoint: z?.string().url(),
-  webhookUrl: z?.string().url().optional(),
-  supplierType: z?.enum(['DIRECT', 'MARKETPLACE', 'DISTRIBUTOR']),
-  integrationSettings: z?.record(z?.any()).optional(),
+const supplierConfigSchema = <span class="cstat-no" title="statement not covered" >z.object({</span>
+  apiKey: z.string(),
+  apiEndpoint: z.string().url(),
+  webhookUrl: z.string().url().optional(),
+  supplierType: z.enum(['DIRECT', 'MARKETPLACE', 'DISTRIBUTOR']),
+  integrationSettings: z.record(z.any()).optional(),
 });
 &nbsp;
-const orderRequestSchema = <span class="cstat-no" title="statement not covered" >z?.object({</span>
-  productId: z?.string(),
-  quantity: z?.number().positive(),
-  requestedDeliveryDate: z?.date().optional(),
-  priority: z?.enum(['LOW', 'MEDIUM', 'HIGH']).optional(),
-  notes: z?.string().optional(),
+const orderRequestSchema = <span class="cstat-no" title="statement not covered" >z.object({</span>
+  productId: z.string(),
+  quantity: z.number().positive(),
+  requestedDeliveryDate: z.date().optional(),
+  priority: z.enum(['LOW', 'MEDIUM', 'HIGH']).optional(),
+  notes: z.string().optional(),
 });
 &nbsp;
 interface SupplierConfig {
@@ -873,7 +873,7 @@ export class <span class="cstat-no" title="statement not covered" >SupplierInteg
   private <span class="cstat-no" title="statement not covered" >supplierConfigs: Map&lt;string, SupplierConfig&gt; = new Map();</span>
 &nbsp;
 <span class="fstat-no" title="function not covered" >  constructor() {</span>
-<span class="cstat-no" title="statement not covered" >    this?.initializeSupplierConfigs();</span>
+<span class="cstat-no" title="statement not covered" >    this.initializeSupplierConfigs();</span>
   }
 &nbsp;
   /**
@@ -881,7 +881,7 @@ export class <span class="cstat-no" title="statement not covered" >SupplierInteg
    */
 <span class="fstat-no" title="function not covered" >  private async i</span>nitializeSupplierConfigs(): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const suppliers = <span class="cstat-no" title="statement not covered" >await prisma?.supplier.findMany({</span>
+      const suppliers = <span class="cstat-no" title="statement not covered" >await prisma.supplier.findMany({</span>
         where: {
           isActive: true,
           integrationConfig: {
@@ -893,18 +893,18 @@ export class <span class="cstat-no" title="statement not covered" >SupplierInteg
         },
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      suppliers?.forEach(<span class="fstat-no" title="function not covered" >(s</span>upplier) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (supplier?.integrationConfig) {</span>
-          const config = <span class="cstat-no" title="statement not covered" >supplierConfigSchema?.parse(supplier?.integrationConfig);</span>
-<span class="cstat-no" title="statement not covered" >          this?.supplierConfigs.set(supplier?.id, config);</span>
+<span class="cstat-no" title="statement not covered" >      suppliers.forEach(<span class="fstat-no" title="function not covered" >(s</span>upplier) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (supplier.integrationConfig) {</span>
+          const config = <span class="cstat-no" title="statement not covered" >supplierConfigSchema.parse(supplier.integrationConfig);</span>
+<span class="cstat-no" title="statement not covered" >          this.supplierConfigs.set(supplier.id, config);</span>
         }
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      logger?.info('Supplier configurations initialized', 'SupplierIntegration', {</span>
-        supplierCount: suppliers?.length,
+<span class="cstat-no" title="statement not covered" >      logger.info('Supplier configurations initialized', 'SupplierIntegration', {</span>
+        supplierCount: suppliers.length,
       });
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Failed to initialize supplier configurations', 'SupplierIntegration', {</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Failed to initialize supplier configurations', 'SupplierIntegration', {</span>
         error,
       });
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
@@ -917,16 +917,16 @@ export class <span class="cstat-no" title="statement not covered" >SupplierInteg
 <span class="fstat-no" title="function not covered" >  async p</span>laceOrder(supplierId: string, orderRequest: OrderRequest): Promise&lt;OrderResponse&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Validate request
-      const validatedRequest = <span class="cstat-no" title="statement not covered" >orderRequestSchema?.parse(orderRequest);</span>
-      const supplierConfig = <span class="cstat-no" title="statement not covered" >this?.getSupplierConfig(supplierId);</span>
+      const validatedRequest = <span class="cstat-no" title="statement not covered" >orderRequestSchema.parse(orderRequest);</span>
+      const supplierConfig = <span class="cstat-no" title="statement not covered" >this.getSupplierConfig(supplierId);</span>
 &nbsp;
       // Prepare order payload based on supplier type
-      const payload = <span class="cstat-no" title="statement not covered" >this?.prepareOrderPayload(supplierConfig?.supplierType, validatedRequest);</span>
+      const payload = <span class="cstat-no" title="statement not covered" >this.prepareOrderPayload(supplierConfig.supplierType, validatedRequest);</span>
 &nbsp;
       // Send order to supplier API
-      const response = <span class="cstat-no" title="statement not covered" >await axios?.post(`${supplierConfig?.apiEndpoint}/orders`, payload, {</span>
+      const response = <span class="cstat-no" title="statement not covered" >await axios.post(`${supplierConfig.apiEndpoint}/orders`, payload, {</span>
         headers: {
-          Authorization: `Bearer ${supplierConfig?.apiKey}`,
+          Authorization: `Bearer ${supplierConfig.apiKey}`,
 &nbsp;
 &nbsp;
           'Content-Type': 'application/json',
@@ -934,11 +934,11 @@ export class <span class="cstat-no" title="statement not covered" >SupplierInteg
       });
 &nbsp;
       // Store order in database
-<span class="cstat-no" title="statement not covered" >      await this?.storeOrder(supplierId, validatedRequest, response?.data);</span>
+<span class="cstat-no" title="statement not covered" >      await this.storeOrder(supplierId, validatedRequest, response.data);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      return this?.normalizeOrderResponse(response?.data);</span>
+<span class="cstat-no" title="statement not covered" >      return this.normalizeOrderResponse(response.data);</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Failed to place order with supplier', 'SupplierIntegration', {</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Failed to place order with supplier', 'SupplierIntegration', {</span>
         supplierId,
         error,
       });
@@ -951,19 +951,19 @@ export class <span class="cstat-no" title="statement not covered" >SupplierInteg
    */
 <span class="fstat-no" title="function not covered" >  async c</span>heckOrderStatus(supplierId: string, orderId: string): Promise&lt;Record&lt;string, any&gt;&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const supplierConfig = <span class="cstat-no" title="statement not covered" >this?.getSupplierConfig(supplierId);</span>
+      const supplierConfig = <span class="cstat-no" title="statement not covered" >this.getSupplierConfig(supplierId);</span>
 &nbsp;
-      const response = <span class="cstat-no" title="statement not covered" >await axios?.get(`${supplierConfig?.apiEndpoint}/orders/${orderId}`, {</span>
+      const response = <span class="cstat-no" title="statement not covered" >await axios.get(`${supplierConfig.apiEndpoint}/orders/${orderId}`, {</span>
         headers: {
-          Authorization: `Bearer ${supplierConfig?.apiKey}`,
+          Authorization: `Bearer ${supplierConfig.apiKey}`,
         },
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      await this?.updateOrderStatus(orderId, response?.data);</span>
+<span class="cstat-no" title="statement not covered" >      await this.updateOrderStatus(orderId, response.data);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      return response?.data;</span>
+<span class="cstat-no" title="statement not covered" >      return response.data;</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Failed to check order status', 'SupplierIntegration', {</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Failed to check order status', 'SupplierIntegration', {</span>
         supplierId,
         orderId,
         error,
@@ -977,23 +977,23 @@ export class <span class="cstat-no" title="statement not covered" >SupplierInteg
    */
 <span class="fstat-no" title="function not covered" >  async c</span>onfigureWebhook(supplierId: string, webhookUrl: string): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const supplierConfig = <span class="cstat-no" title="statement not covered" >this?.getSupplierConfig(supplierId);</span>
+      const supplierConfig = <span class="cstat-no" title="statement not covered" >this.getSupplierConfig(supplierId);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      await axios?.post(</span>
-        `${supplierConfig?.apiEndpoint}/webhooks`,
+<span class="cstat-no" title="statement not covered" >      await axios.post(</span>
+        `${supplierConfig.apiEndpoint}/webhooks`,
         {
           url: webhookUrl,
-          events: ['order?.status_update', 'order?.shipped', 'order?.delivered'],
+          events: ['order.status_update', 'order.shipped', 'order.delivered'],
         },
         {
           headers: {
-            Authorization: `Bearer ${supplierConfig?.apiKey}`,
+            Authorization: `Bearer ${supplierConfig.apiKey}`,
           },
         },
       );
 &nbsp;
       // Update supplier config
-<span class="cstat-no" title="statement not covered" >      await prisma?.supplier.update({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.supplier.update({</span>
         where: { id: supplierId },
         data: {
           integrationConfig: {
@@ -1003,17 +1003,17 @@ export class <span class="cstat-no" title="statement not covered" >SupplierInteg
         },
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      this?.supplierConfigs.set(supplierId, {</span>
+<span class="cstat-no" title="statement not covered" >      this.supplierConfigs.set(supplierId, {</span>
         ...supplierConfig,
         webhookUrl,
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      logger?.info('Webhook configured successfully', 'SupplierIntegration', {</span>
+<span class="cstat-no" title="statement not covered" >      logger.info('Webhook configured successfully', 'SupplierIntegration', {</span>
         supplierId,
         webhookUrl,
       });
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Failed to configure webhook', 'SupplierIntegration', {</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Failed to configure webhook', 'SupplierIntegration', {</span>
         supplierId,
         error,
       });
@@ -1026,24 +1026,24 @@ export class <span class="cstat-no" title="statement not covered" >SupplierInteg
    */
 <span class="fstat-no" title="function not covered" >  async h</span>andleWebhookEvent(supplierId: string, event: Record&lt;string, any&gt;): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      switch (event?.type) {</span>
-        case 'order?.status_update':
-<span class="cstat-no" title="statement not covered" >          await this?.handleOrderStatusUpdate(event?.data);</span>
+<span class="cstat-no" title="statement not covered" >      switch (event.type) {</span>
+        case 'order.status_update':
+<span class="cstat-no" title="statement not covered" >          await this.handleOrderStatusUpdate(event.data);</span>
 <span class="cstat-no" title="statement not covered" >          break;</span>
-        case 'order?.shipped':
-<span class="cstat-no" title="statement not covered" >          await this?.handleOrderShipped(event?.data);</span>
+        case 'order.shipped':
+<span class="cstat-no" title="statement not covered" >          await this.handleOrderShipped(event.data);</span>
 <span class="cstat-no" title="statement not covered" >          break;</span>
-        case 'order?.delivered':
-<span class="cstat-no" title="statement not covered" >          await this?.handleOrderDelivered(event?.data);</span>
+        case 'order.delivered':
+<span class="cstat-no" title="statement not covered" >          await this.handleOrderDelivered(event.data);</span>
 <span class="cstat-no" title="statement not covered" >          break;</span>
         default:
-<span class="cstat-no" title="statement not covered" >          logger?.warn('Unhandled webhook event type', 'SupplierIntegration', {</span>
+<span class="cstat-no" title="statement not covered" >          logger.warn('Unhandled webhook event type', 'SupplierIntegration', {</span>
             supplierId,
-            eventType: event?.type,
+            eventType: event.type,
           });
       }
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Failed to handle webhook event', 'SupplierIntegration', {</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Failed to handle webhook event', 'SupplierIntegration', {</span>
         supplierId,
         event,
         error,
@@ -1053,7 +1053,7 @@ export class <span class="cstat-no" title="statement not covered" >SupplierInteg
   }
 &nbsp;
   private <span class="fstat-no" title="function not covered" >getSupplierConfig(s</span>upplierId: string): SupplierConfig {
-    const config = <span class="cstat-no" title="statement not covered" >this?.supplierConfigs.get(supplierId);</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.supplierConfigs.get(supplierId);</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!config) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error(`No configuration found for supplier ${supplierId}`);</span>
     }
@@ -1068,27 +1068,27 @@ export class <span class="cstat-no" title="statement not covered" >SupplierInteg
 <span class="cstat-no" title="statement not covered" >    switch (supplierType) {</span>
       case 'DIRECT':
 <span class="cstat-no" title="statement not covered" >        return {</span>
-          product_id: orderRequest?.productId,
-          quantity: orderRequest?.quantity,
-          delivery_date: orderRequest?.requestedDeliveryDate?.toISOString(),
-          priority: orderRequest?.priority,
-          notes: orderRequest?.notes,
+          product_id: orderRequest.productId,
+          quantity: orderRequest.quantity,
+          delivery_date: orderRequest.requestedDeliveryDate.toISOString(),
+          priority: orderRequest.priority,
+          notes: orderRequest.notes,
         };
       case 'MARKETPLACE':
 <span class="cstat-no" title="statement not covered" >        return {</span>
-          sku: orderRequest?.productId,
-          qty: orderRequest?.quantity,
-          requested_delivery: orderRequest?.requestedDeliveryDate?.toISOString(),
-          urgency: orderRequest?.priority,
-          additional_info: orderRequest?.notes,
+          sku: orderRequest.productId,
+          qty: orderRequest.quantity,
+          requested_delivery: orderRequest.requestedDeliveryDate.toISOString(),
+          urgency: orderRequest.priority,
+          additional_info: orderRequest.notes,
         };
       case 'DISTRIBUTOR':
 <span class="cstat-no" title="statement not covered" >        return {</span>
-          itemId: orderRequest?.productId,
-          orderQty: orderRequest?.quantity,
-          targetDelivery: orderRequest?.requestedDeliveryDate?.toISOString(),
-          orderPriority: orderRequest?.priority,
-          comments: orderRequest?.notes,
+          itemId: orderRequest.productId,
+          orderQty: orderRequest.quantity,
+          targetDelivery: orderRequest.requestedDeliveryDate.toISOString(),
+          orderPriority: orderRequest.priority,
+          comments: orderRequest.notes,
         };
     }
   }
@@ -1098,76 +1098,76 @@ export class <span class="cstat-no" title="statement not covered" >SupplierInteg
     request: OrderRequest,
     response: Record&lt;string, any&gt;,
   ): Promise&lt;void&gt; {
-<span class="cstat-no" title="statement not covered" >    await prisma?.supplierOrder.create({</span>
+<span class="cstat-no" title="statement not covered" >    await prisma.supplierOrder.create({</span>
       data: {
         supplierId,
-        productId: request?.productId,
-        quantity: request?.quantity,
-        requestedDeliveryDate: request?.requestedDeliveryDate,
-        priority: request?.priority,
-        notes: request?.notes,
-        externalOrderId: response?.orderId,
-        status: response?.status,
-        estimatedDeliveryDate: response?.estimatedDeliveryDate,
-        unitPrice: response?.pricing.unitPrice,
-        totalPrice: response?.pricing.totalPrice,
-        currency: response?.pricing.currency,
+        productId: request.productId,
+        quantity: request.quantity,
+        requestedDeliveryDate: request.requestedDeliveryDate,
+        priority: request.priority,
+        notes: request.notes,
+        externalOrderId: response.orderId,
+        status: response.status,
+        estimatedDeliveryDate: response.estimatedDeliveryDate,
+        unitPrice: response.pricing.unitPrice,
+        totalPrice: response.pricing.totalPrice,
+        currency: response.pricing.currency,
       },
     });
   }
 &nbsp;
   private <span class="fstat-no" title="function not covered" >normalizeOrderResponse(r</span>esponse: Record&lt;string, any&gt;): OrderResponse {
 <span class="cstat-no" title="statement not covered" >    return {</span>
-      orderId: response?.orderId || response?.order_id || response?.id,
-      status: this?.normalizeOrderStatus(response?.status),
-      estimatedDeliveryDate: response?.estimatedDeliveryDate || response?.estimated_delivery,
+      orderId: response.orderId || response.order_id || response.id,
+      status: this.normalizeOrderStatus(response.status),
+      estimatedDeliveryDate: response.estimatedDeliveryDate || response.estimated_delivery,
       pricing: {
-        unitPrice: response?.pricing.unitPrice || response?.unit_price,
-        totalPrice: response?.pricing.totalPrice || response?.total_price,
-        currency: response?.pricing.currency,
+        unitPrice: response.pricing.unitPrice || response.unit_price,
+        totalPrice: response.pricing.totalPrice || response.total_price,
+        currency: response.pricing.currency,
       },
-      message: response?.message || response?.notes,
+      message: response.message || response.notes,
     };
   }
 &nbsp;
   private <span class="fstat-no" title="function not covered" >normalizeOrderStatus(s</span>tatus: string): OrderResponse['status'] {
-<span class="cstat-no" title="statement not covered" >    status = status?.toUpperCase();</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (status?.includes('CONFIRM')) <span class="cstat-no" title="statement not covered" >return 'CONFIRMED';</span></span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (status?.includes('PEND')) <span class="cstat-no" title="statement not covered" >return 'PENDING';</span></span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (status?.includes('REJECT') || status?.includes('FAIL')) <span class="cstat-no" title="statement not covered" >return 'REJECTED';</span></span>
+<span class="cstat-no" title="statement not covered" >    status = status.toUpperCase();</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (status.includes('CONFIRM')) <span class="cstat-no" title="statement not covered" >return 'CONFIRMED';</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (status.includes('PEND')) <span class="cstat-no" title="statement not covered" >return 'PENDING';</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (status.includes('REJECT') || status.includes('FAIL')) <span class="cstat-no" title="statement not covered" >return 'REJECTED';</span></span>
 <span class="cstat-no" title="statement not covered" >    return 'PENDING';</span>
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async u</span>pdateOrderStatus(orderId: string, statusData: Record&lt;string, any&gt;): Promise&lt;void&gt; {
-<span class="cstat-no" title="statement not covered" >    await prisma?.supplierOrder.update({</span>
+<span class="cstat-no" title="statement not covered" >    await prisma.supplierOrder.update({</span>
       where: { externalOrderId: orderId },
       data: {
-        status: this?.normalizeOrderStatus(statusData?.status),
-        estimatedDeliveryDate: statusData?.estimatedDeliveryDate,
+        status: this.normalizeOrderStatus(statusData.status),
+        estimatedDeliveryDate: statusData.estimatedDeliveryDate,
         lastStatusUpdate: new Date(),
       },
     });
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async h</span>andleOrderStatusUpdate(data: Record&lt;string, any&gt;): Promise&lt;void&gt; {
-<span class="cstat-no" title="statement not covered" >    await this?.updateOrderStatus(data?.orderId, data);</span>
+<span class="cstat-no" title="statement not covered" >    await this.updateOrderStatus(data.orderId, data);</span>
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async h</span>andleOrderShipped(data: Record&lt;string, any&gt;): Promise&lt;void&gt; {
-<span class="cstat-no" title="statement not covered" >    await prisma?.supplierOrder.update({</span>
-      where: { externalOrderId: data?.orderId },
+<span class="cstat-no" title="statement not covered" >    await prisma.supplierOrder.update({</span>
+      where: { externalOrderId: data.orderId },
       data: {
         status: 'SHIPPED',
         shippedAt: new Date(),
-        trackingNumber: data?.trackingNumber,
-        carrier: data?.carrier,
+        trackingNumber: data.trackingNumber,
+        carrier: data.carrier,
       },
     });
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async h</span>andleOrderDelivered(data: Record&lt;string, any&gt;): Promise&lt;void&gt; {
-<span class="cstat-no" title="statement not covered" >    await prisma?.supplierOrder.update({</span>
-      where: { externalOrderId: data?.orderId },
+<span class="cstat-no" title="statement not covered" >    await prisma.supplierOrder.update({</span>
+      where: { externalOrderId: data.orderId },
       data: {
         status: 'DELIVERED',
         deliveredAt: new Date(),
@@ -1175,16 +1175,16 @@ export class <span class="cstat-no" title="statement not covered" >SupplierInteg
     });
 &nbsp;
     // Update inventory
-    const order = <span class="cstat-no" title="statement not covered" >await prisma?.supplierOrder.findUnique({</span>
-      where: { externalOrderId: data?.orderId },
+    const order = <span class="cstat-no" title="statement not covered" >await prisma.supplierOrder.findUnique({</span>
+      where: { externalOrderId: data.orderId },
     });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (order) {</span>
-<span class="cstat-no" title="statement not covered" >      await prisma?.product.update({</span>
-        where: { id: order?.productId },
+<span class="cstat-no" title="statement not covered" >      await prisma.product.update({</span>
+        where: { id: order.productId },
         data: {
           stockQuantity: {
-            increment: order?.quantity,
+            increment: order.quantity,
           },
         },
       });
@@ -1198,7 +1198,7 @@ export class <span class="cstat-no" title="statement not covered" >SupplierInteg
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

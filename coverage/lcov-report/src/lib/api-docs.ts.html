@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/16</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/15</span>
+                <span class='fraction'>0/11</span>
             </div>
         
             
@@ -212,15 +212,7 @@
 <a name='L147'></a><a href='#L147'>147</a>
 <a name='L148'></a><a href='#L148'>148</a>
 <a name='L149'></a><a href='#L149'>149</a>
-<a name='L150'></a><a href='#L150'>150</a>
-<a name='L151'></a><a href='#L151'>151</a>
-<a name='L152'></a><a href='#L152'>152</a>
-<a name='L153'></a><a href='#L153'>153</a>
-<a name='L154'></a><a href='#L154'>154</a>
-<a name='L155'></a><a href='#L155'>155</a>
-<a name='L156'></a><a href='#L156'>156</a>
-<a name='L157'></a><a href='#L157'>157</a>
-<a name='L158'></a><a href='#L158'>158</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L150'></a><a href='#L150'>150</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -344,10 +336,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -364,10 +352,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -424,7 +408,7 @@ export const <span class="cstat-no" title="statement not covered" >API_DOCUMENTA
 &nbsp;
     path: '/api/health',
     method: 'GET',
-    version: ApiVersion?.V1,
+    version: ApiVersion.V1,
     description: 'Check API health status',
     rateLimits: {
       requestsPerMinute: 60,
@@ -449,7 +433,7 @@ export const <span class="cstat-no" title="statement not covered" >API_DOCUMENTA
 &nbsp;
     path: '/api/auth',
     method: 'POST',
-    version: ApiVersion?.V1,
+    version: ApiVersion.V1,
     description: 'Authenticate user and get access token',
     rateLimits: {
       requestsPerMinute: 5,
@@ -501,11 +485,7 @@ export const <span class="cstat-no" title="statement not covered" >API_DOCUMENTA
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getEndpointDocs(</span></span>path: string): ApiEndpointDoc | undefined {
 &nbsp;
-    // Safe array access
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (path &lt; 0 || path &gt;= array?.length) {</span>
-<span class="cstat-no" title="statement not covered" >      throw new Error('Array index out of bounds');</span>
-    }
-<span class="cstat-no" title="statement not covered" >  return API_DOCUMENTATION[path];</span>
+<span class="cstat-no" title="statement not covered" >    return API_DOCUMENTATION[path];</span>
 }
 &nbsp;
 /**
@@ -519,15 +499,11 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
  * Get documentation for endpoints of a specific version
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getVersionDocs(</span></span>version: ApiVersion): Record&lt;string, ApiEndpointDoc&gt; {
-<span class="cstat-no" title="statement not covered" >  return Object?.entries(API_DOCUMENTATION).reduce(</span>
+<span class="cstat-no" title="statement not covered" >  return Object.entries(API_DOCUMENTATION).reduce(</span>
 <span class="fstat-no" title="function not covered" >    (a</span>cc, [key, doc]) =&gt; {
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (doc?.version === version) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (doc.version === version) {</span>
 &nbsp;
-    // Safe array access
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (key &lt; 0 || key &gt;= array?.length) {</span>
-<span class="cstat-no" title="statement not covered" >      throw new Error('Array index out of bounds');</span>
-    }
-<span class="cstat-no" title="statement not covered" >        acc[key] = doc;</span>
+<span class="cstat-no" title="statement not covered" >    acc[key] = doc;</span>
       }
 <span class="cstat-no" title="statement not covered" >      return acc;</span>
     },
@@ -541,7 +517,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

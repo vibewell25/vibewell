@@ -6,8 +6,6 @@ export interface LoyaltyTier {
   benefits: string[];
   pointMultiplier: number;
   specialPerks: string[];
-}
-
 export interface Reward {
   id: string;
   name: string;
@@ -18,8 +16,6 @@ export interface Reward {
   minimumTier?: string;
   expiryDays: number;
   isActive: boolean;
-}
-
 export interface LoyaltyTransaction {
   id: string;
   userId: string;
@@ -29,8 +25,6 @@ export interface LoyaltyTransaction {
   bookingId?: string;
   rewardId?: string;
   createdAt: Date;
-}
-
 export interface LoyaltyMember extends Document {
   userId: Types.ObjectId;
   currentPoints: number;
@@ -44,9 +38,7 @@ export interface LoyaltyMember extends Document {
     redeemedAt: Date;
     expiresAt: Date;
     status: 'active' | 'used' | 'expired';
-  }[];
-}
-
+[];
 const loyaltyMemberSchema = new Schema<LoyaltyMember>({
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   currentPoints: { type: Number, default: 0 },
@@ -63,16 +55,12 @@ const loyaltyMemberSchema = new Schema<LoyaltyMember>({
       bookingId: { type: String },
       rewardId: { type: String },
       createdAt: { type: Date, default: Date.now },
-    },
-  ],
+],
   redeemedRewards: [
     {
       rewardId: { type: String, required: true },
       redeemedAt: { type: Date, default: Date.now },
       expiresAt: { type: Date, required: true },
       status: { type: String, enum: ['active', 'used', 'expired'], default: 'active' },
-    },
-  ],
-});
-
+],
 export {};

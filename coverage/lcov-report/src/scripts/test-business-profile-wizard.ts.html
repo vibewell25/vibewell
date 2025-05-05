@@ -462,184 +462,184 @@
 &nbsp;
 import { test, expect } from <span class="cstat-no" title="statement not covered" >'@playwright/test';</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >test?.describe('Business Profile Wizard', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >  test?.beforeEach(<span class="fstat-no" title="function not covered" >async ({</span> page }) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >test.describe('Business Profile Wizard', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >  test.beforeEach(<span class="fstat-no" title="function not covered" >async ({</span> page }) =&gt; {</span>
     // Navigate to the business profile wizard page
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await page?.goto('/business/setup');</span>
+<span class="cstat-no" title="statement not covered" >    await page.goto('/business/setup');</span>
 &nbsp;
     // Ensure the wizard is loaded
-<span class="cstat-no" title="statement not covered" >    await expect(page?.getByText('Business Profile Setup')).toBeVisible();</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.getByText('Business Profile Setup')).toBeVisible();</span>
   });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  test('Complete wizard flow from start to finish', <span class="fstat-no" title="function not covered" >async ({</span> page }) =&gt; {</span>
     // Step 1: Location Form
-<span class="cstat-no" title="statement not covered" >    await expect(page?.getByText('Location')).toBeVisible();</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.getByText('Location')).toBeVisible();</span>
 &nbsp;
     // Fill out location form
-<span class="cstat-no" title="statement not covered" >    await page?.fill('input[name="address"]', '123 Main Street');</span>
-<span class="cstat-no" title="statement not covered" >    await page?.fill('input[name="city"]', 'Portland');</span>
-<span class="cstat-no" title="statement not covered" >    await page?.selectOption('select[name="state"]', 'OR');</span>
-<span class="cstat-no" title="statement not covered" >    await page?.fill('input[name="zipCode"]', '97201');</span>
+<span class="cstat-no" title="statement not covered" >    await page.fill('input[name="address"]', '123 Main Street');</span>
+<span class="cstat-no" title="statement not covered" >    await page.fill('input[name="city"]', 'Portland');</span>
+<span class="cstat-no" title="statement not covered" >    await page.selectOption('select[name="state"]', 'OR');</span>
+<span class="cstat-no" title="statement not covered" >    await page.fill('input[name="zipCode"]', '97201');</span>
 &nbsp;
     // Virtual services toggle
-<span class="cstat-no" title="statement not covered" >    await page?.click('input[name="offersVirtualServices"]');</span>
-<span class="cstat-no" title="statement not covered" >    await page?.fill(</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('input[name="offersVirtualServices"]');</span>
+<span class="cstat-no" title="statement not covered" >    await page.fill(</span>
       'textarea[name="virtualServicesDescription"]',
       'We offer virtual consultations for all services.',
     );
 &nbsp;
     // Move to next step
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await page?.click('button:has-text("Next Step")');</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('button:has-text("Next Step")');</span>
 &nbsp;
     // Step 2: Services Form
-<span class="cstat-no" title="statement not covered" >    await expect(page?.getByText('Services &amp; Pricing')).toBeVisible();</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.getByText('Services &amp; Pricing')).toBeVisible();</span>
 &nbsp;
     // Add a service
-<span class="cstat-no" title="statement not covered" >    await page?.fill('input[name="newServiceName"]', 'Haircut &amp; Style');</span>
-<span class="cstat-no" title="statement not covered" >    await page?.selectOption('select[name="selectedCategory"]', 'hair');</span>
-<span class="cstat-no" title="statement not covered" >    await page?.fill('input[name="newServicePrice"]', '65');</span>
-<span class="cstat-no" title="statement not covered" >    await page?.selectOption('select[name="newServiceDuration"]', '60');</span>
+<span class="cstat-no" title="statement not covered" >    await page.fill('input[name="newServiceName"]', 'Haircut &amp; Style');</span>
+<span class="cstat-no" title="statement not covered" >    await page.selectOption('select[name="selectedCategory"]', 'hair');</span>
+<span class="cstat-no" title="statement not covered" >    await page.fill('input[name="newServicePrice"]', '65');</span>
+<span class="cstat-no" title="statement not covered" >    await page.selectOption('select[name="newServiceDuration"]', '60');</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await page?.click('button:has-text("Add Service")');</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('button:has-text("Add Service")');</span>
 &nbsp;
     // Verify service was added
-<span class="cstat-no" title="statement not covered" >    await expect(page?.getByText('Haircut &amp; Style')).toBeVisible();</span>
-<span class="cstat-no" title="statement not covered" >    await expect(page?.getByText('$65')).toBeVisible();</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.getByText('Haircut &amp; Style')).toBeVisible();</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.getByText('$65')).toBeVisible();</span>
 &nbsp;
     // Special offers
-<span class="cstat-no" title="statement not covered" >    await page?.click('input[name="offersSpecialDiscounts"]');</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('input[name="offersSpecialDiscounts"]');</span>
 &nbsp;
     // Move to next step
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await page?.click('button:has-text("Next Step")');</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('button:has-text("Next Step")');</span>
 &nbsp;
     // Step 3: Photos Form
-<span class="cstat-no" title="statement not covered" >    await expect(page?.getByText('Business Photos')).toBeVisible();</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.getByText('Business Photos')).toBeVisible();</span>
 &nbsp;
     // Upload a photo (mocked)
-    const fileInput = <span class="cstat-no" title="statement not covered" >page?.locator('input[type="file"]');</span>
-<span class="cstat-no" title="statement not covered" >    await fileInput?.setInputFiles({</span>
+    const fileInput = <span class="cstat-no" title="statement not covered" >page.locator('input[type="file"]');</span>
+<span class="cstat-no" title="statement not covered" >    await fileInput.setInputFiles({</span>
 &nbsp;
-      name: 'test-image?.jpg',
+      name: 'test-image.jpg',
 &nbsp;
       mimeType: 'image/jpeg',
-      buffer: Buffer?.from('Mock image content'),
+      buffer: Buffer.from('Mock image content'),
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await page?.click('button:has-text("Upload Selected Photos")');</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('button:has-text("Upload Selected Photos")');</span>
 &nbsp;
     // Move to next step
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await page?.click('button:has-text("Next Step")');</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('button:has-text("Next Step")');</span>
 &nbsp;
     // Step 4: Payment Settings Form
-<span class="cstat-no" title="statement not covered" >    await expect(page?.getByText('Payment Settings')).toBeVisible();</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.getByText('Payment Settings')).toBeVisible();</span>
 &nbsp;
     // Select payment methods
 &nbsp;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await page?.click('input#payment-method-credit-card');</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('input#payment-method-credit-card');</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await page?.click('input#payment-method-cash');</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('input#payment-method-cash');</span>
 &nbsp;
     // Configure deposits
-<span class="cstat-no" title="statement not covered" >    await page?.click('input[name="acceptsDeposits"]');</span>
-<span class="cstat-no" title="statement not covered" >    await page?.selectOption('select[name="depositType"]', 'fixed');</span>
-<span class="cstat-no" title="statement not covered" >    await page?.fill('input[name="depositAmount"]', '25');</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('input[name="acceptsDeposits"]');</span>
+<span class="cstat-no" title="statement not covered" >    await page.selectOption('select[name="depositType"]', 'fixed');</span>
+<span class="cstat-no" title="statement not covered" >    await page.fill('input[name="depositAmount"]', '25');</span>
 &nbsp;
     // Move to next step
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await page?.click('button:has-text("Next Step")');</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('button:has-text("Next Step")');</span>
 &nbsp;
     // Step 5: Policies Form
-<span class="cstat-no" title="statement not covered" >    await expect(page?.getByText('Business Policies')).toBeVisible();</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.getByText('Business Policies')).toBeVisible();</span>
 &nbsp;
     // Select cancellation policy
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await page?.click('input#policy-moderate');</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('input#policy-moderate');</span>
 &nbsp;
     // Configure late arrival policy
-<span class="cstat-no" title="statement not covered" >    await page?.click('input[name="hasLateArrivalPolicy"]');</span>
-<span class="cstat-no" title="statement not covered" >    await page?.fill('input[name="lateArrivalGracePeriod"]', '15');</span>
-<span class="cstat-no" title="statement not covered" >    await page?.fill(</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('input[name="hasLateArrivalPolicy"]');</span>
+<span class="cstat-no" title="statement not covered" >    await page.fill('input[name="lateArrivalGracePeriod"]', '15');</span>
+<span class="cstat-no" title="statement not covered" >    await page.fill(</span>
       'textarea[name="lateArrivalPolicy"]',
       'Services will be shortened to fit within the remaining time.',
     );
 &nbsp;
     // Add additional policies
-<span class="cstat-no" title="statement not covered" >    await page?.fill(</span>
+<span class="cstat-no" title="statement not covered" >    await page.fill(</span>
       'textarea[name="additionalPolicies"]',
       'We require 24-hour notice for all appointment changes or cancellations.',
     );
 &nbsp;
     // Submit the form
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await page?.click('button:has-text("Save Profile")');</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('button:has-text("Save Profile")');</span>
 &nbsp;
     // Verify submission was successful
-<span class="cstat-no" title="statement not covered" >    await expect(page?.getByText('Business profile saved successfully')).toBeVisible();</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.getByText('Business profile saved successfully')).toBeVisible();</span>
   });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  test('Validation prevents progression with empty required fields', <span class="fstat-no" title="function not covered" >async ({</span> page }) =&gt; {</span>
     // Attempt to proceed without filling required fields
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await page?.click('button:has-text("Next Step")');</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('button:has-text("Next Step")');</span>
 &nbsp;
     // Verify validation error messages
-<span class="cstat-no" title="statement not covered" >    await expect(page?.getByText('Address is required')).toBeVisible();</span>
-<span class="cstat-no" title="statement not covered" >    await expect(page?.getByText('City is required')).toBeVisible();</span>
-<span class="cstat-no" title="statement not covered" >    await expect(page?.getByText('State is required')).toBeVisible();</span>
-<span class="cstat-no" title="statement not covered" >    await expect(page?.getByText('ZIP code is required')).toBeVisible();</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.getByText('Address is required')).toBeVisible();</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.getByText('City is required')).toBeVisible();</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.getByText('State is required')).toBeVisible();</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.getByText('ZIP code is required')).toBeVisible();</span>
 &nbsp;
     // Fill just one field and verify other validation errors remain
-<span class="cstat-no" title="statement not covered" >    await page?.fill('input[name="address"]', '123 Main Street');</span>
+<span class="cstat-no" title="statement not covered" >    await page.fill('input[name="address"]', '123 Main Street');</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await page?.click('button:has-text("Next Step")');</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('button:has-text("Next Step")');</span>
 &nbsp;
     // These errors should still be visible
-<span class="cstat-no" title="statement not covered" >    await expect(page?.getByText('City is required')).toBeVisible();</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.getByText('City is required')).toBeVisible();</span>
   });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  test('Skip functionality allows bypassing steps', <span class="fstat-no" title="function not covered" >async ({</span> page }) =&gt; {</span>
     // Use skip button to bypass the first step
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await page?.click('button:has-text("Skip for now")');</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('button:has-text("Skip for now")');</span>
 &nbsp;
     // Verify we're on the second step
-<span class="cstat-no" title="statement not covered" >    await expect(page?.getByText('Services &amp; Pricing')).toBeVisible();</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.getByText('Services &amp; Pricing')).toBeVisible();</span>
 &nbsp;
     // Skip again
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await page?.click('button:has-text("Skip for now")');</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('button:has-text("Skip for now")');</span>
 &nbsp;
     // Verify we're on the third step
-<span class="cstat-no" title="statement not covered" >    await expect(page?.getByText('Business Photos')).toBeVisible();</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.getByText('Business Photos')).toBeVisible();</span>
   });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  test('Back button navigates to previous step', <span class="fstat-no" title="function not covered" >async ({</span> page }) =&gt; {</span>
     // Move forward one step
-<span class="cstat-no" title="statement not covered" >    await page?.fill('input[name="address"]', '123 Main Street');</span>
-<span class="cstat-no" title="statement not covered" >    await page?.fill('input[name="city"]', 'Portland');</span>
-<span class="cstat-no" title="statement not covered" >    await page?.selectOption('select[name="state"]', 'OR');</span>
-<span class="cstat-no" title="statement not covered" >    await page?.fill('input[name="zipCode"]', '97201');</span>
+<span class="cstat-no" title="statement not covered" >    await page.fill('input[name="address"]', '123 Main Street');</span>
+<span class="cstat-no" title="statement not covered" >    await page.fill('input[name="city"]', 'Portland');</span>
+<span class="cstat-no" title="statement not covered" >    await page.selectOption('select[name="state"]', 'OR');</span>
+<span class="cstat-no" title="statement not covered" >    await page.fill('input[name="zipCode"]', '97201');</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await page?.click('button:has-text("Next Step")');</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('button:has-text("Next Step")');</span>
 &nbsp;
     // Verify we're on the second step
-<span class="cstat-no" title="statement not covered" >    await expect(page?.getByText('Services &amp; Pricing')).toBeVisible();</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.getByText('Services &amp; Pricing')).toBeVisible();</span>
 &nbsp;
     // Go back
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await page?.click('button:has-text("Back")');</span>
+<span class="cstat-no" title="statement not covered" >    await page.click('button:has-text("Back")');</span>
 &nbsp;
     // Verify we're on the first step again
-<span class="cstat-no" title="statement not covered" >    await expect(page?.getByText('Location')).toBeVisible();</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.getByText('Location')).toBeVisible();</span>
 &nbsp;
     // Verify field values are preserved
-<span class="cstat-no" title="statement not covered" >    await expect(page?.locator('input[name="address"]')).toHaveValue('123 Main Street');</span>
-<span class="cstat-no" title="statement not covered" >    await expect(page?.locator('input[name="city"]')).toHaveValue('Portland');</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.locator('input[name="address"]')).toHaveValue('123 Main Street');</span>
+<span class="cstat-no" title="statement not covered" >    await expect(page.locator('input[name="city"]')).toHaveValue('Portland');</span>
   });
 });
 &nbsp;</pre></td></tr></table></pre>
@@ -649,7 +649,7 @@ import { test, expect } from <span class="cstat-no" title="statement not covered
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

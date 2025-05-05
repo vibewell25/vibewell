@@ -646,16 +646,16 @@ export interface UpdatePractitionerParams extends Partial&lt;CreatePractitionerP
 &nbsp;
 export class <span class="cstat-no" title="statement not covered" >PractitionerService {</span>
 <span class="fstat-no" title="function not covered" >  async c</span>reatePractitioner(data: CreatePractitionerParams) {
-<span class="cstat-no" title="statement not covered" >    return prisma?.practitioner.create({</span>
+<span class="cstat-no" title="statement not covered" >    return prisma.practitioner.create({</span>
       data: {
-        userId: data?.userId,
-        businessId: data?.businessId,
-        specialization: data?.specialization,
-        experience: data?.experience,
-        bio: data?.bio,
-        certifications: data?.certifications || [],
-        education: data?.education || [],
-        languages: data?.languages || [],
+        userId: data.userId,
+        businessId: data.businessId,
+        specialization: data.specialization,
+        experience: data.experience,
+        bio: data.bio,
+        certifications: data.certifications || [],
+        education: data.education || [],
+        languages: data.languages || [],
       },
       include: {
         user: {
@@ -692,7 +692,7 @@ export class <span class="cstat-no" title="statement not covered" >PractitionerS
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async g</span>etPractitionerById(id: string) {
-<span class="cstat-no" title="statement not covered" >    return prisma?.practitioner.findUnique({</span>
+<span class="cstat-no" title="statement not covered" >    return prisma.practitioner.findUnique({</span>
       where: { id },
       include: {
         user: {
@@ -730,7 +730,7 @@ export class <span class="cstat-no" title="statement not covered" >PractitionerS
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async g</span>etPractitionerByUserId(userId: string) {
-<span class="cstat-no" title="statement not covered" >    return prisma?.practitioner.findUnique({</span>
+<span class="cstat-no" title="statement not covered" >    return prisma.practitioner.findUnique({</span>
       where: { userId },
       include: {
         user: {
@@ -768,7 +768,7 @@ export class <span class="cstat-no" title="statement not covered" >PractitionerS
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async g</span>etPractitionersByBusiness(businessId: string) {
-<span class="cstat-no" title="statement not covered" >    return prisma?.practitioner.findMany({</span>
+<span class="cstat-no" title="statement not covered" >    return prisma.practitioner.findMany({</span>
       where: { businessId },
       include: {
         user: {
@@ -806,17 +806,17 @@ export class <span class="cstat-no" title="statement not covered" >PractitionerS
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async u</span>pdatePractitioner(id: string, data: UpdatePractitionerParams) {
-<span class="cstat-no" title="statement not covered" >    return prisma?.practitioner.update({</span>
+<span class="cstat-no" title="statement not covered" >    return prisma.practitioner.update({</span>
       where: { id },
       data: {
-        specialization: data?.specialization,
-        experience: data?.experience,
-        bio: data?.bio,
-        rating: data?.rating,
-        availability: data?.availability,
-        certifications: data?.certifications,
-        education: data?.education,
-        languages: data?.languages,
+        specialization: data.specialization,
+        experience: data.experience,
+        bio: data.bio,
+        rating: data.rating,
+        availability: data.availability,
+        certifications: data.certifications,
+        education: data.education,
+        languages: data.languages,
       },
       include: {
         user: {
@@ -854,13 +854,13 @@ export class <span class="cstat-no" title="statement not covered" >PractitionerS
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async d</span>eletePractitioner(id: string) {
-<span class="cstat-no" title="statement not covered" >    return prisma?.practitioner.delete({</span>
+<span class="cstat-no" title="statement not covered" >    return prisma.practitioner.delete({</span>
       where: { id },
     });
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async a</span>ddServiceToPractitioner(practitionerId: string, serviceId: string) {
-<span class="cstat-no" title="statement not covered" >    return prisma?.practitioner.update({</span>
+<span class="cstat-no" title="statement not covered" >    return prisma.practitioner.update({</span>
       where: { id: practitionerId },
       data: {
         services: {
@@ -871,7 +871,7 @@ export class <span class="cstat-no" title="statement not covered" >PractitionerS
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async r</span>emoveServiceFromPractitioner(practitionerId: string, serviceId: string) {
-<span class="cstat-no" title="statement not covered" >    return prisma?.practitioner.update({</span>
+<span class="cstat-no" title="statement not covered" >    return prisma.practitioner.update({</span>
       where: { id: practitionerId },
       data: {
         services: {
@@ -882,7 +882,7 @@ export class <span class="cstat-no" title="statement not covered" >PractitionerS
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async a</span>ddSpecialtyToPractitioner(practitionerId: string, specialtyId: string) {
-<span class="cstat-no" title="statement not covered" >    return prisma?.practitioner.update({</span>
+<span class="cstat-no" title="statement not covered" >    return prisma.practitioner.update({</span>
       where: { id: practitionerId },
       data: {
         specialties: {
@@ -893,7 +893,7 @@ export class <span class="cstat-no" title="statement not covered" >PractitionerS
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async r</span>emoveSpecialtyFromPractitioner(practitionerId: string, specialtyId: string) {
-<span class="cstat-no" title="statement not covered" >    return prisma?.practitioner.update({</span>
+<span class="cstat-no" title="statement not covered" >    return prisma.practitioner.update({</span>
       where: { id: practitionerId },
       data: {
         specialties: {
@@ -910,7 +910,7 @@ export class <span class="cstat-no" title="statement not covered" >PractitionerS
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -1,4 +1,3 @@
-'use client';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
@@ -14,27 +13,23 @@ import { Icons } from '@/components/icons';
   ShareIcon,
   PrinterIcon,
   ClockIcon
-} from '@heroicons/react/24/outline';
+from '@heroicons/react/24/outline';
 export default function AccountSetupGuide() {
   // Function to handle printing the article
   const handlePrint = () => {
     window.print();
-  };
-  // Related articles
+// Related articles
   const relatedArticles = [
     {
       title: 'Setting Up Your Profile',
       path: '/help/getting-started/profile-setup',
-    },
-    {
+{
       title: 'Navigating the App',
       path: '/help/getting-started/navigation',
-    },
-    {
+{
       title: 'Privacy and Security Settings',
       path: '/help/account/privacy',
-    },
-  ];
+];
   return (
     <Layout>
       <div className="container-app py-8">
@@ -315,5 +310,3 @@ export default function AccountSetupGuide() {
         </div>
       </div>
     </Layout>
-  );
-} 

@@ -1,12 +1,3 @@
-/**
-
-    // Safe integer operation
-    if (colors > Number.MAX_SAFE_INTEGER || colors < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
- * This script updates the Tailwind configuration to use more accessible colors
- * with better contrast ratios
- */
 const fs = require('fs');
 const path = require('path');
 
@@ -24,8 +15,7 @@ const accessibleColors = {
     700: '#003D99',
     800: '#002966',
     900: '#001433'
-  },
-  // Neutral colors
+// Neutral colors
   neutral: {
     50: '#F8F9FA',
     100: '#F1F3F5',
@@ -37,8 +27,7 @@ const accessibleColors = {
     700: '#495057',
     800: '#343A40',
     900: '#212529'
-  },
-  // Error colors
+// Error colors
   error: {
     50: '#FFEBEE',
     100: '#FFCDD2',
@@ -50,8 +39,7 @@ const accessibleColors = {
     700: '#D32F2F',
     800: '#C62828',
     900: '#B71C1C'
-  },
-  // Success colors
+// Success colors
   success: {
     50: '#E8F5E9',
     100: '#C8E6C9',
@@ -63,9 +51,6 @@ const accessibleColors = {
     700: '#388E3C',
     800: '#2E7D32',
     900: '#1B5E20'
-  }
-};
-
 // Path to the Tailwind config file
 const tailwindConfigPath = path.join(process.cwd(), 'tailwind.config.js');
 
@@ -76,8 +61,6 @@ let tailwindConfig = fs.readFileSync(tailwindConfigPath, 'utf8');
 const updatedConfig = tailwindConfig.replace(
   /colors:\s*{([^}]*)}/,
   `colors: ${JSON.stringify(accessibleColors, null, 2)}`
-);
-
 // Write the updated config
 fs.writeFileSync(tailwindConfigPath, updatedConfig);
 

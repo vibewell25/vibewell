@@ -542,7 +542,7 @@ const endpoints: Endpoint[] = <span class="cstat-no" title="statement not covere
             {
               id: 'user_123',
               name: 'John Doe',
-              email: 'john@example?.com',
+              email: 'john@example.com',
             },
           ],
           total: 100,
@@ -601,28 +601,28 @@ export default function <span class="cstat-no" title="statement not covered" ><s
           &lt;DocSearch className="mb-8" /&gt;
 &nbsp;
           &lt;div className="space-y-12"&gt;
-            {endpoints?.map(<span class="fstat-no" title="function not covered" >(e</span>ndpoint, index) =&gt; (
+            {endpoints.map(<span class="fstat-no" title="function not covered" >(e</span>ndpoint, index) =&gt; (
 <span class="cstat-no" title="statement not covered" >              &lt;div key={index} c</span>lassName="rounded-lg border p-6"&gt;
                 &lt;div className="mb-4 flex items-center gap-4"&gt;
                   &lt;span
                     className={`rounded px-3 py-1 text-sm font-medium ${
-                      endpoint?.method === 'GET'
+                      endpoint.method === 'GET'
                         ? 'bg-blue-100 text-blue-800'
-                        : endpoint?.method === 'POST'
+                        : endpoint.method === 'POST'
                           ? 'bg-green-100 text-green-800'
-                          : endpoint?.method === 'PUT'
+                          : endpoint.method === 'PUT'
                             ? 'bg-yellow-100 text-yellow-800'
                             : 'bg-red-100 text-red-800'
                     }`}
                   &gt;
-                    {endpoint?.method}
+                    {endpoint.method}
                   &lt;/span&gt;
-                  &lt;code className="text-sm"&gt;{endpoint?.path}&lt;/code&gt;
+                  &lt;code className="text-sm"&gt;{endpoint.path}&lt;/code&gt;
                 &lt;/div&gt;
 &nbsp;
-                &lt;p className="mb-4 text-gray-600"&gt;{endpoint?.description}&lt;/p&gt;
+                &lt;p className="mb-4 text-gray-600"&gt;{endpoint.description}&lt;/p&gt;
 &nbsp;
-                {<span class="branch-0 cbranch-no" title="branch not covered" >endpoint?.authentication &amp;&amp; (</span>
+                {<span class="branch-0 cbranch-no" title="branch not covered" >endpoint.authentication </span>&amp;&amp; (
                   &lt;div className="mb-4"&gt;
                     &lt;span className="text-sm font-medium text-amber-600"&gt;
                       Requires Authentication
@@ -630,7 +630,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
                   &lt;/div&gt;
                 )}
 &nbsp;
-                {endpoint?.parameters &amp;&amp; endpoint?.parameters.length &gt; 0 &amp;&amp; (
+                {endpoint.parameters &amp;&amp; endpoint.parameters.length &gt; 0 &amp;&amp; (
                   &lt;div className="mb-6"&gt;
                     &lt;h3 className="mb-2 text-lg font-semibold"&gt;Parameters&lt;/h3&gt;
                     &lt;div className="overflow-hidden rounded-md border"&gt;
@@ -652,12 +652,12 @@ export default function <span class="cstat-no" title="statement not covered" ><s
                           &lt;/tr&gt;
                         &lt;/thead&gt;
                         &lt;tbody className="divide-y"&gt;
-                          {endpoint?.parameters.map(<span class="fstat-no" title="function not covered" >(p</span>aram, paramIndex) =&gt; (
+                          {endpoint.parameters.map(<span class="fstat-no" title="function not covered" >(p</span>aram, paramIndex) =&gt; (
 <span class="cstat-no" title="statement not covered" >                            &lt;tr key={paramIndex}&gt;</span>
-                              &lt;td className="px-4 py-2 font-mono text-sm"&gt;{param?.name}&lt;/td&gt;
-                              &lt;td className="px-4 py-2 text-sm"&gt;{param?.type}&lt;/td&gt;
-                              &lt;td className="px-4 py-2 text-sm"&gt;{param?.required ? 'Yes' : 'No'}&lt;/td&gt;
-                              &lt;td className="px-4 py-2 text-sm"&gt;{param?.description}&lt;/td&gt;
+                              &lt;td className="px-4 py-2 font-mono text-sm"&gt;{param.name}&lt;/td&gt;
+                              &lt;td className="px-4 py-2 text-sm"&gt;{param.type}&lt;/td&gt;
+                              &lt;td className="px-4 py-2 text-sm"&gt;{param.required ? 'Yes' : 'No'}&lt;/td&gt;
+                              &lt;td className="px-4 py-2 text-sm"&gt;{param.description}&lt;/td&gt;
                             &lt;/tr&gt;
                           ))}
                         &lt;/tbody&gt;
@@ -669,25 +669,25 @@ export default function <span class="cstat-no" title="statement not covered" ><s
                 &lt;div&gt;
                   &lt;h3 className="mb-2 text-lg font-semibold"&gt;Responses&lt;/h3&gt;
                   &lt;div className="space-y-4"&gt;
-                    {endpoint?.responses.map(<span class="fstat-no" title="function not covered" >(r</span>esponse, responseIndex) =&gt; (
+                    {endpoint.responses.map(<span class="fstat-no" title="function not covered" >(r</span>esponse, responseIndex) =&gt; (
 <span class="cstat-no" title="statement not covered" >                      &lt;div key={responseIndex} c</span>lassName="rounded-md border p-4"&gt;
                         &lt;div className="mb-2 flex items-center gap-2"&gt;
                           &lt;span
                             className={`rounded px-2 py-1 text-sm ${
-                              response?.code &gt;= 200 &amp;&amp; response?.code &lt; 300
+                              response.code &gt;= 200 &amp;&amp; response.code &lt; 300
                                 ? 'bg-green-100 text-green-800'
-                                : response?.code &gt;= 400
+                                : response.code &gt;= 400
                                   ? 'bg-red-100 text-red-800'
                                   : 'bg-gray-100 text-gray-800'
                             }`}
                           &gt;
-                            {response?.code}
+                            {response.code}
                           &lt;/span&gt;
-                          &lt;span className="text-sm text-gray-600"&gt;{response?.description}&lt;/span&gt;
+                          &lt;span className="text-sm text-gray-600"&gt;{response.description}&lt;/span&gt;
                         &lt;/div&gt;
-                        {<span class="branch-0 cbranch-no" title="branch not covered" >response?.example &amp;&amp; (</span>
+                        {<span class="branch-0 cbranch-no" title="branch not covered" >response.example </span>&amp;&amp; (
                           &lt;pre className="mt-2 overflow-auto rounded-md bg-gray-50 p-4"&gt;
-                            &lt;code&gt;{JSON?.stringify(response?.example, null, 2)}&lt;/code&gt;
+                            &lt;code&gt;{JSON.stringify(response.example, null, 2)}&lt;/code&gt;
                           &lt;/pre&gt;
                         )}
                       &lt;/div&gt;
@@ -709,7 +709,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

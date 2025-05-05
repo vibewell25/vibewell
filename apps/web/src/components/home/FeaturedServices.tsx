@@ -4,14 +4,12 @@ export default function FeaturedServices() {
       id: 1,
       name: 'Massage Therapy',
       description: 'Relax and rejuvenate with our expert therapists.',
-    },
-    { id: 2, name: 'Yoga Classes', description: 'Find your balance with guided yoga sessions.' },
+{ id: 2, name: 'Yoga Classes', description: 'Find your balance with guided yoga sessions.' },
     {
       id: 3,
       name: 'Meditation Sessions',
       description: 'Calm your mind with our meditation experts.',
-    },
-  ];
+];
 
   return (
     <section className="featured-services py-16">
@@ -25,5 +23,3 @@ export default function FeaturedServices() {
         ))}
       </div>
     </section>
-  );
-}

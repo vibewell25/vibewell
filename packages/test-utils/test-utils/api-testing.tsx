@@ -1,8 +1,3 @@
-/**
- * API testing utilities
- *
- * This file provides utilities for testing API endpoints, services, and requests.
- */
 import { jest } from '@jest/globals';
 import { mockApiResponse } from '@/types/api';
 
@@ -16,56 +11,43 @@ export function createMockApiClient(responses = {}) {
     get: jest.fn((path) => {
       if (responses[path]) {
         return Promise.resolve(responses[path]);
-      }
-      return Promise.resolve(mockApiResponse({ message: 'Mock GET response' }));
-    }),
+return Promise.resolve(mockApiResponse({ message: 'Mock GET response' }));
+),
 
     post: jest.fn((path, data) => {
       if (responses[path]) {
         return Promise.resolve(
           typeof responses[path] === 'function' ? responses[path](data) : responses[path],
-        );
-      }
-      return Promise.resolve(mockApiResponse({ message: 'Mock POST response', data }));
-    }),
+return Promise.resolve(mockApiResponse({ message: 'Mock POST response', data }));
+),
 
     put: jest.fn((path, data) => {
       if (responses[path]) {
         return Promise.resolve(
           typeof responses[path] === 'function' ? responses[path](data) : responses[path],
-        );
-      }
-      return Promise.resolve(mockApiResponse({ message: 'Mock PUT response', data }));
-    }),
+return Promise.resolve(mockApiResponse({ message: 'Mock PUT response', data }));
+),
 
     patch: jest.fn((path, data) => {
       if (responses[path]) {
         return Promise.resolve(
           typeof responses[path] === 'function' ? responses[path](data) : responses[path],
-        );
-      }
-      return Promise.resolve(mockApiResponse({ message: 'Mock PATCH response', data }));
-    }),
+return Promise.resolve(mockApiResponse({ message: 'Mock PATCH response', data }));
+),
 
     delete: jest.fn((path) => {
       if (responses[path]) {
         return Promise.resolve(responses[path]);
-      }
-      return Promise.resolve(mockApiResponse({ message: 'Mock DELETE response' }));
-    }),
+return Promise.resolve(mockApiResponse({ message: 'Mock DELETE response' }));
+),
 
     request: jest.fn((config) => {
       const { url, method = 'GET', data } = config;
       if (responses[url]) {
         return Promise.resolve(
           typeof responses[url] === 'function' ? responses[url](data, method) : responses[url],
-        );
-      }
-      return Promise.resolve(mockApiResponse({ message: `Mock ${method} response`, data }));
-    }),
-  };
-}
-
+return Promise.resolve(mockApiResponse({ message: `Mock ${method} response`, data }));
+),
 /**
  * Create a mock HTTP response object for testing Next.js API handlers
  * @returns {Object} - Mock response object
@@ -83,60 +65,56 @@ export function createMockResponse() {
     status: jest.fn(function (statusCode) {
       this.statusCode = statusCode;
       return this;
-    }),
+),
 
     json: jest.fn(function (data) {
       this._sent = true;
       this.data = data;
       return this;
-    }),
+),
 
     send: jest.fn(function (data) {
       this._sent = true;
       this.data = data;
       return this;
-    }),
+),
 
     setHeader: jest.fn(function (name, value) {
       this.headers[name.toLowerCase()] = value;
       return this;
-    }),
+),
 
     getHeader: jest.fn(function (name) {
       return this.headers[name.toLowerCase()];
-    }),
+),
 
     removeHeader: jest.fn(function (name) {
       delete this.headers[name.toLowerCase()];
       return this;
-    }),
+),
 
     setCookie: jest.fn(function (name, value, options) {
       this.cookies[name] = { value, options };
       return this;
-    }),
+),
 
     clearCookie: jest.fn(function (name) {
       delete this.cookies[name];
       return this;
-    }),
+),
 
     redirect: jest.fn(function (url) {
       this._sent = true;
       this.redirectUrl = url;
       return this;
-    }),
+),
 
     end: jest.fn(function (data) {
       this._sent = true;
       if (data) this.data = data;
       return this;
-    }),
-  };
-
-  return res;
-}
-
+),
+return res;
 /**
  * Create a mock HTTP request object for testing Next.js API handlers
  * @param {Object} options - Request options
@@ -152,7 +130,7 @@ export function createMockRequest(options = {}) {
     params = {},
     body = null,
     session = null,
-  } = options;
+= options;
 
   return {
     method,
@@ -161,15 +139,11 @@ export function createMockRequest(options = {}) {
       host: 'localhost:3000',
       'content-type': 'application/json',
       ...headers,
-    },
-    cookies,
+cookies,
     query,
     params,
     body,
     session,
-  };
-}
-
 /**
  * Create mock Next.js API request and response objects
  * @param {Object} reqOptions - Request options
@@ -179,9 +153,6 @@ export function createMockReqRes(reqOptions = {}) {
   return {
     req: createMockRequest(reqOptions),
     res: createMockResponse(),
-  };
-}
-
 /**
  * Test a Next.js API handler
  * @param {Function} handler - API route handler
@@ -194,8 +165,6 @@ export async function {
   const { req, res } = createMockReqRes(reqOptions);
   await handler(req, res);
   return { req, res };
-}
-
 /**
  * Create a testing wrapper for a service
  * @param {Object} Service - Service class or object
@@ -206,11 +175,8 @@ export function createServiceTestWrapper(Service, mockApiClient) {
   if (typeof Service === 'function') {
     // It's a class, instantiate it with the mock API client
     return new Service(mockApiClient);
-  } else {
+else {
     // It's an object with methods, update to use mock API client
     return {
       ...Service,
       apiClient: mockApiClient,
-    };
-  }
-}

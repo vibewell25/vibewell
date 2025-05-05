@@ -11,30 +11,18 @@ export default async function {
 
   if (!session.user) {
     redirect('/login');
-  }
-
-  // Check if user is already an admin
+// Check if user is already an admin
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
     select: { role: true },
-  });
-
-  if (user.role !== 'ADMIN') {
+if (user.role !== 'ADMIN') {
     redirect('/');
-  }
-
-  // Check if initial setup is already completed
+// Check if initial setup is already completed
   const setupStatus = await prisma.systemConfig.findFirst({
     where: { key: 'initial_setup_completed' },
-  });
-
-  if (setupStatus.value === 'true') {
+if (setupStatus.value === 'true') {
     redirect('/admin');
-  }
-
-  return (
+return (
     <div className="container mx-auto py-10">
       <AdminSetupForm />
     </div>
-  );
-}

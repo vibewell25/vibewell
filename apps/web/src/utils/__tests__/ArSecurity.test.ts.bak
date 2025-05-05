@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import ar-security from '../ar-security.ts';
+
+describe('ar-security', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<ar-security />);
+    expect(container).toBeInTheDocument();
+  });
+});

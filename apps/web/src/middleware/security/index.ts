@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 import type { NextRequest } from 'next/server';
@@ -13,14 +12,10 @@ interface RateLimitConfig {
   windowMs: number;
   max: number;
   message: string;
-}
-
 export const rateLimitConfig: RateLimitConfig = {
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // Limit each IP to 100 requests per windowMs
   message: 'Too many requests from this IP, please try again later.',
-};
-
 /**
  * Check if a request should be rate limited
  *
@@ -44,20 +39,14 @@ export function checkRateLimit(req: NextRequest): NextResponse | null {
     Array.from(rateLimitStore.entries()).forEach(([key, data]) => {
       if (data.timestamp < windowStart) {
         rateLimitStore.delete(key);
-      }
-    });
-  }
-
-  // Get or create record
+// Get or create record
   const record = rateLimitStore.get(ip) || { count: 0, timestamp: now };
 
   // Reset if window expired
   if (record.timestamp < windowStart) {
     record.count = 0;
     record.timestamp = now;
-  }
-
-  // Increment count
+// Increment count
   record.if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count += 1;
   rateLimitStore.set(ip, record);
 
@@ -74,14 +63,7 @@ export function checkRateLimit(req: NextRequest): NextResponse | null {
 
 
           'Retry-After': `${Math.ceil(rateLimitConfig.windowMs / 1000)}`,
-        },
-      },
-    );
-  }
-
-  return null;
-}
-
+return null;
 // CORS configuration
 export const corsOptions = {
   origin: process.env.ALLOWED_ORIGINS.split(',') || ['http://localhost:3000'],
@@ -90,8 +72,6 @@ export const corsOptions = {
 
 
   allowedHeaders: ['Content-Type', 'Authorization', 'X-XSRF-TOKEN'],
-};
-
 // Security headers middleware
 export async function {
   const start = Date.now();
@@ -100,17 +80,13 @@ export async function {
   const rateLimitResponse = checkRateLimit(request);
   if (rateLimitResponse) {
     return rateLimitResponse;
-  }
-
-  // Apply CSRF middleware next
+// Apply CSRF middleware next
   const csrfResponse = csrfMiddleware(request);
 
   // If CSRF validation failed, return the error response
   if (csrfResponse.status !== 200) {
     return csrfResponse;
-  }
-
-  const response = NextResponse.next();
+const response = NextResponse.next();
 
   // Security headers
 
@@ -154,12 +130,7 @@ export async function {
   `
       .replace(/\s+/g, ' ')
       .trim(),
-  );
-
-  return response;
-}
-
-
+return response;
 // Field-level encryption utility
 import { createCipheriv, createDecipheriv, randomBytes } from 'crypto';
 
@@ -171,9 +142,7 @@ export const fieldEncryption = {
     let encrypted = cipher.update(text);
     encrypted = Buffer.concat([encrypted, cipher.final()]);
     return `${iv.toString('hex')}:${encrypted.toString('hex')}`;
-  },
-
-  decrypt: (text: string, key: string = process.env.ENCRYPTION_KEY || ''): string => {
+decrypt: (text: string, key: string = process.env.ENCRYPTION_KEY || ''): string => {
     const [ivHex, encryptedHex] = text.split(':');
     const iv = Buffer.from(ivHex, 'hex');
     const encrypted = Buffer.from(encryptedHex, 'hex');
@@ -182,9 +151,6 @@ export const fieldEncryption = {
     let decrypted = decipher.update(encrypted);
     decrypted = Buffer.concat([decrypted, decipher.final()]);
     return decrypted.toString();
-  },
-};
-
 // Export CSRF utilities
 export { generateCsrfToken, verifyCsrfToken, getCsrfToken };
 
@@ -202,4 +168,3 @@ export default {
   verifyCsrfToken,
   getCsrfToken,
   csrfMiddleware,
-};

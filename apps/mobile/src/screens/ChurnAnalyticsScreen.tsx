@@ -23,20 +23,16 @@ const ChurnAnalyticsScreen: React.FC = () => {
     try {
       const res = await fetch(`${serverBaseUrl}/api/analytics/metrics/subscription-churn${qs}`, { headers });
       setChurn(await res.json());
-    } catch (e) { console.error(e); }
+catch (e) { console.error(e); }
     setLoading(false);
-  };
-
-  const exportCsv = async () => {
+const exportCsv = async () => {
     const qs = `?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
     const res = await fetch(`${serverBaseUrl}/api/analytics/metrics/subscription-churn/export${qs}`, { headers });
     const csv = await res.text();
     const uri = FileSystem.documentDirectory + 'churn.csv';
     await FileSystem.writeAsStringAsync(uri, csv, { encoding: FileSystem.EncodingType.UTF8 });
     await Sharing.shareAsync(uri, { mimeType: 'text/csv', dialogTitle: 'Share churn.csv' });
-  };
-
-  if (loading) return <ActivityIndicator style={styles.loader} size="large" />;
+if (loading) return <ActivityIndicator style={styles.loader} size="large" />;
   return (
     <ScrollView style={styles.container}>
       <View style={styles.filterRow}>
@@ -55,14 +51,9 @@ const ChurnAnalyticsScreen: React.FC = () => {
         <Button title="Export CSV" onPress={exportCsv} />
       </View>
     </ScrollView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   loader: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   filterRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
   section: { marginTop: 16 },
-});
-
 export default ChurnAnalyticsScreen;

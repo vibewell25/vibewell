@@ -20,17 +20,13 @@ const EventFormScreen: React.FC = () => {
     try {
       if (event) {
         await communityApi.updateEvent(event.id, { title, description, startAt, endAt, location });
-      } else {
+else {
         await communityApi.createEvent({ title, description, startAt, endAt, location });
-      }
-      navigation.goBack();
-    } catch (err) {
+navigation.goBack();
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to save event');
-    }
-  };
-
-  return (
+return (
     <View style={styles.container}>
       <TextInput style={styles.input} placeholder="Title" value={title} onChangeText={setTitle} />
       <TextInput style={styles.input} placeholder="Description" value={description} onChangeText={setDescription} />
@@ -39,12 +35,7 @@ const EventFormScreen: React.FC = () => {
       <TextInput style={styles.input} placeholder="Location" value={location} onChangeText={setLocation} />
       <Button title={event ? 'Update' : 'Create'} onPress={handleSubmit} />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   input: { borderWidth: 1, borderColor: '#ccc', padding: 8, borderRadius: 4, marginBottom: 12 }
-});
-
 export default EventFormScreen;

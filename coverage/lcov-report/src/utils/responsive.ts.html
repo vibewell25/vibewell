@@ -442,8 +442,8 @@ export const <span class="cstat-no" title="statement not covered" >touchTargets 
 // Hook to detect screen size
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >useScreenSize(</span></span>) {
   const [screenSize, setScreenSize] = <span class="cstat-no" title="statement not covered" >useState({</span>
-    width: typeof window !== 'undefined' ? window?.innerWidth : 0,
-    height: typeof window !== 'undefined' ? window?.innerHeight : 0,
+    width: typeof window !== 'undefined' ? window.innerWidth : 0,
+    height: typeof window !== 'undefined' ? window.innerHeight : 0,
   });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
@@ -451,13 +451,13 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
     const handleResize = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >      setScreenSize({</span>
-        width: window?.innerWidth,
-        height: window?.innerHeight,
+        width: window.innerWidth,
+        height: window.innerHeight,
       });
     };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    window?.addEventListener('resize', handleResize);</span>
-<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >w</span>indow?.removeEventListener('resize', handleResize);</span></span>
+<span class="cstat-no" title="statement not covered" >    window.addEventListener('resize', handleResize);</span>
+<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >w</span>indow.removeEventListener('resize', handleResize);</span></span>
   }, []);
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return screenSize;</span>
@@ -467,9 +467,9 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >useDeviceType(</span></span>) {
   const { width } = <span class="cstat-no" title="statement not covered" >useScreenSize();</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (width &lt; breakpoints?.sm) {</span>
+<span class="cstat-no" title="statement not covered" >  if (width &lt; breakpoints.sm) {</span>
 <span class="cstat-no" title="statement not covered" >    return 'mobile';</span>
-  } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (width &lt; breakpoints?.lg) {</span>
+  } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (width &lt; breakpoints.lg) {</span>
 <span class="cstat-no" title="statement not covered" >    return 'tablet';</span>
   }
 <span class="cstat-no" title="statement not covered" >  return 'desktop';</span>
@@ -482,11 +482,11 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof window === 'undefined') <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
-    const hasTouch = <span class="cstat-no" title="statement not covered" >process?.env['HASTOUCH'] in window ||</span>
-      navigator?.maxTouchPoints &gt; 0 ||
+    const hasTouch = <span class="cstat-no" title="statement not covered" >process.env['HASTOUCH'] in window ||</span>
+      navigator.maxTouchPoints &gt; 0 ||
 &nbsp;
       // @ts-ignore
-      navigator?.msMaxTouchPoints &gt; 0;
+      navigator.msMaxTouchPoints &gt; 0;
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    setIsTouch(hasTouch);</span>
   }, []);
@@ -498,14 +498,14 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getResponsiveStyles(</span></span>deviceType: 'mobile' | 'tablet' | 'desktop') {
   const baseStyles = <span class="cstat-no" title="statement not covered" >{</span>
     interactive: {
-      minWidth: `${touchTargets?.minimum}px`,
-      minHeight: `${touchTargets?.minimum}px`,
-      padding: '0?.5rem',
-      margin: '0?.25rem',
+      minWidth: `${touchTargets.minimum}px`,
+      minHeight: `${touchTargets.minimum}px`,
+      padding: '0.5rem',
+      margin: '0.25rem',
     },
     text: {
       fontSize: '1rem',
-      lineHeight: '1?.5',
+      lineHeight: '1.5',
     },
     spacing: {
       gap: '1rem',
@@ -518,29 +518,29 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="cstat-no" title="statement not covered" >      return {</span>
         ...baseStyles,
         interactive: {
-          ...baseStyles?.interactive,
-          minWidth: `${touchTargets?.comfortable}px`,
-          minHeight: `${touchTargets?.comfortable}px`,
-          padding: '0?.75rem',
-          margin: '0?.5rem',
+          ...baseStyles.interactive,
+          minWidth: `${touchTargets.comfortable}px`,
+          minHeight: `${touchTargets.comfortable}px`,
+          padding: '0.75rem',
+          margin: '0.5rem',
         },
         text: {
-          ...baseStyles?.text,
-          fontSize: '1?.125rem',
+          ...baseStyles.text,
+          fontSize: '1.125rem',
         },
         spacing: {
-          ...baseStyles?.spacing,
-          gap: '1?.5rem',
-          padding: '1?.5rem',
+          ...baseStyles.spacing,
+          gap: '1.5rem',
+          padding: '1.5rem',
         },
       };
     case 'tablet':
 <span class="cstat-no" title="statement not covered" >      return {</span>
         ...baseStyles,
         interactive: {
-          ...baseStyles?.interactive,
-          minWidth: `${touchTargets?.comfortable}px`,
-          minHeight: `${touchTargets?.comfortable}px`,
+          ...baseStyles.interactive,
+          minWidth: `${touchTargets.comfortable}px`,
+          minHeight: `${touchTargets.comfortable}px`,
         },
       };
     default:
@@ -607,7 +607,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

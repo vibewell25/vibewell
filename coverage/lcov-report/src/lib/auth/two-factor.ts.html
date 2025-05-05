@@ -269,13 +269,13 @@ export class <span class="cstat-no" title="statement not covered" >TwoFactorServ
   private static readonly <span class="cstat-no" title="statement not covered" >issuer = 'Vibewell';</span>
 &nbsp;
 <span class="fstat-no" title="function not covered" >  public async s</span>etupTwoFactor(userId: string, email: string): Promise&lt;TwoFactorSetupResponse&gt; {
-    const secret = <span class="cstat-no" title="statement not covered" >authenticator?.generateSecret();</span>
-    const otpauth = <span class="cstat-no" title="statement not covered" >authenticator?.keyuri(email, this?.constructor.issuer, secret);</span>
+    const secret = <span class="cstat-no" title="statement not covered" >authenticator.generateSecret();</span>
+    const otpauth = <span class="cstat-no" title="statement not covered" >authenticator.keyuri(email, this.constructor.issuer, secret);</span>
 &nbsp;
     // Hash the secret before storing
     const hashedSecret = <span class="cstat-no" title="statement not covered" >createHash('sha256').update(secret).digest('hex');</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    await prisma?.user.update({</span>
+<span class="cstat-no" title="statement not covered" >    await prisma.user.update({</span>
       where: { id: userId },
       data: {
         twoFactorSecret: hashedSecret,
@@ -290,24 +290,24 @@ export class <span class="cstat-no" title="statement not covered" >TwoFactorServ
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  public async v</span>erifyTwoFactor(userId: string, token: string): Promise&lt;boolean&gt; {
-    const user = <span class="cstat-no" title="statement not covered" >await prisma?.user.findUnique({</span>
+    const user = <span class="cstat-no" title="statement not covered" >await prisma.user.findUnique({</span>
       where: { id: userId },
       select: { twoFactorSecret: true }
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user?.twoFactorSecret) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user.twoFactorSecret) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('2FA not set up for this user');</span>
     }
 &nbsp;
     // Verify the token
-    const isValid = <span class="cstat-no" title="statement not covered" >authenticator?.verify({</span>
+    const isValid = <span class="cstat-no" title="statement not covered" >authenticator.verify({</span>
       token,
-      secret: user?.twoFactorSecret
+      secret: user.twoFactorSecret
     });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (isValid) {</span>
       // Enable 2FA after successful verification
-<span class="cstat-no" title="statement not covered" >      await prisma?.user.update({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.user.update({</span>
         where: { id: userId },
         data: { twoFactorEnabled: true }
       });
@@ -317,30 +317,30 @@ export class <span class="cstat-no" title="statement not covered" >TwoFactorServ
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  public async v</span>alidateLogin(userId: string, token: string): Promise&lt;boolean&gt; {
-    const user = <span class="cstat-no" title="statement not covered" >await prisma?.user.findUnique({</span>
+    const user = <span class="cstat-no" title="statement not covered" >await prisma.user.findUnique({</span>
       where: { id: userId },
       select: { twoFactorSecret: true, twoFactorEnabled: true }
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user?.twoFactorEnabled) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user.twoFactorEnabled) {</span>
 <span class="cstat-no" title="statement not covered" >      return true; /</span>/ 2FA not required
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user?.twoFactorSecret) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user.twoFactorSecret) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('2FA configuration error');</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return authenticator?.verify({</span>
+<span class="cstat-no" title="statement not covered" >    return authenticator.verify({</span>
       token,
-      secret: user?.twoFactorSecret
+      secret: user.twoFactorSecret
     });
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  public async d</span>isableTwoFactor(userId: string, token: string): Promise&lt;boolean&gt; {
-    const isValid = <span class="cstat-no" title="statement not covered" >await this?.validateLogin(userId, token);</span>
+    const isValid = <span class="cstat-no" title="statement not covered" >await this.validateLogin(userId, token);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (isValid) {</span>
-<span class="cstat-no" title="statement not covered" >      await prisma?.user.update({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.user.update({</span>
         where: { id: userId },
         data: {
           twoFactorSecret: null,
@@ -358,7 +358,7 @@ export class <span class="cstat-no" title="statement not covered" >TwoFactorServ
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

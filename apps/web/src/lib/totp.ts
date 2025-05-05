@@ -1,13 +1,3 @@
-/**
-
-
-
- * TOTP (Time-based One-Time Password) implementation
-
- * Used for Multi-Factor Authentication
- */
-
-
 import * as crypto from 'crypto';
 import { authenticator } from 'otplib';
 
@@ -20,8 +10,6 @@ export function generateTOTPSecret(): string {
   const buffer = crypto.randomBytes(20);
   // Convert to base32 for compatibility with authenticator apps
   return authenticator.encode(buffer.toString('hex'));
-}
-
 /**
  * Generate a TOTP token based on the secret
  * @param secret The TOTP secret
@@ -29,8 +17,6 @@ export function generateTOTPSecret(): string {
  */
 export function generateTOTP(secret: string): string {
   return authenticator.generate(secret);
-}
-
 /**
  * Verify a TOTP token against a secret
  * @param token The token to verify
@@ -40,12 +26,9 @@ export function generateTOTP(secret: string): string {
 export function verifyTOTP(token: string, secret: string): boolean {
   try {
     return authenticator.verify({ token, secret });
-  } catch (error) {
+catch (error) {
     console.error('Error verifying TOTP:', error);
     return false;
-  }
-}
-
 /**
  * Generate a QR code URL for setting up authenticator apps
  * @param secret The TOTP secret
@@ -60,8 +43,6 @@ export function generateTOTPQRCodeURL(
   issuer: string = 'Vibewell',
 ): string {
   return authenticator.keyuri(account, issuer, secret);
-}
-
 /**
  * Generate new TOTP credentials
 
@@ -76,7 +57,7 @@ export function generateTOTPCredentials(
   secret: string;
   qrCodeUrl: string;
   currentToken: string;
-} {
+{
   const secret = generateTOTPSecret();
   const qrCodeUrl = generateTOTPQRCodeURL(secret, account, issuer);
   const currentToken = generateTOTP(secret);
@@ -85,9 +66,6 @@ export function generateTOTPCredentials(
     secret,
     qrCodeUrl,
     currentToken,
-  };
-}
-
 /**
 
  * Check if a TOTP setup is valid by verifying a token
@@ -101,4 +79,3 @@ export function generateTOTPCredentials(
  */
 export function verifyTOTPSetup(token: string, secret: string): boolean {
   return verifyTOTP(token, secret);
-}

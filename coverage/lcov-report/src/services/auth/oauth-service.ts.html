@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/51</span>
+                <span class='fraction'>0/47</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/46</span>
+                <span class='fraction'>0/40</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/51</span>
+                <span class='fraction'>0/47</span>
             </div>
         
             
@@ -290,15 +290,7 @@
 <a name='L225'></a><a href='#L225'>225</a>
 <a name='L226'></a><a href='#L226'>226</a>
 <a name='L227'></a><a href='#L227'>227</a>
-<a name='L228'></a><a href='#L228'>228</a>
-<a name='L229'></a><a href='#L229'>229</a>
-<a name='L230'></a><a href='#L230'>230</a>
-<a name='L231'></a><a href='#L231'>231</a>
-<a name='L232'></a><a href='#L232'>232</a>
-<a name='L233'></a><a href='#L233'>233</a>
-<a name='L234'></a><a href='#L234'>234</a>
-<a name='L235'></a><a href='#L235'>235</a>
-<a name='L236'></a><a href='#L236'>236</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L228'></a><a href='#L228'>228</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -353,10 +345,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -376,10 +364,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -557,54 +541,50 @@ interface OAuthResponse {
 export class <span class="cstat-no" title="statement not covered" >OAuthService {</span>
   private static <span class="cstat-no" title="statement not covered" >configs: Record&lt;SupportedOAuthProvider, OAuthConfig&gt; = {</span>
     google: {
-      clientId: process?.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
-      clientSecret: process?.env.GOOGLE_CLIENT_SECRET || '',
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
 &nbsp;
 &nbsp;
-      callbackUrl: `${process?.env.NEXT_PUBLIC_APP_URL}/api/auth/callback/google`,
+      callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback/google`,
     },
     facebook: {
-      clientId: process?.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID || '',
-      clientSecret: process?.env.FACEBOOK_CLIENT_SECRET || '',
+      clientId: process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID || '',
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET || '',
 &nbsp;
 &nbsp;
-      callbackUrl: `${process?.env.NEXT_PUBLIC_APP_URL}/api/auth/callback/facebook`,
+      callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback/facebook`,
     },
     apple: {
-      clientId: process?.env.NEXT_PUBLIC_APPLE_CLIENT_ID || '',
-      clientSecret: process?.env.APPLE_CLIENT_SECRET || '',
+      clientId: process.env.NEXT_PUBLIC_APPLE_CLIENT_ID || '',
+      clientSecret: process.env.APPLE_CLIENT_SECRET || '',
 &nbsp;
 &nbsp;
-      callbackUrl: `${process?.env.NEXT_PUBLIC_APP_URL}/api/auth/callback/apple`,
+      callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback/apple`,
     },
     twitter: {
-      clientId: process?.env.NEXT_PUBLIC_TWITTER_CLIENT_ID || '',
-      clientSecret: process?.env.TWITTER_CLIENT_SECRET || '',
+      clientId: process.env.NEXT_PUBLIC_TWITTER_CLIENT_ID || '',
+      clientSecret: process.env.TWITTER_CLIENT_SECRET || '',
 &nbsp;
 &nbsp;
-      callbackUrl: `${process?.env.NEXT_PUBLIC_APP_URL}/api/auth/callback/twitter`,
+      callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback/twitter`,
     },
   };
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async i</span>nitiateOAuth(provider: SupportedOAuthProvider): Promise&lt;string&gt; {
 &nbsp;
-    // Safe array access
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (provider &lt; 0 || provider &gt;= array?.length) {</span>
-<span class="cstat-no" title="statement not covered" >      throw new Error('Array index out of bounds');</span>
-    }
-    const config = <span class="cstat-no" title="statement not covered" >this?.configs[provider];</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.configs[provider];</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!config) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error(`Unsupported OAuth provider: ${provider}`);</span>
     }
 &nbsp;
     const params = <span class="cstat-no" title="statement not covered" >new URLSearchParams({</span>
-      client_id: config?.clientId,
-      redirect_uri: config?.callbackUrl,
+      client_id: config.clientId,
+      redirect_uri: config.callbackUrl,
       response_type: 'code',
-      scope: this?.getScope(provider),
+      scope: this.getScope(provider),
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return this?.getAuthorizationUrl(provider, params);</span>
+<span class="cstat-no" title="statement not covered" >    return this.getAuthorizationUrl(provider, params);</span>
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async h</span>andleCallback(
@@ -612,27 +592,23 @@ export class <span class="cstat-no" title="statement not covered" >OAuthService 
     code: string,
   ): Promise&lt;OAuthResponse&gt; {
 &nbsp;
-    // Safe array access
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (provider &lt; 0 || provider &gt;= array?.length) {</span>
-<span class="cstat-no" title="statement not covered" >      throw new Error('Array index out of bounds');</span>
-    }
-    const config = <span class="cstat-no" title="statement not covered" >this?.configs[provider];</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.configs[provider];</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!config) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error(`Unsupported OAuth provider: ${provider}`);</span>
     }
 &nbsp;
-    const tokenResponse = <span class="cstat-no" title="statement not covered" >await this?.exchangeCodeForToken(provider, code, config);</span>
-    const userInfo = <span class="cstat-no" title="statement not covered" >await this?.fetchUserInfo(provider, tokenResponse?.access_token);</span>
+    const tokenResponse = <span class="cstat-no" title="statement not covered" >await this.exchangeCodeForToken(provider, code, config);</span>
+    const userInfo = <span class="cstat-no" title="statement not covered" >await this.fetchUserInfo(provider, tokenResponse.access_token);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return {</span>
-      accessToken: tokenResponse?.access_token,
-      refreshToken: tokenResponse?.refresh_token,
-      expiresIn: tokenResponse?.expires_in,
+      accessToken: tokenResponse.access_token,
+      refreshToken: tokenResponse.refresh_token,
+      expiresIn: tokenResponse.expires_in,
       user: {
-        id: userInfo?.id,
-        email: userInfo?.email,
-        name: userInfo?.name,
-        avatar: userInfo?.picture,
+        id: userInfo.id,
+        email: userInfo.email,
+        name: userInfo.name,
+        avatar: userInfo.picture,
         provider,
       },
     };
@@ -647,7 +623,7 @@ export class <span class="cstat-no" title="statement not covered" >OAuthService 
       case 'apple':
 <span class="cstat-no" title="statement not covered" >        return 'name email';</span>
       case 'twitter':
-<span class="cstat-no" title="statement not covered" >        return 'users?.read tweet?.read';</span>
+<span class="cstat-no" title="statement not covered" >        return 'users.read tweet.read';</span>
       default:
 <span class="cstat-no" title="statement not covered" >        return '';</span>
     }
@@ -661,18 +637,18 @@ export class <span class="cstat-no" title="statement not covered" >OAuthService 
       case 'google':
 &nbsp;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return `https://accounts?.google.com/o/oauth2/v2/auth?${params}`;</span>
+<span class="cstat-no" title="statement not covered" >        return `https://accounts.google.com/o/oauth2/v2/auth?${params}`;</span>
       case 'facebook':
 &nbsp;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return `https://www?.facebook.com/v12?.0/dialog/oauth?${params}`;</span>
+<span class="cstat-no" title="statement not covered" >        return `https://www.facebook.com/v12.0/dialog/oauth?${params}`;</span>
       case 'apple':
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return `https://appleid?.apple.com/auth/authorize?${params}`;</span>
+<span class="cstat-no" title="statement not covered" >        return `https://appleid.apple.com/auth/authorize?${params}`;</span>
       case 'twitter':
 &nbsp;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return `https://twitter?.com/i/oauth2/authorize?${params}`;</span>
+<span class="cstat-no" title="statement not covered" >        return `https://twitter.com/i/oauth2/authorize?${params}`;</span>
       default:
 <span class="cstat-no" title="statement not covered" >        throw new Error(`Unsupported OAuth provider: ${provider}`);</span>
     }
@@ -683,7 +659,7 @@ export class <span class="cstat-no" title="statement not covered" >OAuthService 
     code: string,
     config: OAuthConfig,
   ): Promise&lt;any&gt; {
-    const tokenEndpoint = <span class="cstat-no" title="statement not covered" >this?.getTokenEndpoint(provider);</span>
+    const tokenEndpoint = <span class="cstat-no" title="statement not covered" >this.getTokenEndpoint(provider);</span>
     const response = <span class="cstat-no" title="statement not covered" >await fetch(tokenEndpoint, {</span>
       method: 'POST',
       headers: {
@@ -694,36 +670,36 @@ export class <span class="cstat-no" title="statement not covered" >OAuthService 
       },
       body: new URLSearchParams({
         code,
-        client_id: config?.clientId,
-        client_secret: config?.clientSecret,
-        redirect_uri: config?.callbackUrl,
+        client_id: config.clientId,
+        client_secret: config.clientSecret,
+        redirect_uri: config.callbackUrl,
         grant_type: 'authorization_code',
       }),
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('Failed to exchange code for token');</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return response?.json();</span>
+<span class="cstat-no" title="statement not covered" >    return response.json();</span>
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private static g</span>etTokenEndpoint(provider: SupportedOAuthProvider): string {
 <span class="cstat-no" title="statement not covered" >    switch (provider) {</span>
       case 'google':
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return 'https://oauth2?.googleapis.com/token';</span>
+<span class="cstat-no" title="statement not covered" >        return 'https://oauth2.googleapis.com/token';</span>
       case 'facebook':
 &nbsp;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return 'https://graph?.facebook.com/v12?.0/oauth/access_token';</span>
+<span class="cstat-no" title="statement not covered" >        return 'https://graph.facebook.com/v12.0/oauth/access_token';</span>
       case 'apple':
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return 'https://appleid?.apple.com/auth/token';</span>
+<span class="cstat-no" title="statement not covered" >        return 'https://appleid.apple.com/auth/token';</span>
       case 'twitter':
 &nbsp;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return 'https://api?.twitter.com/2/oauth2/token';</span>
+<span class="cstat-no" title="statement not covered" >        return 'https://api.twitter.com/2/oauth2/token';</span>
       default:
 <span class="cstat-no" title="statement not covered" >        throw new Error(`Unsupported OAuth provider: ${provider}`);</span>
     }
@@ -733,18 +709,18 @@ export class <span class="cstat-no" title="statement not covered" >OAuthService 
     provider: SupportedOAuthProvider,
     accessToken: string,
   ): Promise&lt;any&gt; {
-    const userInfoEndpoint = <span class="cstat-no" title="statement not covered" >this?.getUserInfoEndpoint(provider);</span>
+    const userInfoEndpoint = <span class="cstat-no" title="statement not covered" >this.getUserInfoEndpoint(provider);</span>
     const response = <span class="cstat-no" title="statement not covered" >await fetch(userInfoEndpoint, {</span>
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('Failed to fetch user info');</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return response?.json();</span>
+<span class="cstat-no" title="statement not covered" >    return response.json();</span>
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private static g</span>etUserInfoEndpoint(provider: SupportedOAuthProvider): string {
@@ -752,17 +728,17 @@ export class <span class="cstat-no" title="statement not covered" >OAuthService 
       case 'google':
 &nbsp;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return 'https://www?.googleapis.com/oauth2/v3/userinfo';</span>
+<span class="cstat-no" title="statement not covered" >        return 'https://www.googleapis.com/oauth2/v3/userinfo';</span>
       case 'facebook':
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return 'https://graph?.facebook.com/v12?.0/me?fields=id,name,email,picture';</span>
+<span class="cstat-no" title="statement not covered" >        return 'https://graph.facebook.com/v12.0/me?fields=id,name,email,picture';</span>
       case 'apple':
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return 'https://appleid?.apple.com/auth/userinfo';</span>
+<span class="cstat-no" title="statement not covered" >        return 'https://appleid.apple.com/auth/userinfo';</span>
       case 'twitter':
 &nbsp;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return 'https://api?.twitter.com/2/users/me';</span>
+<span class="cstat-no" title="statement not covered" >        return 'https://api.twitter.com/2/users/me';</span>
       default:
 <span class="cstat-no" title="statement not covered" >        throw new Error(`Unsupported OAuth provider: ${provider}`);</span>
     }
@@ -775,7 +751,7 @@ export class <span class="cstat-no" title="statement not covered" >OAuthService 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -18,8 +18,7 @@ const LoadingOverlay: React.FC<{ onLoaded: boolean; sound?: any }> = ({ onLoaded
       ),
       -1,
       true
-    );
-  }, []);
+[]);
 
   useEffect(() => {
     if (onLoaded) {
@@ -30,11 +29,9 @@ const LoadingOverlay: React.FC<{ onLoaded: boolean; sound?: any }> = ({ onLoaded
           setTimeout(() => {
             sound.stopAsync();
             sound.unloadAsync();
-          }, 500);
-        })();
-      }
-    }
-  }, [onLoaded]);
+500);
+)();
+[onLoaded]);
 
   return (
     <Animated.View style={[styles.overlay, animOpacity]}>
@@ -44,20 +41,13 @@ const LoadingOverlay: React.FC<{ onLoaded: boolean; sound?: any }> = ({ onLoaded
         resizeMode="contain"
       />
     </Animated.View>
-  );
-};
-
 const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0,0,0,0.6)',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  logo: {
+logo: {
     width: 120,
     height: 120,
-  },
-});
-
 export default LoadingOverlay;

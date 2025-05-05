@@ -10,8 +10,6 @@ interface AccessibilityContextType {
   setKeyboardFocusVisible: (enabled: boolean) => void;
   setLanguage: (languageCode: string) => void;
   resetPreferences: () => void;
-}
-
 const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined);
 
 export {};

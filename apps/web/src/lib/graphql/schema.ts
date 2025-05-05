@@ -1,11 +1,3 @@
-/**
- * GraphQL Schema Definition
- *
- * This file defines the schema for the VibeWell GraphQL API.
- * The schema includes types for users, providers, services, bookings, and reviews.
- */
-
-
 import { gql } from 'graphql-tag';
 
 // Define GraphQL type definitions (schema)
@@ -22,9 +14,7 @@ export const typeDefs = gql`
     createdAt: String
     updatedAt: String
     preferences: JSON
-  }
-
-  # User types
+# User types
   type User implements UserInterface {
     id: ID!
     email: String!
@@ -35,9 +25,7 @@ export const typeDefs = gql`
     createdAt: String
     updatedAt: String
     preferences: JSON
-  }
-
-  # Admin type
+# Admin type
   type Admin implements UserInterface {
     id: ID!
     email: String!
@@ -47,15 +35,9 @@ export const typeDefs = gql`
     updatedAt: String
     preferences: JSON
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     permissions: [String]
     lastLogin: String
-  }
-
-  # Customer type
+# Customer type
   type Customer implements UserInterface {
     id: ID!
     email: String!
@@ -65,20 +47,10 @@ export const typeDefs = gql`
     updatedAt: String
     preferences: JSON
 
-    // Safe array access
-    if (Booking < 0 || Booking >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     bookings: [Booking]
 
-    // Safe array access
-    if (Review < 0 || Review >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     reviews: [Review]
-  }
-
-  # Service provider type
+# Service provider type
   type ServiceProvider implements UserInterface {
     id: ID!
     email: String!
@@ -89,32 +61,20 @@ export const typeDefs = gql`
     preferences: JSON
     provider: Provider
 
-    // Safe array access
-    if (Service < 0 || Service >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     services: [Service]
-  }
-
-  type AuthPayload {
+type AuthPayload {
     token: String!
     user: User!
-  }
-
-  input RegisterUserInput {
+input RegisterUserInput {
     email: String!
     password: String!
     fullName: String!
     userType: String
-  }
-
-  input UpdateProfileInput {
+input UpdateProfileInput {
     fullName: String
     avatarUrl: String
     preferences: JSON
-  }
-
-  # Provider types
+# Provider types
   type Provider {
     id: ID!
     userId: ID!
@@ -123,74 +83,40 @@ export const typeDefs = gql`
     description: String
     address: String
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     categories: [String]
 
-    // Safe array access
-    if (BusinessHour < 0 || BusinessHour >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     businessHours: [BusinessHour]
     contactInfo: JSON
     rating: Float
     createdAt: String
     updatedAt: String
-  }
-
-  type BusinessHour {
+type BusinessHour {
     day: String!
     openTime: String!
     closeTime: String!
-  }
-
-  input BusinessHourInput {
+input BusinessHourInput {
     day: String!
     openTime: String!
     closeTime: String!
-  }
-
-  input CreateProviderInput {
+input CreateProviderInput {
     businessName: String!
     description: String
     address: String
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     categories: [String]
 
-    // Safe array access
-    if (BusinessHourInput < 0 || BusinessHourInput >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     businessHours: [BusinessHourInput]
     contactInfo: JSON
-  }
-
-  input UpdateProviderInput {
+input UpdateProviderInput {
     businessName: String
     description: String
     address: String
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     categories: [String]
 
-    // Safe array access
-    if (BusinessHourInput < 0 || BusinessHourInput >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     businessHours: [BusinessHourInput]
     contactInfo: JSON
-  }
-
-  # Service types
+# Service types
   type Service {
     id: ID!
     providerId: ID!
@@ -204,9 +130,7 @@ export const typeDefs = gql`
     isActive: Boolean!
     createdAt: String
     updatedAt: String
-  }
-
-  input CreateServiceInput {
+input CreateServiceInput {
     name: String!
     description: String
     price: Float!
@@ -214,9 +138,7 @@ export const typeDefs = gql`
     category: String
     imageUrl: String
     isActive: Boolean
-  }
-
-  input UpdateServiceInput {
+input UpdateServiceInput {
     name: String
     description: String
     price: Float
@@ -224,9 +146,7 @@ export const typeDefs = gql`
     category: String
     imageUrl: String
     isActive: Boolean
-  }
-
-  # Booking types
+# Booking types
   type Booking {
     id: ID!
     customerId: ID!
@@ -244,23 +164,17 @@ export const typeDefs = gql`
     paymentIntent: String
     createdAt: String
     updatedAt: String
-  }
-
-  input CreateBookingInput {
+input CreateBookingInput {
     providerId: ID!
     serviceId: ID!
     startTime: String!
     endTime: String!
     notes: String
-  }
-
-  input UpdateBookingInput {
+input UpdateBookingInput {
     status: String
     notes: String
     paymentStatus: String
-  }
-
-  # Review types
+# Review types
   type Review {
     id: ID!
     customerId: ID!
@@ -273,29 +187,20 @@ export const typeDefs = gql`
     comment: String
     createdAt: String
     updatedAt: String
-  }
-
-  input CreateReviewInput {
+input CreateReviewInput {
     providerId: ID!
     serviceId: ID!
     rating: Int!
     comment: String
-  }
-
-  input UpdateReviewInput {
+input UpdateReviewInput {
     rating: Int
     comment: String
-  }
-
-
-  # Location input type for geo-based provider search
+# Location input type for geo-based provider search
   input LocationInput {
     lat: Float!
     lng: Float!
     radius: Float
-  }
-
-  # Query type
+# Query type
   type Query {
     # User queries
     me: User
@@ -317,9 +222,7 @@ export const typeDefs = gql`
     # Review queries
     review(id: ID!): Review
     reviewsByProvider(providerId: ID!, limit: Int, offset: Int): [Review!]
-  }
-
-  # Mutation type
+# Mutation type
   type Mutation {
     # Auth mutations
     registerUser(input: RegisterUserInput!): AuthPayload!
@@ -344,7 +247,6 @@ export const typeDefs = gql`
     createReview(input: CreateReviewInput!): Review!
     updateReview(id: ID!, input: UpdateReviewInput!): Review!
     deleteReview(id: ID!): Boolean!
-  }
 `;
 
 export default typeDefs;

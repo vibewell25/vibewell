@@ -1,4 +1,3 @@
-'use client';
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { BusinessHubNavigation } from '@/components/business-hub-navigation';
@@ -13,19 +12,16 @@ interface ViewData {
   name: string;
   lastViewed: string;
   views: number;
-}
 interface SearchHistoryItem {
   query: string;
   category: string;
   timestamp: string;
-}
 interface MetricCard {
   title: string;
   value: string | number;
   change: number;
   changeType: 'increase' | 'decrease' | 'neutral';
   icon: React.ReactNode;
-}
 interface PopularResource {
   id: string;
   title: string;
@@ -34,7 +30,6 @@ interface PopularResource {
   url: string;
   views: number;
   imageUrl?: string;
-}
 // Define the PopularRating interface from lib/ratings.ts
 interface PopularRating {
   id: string;
@@ -42,7 +37,6 @@ interface PopularRating {
   total: number;
   count: number;
   average: number;
-}
 // Get analytics data from localStorage
 const getAnalyticsData = () => {
   if (typeof window === 'undefined') {
@@ -53,9 +47,7 @@ const getAnalyticsData = () => {
       searchHistory: [] as SearchHistoryItem[],
       bookmarkedCount: 0,
       topRated: [] as PopularRating[],
-    };
-  }
-  try {
+try {
     // Resource views
     const viewData = JSON.parse(localStorage.getItem('resource_view_log') || '{}');
     const resourceViews = Object.values(viewData) as ViewData[];
@@ -71,8 +63,7 @@ const getAnalyticsData = () => {
     const searchCounts: Record<string, number> = {};
     searchTerms.forEach((term) => {
       searchCounts[term] = (searchCounts[term] || 0) + 1;
-    });
-    const popularSearches = Object.entries(searchCounts)
+const popularSearches = Object.entries(searchCounts)
       .map(([term, count]) => ({ term, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 5);
@@ -88,8 +79,7 @@ const getAnalyticsData = () => {
       searchHistory,
       bookmarkedCount,
       topRated,
-    };
-  } catch (error) {
+catch (error) {
     console.error('Error fetching analytics data:', error);
     return {
       totalViews: 0,
@@ -98,9 +88,6 @@ const getAnalyticsData = () => {
       searchHistory: [],
       bookmarkedCount: 0,
       topRated: [],
-    };
-  }
-};
 // Popular resources mock data (in a real app, this would come from analytics)
 const popularResources: PopularResource[] = [
   {
@@ -111,8 +98,7 @@ const popularResources: PopularResource[] = [
     url: '/business-hub/marketing/resources/1',
     views: 245,
     imageUrl: '/images/social-media-marketing.jpg',
-  },
-  {
+{
     id: '2',
     title: 'Financial Planning Template for Spa Businesses',
     type: 'tool',
@@ -120,8 +106,7 @@ const popularResources: PopularResource[] = [
     url: '/business-hub/financial-management/resources/1',
     views: 189,
     imageUrl: '/images/financial-planning.jpg',
-  },
-  {
+{
     id: '3',
     title: 'Client Acquisition Strategies for Beauty Businesses',
     type: 'article',
@@ -129,8 +114,7 @@ const popularResources: PopularResource[] = [
     url: '/business-hub/client-acquisition/strategies/1',
     views: 173,
     imageUrl: '/images/client-acquisition.jpg',
-  },
-  {
+{
     id: '4',
     title: 'Pricing Calculator for Wellness Services',
     type: 'tool',
@@ -138,8 +122,7 @@ const popularResources: PopularResource[] = [
     url: '/business-hub/financial-management/tools/1',
     views: 162,
     imageUrl: '/images/pricing-calculator.jpg',
-  },
-  {
+{
     id: '5',
     title: 'Email Marketing Automation for Wellness Businesses',
     type: 'resource',
@@ -147,7 +130,6 @@ const popularResources: PopularResource[] = [
     url: '/business-hub/marketing/resources/2',
     views: 157,
     imageUrl: '/images/email-marketing.jpg',
-  },
 ];
 export default function BusinessHubAnalyticsPage() {
   const [analyticsData, setAnalyticsData] = useState<{
@@ -157,20 +139,19 @@ export default function BusinessHubAnalyticsPage() {
     searchHistory: SearchHistoryItem[];
     bookmarkedCount: number;
     topRated: PopularRating[];
-  }>({
+>({
     totalViews: 0,
     resourceViews: [],
     popularSearches: [],
     searchHistory: [],
     bookmarkedCount: 0,
     topRated: [],
-  });
-  const [isClient, setIsClient] = useState(false);
+const [isClient, setIsClient] = useState(false);
   useEffect(() => {
     setIsClient(true);
     const data = getAnalyticsData();
     setAnalyticsData(data);
-  }, []);
+[]);
   // Metric cards with mock growth data
   const metricCards: MetricCard[] = [
     {
@@ -179,38 +160,32 @@ export default function BusinessHubAnalyticsPage() {
       change: 12.5,
       changeType: 'increase',
       icon: <Icons.ChartBarIcon className="h-6 w-6 text-blue-500" />,
-    },
-    {
+{
       title: 'Resources Bookmarked',
       value: analyticsData.bookmarkedCount,
       change: 8.3,
       changeType: 'increase',
       icon: <Icons.BookmarkIcon className="h-6 w-6 text-yellow-500" />,
-    },
-    {
+{
       title: 'Search Queries',
       value: analyticsData.searchHistory.length,
       change: 15.2,
       changeType: 'increase',
       icon: <Icons.MagnifyingGlassIcon className="h-6 w-6 text-purple-500" />,
-    },
-    {
+{
       title: 'Resource Engagement',
       value: '42%',
       change: 5.7,
       changeType: 'increase',
       icon: <Icons.UserGroupIcon className="h-6 w-6 text-green-500" />,
-    },
-  ];
+];
   // Format date to readable format
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
-    });
-  };
-  return (
+return (
     <Layout>
       <div className="flex min-h-screen flex-col bg-gray-50">
         <div className="container mx-auto px-4 py-8">
@@ -257,7 +232,7 @@ export default function BusinessHubAnalyticsPage() {
                             : card.changeType === 'decrease'
                               ? 'text-red-600'
                               : 'text-gray-500'
-                        }`}
+`}
                       >
                         {card.changeType === 'increase' ? (
                           <Icons.ArrowUpIcon className="mr-1 h-4 w-4" />
@@ -439,5 +414,3 @@ export default function BusinessHubAnalyticsPage() {
         </div>
       </div>
     </Layout>
-  );
-}

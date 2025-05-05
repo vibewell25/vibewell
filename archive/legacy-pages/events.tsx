@@ -15,9 +15,7 @@ const Events: NextPage = () => {
     const res = await fetchWithTimeout('/api/events');
     const data = await res.json();
     setEvents(data.events || []);
-  };
-
-  useEffect(() => { fetchEvents(); }, []);
+useEffect(() => { fetchEvents(); }, []);
 
   return (
     <div className="max-w-2xl mx-auto py-6">
@@ -37,14 +35,10 @@ const Events: NextPage = () => {
               if (confirm('Delete this event?')) {
                 await fetchWithTimeout(`/api/events/${e.id}`, { method: 'DELETE' });
                 fetchEvents();
-              }
-            }}>Delete</Button>
+>Delete</Button>
           </div>
         </Card>
       ))}
       {events.length === 0 && <p>No events.</p>}
     </div>
-  );
-};
-
 export default Events;

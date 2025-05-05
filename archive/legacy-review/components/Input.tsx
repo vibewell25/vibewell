@@ -15,27 +15,18 @@ const inputVariants = cva(
         default: '',
         error: 'border-destructive focus-visible:ring-destructive',
         success: 'border-success focus-visible:ring-success',
-      },
-      size: {
+size: {
         default: 'h-10',
         sm: 'h-8 px-2',
         lg: 'h-12 px-4',
-      },
-    },
-    defaultVariants: {
+defaultVariants: {
       variant: 'default',
       size: 'default',
-    },
-  },
-);
-
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement>,
     VariantProps<typeof inputVariants> {
   error?: string;
   success?: string;
-}
-
 /**
  * Input component for form controls
  * @param {InputProps} props - The input props
@@ -61,10 +52,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
         {!error && success && <p className="text-success mt-1 text-sm">{success}</p>}
       </div>
-    );
-  },
-);
-
 Input.displayName = 'Input';
 
 export { Input, inputVariants };

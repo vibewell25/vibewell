@@ -1,5 +1,3 @@
-'use client';
-
 import { Button } from '@/components/ui/Button';
 import {
   Card,
@@ -8,7 +6,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/Card';
+from '@/components/ui/Card';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -66,5 +64,3 @@ export default function UnauthorizedPage() {
         </CardFooter>
       </Card>
     </div>
-  );
-}

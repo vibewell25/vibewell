@@ -1,4 +1,3 @@
-'use client';
 import React, { Suspense, useEffect, useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Input } from '@/components/ui/Input';
@@ -9,7 +8,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
 import Link from 'next/link';
@@ -30,7 +29,6 @@ interface Business {
   tags: string[];
   services: { name: string; price: number }[];
   availableSlots: number;
-}
 function BusinessDirectoryContent() {
   // State for filters and search
   const [searchTerm, setSearchTerm] = useState('');
@@ -66,8 +64,7 @@ function BusinessDirectoryContent() {
             { name: 'Hot Stone Therapy', price: 150 },
           ],
           availableSlots: 8,
-        },
-        {
+{
           id: '2',
           name: 'Glow Beauty Studio',
           category: 'beauty',
@@ -86,8 +83,7 @@ function BusinessDirectoryContent() {
             { name: 'Manicure & Pedicure', price: 65 },
           ],
           availableSlots: 5,
-        },
-        {
+{
           id: '3',
           name: 'Mindful Meditation Center',
           category: 'wellness',
@@ -106,8 +102,7 @@ function BusinessDirectoryContent() {
             { name: 'Mindfulness Workshop', price: 45 },
           ],
           availableSlots: 12,
-        },
-        {
+{
           id: '4',
           name: 'Fit Life Coaching',
           category: 'fitness',
@@ -126,8 +121,7 @@ function BusinessDirectoryContent() {
             { name: 'Group Fitness Class', price: 30 },
           ],
           availableSlots: 7,
-        },
-        {
+{
           id: '5',
           name: 'Healing Hands Therapy',
           category: 'wellness',
@@ -146,8 +140,7 @@ function BusinessDirectoryContent() {
             { name: 'Sports Rehabilitation', price: 130 },
           ],
           availableSlots: 4,
-        },
-        {
+{
           id: '6',
           name: 'Zen Yoga Studio',
           category: 'fitness',
@@ -165,13 +158,12 @@ function BusinessDirectoryContent() {
             { name: 'Yoga Workshop', price: 45 },
           ],
           availableSlots: 10,
-        },
-      ];
+];
       setBusinesses(mockBusinesses);
       setFilteredBusinesses(mockBusinesses);
       setIsLoading(false);
-    }, 1000);
-  }, []);
+1000);
+[]);
   // Apply filters
   useEffect(() => {
     if (businesses.length === 0) return;
@@ -183,35 +175,28 @@ function BusinessDirectoryContent() {
           business.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           business.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
           business.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase())),
-      );
-    }
-    // Category filter
+// Category filter
     if (category !== 'all') {
       filtered = filtered.filter((business) => business.category === category);
-    }
-    // Location filter
+// Location filter
     if (location !== 'all') {
       filtered = filtered.filter((business) => business.location.includes(location));
-    }
-    // Price range filter
+// Price range filter
     filtered = filtered.filter((business) => {
       const avgPrice =
         business.services.reduce((sum, service) => sum + service.price, 0) /
         business.services.length;
       return avgPrice >= priceRange[0] && avgPrice <= priceRange[1];
-    });
-    // Rating filter
+// Rating filter
     if (rating > 0) {
       filtered = filtered.filter((business) => business.rating >= rating);
-    }
-    // Sort premium listings first
+// Sort premium listings first
     filtered.sort((a, b) => {
       if (a.isPremium && !b.isPremium) return -1;
       if (!a.isPremium && b.isPremium) return 1;
       return 0;
-    });
-    setFilteredBusinesses(filtered);
-  }, [businesses, searchTerm, category, location, priceRange, rating]);
+setFilteredBusinesses(filtered);
+[businesses, searchTerm, category, location, priceRange, rating]);
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
@@ -250,8 +235,7 @@ function BusinessDirectoryContent() {
                   value={searchTerm}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setSearchTerm(e.target.value)
-                  }
-                />
+/>
               </div>
               <Button
                 variant="outline"
@@ -426,8 +410,7 @@ function BusinessDirectoryContent() {
                     setLocation('all');
                     setPriceRange([0, 200]);
                     setRating(0);
-                  }}
-                >
+>
                   Clear all filters
                 </Button>
               </div>
@@ -509,12 +492,8 @@ function BusinessDirectoryContent() {
         </div>
       </div>
     </Layout>
-  );
-}
 export default function BusinessDirectory() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <BusinessDirectoryContent />
     </Suspense>
-  );
-}

@@ -1,15 +1,3 @@
-
-    fetch();
-    return Boolean(networkState.isConnected && networkState.isInternetReachable);
-  } catch (error) {
-    console.error('Error checking network status:', error);
-    return false;
-  }
-}
-
-/**
- * Add an operation to the sync queue for later processing when online
- */
 export async function {
   addToSyncQueue(
   endpoint: string,
@@ -29,9 +17,7 @@ export async function {
       timestamp: Date.now(),
       retryCount: 0,
       synced: false,
-    };
-
-    // Get current queue
+// Get current queue
     const queueString = await AsyncStorage.getItem(STORAGE_KEYS.SYNC_QUEUE);
     const queue: SyncOperation[] = queueString ? JSON.parse(queueString) : [];
 
@@ -45,15 +31,10 @@ export async function {
     const online = await isOnline();
     if (online) {
       processSyncOperation(syncOperation);
-    }
-
-    return operationId;
-  } catch (error) {
+return operationId;
+catch (error) {
     console.error('Error adding to sync queue:', error);
     throw error;
-  }
-}
-
 /**
  * Process all pending sync operations in the queue
  */
@@ -62,27 +43,21 @@ export async function {
   success: number;
   failed: number;
   remaining: number;
-}> {
+> {
   try {
     // Check if online
     const online = await isOnline();
     if (!online) {
       console.log('Cannot sync: Device is offline');
       return { success: 0, failed: 0, remaining: 0 };
-    }
-
-    // Get current queue
+// Get current queue
     const queueString = await AsyncStorage.getItem(STORAGE_KEYS.SYNC_QUEUE);
     if (!queueString) {
       return { success: 0, failed: 0, remaining: 0 };
-    }
-
-    const queue: SyncOperation[] = JSON.parse(queueString);
+const queue: SyncOperation[] = JSON.parse(queueString);
     if (!queue.length) {
       return { success: 0, failed: 0, remaining: 0 };
-    }
-
-    // Track results
+// Track results
     let successCount = 0;
     let failedCount = 0;
 
@@ -93,16 +68,12 @@ export async function {
         const success = await processSyncOperation(operation);
         if (success) {
           if (successCount > Number.MAX_SAFE_INTEGER || successCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); successCount++;
-        } else {
+else {
           if (failedCount > Number.MAX_SAFE_INTEGER || failedCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); failedCount++;
-        }
-      } catch (error) {
+catch (error) {
         console.error(`Error processing sync operation ${operation.id}:`, error);
         if (failedCount > Number.MAX_SAFE_INTEGER || failedCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); failedCount++;
-      }
-    }
-
-    // Update last sync timestamp
+// Update last sync timestamp
     await AsyncStorage.setItem(STORAGE_KEYS.LAST_SYNC, Date.now().toString());
 
     // Get updated queue to calculate remaining items
@@ -116,13 +87,9 @@ export async function {
       success: successCount,
       failed: failedCount,
       remaining: remainingCount,
-    };
-  } catch (error) {
+catch (error) {
     console.error('Error syncing pending operations:', error);
     throw error;
-  }
-}
-
 /**
  * Process a single sync operation
  */
@@ -132,15 +99,11 @@ async function {
     // Skip if already synced
     if (operation.synced) {
       return true;
-    }
-
-    // Verify we're online before attempting to sync
+// Verify we're online before attempting to sync
     const online = await isOnline();
     if (!online) {
       return false;
-    }
-
-    // Exceed max retry attempts?
+// Exceed max retry attempts?
     if (operation.retryCount >= MAX_RETRY_ATTEMPTS) {
       console.warn(`Sync operation ${operation.id} exceeded max retry attempts`);
       
@@ -171,7 +134,7 @@ async function {
     forceRefresh?: boolean;
     offlineData?: T;
     highPriority?: boolean; // New option for important requests
-  } = {}
+= {}
 ): Promise<{ data: T | null; fromCache: boolean; error?: string }> {
   const {
     method = 'GET',
@@ -181,7 +144,7 @@ async function {
     forceRefresh = false,
     offlineData = null,
     highPriority = false,
-  } = options;
+= options;
 
   const cacheKey = `${method}:${endpoint}:${body ? JSON.stringify(body) : ''}`;
 
@@ -198,18 +161,12 @@ async function {
         data: cachedData || offlineData,
         fromCache: true,
         error: !cachedData && !offlineData ? 'Offline with no cached data' : undefined,
-      };
-    }
-
-    // If online but not forcing refresh, check for valid cache
+// If online but not forcing refresh, check for valid cache
     if (!forceRefresh && method === 'GET') {
       const cachedData = await retrieveCachedData<T>(cacheKey);
       if (cachedData) {
         return { data: cachedData, fromCache: true };
-      }
-    }
-
-    // Prepare auth header if available
+// Prepare auth header if available
 
     fetch(`${serverBaseUrl}${endpoint}`, {
       method,
@@ -225,18 +182,11 @@ async function {
         data: cachedData,
         fromCache: true,
         error: error instanceof Error ? error.message : 'Unknown error',
-      };
-    }
-
-    // If no cached data, use provided offline data or return null
+// If no cached data, use provided offline data or return null
     return {
       data: offlineData,
       fromCache: false,
       error: error instanceof Error ? error.message : 'Unknown error',
-    };
-  }
-}
-
 /**
  * Create a resource offline and sync later
  */
@@ -258,27 +208,19 @@ export async function {
           method: 'GET',
           cacheTTL: 24 * 60 * 60 * 1000, // 24 hours
           forceRefresh: true, // Force a fresh fetch
-        });
-        
-        if (result.data) {
+if (result.data) {
           cachedResources.push(endpoint);
-        }
-      } catch (error) {
+catch (error) {
         console.error(`Failed to preload data for ${endpoint}:`, error);
         errors.push(endpoint);
-      }
-    }
-    
-    // Cache app configuration
+// Cache app configuration
     try {
 
     fetchWithOfflineSupport('/api/config', {
         method: 'GET',
         cacheTTL: 7 * 24 * 60 * 60 * 1000, // 7 days
         forceRefresh: true,
-      });
-      
-      if (configResult.data) {
+if (configResult.data) {
 
     fetchWithOfflineSupport,
   createResourceOffline,
@@ -291,4 +233,3 @@ export async function {
   estimateCacheSize,
   getCacheSummary,
   getCachePriority,
-}; 

@@ -1,4 +1,3 @@
-'use client';;
 import { useState, Suspense } from 'react';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
@@ -19,7 +18,7 @@ import {
   CubeTransparentIcon,
   DocumentDuplicateIcon,
   CheckIcon,
-} from '@heroicons/react/24/outline';
+from '@heroicons/react/24/outline';
 import { Search } from 'lucide-react';
 
 // JSON examples for the documentation
@@ -32,8 +31,7 @@ const examples = {
     "email": "user@example.com",
     "name": "John Doe",
     "role": "customer"
-  }
-}`,
+`,
   userProfile: `{
   "id": "user_123",
   "email": "user@example.com",
@@ -46,15 +44,12 @@ const examples = {
       "email": true,
       "sms": false,
       "push": true
-    },
-    "privacy": {
+"privacy": {
       "profileVisibility": "public",
       "emailVisibility": "private"
-    }
-  },
-  "createdAt": "2023-01-15T12:00:00Z",
+"createdAt": "2023-01-15T12:00:00Z",
   "updatedAt": "2023-02-20T15:30:00Z"
-}`,
+`,
   booking: `{
   "id": "booking_123",
   "providerId": "provider_456",
@@ -69,9 +64,7 @@ const examples = {
   "currency": "USD",
   "notes": "Please arrive 10 minutes early",
   "createdAt": "2023-03-20T10:15:00Z"
-}`,
-};
-
+`,
 // API endpoints for documentation
 const endpoints = [
   {
@@ -86,10 +79,9 @@ const endpoints = [
         requestBody: `{
   "email": "user@example.com",
   "password": "yourpassword"
-}`,
+`,
         responseExample: examples.auth,
-      },
-      {
+{
         method: 'POST',
         path: '/auth/register',
         description: 'Register a new user account',
@@ -97,27 +89,23 @@ const endpoints = [
   "email": "user@example.com",
   "password": "yourpassword",
   "name": "John Doe"
-}`,
-      },
-      {
+`,
+{
         method: 'POST',
         path: '/auth/refresh',
         description: 'Refresh an expired JWT token',
         requestBody: `{
   "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}`,
-      },
-      {
+`,
+{
         method: 'POST',
         path: '/auth/password/reset',
         description: 'Request a password reset',
         requestBody: `{
   "email": "user@example.com"
-}`,
-      },
-    ],
-  },
-  {
+`,
+],
+{
     id: 'users',
     name: 'Users',
     icon: <UserIcon className="h-5 w-5" />,
@@ -127,8 +115,7 @@ const endpoints = [
         path: '/users/me',
         description: "Get the current user's profile",
         responseExample: examples.userProfile,
-      },
-      {
+{
         method: 'PATCH',
         path: '/users/me',
         description: "Update the current user's profile",
@@ -138,19 +125,14 @@ const endpoints = [
   "preferences": {
     "notifications": {
       "sms": true
-    }
-  }
-}`,
-      },
-      {
+`,
+{
         method: 'POST',
         path: '/users/me/profile-image',
         description: 'Upload a profile image',
         notes: "Uses multipart/form-data with 'image' field",
-      },
-    ],
-  },
-  {
+],
+{
     id: 'bookings',
     name: 'Bookings',
     icon: <CalendarIcon className="h-5 w-5" />,
@@ -163,14 +145,12 @@ const endpoints = [
           {
             name: 'status',
             description: 'Filter by status (pending, confirmed, completed, cancelled)',
-          },
-          { name: 'from', description: 'Start date (YYYY-MM-DD)' },
+{ name: 'from', description: 'Start date (YYYY-MM-DD)' },
           { name: 'to', description: 'End date (YYYY-MM-DD)' },
           { name: 'limit', description: 'Maximum number of results (default: 20)' },
           { name: 'offset', description: 'Results offset for pagination (default: 0)' },
         ],
-      },
-      {
+{
         method: 'POST',
         path: '/bookings',
         description: 'Create a new booking',
@@ -180,20 +160,17 @@ const endpoints = [
   "date": "2023-05-10",
   "startTime": "11:00:00",
   "notes": "First-time client"
-}`,
+`,
         responseExample: examples.booking,
-      },
-      {
+{
         method: 'POST',
         path: '/bookings/{bookingId}/cancel',
         description: 'Cancel an existing booking',
         requestBody: `{
   "reason": "Schedule conflict"
-}`,
-      },
-    ],
-  },
-  {
+`,
+],
+{
     id: 'providers',
     name: 'Providers',
     icon: <BuildingStorefrontIcon className="h-5 w-5" />,
@@ -202,8 +179,7 @@ const endpoints = [
         method: 'GET',
         path: '/providers/{providerId}',
         description: 'Get detailed information about a service provider',
-      },
-      {
+{
         method: 'GET',
         path: '/providers/search',
         description: 'Search for providers based on various criteria',
@@ -215,10 +191,8 @@ const endpoints = [
           { name: 'radius', description: 'Search radius in km (default: 10)' },
           { name: 'minRating', description: 'Minimum rating' },
         ],
-      },
-    ],
-  },
-  {
+],
+{
     id: 'ar',
     name: 'AR Models',
     icon: <CubeTransparentIcon className="h-5 w-5" />,
@@ -232,15 +206,12 @@ const endpoints = [
           { name: 'limit', description: 'Maximum number of results (default: 20)' },
           { name: 'offset', description: 'Results offset for pagination (default: 0)' },
         ],
-      },
-      {
+{
         method: 'GET',
         path: '/ar/models/{modelId}',
         description: 'Get detailed information about a specific AR model',
-      },
-    ],
-  },
-  {
+],
+{
     id: 'content',
     name: 'Content',
     icon: <DocumentTextIcon className="h-5 w-5" />,
@@ -253,18 +224,14 @@ const endpoints = [
           {
             name: 'category',
             description: 'Filter by category (meditation, yoga, nutrition, etc.)',
-          },
-          { name: 'tags', description: 'Filter by tags (comma-separated list)' },
+{ name: 'tags', description: 'Filter by tags (comma-separated list)' },
         ],
-      },
-      {
+{
         method: 'GET',
         path: '/content/articles/{articleId}',
         description: 'Get the full content of a specific article',
-      },
-    ],
-  },
-  {
+],
+{
     id: 'reviews',
     name: 'Reviews',
     icon: <DocumentDuplicateIcon className="h-5 w-5" />,
@@ -277,8 +244,7 @@ const endpoints = [
           { name: 'rating', description: 'Filter by rating (1-5)' },
           { name: 'sort', description: 'Sort order (newest, oldest, highest, lowest)' },
         ],
-      },
-      {
+{
         method: 'POST',
         path: '/bookings/{bookingId}/review',
         description: 'Create a new review for a completed service',
@@ -289,12 +255,9 @@ const endpoints = [
   "images": [
     {
       "data": "base64EncodedImageData..."
-    }
-  ]
-}`,
-      },
-    ],
-  },
+]
+`,
+],
 ];
 
 function ApiDocumentationContent() {
@@ -312,7 +275,7 @@ function ApiDocumentationContent() {
                 endpoint.path.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 endpoint.description.toLowerCase().includes(searchQuery.toLowerCase()),
             ),
-          }))
+))
           .filter((category) => category.endpoints.length > 0)
       : endpoints;
 
@@ -390,7 +353,7 @@ function ApiDocumentationContent() {
                                 selectedEndpoint === `${category.id}-${index}`
                                   ? 'text-primary font-medium'
                                   : 'text-muted-foreground'
-                              }`}
+`}
                               onClick={() => setSelectedEndpoint(`${category.id}-${index}`)}
                             >
                               <span
@@ -404,7 +367,7 @@ function ApiDocumentationContent() {
                                         : endpoint.method === 'DELETE'
                                           ? 'text-red-600'
                                           : ''
-                                }`}
+`}
                               >
                                 {endpoint.method}
                               </span>
@@ -488,8 +451,7 @@ function ApiDocumentationContent() {
     "code": "ERROR_CODE",
     "message": "Human-readable error message",
     "details": {} // Optional additional information
-  }
-}`}
+`}
               </pre>
 
               <div className="mt-6 grid grid-cols-2 gap-4">
@@ -546,7 +508,7 @@ function ApiDocumentationContent() {
                         selectedEndpoint === `${category.id}-${index}`
                           ? 'border-primary ring-primary ring-1'
                           : ''
-                      }`}
+`}
                     >
                       <div className="p-4">
                         <div className="mb-2 flex items-center">
@@ -561,7 +523,7 @@ function ApiDocumentationContent() {
                                     : endpoint.method === 'DELETE'
                                       ? 'bg-red-100 text-red-800'
                                       : ''
-                            }`}
+`}
                           >
                             {endpoint.method}
                           </span>
@@ -680,8 +642,7 @@ function ApiDocumentationContent() {
     "serviceId": "service_101",
     "date": "2023-05-10",
     "status": "pending"
-  }
-}`}
+`}
               </pre>
 
               <h3 className="mb-2 mt-4 text-lg font-semibold">Available webhook events:</h3>
@@ -748,17 +709,11 @@ function ApiDocumentationContent() {
         </div>
       </div>
     </Layout>
-  );
-}
-
 export default function ApiDocumentationPage() {
   return (
     <Suspense fallback={<ApiDocumentationSkeleton />}>
       <ApiDocumentationContent />
     </Suspense>
-  );
-}
-
 // Add skeleton component for loading state
 function ApiDocumentationSkeleton() {
   return (
@@ -773,5 +728,3 @@ function ApiDocumentationSkeleton() {
         </div>
       </div>
     </div>
-  );
-}

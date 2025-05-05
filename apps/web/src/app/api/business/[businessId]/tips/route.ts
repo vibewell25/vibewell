@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 import { getServerSession } from 'next-auth';
@@ -14,21 +13,14 @@ export async function {
     const session = await getServerSession(authOptions);
     if (!session.user.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    // Check if user owns the business
+// Check if user owns the business
     const business = await prisma.business.findFirst({
       where: {
         id: params.id,
         userId: session.user.id,
-      },
-    });
-
-    if (!business) {
+if (!business) {
       return NextResponse.json({ error: 'Business not found or unauthorized' }, { status: 404 });
-    }
-
-    const { searchParams } = new URL(request.url);
+const { searchParams } = new URL(request.url);
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
     const page = parseInt(searchParams.get('page') || '1');
@@ -44,11 +36,8 @@ export async function {
           createdAt: {
             gte: new Date(startDate),
             lte: new Date(endDate),
-          },
-        }),
-    };
-
-    // Fetch tips with pagination
+),
+// Fetch tips with pagination
     const [tips, total] = await Promise.all([
       prisma.tip.findMany({
         where,
@@ -56,24 +45,16 @@ export async function {
           user: {
             select: {
               name: true,
-            },
-          },
-          booking: {
+booking: {
             select: {
               service: {
                 select: {
                   name: true,
-                },
-              },
-            },
-          },
-        },
-        orderBy: {
+orderBy: {
           createdAt: 'desc',
-        },
-        skip,
+skip,
         take: limit,
-      }),
+),
       prisma.tip.count({ where }),
     ]);
 
@@ -82,19 +63,13 @@ export async function {
       where,
       _sum: {
         amount: true,
-      },
-    });
-
-    return NextResponse.json({
+return NextResponse.json({
       tips,
       total,
       totalAmount: totalAmount._sum.amount || 0,
       currentPage: page,
 
       totalPages: Math.ceil(total / limit),
-    });
-  } catch (error) {
+catch (error) {
     console.error('Error fetching tips:', error);
     return NextResponse.json({ error: 'Failed to fetch tips' }, { status: 500 });
-  }
-}

@@ -21,20 +21,16 @@ const InventoryFormScreen: React.FC = () => {
       if (item) {
         await inventoryApi.updateItem(item.id, { name, description, quantity: Number(quantity) });
         Alert.alert('Success', 'Item updated');
-      } else {
+else {
         await inventoryApi.createItem({ name, description, quantity: Number(quantity) });
         Alert.alert('Success', 'Item created');
-      }
-      navigation.goBack();
-    } catch (err) {
+navigation.goBack();
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to save item');
-    } finally {
+finally {
       setSaving(false);
-    }
-  };
-
-  return (
+return (
     <View style={styles.container}>
       <Text style={styles.title}>{item ? 'Edit Item' : 'New Item'}</Text>
       <TextInput
@@ -62,13 +58,8 @@ const InventoryFormScreen: React.FC = () => {
         disabled={saving}
       />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   input: { borderWidth: 1, borderColor: '#ccc', padding: 8, marginBottom: 12, borderRadius: 4 },
   title: { fontSize: 20, fontWeight: 'bold', marginBottom: 16 },
-});
-
 export default InventoryFormScreen;

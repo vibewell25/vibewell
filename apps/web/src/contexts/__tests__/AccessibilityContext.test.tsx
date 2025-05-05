@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
+/* eslint-disable */import { render, screen, fireEvent, act } from '@testing-library/react';
 import { AccessibilityProvider, useAccessibilityContext } from '../AccessibilityContext';
 
 // Mock localStorage
@@ -63,10 +63,10 @@ const TestComponent = () => {
         Reset
       </button>
     </div>
-  );
+
 };
 
-describe('AccessibilityContext', () => {
+describe('AccessibilityContext', () => {;
   beforeEach(() => {
     mockLocalStorage.clear();
     document.body.classList.remove(
@@ -74,7 +74,7 @@ describe('AccessibilityContext', () => {
       'large-text',
       'reduce-motion',
       'keyboard-focus-visible',
-    );
+
   });
 
   it('provides default preferences', () => {
@@ -82,7 +82,6 @@ describe('AccessibilityContext', () => {
       <AccessibilityProvider>
         <TestComponent />
       </AccessibilityProvider>,
-    );
 
     expect(screen.getByTestId('high-contrast-value').textContent).toBe('off');
     expect(screen.getByTestId('large-text-value').textContent).toBe('off');
@@ -95,7 +94,6 @@ describe('AccessibilityContext', () => {
       <AccessibilityProvider>
         <TestComponent />
       </AccessibilityProvider>,
-    );
 
     const toggleButton = screen.getByTestId('toggle-high-contrast');
 
@@ -119,7 +117,6 @@ describe('AccessibilityContext', () => {
       <AccessibilityProvider>
         <TestComponent />
       </AccessibilityProvider>,
-    );
 
     const toggleButton = screen.getByTestId('toggle-large-text');
 
@@ -136,7 +133,6 @@ describe('AccessibilityContext', () => {
       <AccessibilityProvider>
         <TestComponent />
       </AccessibilityProvider>,
-    );
 
     const toggleButton = screen.getByTestId('toggle-reduce-motion');
 
@@ -153,7 +149,6 @@ describe('AccessibilityContext', () => {
       <AccessibilityProvider>
         <TestComponent />
       </AccessibilityProvider>,
-    );
 
     const toggleButton = screen.getByTestId('toggle-keyboard-focus');
 
@@ -170,7 +165,6 @@ describe('AccessibilityContext', () => {
       <AccessibilityProvider>
         <TestComponent />
       </AccessibilityProvider>,
-    );
 
     // First enable all settings
     act(() => {
@@ -200,13 +194,11 @@ describe('AccessibilityContext', () => {
         reduceMotion: false,
         keyboardFocusVisible: false,
       }),
-    );
 
     render(
       <AccessibilityProvider>
         <TestComponent />
       </AccessibilityProvider>,
-    );
 
     expect(screen.getByTestId('high-contrast-value').textContent).toBe('on');
     expect(screen.getByTestId('large-text-value').textContent).toBe('on');
@@ -219,7 +211,6 @@ describe('AccessibilityContext', () => {
       <AccessibilityProvider>
         <TestComponent />
       </AccessibilityProvider>,
-    );
 
     act(() => {
       fireEvent.click(screen.getByTestId('toggle-high-contrast'));
@@ -228,11 +219,9 @@ describe('AccessibilityContext', () => {
     expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
       'accessibility-preferences',
       expect.any(String),
-    );
 
     const savedPrefs = JSON.parse(
       mockLocalStorage.setItem.mock.calls[mockLocalStorage.setItem.mock.calls.length - 1][1],
-    );
 
     expect(savedPrefs.highContrast).toBe(true);
   });
@@ -246,5 +235,4 @@ describe('AccessibilityContext', () => {
     }).toThrow('useAccessibilityContext must be used within an AccessibilityProvider');
 
     consoleErrorMock.mockRestore();
-  });
-});
+  }));

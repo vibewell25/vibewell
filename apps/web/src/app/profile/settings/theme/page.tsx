@@ -1,4 +1,3 @@
-'use client';;
 import { Suspense, useState, useEffect } from 'react';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { Button } from '@/components/ui/Button';
@@ -17,9 +16,7 @@ function ThemeSettingsContent() {
       const storedColorTheme = localStorage.getItem('vibewell-color-theme');
       if (storedColorTheme) {
         setActiveColorTheme(storedColorTheme);
-      }
-    }
-  }, []);
+[]);
   return (
     <MobileLayout>
       <div className="min-h-screen bg-background pb-16">
@@ -52,8 +49,7 @@ function ThemeSettingsContent() {
                 className="flex h-auto flex-col items-center justify-center py-6"
                 onClick={() => {
                   if (isSystemPreference) setIsSystemPreference(false);
-                }}
-                disabled={theme === 'light' && !isSystemPreference}
+disabled={theme === 'light' && !isSystemPreference}
               >
                 <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-white">
                   <svg
@@ -73,8 +69,7 @@ function ThemeSettingsContent() {
                 className="flex h-auto flex-col items-center justify-center py-6"
                 onClick={() => {
                   if (isSystemPreference) setIsSystemPreference(false);
-                }}
-                disabled={theme === 'dark' && !isSystemPreference}
+disabled={theme === 'dark' && !isSystemPreference}
               >
                 <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full border border-gray-700 bg-gray-900">
                   <svg
@@ -109,8 +104,7 @@ function ThemeSettingsContent() {
                   name: 'Customize',
                   value: 'custom',
                   color: 'linear-gradient(135deg, #FF9580, #7C3AED, #3B82F6)',
-                },
-              ].map((colorTheme) => (
+].map((colorTheme) => (
                 <Button
                   key={colorTheme.value}
                   variant={activeColorTheme === colorTheme.value ? 'default' : 'outline'}
@@ -119,8 +113,7 @@ function ThemeSettingsContent() {
                     if (colorTheme.value === 'custom') {
                       // Handle custom theme picker
                       return;
-                    }
-                    // Apply the color theme
+// Apply the color theme
                     const root = window.document.documentElement;
                     [
                       'default-theme',
@@ -130,12 +123,10 @@ function ThemeSettingsContent() {
                       'purple-theme',
                     ].forEach((theme) => {
                       root.classList.remove(theme);
-                    });
-                    root.classList.add(colorTheme.value);
+root.classList.add(colorTheme.value);
                     setActiveColorTheme(colorTheme.value);
                     localStorage.setItem('vibewell-color-theme', colorTheme.value);
-                  }}
-                >
+>
                   <div
                     className="mb-2 h-10 w-10 rounded-full"
                     style={{
@@ -143,8 +134,7 @@ function ThemeSettingsContent() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                    }}
-                  >
+>
                     {activeColorTheme === colorTheme.value && (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -193,12 +183,8 @@ function ThemeSettingsContent() {
         </div>
       </div>
     </MobileLayout>
-  );
-}
 export default function ThemeSettingsPage() {
   return (
     <Suspense fallback={<div>Loading theme settings...</div>}>
       <ThemeSettingsContent />
     </Suspense>
-  );
-}

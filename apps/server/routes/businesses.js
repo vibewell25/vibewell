@@ -9,12 +9,9 @@ router.get('/', async (req, res) => {
   try {
     const businesses = await prisma.business.findMany();
     res.json(businesses);
-  } catch (err) {
+catch (err) {
     console.error('Error fetching businesses:', err);
     res.status(500).json({ error: 'Failed to fetch businesses' });
-  }
-});
-
 // GET /api/businesses/:id
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
@@ -22,10 +19,7 @@ router.get('/:id', async (req, res) => {
     const business = await prisma.business.findUnique({ where: { id } });
     if (!business) return res.status(404).json({ error: 'Business not found' });
     res.json(business);
-  } catch (err) {
+catch (err) {
     console.error('Error fetching business:', err);
     res.status(500).json({ error: 'Failed to fetch business' });
-  }
-});
-
 module.exports = router; 

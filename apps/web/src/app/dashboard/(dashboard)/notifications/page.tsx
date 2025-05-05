@@ -1,4 +1,3 @@
-'use client';;
 import React, { useState } from 'react';
 import { useNotifications, NotificationType, Notification } from '@/hooks/use-notifications';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
@@ -10,7 +9,7 @@ import {
   RefreshCwIcon,
   ExternalLinkIcon,
   MailOpenIcon,
-} from 'lucide-react';
+from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { formatDistanceToNow } from 'date-fns';
 import { cn } from '@/lib/utils';
@@ -26,16 +25,13 @@ export interface NotificationTypeConfig {
   icon: React.ReactNode;
   bgClass: string;
   textClass: string;
-}
-
 const notificationTypeConfig: Record<NotificationType, NotificationTypeConfig> = {
   SYSTEM: {
     label: 'System',
     icon: <BellIcon className="h-5 w-5" />,
     bgClass: 'bg-gray-100',
     textClass: 'text-gray-600',
-  },
-  BOOKING: {
+BOOKING: {
     label: 'Booking',
     icon: (
       <svg
@@ -57,8 +53,7 @@ const notificationTypeConfig: Record<NotificationType, NotificationTypeConfig> =
     ),
     bgClass: 'bg-blue-100',
     textClass: 'text-blue-600',
-  },
-  LOYALTY: {
+LOYALTY: {
     label: 'Loyalty',
     icon: (
       <svg
@@ -77,8 +72,7 @@ const notificationTypeConfig: Record<NotificationType, NotificationTypeConfig> =
     ),
     bgClass: 'bg-purple-100',
     textClass: 'text-purple-600',
-  },
-  MARKETING: {
+MARKETING: {
     label: 'Marketing',
     icon: (
       <svg
@@ -98,9 +92,6 @@ const notificationTypeConfig: Record<NotificationType, NotificationTypeConfig> =
     ),
     bgClass: 'bg-green-100',
     textClass: 'text-green-600',
-  },
-};
-
 export default function NotificationsPage() {
   const [activeTab, setActiveTab] = useState<string>('all');
   const pageSize = 10;
@@ -118,31 +109,20 @@ export default function NotificationsPage() {
     goToPrevPage,
     refresh,
     page,
-  } = useNotifications({
+= useNotifications({
     filter: activeTab === 'all' ? 'all' : activeTab === 'unread' ? 'unread' : 'read',
     pageSize,
-  });
-
-  const handleTabChange = (value: string) => {
+const handleTabChange = (value: string) => {
     setActiveTab(value);
-  };
-
-  const handleNotificationClick = (notification: Notification) => {
+const handleNotificationClick = (notification: Notification) => {
     if (!notification.read) {
       markAsRead(notification.id);
-    }
-
-    if (notification.linkUrl) {
+if (notification.linkUrl) {
       router.push(notification.linkUrl);
-    }
-  };
-
-  const handleMarkAllRead = () => {
+const handleMarkAllRead = () => {
     markAllAsRead();
     toast.success('All notifications marked as read');
-  };
-
-  return (
+return (
     <>
       <DashboardHeader
         heading="Notifications"
@@ -259,8 +239,7 @@ export default function NotificationsPage() {
                                       onClick={(e) => {
                                         e.stopPropagation();
                                         markAsRead(notification.id);
-                                      }}
-                                    >
+>
                                       <MailOpenIcon className="h-4 w-4" />
                                       <span className="sr-only">Mark as read</span>
                                     </Button>
@@ -275,8 +254,7 @@ export default function NotificationsPage() {
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       deleteNotification(notification.id);
-                                    }}
-                                  >
+>
                                     <TrashIcon className="h-4 w-4" />
                                     <span className="sr-only">Delete</span>
                                   </Button>
@@ -288,7 +266,7 @@ export default function NotificationsPage() {
                                   <span className="text-xs text-muted-foreground">
                                     {formatDistanceToNow(new Date(notification.createdAt), {
                                       addSuffix: true,
-                                    })}
+)}
                                   </span>
                                   <span className="h-1 w-1 rounded-full bg-muted-foreground"></span>
                                   <span className="text-xs text-muted-foreground">
@@ -298,8 +276,7 @@ export default function NotificationsPage() {
                               </div>
                             </div>
                           </div>
-                        );
-                      })}
+)}
                     </div>
 
                     {pagination && pagination.totalPages > 1 && (
@@ -341,5 +318,3 @@ export default function NotificationsPage() {
         </Card>
       </div>
     </>
-  );
-}

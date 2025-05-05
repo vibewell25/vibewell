@@ -1,20 +1,9 @@
-
-    // Safe integer operation
-    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-// @ts-ignore - Add this to silence module import errors until vitest is properly installed
-import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest';
+import errors until vitest is properly installed
 import { 
   ServiceWorkerRegistrationTracker,
   ServiceWorkerStatus,
   ServiceWorkerEvents
-
-    // Safe integer operation
-    if (src > Number.MAX_SAFE_INTEGER || src < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-} from '../../src/utils/registerServiceWorker';
+from '../../src/utils/registerServiceWorker';
 
 // Create mock for navigator.serviceWorker
 const mockServiceWorkerContainer = {
@@ -28,12 +17,9 @@ const mockServiceWorkerContainer = {
     waiting: null,
     active: {
       state: 'activated'
-    },
-    addEventListener: vi.fn(),
+addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
-  })
-};
-
+)
 // Create mock for registration return value
 const mockRegistration = {
   update: vi.fn(),
@@ -41,20 +27,14 @@ const mockRegistration = {
   waiting: null,
   active: {
     state: 'activated'
-  },
-  addEventListener: vi.fn(),
+addEventListener: vi.fn(),
   removeEventListener: vi.fn(),
-};
-
 // Stub for window object
 const mockWindow = {
   addEventListener: vi.fn(),
   removeEventListener: vi.fn(),
   navigator: {
     serviceWorker: mockServiceWorkerContainer
-  }
-};
-
 describe('Service Worker Registration Tracker', () => {
   let originalWindow: any;
   let tracker: ServiceWorkerRegistrationTracker;
@@ -65,10 +45,6 @@ describe('Service Worker Registration Tracker', () => {
     
     // Mock window for tests
 
-    // Safe integer operation
-    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     // @ts-ignore
     global.window = mockWindow;
     
@@ -81,14 +57,10 @@ describe('Service Worker Registration Tracker', () => {
     
     // Create tracker instance
     tracker = new ServiceWorkerRegistrationTracker();
-  });
-  
-  afterEach(() => {
+afterEach(() => {
     // Restore original window
     global.window = originalWindow;
-  });
-  
-  test('should maintain a singleton instance', () => {
+test('should maintain a singleton instance', () => {
     // Create multiple instances
     const tracker1 = new ServiceWorkerRegistrationTracker();
     const tracker2 = new ServiceWorkerRegistrationTracker();
@@ -96,9 +68,7 @@ describe('Service Worker Registration Tracker', () => {
     // All should reference the same instance
     expect(tracker1).toBe(tracker2);
     expect(tracker1).toBe(tracker);
-  });
-  
-  test('should only register service worker once even with multiple calls', async () => {
+test('should only register service worker once even with multiple calls', async () => {
     // Register multiple times in parallel
     const promise1 = tracker.register('/sw.js');
     const promise2 = tracker.register('/sw.js');
@@ -109,9 +79,7 @@ describe('Service Worker Registration Tracker', () => {
     
     // Should only call register once
     expect(mockServiceWorkerContainer.register).toHaveBeenCalledTimes(1);
-  });
-  
-  test('should properly track registration status', async () => {
+test('should properly track registration status', async () => {
     // Initially should be PENDING
     expect(tracker.getStatus().status).toBe(ServiceWorkerStatus.PENDING);
     
@@ -121,9 +89,7 @@ describe('Service Worker Registration Tracker', () => {
     // Should now be REGISTERED
     expect(tracker.getStatus().status).toBe(ServiceWorkerStatus.REGISTERED);
     expect(registration).toBe(mockRegistration);
-  });
-  
-  test('should emit events correctly', async () => {
+test('should emit events correctly', async () => {
     // Setup event listeners
     const registrationStartListener = vi.fn();
     const registrationSuccessListener = vi.fn();
@@ -144,9 +110,7 @@ describe('Service Worker Registration Tracker', () => {
     expect(registrationSuccessListener).toHaveBeenCalledTimes(1);
     expect(updateFoundListener).toHaveBeenCalledTimes(1);
     expect(updateFoundListener).toHaveBeenCalledWith(mockRegistration);
-  });
-  
-  test('should handle registration failure correctly', async () => {
+test('should handle registration failure correctly', async () => {
     // Setup mock to fail
     const mockError = new Error('Registration failed');
     mockServiceWorkerContainer.register.mockRejectedValueOnce(mockError);
@@ -160,20 +124,16 @@ describe('Service Worker Registration Tracker', () => {
       await tracker.register('/sw.js');
       // Should not reach here
       expect(true).toBe(false);
-    } catch (error) {
+catch (error) {
       // Verify the error
       expect(error).toBe(mockError);
-    }
-    
-    // Status should be ERROR
+// Status should be ERROR
     expect(tracker.getStatus().status).toBe(ServiceWorkerStatus.ERROR);
     
     // Error event should be emitted
     expect(errorListener).toHaveBeenCalledTimes(1);
     expect(errorListener).toHaveBeenCalledWith(mockError);
-  });
-  
-  test('should handle multiple attempts after failure', async () => {
+test('should handle multiple attempts after failure', async () => {
     // Setup mock to fail first time
     const mockError = new Error('Registration failed');
     mockServiceWorkerContainer.register.mockRejectedValueOnce(mockError);
@@ -181,11 +141,9 @@ describe('Service Worker Registration Tracker', () => {
     // Attempt registration and catch error
     try {
       await tracker.register('/sw.js');
-    } catch (error) {
+catch (error) {
       // Expected to fail
-    }
-    
-    // Reset mock to succeed
+// Reset mock to succeed
     mockServiceWorkerContainer.register.mockResolvedValueOnce(mockRegistration);
     
     // Try again
@@ -197,9 +155,7 @@ describe('Service Worker Registration Tracker', () => {
     
     // Should have called register twice (once for failure, once for success)
     expect(mockServiceWorkerContainer.register).toHaveBeenCalledTimes(2);
-  });
-  
-  test('should prevent race conditions during update', async () => {
+test('should prevent race conditions during update', async () => {
     // Register service worker
     await tracker.register('/sw.js');
     
@@ -213,9 +169,7 @@ describe('Service Worker Registration Tracker', () => {
     
     // Should only call update once
     expect(mockRegistration.update).toHaveBeenCalledTimes(1);
-  });
-  
-  test('should expose status for external components to check', async () => {
+test('should expose status for external components to check', async () => {
     // Test initial status
     expect(tracker.getStatus().status).toBe(ServiceWorkerStatus.PENDING);
     
@@ -228,16 +182,12 @@ describe('Service Worker Registration Tracker', () => {
       scriptURL: '/sw.js',
       registration: mockRegistration,
       error: null
-    });
-    
-    // Simulate update found
+// Simulate update found
     tracker.notifyUpdateFound(mockRegistration);
     
     // Status should still be REGISTERED
     expect(tracker.getStatus().status).toBe(ServiceWorkerStatus.REGISTERED);
-  });
-  
-  test('should wrap service worker event listeners', async () => {
+test('should wrap service worker event listeners', async () => {
     // Register
     await tracker.register('/sw.js');
     
@@ -249,9 +199,5 @@ describe('Service Worker Registration Tracker', () => {
     expect(mockServiceWorkerContainer.addEventListener).toHaveBeenCalledWith(
       'controllerchange',
       expect.any(Function)
-    );
-    
-    // Cleanup listeners
+// Cleanup listeners
     tracker.removeAllEventListeners();
-  });
-}); 

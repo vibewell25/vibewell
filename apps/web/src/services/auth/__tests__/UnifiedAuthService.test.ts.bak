@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import unified-auth-service from '../unified-auth-service.ts';
+
+describe('unified-auth-service', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<unified-auth-service />);
+    expect(container).toBeInTheDocument();
+  });
+});

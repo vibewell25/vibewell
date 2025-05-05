@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { WifiOff, RefreshCw } from "lucide-react";
@@ -19,31 +17,22 @@ export default function OfflinePage() {
             .map(req => {
               const url = new URL(req.url);
               return url.pathname;
-            })
+)
             .filter(path => 
               path !== '/' && 
               path !== '/offline' && 
               !path.includes('/_next/') && 
               !path.includes('/api/')
-            );
-          
-          // Remove duplicates without using Set spread
+// Remove duplicates without using Set spread
           const uniqueUrls: string[] = [];
           urls.forEach(url => {
             if (!uniqueUrls.includes(url)) {
               uniqueUrls.push(url);
-            }
-          });
-          
-          setCachedPages(uniqueUrls);
-        }
-      } catch (error) {
+setCachedPages(uniqueUrls);
+catch (error) {
         console.error('Failed to get cached pages:', error);
-      }
-    };
-    
-    getCachedPages();
-  }, []);
+getCachedPages();
+[]);
 
   const handleRefresh = () => {
     setIsLoading(true);
@@ -51,15 +40,12 @@ export default function OfflinePage() {
     // Check if we're back online
     if (navigator.onLine) {
       window.location.href = '/';
-    } else {
+else {
       // If still offline, show the spinner for a bit and then stop
       setTimeout(() => {
         setIsLoading(false);
-      }, 1500);
-    }
-  };
-
-  return (
+1500);
+return (
     <div className="flex flex-col items-center justify-center min-h-screen p-5 text-center">
       <WifiOff size={64} className="text-muted-foreground mb-6" />
       
@@ -101,5 +87,3 @@ export default function OfflinePage() {
         </div>
       )}
     </div>
-  );
-} 

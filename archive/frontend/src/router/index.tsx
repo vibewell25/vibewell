@@ -73,7 +73,4 @@ const Router: React.FC = () => {
         </Suspense>
       </ErrorBoundary>
     </BrowserRouter>
-  );
-};
-
 export default Router; 

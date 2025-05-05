@@ -10,8 +10,6 @@ export interface ModuleContent {
   isRequired: boolean;
   createdAt: Date;
   updatedAt: Date;
-}
-
 export interface CreateModuleContentInput {
   title: string;
   description?: string;
@@ -20,8 +18,6 @@ export interface CreateModuleContentInput {
   sequence: number;
   duration?: number;
   isRequired: boolean;
-}
-
 export interface UpdateModuleContentInput {
   id: string;
   title?: string;
@@ -31,4 +27,3 @@ export interface UpdateModuleContentInput {
   sequence?: number;
   duration?: number;
   isRequired?: boolean;
-}

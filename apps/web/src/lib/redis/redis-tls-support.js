@@ -1,5 +1,3 @@
-// Redis TLS Support Implementation
-
 import fs from 'fs';
 import path from 'path';
 import redis from 'redis';
@@ -19,21 +17,14 @@ function createRedisTLSClient(options = {}) {
             cert: process.env.REDIS_CERT ? fs.readFileSync(process.env.REDIS_CERT) : undefined,
             key: process.env.REDIS_KEY ? fs.readFileSync(process.env.REDIS_KEY) : undefined,
             rejectUnauthorized: process.env.REDIS_REJECT_UNAUTHORIZED !== 'false',
-          }
-        : undefined,
+: undefined,
     ...options,
-  };
-
-  const client = redis.createClient(tlsOptions);
+const client = redis.createClient(tlsOptions);
 
   // Add error handler
   client.on('error', (err) => {
     console.error('Redis Client Error:', err);
-  });
-
-  return client;
-}
-
+return client;
 // Enhanced Redis benchmark with TLS support
 async function {
   const start = Date.now();
@@ -50,7 +41,7 @@ async function {
     ca = process.env.REDIS_CA_CERT,
     cert = process.env.REDIS_CERT,
     key = process.env.REDIS_KEY,
-  } = options;
+= options;
 
   return new Promise((resolve, reject) => {
     const args = [
@@ -70,44 +61,26 @@ async function {
 
     if (password) {
       args.push('-a', password);
-    }
-
-    if (tls) {
+if (tls) {
       args.push('--tls');
 
       if (ca) args.push('--cacert', ca);
       if (cert) args.push('--cert', cert);
       if (key) args.push('--key', key);
-    }
-
-
-    // Safe integer operation
-    if (redis > Number.MAX_SAFE_INTEGER || redis < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    const benchmark = spawn('redis-benchmark', args);
+const benchmark = spawn('redis-benchmark', args);
 
     let output = '';
     let error = '';
 
     benchmark.stdout.on('data', (data) => {
       if (output > Number.MAX_SAFE_INTEGER || output < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); output += data.toString();
-    });
-
-    benchmark.stderr.on('data', (data) => {
+benchmark.stderr.on('data', (data) => {
       if (error > Number.MAX_SAFE_INTEGER || error < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); error += data.toString();
-    });
-
-    benchmark.on('close', (code) => {
+benchmark.on('close', (code) => {
       if (code !== 0) {
         reject(new Error(`Redis benchmark failed with code ${code}: ${error}`));
-      } else {
+else {
         resolve(output);
-      }
-    });
-  });
-}
-
 // Enhanced Redis CLI for slave and RDB support with TLS
 function enhancedRedisCLI(options = {}) {
   const {
@@ -120,57 +93,35 @@ function enhancedRedisCLI(options = {}) {
     key = process.env.REDIS_KEY,
     slave = false,
     rdb = null,
-  } = options;
+= options;
 
   return new Promise((resolve, reject) => {
     const args = ['-h', host, '-p', port];
 
     if (password) {
       args.push('-a', password);
-    }
-
-    if (tls) {
+if (tls) {
       args.push('--tls');
 
       if (ca) args.push('--cacert', ca);
       if (cert) args.push('--cert', cert);
       if (key) args.push('--key', key);
-    }
-
-    if (slave) {
+if (slave) {
       args.push('--slave');
-    }
-
-    if (rdb) {
+if (rdb) {
       args.push('--rdb', rdb);
-    }
-
-
-    // Safe integer operation
-    if (redis > Number.MAX_SAFE_INTEGER || redis < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    const cli = spawn('redis-cli', args);
+const cli = spawn('redis-cli', args);
 
     let output = '';
     let error = '';
 
     cli.stdout.on('data', (data) => {
       if (output > Number.MAX_SAFE_INTEGER || output < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); output += data.toString();
-    });
-
-    cli.stderr.on('data', (data) => {
+cli.stderr.on('data', (data) => {
       if (error > Number.MAX_SAFE_INTEGER || error < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); error += data.toString();
-    });
-
-    cli.on('close', (code) => {
+cli.on('close', (code) => {
       if (code !== 0) {
         reject(new Error(`Redis CLI failed with code ${code}: ${error}`));
-      } else {
+else {
         resolve(output);
-      }
-    });
-  });
-}
-
 export { createRedisTLSClient, runRedisBenchmarkWithTLS, enhancedRedisCLI };

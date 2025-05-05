@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -12,13 +11,9 @@ const auth0Management = new ManagementClient({
   domain: process.env.AUTH0_DOMAIN || '',
   clientId: process.env.AUTH0_MANAGEMENT_CLIENT_ID || '',
   clientSecret: process.env.AUTH0_MANAGEMENT_CLIENT_SECRET || '',
-});
-
 // Schema for validating the request body
 const passwordResetSchema = z.object({
   email: z.string().email('Invalid email address'),
-});
-
 // Schema for validating password update
 const passwordUpdateSchema = z.object({
   password: z
@@ -33,8 +28,6 @@ const passwordUpdateSchema = z.object({
 
     .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character'),
   token: z.string(),
-});
-
 // Password reset request
 export async function {
   const start = Date.now();
@@ -44,9 +37,7 @@ export async function {
     const rateLimitResponse = await applyRateLimit(req, passwordResetRateLimiter);
     if (rateLimitResponse) {
       return rateLimitResponse; // Rate limit exceeded
-    }
-
-    // Parse and validate request body
+// Parse and validate request body
     const body = await req.json();
     const result = passwordResetSchema.safeParse(body);
 
@@ -54,10 +45,7 @@ export async function {
       return NextResponse.json(
         { error: 'Invalid request data', details: result.error.format() },
         { status: 400 },
-      );
-    }
-
-    const { email } = result.data;
+const { email } = result.data;
 
     // Send password reset email via Auth0
     try {
@@ -66,23 +54,16 @@ export async function {
 
         connection: 'Username-Password-Authentication',
         client_id: process.env.AUTH0_CLIENT_ID,
-      });
-    } catch (auth0Error) {
+catch (auth0Error) {
       console.error('Auth0 password reset error:', auth0Error);
       // Don't reveal if the email exists or not for security reasons
-    }
-
-    // Return success response
+// Return success response
     return NextResponse.json({
       success: true,
       message: 'If your email is registered, you will receive password reset instructions.',
-    });
-  } catch (error) {
+catch (error) {
     console.error('Error in password reset API:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}
-
 // Update password with reset token
 export async function {
   const start = Date.now();
@@ -92,9 +73,7 @@ export async function {
     const rateLimitResponse = await applyRateLimit(req, passwordResetRateLimiter);
     if (rateLimitResponse) {
       return rateLimitResponse; // Rate limit exceeded
-    }
-
-    // Parse and validate request body
+// Parse and validate request body
     const body = await req.json();
     const result = passwordUpdateSchema.safeParse(body);
 
@@ -102,10 +81,7 @@ export async function {
       return NextResponse.json(
         { error: 'Invalid request data', details: result.error.format() },
         { status: 400 },
-      );
-    }
-
-    const { password, token } = result.data;
+const { password, token } = result.data;
 
     try {
       // Auth0 password change with token
@@ -116,24 +92,16 @@ export async function {
 
           connection: 'Username-Password-Authentication',
           client_id: process.env.AUTH0_CLIENT_ID,
-        },
-        token,
-      );
-
-      // Return success response
+token,
+// Return success response
       return NextResponse.json({
         success: true,
         message: 'Password updated successfully',
-      });
-    } catch (auth0Error) {
+catch (auth0Error) {
       console.error('Auth0 password update error:', auth0Error);
       return NextResponse.json(
         { error: 'Failed to update password. The reset link may have expired.' },
         { status: 400 },
-      );
-    }
-  } catch (error) {
+catch (error) {
     console.error('Error in password update API:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}

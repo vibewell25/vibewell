@@ -21,13 +21,10 @@ const TrainingModules: NextPage = () => {
       const res = await fetchWithTimeout('/api/trainingModules');
       const json = await res.json();
       setModules(json.modules || []);
-    } catch (error) {
+catch (error) {
       console.error('Error fetching modules:', error);
       alert('Failed to load training modules');
-    }
-  };
-
-  useEffect(() => { fetchMods(); }, []);
+useEffect(() => { fetchMods(); }, []);
 
   const handleCreate = async (e: FormEvent) => {
     e.preventDefault();
@@ -36,27 +33,20 @@ const TrainingModules: NextPage = () => {
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, description, contentUrl })
-      });
-      setTitle(''); setDescription(''); setContentUrl('');
+setTitle(''); setDescription(''); setContentUrl('');
       fetchMods();
-    } catch (error) {
+catch (error) {
       console.error('Error creating module:', error);
       alert('Failed to create training module');
-    }
-  };
-
-  const handleDelete = async (id: string) => {
+const handleDelete = async (id: string) => {
     if (!confirm('Delete this module?')) return;
     try {
       await fetchWithTimeout(`/api/trainingModules/${id}`, { method: 'DELETE' });
       fetchMods();
-    } catch (error) {
+catch (error) {
       console.error('Error deleting module:', error);
       alert('Failed to delete training module');
-    }
-  };
-
-  return (
+return (
     <div className="max-w-2xl mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Training Modules</h1>
       <form onSubmit={handleCreate} className="space-y-2 mb-6">
@@ -79,7 +69,4 @@ const TrainingModules: NextPage = () => {
       ))}
       {modules.length === 0 && <p>No modules.</p>}
     </div>
-  );
-};
-
 export default TrainingModules;

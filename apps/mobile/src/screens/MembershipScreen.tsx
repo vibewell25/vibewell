@@ -29,9 +29,6 @@ const MembershipScreen: React.FC = () => {
         </View>
       ))}
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, backgroundColor: '#fff' },
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 16 },
@@ -41,6 +38,4 @@ const styles = StyleSheet.create({
   price: { fontSize: 18, fontWeight: 'bold', marginBottom: 8 },
   button: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#4F46E5', padding: 12, borderRadius: 6 },
   buttonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
-});
-
 export default MembershipScreen;

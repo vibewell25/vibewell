@@ -1,4 +1,3 @@
-
 import { ApiResponse, ApiError } from '@/types/api';
 
 import { parseApiError, HTTP_STATUS } from '@/types/api';
@@ -13,16 +12,12 @@ export interface RequestInterceptorConfig {
   timeout?: number;
   retryAttempts?: number;
   retryDelay?: number;
-}
-
 /**
  * Response interceptor configuration
  */
 export interface ResponseInterceptorConfig {
   validateStatus?: (status: number) => boolean;
   transformResponse?: (data: any) => any;
-}
-
 /**
  * Default request interceptor
  */
@@ -38,22 +33,13 @@ export async function {
   Object.entries(API_CONFIG.headers).forEach(([key, value]) => {
     if (!headers.has(key)) {
       headers.set(key, value);
-    }
-  });
-
-  // Add custom headers
+// Add custom headers
   if (config.headers) {
     Object.entries(config.headers).forEach(([key, value]) => {
       headers.set(key, value);
-    });
-  }
-
-  // Clone request with new headers
+// Clone request with new headers
   return new Request(request, {
     headers,
-  });
-}
-
 /**
  * Default response interceptor
  */
@@ -76,9 +62,7 @@ export async function {
       meta: {
         version: API_CONFIG.version,
         timestamp: new Date().toISOString(),
-      },
-    };
-  } catch (error) {
+catch (error) {
     const apiError = parseApiError(error);
     return {
       success: false,
@@ -86,25 +70,16 @@ export async function {
       meta: {
         version: API_CONFIG.version,
         timestamp: new Date().toISOString(),
-      },
-    };
-  }
-}
-
 /**
  * Default status validator
  */
 function defaultValidateStatus(status: number): boolean {
   return status >= HTTP_STATUS.OK && status < HTTP_STATUS.BAD_REQUEST;
-}
-
 /**
  * Default response transformer
  */
 function defaultTransformResponse(data: any): any {
   return data;
-}
-
 /**
  * Error response handler
  */
@@ -116,42 +91,27 @@ export function handleErrorResponse(response: Response): ApiError {
       return {
         code: 'UNAUTHORIZED',
         message: 'Authentication required',
-      };
-
-    case HTTP_STATUS.FORBIDDEN:
+case HTTP_STATUS.FORBIDDEN:
       return {
         code: 'FORBIDDEN',
         message: 'Access denied',
-      };
-
-    case HTTP_STATUS.NOT_FOUND:
+case HTTP_STATUS.NOT_FOUND:
       return {
         code: 'NOT_FOUND',
         message: 'Resource not found',
-      };
-
-    case HTTP_STATUS.TOO_MANY_REQUESTS:
+case HTTP_STATUS.TOO_MANY_REQUESTS:
       return {
         code: 'RATE_LIMIT_EXCEEDED',
         message: 'Too many requests',
-      };
-
-    case HTTP_STATUS.INTERNAL_SERVER_ERROR:
+case HTTP_STATUS.INTERNAL_SERVER_ERROR:
       return {
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Internal server error',
-      };
-
-    case HTTP_STATUS.SERVICE_UNAVAILABLE:
+case HTTP_STATUS.SERVICE_UNAVAILABLE:
       return {
         code: 'SERVICE_UNAVAILABLE',
         message: 'Service temporarily unavailable',
-      };
-
-    default:
+default:
       return {
         code: 'UNKNOWN_ERROR',
         message: response.statusText || 'Unknown error occurred',
-      };
-  }
-}

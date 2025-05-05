@@ -56,7 +56,4 @@ const AdminPortal: NextPage = () => {
         </div>
       </div>
     </AdminLayout>
-  );
-};
-
 export default AdminPortal; 

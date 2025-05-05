@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 import { getServerSession } from 'next-auth';
@@ -15,18 +14,11 @@ export async function {
 
     if (!session.user.id) {
       return NextResponse.json({ count: 0 });
-    }
-
-    const count = await prisma.notification.count({
+const count = await prisma.notification.count({
       where: {
         userId: session.user.id,
         isRead: false,
-      },
-    });
-
-    return NextResponse.json({ count });
-  } catch (error) {
+return NextResponse.json({ count });
+catch (error) {
     console.error('Error fetching unread count:', error);
     return NextResponse.json({ count: 0 });
-  }
-}

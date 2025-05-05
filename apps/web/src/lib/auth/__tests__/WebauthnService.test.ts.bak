@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import webauthn-service from '../webauthn-service.ts';
+
+describe('webauthn-service', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<webauthn-service />);
+    expect(container).toBeInTheDocument();
+  });
+});

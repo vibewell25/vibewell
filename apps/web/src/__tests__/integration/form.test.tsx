@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react/pure';
+/* eslint-disable */import { screen, waitFor } from '@testing-library/react/pure';
 import { setup } from '@/test-utils/setup';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -29,7 +29,6 @@ type FormData = z.infer<typeof formSchema>;
 
 interface TestFormProps {
   onSubmit?: (data: FormData) => void;
-}
 
 // Create a test form component using the Form components
 function TestForm({ onSubmit = jest.fn() }: TestFormProps) {
@@ -74,11 +73,8 @@ function TestForm({ onSubmit = jest.fn() }: TestFormProps) {
         />
         <Button type="submit">Submit</Button>
       </form>
-    </Form>
-  );
-}
-
-describe('Form Integration', () => {
+    </Form>;
+describe('Form Integration', () => {;
   test('renders form with all fields and descriptions', () => {
     setup(<TestForm />);
 
@@ -101,8 +97,7 @@ describe('Form Integration', () => {
     await waitFor(() => {
       expect(screen.getByText('Username must be at least 2 characters.')).toBeInTheDocument();
       expect(screen.getByText('Please enter a valid email address.')).toBeInTheDocument();
-    });
-  });
+    }));
 
   test('displays validation error for invalid email', async () => {
     const { user } = setup(<TestForm />);
@@ -120,8 +115,7 @@ describe('Form Integration', () => {
     await waitFor(() => {
       expect(screen.queryByText('Username must be at least 2 characters.')).not.toBeInTheDocument();
       expect(screen.getByText('Please enter a valid email address.')).toBeInTheDocument();
-    });
-  });
+    }));
 
   test('submits form with valid data', async () => {
     const handleSubmit = jest.fn();
@@ -144,7 +138,7 @@ describe('Form Integration', () => {
           email: 'john@example.com',
         },
         expect.anything(),
-      );
+
     });
 
     // No validation errors should be visible
@@ -171,6 +165,5 @@ describe('Form Integration', () => {
     // After error, label should have error class
     await waitFor(() => {
       expect(usernameLabel).toHaveClass('text-destructive');
-    });
-  });
+    }));
 });

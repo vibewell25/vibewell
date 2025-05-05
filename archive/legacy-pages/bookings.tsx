@@ -11,14 +11,11 @@ const Bookings: NextPage = () => {
       const res = await fetchWithTimeout('/api/bookings');
       const json = await res.json();
       setData(json.bookings || []);
-    } catch (error) {
+catch (error) {
       console.error('Error fetching bookings:', error);
-    }
-  };
-
-  useEffect(() => {
+useEffect(() => {
     fetchData();
-  }, []);
+[]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -62,9 +59,7 @@ const Bookings: NextPage = () => {
                     onClick={() => {
                       if (confirm('Are you sure you want to cancel this booking?')) {
                         // Add cancellation logic here
-                      }
-                    }}
-                  >
+>
                     Cancel
                   </button>
                 )}
@@ -74,7 +69,4 @@ const Bookings: NextPage = () => {
         </div>
       )}
     </div>
-  );
-};
-
 export default Bookings;

@@ -25,14 +25,11 @@ const ModuleDetail: NextPage = () => {
         setTitle(data.title);
         setDescription(data.description);
         setContentUrl(data.contentUrl);
-      } catch (error) {
+catch (error) {
         console.error('Error fetching module:', error);
         alert('Failed to load module details');
-      }
-    };
-    
-    fetchModule();
-  }, [id]);
+fetchModule();
+[id]);
 
   const handleUpdate = async (e: FormEvent) => {
     e.preventDefault();
@@ -41,15 +38,11 @@ const ModuleDetail: NextPage = () => {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, description, contentUrl }),
-      });
-      router.back();
-    } catch (error) {
+router.back();
+catch (error) {
       console.error('Error updating module:', error);
       alert('Failed to update module');
-    }
-  };
-
-  return (
+return (
     <div className="max-w-md mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Edit Module</h1>
       <form onSubmit={handleUpdate} className="space-y-2">
@@ -62,7 +55,4 @@ const ModuleDetail: NextPage = () => {
         </div>
       </form>
     </div>
-  );
-};
-
 export default ModuleDetail;

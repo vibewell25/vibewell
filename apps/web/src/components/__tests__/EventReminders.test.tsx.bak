@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import event-reminders from '../event-reminders.tsx';
+
+describe('event-reminders', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<event-reminders />);
+    expect(container).toBeInTheDocument();
+  });
+});

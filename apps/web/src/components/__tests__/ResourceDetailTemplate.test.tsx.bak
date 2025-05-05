@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import resource-detail-template from '../resource-detail-template.tsx';
+
+describe('resource-detail-template', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<resource-detail-template />);
+    expect(container).toBeInTheDocument();
+  });
+});

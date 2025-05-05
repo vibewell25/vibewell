@@ -6,6 +6,4 @@ export interface ARFilter {
   thumbnailUrl: string;
   description: string;
   intensity: number;
-}
-
 export {};

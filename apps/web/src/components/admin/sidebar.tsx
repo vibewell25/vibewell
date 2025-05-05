@@ -1,4 +1,3 @@
-'use client';;
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -10,7 +9,7 @@ import {
   BarChart3,
   Database,
   Settings,
-} from 'lucide-react';
+from 'lucide-react';
 
 // Define sidebar navigation items
 const navItems = [
@@ -45,15 +44,14 @@ export const Sidebar = () => {
               href={item.href}
               className={`flex items-center rounded-md px-4 py-3 text-sm transition-colors ${
                 isActive ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100'
-              }`}
+`}
             >
               <span className={`mr-3 ${isActive ? 'text-blue-700' : 'text-gray-500'}`}>
                 {item.icon}
               </span>
               {item.title}
             </Link>
-          );
-        })}
+)}
       </nav>
 
       {/* User profile section */}
@@ -69,8 +67,5 @@ export const Sidebar = () => {
         </div>
       </div>
     </div>
-  );
-};
-
 // Also export as default for flexibility
 export default Sidebar;

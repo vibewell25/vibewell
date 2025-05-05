@@ -1,4 +1,3 @@
-'use client';;
 import { useState, useMemo, Suspense, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/Button';
@@ -20,7 +19,6 @@ interface UserProgress {
   wellnessStreak: number;
   rewardsPoints: number;
   nextLevelPoints: number;
-}
 interface ServiceProvider {
   name: string;
   avatar: string;
@@ -28,23 +26,18 @@ interface ServiceProvider {
   reviews: number;
   location: string;
   specialization?: string;
-}
 // Import content types
 import type { ServiceItem as ImportedServiceItem } from '@/types/services';
 // Local ServiceItem interface that extends the imported one
 interface ServiceItem extends ImportedServiceItem {
   provider: ServiceProvider;
-}
 // Dynamically import components with proper typing
 const DynamicCard = lazyLoad<CardProps>(() =>
   import('@/components/ui/Card').then((mod) => ({ default: mod.Card })),
-);
 const DynamicBadge = lazyLoad<BadgeProps>(() =>
   import('@/components/ui/badge').then((mod) => ({ default: mod.Badge })),
-);
 const DynamicTabs = lazyLoad<TabsProps>(() =>
   import('@/components/ui/tabs').then((mod) => ({ default: mod.Tabs })),
-);
 // Import categories and content from separate files
 import { categories } from '@/data/beauty-wellness/categories';
 import { content } from '@/data/beauty-wellness/content';
@@ -57,12 +50,10 @@ interface Filters {
   priceRange: [number, number];
   duration: 'any' | '30min' | '60min' | '90min';
   level: 'any' | 'beginner' | 'intermediate' | 'advanced';
-}
 interface CategoryType {
   id: string;
   name: string;
   icon: React.ComponentType<{ className?: string }>;
-}
 function BeautyWellnessContent(): JSX.Element {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -72,13 +63,11 @@ function BeautyWellnessContent(): JSX.Element {
     priceRange: [0, 500],
     duration: 'any',
     level: 'any',
-  });
-  const [userProgress, setUserProgress] = useState<UserProgress>({
+const [userProgress, setUserProgress] = useState<UserProgress>({
     wellnessStreak: 0,
     rewardsPoints: 0,
     nextLevelPoints: 100,
-  });
-  const [services, setServices] = useState<ServiceItem[]>([]);
+const [services, setServices] = useState<ServiceItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { t } = useTranslation();
@@ -90,17 +79,14 @@ function BeautyWellnessContent(): JSX.Element {
         const response = await fetch('/api/beauty-wellness/services');
         if (!response.ok) {
           throw new Error('Failed to fetch services');
-        }
-        const data = await response.json();
+const data = await response.json();
         setServices(data);
-      } catch (err) {
+catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
-      } finally {
+finally {
         setLoading(false);
-      }
-    };
-    fetchServices();
-  }, []);
+fetchServices();
+[]);
   // Memoize handlers and computed values
   const filterContent = useMemo(() => {
     return content.filter((item) => {
@@ -115,17 +101,13 @@ function BeautyWellnessContent(): JSX.Element {
       const matchesLevel = filters.level === 'any' || item.level === filters.level;
       return (
         matchesCategory && matchesSearch && matchesPriceRange && matchesDuration && matchesLevel
-      );
-    });
-  }, [selectedCategory, searchQuery, filters]);
+[selectedCategory, searchQuery, filters]);
   const filteredContent = useMemo(() => filterContent, [filterContent]);
   if (loading) {
     return <LoadingSpinner />;
-  }
-  if (error) {
+if (error) {
     return <ErrorMessage message={error} />;
-  }
-  return (
+return (
     <Layout>
       <div className="container-app py-12">
         {/* Enhanced Header Section */}
@@ -145,8 +127,7 @@ function BeautyWellnessContent(): JSX.Element {
                 <Skeleton key={i} className="h-48" />
               ))}
             </div>
-          }
-        >
+>
           <div
             className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4"
             role="region"
@@ -388,7 +369,7 @@ function BeautyWellnessContent(): JSX.Element {
                   selectedCategory === category.id
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-gradient-to-br ' + category.color
-                }`}
+`}
               >
                 {category.icon && <category.icon className="mx-auto mb-2 h-6 w-6" />}
                 <span className="text-sm font-medium">{category.name}</span>
@@ -404,8 +385,7 @@ function BeautyWellnessContent(): JSX.Element {
                 <Skeleton key={i} className="h-96" />
               ))}
             </div>
-          }
-        >
+>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredContent.map((item: ServiceItem) => (
               <DynamicCard key={item.id} className="overflow-hidden">
@@ -559,16 +539,12 @@ function BeautyWellnessContent(): JSX.Element {
         </Suspense>
       </div>
     </Layout>
-  );
-}
 BeautyWellnessContent.displayName = 'BeautyWellnessContent';
 export default function BeautyWellnessPage(): JSX.Element {
   return (
     <Suspense fallback={<BeautyWellnessSkeleton />}>
       <BeautyWellnessContent />
     </Suspense>
-  );
-}
 BeautyWellnessPage.displayName = 'BeautyWellnessPage';
 // Add skeleton component for loading state
 function BeautyWellnessSkeleton(): JSX.Element {
@@ -586,8 +562,6 @@ function BeautyWellnessSkeleton(): JSX.Element {
         </div>
       </div>
     </Layout>
-  );
-}
 BeautyWellnessSkeleton.displayName = 'BeautyWellnessSkeleton';
 /**
  * @swagger

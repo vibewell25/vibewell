@@ -487,46 +487,46 @@ export class <span class="cstat-no" title="statement not covered" >PaymentRetryS
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async c</span>heckRateLimit(userId: string): Promise&lt;boolean&gt; {
-    const key = <span class="cstat-no" title="statement not covered" >await this?.getRateLimitKey(userId);</span>
-    const attempts = <span class="cstat-no" title="statement not covered" >await this?.redis.incr(key);</span>
+    const key = <span class="cstat-no" title="statement not covered" >await this.getRateLimitKey(userId);</span>
+    const attempts = <span class="cstat-no" title="statement not covered" >await this.redis.incr(key);</span>
     
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (attempts === 1) {</span>
       // Set expiry for new keys
-<span class="cstat-no" title="statement not covered" >      await this?.redis.expire(key, this?.RATE_LIMIT_WINDOW);</span>
+<span class="cstat-no" title="statement not covered" >      await this.redis.expire(key, this.RATE_LIMIT_WINDOW);</span>
     }
     
-<span class="cstat-no" title="statement not covered" >    return attempts &lt;= this?.MAX_ATTEMPTS_PER_WINDOW;</span>
+<span class="cstat-no" title="statement not covered" >    return attempts &lt;= this.MAX_ATTEMPTS_PER_WINDOW;</span>
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async g</span>etRemainingAttempts(userId: string): Promise&lt;number&gt; {
-    const key = <span class="cstat-no" title="statement not covered" >await this?.getRateLimitKey(userId);</span>
-    const attempts = <span class="cstat-no" title="statement not covered" >await this?.redis.get(key);</span>
-<span class="cstat-no" title="statement not covered" >    return this?.MAX_ATTEMPTS_PER_WINDOW - (parseInt(attempts || '0', 10));</span>
+    const key = <span class="cstat-no" title="statement not covered" >await this.getRateLimitKey(userId);</span>
+    const attempts = <span class="cstat-no" title="statement not covered" >await this.redis.get(key);</span>
+<span class="cstat-no" title="statement not covered" >    return this.MAX_ATTEMPTS_PER_WINDOW - (parseInt(attempts || '0', 10));</span>
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async g</span>etRetryDelay(retryCount: number): Promise&lt;number&gt; {
     // Exponential backoff with jitter
-    const baseDelay = <span class="cstat-no" title="statement not covered" >Math?.min(</span>
+    const baseDelay = <span class="cstat-no" title="statement not covered" >Math.min(</span>
 &nbsp;
-      this?.INITIAL_RETRY_DELAY * Math?.pow(2, retryCount),
-      this?.MAX_RETRY_DELAY
+      this.INITIAL_RETRY_DELAY * Math.pow(2, retryCount),
+      this.MAX_RETRY_DELAY
     );
-    const jitter = <span class="cstat-no" title="statement not covered" >Math?.random() * 1000; /</span>/ Add up to 1 second of random jitter
+    const jitter = <span class="cstat-no" title="statement not covered" >Math.random() * 1000; /</span>/ Add up to 1 second of random jitter
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return baseDelay + jitter;</span>
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async r</span>etryPayment(paymentId: string, userId: string): Promise&lt;Payment&gt; {
     // Check rate limit
-    const canRetry = <span class="cstat-no" title="statement not covered" >await this?.checkRateLimit(userId);</span>
+    const canRetry = <span class="cstat-no" title="statement not covered" >await this.checkRateLimit(userId);</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!canRetry) {</span>
-      const remainingTime = <span class="cstat-no" title="statement not covered" >await this?.redis.ttl(await this?.getRateLimitKey(userId));</span>
+      const remainingTime = <span class="cstat-no" title="statement not covered" >await this.redis.ttl(await this.getRateLimitKey(userId));</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      throw new Error(`Rate limit exceeded. Please try again in ${Math?.ceil(remainingTime / 60)} minutes.`);</span>
+<span class="cstat-no" title="statement not covered" >      throw new Error(`Rate limit exceeded. Please try again in ${Math.ceil(remainingTime / 60)} minutes.`);</span>
     }
 &nbsp;
     // Get payment details
-    const payment = <span class="cstat-no" title="statement not covered" >await this?.prisma.payment?.findUnique({</span>
+    const payment = <span class="cstat-no" title="statement not covered" >await this.prisma.payment.findUnique({</span>
       where: { id: paymentId }
     });
 &nbsp;
@@ -534,45 +534,45 @@ export class <span class="cstat-no" title="statement not covered" >PaymentRetryS
 <span class="cstat-no" title="statement not covered" >      throw new Error('Payment not found');</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (payment?.status !== PaymentStatus?.FAILED) {</span>
-<span class="cstat-no" title="statement not covered" >      throw new Error(`Cannot retry payment with status: ${payment?.status}`);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (payment.status !== PaymentStatus.FAILED) {</span>
+<span class="cstat-no" title="statement not covered" >      throw new Error(`Cannot retry payment with status: ${payment.status}`);</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (payment?.retryCount &gt;= this?.MAX_RETRIES) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (payment.retryCount &gt;= this.MAX_RETRIES) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('Maximum retry attempts exceeded');</span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Calculate retry delay
-      const retryDelay = <span class="cstat-no" title="statement not covered" >await this?.getRetryDelay(payment?.retryCount);</span>
+      const retryDelay = <span class="cstat-no" title="statement not covered" >await this.getRetryDelay(payment.retryCount);</span>
       
       // Wait for the retry delay
 <span class="cstat-no" title="statement not covered" >      await new Promise(<span class="fstat-no" title="function not covered" >resolve =&gt; <span class="cstat-no" title="statement not covered" >s</span>etTimeout(resolve, retryDelay));</span></span>
 &nbsp;
       // Create new payment intent
-      const paymentIntent = <span class="cstat-no" title="statement not covered" >await this?.stripe.paymentIntents?.create({</span>
-        amount: payment?.amount,
-        currency: payment?.currency,
+      const paymentIntent = <span class="cstat-no" title="statement not covered" >await this.stripe.paymentIntents.create({</span>
+        amount: payment.amount,
+        currency: payment.currency,
         metadata: {
-          bookingId: payment?.bookingId,
+          bookingId: payment.bookingId,
 &nbsp;
-          retryCount: payment?.retryCount + 1
+          retryCount: payment.retryCount + 1
         }
       });
 &nbsp;
       const metadata: PaymentMetadata = <span class="cstat-no" title="statement not covered" >{</span>
-        ...(payment?.metadata as PaymentMetadata),
-        stripePaymentIntentId: paymentIntent?.id,
+        ...(payment.metadata as PaymentMetadata),
+        stripePaymentIntentId: paymentIntent.id,
         lastRetryAt: new Date().toISOString()
       };
 &nbsp;
       // Update payment record
-      const updatedPayment = <span class="cstat-no" title="statement not covered" >await this?.prisma.payment?.update({</span>
+      const updatedPayment = <span class="cstat-no" title="statement not covered" >await this.prisma.payment.update({</span>
         where: { id: paymentId },
         data: {
-          status: PaymentStatus?.PENDING,
+          status: PaymentStatus.PENDING,
 &nbsp;
-          retryCount: payment?.retryCount + 1,
+          retryCount: payment.retryCount + 1,
           errorMessage: null,
           metadata: metadata as unknown as InputJsonValue
         }
@@ -580,27 +580,27 @@ export class <span class="cstat-no" title="statement not covered" >PaymentRetryS
 &nbsp;
       const logContext: LogContext = <span class="cstat-no" title="statement not covered" >{</span>
         paymentId,
-        retryCount: updatedPayment?.retryCount,
-        stripePaymentIntentId: paymentIntent?.id
+        retryCount: updatedPayment.retryCount,
+        stripePaymentIntentId: paymentIntent.id
       };
-<span class="cstat-no" title="statement not covered" >      logger?.info(`Payment retry initiated for payment ${paymentId}`, JSON?.stringify(logContext));</span>
+<span class="cstat-no" title="statement not covered" >      logger.info(`Payment retry initiated for payment ${paymentId}`, JSON.stringify(logContext));</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return updatedPayment;</span>
     } catch (error) {
       const logContext: LogContext = <span class="cstat-no" title="statement not covered" >{</span>
         paymentId,
-        error: error instanceof Error ? error?.message : 'Unknown error'
+        error: error instanceof Error ? error.message : 'Unknown error'
       };
-<span class="cstat-no" title="statement not covered" >      logger?.error(`Payment retry failed for payment ${paymentId}`, JSON?.stringify(logContext));</span>
+<span class="cstat-no" title="statement not covered" >      logger.error(`Payment retry failed for payment ${paymentId}`, JSON.stringify(logContext));</span>
 &nbsp;
       // Update payment record with failure
-      const updatedPayment = <span class="cstat-no" title="statement not covered" >await this?.prisma.payment?.update({</span>
+      const updatedPayment = <span class="cstat-no" title="statement not covered" >await this.prisma.payment.update({</span>
         where: { id: paymentId },
         data: {
-          status: PaymentStatus?.FAILED,
-          errorMessage: error instanceof Error ? error?.message : 'Unknown error',
+          status: PaymentStatus.FAILED,
+          errorMessage: error instanceof Error ? error.message : 'Unknown error',
 &nbsp;
-          retryCount: payment?.retryCount + 1
+          retryCount: payment.retryCount + 1
         }
       });
 &nbsp;
@@ -614,7 +614,7 @@ export class <span class="cstat-no" title="statement not covered" >PaymentRetryS
     nextRetryDelay?: number | undefined;
     rateLimitReset?: number | undefined;
   }&gt; {
-    const payment = <span class="cstat-no" title="statement not covered" >await this?.prisma.payment?.findUnique({</span>
+    const payment = <span class="cstat-no" title="statement not covered" >await this.prisma.payment.findUnique({</span>
       where: { id: paymentId }
     });
 &nbsp;
@@ -622,14 +622,14 @@ export class <span class="cstat-no" title="statement not covered" >PaymentRetryS
 <span class="cstat-no" title="statement not covered" >      throw new Error('Payment not found');</span>
     }
 &nbsp;
-    const remainingAttempts = <span class="cstat-no" title="statement not covered" >await this?.getRemainingAttempts(userId);</span>
-    const rateLimitReset = <span class="cstat-no" title="statement not covered" >await this?.redis.ttl(await this?.getRateLimitKey(userId));</span>
+    const remainingAttempts = <span class="cstat-no" title="statement not covered" >await this.getRemainingAttempts(userId);</span>
+    const rateLimitReset = <span class="cstat-no" title="statement not covered" >await this.redis.ttl(await this.getRateLimitKey(userId));</span>
     
-    const canRetry = <span class="cstat-no" title="statement not covered" >payment?.status === PaymentStatus?.FAILED &amp;&amp;</span>
-      payment?.retryCount &lt; this?.MAX_RETRIES &amp;&amp;
+    const canRetry = <span class="cstat-no" title="statement not covered" >payment.status === PaymentStatus.FAILED &amp;&amp;</span>
+      payment.retryCount &lt; this.MAX_RETRIES &amp;&amp;
       remainingAttempts &gt; 0;
 &nbsp;
-    const nextRetryDelay = <span class="cstat-no" title="statement not covered" >canRetry ? await this?.getRetryDelay(payment?.retryCount) : undefined;</span>
+    const nextRetryDelay = <span class="cstat-no" title="statement not covered" >canRetry ? await this.getRetryDelay(payment.retryCount) : undefined;</span>
     const resetTime = <span class="cstat-no" title="statement not covered" >rateLimitReset &gt; 0 ? rateLimitReset : undefined;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return {</span>
@@ -646,7 +646,7 @@ export class <span class="cstat-no" title="statement not covered" >PaymentRetryS
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

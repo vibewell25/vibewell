@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 
 
@@ -22,59 +21,39 @@ export async function {
     // Check if the user is authenticated
     if (!(await isAuthenticated())) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    // Get user ID from auth state
+// Get user ID from auth state
     const { user } = await getAuthState();
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
-
-    // Get count of unread notifications before update
+// Get count of unread notifications before update
     const unreadCount = await prisma.notification.count({
       where: {
         userId: user.id,
         read: false,
-      },
-    });
-
-    // If no unread notifications, return early
+// If no unread notifications, return early
     if (unreadCount === 0) {
       return NextResponse.json({
         success: true,
         message: 'No unread notifications found',
         count: 0,
-      });
-    }
-
-    // Update all unread notifications to read
+// Update all unread notifications to read
     const result = await prisma.notification.updateMany({
       where: {
         userId: user.id,
         read: false,
-      },
-      data: {
+data: {
         read: true,
-      },
-    });
-
-    logger.info(`Marked ${result.count} notifications as read for user ${user.id}`);
+logger.info(`Marked ${result.count} notifications as read for user ${user.id}`);
 
     // Return success response
     return NextResponse.json({
       success: true,
       message: 'All notifications marked as read',
       count: result.count,
-    });
-  } catch (error) {
+catch (error) {
     logger.error(
       'Error marking all notifications as read',
       error instanceof Error ? error.message : String(error),
-    );
-
-    return NextResponse.json(
+return NextResponse.json(
       { error: 'Failed to mark all notifications as read' },
       { status: 500 },
-    );
-  }
-}

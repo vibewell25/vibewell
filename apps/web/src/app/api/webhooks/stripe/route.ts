@@ -6,9 +6,6 @@ import { headers } from 'next/headers';
 export const config = {
   api: {
     bodyParser: false,
-  },
-};
-
 export async function POST(req: NextRequest) {
   try {
     // Get the webhook signature from the headers
@@ -19,10 +16,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { error: 'Missing stripe-signature header' },
         { status: 400 }
-      );
-    }
-
-    // Get the Stripe webhook secret from the environment
+// Get the Stripe webhook secret from the environment
     const webhookSecret = process.env['STRIPE_WEBHOOK_SECRET'] || '';
 
     if (!webhookSecret) {
@@ -30,10 +24,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { error: 'Webhook secret not configured' },
         { status: 500 }
-      );
-    }
-
-    // Get the raw request body
+// Get the raw request body
     const rawBody = await req.text();
 
     // Verify the webhook signature and construct the event
@@ -43,16 +34,12 @@ export async function POST(req: NextRequest) {
         rawBody,
         signature,
         webhookSecret
-      );
-    } catch (err: any) {
+catch (err: any) {
       console.error(`Webhook signature verification failed: ${err.message}`);
       return NextResponse.json(
         { error: `Webhook Error: ${err.message}` },
         { status: 400 }
-      );
-    }
-
-    // Handle the verified webhook event
+// Handle the verified webhook event
     const result = await handleWebhookEvent(event);
 
     if (!result.success) {
@@ -60,17 +47,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { error: result.message },
         { status: 400 }
-      );
-    }
-
-    // Return a successful response
+// Return a successful response
     return NextResponse.json({ received: true, type: event.type });
-  } catch (error) {
+catch (error) {
     // Handle any other errors
     console.error('Unexpected error handling webhook:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
-    );
-  }
-}

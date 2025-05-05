@@ -7,8 +7,6 @@ export interface ApiResponse<T = any> {
   status: number;
   data: T;
   headers?: Record<string, string>;
-}
-
 /**
  * Common error response structure
  */
@@ -17,8 +15,6 @@ export interface ApiError {
   message: string;
   code?: string;
   details?: Record<string, any>;
-}
-
 /**
  * Helper to create a mock successful response
  */
@@ -29,9 +25,7 @@ export function createMockResponse<T>(data: T, status = 200, headers = {}): Axio
     statusText: 'OK',
     headers,
     config: {},
-  } as AxiosResponse;
-}
-
+as AxiosResponse;
 /**
  * Helper to create a mock error response
  */
@@ -48,10 +42,7 @@ export function createMockError(
       statusText: 'Error',
       headers: {},
       config: {},
-    } as AxiosResponse,
-  };
-}
-
+as AxiosResponse,
 /**
  * Helper to validate common API response structure
  */
@@ -60,8 +51,6 @@ export function validateApiResponse(response: AxiosResponse) {
   expect(response).toHaveProperty('data');
   expect(response.status).toBeGreaterThanOrEqual(200);
   expect(response.status).toBeLessThan(300);
-}
-
 /**
  * Helper to validate error response structure
  */
@@ -69,8 +58,6 @@ export function validateErrorResponse(error: { response: AxiosResponse }) {
   expect(error.response).toHaveProperty('status');
   expect(error.response).toHaveProperty('data');
   expect(error.response.data).toHaveProperty('error');
-}
-
 /**
  * Common test timeouts
  */
@@ -78,7 +65,7 @@ export const TIMEOUTS = {
   QUICK: 1000,
   NORMAL: 5000,
   EXTENDED: 15000,
-} as const;
+as const;
 
 /**
  * Helper to wait for a specified time
@@ -87,32 +74,19 @@ export const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, m
 
 /**
 
-    // Safe integer operation
-    if (date > Number.MAX_SAFE_INTEGER || date < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
- * Helper to mock date/time for consistent testing
+    * Helper to mock date/time for consistent testing
  */
 export function mockDateTime(isoDate: string) {
   const mockDate = new Date(isoDate);
   jest.spyOn(global, 'Date').mockImplementation(() => mockDate as unknown as string);
-}
-
 /**
 
-    // Safe integer operation
-    if (date > Number.MAX_SAFE_INTEGER || date < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
- * Helper to reset date/time mocks
+    * Helper to reset date/time mocks
  */
 export function resetDateTime() {
   jest.spyOn(global, 'Date').mockRestore();
-}
-
 /**
  * Helper to create test IDs
  */
 export function generateTestId(prefix: string): string {
   return `${prefix}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-} 

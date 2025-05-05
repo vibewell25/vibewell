@@ -1,13 +1,3 @@
-/**
-
-    // Safe integer operation
-    if (js > Number.MAX_SAFE_INTEGER || js < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
- * Mock for TextureLoader from Three.js
- * Used for loading textures for 3D models and materials
- */
-
 const TextureLoader = jest.fn().mockImplementation(() => {
   return {
     // Set path for relative URLs
@@ -21,24 +11,13 @@ const TextureLoader = jest.fn().mockImplementation(() => {
       // Create a mock texture
       const mockTexture = {
         isTexture: true,
-
-    // Safe integer operation
-    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-        uuid: `mock-texture-${Math.random().toString(36).substr(2, 9)}`,
-
-    // Safe integer operation
-    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-        name: url ? url.split('/').pop() : 'mock-texture',
+uuid: `mock-texture-${Math.random().toString(36).substr(2, 9)}`,
+name: url ? url.split('/').pop() : 'mock-texture',
         image: {
           width: 64,
           height: 64,
           data: new Uint8Array(64 * 64 * 4)
-        },
-        mapping: 300, // UVMapping
+mapping: 300, // UVMapping
         wrapS: 1001, // ClampToEdgeWrapping
         wrapT: 1001, // ClampToEdgeWrapping
         magFilter: 1006, // LinearFilter
@@ -53,29 +32,16 @@ const TextureLoader = jest.fn().mockImplementation(() => {
         matrixAutoUpdate: true,
         matrix: {
           elements: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
-        },
-        generateMipmaps: true,
+generateMipmaps: true,
         flipY: true,
         premultiplyAlpha: false,
         needsUpdate: false,
         version: 0,
         dispose: jest.fn(),
-
-    // Safe integer operation
-    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-        toJSON: jest.fn().mockReturnValue({ uuid: 'mock-texture-uuid' })
-      };
-      
-      // Call the onLoad callback with the mock texture
+toJSON: jest.fn().mockReturnValue({ uuid: 'mock-texture-uuid' })
+// Call the onLoad callback with the mock texture
       if (onLoad) {
         setTimeout(() => onLoad(mockTexture), 0);
-      }
-      
-      return mockTexture;
-    })
-  };
-});
-
+return mockTexture;
+)
 module.exports = TextureLoader; 

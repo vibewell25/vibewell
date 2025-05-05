@@ -11,13 +11,9 @@ export interface ExtendedUserProfile extends UserProfile {
   isAdmin?: boolean;
   isProvider?: boolean;
   isUser?: boolean;
-}
-
 // Extended session with the extended user profile
 export interface ExtendedSession extends Session {
   user: ExtendedUserProfile;
-}
-
 /**
  * Higher-order function to wrap API handlers with authentication
  * 
@@ -40,11 +36,8 @@ export function withAuth(
           path: req.url,
           method: req.method,
           ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
-        });
-        return res.status(401).json({ error: 'Unauthorized: Authentication required' });
-      }
-
-      // Check if roles are required
+return res.status(401).json({ error: 'Unauthorized: Authentication required' });
+// Check if roles are required
       if (options.requiredRoles && options.requiredRoles.length > 0) {
         // Enhance session with role information from Auth0
         const extendedSession = session as ExtendedSession;
@@ -64,38 +57,25 @@ export function withAuth(
           (role === 'provider' && user.isProvider) ||
           (role === 'user' && user.isUser) ||
           (role === 'guest') // Everyone has at least guest access
-        );
-        
-        if (!hasRequiredRole) {
+if (!hasRequiredRole) {
           logger.warn('Insufficient permissions', {
             userId: user.sub,
             path: req.url,
             method: req.method,
             requiredRoles: options.requiredRoles,
             userRoles,
-          });
-          return res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
-        }
-      }
-
-      // Add user ID to headers for rate limiting
+return res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
+// Add user ID to headers for rate limiting
       if (session.user.sub) {
         req.headers['x-user-id'] = session.user.sub;
-      }
-
-      // All checks passed, proceed to the handler
+// All checks passed, proceed to the handler
       return handler(req, res);
-    } catch (error) {
+catch (error) {
       logger.error('Authentication error', {
         path: req.url,
         method: req.method,
         error: error instanceof Error ? error.message : String(error),
-      });
-      return res.status(500).json({ error: 'Internal server error during authentication' });
-    }
-  };
-}
-
+return res.status(500).json({ error: 'Internal server error during authentication' });
 /**
  * Check if a session has a specific role
  * @param session - User session
@@ -117,8 +97,6 @@ export function hasRole(session: Session | null, role: UserRole): boolean {
   if (role === 'guest') return true; // Everyone has at least guest access
   
   return false;
-}
-
 /**
  * Middleware for Next.js App Router to require specific roles
  */
@@ -130,24 +108,15 @@ export function requireRoles(roles: UserRole[]) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         status: 401,
         headers: { 'Content-Type': 'application/json' }
-      });
-    }
-    
-    // Check if user has any of the required roles
+// Check if user has any of the required roles
     const hasPermission = roles.some(role => hasRole(session, role));
     
     if (!hasPermission) {
       return new Response(JSON.stringify({ error: 'Forbidden' }), {
         status: 403,
         headers: { 'Content-Type': 'application/json' }
-      });
-    }
-    
-    // Continue to the next middleware or route handler
+// Continue to the next middleware or route handler
     return null;
-  };
-}
-
 // Pre-configured middleware for common role requirements
 export const requireAdmin = requireRoles(['admin']);
 export const requireProvider = requireRoles(['admin', 'provider']);

@@ -1,4 +1,3 @@
-'use client';
 import { useState } from 'react';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { Input } from '@/components/ui/Input';
@@ -15,21 +14,18 @@ const serviceCategories = [
     image: 'https://placehold.co/200x200?text=Hair',
     provider: 'Sndhardong',
     href: '/bookings/hair',
-  },
-  {
+{
     id: 'skincare',
     name: 'Skincare',
     image: 'https://placehold.co/200x200?text=Skin',
     provider: 'Cat Tral Ope',
     href: '/bookings/skincare',
-  },
-  {
+{
     id: 'makeup',
     name: 'Makeup',
     image: 'https://placehold.co/200x200?text=Makeup',
     provider: 'Sondaice',
     href: '/bookings/makeup',
-  },
 ];
 export default function SearchServicesPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -105,5 +101,3 @@ export default function SearchServicesPage() {
         </div>
       </div>
     </MobileLayout>
-  );
-}

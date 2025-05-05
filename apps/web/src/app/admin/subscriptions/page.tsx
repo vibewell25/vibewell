@@ -16,8 +16,7 @@ const columns: Column[] = [
     header: 'Amount',
     cell: ({ row: { original } }: { row: { original: Subscription } }) =>
       formatCurrency(original.amount),
-  },
-  { accessorKey: 'status', header: 'Status' },
+{ accessorKey: 'status', header: 'Status' },
   { accessorKey: 'nextBillingDate', header: 'Next Billing' },
   {
     id: 'actions',
@@ -32,7 +31,6 @@ const columns: Column[] = [
         </Button>
       </div>
     ),
-  },
 ];
 
 export default function SubscriptionManagement() {
@@ -43,30 +41,22 @@ export default function SubscriptionManagement() {
   // Track page view
   React.useEffect(() => {
     trackEvent('subscription_management_view');
-  }, []);
+[]);
 
   if (!user.isAdmin) {
     return <div>Access denied. Admin privileges required.</div>;
-  }
-
-  if (isLoading) {
+if (isLoading) {
     return <div>Loading...</div>;
-  }
-
-  if (error) {
+if (error) {
     return <div>Error: {error.message}</div>;
-  }
-
-  const subscriptionStats = {
+const subscriptionStats = {
     total: subscriptions.length,
     active: subscriptions.filter((s) => s.status === 'active').length,
     cancelled: subscriptions.filter((s) => s.status === 'cancelled').length,
     revenue: subscriptions
       .filter((s) => s.status === 'active')
       .reduce((acc, curr) => acc + curr.amount, 0),
-  };
-
-  return (
+return (
     <div className="container mx-auto py-8">
       <h1 className="mb-8 text-3xl font-bold">Subscription Management</h1>
 
@@ -98,23 +88,15 @@ export default function SubscriptionManagement() {
         <DataTable columns={columns} data={subscriptions} pagination sorting filtering />
       </Card>
     </div>
-  );
-}
-
 // Handler functions
 const handleManage = (subscription: Subscription) => {
   trackEvent('subscription_manage', { subscriptionId: subscription.id });
   // Implement subscription management functionality
-};
-
 const handleCancel = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');subscription: Subscription) => {
   trackEvent('subscription_cancel', { subscriptionId: subscription.id });
   // Implement subscription cancellation functionality
-};
-
 const handleCreateSubscription = () => {
   trackEvent('subscription_create');
   // Implement subscription creation functionality
-};

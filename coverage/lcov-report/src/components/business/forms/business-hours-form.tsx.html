@@ -505,7 +505,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
       sunday: { isOpen: false },
     };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    form?.setValue('businessHours', standardHours, { shouldValidate: true });</span>
+<span class="cstat-no" title="statement not covered" >    form.setValue('businessHours', standardHours, { shouldValidate: true });</span>
   };
 &nbsp;
   // Extended hours (10am-8pm, Mon-Sat)
@@ -520,7 +520,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
       sunday: { isOpen: false },
     };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    form?.setValue('businessHours', extendedHours, { shouldValidate: true });</span>
+<span class="cstat-no" title="statement not covered" >    form.setValue('businessHours', extendedHours, { shouldValidate: true });</span>
   };
 &nbsp;
   // Weekend hours (11am-7pm, Sat-Sun only)
@@ -535,12 +535,12 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
       sunday: { isOpen: true, openTime: '11:00', closeTime: '19:00' },
     };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    form?.setValue('businessHours', weekendHours, { shouldValidate: true });</span>
+<span class="cstat-no" title="statement not covered" >    form.setValue('businessHours', weekendHours, { shouldValidate: true });</span>
   };
 &nbsp;
   // Toggle isOpen status for a day
   const toggleDay = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(d</span>ay: string, isOpen: boolean) =&gt; {</span>
-    const currentHours = <span class="cstat-no" title="statement not covered" >form?.watch('businessHours');</span>
+    const currentHours = <span class="cstat-no" title="statement not covered" >form.watch('businessHours');</span>
 &nbsp;
     // Set default open and close times if toggling to open and they're not set
     let updatedDay = <span class="cstat-no" title="statement not covered" >{ isOpen };</span>
@@ -552,7 +552,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
       };
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    form?.setValue(`businessHours.${day}`, updatedDay, { shouldValidate: true });</span>
+<span class="cstat-no" title="statement not covered" >    form.setValue(`businessHours.${day}`, updatedDay, { shouldValidate: true });</span>
   };
 &nbsp;
   return (
@@ -581,42 +581,42 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         &lt;/CardHeader&gt;
         &lt;CardContent&gt;
           &lt;div className="space-y-4"&gt;
-            {days?.map(<span class="fstat-no" title="function not covered" >(d</span>ay) =&gt; {
-              const dayData = <span class="cstat-no" title="statement not covered" >form?.watch(`businessHours.${day?.id}`);</span>
+            {days.map(<span class="fstat-no" title="function not covered" >(d</span>ay) =&gt; {
+              const dayData = <span class="cstat-no" title="statement not covered" >form.watch(`businessHours.${day.id}`);</span>
 <span class="cstat-no" title="statement not covered" >              return (</span>
                 &lt;div
-                  key={day?.id}
+                  key={day.id}
                   className="grid grid-cols-6 items-center gap-4 border-b py-2 last:border-0"
                 &gt;
                   &lt;div className="col-span-2"&gt;
                     &lt;div className="flex items-center space-x-2"&gt;
                       &lt;Switch
-                        id={`is-open-${day?.id}`}
-                        checked={dayData?.isOpen}
-                        onCheckedChange={<span class="fstat-no" title="function not covered" >(c</span>hecked) =&gt; <span class="cstat-no" title="statement not covered" >toggleDay(day?.id, checked)}</span>
+                        id={`is-open-${day.id}`}
+                        checked={dayData.isOpen}
+                        onCheckedChange={<span class="fstat-no" title="function not covered" >(c</span>hecked) =&gt; <span class="cstat-no" title="statement not covered" >toggleDay(day.id, checked)}</span>
                       /&gt;
-                      &lt;Label htmlFor={`is-open-${day?.id}`} className="font-medium"&gt;
-                        {day?.label}
+                      &lt;Label htmlFor={`is-open-${day.id}`} className="font-medium"&gt;
+                        {day.label}
                       &lt;/Label&gt;
                     &lt;/div&gt;
                   &lt;/div&gt;
 &nbsp;
-                  {dayData?.isOpen ? (
+                  {dayData.isOpen ? (
 <span class="branch-0 cbranch-no" title="branch not covered" >                    &lt;&gt;</span>
                       &lt;div className="col-span-2"&gt;
                         &lt;div className="space-y-1"&gt;
                           &lt;Label
-                            htmlFor={`open-time-${day?.id}`}
+                            htmlFor={`open-time-${day.id}`}
                             className="text-xs text-muted-foreground"
                           &gt;
                             Open
                           &lt;/Label&gt;
                           &lt;Input
-                            id={`open-time-${day?.id}`}
+                            id={`open-time-${day.id}`}
                             type="time"
-                            value={dayData?.openTime || ''}
+                            value={dayData.openTime || ''}
                             onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt;
-<span class="cstat-no" title="statement not covered" >                              form?.setValue(`businessHours.${day?.id}.openTime`, e?.target.value, {</span>
+<span class="cstat-no" title="statement not covered" >                              form.setValue(`businessHours.${day.id}.openTime`, e.target.value, {</span>
                                 shouldValidate: true,
                               })
                             }
@@ -627,17 +627,17 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                       &lt;div className="col-span-2"&gt;
                         &lt;div className="space-y-1"&gt;
                           &lt;Label
-                            htmlFor={`close-time-${day?.id}`}
+                            htmlFor={`close-time-${day.id}`}
                             className="text-xs text-muted-foreground"
                           &gt;
                             Close
                           &lt;/Label&gt;
                           &lt;Input
-                            id={`close-time-${day?.id}`}
+                            id={`close-time-${day.id}`}
                             type="time"
-                            value={dayData?.closeTime || ''}
+                            value={dayData.closeTime || ''}
                             onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt;
-<span class="cstat-no" title="statement not covered" >                              form?.setValue(`businessHours.${day?.id}.closeTime`, e?.target.value, {</span>
+<span class="cstat-no" title="statement not covered" >                              form.setValue(`businessHours.${day.id}.closeTime`, e.target.value, {</span>
                                 shouldValidate: true,
                               })
                             }
@@ -676,7 +676,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

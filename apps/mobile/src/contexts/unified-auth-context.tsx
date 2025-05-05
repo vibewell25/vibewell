@@ -15,8 +15,6 @@ export interface User {
   role: 'USER' | 'PROVIDER' | 'ADMIN';
   createdAt: string;
   updatedAt: string;
-}
-
 export interface AuthContextType {
   user: User | null;
   isLoading: boolean;
@@ -24,8 +22,6 @@ export interface AuthContextType {
   token: string | null;
   signIn: (signup?: boolean) => Promise<boolean>;
   signOut: () => Promise<void>;
-}
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -42,20 +38,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
           const resp = await fetch(`${serverBaseUrl}/api/auth/me`, {
             headers: { Authorization: `Bearer ${token}` },
-          });
-          if (resp.ok) {
+if (resp.ok) {
             const json = await resp.json();
             setUser(json.user);
             await AsyncStorage.setItem(storageKeys.USER_DATA, JSON.stringify(json.user));
-          }
-        } catch {
+catch {
           // ignore
-        }
-      }
-      setIsLoading(false);
-    };
-    restore();
-  }, []);
+setIsLoading(false);
+restore();
+[]);
 
   const signIn = async (signup = false): Promise<boolean> => {
     try {
@@ -75,65 +66,48 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (result.type !== 'success' || !result.params.code) {
         setIsLoading(false);
         return false;
-      }
-
-      // Exchange code for tokens
+// Exchange code for tokens
       // @ts-ignore: exchangeCodeAsync missing in TS defs
       const tokenResult = await AuthSession.exchangeCodeAsync(
         {
           clientId: AUTH0_CLIENT_ID,
           code: result.params.code,
           redirectUri: REDIRECT_URI,
-        },
-        DISCOVERY
-      );
-      if (!tokenResult.accessToken) {
+DISCOVERY
+if (!tokenResult.accessToken) {
         setIsLoading(false);
         return false;
-      }
-      await AsyncStorage.setItem(storageKeys.AUTH_TOKEN, tokenResult.accessToken);
+await AsyncStorage.setItem(storageKeys.AUTH_TOKEN, tokenResult.accessToken);
       setAccessToken(tokenResult.accessToken);
 
       // Fetch user profile
       const resp = await fetch(`${serverBaseUrl}/api/auth/me`, {
         headers: { Authorization: `Bearer ${tokenResult.accessToken}` },
-      });
-      if (resp.ok) {
+if (resp.ok) {
         const json = await resp.json();
         setUser(json.user);
         await AsyncStorage.setItem(storageKeys.USER_DATA, JSON.stringify(json.user));
-      }
-      setIsLoading(false);
+setIsLoading(false);
       return true;
-    } catch (error) {
+catch (error) {
       console.error('Auth signIn error:', error);
       setIsLoading(false);
       return false;
-    }
-  };
-
-  const signOut = async (): Promise<void> => {
+const signOut = async (): Promise<void> => {
     setIsLoading(true);
     await AsyncStorage.removeItem(storageKeys.AUTH_TOKEN);
     setUser(null);
     setAccessToken(null);
     setIsLoading(false);
-  };
-
-  const value: AuthContextType = {
+const value: AuthContextType = {
     user,
     isLoading,
     isLoggedIn: !!user,
     token: accessToken,
     signIn,
     signOut,
-  };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
-
+return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context) throw new Error('useAuth must be used within AuthProvider');
   return context;
-};

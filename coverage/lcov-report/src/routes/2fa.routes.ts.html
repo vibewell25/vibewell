@@ -270,7 +270,7 @@
 <span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Router } from <span class="cstat-no" title="statement not covered" >'express';</span>
 import { z } from <span class="cstat-no" title="statement not covered" >'zod';</span>
 &nbsp;
-import { TwoFactorService } from <span class="cstat-no" title="statement not covered" >'../services/two-factor?.service';</span>
+import { TwoFactorService } from <span class="cstat-no" title="statement not covered" >'../services/two-factor.service';</span>
 &nbsp;
 import { validateRequest } from <span class="cstat-no" title="statement not covered" >'../middleware/validate-request';</span>
 &nbsp;
@@ -282,36 +282,36 @@ const router = <span class="cstat-no" title="statement not covered" >Router();</
 const twoFactorService = <span class="cstat-no" title="statement not covered" >new TwoFactorService(prisma);</span>
 &nbsp;
 // Request validation schemas
-const verifyTokenSchema = <span class="cstat-no" title="statement not covered" >z?.object({</span>
-  token: z?.string().length(6).regex(/^\d+$/, 'Token must be numeric'),
+const verifyTokenSchema = <span class="cstat-no" title="statement not covered" >z.object({</span>
+  token: z.string().length(6).regex(/^\d+$/, 'Token must be numeric'),
 });
 &nbsp;
-const verifyBackupCodeSchema = <span class="cstat-no" title="statement not covered" >z?.object({</span>
-  code: z?.string().min(16).max(16),
+const verifyBackupCodeSchema = <span class="cstat-no" title="statement not covered" >z.object({</span>
+  code: z.string().min(16).max(16),
 });
 &nbsp;
 // Enable 2FA
-<span class="cstat-no" title="statement not covered" >router?.post('/enable', isAuthenticated, <span class="fstat-no" title="function not covered" >async (r</span>eq, res, next) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >router.post('/enable', isAuthenticated, <span class="fstat-no" title="function not covered" >async (r</span>eq, res, next) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-    const result = <span class="cstat-no" title="statement not covered" >await twoFactorService?.enable2FA(req?.user.id);</span>
-<span class="cstat-no" title="statement not covered" >    res?.json(result);</span>
+    const result = <span class="cstat-no" title="statement not covered" >await twoFactorService.enable2FA(req.user.id);</span>
+<span class="cstat-no" title="statement not covered" >    res.json(result);</span>
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    next(error);</span>
   }
 });
 &nbsp;
 // Verify and activate 2FA
-<span class="cstat-no" title="statement not covered" >router?.post(</span>
+<span class="cstat-no" title="statement not covered" >router.post(</span>
   '/verify',
   isAuthenticated,
   validateRequest(verifyTokenSchema),
 <span class="fstat-no" title="function not covered" >  async (r</span>eq, res, next) =&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const result = <span class="cstat-no" title="statement not covered" >await twoFactorService?.verify2FA(</span>
-        req?.user.id,
-        req?.body.token
+      const result = <span class="cstat-no" title="statement not covered" >await twoFactorService.verify2FA(</span>
+        req.user.id,
+        req.body.token
       );
-<span class="cstat-no" title="statement not covered" >      res?.json(result);</span>
+<span class="cstat-no" title="statement not covered" >      res.json(result);</span>
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      next(error);</span>
     }
@@ -319,28 +319,28 @@ const verifyBackupCodeSchema = <span class="cstat-no" title="statement not cover
 );
 &nbsp;
 // Disable 2FA
-<span class="cstat-no" title="statement not covered" >router?.post('/disable', isAuthenticated, <span class="fstat-no" title="function not covered" >async (r</span>eq, res, next) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >router.post('/disable', isAuthenticated, <span class="fstat-no" title="function not covered" >async (r</span>eq, res, next) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-    const result = <span class="cstat-no" title="statement not covered" >await twoFactorService?.disable2FA(req?.user.id);</span>
-<span class="cstat-no" title="statement not covered" >    res?.json(result);</span>
+    const result = <span class="cstat-no" title="statement not covered" >await twoFactorService.disable2FA(req.user.id);</span>
+<span class="cstat-no" title="statement not covered" >    res.json(result);</span>
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    next(error);</span>
   }
 });
 &nbsp;
 // Verify backup code
-<span class="cstat-no" title="statement not covered" >router?.post(</span>
+<span class="cstat-no" title="statement not covered" >router.post(</span>
 &nbsp;
   '/verify-backup',
   isAuthenticated,
   validateRequest(verifyBackupCodeSchema),
 <span class="fstat-no" title="function not covered" >  async (r</span>eq, res, next) =&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const result = <span class="cstat-no" title="statement not covered" >await twoFactorService?.verifyBackupCode(</span>
-        req?.user.id,
-        req?.body.code
+      const result = <span class="cstat-no" title="statement not covered" >await twoFactorService.verifyBackupCode(</span>
+        req.user.id,
+        req.body.code
       );
-<span class="cstat-no" title="statement not covered" >      res?.json(result);</span>
+<span class="cstat-no" title="statement not covered" >      res.json(result);</span>
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      next(error);</span>
     }
@@ -349,10 +349,10 @@ const verifyBackupCodeSchema = <span class="cstat-no" title="statement not cover
 &nbsp;
 // List backup codes
 &nbsp;
-<span class="cstat-no" title="statement not covered" >router?.get('/backup-codes', isAuthenticated, <span class="fstat-no" title="function not covered" >async (r</span>eq, res, next) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >router.get('/backup-codes', isAuthenticated, <span class="fstat-no" title="function not covered" >async (r</span>eq, res, next) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-    const codes = <span class="cstat-no" title="statement not covered" >await twoFactorService?.listBackupCodes(req?.user.id);</span>
-<span class="cstat-no" title="statement not covered" >    res?.json(codes);</span>
+    const codes = <span class="cstat-no" title="statement not covered" >await twoFactorService.listBackupCodes(req.user.id);</span>
+<span class="cstat-no" title="statement not covered" >    res.json(codes);</span>
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    next(error);</span>
   }
@@ -360,10 +360,10 @@ const verifyBackupCodeSchema = <span class="cstat-no" title="statement not cover
 &nbsp;
 // Regenerate backup codes
 &nbsp;
-<span class="cstat-no" title="statement not covered" >router?.post('/regenerate-backup-codes', isAuthenticated, <span class="fstat-no" title="function not covered" >async (r</span>eq, res, next) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >router.post('/regenerate-backup-codes', isAuthenticated, <span class="fstat-no" title="function not covered" >async (r</span>eq, res, next) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-    const result = <span class="cstat-no" title="statement not covered" >await twoFactorService?.regenerateBackupCodes(req?.user.id);</span>
-<span class="cstat-no" title="statement not covered" >    res?.json(result);</span>
+    const result = <span class="cstat-no" title="statement not covered" >await twoFactorService.regenerateBackupCodes(req.user.id);</span>
+<span class="cstat-no" title="statement not covered" >    res.json(result);</span>
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    next(error);</span>
   }
@@ -376,7 +376,7 @@ const verifyBackupCodeSchema = <span class="cstat-no" title="statement not cover
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

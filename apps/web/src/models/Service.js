@@ -5,18 +5,15 @@ const ServiceSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'ProviderProfile',
     required: true,
-  },
-  name: {
+name: {
     type: String,
     required: [true, 'Please provide a service name'],
     trim: true,
-  },
-  description: {
+description: {
     type: String,
     required: [true, 'Please provide a service description'],
     maxlength: [1000, 'Description cannot be more than 1000 characters'],
-  },
-  category: {
+category: {
     type: String,
     required: [true, 'Please specify a category'],
     enum: [
@@ -32,134 +29,95 @@ const ServiceSchema = new mongoose.Schema({
       'meditation',
       'other',
     ],
-  },
-  subcategory: String,
+subcategory: String,
   duration: {
     type: Number, // Duration in minutes
     required: [true, 'Please specify service duration'],
     min: [5, 'Duration must be at least 5 minutes'],
-  },
-  price: {
+price: {
     type: Number,
     required: [true, 'Please specify service price'],
     min: [0, 'Price must be positive'],
-  },
-  discountedPrice: {
+discountedPrice: {
     type: Number,
     min: [0, 'Discounted price must be positive'],
     validate: {
       validator: function (value) {
         return !value || value < this.price;
-      },
-      message: 'Discounted price must be less than regular price',
-    },
-  },
-  discountExpiry: Date,
+message: 'Discounted price must be less than regular price',
+discountExpiry: Date,
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  images: [String],
+    images: [String],
   isPopular: {
     type: Boolean,
     default: false,
-  },
-  isPromoted: {
+isPromoted: {
     type: Boolean,
     default: false,
-  },
-  promotionExpiry: Date,
+promotionExpiry: Date,
   isAvailable: {
     type: Boolean,
     default: true,
-  },
-  maxParticipants: {
+maxParticipants: {
     type: Number,
     default: 1,
     min: [1, 'At least one participant is required'],
-  },
-  rating: {
+rating: {
     type: Number,
     min: 0,
     max: 5,
     default: 0,
-  },
-  reviewCount: {
+reviewCount: {
     type: Number,
     default: 0,
-  },
-
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  tags: [String],
+tags: [String],
   additionalInfo: {
     type: Map,
     of: String,
-  },
-  preparationInstructions: String,
+preparationInstructions: String,
   aftercareInstructions: String,
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  restrictions: [String],
+    restrictions: [String],
   ageRestriction: {
     minimum: Number,
     maximum: Number,
-  },
-  cancellationPolicy: {
+cancellationPolicy: {
     type: String,
     enum: ['inherit', 'flexible', 'moderate', 'strict'],
     default: 'inherit', // Inherits from provider profile
-  },
-  cancellationPolicyDescription: String,
+cancellationPolicyDescription: String,
   bufferTimeBefore: {
     type: Number, // Buffer time in minutes before the service
     default: 0,
-  },
-  bufferTimeAfter: {
+bufferTimeAfter: {
     type: Number, // Buffer time in minutes after the service
     default: 0,
-  },
-  availableDays: [
+availableDays: [
     {
       type: String,
       enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
-    },
-  ],
+],
   customAvailability: [
     {
       day: {
         type: String,
         enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
         required: true,
-      },
-      isAvailable: {
+isAvailable: {
         type: Boolean,
         default: true,
-      },
-      slots: [
+slots: [
         {
           startTime: String, // HH:MM format
           endTime: String, // HH:MM format
-        },
-      ],
-    },
-  ],
+],
+],
   createdAt: {
     type: Date,
     default: Date.now,
-  },
-  updatedAt: {
+updatedAt: {
     type: Date,
     default: Date.now,
-  },
-});
-
 // Text index for search
 ServiceSchema.index({ name: 'text', description: 'text', tags: 'text' });
 
@@ -167,8 +125,6 @@ ServiceSchema.index({ name: 'text', description: 'text', tags: 'text' });
 ServiceSchema.pre('save', function (next) {
   this.updatedAt = Date.now();
   next();
-});
-
 const Service = mongoose.model('Service', ServiceSchema);
 
 export default Service;

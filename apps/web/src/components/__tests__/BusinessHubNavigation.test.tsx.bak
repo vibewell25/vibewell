@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import business-hub-navigation from '../business-hub-navigation.tsx';
+
+describe('business-hub-navigation', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<business-hub-navigation />);
+    expect(container).toBeInTheDocument();
+  });
+});

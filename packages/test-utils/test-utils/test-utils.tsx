@@ -9,8 +9,6 @@ expect.extend(toHaveNoViolations);
 // Define wrapper providers if needed
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
-};
-
 const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
   render(ui, { wrapper: AllTheProviders, ...options });
 
@@ -38,47 +36,30 @@ export const mockMatchMedia = () => {
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
       dispatchEvent: jest.fn(),
-    })),
-  });
-};
-
+)),
 export const mockIntersectionObserver = () => {
   class IntersectionObserver {
     observe = jest.fn();
     unobserve = jest.fn();
     disconnect = jest.fn();
-  }
-
-  Object.defineProperty(window, 'IntersectionObserver', {
+Object.defineProperty(window, 'IntersectionObserver', {
     writable: true,
     value: IntersectionObserver,
-  });
-};
-
 export const mockResizeObserver = () => {
   class ResizeObserver {
     observe = jest.fn();
     unobserve = jest.fn();
     disconnect = jest.fn();
-  }
-
-  Object.defineProperty(window, 'ResizeObserver', {
+Object.defineProperty(window, 'ResizeObserver', {
     writable: true,
     value: ResizeObserver,
-  });
-};
-
 interface MockAPIOptions {
   method?: string;
   status?: number;
   delay?: number;
-}
-
 interface MockServiceOptions {
   implementation: (...args: unknown[]) => unknown;
   name: string;
-}
-
 type ErrorCallback = (message: string, ...args: unknown[]) => void;
 
 // Override console.error to prevent React error logging during tests
@@ -90,9 +71,8 @@ console.error = ((message: string, ...args: unknown[]) => {
       message.includes('Warning: React.createElement: type is invalid'))
   ) {
     return;
-  }
-  originalError(message, ...args);
-}) as ErrorCallback;
+originalError(message, ...args);
+) as ErrorCallback;
 
 // Setup all mocks
 export {};

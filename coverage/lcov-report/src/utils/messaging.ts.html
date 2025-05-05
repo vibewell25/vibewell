@@ -550,76 +550,76 @@ export interface PushNotification {
 }
 &nbsp;
 export class <span class="cstat-no" title="statement not covered" >MessagingUtils {</span>
-  private static <span class="cstat-no" title="statement not covered" >manager = ThirdPartyManager?.getInstance();</span>
+  private static <span class="cstat-no" title="statement not covered" >manager = ThirdPartyManager.getInstance();</span>
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async s</span>endEmail(message: EmailMessage): Promise&lt;any&gt; {
-    const messaging = <span class="cstat-no" title="statement not covered" >this?.manager.getService('messaging');</span>
+    const messaging = <span class="cstat-no" title="statement not covered" >this.manager.getService('messaging');</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!messaging) <span class="cstat-no" title="statement not covered" >throw new Error('Messaging service not initialized');</span></span>
 &nbsp;
-    const config = <span class="cstat-no" title="statement not covered" >this?.manager.getServiceConfig('messaging') as MessagingConfig;</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.manager.getServiceConfig('messaging') as MessagingConfig;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >      switch (config.service) {</span>
         case 'sendgrid': {
           const msg = <span class="cstat-no" title="statement not covered" >{</span>
-            to: message?.to,
-            from: message?.from || config?.sender?.email,
-            subject: message?.subject,
-            text: message?.text,
-            html: message?.html,
-            templateId: message?.templateId,
-            dynamicTemplateData: message?.templateData,
-            attachments: message?.attachments?.map(<span class="fstat-no" title="function not covered" >(a</span>ttachment) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
-              filename: attachment?.filename,
-              content: Buffer?.isBuffer(attachment?.content)
-                ? attachment?.content.toString('base64')
-                : attachment?.content,
-              type: attachment?.contentType,
+            to: message.to,
+            from: message.from || config.sender.email,
+            subject: message.subject,
+            text: message.text,
+            html: message.html,
+            templateId: message.templateId,
+            dynamicTemplateData: message.templateData,
+            attachments: message.attachments.map(<span class="fstat-no" title="function not covered" >(a</span>ttachment) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+              filename: attachment.filename,
+              content: Buffer.isBuffer(attachment.content)
+                ? attachment.content.toString('base64')
+                : attachment.content,
+              type: attachment.contentType,
             })),
           };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          return await messaging?.send(msg);</span>
+<span class="cstat-no" title="statement not covered" >          return await messaging.send(msg);</span>
         }
 &nbsp;
         case 'twilio': {
-<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (!message?.templateId) {</span>
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (!message.templateId) {</span>
 <span class="cstat-no" title="statement not covered" >            throw new Error('Template ID is required for Twilio email service');</span>
           }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          return await messaging?.messages.create({</span>
-            to: Array?.isArray(message?.to) ? message?.to[0] : message?.to,
-            from: message?.from || config?.sender?.email,
-            templateId: message?.templateId,
-            dynamicTemplateData: message?.templateData,
+<span class="cstat-no" title="statement not covered" >          return await messaging.messages.create({</span>
+            to: Array.isArray(message.to) ? message.to[0] : message.to,
+            from: message.from || config.sender.email,
+            templateId: message.templateId,
+            dynamicTemplateData: message.templateData,
           });
         }
 &nbsp;
         default:
-<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported email service: ${config?.service}`);</span>
+<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported email service: ${config.service}`);</span>
       }
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Failed to send email:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to send email:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async s</span>endSMS(message: SMSMessage): Promise&lt;any&gt; {
-    const messaging = <span class="cstat-no" title="statement not covered" >this?.manager.getService('messaging');</span>
+    const messaging = <span class="cstat-no" title="statement not covered" >this.manager.getService('messaging');</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!messaging) <span class="cstat-no" title="statement not covered" >throw new Error('Messaging service not initialized');</span></span>
 &nbsp;
-    const config = <span class="cstat-no" title="statement not covered" >this?.manager.getServiceConfig('messaging') as MessagingConfig;</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.manager.getServiceConfig('messaging') as MessagingConfig;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >      switch (config.service) {</span>
         case 'twilio': {
-          const recipients = <span class="cstat-no" title="statement not covered" >Array?.isArray(message?.to) ? message?.to : [message?.to];</span>
-          const responses = <span class="cstat-no" title="statement not covered" >await Promise?.all(</span>
-            recipients?.map(<span class="fstat-no" title="function not covered" >(t</span>o) =&gt;
-<span class="cstat-no" title="statement not covered" >              messaging?.messages.create({</span>
+          const recipients = <span class="cstat-no" title="statement not covered" >Array.isArray(message.to) ? message.to : [message.to];</span>
+          const responses = <span class="cstat-no" title="statement not covered" >await Promise.all(</span>
+            recipients.map(<span class="fstat-no" title="function not covered" >(t</span>o) =&gt;
+<span class="cstat-no" title="statement not covered" >              messaging.messages.create({</span>
                 to,
-                from: message?.from || config?.sender?.phone,
-                body: message?.body,
-                mediaUrl: message?.mediaUrl,
+                from: message.from || config.sender.phone,
+                body: message.body,
+                mediaUrl: message.mediaUrl,
               }),
             ),
           );
@@ -627,47 +627,47 @@ export class <span class="cstat-no" title="statement not covered" >MessagingUtil
         }
 &nbsp;
         default:
-<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported SMS service: ${config?.service}`);</span>
+<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported SMS service: ${config.service}`);</span>
       }
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Failed to send SMS:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to send SMS:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async s</span>endPushNotification(notification: PushNotification): Promise&lt;any&gt; {
-    const messaging = <span class="cstat-no" title="statement not covered" >this?.manager.getService('messaging');</span>
+    const messaging = <span class="cstat-no" title="statement not covered" >this.manager.getService('messaging');</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!messaging) <span class="cstat-no" title="statement not covered" >throw new Error('Messaging service not initialized');</span></span>
 &nbsp;
-    const config = <span class="cstat-no" title="statement not covered" >this?.manager.getServiceConfig('messaging') as MessagingConfig;</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.manager.getServiceConfig('messaging') as MessagingConfig;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >      switch (config.service) {</span>
 &nbsp;
         case 'firebase-fcm': {
           const message = <span class="cstat-no" title="statement not covered" >{</span>
             notification: {
-              title: notification?.title,
-              body: notification?.body,
-              imageUrl: notification?.imageUrl,
+              title: notification.title,
+              body: notification.body,
+              imageUrl: notification.imageUrl,
             },
-            data: notification?.data,
+            data: notification.data,
             android: {
-              priority: notification?.priority === 'high' ? 'high' : 'normal',
+              priority: notification.priority === 'high' ? 'high' : 'normal',
 &nbsp;
-              ttl: notification?.ttl ? notification?.ttl * 1000 : undefined,
+              ttl: notification.ttl ? notification.ttl * 1000 : undefined,
             },
-            tokens: notification?.tokens,
+            tokens: notification.tokens,
           };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          return await messaging?.sendMulticast(message);</span>
+<span class="cstat-no" title="statement not covered" >          return await messaging.sendMulticast(message);</span>
         }
 &nbsp;
         default:
-<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported push notification service: ${config?.service}`);</span>
+<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported push notification service: ${config.service}`);</span>
       }
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Failed to send push notification:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to send push notification:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -676,20 +676,20 @@ export class <span class="cstat-no" title="statement not covered" >MessagingUtil
     templateId: string,
     data: Record&lt;string, any&gt;,
   ): Promise&lt;boolean&gt; {
-    const messaging = <span class="cstat-no" title="statement not covered" >this?.manager.getService('messaging');</span>
+    const messaging = <span class="cstat-no" title="statement not covered" >this.manager.getService('messaging');</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!messaging) <span class="cstat-no" title="statement not covered" >throw new Error('Messaging service not initialized');</span></span>
 &nbsp;
-    const config = <span class="cstat-no" title="statement not covered" >this?.manager.getServiceConfig('messaging') as MessagingConfig;</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.manager.getServiceConfig('messaging') as MessagingConfig;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >      switch (config.service) {</span>
         case 'sendgrid': {
-          const template = <span class="cstat-no" title="statement not covered" >await messaging?.templates.get(templateId);</span>
-          const requiredVariables = <span class="cstat-no" title="statement not covered" >template?.versions[0].subject?.match(/{{(.*?)}}/g) || [];</span>
+          const template = <span class="cstat-no" title="statement not covered" >await messaging.templates.get(templateId);</span>
+          const requiredVariables = <span class="cstat-no" title="statement not covered" >template.versions[0].subject.match(/{{(.*?)}}/g) || [];</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          return requiredVariables?.every(<span class="fstat-no" title="function not covered" >(v</span>ariable) =&gt; {</span>
-            const key = <span class="cstat-no" title="statement not covered" >variable?.replace(/[{}]/g, '').trim();</span>
-<span class="cstat-no" title="statement not covered" >            return data?.hasOwnProperty(key);</span>
+<span class="cstat-no" title="statement not covered" >          return requiredVariables.every(<span class="fstat-no" title="function not covered" >(v</span>ariable) =&gt; {</span>
+            const key = <span class="cstat-no" title="statement not covered" >variable.replace(/[{}]/g, '').trim();</span>
+<span class="cstat-no" title="statement not covered" >            return data.hasOwnProperty(key);</span>
           });
         }
 &nbsp;
@@ -697,40 +697,40 @@ export class <span class="cstat-no" title="statement not covered" >MessagingUtil
 <span class="cstat-no" title="statement not covered" >          return true;</span>
       }
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Failed to validate email template:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to validate email template:', error);</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async g</span>etDeliveryStatus(messageId: string): Promise&lt;string&gt; {
-    const messaging = <span class="cstat-no" title="statement not covered" >this?.manager.getService('messaging');</span>
+    const messaging = <span class="cstat-no" title="statement not covered" >this.manager.getService('messaging');</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!messaging) <span class="cstat-no" title="statement not covered" >throw new Error('Messaging service not initialized');</span></span>
 &nbsp;
-    const config = <span class="cstat-no" title="statement not covered" >this?.manager.getServiceConfig('messaging') as MessagingConfig;</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.manager.getServiceConfig('messaging') as MessagingConfig;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >      switch (config.service) {</span>
         case 'twilio': {
-          const message = <span class="cstat-no" title="statement not covered" >await messaging?.messages(messageId).fetch();</span>
-<span class="cstat-no" title="statement not covered" >          return message?.status;</span>
+          const message = <span class="cstat-no" title="statement not covered" >await messaging.messages(messageId).fetch();</span>
+<span class="cstat-no" title="statement not covered" >          return message.status;</span>
         }
 &nbsp;
         case 'sendgrid': {
-          const events = <span class="cstat-no" title="statement not covered" >await messaging?.eventWebhook.getEventWebhookSettings();</span>
-<span class="cstat-no" title="statement not covered" >          return events?.processed ? 'delivered' : 'pending';</span>
+          const events = <span class="cstat-no" title="statement not covered" >await messaging.eventWebhook.getEventWebhookSettings();</span>
+<span class="cstat-no" title="statement not covered" >          return events.processed ? 'delivered' : 'pending';</span>
         }
 &nbsp;
 &nbsp;
         case 'firebase-fcm': {
-          const result = <span class="cstat-no" title="statement not covered" >await messaging?.messaging().getMessagingCondition(messageId);</span>
-<span class="cstat-no" title="statement not covered" >          return result?.success ? 'delivered' : 'failed';</span>
+          const result = <span class="cstat-no" title="statement not covered" >await messaging.messaging().getMessagingCondition(messageId);</span>
+<span class="cstat-no" title="statement not covered" >          return result.success ? 'delivered' : 'failed';</span>
         }
 &nbsp;
         default:
-<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported delivery status check for service: ${config?.service}`);</span>
+<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported delivery status check for service: ${config.service}`);</span>
       }
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Failed to get delivery status:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to get delivery status:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -742,7 +742,7 @@ export class <span class="cstat-no" title="statement not covered" >MessagingUtil
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

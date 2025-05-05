@@ -13,30 +13,20 @@ export default function EmailVerification() {
     try {
       const response = await fetch('/api/auth/verify-email', {
         method: 'POST',
-      });
-      
-      if (response.ok) {
+if (response.ok) {
         setMessage('Verification email sent! Please check your inbox.');
-      } else {
+else {
         const data = await response.json();
         setMessage(data.error || 'Failed to send verification email');
-      }
-    } catch (error) {
+catch (error) {
       setMessage('An error occurred while sending the verification email');
-    } finally {
+finally {
       setIsSending(false);
-    }
-  };
-
-  if (isLoading) {
+if (isLoading) {
     return <div>Loading...</div>;
-  }
-
-  if (!user || user.email_verified) {
+if (!user || user.email_verified) {
     return null;
-  }
-
-  return (
+return (
     <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
       <div className="flex">
         <div className="flex-shrink-0">
@@ -62,5 +52,3 @@ export default function EmailVerification() {
         </div>
       </div>
     </div>
-  );
-}

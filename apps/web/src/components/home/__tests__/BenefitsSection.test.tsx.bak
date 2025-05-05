@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import benefits-section from '../benefits-section.tsx';
+
+describe('benefits-section', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<benefits-section />);
+    expect(container).toBeInTheDocument();
+  });
+});

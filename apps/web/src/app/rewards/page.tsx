@@ -1,4 +1,3 @@
-'use client';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getServerSession } from 'next-auth';
@@ -16,10 +15,8 @@ export default function RewardsPage() {
       const session = await getServerSession(authOptions);
       if (!session) {
         router.push('/login');
-      }
-    };
-    checkAuth();
-  }, [router]);
+checkAuth();
+[router]);
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mx-auto max-w-4xl space-y-8">
@@ -61,5 +58,3 @@ export default function RewardsPage() {
         </Card>
       </div>
     </div>
-  );
-}

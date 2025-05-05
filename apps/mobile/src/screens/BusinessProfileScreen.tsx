@@ -21,7 +21,4 @@ const BusinessProfileScreen: React.FC = () => {
         <Button title="Manage Staff" onPress={() => navigation.navigate('StaffList', { business })} />
       </View>
     </View>
-  );
-};
-
 export default BusinessProfileScreen;

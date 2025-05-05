@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import virtual-wellness-room from '../virtual-wellness-room.tsx';
+
+describe('virtual-wellness-room', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<virtual-wellness-room />);
+    expect(container).toBeInTheDocument();
+  });
+});

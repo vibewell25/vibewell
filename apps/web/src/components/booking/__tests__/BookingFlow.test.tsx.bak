@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import booking-flow from '../booking-flow.tsx';
+
+describe('booking-flow', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<booking-flow />);
+    expect(container).toBeInTheDocument();
+  });
+});

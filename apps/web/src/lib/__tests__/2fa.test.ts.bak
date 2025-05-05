@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import 2fa from '../2fa.ts';
+
+describe('2fa', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<2fa />);
+    expect(container).toBeInTheDocument();
+  });
+});

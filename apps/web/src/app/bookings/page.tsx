@@ -1,5 +1,3 @@
-'use client';
-
 import { useSearchParams } from 'next/navigation';
 import { BookingList } from '@/components/booking/booking-list';
 import { BookingDetails } from '@/components/booking/booking-details';
@@ -16,27 +14,18 @@ function BookingsContent() {
       <div className="flex h-64 items-center justify-center">
         <p>Please sign in to view your bookings</p>
       </div>
-    );
-  }
-
-  if (bookingId) {
+if (bookingId) {
     return (
       <BookingDetails
         bookingId={bookingId}
         userId={user.id}
         role={user.role as 'customer' | 'provider'}
       />
-    );
-  }
-
-  return (
+return (
     <div className="container mx-auto py-8">
       <h1 className="mb-8 text-3xl font-bold">My Bookings</h1>
       <BookingList userId={user.id} role={user.role as 'customer' | 'provider'} />
     </div>
-  );
-}
-
 export default function BookingsPage() {
   return (
     <Suspense
@@ -44,5 +33,3 @@ export default function BookingsPage() {
     >
       <BookingsContent />
     </Suspense>
-  );
-}

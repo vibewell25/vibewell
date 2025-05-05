@@ -23,15 +23,13 @@ export default {
       serverError: 'Errore del server. Riprova più tardi.',
       noData: 'Nessun dato disponibile',
       unauthorized: 'Non autorizzato. Effettua nuovamente l\'accesso.',
-    },
-    search: 'Cerca...',
+search: 'Cerca...',
     seeAll: 'Vedi tutti',
     noResults: 'Nessun risultato trovato',
     errorOccurred: 'Si è verificato un errore',
     tryAgain: 'Per favore riprova',
     comingSoon: 'Prossimamente',
-  },
-  auth: {
+auth: {
     login: 'Accedi',
     signup: 'Registrati',
     email: 'Email',
@@ -50,8 +48,7 @@ export default {
       passwordRequired: 'Password obbligatoria',
       passwordTooShort: 'La password deve contenere almeno 8 caratteri',
       passwordsDontMatch: 'Le password non corrispondono',
-    },
-    signIn: 'Accedi',
+signIn: 'Accedi',
     signUp: 'Registrati',
     emailAddress: 'Indirizzo email',
     signInWithGoogle: 'Accedi con Google',
@@ -68,8 +65,7 @@ export default {
     verifyEmailSent: 'Abbiamo inviato un link di verifica alla tua email.',
     resetPasswordSuccess: 'Password reimpostata con successo',
     resetPasswordEmail: 'Email per reimpostare la password inviata',
-  },
-  profile: {
+profile: {
     title: 'Il mio profilo',
     personalInfo: 'Informazioni personali',
     firstName: 'Nome',
@@ -100,8 +96,7 @@ export default {
     takePhoto: 'Scatta foto',
     chooseFromLibrary: 'Scegli dalla galleria',
     removePhoto: 'Rimuovi foto',
-  },
-  booking: {
+booking: {
     title: 'Prenotazioni',
     myBookings: 'Le mie prenotazioni',
     upcoming: 'In arrivo',
@@ -140,8 +135,7 @@ export default {
     confirmationSent: 'I dettagli della conferma sono stati inviati alla tua email',
     noAvailability: 'Nessuna disponibilità per la data selezionata',
     tryAnotherDate: 'Prova un\'altra data',
-  },
-  dashboard: {
+dashboard: {
     title: 'Dashboard',
     welcome: 'Bentornato',
     todayAppointments: 'Appuntamenti di oggi',
@@ -161,8 +155,7 @@ export default {
     noRecentServices: 'Nessun servizio recente',
     viewAll: 'Vedi tutti',
     seeMore: 'Vedi altro',
-  },
-  services: {
+services: {
     title: 'Servizi',
     categories: 'Categorie',
     featured: 'In evidenza',
@@ -186,8 +179,7 @@ export default {
     sortByPrice: 'Ordina per prezzo',
     sortByPopularity: 'Ordina per popolarità',
     sortByRating: 'Ordina per valutazione',
-  },
-  practitioners: {
+practitioners: {
     title: 'Professionisti',
     specialties: 'Specialità',
     about: 'Informazioni',
@@ -204,8 +196,7 @@ export default {
     clientsSatisfied: 'Clienti soddisfatti',
     servicesOffered: 'Servizi offerti',
     contactPractitioner: 'Contatta il professionista',
-  },
-  payments: {
+payments: {
     title: 'Pagamenti',
     history: 'Cronologia pagamenti',
     methods: 'Metodi di pagamento',
@@ -236,8 +227,7 @@ export default {
     paymentFailed: 'Pagamento fallito',
     transactionHistory: 'Cronologia transazioni',
     downloadReceipt: 'Scarica ricevuta',
-  },
-  settings: {
+settings: {
     title: 'Impostazioni',
     account: 'Account',
     notifications: 'Notifiche',
@@ -260,8 +250,7 @@ export default {
       ja: 'Giapponese',
       zh: 'Cinese (Semplificato)',
       ar: 'Arabo'
-    },
-    selectLanguage: 'Seleziona lingua',
+selectLanguage: 'Seleziona lingua',
     darkMode: 'Modalità scura',
     soundEffects: 'Effetti sonori',
     hapticFeedback: 'Feedback aptico',
@@ -272,8 +261,7 @@ export default {
     faq: 'Domande frequenti',
     termsOfService: 'Termini di servizio',
     deleteAccount: 'Elimina account',
-  },
-  offline: {
+offline: {
     offlineMode: 'Modalità offline',
     limitedFunctionality: 'Funzionalità limitata in modalità offline',
     syncRequired: 'Sincronizzazione richiesta',
@@ -283,8 +271,7 @@ export default {
     offlineData: 'Dati offline',
     dataWillSync: 'I tuoi dati si sincronizzeranno quando tornerai online',
     manageOfflineData: 'Gestisci dati offline',
-  },
-  errors: {
+errors: {
     networkError: 'Errore di rete',
     serverError: 'Errore del server',
     unknownError: 'Errore sconosciuto',
@@ -294,5 +281,3 @@ export default {
     dataNotFound: 'Dati non trovati',
     pleaseCheckConnection: 'Verifica la tua connessione internet',
     tryAgainLater: 'Per favore riprova più tardi'
-  }
-}; 

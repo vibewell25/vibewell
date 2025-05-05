@@ -1,4 +1,3 @@
-'use client';;
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { BookingService } from '@/services/booking-service';
@@ -14,26 +13,19 @@ interface Booking {
     name: string;
     duration: number;
     price: number;
-  };
-  provider: {
+provider: {
     name: string;
     email: string;
-  };
-  customer: {
+customer: {
     name: string;
     email: string;
-  };
-  start_time: string;
+start_time: string;
   end_time: string;
   status: string;
   notes?: string;
-}
-
 interface BookingListProps {
   userId: string;
   role: 'customer' | 'provider';
-}
-
 export function BookingList({ userId, role }: BookingListProps) {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
@@ -44,7 +36,7 @@ export function BookingList({ userId, role }: BookingListProps) {
 
   useEffect(() => {
     loadBookings();
-  }, [userId, role]);
+[userId, role]);
 
   const loadBookings = async ( {
   const start = Date.now();
@@ -54,19 +46,15 @@ export function BookingList({ userId, role }: BookingListProps) {
       const bookingService = new BookingService();
       const data = await bookingService.getBookings(userId, role);
       setBookings(data);
-    } catch (err) {
+catch (err) {
       setError('Failed to load bookings');
       toast({
         title: 'Error',
         description: 'Failed to load bookings. Please try again.',
         variant: 'destructive',
-      });
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  const getStatusBadge = (status: string) => {
+const getStatusBadge = (status: string) => {
     const statusMap: Record<
       string,
       { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }
@@ -76,31 +64,20 @@ export function BookingList({ userId, role }: BookingListProps) {
       completed: { label: 'Completed', variant: 'outline' },
       cancelled_by_customer: { label: 'Cancelled by Customer', variant: 'destructive' },
       cancelled_by_provider: { label: 'Cancelled by Provider', variant: 'destructive' },
-    };
-
-    const statusInfo = statusMap[status] || { label: status, variant: 'secondary' };
+const statusInfo = statusMap[status] || { label: status, variant: 'secondary' };
     return <Badge variant={statusInfo.variant}>{statusInfo.label}</Badge>;
-  };
-
-  const filteredBookings = bookings.filter((booking) => {
+const filteredBookings = bookings.filter((booking) => {
     if (filter === 'all') return true;
     return booking.status === filter;
-  });
-
-  if (loading) {
+if (loading) {
     return <div className="flex h-64 items-center justify-center">Loading...</div>;
-  }
-
-  if (error) {
+if (error) {
     return (
       <div className="flex h-64 flex-col items-center justify-center">
         <p className="mb-4 text-red-500">{error}</p>
         <Button onClick={loadBookings}>Retry</Button>
       </div>
-    );
-  }
-
-  if (filteredBookings.length === 0) {
+if (filteredBookings.length === 0) {
     return (
       <div className="flex h-64 flex-col items-center justify-center">
         <p className="mb-4 text-gray-500">No bookings found</p>
@@ -110,10 +87,7 @@ export function BookingList({ userId, role }: BookingListProps) {
           </Button>
         )}
       </div>
-    );
-  }
-
-  return (
+return (
     <div className="space-y-4">
       <div className="mb-4 flex gap-2">
         <Button variant={filter === 'all' ? 'default' : 'outline'} onClick={() => setFilter('all')}>
@@ -170,8 +144,7 @@ export function BookingList({ userId, role }: BookingListProps) {
                   onClick={(e) => {
                     e.stopPropagation();
                     router.push(`/bookings?id=${booking.id}`);
-                  }}
-                >
+>
                   View Details
                 </Button>
               </div>
@@ -185,5 +158,3 @@ export function BookingList({ userId, role }: BookingListProps) {
         ))}
       </div>
     </div>
-  );
-}

@@ -5,6 +5,4 @@ interface TooltipProps {
   children: React.ReactNode;
   position?: 'top' | 'right' | 'bottom' | 'left';
   className?: string;
-}
-
 export {};

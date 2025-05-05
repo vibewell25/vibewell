@@ -1,4 +1,3 @@
-'use client';;
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -23,8 +22,7 @@ const resources = [
       'Learn effective strategies to keep your wellness clients coming back and increase your business sustainability.',
     tags: ['retention', 'client management', 'loyalty programs'],
     type: 'resource',
-  },
-  {
+{
     id: '2',
     title: 'Referral Marketing for Health and Wellness Providers',
     author: 'Sophia Chen, Referral Marketing Strategist',
@@ -37,8 +35,7 @@ const resources = [
     tags: ['referrals', 'marketing', 'client acquisition'],
     downloadUrl: '/downloads/referral-program-template.pdf',
     type: 'resource',
-  },
-  {
+{
     id: '3',
     title: 'Converting First-Time Visitors into Regular Clients',
     author: 'Marcus Williams, Conversion Specialist',
@@ -51,7 +48,6 @@ const resources = [
     tags: ['conversion', 'client experience', 'onboarding'],
     premium: true,
     type: 'resource',
-  },
 ];
 export default function ClientAcquisitionResourcesPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -67,8 +63,7 @@ export default function ClientAcquisitionResourcesPage() {
       resource.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesCategory = selectedCategory === null || resource.category === selectedCategory;
     return matchesSearch && matchesCategory;
-  });
-  // Handle resource sharing
+// Handle resource sharing
   const handleShare = (resource: any) => {
     if (navigator.share) {
       navigator
@@ -76,16 +71,13 @@ export default function ClientAcquisitionResourcesPage() {
           title: resource.title,
           text: resource.excerpt,
           url: window.location.origin + `/business-hub/client-acquisition/resources/${resource.id}`,
-        })
+)
         .catch((error) => console.log('Error sharing', error));
-    } else {
+else {
       // Fallback for browsers that don't support the Web Share API
       alert(
         `Share this resource: ${window.location.origin}/business-hub/client-acquisition/resources/${resource.id}`,
-      );
-    }
-  };
-  return (
+return (
     <Layout>
       <div className="flex min-h-screen flex-col bg-gray-50">
         <div className="container mx-auto px-4 py-8">
@@ -158,8 +150,7 @@ export default function ClientAcquisitionResourcesPage() {
                         onClick={() => {
                           setSearchTerm('');
                           setSelectedCategory(null);
-                        }}
-                      >
+>
                         Clear filters
                       </Button>
                     </div>
@@ -269,5 +260,3 @@ export default function ClientAcquisitionResourcesPage() {
         </div>
       </div>
     </Layout>
-  );
-}

@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/76</span>
+                <span class='fraction'>0/70</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/20</span>
+                <span class='fraction'>0/14</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/69</span>
+                <span class='fraction'>0/67</span>
             </div>
         
             
@@ -235,9 +235,7 @@
 <a name='L170'></a><a href='#L170'>170</a>
 <a name='L171'></a><a href='#L171'>171</a>
 <a name='L172'></a><a href='#L172'>172</a>
-<a name='L173'></a><a href='#L173'>173</a>
-<a name='L174'></a><a href='#L174'>174</a>
-<a name='L175'></a><a href='#L175'>175</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L173'></a><a href='#L173'>173</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -404,8 +402,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -446,13 +442,13 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   }&gt;,
 ) {
 <span class="cstat-no" title="statement not covered" >  describe('form validation', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >    testCases?.forEach(<span class="fstat-no" title="function not covered" >({</span> field, value, expectedError }) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    testCases.forEach(<span class="fstat-no" title="function not covered" >({</span> field, value, expectedError }) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      it(`validates ${field} with value "${value}"`, <span class="fstat-no" title="function not covered" >async () =&gt; {</span></span>
         const { getByLabelText, findByText } = <span class="cstat-no" title="statement not covered" >customRender(formComponent);</span>
         const input = <span class="cstat-no" title="statement not covered" >getByLabelText(field);</span>
-        const user = <span class="cstat-no" title="statement not covered" >userEvent?.setup();</span>
-<span class="cstat-no" title="statement not covered" >        await user?.type(input, value);</span>
-<span class="cstat-no" title="statement not covered" >        await user?.tab();</span>
+        const user = <span class="cstat-no" title="statement not covered" >userEvent.setup();</span>
+<span class="cstat-no" title="statement not covered" >        await user.type(input, value);</span>
+<span class="cstat-no" title="statement not covered" >        await user.tab();</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (expectedError) {</span>
           const error = <span class="cstat-no" title="statement not covered" >await findByText(expectedError);</span>
@@ -495,9 +491,9 @@ export async function <span class="cstat-no" title="statement not covered" ><spa
 // Helper to test responsive behavior
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >testResponsiveBehavior(</span></span>component: ReactElement, breakpoints: string[]) {
 <span class="cstat-no" title="statement not covered" >  describe('responsive behavior', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >    breakpoints?.forEach(<span class="fstat-no" title="function not covered" >(b</span>reakpoint) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    breakpoints.forEach(<span class="fstat-no" title="function not covered" >(b</span>reakpoint) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      it(`renders correctly at ${breakpoint}`, <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >        window?.resizeTo(parseInt(breakpoint), 800);</span>
+<span class="cstat-no" title="statement not covered" >        window.resizeTo(parseInt(breakpoint), 800);</span>
         const { container } = <span class="cstat-no" title="statement not covered" >customRender(component);</span>
 <span class="cstat-no" title="statement not covered" >        expect(container).toMatchSnapshot();</span>
       });
@@ -516,11 +512,11 @@ interface TestClientConfig {
 &nbsp;
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >createTestClient(</span></span>config: TestClientConfig = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> {
 <span class="cstat-no" title="statement not covered" >  return axios.create({</span>
-    baseURL: config?.baseURL || 'http://localhost:3000',
-    timeout: config?.timeout || 5000,
+    baseURL: config.baseURL || 'http://localhost:3000',
+    timeout: config.timeout || 5000,
     headers: {
       'Content-Type': 'application/json',
-      ...config?.headers,
+      ...config.headers,
     },
     validateStatus: <span class="fstat-no" title="function not covered" >(s</span>tatus) =&gt; <span class="cstat-no" title="statement not covered" >status &lt; 500,</span>
   });
@@ -534,19 +530,19 @@ interface TestDataGenerators {
 &nbsp;
 const generators: TestDataGenerators = <span class="cstat-no" title="statement not covered" >{</span>
   user: <span class="fstat-no" title="function not covered" >() =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
-    id: Math?.random().toString(36).substring(2, 9),
-    name: `Test User ${Math?.random().toString(36).substring(2, 5)}`,
-    email: `test${Math?.random().toString(36).substring(2, 5)}@example?.com`,
+    id: Math.random().toString(36).substring(2, 9),
+    name: `Test User ${Math.random().toString(36).substring(2, 5)}`,
+    email: `test${Math.random().toString(36).substring(2, 5)}@example.com`,
   }),
   post: <span class="fstat-no" title="function not covered" >() =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
-    id: Math?.random().toString(36).substring(2, 9),
-    title: `Test Post ${Math?.random().toString(36).substring(2, 5)}`,
-    content: `Test content ${Math?.random().toString(36).substring(2, 20)}`,
+    id: Math.random().toString(36).substring(2, 9),
+    title: `Test Post ${Math.random().toString(36).substring(2, 5)}`,
+    content: `Test content ${Math.random().toString(36).substring(2, 20)}`,
   }),
   comment: <span class="fstat-no" title="function not covered" >() =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
-    id: Math?.random().toString(36).substring(2, 9),
-    content: `Test comment ${Math?.random().toString(36).substring(2, 20)}`,
-    userId: Math?.random().toString(36).substring(2, 9),
+    id: Math.random().toString(36).substring(2, 9),
+    content: `Test comment ${Math.random().toString(36).substring(2, 20)}`,
+    userId: Math.random().toString(36).substring(2, 9),
   }),
 };
 &nbsp;
@@ -569,7 +565,7 @@ export async function <span class="cstat-no" title="statement not covered" ><spa
 &nbsp;
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >calculatePercentile(</span></span>values: number[], percentile: number): number {
   const sorted = <span class="cstat-no" title="statement not covered" >[...values].sort(<span class="fstat-no" title="function not covered" >(a</span>, b) =&gt; <span class="cstat-no" title="statement not covered" >a - b);</span></span>
-  const index = <span class="cstat-no" title="statement not covered" >Math?.ceil((percentile / 100) * sorted?.length) - 1;</span>
+  const index = <span class="cstat-no" title="statement not covered" >Math.ceil((percentile / 100) * sorted.length) - 1;</span>
 <span class="cstat-no" title="statement not covered" >  return sorted[index];</span>
 }
 &nbsp;
@@ -578,12 +574,10 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   let size = <span class="cstat-no" title="statement not covered" >bytes;</span>
   let unitIndex = <span class="cstat-no" title="statement not covered" >0;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  while (size &gt;= 1024 &amp;&amp; unitIndex &lt; units?.length - 1) {</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (size &gt; Number.MAX_SAFE_INTEGER || size &lt; Number.MIN_SAFE_INTEGER) <span class="cstat-no" title="statement not covered" >throw new Error('Integer overflow'); <span class="cstat-no" title="statement not covered" >s</span></span>ize /= 1024;</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (unitIndex &gt; Number.MAX_SAFE_INTEGER || unitIndex &lt; Number.MIN_SAFE_INTEGER) <span class="cstat-no" title="statement not covered" >throw new Error('Integer overflow'); <span class="cstat-no" title="statement not covered" >u</span></span>nitIndex++;</span>
+<span class="cstat-no" title="statement not covered" >  while (size &gt;= 1024 &amp;&amp; unitIndex &lt; units.length - 1) {</span>
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return `${size?.toFixed(2)} ${units[unitIndex]}`;</span>
+<span class="cstat-no" title="statement not covered" >  return `${size.toFixed(2)} ${units[unitIndex]}`;</span>
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -592,7 +586,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

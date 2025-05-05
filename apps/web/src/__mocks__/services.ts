@@ -7,10 +7,6 @@ export class ProductService {
       subcategory: 'Fitness',
       brand: 'TestBrand',
       description: 'A test product',
-    },
-  });
-}
-
 export class FeedbackService {
   getProductFeedbackStats = jest.fn().mockResolvedValue({
     ratingDistribution: {
@@ -19,11 +15,6 @@ export class FeedbackService {
       '3': 15,
       '4': 25,
       '5': 45,
-    },
-  });
-}
-
 export class AnalyticsService {
   trackEvent = jest.fn();
   trackTryOnSession = jest.fn();
-}

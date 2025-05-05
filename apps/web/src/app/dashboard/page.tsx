@@ -1,5 +1,3 @@
-'use client';
-
 import { useUser } from '@auth0/nextjs-auth0/client';
 import Link from 'next/link';
 import { useEffect } from 'react';
@@ -13,18 +11,14 @@ export default function Dashboard() {
     // If not loading and no user, redirect to login
     if (!isLoading && !user) {
       router.push('/api/auth/login?returnTo=/dashboard');
-    }
-  }, [isLoading, user, router]);
+[isLoading, user, router]);
 
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-indigo-600"></div>
       </div>
-    );
-  }
-
-  if (error) {
+if (error) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-4">
         <h1 className="text-2xl font-bold text-red-600">Authentication Error</h1>
@@ -38,14 +32,9 @@ export default function Dashboard() {
           </Link>
         </div>
       </div>
-    );
-  }
-
-  if (!user) {
+if (!user) {
     return null; // The useEffect will handle the redirect
-  }
-
-  // Get user roles if available
+// Get user roles if available
   const namespace = process.env.NEXT_PUBLIC_AUTH0_NAMESPACE || 'https://vibewell.com';
   const userRoles = user[`${namespace}/roles`] || [];
   const isAdmin = userRoles.includes('admin');
@@ -139,5 +128,3 @@ export default function Dashboard() {
         </div>
       </div>
     </div>
-  );
-}

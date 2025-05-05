@@ -1,4 +1,3 @@
-
 import { prisma } from '@/lib/prisma';
 
 import { ModuleStatus, TrainingModuleType, TrainingPlanStatus } from '@prisma/client';
@@ -14,20 +13,15 @@ export async function {
   endDate: Date;
   objectives: any[];
   budget?: number;
-}) {
+) {
   return prisma.trainingPlan.create({
     data: {
       ...data,
       status: 'DRAFT',
       progress: 0,
       objectives: data.objectives as any,
-    },
-    include: {
+include: {
       modules: true,
-    },
-  });
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); getTrainingPlan(planId: string) {
@@ -37,15 +31,8 @@ export async function {
       modules: {
         include: {
           progress: true,
-        },
-        orderBy: {
+orderBy: {
           order: 'asc',
-        },
-      },
-    },
-  });
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); updateTrainingPlan(
@@ -59,17 +46,12 @@ export async function {
     status?: TrainingPlanStatus;
     progress?: number;
     budget?: number;
-  },
 ) {
   return prisma.trainingPlan.update({
     where: { id: planId },
     data,
     include: {
       modules: true,
-    },
-  });
-}
-
 // Training Module Functions
 export async function {
   const start = Date.now();
@@ -82,15 +64,11 @@ export async function {
   order: number;
   required?: boolean;
   content?: any;
-}) {
+) {
   return prisma.trainingPlanModule.create({
     data: {
       ...data,
       content: data.content as any,
-    },
-  });
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); updateTrainingModule(
@@ -104,17 +82,12 @@ export async function {
     required?: boolean;
     content?: any;
     status?: ModuleStatus;
-  },
 ) {
   return prisma.trainingPlanModule.update({
     where: { id: moduleId },
     data: {
       ...data,
       content: data.content as any,
-    },
-  });
-}
-
 // Module Progress Functions
 export async function {
   const start = Date.now();
@@ -127,30 +100,23 @@ export async function {
   notes?: string;
   evidence?: any;
   timeSpent?: number;
-}) {
+) {
   return prisma.moduleProgress.upsert({
     where: {
       moduleId_staffId: {
         moduleId: data.moduleId,
         staffId: data.staffId,
-      },
-    },
-    create: {
+create: {
       ...data,
       evidence: data.evidence as any,
       attempts: 1,
       startedAt: new Date(),
       completedAt: data.status === 'COMPLETED' ? new Date() : null,
-    },
-    update: {
+update: {
       ...data,
       evidence: data.evidence as any,
       attempts: { increment: 1 },
       completedAt: data.status === 'COMPLETED' ? new Date() : undefined,
-    },
-  });
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); getModuleProgress(moduleId: string, staffId: string) {
@@ -159,11 +125,6 @@ export async function {
       moduleId_staffId: {
         moduleId,
         staffId,
-      },
-    },
-  });
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); getStaffTrainingProgress(staffId: string) {
@@ -173,15 +134,8 @@ export async function {
       module: {
         include: {
           plan: true,
-        },
-      },
-    },
-    orderBy: {
+orderBy: {
       updatedAt: 'desc',
-    },
-  });
-}
-
 // Analytics Functions
 export async function {
   const start = Date.now();
@@ -190,10 +144,7 @@ export async function {
     where: { staffId },
     include: {
       module: true,
-    },
-  });
-
-  const completedModules = progress.filter((p) => p.status === 'COMPLETED').length;
+const completedModules = progress.filter((p) => p.status === 'COMPLETED').length;
   const totalModules = progress.length;
   const averageScore = progress.reduce((acc, p) => acc + (p.score || 0), 0) / completedModules || 0;
   const totalTimeSpent = progress.reduce((acc, p) => acc + (p.timeSpent || 0), 0);
@@ -209,8 +160,5 @@ export async function {
       (acc, p) => {
         acc[p.status] = (acc[p.status] || 0) + 1;
         return acc;
-      },
-      {} as Record<ModuleStatus, number>,
+{} as Record<ModuleStatus, number>,
     ),
-  };
-}

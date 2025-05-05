@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { WebAuthnButton } from '@/components/auth/WebAuthnButton';
 import { AuthenticatorList } from '@/components/auth/AuthenticatorList';
@@ -15,13 +13,9 @@ import { prisma } from '@/lib/prisma';
 export const metadata: Metadata = {
   title: 'Security Settings - VibeWell',
   description: 'Manage your security settings and authenticators',
-};
-
 interface Authenticator {
   id: string;
   createdAt: Date;
-}
-
 export default function SecuritySettingsPage() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
@@ -29,48 +23,33 @@ export default function SecuritySettingsPage() {
     setMessage({
       type: 'success',
       text: 'Device registered successfully!',
-    });
-    setTimeout(() => setMessage(null), 5000);
-  };
-
-  const handleError = (error: Error) => {
+setTimeout(() => setMessage(null), 5000);
+const handleError = (error: Error) => {
     setMessage({
       type: 'error',
       text: error.message,
-    });
-    setTimeout(() => setMessage(null), 5000);
-  };
-
-  const handleDelete = async ( {
+setTimeout(() => setMessage(null), 5000);
+const handleDelete = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');authenticatorId: string) => {
     try {
       const response = await fetch(`/api/auth/webauthn/authenticators?id=${authenticatorId}`, {
         method: 'DELETE',
-      });
-
-      if (!response.ok) {
+if (!response.ok) {
         const error = await response.json();
         throw new WebAuthnError(
           error.error || 'Failed to delete authenticator',
           error.code || 'UNKNOWN_ERROR',
           error.details,
-        );
-      }
-
-      setMessage({
+setMessage({
         type: 'success',
         text: 'Device removed successfully!',
-      });
-      setTimeout(() => setMessage(null), 5000);
-    } catch (err) {
+setTimeout(() => setMessage(null), 5000);
+catch (err) {
       const error = err instanceof Error ? err : new Error('Failed to delete authenticator');
       handleError(error);
       throw error;
-    }
-  };
-
-  const handleRename = async ( {
+const handleRename = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');authenticatorId: string, name: string) => {
     try {
@@ -78,38 +57,26 @@ export default function SecuritySettingsPage() {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: authenticatorId, name }),
-      });
-
-      if (!response.ok) {
+body: JSON.stringify({ id: authenticatorId, name }),
+if (!response.ok) {
         const error = await response.json();
         throw new WebAuthnError(
           error.error || 'Failed to rename authenticator',
           error.code || 'UNKNOWN_ERROR',
           error.details,
-        );
-      }
-
-      setMessage({
+setMessage({
         type: 'success',
         text: 'Device renamed successfully!',
-      });
-      setTimeout(() => setMessage(null), 5000);
-    } catch (err) {
+setTimeout(() => setMessage(null), 5000);
+catch (err) {
       const error = err instanceof Error ? err : new Error('Failed to rename authenticator');
       handleError(error);
       throw error;
-    }
-  };
-
-  const session = await getServerSession(authOptions);
+const session = await getServerSession(authOptions);
 
   if (!session.user) {
     redirect('/sign-in');
-  }
-
-  const authenticators = await prisma.$queryRaw<Authenticator[]>`
+const authenticators = await prisma.$queryRaw<Authenticator[]>`
     SELECT id, "createdAt"
     FROM "WebAuthnAuthenticator"
     WHERE "userId" = ${session.user.id}
@@ -164,7 +131,7 @@ export default function SecuritySettingsPage() {
         <div
           className={`mb-6 rounded-lg p-4 ${
             message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
-          }`}
+`}
         >
           {message.text}
         </div>
@@ -267,5 +234,3 @@ export default function SecuritySettingsPage() {
         </div>
       </section>
     </div>
-  );
-}

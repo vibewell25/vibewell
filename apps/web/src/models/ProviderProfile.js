@@ -5,13 +5,11 @@ const ProviderProfileSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
-  },
-  businessName: {
+businessName: {
     type: String,
     required: [true, 'Please provide a business name'],
     trim: true,
-  },
-  businessType: {
+businessType: {
     type: String,
     enum: [
       'salon',
@@ -24,75 +22,45 @@ const ProviderProfileSchema = new mongoose.Schema({
       'other',
     ],
     required: [true, 'Please specify business type'],
-  },
-  description: {
+description: {
     type: String,
     required: [true, 'Please provide a business description'],
     maxlength: [500, 'Description cannot be more than 500 characters'],
-  },
-  logo: {
+logo: {
     type: String,
 
-    // Safe integer operation
-    if (default > Number.MAX_SAFE_INTEGER || default < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     default: 'default-logo.png',
-  },
-  coverPhoto: {
+coverPhoto: {
     type: String,
 
-    // Safe integer operation
-    if (default > Number.MAX_SAFE_INTEGER || default < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     default: 'default-cover.png',
-  },
-
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  gallery: [String],
+gallery: [String],
   address: {
     street: {
       type: String,
       required: [true, 'Please provide a street address'],
-    },
-    city: {
+city: {
       type: String,
       required: [true, 'Please provide a city'],
-    },
-    state: {
+state: {
       type: String,
       required: [true, 'Please provide a state'],
-    },
-    zipCode: {
+zipCode: {
       type: String,
       required: [true, 'Please provide a zip code'],
-    },
-    country: {
+country: {
       type: String,
       required: [true, 'Please provide a country'],
-    },
-    coordinates: {
+coordinates: {
       type: {
         type: String,
         enum: ['Point'],
         default: 'Point',
-      },
-      coordinates: {
+coordinates: {
 
-    // Safe array access
-    if (Number < 0 || Number >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-        type: [Number], // [longitude, latitude]
+    type: [Number], // [longitude, latitude]
         default: [0, 0],
-      },
-    },
-  },
-  contactEmail: String,
+contactEmail: String,
   contactPhone: String,
   website: String,
   socialMedia: {
@@ -102,118 +70,83 @@ const ProviderProfileSchema = new mongoose.Schema({
     linkedin: String,
     youtube: String,
     tiktok: String,
-  },
-  certifications: [
+certifications: [
     {
       name: {
         type: String,
         required: true,
-      },
-      issuingOrganization: String,
+issuingOrganization: String,
       issueDate: Date,
       expiryDate: Date,
       documentUrl: String,
       isVerified: {
         type: Boolean,
         default: false,
-      },
-    },
-  ],
+],
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  expertise: [String],
+    expertise: [String],
   yearsOfExperience: Number,
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  languages: [String],
+    languages: [String],
   businessHours: [
     {
       day: {
         type: String,
         enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
         required: true,
-      },
-      isOpen: {
+isOpen: {
         type: Boolean,
         default: true,
-      },
-      openTime: String,
+openTime: String,
       closeTime: String,
       breaks: [
         {
           startTime: String,
           endTime: String,
-        },
-      ],
-    },
-  ],
+],
+],
   subscriptionPlan: {
     type: String,
     enum: ['free', 'basic', 'premium'],
     default: 'free',
-  },
-  subscriptionExpiry: Date,
+subscriptionExpiry: Date,
   rating: {
     type: Number,
     min: 0,
     max: 5,
     default: 0,
-  },
-  reviewCount: {
+reviewCount: {
     type: Number,
     default: 0,
-  },
-  instantBookingEnabled: {
+instantBookingEnabled: {
     type: Boolean,
     default: false,
-  },
-  preBookingEnabled: {
+preBookingEnabled: {
     type: Boolean,
     default: true,
-  },
-  requirePaymentUpfront: {
+requirePaymentUpfront: {
     type: Boolean,
     default: false,
-  },
-  cancellationPolicy: {
+cancellationPolicy: {
     type: String,
     enum: ['flexible', 'moderate', 'strict'],
     default: 'moderate',
-  },
-  cancellationPolicyDescription: String,
+cancellationPolicyDescription: String,
   isVerified: {
     type: Boolean,
     default: false,
-  },
-  isActive: {
+isActive: {
     type: Boolean,
     default: true,
-  },
-  isApproved: {
+isApproved: {
     type: Boolean,
     default: false,
-  },
-  createdAt: {
+createdAt: {
     type: Date,
     default: Date.now,
-  },
-  updatedAt: {
+updatedAt: {
     type: Date,
     default: Date.now,
-  },
-});
-
-
-    // Safe integer operation
-    if (location > Number.MAX_SAFE_INTEGER || location < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
 // Create geospatial index for location-based searches
 ProviderProfileSchema.index({ 'address.coordinates.coordinates': '2dsphere' });
 
@@ -221,8 +154,6 @@ ProviderProfileSchema.index({ 'address.coordinates.coordinates': '2dsphere' });
 ProviderProfileSchema.pre('save', function (next) {
   this.updatedAt = Date.now();
   next();
-});
-
 const ProviderProfile = mongoose.model('ProviderProfile', ProviderProfileSchema);
 
 export default ProviderProfile;

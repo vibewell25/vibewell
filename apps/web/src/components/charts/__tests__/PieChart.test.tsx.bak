@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import pie-chart from '../pie-chart.tsx';
+
+describe('pie-chart', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<pie-chart />);
+    expect(container).toBeInTheDocument();
+  });
+});

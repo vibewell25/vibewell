@@ -16,14 +16,11 @@ const EmailCampaignsScreen: React.FC = () => {
     try {
       const data = await getEmailCampaigns();
       setCampaigns(data);
-    } catch (err) {
+catch (err) {
       console.error(err);
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  useEffect(() => { fetchCampaigns(); }, []);
+useEffect(() => { fetchCampaigns(); }, []);
 
   const handleAdd = async () => {
     if (!name || !subject || !body) { Alert.alert('Error', 'All fields required'); return; }
@@ -32,21 +29,16 @@ const EmailCampaignsScreen: React.FC = () => {
       await createEmailCampaign({ name, subject, body, scheduledAt: scheduledAt || undefined });
       setName(''); setSubject(''); setBody(''); setScheduledAt('');
       fetchCampaigns();
-    } catch (err) {
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to create');
-    }
-  };
-
-  const handleDelete = async (id: string) => {
+const handleDelete = async (id: string) => {
     setLoading(true);
     try {
       await deleteEmailCampaign(id);
       fetchCampaigns();
-    } catch (err) { console.error(err); }
-  };
-
-  return (
+catch (err) { console.error(err); }
+return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
       <View style={styles.form}>
         <TextInput
@@ -89,15 +81,9 @@ const EmailCampaignsScreen: React.FC = () => {
             </View>
           )}
         />
-      }
-    </SafeAreaView>
-  );
-};
-
+</SafeAreaView>
 const styles = StyleSheet.create({
   form: { padding: 16 },
   input: { borderWidth: 1, marginBottom: 8, padding: 8, borderRadius: 4 },
   item: { padding: 16, borderBottomWidth: 1, borderColor: '#ccc', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-});
-
 export default EmailCampaignsScreen;

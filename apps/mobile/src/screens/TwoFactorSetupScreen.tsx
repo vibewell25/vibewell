@@ -11,7 +11,7 @@ import {
   Image,
   Clipboard,
   Share
-} from 'react-native';
+from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNavigation } from '@react-navigation/native';
@@ -22,14 +22,10 @@ import TwoFactorService from '../services/auth/twoFactorService';
 
 interface TwoFactorForm {
   verificationCode: string;
-}
-
 const validationSchema = Yup.object().shape({
   verificationCode: Yup.string()
     .matches(/^\d{6}$/, 'Code must be exactly 6 digits')
     .required('Verification code is required'),
-});
-
 const TwoFactorSetupScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const navigation = useNavigation();
@@ -42,7 +38,7 @@ const TwoFactorSetupScreen: React.FC = () => {
 
   useEffect(() => {
     generateSecretKey();
-  }, []);
+[]);
 
   const generateSecretKey = async () => {
     try {
@@ -52,36 +48,26 @@ const TwoFactorSetupScreen: React.FC = () => {
       if (response.success && response.data) {
         setSecretKey(response.data.secretKey);
         setQrCodeUrl(response.data.qrCodeUrl);
-      } else {
+else {
         Alert.alert('Error', response.message || 'Failed to generate 2FA secret key');
-      }
-    } catch (error) {
+catch (error) {
       Alert.alert('Error', 'Failed to generate 2FA secret key');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  const generateBackupCodes = async () => {
+const generateBackupCodes = async () => {
     try {
       const response = await twoFactorService.generateBackupCodes();
       
       if (response.success && response.data) {
         setBackupCodes(response.data.backupCodes);
-      } else {
+else {
         Alert.alert('Error', response.message || 'Failed to generate backup codes');
-      }
-    } catch (error) {
+catch (error) {
       Alert.alert('Error', 'Failed to generate backup codes');
-    }
-  };
-
-  const handleCopySecretKey = () => {
+const handleCopySecretKey = () => {
     Clipboard.setString(secretKey.replace(/\s/g, ''));
     Alert.alert('Copied', 'Secret key copied to clipboard');
-  };
-
-  const handleShareBackupCodes = async () => {
+const handleShareBackupCodes = async () => {
     try {
       const message = 'Your 2FA Backup Codes:\n\n' + 
         backupCodes.join('\n') + 
@@ -90,13 +76,9 @@ const TwoFactorSetupScreen: React.FC = () => {
       await Share.share({
         message,
         title: 'Vibewell 2FA Backup Codes'
-      });
-    } catch (error) {
+catch (error) {
       Alert.alert('Error', 'Failed to share backup codes');
-    }
-  };
-
-  const handleVerifyCode = async (values: TwoFactorForm) => {
+const handleVerifyCode = async (values: TwoFactorForm) => {
     setLoading(true);
     try {
       const verifyResponse = await twoFactorService.verifyCode(values.verificationCode);
@@ -104,17 +86,13 @@ const TwoFactorSetupScreen: React.FC = () => {
       if (verifyResponse.success) {
         await generateBackupCodes();
         setStep('backup');
-      } else {
+else {
         Alert.alert('Error', verifyResponse.message || 'Invalid verification code');
-      }
-    } catch (error) {
+catch (error) {
       Alert.alert('Error', 'Failed to verify code');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  const handleFinish = async () => {
+const handleFinish = async () => {
     setLoading(true);
     try {
       const response = await twoFactorService.enable2FA();
@@ -124,18 +102,13 @@ const TwoFactorSetupScreen: React.FC = () => {
           'Setup Complete',
           'Two-factor authentication has been enabled for your account.',
           [{ text: 'OK', onPress: () => navigation.goBack() }]
-        );
-      } else {
+else {
         Alert.alert('Error', response.message || 'Failed to enable 2FA');
-      }
-    } catch (error) {
+catch (error) {
       Alert.alert('Error', 'Failed to enable 2FA');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  const renderQRStep = () => (
+const renderQRStep = () => (
     <View style={styles.stepContainer}>
       <Text style={[styles.description, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
         Scan this QR code with your authenticator app (Google Authenticator, Authy, etc.).
@@ -169,9 +142,7 @@ const TwoFactorSetupScreen: React.FC = () => {
         <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
     </View>
-  );
-
-  const renderVerifyStep = () => (
+const renderVerifyStep = () => (
     <View style={styles.stepContainer}>
       <Text style={[styles.description, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
         Enter the 6-digit code from your authenticator app to verify the setup.
@@ -218,9 +189,7 @@ const TwoFactorSetupScreen: React.FC = () => {
         )}
       </Formik>
     </View>
-  );
-
-  const renderBackupStep = () => (
+const renderBackupStep = () => (
     <View style={styles.stepContainer}>
       <Text style={[styles.description, { color: isDarkMode ? '#BBBBBB' : '#666666' }]}>
         Save these backup codes in a secure place. You can use them to access your account if you lose your authenticator device.
@@ -252,9 +221,7 @@ const TwoFactorSetupScreen: React.FC = () => {
         <Text style={styles.buttonText}>Finish Setup</Text>
       </TouchableOpacity>
     </View>
-  );
-
-  return (
+return (
     <SafeAreaView style={[
       styles.container,
       { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }
@@ -315,97 +282,76 @@ const TwoFactorSetupScreen: React.FC = () => {
         {step === 'backup' && renderBackupStep()}
       </ScrollView>
     </SafeAreaView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
+header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
-  },
-  backButton: {
+backButton: {
     marginRight: 16,
-  },
-  title: {
+title: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  content: {
+content: {
     flex: 1,
     padding: 16,
-  },
-  stepsIndicator: {
+stepsIndicator: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 24,
-  },
-  stepDot: {
+stepDot: {
     width: 12,
     height: 12,
     borderRadius: 6,
-  },
-  stepLine: {
+stepLine: {
     flex: 1,
     height: 2,
     marginHorizontal: 8,
-  },
-  stepContainer: {
+stepContainer: {
     flex: 1,
-  },
-  description: {
+description: {
     fontSize: 16,
     marginBottom: 24,
     textAlign: 'center',
-  },
-  qrContainer: {
+qrContainer: {
     alignSelf: 'center',
     padding: 16,
     borderRadius: 12,
     marginBottom: 24,
-  },
-  qrCode: {
+qrCode: {
     width: 200,
     height: 200,
-  },
-  orText: {
+orText: {
     fontSize: 14,
     textAlign: 'center',
     marginBottom: 12,
-  },
-  secretKeyContainer: {
+secretKeyContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 24,
-  },
-  secretKey: {
+secretKey: {
     fontSize: 20,
     fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
     marginRight: 12,
-  },
-  button: {
+button: {
     backgroundColor: '#4F46E5',
     height: 48,
     borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  buttonText: {
+buttonText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  codeInputContainer: {
+codeInputContainer: {
     marginBottom: 16,
-  },
-  codeInput: {
+codeInput: {
     height: 48,
     borderRadius: 8,
     backgroundColor: '#F5F5F5',
@@ -413,38 +359,32 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
-  },
-  errorText: {
+errorText: {
     color: '#FF4444',
     fontSize: 14,
     marginBottom: 16,
     textAlign: 'center',
-  },
-  backupCodesContainer: {
+backupCodesContainer: {
     backgroundColor: '#F5F5F5',
     borderRadius: 12,
     padding: 16,
     marginBottom: 24,
-  },
-  backupCode: {
+backupCode: {
     fontSize: 18,
     fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
     textAlign: 'center',
     marginBottom: 8,
-  },
-  shareButton: {
+shareButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 24,
-  },
-  shareButtonText: {
+shareButtonText: {
     color: '#4F46E5',
     fontSize: 16,
     fontWeight: '500',
     marginLeft: 8,
-  },
-  loadingContainer: {
+loadingContainer: {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -454,11 +394,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     zIndex: 999,
-  },
-  loadingText: {
+loadingText: {
     fontSize: 16,
     fontWeight: '500',
-  },
-});
-
 export default TwoFactorSetupScreen; 

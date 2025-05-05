@@ -726,16 +726,16 @@ export default function <span class="cstat-no" title="statement not covered" ><s
   const [time, setTime] = <span class="cstat-no" title="statement not covered" >useState&lt;string&gt;('');</span>
   const [notes, setNotes] = <span class="cstat-no" title="statement not covered" >useState&lt;string&gt;('');</span>
   const [isNewClient, setIsNewClient] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
-  const totalDuration = <span class="cstat-no" title="statement not covered" >selectedServices?.reduce(<span class="fstat-no" title="function not covered" >(s</span>um, service) =&gt; <span class="cstat-no" title="statement not covered" >sum + service?.duration, 0</span>);</span>
-  const totalPrice = <span class="cstat-no" title="statement not covered" >selectedServices?.reduce(<span class="fstat-no" title="function not covered" >(s</span>um, service) =&gt; <span class="cstat-no" title="statement not covered" >sum + service?.price, 0</span>);</span>
+  const totalDuration = <span class="cstat-no" title="statement not covered" >selectedServices.reduce(<span class="fstat-no" title="function not covered" >(s</span>um, service) =&gt; <span class="cstat-no" title="statement not covered" >sum + service.duration,</span> 0);</span>
+  const totalPrice = <span class="cstat-no" title="statement not covered" >selectedServices.reduce(<span class="fstat-no" title="function not covered" >(s</span>um, service) =&gt; <span class="cstat-no" title="statement not covered" >sum + service.price,</span> 0);</span>
   const handleServiceSelect = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>erviceId: string) =&gt; {</span>
-    const service = <span class="cstat-no" title="statement not covered" >dummyServices?.find(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; <span class="cstat-no" title="statement not covered" >s?.id === serviceId);</span></span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (service &amp;&amp; !selectedServices?.find(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; <span class="cstat-no" title="statement not covered" >s?.id === serviceId)) {</span></span>
+    const service = <span class="cstat-no" title="statement not covered" >dummyServices.find(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; <span class="cstat-no" title="statement not covered" >s.id === serviceId);</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (service &amp;&amp; !selectedServices.find(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; <span class="cstat-no" title="statement not covered" >s.id === serviceId)) {</span></span>
 <span class="cstat-no" title="statement not covered" >      setSelectedServices([...selectedServices, service]);</span>
     }
   };
   const handleServiceRemove = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>erviceId: string) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setSelectedServices(selectedServices?.filter(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; <span class="cstat-no" title="statement not covered" >s?.id !== serviceId));</span></span>
+<span class="cstat-no" title="statement not covered" >    setSelectedServices(selectedServices.filter(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; <span class="cstat-no" title="statement not covered" >s.id !== serviceId));</span></span>
   };
   const handleSubmit = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>: React.FormEvent) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    e.preventDefault();</span>
@@ -792,7 +792,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
                       &lt;/div&gt;
                       &lt;div&gt;
                         &lt;Label&gt;Email&lt;/Label&gt;
-                        &lt;Input type="email" placeholder="client@example?.com" /&gt;
+                        &lt;Input type="email" placeholder="client@example.com" /&gt;
                       &lt;/div&gt;
                       &lt;div&gt;
                         &lt;Label&gt;Phone&lt;/Label&gt;
@@ -801,9 +801,9 @@ export default function <span class="cstat-no" title="statement not covered" ><s
                     &lt;/div&gt;
                   ) : (
                     &lt;Select
-                      value={selectedClient?.id || ''}
+                      value={selectedClient.id || ''}
                       onValueChange={<span class="fstat-no" title="function not covered" >(v</span>alue) =&gt; {
-                        const client = <span class="cstat-no" title="statement not covered" >dummyClients?.find(<span class="fstat-no" title="function not covered" >(c</span>) =&gt; <span class="cstat-no" title="statement not covered" >c?.id === value);</span></span>
+                        const client = <span class="cstat-no" title="statement not covered" >dummyClients.find(<span class="fstat-no" title="function not covered" >(c</span>) =&gt; <span class="cstat-no" title="statement not covered" >c.id === value);</span></span>
 <span class="cstat-no" title="statement not covered" >                        setSelectedClient(client || null);</span>
                       }}
                     &gt;
@@ -811,9 +811,9 @@ export default function <span class="cstat-no" title="statement not covered" ><s
                         &lt;SelectValue placeholder="Select a client" /&gt;
                       &lt;/SelectTrigger&gt;
                       &lt;SelectContent&gt;
-                        {dummyClients?.map(<span class="fstat-no" title="function not covered" >(c</span>lient) =&gt; (
-<span class="cstat-no" title="statement not covered" >                          &lt;SelectItem key={client?.id} v</span>alue={client?.id}&gt;
-                            {client?.name}
+                        {dummyClients.map(<span class="fstat-no" title="function not covered" >(c</span>lient) =&gt; (
+<span class="cstat-no" title="statement not covered" >                          &lt;SelectItem key={client.id} v</span>alue={client.id}&gt;
+                            {client.name}
                           &lt;/SelectItem&gt;
                         ))}
                       &lt;/SelectContent&gt;
@@ -831,44 +831,44 @@ export default function <span class="cstat-no" title="statement not covered" ><s
               &lt;CardContent&gt;
                 &lt;div className="space-y-4"&gt;
                   &lt;Select
-                    value={selectedServices?.length &gt; 0 ? selectedServices[0].id : ''}
+                    value={selectedServices.length &gt; 0 ? selectedServices[0].id : ''}
                     onValueChange={handleServiceSelect}
                   &gt;
                     &lt;SelectTrigger&gt;
                       &lt;SelectValue placeholder="Select a service" /&gt;
                     &lt;/SelectTrigger&gt;
                     &lt;SelectContent&gt;
-                      {dummyServices?.map(<span class="fstat-no" title="function not covered" >(s</span>ervice) =&gt; (
-<span class="cstat-no" title="statement not covered" >                        &lt;SelectItem key={service?.id} v</span>alue={service?.id}&gt;
-                          {service?.name} (${service?.price})
+                      {dummyServices.map(<span class="fstat-no" title="function not covered" >(s</span>ervice) =&gt; (
+<span class="cstat-no" title="statement not covered" >                        &lt;SelectItem key={service.id} v</span>alue={service.id}&gt;
+                          {service.name} (${service.price})
                         &lt;/SelectItem&gt;
                       ))}
                     &lt;/SelectContent&gt;
                   &lt;/Select&gt;
                   &lt;div className="space-y-2"&gt;
-                    {selectedServices?.map(<span class="fstat-no" title="function not covered" >(s</span>ervice) =&gt; (
+                    {selectedServices.map(<span class="fstat-no" title="function not covered" >(s</span>ervice) =&gt; (
 <span class="cstat-no" title="statement not covered" >                      &lt;div</span>
-                        key={service?.id}
+                        key={service.id}
                         className="flex items-center justify-between rounded-lg border p-3"
                       &gt;
                         &lt;div&gt;
-                          &lt;h3 className="font-medium"&gt;{service?.name}&lt;/h3&gt;
+                          &lt;h3 className="font-medium"&gt;{service.name}&lt;/h3&gt;
                           &lt;p className="text-sm text-muted-foreground"&gt;
-                            {service?.duration} minutes • ${service?.price}
+                            {service.duration} minutes • ${service.price}
                           &lt;/p&gt;
                         &lt;/div&gt;
                         &lt;Button
                           type="button"
                           variant="ghost"
                           size="icon"
-                          onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleServiceRemove(service?.id)}</span>
+                          onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleServiceRemove(service.id)}</span>
                         &gt;
                           &lt;Icons.XMarkIcon className="h-5 w-5" /&gt;
                         &lt;/Button&gt;
                       &lt;/div&gt;
                     ))}
                   &lt;/div&gt;
-                  {<span class="branch-0 cbranch-no" title="branch not covered" >selectedServices?.length &gt; 0 &amp;&amp; (</span>
+                  {<span class="branch-0 cbranch-no" title="branch not covered" >selectedServices.length &gt; 0 &amp;&amp; (</span>
                     &lt;div className="border-t pt-4"&gt;
                       &lt;div className="flex justify-between"&gt;
                         &lt;span&gt;Total Duration:&lt;/span&gt;
@@ -910,7 +910,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
                   &lt;/div&gt;
                   &lt;div&gt;
                     &lt;Label&gt;Time&lt;/Label&gt;
-                    &lt;Input type="time" value={time} onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setTime(e?.target.value)} /&gt;</span>
+                    &lt;Input type="time" value={time} onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setTime(e.target.value)} /&gt;</span>
                   &lt;/div&gt;
                 &lt;/div&gt;
               &lt;/CardContent&gt;
@@ -925,7 +925,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
                 &lt;Textarea
                   placeholder="Add notes about the appointment..."
                   value={notes}
-                  onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setNotes(e?.target.value)}</span>
+                  onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setNotes(e.target.value)}</span>
                 /&gt;
               &lt;/CardContent&gt;
             &lt;/Card&gt;
@@ -946,7 +946,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

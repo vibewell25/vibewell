@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import beauty-goals from '../beauty-goals.tsx';
+
+describe('beauty-goals', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<beauty-goals />);
+    expect(container).toBeInTheDocument();
+  });
+});

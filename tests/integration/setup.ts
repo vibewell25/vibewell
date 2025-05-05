@@ -1,22 +1,9 @@
-
-    // Safe integer operation
-    if (msw > Number.MAX_SAFE_INTEGER || msw < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
-    // Safe integer operation
-    if (tanstack > Number.MAX_SAFE_INTEGER || tanstack < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { QueryClient } from '@tanstack/react-query';
+    import { QueryClient } from '@tanstack/react-query';
 
-    // Safe integer operation
-    if (utils > Number.MAX_SAFE_INTEGER || utils < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { createTestRunner } from '../utils/createTestRunner';
+    import { createTestRunner } from '../utils/createTestRunner';
 
 // Create a test server instance
 export const server = setupServer();
@@ -28,17 +15,11 @@ export const createTestQueryClient = () =>
       queries: {
         retry: false,
         cacheTime: 0,
-      },
-    },
-  });
-
 // Create test runner with integration test specific options
 export const createIntegrationTestRunner = () =>
   createTestRunner({
     mockApi: true,
     performanceThreshold: 200, // Higher threshold for integration tests
-  });
-
 // Helper to create mock API handlers
 export const createMockHandlers = (baseUrl: string) => ({
   get: (path: string, response: any) =>
@@ -57,8 +38,6 @@ export const createMockHandlers = (baseUrl: string) => ({
     rest.delete(`${baseUrl}${path}`, (req, res, ctx) =>
       res(ctx.json(response))
     ),
-});
-
 // Setup and teardown helpers
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
@@ -78,9 +57,6 @@ export const simulateUserFlow = async ( {
   for (const step of steps) {
     await step();
     await new Promise((resolve) => setTimeout(resolve, options.delay));
-  }
-};
-
 // Helper to test form submissions
 export const testFormSubmission = async ( {
   const start = Date.now();
@@ -90,36 +66,31 @@ export const testFormSubmission = async ( {
   submitButton,
   expectedApiCall,
   expectedResponse,
-}: {
+: {
   form: HTMLFormElement;
   fields: Record<string, string>;
   submitButton: HTMLElement;
   expectedApiCall: string;
   expectedResponse: any;
-}) => {
+) => {
   // Setup API mock
   server.use(
     rest.post(expectedApiCall, (req, res, ctx) =>
       res(ctx.json(expectedResponse))
     )
-  );
-
-  // Fill form fields
+// Fill form fields
   Object.entries(fields).forEach(([name, value]) => {
     const input = form.querySelector(`[name="${name}"]`) as HTMLInputElement;
     if (input) {
       input.value = value;
       input.dispatchEvent(new Event('change'));
-    }
-  });
+});
 
   // Submit form
   submitButton.click();
 
   // Wait for submission to complete
   await waitForNetworkIdle();
-};
-
 // Helper to test error handling
 export const testErrorHandling = async ( {
   const start = Date.now();
@@ -127,23 +98,20 @@ export const testErrorHandling = async ( {
   action,
   expectedError,
   errorHandler,
-}: {
+: {
   action: () => Promise<void>;
   expectedError: any;
   errorHandler?: (error: any) => void;
-}) => {
+) => {
   let error;
   try {
     await action();
-  } catch (e) {
+catch (e) {
     error = e;
     if (errorHandler) {
       errorHandler(e);
-    }
-  }
+}
   expect(error).toEqual(expectedError);
-};
-
 // Export common test data
 export const testData = {
   users: [
@@ -154,4 +122,3 @@ export const testData = {
     { id: 1, name: 'Test Product 1', price: 99.99 },
     { id: 2, name: 'Test Product 2', price: 149.99 },
   ],
-}; 

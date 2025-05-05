@@ -10,9 +10,6 @@ import { logger } from '@/lib/logger';
 export const config = {
   api: {
     bodyParser: false,
-  },
-};
-
 export default async function handler(
   req: NextApiRequest, 
   res: NextApiResponse
@@ -23,9 +20,7 @@ export default async function handler(
       res.setHeader('Allow', 'POST');
       res.status(405).json({ error: 'Method not allowed' });
       return;
-    }
-
-    // Get the raw body as a buffer
+// Get the raw body as a buffer
     const rawBody = await buffer(req);
     
     // Validate Stripe signature
@@ -35,35 +30,26 @@ export default async function handler(
       logger.warn('Stripe webhook called without signature', {
         ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
         timestamp: new Date().toISOString(),
-      });
-      return res.status(400).json({ error: 'Missing stripe-signature header' });
-    }
-
-    // Verify webhook signature
+return res.status(400).json({ error: 'Missing stripe-signature header' });
+// Verify webhook signature
     let event: Stripe.Event;
     try {
       event = stripe.webhooks.constructEvent(
         rawBody.toString(),
         signature,
         env.STRIPE_WEBHOOK_SECRET
-      );
-    } catch (err) {
+catch (err) {
       const error = err as Error;
       logger.error('Stripe webhook signature verification failed', {
         error: error.message,
         ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
-      });
-      return res.status(400).json({ error: `Webhook signature verification failed: ${error.message}` });
-    }
-
-    // Log event for monitoring
+return res.status(400).json({ error: `Webhook signature verification failed: ${error.message}` });
+// Log event for monitoring
     logger.info('Stripe webhook received', {
       eventType: event.type,
       eventId: event.id,
       timestamp: event.created,
-    });
-
-    // Handle specific event types
+// Handle specific event types
     switch (event.type) {
       case 'payment_intent.succeeded': {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
@@ -74,31 +60,21 @@ export default async function handler(
         if (!userId || !orderId) {
           logger.warn('Payment intent missing required metadata', {
             paymentIntentId: paymentIntent.id,
-          });
-          return res.status(400).json({ error: 'Missing required metadata' });
-        }
-        
-        // Update order status in database
+return res.status(400).json({ error: 'Missing required metadata' });
+// Update order status in database
         await prisma.order.update({
           where: { id: orderId },
           data: {
             status: 'PAID',
             paymentId: paymentIntent.id,
             updatedAt: new Date(),
-          },
-        });
-        
-        logger.info('Payment succeeded', {
+logger.info('Payment succeeded', {
           paymentIntentId: paymentIntent.id,
           userId,
           orderId,
           amount: paymentIntent.amount,
-        });
-        
-        break;
-      }
-      
-      case 'payment_intent.payment_failed': {
+break;
+case 'payment_intent.payment_failed': {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
         const { userId, orderId } = paymentIntent.metadata;
         
@@ -110,21 +86,13 @@ export default async function handler(
               status: 'FAILED',
               paymentId: paymentIntent.id,
               updatedAt: new Date(),
-            },
-          });
-        }
-        
-        logger.warn('Payment failed', {
+logger.warn('Payment failed', {
           paymentIntentId: paymentIntent.id,
           error: paymentIntent.last_payment_error.message || 'Unknown error',
           userId,
           orderId,
-        });
-        
-        break;
-      }
-      
-      case 'customer.subscription.created':
+break;
+case 'customer.subscription.created':
       case 'customer.subscription.updated': {
         const subscription = event.data.object as Stripe.Subscription;
         const stripeCustomerId = subscription.customer as string;
@@ -132,22 +100,16 @@ export default async function handler(
         // Find user by Stripe customer ID
         const user = await prisma.user.findFirst({
           where: { stripeCustomerId },
-        });
-        
-        if (!user) {
+if (!user) {
           logger.warn('Subscription event for unknown customer', {
             subscriptionId: subscription.id,
             stripeCustomerId,
-          });
-          return res.status(400).json({ error: 'Unknown customer' });
-        }
-        
-        // Update subscription status
+return res.status(400).json({ error: 'Unknown customer' });
+// Update subscription status
         await prisma.subscription.upsert({
           where: {
             stripeSubscriptionId: subscription.id
-          },
-          create: {
+create: {
             userId: user.id,
             stripeSubscriptionId: subscription.id,
             status: subscription.status,
@@ -155,25 +117,17 @@ export default async function handler(
             currentPeriodStart: new Date(subscription.current_period_start * 1000),
             currentPeriodEnd: new Date(subscription.current_period_end * 1000),
             cancelAtPeriodEnd: subscription.cancel_at_period_end,
-          },
-          update: {
+update: {
             status: subscription.status,
             currentPeriodStart: new Date(subscription.current_period_start * 1000),
             currentPeriodEnd: new Date(subscription.current_period_end * 1000),
             cancelAtPeriodEnd: subscription.cancel_at_period_end,
-          },
-        });
-        
-        logger.info('Subscription updated', {
+logger.info('Subscription updated', {
           subscriptionId: subscription.id,
           userId: user.id,
           status: subscription.status,
-        });
-        
-        break;
-      }
-      
-      case 'customer.subscription.deleted': {
+break;
+case 'customer.subscription.deleted': {
         const subscription = event.data.object as Stripe.Subscription;
         
         // Update subscription status
@@ -182,31 +136,18 @@ export default async function handler(
           data: {
             status: 'canceled',
             canceledAt: new Date(),
-          },
-        });
-        
-        logger.info('Subscription canceled', {
+logger.info('Subscription canceled', {
           subscriptionId: subscription.id,
-        });
-        
-        break;
-      }
-      
-      default:
+break;
+default:
         // Unexpected event type
         logger.info('Unhandled Stripe event', { eventType: event.type });
-    }
-    
-    // Return success response
+// Return success response
     res.status(200).json({ received: true });
-  } catch (err) {
+catch (err) {
     // Handle any unexpected errors
     const error = err as Error;
     logger.error('Error processing Stripe webhook', {
       error: error.message,
       stack: error.stack,
-    });
-    
-    res.status(500).json({ error: 'Internal server error' });
-  }
-} 
+res.status(500).json({ error: 'Internal server error' });

@@ -3,8 +3,6 @@ import { CameraOff, ZoomIn, ZoomOut, RotateCcw, Share2 } from 'lucide-react';
 
 interface ARControlsProps {
   modelId: string;
-}
-
 /**
  * Controls for interacting with AR models
  *
@@ -26,37 +24,28 @@ export function ARControls({ modelId }: ARControlsProps) {
 
       // For demonstration purposes
       alert('AR mode activated! In a real app, this would launch the AR experience.');
-    } catch (err) {
+catch (err) {
       console.error('Error starting AR session:', err);
       setInARMode(false);
-    }
-  };
-
-  const stopARSession = () => {
+const stopARSession = () => {
     setInARMode(false);
     // In a real implementation, this would end the WebXR session
-  };
-
-  const shareModel = () => {
+const shareModel = () => {
     if (navigator.share) {
       navigator
         .share({
           title: 'Check out this product in AR',
           text: 'Try this product virtually with Vibewell AR!',
           url: `https://vibewell.com/virtual-try-on/${modelId}`,
-        })
+)
         .catch((err) => {
           console.error('Error sharing:', err);
-        });
-    } else {
+else {
       // Fallback for browsers that don't support the Web Share API
       const shareUrl = `https://vibewell.com/virtual-try-on/${modelId}`;
       navigator.clipboard.writeText(shareUrl);
       alert('Link copied to clipboard!');
-    }
-  };
-
-  return (
+return (
     <div className="ar-controls absolute bottom-4 left-1/2 flex -translate-x-1/2 transform items-center space-x-4 rounded-full bg-white/80 px-6 py-3 backdrop-blur-sm">
       {!inARMode ? (
         <button
@@ -113,7 +102,4 @@ export function ARControls({ modelId }: ARControlsProps) {
         </button>
       </div>
     </div>
-  );
-}
-
 export default ARControls;

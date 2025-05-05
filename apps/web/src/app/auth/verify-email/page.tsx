@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -25,37 +23,27 @@ function VerifyEmailContent() {
       toast({
         title: 'Success',
         description: 'Verification email sent. Please check your inbox.',
-      });
-    } catch (error) {
+catch (error) {
       toast({
         title: 'Error',
         description: 'Failed to send verification email. Please try again.',
         variant: 'destructive',
-      });
-    } finally {
+finally {
       setIsLoading(false);
-    }
-  };
-
-  if (token) {
+if (token) {
     verifyEmail(token)
       .then(() => {
         toast({
           title: 'Success',
           description: 'Email verified successfully',
-        });
-        router.push('/dashboard');
-      })
+router.push('/dashboard');
+)
       .catch((error) => {
         toast({
           title: 'Error',
           description: 'Failed to verify email. Please try again.',
           variant: 'destructive',
-        });
-      });
-  }
-
-  return (
+return (
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
@@ -79,9 +67,6 @@ function VerifyEmailContent() {
         </p>
       </div>
     </div>
-  );
-}
-
 export default function VerifyEmailPage() {
   return (
     <Suspense
@@ -89,5 +74,3 @@ export default function VerifyEmailPage() {
     >
       <VerifyEmailContent />
     </Suspense>
-  );
-}

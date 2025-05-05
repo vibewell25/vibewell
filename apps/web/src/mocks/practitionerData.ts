@@ -6,8 +6,7 @@ export const mockPractitioners = [
 
       image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
       email: 'sarah.j@example.com',
-    },
-    specialization: ['Hair Styling', 'Color Treatment', 'Hair Care'],
+specialization: ['Hair Styling', 'Color Treatment', 'Hair Care'],
     experience: 8,
     rating: 4.8,
     bio: 'Master hairstylist with over 8 years of experience in creating stunning looks. Specialized in modern cutting techniques and color treatments.',
@@ -31,15 +30,13 @@ export const mockPractitioners = [
         description: 'Professional haircut and styling tailored to your preferences',
         duration: 60,
         price: 85,
-      },
-      {
+{
         id: 's2',
         name: 'Color Treatment',
         description: 'Full color treatment including roots and highlights',
         duration: 120,
         price: 150,
-      },
-    ],
+],
     portfolio: [
       {
         id: 'p1',
@@ -49,8 +46,7 @@ export const mockPractitioners = [
         imageUrl: 'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1',
         category: 'Haircut',
         tags: ['Bob', 'Modern', 'Styling'],
-      },
-      {
+{
         id: 'p2',
         title: 'Balayage Highlights',
 
@@ -60,19 +56,16 @@ export const mockPractitioners = [
         imageUrl: 'https://images.unsplash.com/photo-1600948836101-f9ffda59d250',
         category: 'Color',
         tags: ['Balayage', 'Highlights', 'Blonde'],
-      },
-    ],
+],
     servicesCount: 2,
-  },
-  {
+{
     id: '2',
     user: {
       name: 'Michael Chen',
 
       image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d',
       email: 'michael.c@example.com',
-    },
-    specialization: ['Massage Therapy', 'Aromatherapy', 'Deep Tissue'],
+specialization: ['Massage Therapy', 'Aromatherapy', 'Deep Tissue'],
     experience: 12,
     rating: 4.9,
     bio: 'Licensed massage therapist specializing in therapeutic and deep tissue massage. Focused on helping clients achieve wellness through targeted massage techniques.',
@@ -93,22 +86,19 @@ export const mockPractitioners = [
         description: 'Relaxing full-body massage with medium pressure',
         duration: 60,
         price: 95,
-      },
-      {
+{
         id: 's4',
         name: 'Deep Tissue Massage',
         description: 'Intensive massage targeting deep muscle layers',
         duration: 90,
         price: 120,
-      },
-      {
+{
         id: 's5',
         name: 'Aromatherapy Massage',
         description: 'Therapeutic massage with essential oils',
         duration: 75,
         price: 110,
-      },
-    ],
+],
     portfolio: [
       {
         id: 'p3',
@@ -118,20 +108,16 @@ export const mockPractitioners = [
         imageUrl: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1',
         category: 'Massage',
         tags: ['Therapeutic', 'Wellness', 'Relaxation'],
-      },
-    ],
+],
     servicesCount: 3,
-  },
-  {
+{
     id: '3',
     user: {
       name: 'Emma Rodriguez',
 
       image: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce',
       email: 'emma.r@example.com',
-    },
-
-    specialization: ['Skincare', 'Facial Treatments', 'Anti-aging'],
+specialization: ['Skincare', 'Facial Treatments', 'Anti-aging'],
     experience: 6,
     rating: 4.7,
 
@@ -152,16 +138,14 @@ export const mockPractitioners = [
         description: 'Customized facial treatment for your skin type',
         duration: 75,
         price: 120,
-      },
-      {
+{
         id: 's7',
         name: 'Chemical Peel',
 
         description: 'Professional-grade peel for skin rejuvenation',
         duration: 45,
         price: 150,
-      },
-    ],
+],
     portfolio: [
       {
         id: 'p4',
@@ -172,19 +156,16 @@ export const mockPractitioners = [
         category: 'Skincare',
 
         tags: ['Facial', 'Anti-aging', 'Transformation'],
-      },
-    ],
+],
     servicesCount: 2,
-  },
-  {
+{
     id: '4',
     user: {
       name: 'David Kim',
 
       image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e',
       email: 'david.k@example.com',
-    },
-    specialization: ['Nail Art', 'Manicure', 'Pedicure'],
+specialization: ['Nail Art', 'Manicure', 'Pedicure'],
     experience: 5,
     rating: 4.9,
 
@@ -205,15 +186,13 @@ export const mockPractitioners = [
         description: 'Complete nail care with custom design',
         duration: 60,
         price: 75,
-      },
-      {
+{
         id: 's9',
         name: 'Gel Extension Art',
         description: 'Gel extensions with artistic designs',
         duration: 90,
         price: 120,
-      },
-    ],
+],
     portfolio: [
       {
         id: 'p5',
@@ -223,19 +202,16 @@ export const mockPractitioners = [
         imageUrl: 'https://images.unsplash.com/photo-1519014816548-bf5fe059798b',
         category: 'Nail Art',
         tags: ['Design', 'Gel', 'Abstract'],
-      },
-    ],
+],
     servicesCount: 2,
-  },
-  {
+{
     id: '5',
     user: {
       name: 'Sophia Patel',
 
       image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2',
       email: 'sophia.p@example.com',
-    },
-    specialization: ['Yoga', 'Meditation', 'Wellness Coaching'],
+specialization: ['Yoga', 'Meditation', 'Wellness Coaching'],
     experience: 10,
     rating: 4.8,
 
@@ -257,22 +233,19 @@ export const mockPractitioners = [
         description: 'One-on-one personalized yoga practice',
         duration: 60,
         price: 90,
-      },
-      {
+{
         id: 's11',
         name: 'Meditation Workshop',
         description: 'Guided meditation and mindfulness techniques',
         duration: 45,
         price: 65,
-      },
-      {
+{
         id: 's12',
         name: 'Wellness Consultation',
         description: 'Personalized wellness plan and coaching',
         duration: 90,
         price: 120,
-      },
-    ],
+],
     portfolio: [
       {
         id: 'p6',
@@ -282,10 +255,8 @@ export const mockPractitioners = [
         imageUrl: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597',
         category: 'Yoga',
         tags: ['Wellness', 'Yoga', 'Meditation'],
-      },
-    ],
+],
     servicesCount: 3,
-  },
 ];
 
 export {};

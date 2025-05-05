@@ -1,36 +1,10 @@
-// Declare vitest module to fix type errors
-/// <reference types="vitest" />
+import errors until vitest is properly installed
 
+    import performanceMonitor from '../../src/utils/performanceMonitor';
 
-    // Safe integer operation
-    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-// @ts-ignore - Add this to silence module import errors until vitest is properly installed
-import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest';
+    // @ts-ignore - Add this to silence module import errors
 
-    // Safe integer operation
-    if (src > Number.MAX_SAFE_INTEGER || src < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import performanceMonitor from '../../src/utils/performanceMonitor';
-
-    // Safe integer operation
-    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-// @ts-ignore - Add this to silence module import errors
-
-    // Safe integer operation
-    if (performance > Number.MAX_SAFE_INTEGER || performance < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (src > Number.MAX_SAFE_INTEGER || src < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import PerformanceRemediationService, { MetricType, RemediationStrategy } from '../../src/services/performance-remediation';
+    import PerformanceRemediationService, { MetricType, RemediationStrategy } from '../../src/services/performance-remediation';
 import { EventEmitter } from 'events';
 
 // Define interface for remediation service to avoid typing issues
@@ -41,41 +15,19 @@ interface IRemediationService {
   handlePerformanceIssue: (issue: any) => void;
   applyCachingStrategy: (issue: any) => boolean;
   applyThrottlingStrategy: (issue: any) => boolean;
-}
-
 // Mock the notification service
 
-    // Safe integer operation
-    if (notification > Number.MAX_SAFE_INTEGER || notification < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (src > Number.MAX_SAFE_INTEGER || src < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-vi.mock('../../src/services/notification-service', () => {
+    vi.mock('../../src/services/notification-service', () => {
   return {
     default: class MockNotificationService {
       notifyAdmins() {
         return Promise.resolve();
-      }
-    }
-  };
-});
-
+}
 // Mock analytics
 
-    // Safe integer operation
-    if (src > Number.MAX_SAFE_INTEGER || src < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-vi.mock('../../src/utils/analytics', () => {
+    vi.mock('../../src/utils/analytics', () => {
   return {
     logEvent: vi.fn()
-  };
-});
-
 describe('Performance Monitor and Remediation Integration', () => {
   // Use the interface to type the service
   let remediationService: IRemediationService;
@@ -102,33 +54,19 @@ describe('Performance Monitor and Remediation Integration', () => {
       [MetricType.API]: 100,
       [MetricType.RENDER]: 50,
       [MetricType.DATABASE]: 200
-    });
-  });
-
-  afterEach(() => {
+afterEach(() => {
     // Restore original console methods
     console.warn = originalConsoleWarn;
     console.error = originalConsoleError;
     
     // Clean up after tests
     vi.clearAllMocks();
-  });
-
-  test('Performance monitor should emit events that remediation service can handle', () => {
+test('Performance monitor should emit events that remediation service can handle', () => {
     // Setup a spy on the remediation service's handlePerformanceIssue method
     const handleIssueSpy = vi.spyOn(remediationService as any, 'handlePerformanceIssue');
     
     // Create a slow API measure that will exceed the threshold
 
-    // Safe integer operation
-    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     const measureId = performanceMonitor.startMeasure('test-api-call', MetricType.API, { endpoint: '/api/test' });
     
     // Mock performance.now() to simulate elapsed time
@@ -146,23 +84,13 @@ describe('Performance Monitor and Remediation Integration', () => {
     expect(handleIssueSpy).toHaveBeenCalledWith(expect.objectContaining({
       type: MetricType.API,
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      name: 'test-api-call',
+    name: 'test-api-call',
       duration: expect.any(Number),
       threshold: 100,
 
-    // Safe integer operation
-    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      metadata: { endpoint: '/api/test' }
-    }));
-  });
-
-  test('Remediation service should apply the correct strategy based on the issue', () => {
+    metadata: { endpoint: '/api/test' }
+));
+test('Remediation service should apply the correct strategy based on the issue', () => {
     // Setup spies on remediation strategies
     const cachingSpy = vi.spyOn(remediationService as any, 'applyCachingStrategy');
     const throttlingSpy = vi.spyOn(remediationService as any, 'applyThrottlingStrategy');
@@ -170,36 +98,17 @@ describe('Performance Monitor and Remediation Integration', () => {
     // Add specific rules for the test
     remediationService.addRule({
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      id: 'test-api-caching',
+    id: 'test-api-caching',
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      pattern: /^test-api/,
+    pattern: /^test-api/,
       type: MetricType.API,
       strategy: RemediationStrategy.CACHE,
       threshold: 10, // 10% above normal threshold
       maxAttempts: 3,
       cooldownPeriod: 1000, // 1 second
       enabled: true
-    });
-    
-    // Create a slow API measure that will exceed the threshold
+// Create a slow API measure that will exceed the threshold
 
-    // Safe integer operation
-    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     const measureId = performanceMonitor.startMeasure('test-api-call', MetricType.API, { endpoint: '/api/test' });
     
     // Mock performance.now() to simulate elapsed time
@@ -215,34 +124,22 @@ describe('Performance Monitor and Remediation Integration', () => {
     // Verify that the caching strategy was applied
     expect(cachingSpy).toHaveBeenCalledTimes(1);
     expect(throttlingSpy).not.toHaveBeenCalled();
-  });
-
-  test('Performance monitor statistics should be accurate', () => {
+test('Performance monitor statistics should be accurate', () => {
     // Create a range of measures with different durations
     for (let i = 0; i < 5; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
 
-    // Safe integer operation
-    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      const id = performanceMonitor.startMeasure(`api-call-${i}`, MetricType.API);
+    const id = performanceMonitor.startMeasure(`api-call-${i}`, MetricType.API);
       
       // Mock different durations
       const originalNow = performance.now;
 
-    // Safe integer operation
-    if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      performance.now = vi.fn().mockReturnValue(originalNow() + 50 + i * 20); // 50, 70, 90, 110, 130 ms
+    performance.now = vi.fn().mockReturnValue(originalNow() + 50 + i * 20); // 50, 70, 90, 110, 130 ms
       
       performanceMonitor.stopMeasure(id);
       
       // Restore original performance.now
       performance.now = originalNow;
-    }
-    
-    // Get statistics
+// Get statistics
     const stats = performanceMonitor.getStatistics();
     
     // Verify statistics
@@ -252,40 +149,24 @@ describe('Performance Monitor and Remediation Integration', () => {
     expect(stats.byType[MetricType.API].average).toBeGreaterThanOrEqual(50);
     expect(stats.byType[MetricType.API].min).toBeGreaterThanOrEqual(50);
     expect(stats.byType[MetricType.API].max).toBeGreaterThanOrEqual(130);
-  });
-
-  test('Remediation service should respect cooldown periods', async () => {
+test('Remediation service should respect cooldown periods', async () => {
     // Setup a spy on the remediation strategies
     const cachingSpy = vi.spyOn(remediationService as any, 'applyCachingStrategy');
     
     // Add a rule with a 500ms cooldown
     remediationService.addRule({
 
-    // Safe integer operation
-    if (short > Number.MAX_SAFE_INTEGER || short < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      id: 'short-cooldown-rule',
+    id: 'short-cooldown-rule',
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      pattern: /^test-cooldown/,
+    pattern: /^test-cooldown/,
       type: MetricType.API,
       strategy: RemediationStrategy.CACHE,
       threshold: 10,
       maxAttempts: 5,
       cooldownPeriod: 500, // 500ms cooldown
       enabled: true
-    });
-    
-    // Create first measure to trigger remediation
+// Create first measure to trigger remediation
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     let measureId = performanceMonitor.startMeasure('test-cooldown', MetricType.API);
     let originalNow = performance.now;
     performance.now = vi.fn().mockReturnValue(originalNow() + 150);
@@ -297,16 +178,8 @@ describe('Performance Monitor and Remediation Integration', () => {
     cachingSpy.mockClear();
     
 
-    // Safe integer operation
-    if (immediately > Number.MAX_SAFE_INTEGER || immediately < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     // Create second measure immediately - should be in cooldown
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     measureId = performanceMonitor.startMeasure('test-cooldown', MetricType.API);
     originalNow = performance.now;
     performance.now = vi.fn().mockReturnValue(originalNow() + 150);
@@ -320,16 +193,8 @@ describe('Performance Monitor and Remediation Integration', () => {
     await new Promise(resolve => setTimeout(resolve, 600));
     
 
-    // Safe integer operation
-    if (cooldown > Number.MAX_SAFE_INTEGER || cooldown < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     // Create third measure after cooldown - should trigger remediation again
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     measureId = performanceMonitor.startMeasure('test-cooldown', MetricType.API);
     originalNow = performance.now;
     performance.now = vi.fn().mockReturnValue(originalNow() + 150);
@@ -338,5 +203,3 @@ describe('Performance Monitor and Remediation Integration', () => {
     
     // Verify remediation was attempted again
     expect(cachingSpy).toHaveBeenCalledTimes(1);
-  });
-}); 

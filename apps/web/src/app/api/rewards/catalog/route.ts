@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 import { getServerSession } from 'next-auth';
@@ -14,20 +13,12 @@ export async function {
     const session = await getServerSession(authOptions);
     if (!session.user.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const rewards = await prisma.reward.findMany({
+const rewards = await prisma.reward.findMany({
       where: {
         available: true,
-      },
-      orderBy: {
+orderBy: {
         points: 'asc',
-      },
-    });
-
-    return NextResponse.json(rewards);
-  } catch (error) {
+return NextResponse.json(rewards);
+catch (error) {
     console.error('Error fetching rewards catalog:', error);
     return NextResponse.json({ error: 'Failed to fetch rewards catalog' }, { status: 500 });
-  }
-}

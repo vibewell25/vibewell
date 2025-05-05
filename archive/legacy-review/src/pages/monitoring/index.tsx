@@ -8,9 +8,6 @@ const DynamicSystemMonitorDashboard = dynamic(
   {
     loading: () => <Spinner size="large" />,
     ssr: false, // Disable SSR for monitoring dashboard as it requires client-side data
-  },
-);
-
 const MonitoringPage: React.FC = () => {
   return (
     <div className="monitoring-page">
@@ -25,15 +22,9 @@ const MonitoringPage: React.FC = () => {
           padding: 2rem;
           max-width: 1400px;
           margin: 0 auto;
-        }
-
-        h1 {
+h1 {
           color: var(--text-primary);
           margin-bottom: 2rem;
-        }
-      `}</style>
+`}</style>
     </div>
-  );
-};
-
 export default MonitoringPage;

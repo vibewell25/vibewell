@@ -5,26 +5,17 @@ const stripeSecretKey = process.env['STRIPE_SECRET_KEY'] || '';
 
 if (!stripeSecretKey) {
   console.error('Missing Stripe secret key. Payments will not work.');
-}
-
 export const stripe = new Stripe(stripeSecretKey, {
   apiVersion: '2023-10-16', // Use the latest stable API version
   appInfo: {
     name: 'Vibewell',
     version: '1.0.0',
-  },
-});
-
 // Helper function to format amount for Stripe (convert dollars to cents)
 export const formatAmountForStripe = (amount: number): number => {
   return Math.round(amount * 100);
-};
-
 // Helper function to format amount from Stripe (convert cents to dollars)
 export const formatAmountFromStripe = (amount: number): number => {
   return amount / 100;
-};
-
 // Create a payment intent for a single charge
 export async function createPaymentIntent(
   amount: number, 
@@ -36,9 +27,6 @@ export async function createPaymentIntent(
     currency,
     metadata,
     automatic_payment_methods: { enabled: true }
-  });
-}
-
 // Create a Stripe Checkout session for product purchase
 export async function createCheckoutSession(
   params: {
@@ -48,7 +36,6 @@ export async function createCheckoutSession(
     customerId?: string;
     mode?: Stripe.Checkout.SessionCreateParams.Mode;
     metadata?: Record<string, string>;
-  }
 ): Promise<Stripe.Checkout.Session> {
   const {
     priceId,
@@ -57,7 +44,7 @@ export async function createCheckoutSession(
     customerId,
     mode = 'subscription',
     metadata = {}
-  } = params;
+= params;
 
   return await stripe.checkout.sessions.create({
     mode,
@@ -65,15 +52,11 @@ export async function createCheckoutSession(
       {
         price: priceId,
         quantity: 1,
-      },
-    ],
+],
     success_url: successUrl,
     cancel_url: cancelUrl,
     customer: customerId,
     metadata,
-  });
-}
-
 // Create or retrieve a Stripe customer for a user
 export async function getOrCreateCustomer(
   email: string,
@@ -82,18 +65,11 @@ export async function getOrCreateCustomer(
   const customers = await stripe.customers.list({
     email,
     limit: 1,
-  });
-
-  if (customers.data.length > 0) {
+if (customers.data.length > 0) {
     return customers.data[0];
-  }
-
-  return await stripe.customers.create({
+return await stripe.customers.create({
     email,
     metadata,
-  });
-}
-
 // Handle Stripe webhook event
 export async function handleWebhookEvent(
   event: Stripe.Event
@@ -122,12 +98,8 @@ export async function handleWebhookEvent(
       
       default:
         return { success: true, message: `Unhandled event type: ${event.type}` };
-    }
-  } catch (error) {
+catch (error) {
     console.error('Error handling Stripe webhook:', error);
     return { 
       success: false, 
       message: error instanceof Error ? error.message : 'Unknown error processing webhook'
-    };
-  }
-}

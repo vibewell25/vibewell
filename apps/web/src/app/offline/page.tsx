@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FiWifiOff, FiCalendar, FiRefreshCw, FiHome } from 'react-icons/fi';
@@ -10,8 +8,6 @@ interface CachedBooking {
   serviceName: string;
   date: string;
   time: string;
-}
-
 export default function OfflinePage() {
   const [cachedBookings, setCachedBookings] = useState<CachedBooking[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -28,9 +24,7 @@ export default function OfflinePage() {
         request.onerror = () => {
           console.error('Failed to open IndexedDB');
           setIsLoading(false);
-        };
-        
-        request.onsuccess = (event) => {
+request.onsuccess = (event) => {
           const db = (event.target as IDBOpenDBRequest).result;
           
           // Try to get cached bookings
@@ -43,58 +37,39 @@ export default function OfflinePage() {
             const bookingsRequest = bookingsStore.getAll();
             bookingsRequest.onsuccess = () => {
               setCachedBookings(bookingsRequest.result || []);
-            };
-            
-            // Get last synced timestamp
+// Get last synced timestamp
             const syncRequest = settingsStore.get('lastSync');
             syncRequest.onsuccess = () => {
               if (syncRequest.result) {
                 setLastSynced(syncRequest.result.timestamp);
-              }
-            };
-            
-            transaction.oncomplete = () => {
+transaction.oncomplete = () => {
               db.close();
               setIsLoading(false);
-            };
-          } catch (error) {
+catch (error) {
             console.error('Error fetching cached data:', error);
             setIsLoading(false);
-          }
-        };
-        
-        request.onupgradeneeded = (event) => {
+request.onupgradeneeded = (event) => {
           const db = (event.target as IDBOpenDBRequest).result;
           
           // Create object stores if they don't exist
           if (!db.objectStoreNames.contains('cachedBookings')) {
             db.createObjectStore('cachedBookings', { keyPath: 'id' });
-          }
-          
-          if (!db.objectStoreNames.contains('userSettings')) {
+if (!db.objectStoreNames.contains('userSettings')) {
             db.createObjectStore('userSettings', { keyPath: 'id' });
-          }
-        };
-      } catch (error) {
+catch (error) {
         console.error('Error in IndexedDB operation:', error);
         setIsLoading(false);
-      }
-    }
-    
-    loadCachedData();
-  }, []);
+loadCachedData();
+[]);
   
   // Format date helper
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
       return date.toLocaleDateString();
-    } catch (e) {
+catch (e) {
       return dateString;
-    }
-  };
-
-  return (
+return (
     <div className="min-h-screen bg-gradient-to-b from-violet-50 to-indigo-100 p-4 pb-safe-bottom pt-safe-top">
       <div className="mx-auto max-w-md">
         <div className="mb-6 rounded-xl bg-white p-8 shadow-xl">
@@ -194,5 +169,3 @@ export default function OfflinePage() {
         </div>
       </div>
     </div>
-  );
-}

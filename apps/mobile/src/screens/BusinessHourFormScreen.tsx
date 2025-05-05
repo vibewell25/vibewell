@@ -20,18 +20,14 @@ const BusinessHourFormScreen: React.FC = () => {
       const dow = parseInt(dayOfWeek, 10);
       if (hour) {
         await updateBusinessHour(hour.id, { dayOfWeek: dow, openTime, closeTime });
-      } else {
+else {
         await createBusinessHour({ businessId: business.id, dayOfWeek: dow, openTime, closeTime });
-      }
-      navigation.goBack();
-    } catch {
+navigation.goBack();
+catch {
       Alert.alert('Error', 'Failed to save business hour');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  return (
+return (
     <View style={{ flex: 1, padding: 16 }}>
       <Text>Day of Week (0 = Sun ... 6 = Sat)</Text>
       <TextInput
@@ -58,7 +54,4 @@ const BusinessHourFormScreen: React.FC = () => {
         disabled={loading || !openTime.trim() || !closeTime.trim()}
       />
     </View>
-  );
-};
-
 export default BusinessHourFormScreen;

@@ -39,8 +39,7 @@ const AnalyticsChart: React.FC = () => {
               ></div>
               <div className="mt-2 text-xs text-gray-500">{item.month}</div>
             </div>
-          );
-        })}
+)}
       </div>
       
       <div className="mt-4 flex justify-between">
@@ -48,7 +47,4 @@ const AnalyticsChart: React.FC = () => {
         <div className="text-sm font-medium text-gray-700">Total: $245,000</div>
       </div>
     </div>
-  );
-};
-
 export default AnalyticsChart; 

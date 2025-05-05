@@ -1,4 +1,3 @@
-'use client';;
 import { useEffect, useState } from 'react';
 import { ProviderProfileForm } from '@/components/provider/profile-form';
 import { BusinessProfileWizard } from '@/components/business/business-profile-wizard';
@@ -17,7 +16,7 @@ export default function ProviderProfilePage() {
 
   useEffect(() => {
     checkUser();
-  }, []);
+[]);
 
   const checkUser = async ( {
   const start = Date.now();
@@ -25,13 +24,11 @@ export default function ProviderProfilePage() {
     try {
       const {
         data: { user },
-      } = await supabase.auth.getUser();
+= await supabase.auth.getUser();
       if (!user) {
         router.push('/login');
         return;
-      }
-
-      const { data, error } = await supabase
+const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
@@ -42,9 +39,7 @@ export default function ProviderProfilePage() {
       if (data.role !== 'provider') {
         router.push('/');
         return;
-      }
-
-      setProfile(data);
+setProfile(data);
 
       // Check if business profile is completed
       const { data: businessProfile, error: businessError } = await supabase
@@ -55,31 +50,20 @@ export default function ProviderProfilePage() {
 
       if (!businessError && businessProfile) {
         setHasCompletedBusinessSetup(businessProfile.completed_setup || false);
-      }
-    } catch (error) {
+catch (error) {
       console.error('Error checking user:', error);
-    } finally {
+finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleTabChange = (value: string) => {
+const handleTabChange = (value: string) => {
     setActiveTab(value);
-  };
-
-  if (isLoading) {
+if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="border-primary h-12 w-12 animate-spin rounded-full border-b-2"></div>
       </div>
-    );
-  }
-
-  if (!profile) {
+if (!profile) {
     return null;
-  }
-
-  return (
+return (
     <div className="container mx-auto py-8">
       <h1 className="mb-6 text-3xl font-bold">Provider Profile</h1>
 
@@ -161,5 +145,3 @@ export default function ProviderProfilePage() {
         </TabsContent>
       </Tabs>
     </div>
-  );
-}

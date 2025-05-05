@@ -1,4 +1,3 @@
-
 import { PrismaClient } from '@prisma/client';
 import { 
   generateAuthenticationOptions,
@@ -7,8 +6,7 @@ import {
   verifyRegistrationResponse,
   type AuthenticationResponseJSON,
   type RegistrationResponseJSON,
-
-} from '@simplewebauthn/server';
+from '@simplewebauthn/server';
 
 import { AppError, handleError } from '../utils/error';
 
@@ -26,13 +24,9 @@ export class WebAuthnService {
       const user = await this.prisma.user.findUnique({
         where: { id: userId },
         include: { webAuthnDevices: true },
-      });
-
-      if (!user) {
+if (!user) {
         throw new AppError('User not found', 404);
-      }
-
-      const options = await generateRegistrationOptions({
+const options = await generateRegistrationOptions({
         rpName: this.rpName,
         rpID: this.rpID,
         userID: user.id,
@@ -42,29 +36,20 @@ export class WebAuthnService {
           residentKey: 'preferred',
           userVerification: 'preferred',
           authenticatorAttachment: 'platform',
-        },
-        excludeCredentials: user.webAuthnDevices.map(device => ({
+excludeCredentials: user.webAuthnDevices.map(device => ({
           id: Buffer.from(device.credentialId, 'base64'),
 
           type: 'public-key',
-        })),
-      });
-
-      // Save challenge
+)),
+// Save challenge
       await this.prisma.challenge.create({
         data: {
           userId: user.id,
           challenge: options.challenge,
-        },
-      });
-
-      return options;
-    } catch (error) {
+return options;
+catch (error) {
       throw handleError(error);
-    }
-  }
-
-  async finishRegistration(
+async finishRegistration(
     userId: string, 
     response: RegistrationResponseJSON,
     deviceName?: string
@@ -73,29 +58,19 @@ export class WebAuthnService {
       const user = await this.prisma.user.findUnique({
         where: { id: userId },
         include: { challenges: true },
-      });
-
-      if (!user) {
+if (!user) {
         throw new AppError('User not found', 404);
-      }
-
-      const challenge = user.challenges[0];
+const challenge = user.challenges[0];
       if (!challenge) {
         throw new AppError('Challenge not found', 400);
-      }
-
-      const verification = await verifyRegistrationResponse({
+const verification = await verifyRegistrationResponse({
         response,
         expectedChallenge: challenge.challenge,
         expectedOrigin: this.origin,
         expectedRPID: this.rpID,
-      });
-
-      if (!verification.verified || !verification.registrationInfo) {
+if (!verification.verified || !verification.registrationInfo) {
         throw new AppError('Registration verification failed', 400);
-      }
-
-      const { credentialID, credentialPublicKey, counter } = verification.registrationInfo;
+const { credentialID, credentialPublicKey, counter } = verification.registrationInfo;
 
       // Create WebAuthn device
       await this.prisma.webAuthnDevice.create({
@@ -105,10 +80,7 @@ export class WebAuthnService {
           publicKey: Buffer.from(credentialPublicKey).toString('base64'),
           counter,
           lastUsedAt: new Date(),
-        },
-      });
-
-      // Log the registration
+// Log the registration
       await this.prisma.webAuthnAuditLog.create({
         data: {
           userId: user.id,
@@ -117,56 +89,36 @@ export class WebAuthnService {
           success: true,
           ipAddress: '', // Should be passed from the request
           userAgent: '', // Should be passed from the request
-        },
-      });
-
-      // Clean up challenge
+// Clean up challenge
       await this.prisma.challenge.deleteMany({
         where: { userId: user.id },
-      });
-
-      return { verified: true };
-    } catch (error) {
+return { verified: true };
+catch (error) {
       throw handleError(error);
-    }
-  }
-
-  async startAuthentication(userId: string) {
+async startAuthentication(userId: string) {
     try {
       const user = await this.prisma.user.findUnique({
         where: { id: userId },
         include: { webAuthnDevices: true },
-      });
-
-      if (!user) {
+if (!user) {
         throw new AppError('User not found', 404);
-      }
-
-      const options = await generateAuthenticationOptions({
+const options = await generateAuthenticationOptions({
         rpID: this.rpID,
         allowCredentials: user.webAuthnDevices.map(device => ({
           id: Buffer.from(device.credentialId, 'base64'),
 
           type: 'public-key',
-        })),
+)),
         userVerification: 'preferred',
-      });
-
-      // Save challenge
+// Save challenge
       await this.prisma.challenge.create({
         data: {
           userId: user.id,
           challenge: options.challenge,
-        },
-      });
-
-      return options;
-    } catch (error) {
+return options;
+catch (error) {
       throw handleError(error);
-    }
-  }
-
-  async finishAuthentication(
+async finishAuthentication(
     userId: string,
     response: AuthenticationResponseJSON,
   ) {
@@ -176,31 +128,20 @@ export class WebAuthnService {
         include: { 
           webAuthnDevices: true,
           challenges: true,
-        },
-      });
-
-      if (!user) {
+if (!user) {
         throw new AppError('User not found', 404);
-      }
-
-      const challenge = user.challenges[0];
+const challenge = user.challenges[0];
       if (!challenge) {
         throw new AppError('Challenge not found', 400);
-      }
-
-      const credentialId = Buffer.from(
+const credentialId = Buffer.from(
         response.id, 'base64'
       ).toString('base64');
 
       const device = user.webAuthnDevices.find(
         d => d.credentialId === credentialId
-      );
-
-      if (!device) {
+if (!device) {
         throw new AppError('Device not found', 404);
-      }
-
-      const verification = await verifyAuthenticationResponse({
+const verification = await verifyAuthenticationResponse({
         response,
         expectedChallenge: challenge.challenge,
         expectedOrigin: this.origin,
@@ -209,23 +150,15 @@ export class WebAuthnService {
           credentialID: Buffer.from(device.credentialId, 'base64'),
           credentialPublicKey: Buffer.from(device.publicKey, 'base64'),
           counter: device.counter,
-        },
-      });
-
-      if (!verification.verified) {
+if (!verification.verified) {
         throw new AppError('Authentication verification failed', 400);
-      }
-
-      // Update device counter
+// Update device counter
       await this.prisma.webAuthnDevice.update({
         where: { id: device.id },
         data: {
           counter: verification.authenticationInfo.newCounter,
           lastUsedAt: new Date(),
-        },
-      });
-
-      // Log the authentication
+// Log the authentication
       await this.prisma.webAuthnAuditLog.create({
         data: {
           userId: user.id,
@@ -234,51 +167,31 @@ export class WebAuthnService {
           success: true,
           ipAddress: '', // Should be passed from the request
           userAgent: '', // Should be passed from the request
-        },
-      });
-
-      // Clean up challenge
+// Clean up challenge
       await this.prisma.challenge.deleteMany({
         where: { userId: user.id },
-      });
-
-      return { verified: true };
-    } catch (error) {
+return { verified: true };
+catch (error) {
       throw handleError(error);
-    }
-  }
-
-  async listDevices(userId: string) {
+async listDevices(userId: string) {
     try {
       const devices = await this.prisma.webAuthnDevice.findMany({
         where: { userId },
         orderBy: { lastUsedAt: 'desc' },
-      });
-
-      return devices;
-    } catch (error) {
+return devices;
+catch (error) {
       throw handleError(error);
-    }
-  }
-
-  async removeDevice(userId: string, credentialId: string) {
+async removeDevice(userId: string, credentialId: string) {
     try {
       const device = await this.prisma.webAuthnDevice.findFirst({
         where: {
           userId,
           credentialId,
-        },
-      });
-
-      if (!device) {
+if (!device) {
         throw new AppError('Device not found', 404);
-      }
-
-      await this.prisma.webAuthnDevice.delete({
+await this.prisma.webAuthnDevice.delete({
         where: { id: device.id },
-      });
-
-      // Log the removal
+// Log the removal
       await this.prisma.webAuthnAuditLog.create({
         data: {
           userId,
@@ -287,12 +200,6 @@ export class WebAuthnService {
           success: true,
           ipAddress: '', // Should be passed from the request
           userAgent: '', // Should be passed from the request
-        },
-      });
-
-      return { success: true };
-    } catch (error) {
+return { success: true };
+catch (error) {
       throw handleError(error);
-    }
-  }
-} 

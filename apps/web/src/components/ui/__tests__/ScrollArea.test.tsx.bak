@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import scroll-area from '../scroll-area.tsx';
+
+describe('scroll-area', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<scroll-area />);
+    expect(container).toBeInTheDocument();
+  });
+});

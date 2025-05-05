@@ -32,22 +32,17 @@ const RevenueAnalyticsScreen: React.FC = () => {
       ]);
       setRevenue(await revRes.json());
       setBreakdown(await brRes.json());
-    } catch (e) {
+catch (e) {
       console.error(e);
-    }
-    setLoading(false);
-  };
-
-  const exportCsv = async () => {
+setLoading(false);
+const exportCsv = async () => {
     const qs = `?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
     const res = await fetch(`${serverBaseUrl}/api/analytics/metrics/revenue/export${qs}`, { headers });
     const csv = await res.text();
     const fileUri = FileSystem.documentDirectory + 'revenue.csv';
     await FileSystem.writeAsStringAsync(fileUri, csv, { encoding: FileSystem.EncodingType.UTF8 });
     await Sharing.shareAsync(fileUri, { mimeType: 'text/csv', dialogTitle: 'Share revenue.csv' });
-  };
-
-  if (loading) return <ActivityIndicator style={styles.loader} size="large" />;
+if (loading) return <ActivityIndicator style={styles.loader} size="large" />;
   return (
     <ScrollView style={styles.container}>
       <View style={styles.filterRow}>
@@ -70,8 +65,7 @@ const RevenueAnalyticsScreen: React.FC = () => {
             decimalPlaces: 2,
             color: (opacity = 1) => `rgba(74,144,226,${opacity})`,
             labelColor: (opacity = 1) => `rgba(0,0,0,${opacity})`,
-          }}
-          bezier
+bezier
           style={{ marginVertical: 8 }}
         />
       </View>
@@ -91,9 +85,6 @@ const RevenueAnalyticsScreen: React.FC = () => {
         <Button title="Export CSV" onPress={exportCsv} />
       </View>
     </ScrollView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   loader: { flex: 1, justifyContent: 'center', alignItems: 'center' },
@@ -103,6 +94,4 @@ const styles = StyleSheet.create({
   card: { backgroundColor: '#FFF', padding: 16, borderRadius: 8, marginBottom: 12 },
   cardTitle: { fontSize: 16, fontWeight: 'bold' },
   cardValue: { fontSize: 20, marginTop: 4 },
-});
-
 export default RevenueAnalyticsScreen;

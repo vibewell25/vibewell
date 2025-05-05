@@ -9,7 +9,7 @@ import {
   Alert,
   Platform,
   TextInput
-} from 'react-native';
+from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
@@ -21,8 +21,6 @@ type RootStackParamList = {
   SecuritySettings: undefined;
   ChangePassword: undefined;
   TwoFactorSetup: undefined;
-};
-
 interface SecurityPreferences {
   biometricEnabled: boolean;
   twoFactorEnabled: boolean;
@@ -32,16 +30,12 @@ interface SecurityPreferences {
   securityNotifications: boolean;
   trustedDevices: boolean;
   passwordChangeReminder: boolean;
-}
-
 interface ActiveSession {
   id: string;
   deviceName: string;
   location: string;
   lastActive: string;
   isCurrentDevice: boolean;
-}
-
 const SecuritySettingsScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -54,8 +48,7 @@ const SecuritySettingsScreen: React.FC = () => {
     securityNotifications: true,
     trustedDevices: true,
     passwordChangeReminder: true
-  });
-  const [activeSessions, setActiveSessions] = useState<ActiveSession[]>([]);
+const [activeSessions, setActiveSessions] = useState<ActiveSession[]>([]);
   const [loading, setLoading] = useState(true);
   const [biometricSupported, setBiometricSupported] = useState(false);
 
@@ -63,33 +56,26 @@ const SecuritySettingsScreen: React.FC = () => {
     loadPreferences();
     checkBiometricSupport();
     loadActiveSessions();
-  }, []);
+[]);
 
   const checkBiometricSupport = async () => {
     try {
       const supported = await LocalAuthentication.hasHardwareAsync();
       const enrolled = await LocalAuthentication.isEnrolledAsync();
       setBiometricSupported(supported && enrolled);
-    } catch (error) {
+catch (error) {
       console.error('Error checking biometric support:', error);
-    }
-  };
-
-  const loadPreferences = async () => {
+const loadPreferences = async () => {
     try {
       const saved = await AsyncStorage.getItem('@vibewell/security_preferences');
       if (saved) {
         setPreferences(JSON.parse(saved));
-      }
-    } catch (error) {
+catch (error) {
       console.error('Error loading security preferences:', error);
       Alert.alert('Error', 'Failed to load security preferences');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  const loadActiveSessions = async () => {
+const loadActiveSessions = async () => {
     // Mock data for demonstration
     const mockSessions: ActiveSession[] = [
       {
@@ -98,73 +84,52 @@ const SecuritySettingsScreen: React.FC = () => {
         location: 'San Francisco, CA',
         lastActive: 'Now',
         isCurrentDevice: true
-      },
-      {
+{
         id: '2',
         deviceName: 'MacBook Pro',
         location: 'San Francisco, CA',
         lastActive: '2 hours ago',
         isCurrentDevice: false
-      },
-      {
+{
         id: '3',
         deviceName: 'iPad Air',
         location: 'New York, NY',
         lastActive: '1 day ago',
         isCurrentDevice: false
-      }
-    ];
+];
     setActiveSessions(mockSessions);
-  };
-
-  const savePreferences = async (newPreferences: SecurityPreferences) => {
+const savePreferences = async (newPreferences: SecurityPreferences) => {
     try {
       await AsyncStorage.setItem(
         '@vibewell/security_preferences',
         JSON.stringify(newPreferences)
-      );
-      setPreferences(newPreferences);
-    } catch (error) {
+setPreferences(newPreferences);
+catch (error) {
       console.error('Error saving security preferences:', error);
       Alert.alert('Error', 'Failed to save security preferences');
-    }
-  };
-
-  const handleToggle = async (key: keyof SecurityPreferences) => {
+const handleToggle = async (key: keyof SecurityPreferences) => {
     if (key === 'biometricEnabled' && !preferences.biometricEnabled) {
       try {
         const result = await LocalAuthentication.authenticateAsync({
           promptMessage: 'Authenticate to enable biometric login'
-        });
-        if (!result.success) {
+if (!result.success) {
           return;
-        }
-      } catch (error) {
+catch (error) {
         console.error('Biometric authentication error:', error);
         return;
-      }
-    }
-
-    const newPreferences = {
+const newPreferences = {
       ...preferences,
       [key]: key === 'autoLockTimeout' ? 
         (preferences[key] as number + 5) % 30 : 
         !preferences[key]
-    };
-    savePreferences(newPreferences);
-  };
-
-  const handleChangePassword = () => {
+savePreferences(newPreferences);
+const handleChangePassword = () => {
     // Navigate to change password screen
     navigation.navigate('ChangePassword');
-  };
-
-  const handleSetupTwoFactor = () => {
+const handleSetupTwoFactor = () => {
     // Navigate to 2FA setup screen
     navigation.navigate('TwoFactorSetup');
-  };
-
-  const handleRevokeSession = (sessionId: string) => {
+const handleRevokeSession = (sessionId: string) => {
     Alert.alert(
       'Revoke Session',
       'Are you sure you want to end this session?',
@@ -176,14 +141,8 @@ const SecuritySettingsScreen: React.FC = () => {
           onPress: () => {
             setActiveSessions(prev => 
               prev.filter(session => session.id !== sessionId)
-            );
-          }
-        }
-      ]
-    );
-  };
-
-  const renderSettingItem = (
+]
+const renderSettingItem = (
     key: keyof SecurityPreferences,
     label: string,
     description?: string,
@@ -219,9 +178,7 @@ const SecuritySettingsScreen: React.FC = () => {
         thumbColor={preferences[key] ? '#FFFFFF' : '#F4F3F4'}
       />
     </View>
-  );
-
-  const renderActionButton = (
+const renderActionButton = (
     label: string,
     onPress: () => void,
     type: 'primary' | 'destructive' = 'primary'
@@ -233,15 +190,12 @@ const SecuritySettingsScreen: React.FC = () => {
         {
           backgroundColor: type === 'destructive' ? '#DC2626' : '#4F46E5',
           opacity: loading ? 0.5 : 1
-        }
-      ]}
+]}
       disabled={loading}
     >
       <Text style={styles.actionButtonText}>{label}</Text>
     </TouchableOpacity>
-  );
-
-  const renderSessionItem = (session: ActiveSession) => (
+const renderSessionItem = (session: ActiveSession) => (
     <View
       key={session.id}
       style={[
@@ -277,9 +231,7 @@ const SecuritySettingsScreen: React.FC = () => {
         </TouchableOpacity>
       )}
     </View>
-  );
-
-  return (
+return (
     <SafeAreaView style={[
       styles.container,
       { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }
@@ -371,73 +323,56 @@ const SecuritySettingsScreen: React.FC = () => {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
+header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
-  },
-  backButton: {
+backButton: {
     marginRight: 16,
-  },
-  title: {
+title: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  content: {
+content: {
     flex: 1,
-  },
-  section: {
+section: {
     marginBottom: 24,
-  },
-  sectionTitle: {
+sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
     marginHorizontal: 16,
     marginVertical: 12,
-  },
-  settingItem: {
+settingItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
-  },
-  settingContent: {
+settingContent: {
     flex: 1,
     marginRight: 16,
-  },
-  settingLabel: {
+settingLabel: {
     fontSize: 16,
     marginBottom: 4,
-  },
-  settingDescription: {
+settingDescription: {
     fontSize: 14,
-  },
-  disabledText: {
+disabledText: {
     opacity: 0.5,
-  },
-  actionButton: {
+actionButton: {
     margin: 16,
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',
-  },
-  actionButtonText: {
+actionButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
-  },
-  sessionItem: {
+sessionItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -445,34 +380,24 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginBottom: 12,
     borderRadius: 8,
-  },
-  sessionInfo: {
+sessionInfo: {
     flex: 1,
-  },
-  sessionHeader: {
+sessionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 4,
-  },
-  deviceName: {
+deviceName: {
     fontSize: 16,
     fontWeight: '500',
-  },
-  currentDevice: {
+currentDevice: {
     color: '#4F46E5',
     fontSize: 14,
-  },
-  sessionDetails: {
+sessionDetails: {
     fontSize: 14,
-  },
-  revokeButton: {
+revokeButton: {
     marginLeft: 16,
-  },
-  revokeButtonText: {
+revokeButtonText: {
     color: '#DC2626',
     fontSize: 14,
     fontWeight: '500',
-  },
-});
-
 export default SecuritySettingsScreen; 

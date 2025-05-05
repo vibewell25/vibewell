@@ -1,5 +1,3 @@
-'use client';;
-// Import SVG component types from React
 import type { SVGProps } from 'react';
 import { Loader2, Github } from 'lucide-react';
 
@@ -33,7 +31,7 @@ import {
   Download,
   Copy,
   DollarSign,
-} from 'lucide-react';
+from 'lucide-react';
 
 export const Icons = {
   spinner: Loader2,
@@ -63,21 +61,16 @@ export const Icons = {
   download: Download,
   copy: Copy,
   dollarSign: DollarSign,
-} as const;
+as const;
 
 export type Icon = typeof Icons;
 
 export interface IconProps extends SVGProps<SVGSVGElement> {
   size?: number;
-}
-
 // Create a function to enhance heroicon components with size prop
 const enhanceIconWithSize = (Icon: React.FC<SVGProps<SVGSVGElement>>) => {
   return ({ size, ...props }: IconProps) => (
     <Icon width={size || props.width || 24} height={size || props.height || 24} {...props} />
-  );
-};
-
 // Export individual icons for direct imports
 export const {
   spinner: Spinner,
@@ -107,4 +100,4 @@ export const {
   download: DownloadIcon,
   copy: CopyIcon,
   dollarSign: DollarSignIcon,
-} = Icons;
+= Icons;

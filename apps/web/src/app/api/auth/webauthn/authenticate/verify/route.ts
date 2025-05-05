@@ -1,4 +1,3 @@
-
 import { verifyAuthenticationResponse } from '@simplewebauthn/server';
 
 import type { AuthenticationResponseJSON } from '@simplewebauthn/typescript-types';
@@ -14,9 +13,7 @@ export async function {
 
     if (!response) {
       return NextResponse.json({ error: 'Missing authentication response' }, { status: 400 });
-    }
-
-    // In a real application, you would:
+// In a real application, you would:
     // 1. Get the user's credential from your database using response.id
     // 2. Get the stored challenge from your database
     // 3. Get the user's public key from your database
@@ -34,25 +31,17 @@ export async function {
           publicKey: new Uint8Array([]),
           id: '', // Base64URL string of the credential ID
           counter: 0,
-        },
-      });
-    } catch (error) {
+catch (error) {
       console.error('Error verifying authentication:', error);
       return NextResponse.json({ error: 'Failed to verify authentication' }, { status: 400 });
-    }
-
-    const { verified, authenticationInfo } = verification;
+const { verified, authenticationInfo } = verification;
 
     if (verified && authenticationInfo) {
       // In a real application, you would:
       // 1. Update the authenticator's counter in your database
       // 2. Handle user sign in (e.g., create a session)
       return NextResponse.json({ verified, authenticationInfo });
-    }
-
-    return NextResponse.json({ error: 'Authentication verification failed' }, { status: 400 });
-  } catch (error) {
+return NextResponse.json({ error: 'Authentication verification failed' }, { status: 400 });
+catch (error) {
     console.error('Error processing authentication:', error);
     return NextResponse.json({ error: 'Failed to process authentication' }, { status: 500 });
-  }
-}

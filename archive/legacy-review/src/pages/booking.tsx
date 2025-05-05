@@ -14,6 +14,4 @@ interface BookingFormData {
   time: string;
   phone: string;
   specialRequests: string;
-}
-
 export {};

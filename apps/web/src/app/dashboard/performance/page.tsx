@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect, useState, Suspense } from 'react';
 import { Layout } from '@/components/layout';
 import { useAuth } from '@/hooks/useAuth';
@@ -20,28 +18,21 @@ function PerformanceContent() {
       if (!user) {
         router.push('/auth/signin');
         return;
-      }
-
-      try {
+try {
         // Check if user is admin
         const response = await fetch('/api/users/currentRole');
         const { role } = await response.json();
 
         if (role !== 'admin') {
           setIsAuthorized(false);
-        } else {
+else {
           setIsAuthorized(true);
-        }
-      } catch (error) {
+catch (error) {
         console.error('Error checking user role:', error);
         setIsAuthorized(false);
-      }
-    };
-
-    if (!loading) {
+if (!loading) {
       checkAuth();
-    }
-  }, [user, loading, router]);
+[user, loading, router]);
 
   if (loading) {
     return (
@@ -53,10 +44,7 @@ function PerformanceContent() {
           </div>
         </div>
       </Layout>
-    );
-  }
-
-  if (!isAuthorized) {
+if (!isAuthorized) {
     return (
       <Layout>
         <div className="container-app py-12">
@@ -68,10 +56,7 @@ function PerformanceContent() {
           </Alert>
         </div>
       </Layout>
-    );
-  }
-
-  return (
+return (
     <Layout>
       <div className="container-app py-12">
         <div className="mb-8">
@@ -84,9 +69,6 @@ function PerformanceContent() {
         <PerformanceDashboard />
       </div>
     </Layout>
-  );
-}
-
 export default function PerformancePage() {
   return (
     <Suspense
@@ -94,5 +76,3 @@ export default function PerformancePage() {
     >
       <PerformanceContent />
     </Suspense>
-  );
-}

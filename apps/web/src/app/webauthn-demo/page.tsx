@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { WebAuthnButton } from '@/components/WebAuthnButton';
 
@@ -14,14 +12,10 @@ export default function WebAuthnDemo() {
   const handleSuccess = () => {
     setStatus('Operation completed successfully!');
     setError('');
-  };
-
-  const handleError = (error: Error) => {
+const handleError = (error: Error) => {
     setStatus('');
     setError(error.message);
-  };
-
-  return (
+return (
     <div className="min-h-screen bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-md">
         <div className="text-center">
@@ -102,5 +96,3 @@ export default function WebAuthnDemo() {
         </div>
       </div>
     </div>
-  );
-}

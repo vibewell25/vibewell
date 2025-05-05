@@ -1,9 +1,8 @@
-
 import { PrismaClient } from '@prisma/client';
 
 import { getServerSession } from 'next-auth';
 
-import { authOptions } from '@/lib/auth-options';
+import { authOptions } from '@/lib/AuthOptions';
 
 // Instantiate Prisma client
 const prisma = new PrismaClient();
@@ -12,8 +11,6 @@ export interface GraphQLContext {
   prisma: PrismaClient;
   session: any; // Replace with your session type
   user: any | null; // Replace with your user type
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); createContext({ req, res }): Promise<GraphQLContext> {
@@ -27,12 +24,7 @@ export async function {
   if (session.user.id) {
     user = await prisma.user.findUnique({
       where: { id: session.user.id },
-    });
-  }
-
-  return {
+return {
     prisma,
     session,
     user,
-  };
-}

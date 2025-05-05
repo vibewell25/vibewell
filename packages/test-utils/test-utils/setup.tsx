@@ -10,9 +10,6 @@ export function setup(jsx: ReactElement) {
   return {
     user: userEvent.setup(),
     ...render(jsx),
-  };
-}
-
 /**
  * Re-export everything from testing-library/react for convenience
  */

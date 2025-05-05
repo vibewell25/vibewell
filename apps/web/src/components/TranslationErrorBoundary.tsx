@@ -4,8 +4,6 @@ import { ErrorBoundary } from 'react-error-boundary';
 interface FallbackProps {
   error: Error;
   resetErrorBoundary: () => void;
-}
-
 const ErrorFallback: React.FC<FallbackProps> = ({ error, resetErrorBoundary }) => {
   return (
     <div className="rounded-md border border-red-500 p-4">
@@ -18,13 +16,8 @@ const ErrorFallback: React.FC<FallbackProps> = ({ error, resetErrorBoundary }) =
         Try again
       </button>
     </div>
-  );
-};
-
 export function TranslationErrorBoundary({ children }: { children: ReactNode }) {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       {children}
     </ErrorBoundary>
-  );
-}

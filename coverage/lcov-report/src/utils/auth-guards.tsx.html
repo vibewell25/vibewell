@@ -339,7 +339,7 @@ export interface User {
  * @returns True if the user is valid and authenticated
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >isAuthenticated(</span></span>user: User | null | undefined): user is User {
-<span class="cstat-no" title="statement not covered" >  return exists(user) &amp;&amp; exists(user?.id);</span>
+<span class="cstat-no" title="statement not covered" >  return exists(user) &amp;&amp; exists(user.id);</span>
 }
 &nbsp;
 /**
@@ -349,12 +349,12 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
  * @returns True if the user has the specified role
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >hasRole(</span></span>user: User | null | undefined, role: string | string[]): boolean {
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isAuthenticated(user) || !exists(user?.roles)) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isAuthenticated(user) || !exists(user.roles)) {</span>
 <span class="cstat-no" title="statement not covered" >    return false;</span>
   }
 &nbsp;
-  const roles = <span class="cstat-no" title="statement not covered" >Array?.isArray(role) ? role : [role];</span>
-<span class="cstat-no" title="statement not covered" >  return roles?.some(<span class="fstat-no" title="function not covered" >(r</span>) =&gt; <span class="cstat-no" title="statement not covered" >user?.roles!.includes(r));</span></span>
+  const roles = <span class="cstat-no" title="statement not covered" >Array.isArray(role) ? role : [role];</span>
+<span class="cstat-no" title="statement not covered" >  return roles.some(<span class="fstat-no" title="function not covered" >(r</span>) =&gt; <span class="cstat-no" title="statement not covered" >user.roles!.includes(r));</span></span>
 }
 &nbsp;
 /**
@@ -364,11 +364,11 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
  * @returns True if the user has all the specified roles
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >hasAllRoles(</span></span>user: User | null | undefined, roles: string[]): boolean {
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isAuthenticated(user) || !exists(user?.roles)) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isAuthenticated(user) || !exists(user.roles)) {</span>
 <span class="cstat-no" title="statement not covered" >    return false;</span>
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return roles?.every(<span class="fstat-no" title="function not covered" >(r</span>ole) =&gt; <span class="cstat-no" title="statement not covered" >user?.roles!.includes(role));</span></span>
+<span class="cstat-no" title="statement not covered" >  return roles.every(<span class="fstat-no" title="function not covered" >(r</span>ole) =&gt; <span class="cstat-no" title="statement not covered" >user.roles!.includes(role));</span></span>
 }
 &nbsp;
 /**
@@ -393,18 +393,18 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   permission: string,
   resource?: string,
 ): boolean {
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isAuthenticated(user) || !exists(user?.permissions)) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isAuthenticated(user) || !exists(user.permissions)) {</span>
 <span class="cstat-no" title="statement not covered" >    return false;</span>
   }
 &nbsp;
   // Simple implementation - can be extended based on your permission structure
-  const userPermissions = <span class="cstat-no" title="statement not covered" >user?.permissions as string[];</span>
+  const userPermissions = <span class="cstat-no" title="statement not covered" >user.permissions </span>as string[];
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (exists(resource)) {</span>
-<span class="cstat-no" title="statement not covered" >    return userPermissions?.includes(`${permission}:${resource}`);</span>
+<span class="cstat-no" title="statement not covered" >    return userPermissions.includes(`${permission}:${resource}`);</span>
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return userPermissions?.includes(permission);</span>
+<span class="cstat-no" title="statement not covered" >  return userPermissions.includes(permission);</span>
 }
 &nbsp;
 /**
@@ -413,11 +413,11 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
  * @returns Array of user roles or empty array if none exist
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getUserRoles(</span></span>user: User | null | undefined): string[] {
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isAuthenticated(user) || !exists(user?.roles)) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isAuthenticated(user) || !exists(user.roles)) {</span>
 <span class="cstat-no" title="statement not covered" >    return [];</span>
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return user?.roles;</span>
+<span class="cstat-no" title="statement not covered" >  return user.roles;</span>
 }
 &nbsp;
 /**
@@ -445,7 +445,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

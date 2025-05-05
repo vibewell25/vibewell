@@ -8,15 +8,13 @@ interface WebAuthnButtonProps {
   onError?: (error: Error) => void;
   requireBiometrics?: boolean;
   className?: string;
-}
-
 export function WebAuthnButton({
   mode,
   onSuccess,
   onError,
   requireBiometrics = false,
   className = '',
-}: WebAuthnButtonProps) {
+: WebAuthnButtonProps) {
   const { register, authenticate, isLoading, error } = useWebAuthn();
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
@@ -28,24 +26,18 @@ export function WebAuthnButton({
       const options = {
         requireBiometrics,
         userVerificationLevel: requireBiometrics ? ('required' as const) : ('preferred' as const),
-      };
-
-      const verified = await (mode === 'register' ? register(options) : authenticate(options));
+const verified = await (mode === 'register' ? register(options) : authenticate(options));
 
       if (verified) {
         setStatus('success');
         onSuccess.();
-      } else {
+else {
         throw new WebAuthnError('Verification failed', 'VERIFICATION_FAILED');
-      }
-    } catch (err) {
+catch (err) {
       setStatus('error');
       const error = err instanceof Error ? err : new Error('Operation failed');
       onError.(error);
-    }
-  };
-
-  return (
+return (
     <button
       onClick={handleClick}
       disabled={isLoading || status === 'loading'}
@@ -96,5 +88,3 @@ export function WebAuthnButton({
         <span>{mode === 'register' ? 'Register Device' : 'Authenticate'}</span>
       )}
     </button>
-  );
-}

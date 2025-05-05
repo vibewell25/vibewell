@@ -6,38 +6,32 @@ interface PerformanceMetrics {
     used: number;
     total: number;
     limit: number;
-  } | null;
+| null;
   cpu: {
     usage: number;
     cores: number;
-  } | null;
+| null;
   gpu: {
     usage: number;
     memory: number;
-  } | null;
+| null;
   network: {
     downlink: number;
     rtt: number;
     effectiveType: string;
-  } | null;
+| null;
   triangles: number;
   calls: number;
-}
-
 interface PerformanceThresholds {
   minFps: number;
   maxMemoryUsage: number;
   maxCpuUsage: number;
   maxGpuUsage: number;
-}
-
 const DEFAULT_THRESHOLDS: PerformanceThresholds = {
   minFps: 30,
   maxMemoryUsage: 0.8, // 80%
   maxCpuUsage: 0.7, // 70%
   maxGpuUsage: 0.8 // 80%
-};
-
 export const usePerformanceMonitor = (
   thresholds: Partial<PerformanceThresholds> = {}
 ) => {
@@ -49,9 +43,7 @@ export const usePerformanceMonitor = (
     network: null,
     triangles: 0,
     calls: 0
-  });
-
-  const [warnings, setWarnings] = useState<string[]>([]);
+const [warnings, setWarnings] = useState<string[]>([]);
   const mergedThresholds = { ...DEFAULT_THRESHOLDS, ...thresholds };
 
   // Update metrics
@@ -59,8 +51,8 @@ export const usePerformanceMonitor = (
     setMetrics(prev => ({
       ...prev,
       ...newMetrics
-    }));
-  }, []);
+));
+[]);
 
   // Monitor performance
   useEffect(() => {
@@ -84,7 +76,7 @@ export const usePerformanceMonitor = (
           used: (performance as any).memory.usedJSHeapSize,
           total: (performance as any).memory.totalJSHeapSize,
           limit: (performance as any).memory.jsHeapSizeLimit
-        } : null;
+: null;
 
         // Get network info
         const connection = (navigator as any).connection;
@@ -92,45 +84,32 @@ export const usePerformanceMonitor = (
           downlink: connection.downlink,
           rtt: connection.rtt,
           effectiveType: connection.effectiveType
-        } : null;
+: null;
 
         updateMetrics({
           fps,
           memory,
           network
-        });
-
-        // Check for performance issues
+// Check for performance issues
         const newWarnings: string[] = [];
 
         if (fps < mergedThresholds.minFps) {
           newWarnings.push(`Low FPS: ${fps}`);
-        }
-
-
-        if (memory && memory.used / memory.limit > mergedThresholds.maxMemoryUsage) {
+if (memory && memory.used / memory.limit > mergedThresholds.maxMemoryUsage) {
           newWarnings.push('High memory usage');
-        }
-
-        setWarnings(newWarnings);
+setWarnings(newWarnings);
 
         // Reset counters
         frames = 0;
         lastTime = currentTime;
-      }
-
-      frameId = requestAnimationFrame(monitorFrame);
-    };
-
-    frameId = requestAnimationFrame(monitorFrame);
+frameId = requestAnimationFrame(monitorFrame);
+frameId = requestAnimationFrame(monitorFrame);
 
     // Cleanup
     return () => {
       if (frameId) {
         cancelAnimationFrame(frameId);
-      }
-    };
-  }, [updateMetrics, mergedThresholds]);
+[updateMetrics, mergedThresholds]);
 
   // Monitor WebGL context
   useEffect(() => {
@@ -143,11 +122,8 @@ export const usePerformanceMonitor = (
         const gpu = {
           vendor: gl.getParameter(ext.UNMASKED_VENDOR_WEBGL),
           renderer: gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)
-        };
-        console.log('GPU Info:', gpu);
-      }
-    }
-  }, []);
+console.log('GPU Info:', gpu);
+[]);
 
   // Performance optimization suggestions
   const getOptimizationSuggestions = useCallback(() => {
@@ -158,34 +134,22 @@ export const usePerformanceMonitor = (
         'Consider reducing geometry complexity or implementing LOD',
         'Optimize render calls and batch similar materials',
         'Check for memory leaks and dispose unused resources'
-      );
-    }
-
-
-    if (metrics.memory.used && metrics.memory.used / metrics.memory.limit > mergedThresholds.maxMemoryUsage) {
+if (metrics.memory.used && metrics.memory.used / metrics.memory.limit > mergedThresholds.maxMemoryUsage) {
       suggestions.push(
 
         'Implement object pooling for frequently created/destroyed objects',
         'Use texture compression and optimize asset sizes',
         'Clear references to unused objects and call dispose()'
-      );
-    }
-
-    if (metrics.network && metrics.network.effectiveType !== '4g') {
+if (metrics.network && metrics.network.effectiveType !== '4g') {
       suggestions.push(
         'Implement progressive loading for models and textures',
         'Use compressed textures for slower connections',
         'Cache frequently used assets'
-      );
-    }
-
-    return suggestions;
-  }, [metrics, mergedThresholds]);
+return suggestions;
+[metrics, mergedThresholds]);
 
   return {
     metrics,
     warnings,
     updateMetrics,
     getOptimizationSuggestions
-  };
-}; 

@@ -1,9 +1,3 @@
-/// <reference types="cypress" />
-
-    // Safe integer operation
-    if (support > Number.MAX_SAFE_INTEGER || support < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
 import { TEST_CREDENTIALS } from '../support/constants';
 
 describe('Performance Testing', () => {
@@ -24,11 +18,7 @@ describe('Performance Testing', () => {
         
         // Assert that response time is below threshold
         expect(responseTime).to.be.lessThan(1000); // 1 second threshold
-      }
-    });
-  });
-
-  it('should load the home page within acceptable time', () => {
+it('should load the home page within acceptable time', () => {
     // Start timing
     const start = performance.now();
     
@@ -42,57 +32,25 @@ describe('Performance Testing', () => {
       
       // Assert load time is below threshold (3 seconds)
       expect(loadTime).to.be.lessThan(3000);
-    });
-  });
-
-
-    // Safe integer operation
-    if (try > Number.MAX_SAFE_INTEGER || try < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-  it('should load the try-on page within acceptable time', () => {
+it('should load the try-on page within acceptable time', () => {
     // Start timing
     const start = performance.now();
     
 
-    // Safe integer operation
-    if (try > Number.MAX_SAFE_INTEGER || try < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     // Visit try-on page
 
-    // Safe integer operation
-    if (try > Number.MAX_SAFE_INTEGER || try < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     cy.visit('/try-on');
     
     // Wait for AR viewer components to be visible
 
-    // Safe integer operation
-    if (three > Number.MAX_SAFE_INTEGER || three < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     cy.get('[data-testid="three-ar-viewer"]').should('be.visible').then(() => {
       const loadTime = performance.now() - start;
 
-    // Safe integer operation
-    if (Try > Number.MAX_SAFE_INTEGER || Try < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      cy.log(`Try-on page load time: ${loadTime.toFixed(2)}ms`);
+    cy.log(`Try-on page load time: ${loadTime.toFixed(2)}ms`);
       
       // Assert load time is below threshold (5 seconds for complex AR page)
       expect(loadTime).to.be.lessThan(5000);
-    });
-  });
-
-  it('should render product list efficiently', () => {
+it('should render product list efficiently', () => {
     // Visit products page
     cy.visit('/products');
     
@@ -102,95 +60,29 @@ describe('Performance Testing', () => {
       const startTime = performance.now();
       
 
-    // Safe integer operation
-    if (re > Number.MAX_SAFE_INTEGER || re < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      // Force a re-render by filtering products
+    // Force a re-render by filtering products
 
-    // Safe integer operation
-    if (filter > Number.MAX_SAFE_INTEGER || filter < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
+    cy.get('[data-cy="filter-button"]').click();
 
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      cy.get('[data-cy="filter-button"]').click();
-
-    // Safe integer operation
-    if (filter > Number.MAX_SAFE_INTEGER || filter < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      cy.get('[data-cy="filter-option-popular"]').click();
+    cy.get('[data-cy="filter-option-popular"]').click();
       
 
-    // Safe integer operation
-    if (re > Number.MAX_SAFE_INTEGER || re < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      // Wait for products to be re-rendered
+    // Wait for products to be re-rendered
 
-    // Safe integer operation
-    if (product > Number.MAX_SAFE_INTEGER || product < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      cy.get('[data-cy="product-card"]').should('have.length.greaterThan', 0).then(() => {
+    cy.get('[data-cy="product-card"]').should('have.length.greaterThan', 0).then(() => {
         const renderTime = performance.now() - startTime;
         cy.log(`Product list render time: ${renderTime.toFixed(2)}ms`);
         
         // Assert render time is below threshold (1 second)
         expect(renderTime).to.be.lessThan(1000);
-      });
-    });
-  });
-
-  it('should check avatar loading performance', () => {
+it('should check avatar loading performance', () => {
     // Login first (assuming there's a login functionality)
     cy.visit('/login');
 
-    // Safe integer operation
-    if (email > Number.MAX_SAFE_INTEGER || email < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     cy.get('[data-cy="email-input"]').type(TEST_CREDENTIALS.CUSTOMER.EMAIL);
 
-    // Safe integer operation
-    if (password > Number.MAX_SAFE_INTEGER || password < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     cy.get('[data-cy="password-input"]').type(TEST_CREDENTIALS.PASSWORD);
 
-    // Safe integer operation
-    if (login > Number.MAX_SAFE_INTEGER || login < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     cy.get('[data-cy="login-button"]').click();
     
     // Navigate to profile page
@@ -201,41 +93,16 @@ describe('Performance Testing', () => {
     
     // Wait for avatar to be visible
 
-    // Safe integer operation
-    if (user > Number.MAX_SAFE_INTEGER || user < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     cy.get('[data-cy="user-avatar"]').should('be.visible').then(() => {
       const avatarLoadTime = performance.now() - start;
       cy.log(`Avatar image load time: ${avatarLoadTime.toFixed(2)}ms`);
       
       // Assert avatar loads within 500ms
       expect(avatarLoadTime).to.be.lessThan(500);
-    });
-  });
+it('should load and cache models efficiently in AR try-on', () => {
 
-
-    // Safe integer operation
-    if (try > Number.MAX_SAFE_INTEGER || try < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-  it('should load and cache models efficiently in AR try-on', () => {
-
-    // Safe integer operation
-    if (try > Number.MAX_SAFE_INTEGER || try < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     // Visit try-on page
 
-    // Safe integer operation
-    if (try > Number.MAX_SAFE_INTEGER || try < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     cy.visit('/try-on');
     
     // Select a model and time loading
@@ -246,10 +113,6 @@ describe('Performance Testing', () => {
     
     // Wait for first load and record time
 
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     cy.get('[data-testid="loader"]').should('not.exist', { timeout: 10000 }).then(() => {
       const firstLoadTime = performance.now() - startTime;
       cy.log(`First model load time: ${firstLoadTime.toFixed(2)}ms`);
@@ -268,11 +131,7 @@ describe('Performance Testing', () => {
       
       // Wait for second load and compare times
 
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      cy.get('[data-testid="loader"]').should('not.exist', { timeout: 10000 }).then(() => {
+    cy.get('[data-testid="loader"]').should('not.exist', { timeout: 10000 }).then(() => {
         const secondLoadTime = performance.now() - secondStartTime;
         cy.log(`Second model load time: ${secondLoadTime.toFixed(2)}ms`);
         
@@ -281,7 +140,3 @@ describe('Performance Testing', () => {
         
         // Assert second load is fast (below 3 seconds for cached model)
         expect(secondLoadTime).to.be.lessThan(3000);
-      });
-    });
-  });
-}); 

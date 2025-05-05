@@ -1,5 +1,3 @@
-
-
 import { BackupService } from '@/lib/backup/backup-service';
 
 
@@ -25,10 +23,7 @@ export async function {
         status: 'OK',
         message: 'Backup scheduler already initialized',
         initialized: true,
-      });
-    }
-
-    // Initialize backup service with properly formatted config
+// Initialize backup service with properly formatted config
     const backupServiceConfig = {
       frequency: backupSchedule.full.frequency,
       retentionPeriod: backupConfig.retentionPeriod,
@@ -36,9 +31,7 @@ export async function {
       encryptionEnabled: backupConfig.encryptionEnabled,
       compressionEnabled: backupConfig.compressionEnabled,
       storageLocation: backupConfig.storageLocation,
-    };
-
-    const backupService = new BackupService(backupServiceConfig);
+const backupService = new BackupService(backupServiceConfig);
 
     // Schedule backups
     await backupService.scheduleBackups();
@@ -51,10 +44,7 @@ export async function {
     for (const alert of alerts) {
       if (alert.type === 'error') {
         await backupMonitor.sendAlert(alert);
-      }
-    }
-
-    // Mark as initialized
+// Mark as initialized
     schedulerInitialized = true;
 
     logger.info('Backup system initialized successfully');
@@ -64,20 +54,13 @@ export async function {
       message: 'Backup scheduler initialized',
       initialized: true,
       alerts: alerts.length > 0 ? alerts : undefined,
-    });
-  } catch (error) {
+catch (error) {
     logger.error(
       'Error initializing backup scheduler:',
       error instanceof Error ? error.message : String(error),
-    );
-
-    return NextResponse.json(
+return NextResponse.json(
       {
         status: 'ERROR',
         message: 'Failed to initialize backup scheduler',
         error: error instanceof Error ? error.message : String(error),
-      },
-      { status: 500 },
-    );
-  }
-}
+{ status: 500 },

@@ -14,37 +14,27 @@ const nextConfig: NextConfig = {
         hostname: '**',
         port: '',
         pathname: '**',
-      },
-    ],
-  },
-  webpack(config) {
-    if (!config.resolve) {
-      config.resolve = {};
-    }
-    if (!config.resolve.alias) {
-      config.resolve.alias = {};
-    }
-    config.resolve.alias['@'] = path.resolve(__dirname, 'src');
-    // Alias for components and hooks directories
-    config.resolve.alias['@components'] = path.resolve(__dirname, 'src/components');
-    config.resolve.alias['@hooks'] = path.resolve(__dirname, 'src/hooks');
-    // Aliases for shared packages
-    config.resolve.alias['ui'] = path.resolve(__dirname, '../../packages/ui');
-    config.resolve.alias['services'] = path.resolve(__dirname, '../../packages/services');
-    config.resolve.alias['types'] = path.resolve(__dirname, '../../packages/types');
-    config.resolve.alias['config'] = path.resolve(__dirname, '../../packages/config');
-    config.resolve.alias['test-utils'] = path.resolve(__dirname, '../../packages/test-utils');
-    if (!config.resolve.plugins) {
-      config.resolve.plugins = [];
-    }
-    
-    config.resolve.plugins.push(
-      new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, 'tsconfig.json') })
-    );
-    
-    return config;
-  },
-  /* config options here */
-};
+],
+// Customize Webpack
+  webpack: (config) => {
+    // Ensure resolve and alias objects exist
+    config.resolve = config.resolve || {};
+    config.resolve.alias = config.resolve.alias || {};
 
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.resolve(__dirname, 'src'),
+      '@components': path.resolve(__dirname, 'src/components'),
+      '@hooks': path.resolve(__dirname, 'src/hooks'),
+      'ui': path.resolve(__dirname, '../../packages/ui'),
+      'services': path.resolve(__dirname, '../../packages/services'),
+      'types': path.resolve(__dirname, '../../packages/types'),
+      'config': path.resolve(__dirname, '../../packages/config'),
+      'test-utils': path.resolve(__dirname, '../../packages/test-utils'),
+// Add TsconfigPathsPlugin to resolve plugin list
+    const plugins = config.resolve.plugins ?? [];
+    plugins.push(
+      new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, 'tsconfig.json') })
+config.resolve.plugins = plugins;
+    return config;
 export default nextConfig;

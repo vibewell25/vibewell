@@ -4,8 +4,6 @@ interface RadioOption {
   value: string;
   label: string;
   description?: string;
-}
-
 interface RadioGroupProps {
   label: string;
   name: string;
@@ -15,6 +13,4 @@ interface RadioGroupProps {
   error?: string;
   className?: string;
   required?: boolean;
-}
-
 export {};

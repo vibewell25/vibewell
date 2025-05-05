@@ -8,10 +8,7 @@ export function Mountain() {
   useFrame((state) => {
     if (groupRef.current) {
       groupRef.current.rotation.y += 0.001;
-    }
-  });
-
-  return (
+return (
     <group ref={groupRef}>
       {/* Ground */}
       <Box args={[20, 0.1, 20]} position={[0, -1, 0]} material-color="#4a5d23" />
@@ -52,11 +49,9 @@ export function Mountain() {
                   position={[x + rockX * width, -0.5 + rockSize / 2, z + rockZ * width]}
                   material-color="#696969"
                 />
-              );
-            })}
+)}
           </group>
-        );
-      })}
+)}
 
       {/* Distant Mountains (Background) */}
       {Array.from({ length: 8 }).map((_, i) => {
@@ -73,8 +68,5 @@ export function Mountain() {
             position={[x, height / 2 - 1, z]}
             material-color="#363636"
           />
-        );
-      })}
+)}
     </group>
-  );
-}

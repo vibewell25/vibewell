@@ -27,14 +27,11 @@ const ScheduleDetail: NextPage = () => {
         setDate(data.date);
         setStartTime(data.startTime);
         setEndTime(data.endTime);
-      } catch (error) {
+catch (error) {
         console.error('Error fetching schedule:', error);
         alert('Failed to load schedule details');
-      }
-    };
-    
-    fetchSchedule();
-  }, [id]);
+fetchSchedule();
+[id]);
 
   const handleUpdate = async (e: FormEvent) => {
     e.preventDefault();
@@ -43,15 +40,11 @@ const ScheduleDetail: NextPage = () => {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ staffId, date, startTime, endTime }),
-      });
-      router.back();
-    } catch (error) {
+router.back();
+catch (error) {
       console.error('Error updating schedule:', error);
       alert('Failed to update schedule');
-    }
-  };
-
-  return (
+return (
     <div className="max-w-md mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Edit Schedule</h1>
       <form onSubmit={handleUpdate} className="space-y-2">
@@ -65,7 +58,4 @@ const ScheduleDetail: NextPage = () => {
         </div>
       </form>
     </div>
-  );
-};
-
 export default ScheduleDetail;

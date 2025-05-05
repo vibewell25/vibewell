@@ -4,7 +4,7 @@ import {
   updateEmailCampaign,
   deleteEmailCampaign,
   EmailCampaign,
-} from '../emailCampaignService';
+from '../emailCampaignService';
 import { serverBaseUrl } from '../../config';
 
 describe('emailCampaignService', () => {
@@ -20,9 +20,7 @@ describe('emailCampaignService', () => {
 
         expect(global.fetch).toHaveBeenCalledWith(`${serverBaseUrl}/api/email-campaigns`);
     expect(campaigns).toEqual(mockCampaigns);
-  });
-
-  it('creates an email campaign', async () => {
+it('creates an email campaign', async () => {
     const payload = { name: 'New', subject: 'S', body: 'B' };
     const mockResp: EmailCampaign = { id: '2', name: 'New', subject: 'S', body: 'B', scheduledAt: '2025-05-01', sent: false, createdAt: '2025-05-01', updatedAt: '2025-05-01' };
     (global.fetch as jest.Mock).mockResolvedValueOnce({ json: () => Promise.resolve(mockResp) });
@@ -33,11 +31,8 @@ describe('emailCampaignService', () => {
 
     
           expect.objectContaining({ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-    );
-    expect(result).toEqual(mockResp);
-  });
-
-  it('updates an email campaign', async () => {
+expect(result).toEqual(mockResp);
+it('updates an email campaign', async () => {
     const id = '1';
     const payload = { sent: true };
     const mockResp: EmailCampaign = { id: '1', name: '', subject: '', body: '', scheduledAt: null, sent: true, createdAt: '2025-01-01', updatedAt: '2025-01-02' };
@@ -49,11 +44,8 @@ describe('emailCampaignService', () => {
 
     
           expect.objectContaining({ method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-    );
-    expect(result).toEqual(mockResp);
-  });
-
-  it('deletes an email campaign', async () => {
+expect(result).toEqual(mockResp);
+it('deletes an email campaign', async () => {
     const id = '1';
     (global.fetch as jest.Mock).mockResolvedValueOnce({});
     await deleteEmailCampaign(id);
@@ -61,6 +53,3 @@ describe('emailCampaignService', () => {
 
           `${serverBaseUrl}/api/email-campaigns/${id}`,
       { method: 'DELETE' }
-    );
-  });
-});

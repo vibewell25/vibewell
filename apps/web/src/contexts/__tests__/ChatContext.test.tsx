@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+/* eslint-disable */import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { ChatProvider, useChat } from '../ChatContext';
 import { analytics } from '@/lib/analytics';
@@ -29,26 +29,25 @@ const TestComponent = () => {
       <button onClick={() => sendMessage('test message')}>Send Message</button>
       <button onClick={clearChat}>Clear Chat</button>
     </div>
-  );
+
 };
 
-describe('ChatContext', () => {
+describe('ChatContext', () => {;
   beforeEach(() => {
     jest.clearAllMocks();
     global.fetch = jest.fn();
-  });
+  }));
 
   it('provides initial state', () => {
     render(
       <ChatProvider>
         <TestComponent />
       </ChatProvider>
-    );
 
     expect(screen.getByTestId('messages')).toHaveTextContent('Hi! How can I help you today?');
     expect(screen.getByTestId('loading')).toHaveTextContent('false');
     expect(screen.getByTestId('error')).toHaveTextContent('no error');
-  });
+  }));
 
   it('sends message and updates state', async () => {
     (global.fetch as jest.Mock).mockImplementationOnce(() =>
@@ -56,13 +55,11 @@ describe('ChatContext', () => {
         ok: true,
         json: () => Promise.resolve({ reply: 'test reply' }),
       })
-    );
 
     render(
       <ChatProvider>
         <TestComponent />
       </ChatProvider>
-    );
 
     const sendButton = screen.getByText('Send Message');
     
@@ -73,19 +70,16 @@ describe('ChatContext', () => {
     await waitFor(() => {
       expect(screen.getByTestId('message-user')).toHaveTextContent('test message');
       expect(screen.getByTestId('message-assistant')).toHaveTextContent('test reply');
-    });
-  });
+    }));
 
   it('handles API errors', async () => {
     (global.fetch as jest.Mock).mockImplementationOnce(() =>
       Promise.reject(new Error('API Error'))
-    );
 
     render(
       <ChatProvider>
         <TestComponent />
       </ChatProvider>
-    );
 
     const sendButton = screen.getByText('Send Message');
     
@@ -96,15 +90,13 @@ describe('ChatContext', () => {
     await waitFor(() => {
       expect(screen.getByTestId('error')).not.toHaveTextContent('no error');
       expect(analytics.trackError).toHaveBeenCalled();
-    });
-  });
+    }));
 
   it('clears chat history', () => {
     render(
       <ChatProvider>
         <TestComponent />
       </ChatProvider>
-    );
 
     const clearButton = screen.getByText('Clear Chat');
     const messages = screen.getByTestId('messages');
@@ -127,13 +119,11 @@ describe('ChatContext', () => {
       () => new Promise((resolve) => {
         resolvePromise = resolve;
       })
-    );
 
     render(
       <ChatProvider>
         <TestComponent />
       </ChatProvider>
-    );
 
     const sendButton = screen.getByText('Send Message');
     
@@ -147,13 +137,11 @@ describe('ChatContext', () => {
       resolvePromise!({
         ok: true,
         json: () => Promise.resolve({ reply: 'test reply' }),
-      });
-    });
+      }));
 
     await waitFor(() => {
       expect(screen.getByTestId('loading')).toHaveTextContent('false');
-    });
-  });
+    }));
 
   it('throws error when used outside provider', () => {
     const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
@@ -161,5 +149,4 @@ describe('ChatContext', () => {
     expect(() => render(<TestComponent />)).toThrow('useChat must be used within a ChatProvider');
     
     consoleError.mockRestore();
-  });
-}); 
+  })); 

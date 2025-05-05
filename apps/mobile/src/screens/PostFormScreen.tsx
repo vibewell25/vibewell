@@ -16,17 +16,13 @@ const PostFormScreen: React.FC = () => {
     try {
       if (post) {
         await communityApi.updatePost(post.id, { content });
-      } else {
+else {
         await communityApi.createPost(content);
-      }
-      navigation.goBack();
-    } catch (err) {
+navigation.goBack();
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to save post');
-    }
-  };
-
-  return (
+return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
@@ -37,12 +33,7 @@ const PostFormScreen: React.FC = () => {
       />
       <Button title={post ? 'Update' : 'Create'} onPress={handleSubmit} />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   input: { borderWidth: 1, borderColor: '#ccc', padding: 8, borderRadius: 4, marginBottom: 12, height: 100 }
-});
-
 export default PostFormScreen;

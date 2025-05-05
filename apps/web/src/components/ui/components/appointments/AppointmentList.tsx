@@ -1,5 +1,3 @@
-'use client';
-
 import { format } from 'date-fns';
 import { CalendarIcon, ClockIcon, UserIcon } from '@heroicons/react/24/outline';
 import { ServiceBooking, User, BeautyService } from '@prisma/client';
@@ -7,12 +5,8 @@ import { ServiceBooking, User, BeautyService } from '@prisma/client';
 type AppointmentWithRelations = ServiceBooking & {
   user: User;
   service: BeautyService;
-};
-
 interface AppointmentListProps {
   appointments: AppointmentWithRelations[];
-}
-
 export default function AppointmentList({ appointments }: AppointmentListProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -26,10 +20,7 @@ export default function AppointmentList({ appointments }: AppointmentListProps) 
         return 'bg-blue-100 text-blue-800';
       default:
         return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  return (
+return (
     <div className="overflow-hidden">
       <div className="p-4 sm:px-6 border-b border-gray-200">
         <h2 className="text-lg font-medium text-gray-900">Upcoming Appointments</h2>
@@ -75,5 +66,3 @@ export default function AppointmentList({ appointments }: AppointmentListProps) 
         )}
       </ul>
     </div>
-  );
-} 

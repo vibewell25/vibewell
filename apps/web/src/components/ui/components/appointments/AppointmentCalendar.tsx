@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isToday, isSameMonth, isEqual } from 'date-fns';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
@@ -8,12 +6,8 @@ import { ServiceBooking, User, BeautyService } from '@prisma/client';
 type AppointmentWithRelations = ServiceBooking & {
   user: User;
   service: BeautyService;
-};
-
 interface AppointmentCalendarProps {
   appointments: AppointmentWithRelations[];
-}
-
 export default function AppointmentCalendar({ appointments }: AppointmentCalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const firstDayOfMonth = startOfMonth(currentMonth);
@@ -22,23 +16,15 @@ export default function AppointmentCalendar({ appointments }: AppointmentCalenda
 
   const previousMonth = () => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
-  };
-
-  const nextMonth = () => {
+const nextMonth = () => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
-  };
-
-  const getAppointmentsForDay = (day: Date) => {
+const getAppointmentsForDay = (day: Date) => {
     return appointments.filter(appointment => {
       const appointmentDate = new Date(appointment.startTime);
       return isEqual(
         new Date(appointmentDate.getFullYear(), appointmentDate.getMonth(), appointmentDate.getDate()),
         new Date(day.getFullYear(), day.getMonth(), day.getDate())
-      );
-    });
-  };
-
-  return (
+return (
     <div className="p-4">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-medium text-gray-900">
@@ -76,7 +62,7 @@ export default function AppointmentCalendar({ appointments }: AppointmentCalenda
               key={day.toString()}
               className={`bg-white min-h-[100px] p-2 ${
                 !isSameMonth(day, currentMonth) ? 'text-gray-400' : ''
-              }`}
+`}
             >
               <div className={`text-sm ${isToday(day) ? 'bg-indigo-600 text-white rounded-full w-6 h-6 flex items-center justify-center mx-auto' : ''}`}>
                 {format(day, 'd')}
@@ -92,9 +78,6 @@ export default function AppointmentCalendar({ appointments }: AppointmentCalenda
                 ))}
               </div>
             </div>
-          );
-        })}
+)}
       </div>
     </div>
-  );
-} 

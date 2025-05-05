@@ -20,31 +20,23 @@ const BenefitClaims: NextPage = () => {
       if (Date.now() - start > 30000) throw new Error('Timeout');
       const data = await res.json();
       return data;
-    } catch (error) {
+catch (error) {
       console.error('Failed to fetch benefit claims:', error);
       return [];
-    }
-  };
-
-  useEffect(() => { fetchClaims().then(data => setClaims(data.claims || [])); }, []);
+useEffect(() => { fetchClaims().then(data => setClaims(data.claims || [])); }, []);
 
   const handleCreate = async (e: FormEvent) => {
     e.preventDefault();
     await fetch('/api/benefitClaims', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type, amount })
-    });
-    setType(''); setAmount(0);
+setType(''); setAmount(0);
     fetchClaims().then(data => setClaims(data.claims || []));
-  };
-
-  const handleDelete = async (id: string) => {
+const handleDelete = async (id: string) => {
     if (!confirm('Delete this claim?')) return;
     await fetch(`/api/benefitClaims/${id}`, { method: 'DELETE' });
     fetchClaims().then(data => setClaims(data.claims || []));
-  };
-
-  return (
+return (
     <div className="max-w-2xl mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Benefit Claims</h1>
       <form onSubmit={handleCreate} className="space-y-2 mb-6">
@@ -67,7 +59,4 @@ const BenefitClaims: NextPage = () => {
       ))}
       {claims.length === 0 && <p>No claims.</p>}
     </div>
-  );
-};
-
 export default BenefitClaims;

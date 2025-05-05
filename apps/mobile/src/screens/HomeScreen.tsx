@@ -162,30 +162,22 @@ const HomeScreen: React.FC = () => {
         </View>
       </View>
     </ScrollView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
+header: {
     padding: 20,
     paddingTop: 40,
-  },
-  title: {
+title: {
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 8,
-  },
-  subtitle: {
+subtitle: {
     fontSize: 16,
     marginBottom: 20,
-  },
-  content: {
+content: {
     padding: 15,
-  },
-  card: {
+card: {
     borderRadius: 10,
     padding: 15,
     marginBottom: 15,
@@ -194,61 +186,48 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 2,
-  },
-  cardHeader: {
+cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 8,
-  },
-  cardTitle: {
+cardTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
-  },
-  cardText: {
+cardText: {
     fontSize: 14,
     lineHeight: 20,
     marginBottom: 10,
-  },
-  cardButton: {
+cardButton: {
     backgroundColor: '#4F46E5',
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 5,
     alignSelf: 'flex-start',
     marginTop: 5,
-  },
-  cardButtonText: {
+cardButtonText: {
     color: '#FFFFFF',
     fontWeight: '600',
     fontSize: 12,
-  },
-  quickAccess: {
+quickAccess: {
     marginTop: 10,
     marginBottom: 30,
-  },
-  quickAccessTitle: {
+quickAccessTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 15,
-  },
-  quickAccessGrid: {
+quickAccessGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-  },
-  quickAccessButton: {
+quickAccessButton: {
     width: '48%',
     borderRadius: 10,
     padding: 15,
     marginBottom: 10,
     alignItems: 'center',
-  },
-  quickAccessText: {
+quickAccessText: {
     marginTop: 8,
     fontWeight: '600',
-  },
-});
-
 export default HomeScreen; 

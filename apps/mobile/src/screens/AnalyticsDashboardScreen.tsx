@@ -43,11 +43,9 @@ const AnalyticsDashboardScreen: React.FC = () => {
       setServices((await svcRes.json()).services);
       setChurn(await chRes.json());
       setBreakdown(await brRes.json());
-    } catch (e) { console.error(e); }
+catch (e) { console.error(e); }
     setLoading(false);
-  };
-
-  const exportCsv = async (type: string) => {
+const exportCsv = async (type: string) => {
     try {
       const qs = `?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
       const res = await fetch(`${serverBaseUrl}/api/analytics/metrics/${type}/export${qs}`, { headers });
@@ -55,10 +53,8 @@ const AnalyticsDashboardScreen: React.FC = () => {
       const fileUri = FileSystem.documentDirectory + `${type}.csv`;
       await FileSystem.writeAsStringAsync(fileUri, csv, { encoding: FileSystem.EncodingType.UTF8 });
       await Sharing.shareAsync(fileUri, { mimeType: 'text/csv', dialogTitle: `Share ${type}.csv` });
-    } catch (e) { console.error('Export error', e); }
-  };
-
-  if (loading) return <ActivityIndicator style={styles.loader} size="large" />;
+catch (e) { console.error('Export error', e); }
+if (loading) return <ActivityIndicator style={styles.loader} size="large" />;
   return (
     <ScrollView style={styles.container}>
       <View style={styles.filterRow}>
@@ -81,8 +77,7 @@ const AnalyticsDashboardScreen: React.FC = () => {
             decimalPlaces: 2,
             color: (opacity = 1) => `rgba(74,144,226,${opacity})`,
             labelColor: (opacity = 1) => `rgba(0,0,0,${opacity})`,
-          }}
-          bezier
+bezier
           style={{ marginVertical: 8 }}
         />
       </View>
@@ -124,9 +119,6 @@ const AnalyticsDashboardScreen: React.FC = () => {
         <Button title="Export Breakdown CSV" onPress={() => exportCsv('revenue-breakdown')} />
       </View>
     </ScrollView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   loader: { flex: 1, justifyContent: 'center', alignItems: 'center' },
@@ -137,6 +129,4 @@ const styles = StyleSheet.create({
   section: { marginTop: 16 },
   sectionTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 8 },
   filterRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-});
-
 export default AnalyticsDashboardScreen;

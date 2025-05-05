@@ -1,4 +1,3 @@
-
 import { render, RenderResult } from '@testing-library/react';
 import { ReactElement } from 'react';
 
@@ -7,16 +6,12 @@ interface PerformanceMetrics {
   reRenderTime: number;
   memoryUsage: number;
   domNodes: number;
-}
-
 interface PerformanceTestOptions {
   iterations?: number;
   timeout?: number;
   memoryThreshold?: number;
   renderTimeThreshold?: number;
   domNodesThreshold?: number;
-}
-
 /**
  * Test component rendering performance
  */
@@ -32,7 +27,7 @@ export async function {
     memoryThreshold = 50 * 1024 * 1024, // 50MB
     renderTimeThreshold = 100, // 100ms
     domNodesThreshold = 1000,
-  } = options;
+= options;
 
   const metrics: PerformanceMetrics[] = [];
 
@@ -60,42 +55,25 @@ export async function {
       reRenderTime,
       memoryUsage,
       domNodes,
-    });
-
-    // Cleanup
+// Cleanup
     result.unmount();
-  }
-
-  // Calculate averages
+// Calculate averages
   const averageMetrics: PerformanceMetrics = {
     renderTime: average(metrics.map((m) => m.renderTime)),
     reRenderTime: average(metrics.map((m) => m.reRenderTime)),
     memoryUsage: average(metrics.map((m) => m.memoryUsage)),
     domNodes: average(metrics.map((m) => m.domNodes)),
-  };
-
-  // Assert performance expectations
+// Assert performance expectations
   if (averageMetrics.renderTime >= renderTimeThreshold) {
     throw new Error(
       `Average render time (${averageMetrics.renderTime}ms) exceeds threshold (${renderTimeThreshold}ms)`,
-    );
-  }
-
-  if (averageMetrics.memoryUsage >= memoryThreshold) {
+if (averageMetrics.memoryUsage >= memoryThreshold) {
     throw new Error(
       `Average memory usage (${formatBytes(averageMetrics.memoryUsage)}) exceeds threshold (${formatBytes(memoryThreshold)})`,
-    );
-  }
-
-  if (averageMetrics.domNodes >= domNodesThreshold) {
+if (averageMetrics.domNodes >= domNodesThreshold) {
     throw new Error(
       `Average DOM nodes count (${averageMetrics.domNodes}) exceeds threshold (${domNodesThreshold})`,
-    );
-  }
-
-  return averageMetrics;
-}
-
+return averageMetrics;
 /**
  * Test API response time
  */
@@ -110,20 +88,13 @@ export async function {
   const start = performance.now();
   const timeoutPromise = new Promise((_, reject) =>
     setTimeout(() => reject(new Error('API call timed out')), timeout),
-  );
-
-  await Promise.race([apiCall(), timeoutPromise]);
+await Promise.race([apiCall(), timeoutPromise]);
   const responseTime = performance.now() - start;
 
   if (responseTime >= maxResponseTime) {
     throw new Error(
       `API response time (${responseTime}ms) exceeds threshold (${maxResponseTime}ms)`,
-    );
-  }
-
-  return responseTime;
-}
-
+return responseTime;
 /**
  * Test component update performance
  */
@@ -144,18 +115,11 @@ export async function {
   if (updateTime >= maxUpdateTime) {
     throw new Error(
       `Component update time (${updateTime}ms) exceeds threshold (${maxUpdateTime}ms)`,
-    );
-  }
-
-  return updateTime;
-}
-
+return updateTime;
 // Helper functions
 function average(numbers: number[]): number {
 
   return numbers.reduce((sum, num) => sum + num, 0) / numbers.length;
-}
-
 function formatBytes(bytes: number): string {
   const units = ['B', 'KB', 'MB', 'GB'];
   let size = bytes;
@@ -165,12 +129,4 @@ function formatBytes(bytes: number): string {
   while (size >= 1024 && unitIndex < units.length - 1) {
     if (size > Number.MAX_SAFE_INTEGER || size < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); size /= 1024;
     if (unitIndex > Number.MAX_SAFE_INTEGER || unitIndex < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); unitIndex++;
-  }
-
-
-    // Safe array access
-    if (unitIndex < 0 || unitIndex >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  return `${size.toFixed(2)} ${units[unitIndex]}`;
-}
+return `${size.toFixed(2)} ${units[unitIndex]}`;

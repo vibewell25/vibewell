@@ -11,8 +11,6 @@ export interface NotificationPreferences {
   messages_notifications: boolean;
   promotional_notifications: boolean;
   newsletter: boolean;
-}
-
 export interface Profile {
   id: string;
   email: string;
@@ -32,8 +30,6 @@ export interface Profile {
   show_phone: boolean;
   allow_tagging: boolean;
   receive_messages_from: 'anyone' | 'contacts_only' | 'none';
-}
-
 export interface Service {
   id: string;
   provider_id: string;
@@ -47,8 +43,6 @@ export interface Service {
   is_active: boolean;
   created_at: string;
   updated_at: string;
-}
-
 export type BookingStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled';
 
 export interface Booking {
@@ -61,8 +55,6 @@ export interface Booking {
   notes: string | null;
   created_at: string;
   updated_at: string;
-}
-
 export interface Review {
   id: string;
   booking_id: string;
@@ -76,8 +68,6 @@ export interface Review {
   provider_response: string | null;
   created_at: string;
   updated_at: string;
-}
-
 export interface Message {
   id: string;
   sender_id: string;
@@ -85,8 +75,6 @@ export interface Message {
   content: string;
   is_read: boolean;
   created_at: string;
-}
-
 export interface Product {
   id: string;
   provider_id: string;
@@ -99,8 +87,6 @@ export interface Product {
   is_active: boolean;
   created_at: string;
   updated_at: string;
-}
-
 export type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
 
 export interface Order {
@@ -112,8 +98,6 @@ export interface Order {
   shipping_address: string;
   created_at: string;
   updated_at: string;
-}
-
 export interface OrderItem {
   id: string;
   order_id: string;
@@ -121,8 +105,6 @@ export interface OrderItem {
   quantity: number;
   price: number;
   created_at: string;
-}
-
 export interface TrainingProgram {
   id: string;
   provider_id: string;
@@ -135,8 +117,6 @@ export interface TrainingProgram {
   is_active: boolean;
   created_at: string;
   updated_at: string;
-}
-
 export interface Certificate {
   id: string;
   user_id: string;
@@ -145,8 +125,6 @@ export interface Certificate {
   expiry_date: string | null;
   download_url: string | null;
   created_at: string;
-}
-
 export type SubscriptionStatus = 'active' | 'cancelled' | 'expired';
 
 export interface Subscription {
@@ -159,4 +137,3 @@ export interface Subscription {
   end_date: string | null;
   created_at: string;
   updated_at: string;
-}

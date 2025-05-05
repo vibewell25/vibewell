@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import auth-button from '../auth-button.tsx';
+
+describe('auth-button', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<auth-button />);
+    expect(container).toBeInTheDocument();
+  });
+});

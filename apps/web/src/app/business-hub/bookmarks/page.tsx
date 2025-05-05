@@ -1,4 +1,3 @@
-'use client';
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { BusinessHubNavigation } from '@/components/business-hub-navigation';
@@ -22,14 +21,12 @@ export default function BookmarksPage() {
       setBookmarks(loadedBookmarks);
       const loadedRecentlyViewed = getRecentlyViewed(10);
       setRecentlyViewed(loadedRecentlyViewed);
-    }
-  }, []);
+[]);
   // Remove a bookmark
   const handleRemoveBookmark = (id: string, type: Bookmark['type']) => {
     removeBookmark(id, type);
     setBookmarks((prev) => prev.filter((b) => !(b.id === id && b.type === type)));
-  };
-  // Render icon based on resource type
+// Render icon based on resource type
   const renderTypeIcon = (type: Bookmark['type']) => {
     switch (type) {
       case 'resource':
@@ -40,23 +37,18 @@ export default function BookmarksPage() {
         return <Icons.NewspaperIcon className="h-5 w-5 text-purple-500" />;
       default:
         return <Icons.DocumentTextIcon className="h-5 w-5 text-gray-500" />;
-    }
-  };
-  // Format date to relative time
+// Format date to relative time
   const formatDate = (dateString: string) => {
     try {
       return formatDistanceToNow(new Date(dateString), { addSuffix: true });
-    } catch (error) {
+catch (error) {
       return 'unknown time';
-    }
-  };
-  // Get all unique categories from bookmarks
+// Get all unique categories from bookmarks
   const getCategories = () => {
     const categories = new Set<string>();
     bookmarks.forEach((bookmark) => categories.add(bookmark.category));
     return Array.from(categories).sort();
-  };
-  // Filter bookmarks based on search query, type, and category
+// Filter bookmarks based on search query, type, and category
   const filteredBookmarks = bookmarks.filter((bookmark) => {
     const matchesSearch =
       searchQuery === '' ||
@@ -66,28 +58,22 @@ export default function BookmarksPage() {
     const matchesType = selectedType === 'all' || bookmark.type === selectedType;
     const matchesCategory = selectedCategory === 'all' || bookmark.category === selectedCategory;
     return matchesSearch && matchesType && matchesCategory;
-  });
-  // Group bookmarks by category for better organization
+// Group bookmarks by category for better organization
   const groupBookmarksByCategory = () => {
     const grouped: Record<string, Bookmark[]> = {};
     filteredBookmarks.forEach((bookmark) => {
       if (!grouped[bookmark.category]) {
         grouped[bookmark.category] = [];
-      }
-      grouped[bookmark.category].push(bookmark);
-    });
-    return grouped;
-  };
-  // Filter recently viewed based on search query
+grouped[bookmark.category].push(bookmark);
+return grouped;
+// Filter recently viewed based on search query
   const filteredRecentlyViewed = recentlyViewed.filter((item) => {
     return (
       searchQuery === '' ||
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.category.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  });
-  // Export bookmarks as JSON
+// Export bookmarks as JSON
   const exportBookmarks = () => {
     try {
       const dataStr = JSON.stringify(bookmarks, null, 2);
@@ -97,11 +83,9 @@ export default function BookmarksPage() {
       linkElement.setAttribute('href', dataUri);
       linkElement.setAttribute('download', exportFileName);
       linkElement.click();
-    } catch (error) {
+catch (error) {
       console.error('Error exporting bookmarks:', error);
-    }
-  };
-  // Group and sort bookmarks
+// Group and sort bookmarks
   const groupedBookmarks = groupBookmarksByCategory();
   const categories = getCategories();
   return (
@@ -124,7 +108,7 @@ export default function BookmarksPage() {
                     activeTab === 'bookmarks'
                       ? 'border-b-2 border-blue-600 text-blue-600'
                       : 'text-gray-500 hover:text-gray-700'
-                  }`}
+`}
                   onClick={() => setActiveTab('bookmarks')}
                 >
                   <span className="flex items-center">
@@ -137,7 +121,7 @@ export default function BookmarksPage() {
                     activeTab === 'recent'
                       ? 'border-b-2 border-blue-600 text-blue-600'
                       : 'text-gray-500 hover:text-gray-700'
-                  }`}
+`}
                   onClick={() => setActiveTab('recent')}
                 >
                   <span className="flex items-center">
@@ -158,8 +142,7 @@ export default function BookmarksPage() {
                       value={searchQuery}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         setSearchQuery(e.target.value)
-                      }
-                    />
+/>
                   </div>
                   {activeTab === 'bookmarks' && (
                     <div className="flex gap-2">
@@ -233,8 +216,7 @@ export default function BookmarksPage() {
                           setSearchQuery('');
                           setSelectedType('all');
                           setSelectedCategory('all');
-                        }}
-                      >
+>
                         Clear All Filters
                       </Button>
                     </div>
@@ -350,11 +332,9 @@ export default function BookmarksPage() {
                                   description: item.description,
                                   url: item.url,
                                   category: item.category,
-                                };
-                                const newBookmark = addBookmark(bookmark);
+const newBookmark = addBookmark(bookmark);
                                 setBookmarks((prev) => [...prev, newBookmark]);
-                              }}
-                            >
+>
                               <Icons.BookmarkIcon className="h-5 w-5" />
                             </Button>
                           )}
@@ -369,20 +349,18 @@ export default function BookmarksPage() {
         </div>
       </div>
     </Layout>
-  );
-}
 // BookmarkItem Component for cleaner rendering
 function BookmarkItem({
   bookmark,
   formatDate,
   renderTypeIcon,
   onRemove,
-}: {
+: {
   bookmark: Bookmark;
   formatDate: (date: string) => string;
   renderTypeIcon: (type: Bookmark['type']) => React.ReactNode;
   onRemove: (id: string, type: Bookmark['type']) => void;
-}) {
+) {
   return (
     <div className="flex items-start rounded-lg bg-gray-50 p-4">
       <div className="mr-3 mt-1">{renderTypeIcon(bookmark.type)}</div>
@@ -406,5 +384,3 @@ function BookmarkItem({
         <Icons.XMarkIcon className="h-5 w-5" />
       </button>
     </div>
-  );
-}

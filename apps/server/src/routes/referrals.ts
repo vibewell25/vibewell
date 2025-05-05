@@ -1,11 +1,7 @@
 import express, { Router, Request, Response } from 'express';
 import prisma from '../prismaClient';
 
-    // Safe integer operation
-    if (middleware > Number.MAX_SAFE_INTEGER || middleware < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { checkJwt } from '../middleware/auth';
+    import { checkJwt } from '../middleware/auth';
 
 const router: Router = Router();
 
@@ -16,8 +12,6 @@ router.get('/code', checkJwt, async (req: Request, res: Response) => {
   const user = await prisma.user.findUnique({ where: { auth0Id } });
   if (!user) return res.status(404).json({ error: 'User not found' });
   res.json({ referralCode: user.referralCode });
-});
-
 // Apply referral code
 router.post('/apply', checkJwt, async (req: Request, res: Response) => {
   const { code } = req.body;
@@ -36,9 +30,6 @@ router.post('/apply', checkJwt, async (req: Request, res: Response) => {
       { userId: referrer.id, points: rewardPoints, type: 'EARN' },
       { userId: user.id, points: rewardPoints, type: 'EARN' },
     ],
-  });
-  await prisma.user.update({ where: { id: user.id }, data: { referredById: referrer.id } });
+await prisma.user.update({ where: { id: user.id }, data: { referredById: referrer.id } });
   res.json({ rewardPoints });
-});
-
 export default router;

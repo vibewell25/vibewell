@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { ProductService } from '@/services/product-service';
@@ -37,29 +35,23 @@ export default function TryOnPage() {
         if (!productId) {
           setError('Product ID is missing');
           return;
-        }
-
-        // Fetch product details
+// Fetch product details
         const productData = await productService.getProduct(productId);
 
         if (!productData) {
           setError('Product not found');
           return;
-        }
-
-        if (!productData.ar_compatible) {
+if (!productData.ar_compatible) {
           setError('This product is not AR compatible');
           return;
-        }
-
-        setProduct(productData);
+setProduct(productData);
 
         // Here you would initialize the AR experience using the product.model_url
         // For demonstration purposes, we'll just set a timeout to simulate loading
         setTimeout(() => {
           setModelLoaded(true);
           setLoading(false);
-        }, 2000);
+2000);
 
         // Track this as a try-on session
         if (user.id) {
@@ -67,19 +59,14 @@ export default function TryOnPage() {
             const newSessionId = await tryOnService.startSession(user.id, productId);
             setSessionId(newSessionId);
             setStartTime(new Date());
-          } catch (err) {
+catch (err) {
             console.error('Failed to track try-on session:', err);
-          }
-        }
-      } catch (err) {
+catch (err) {
         console.error('Error loading product for try-on:', err);
         setError('Failed to load product data');
-      } finally {
+finally {
         setLoading(false);
-      }
-    };
-
-    loadProduct();
+loadProduct();
 
     // Clean up function to end the session
     return () => {
@@ -90,13 +77,10 @@ export default function TryOnPage() {
         tryOnService
           .completeSession(sessionId, user.id, {
             duration_seconds: durationSeconds,
-          })
+)
           .catch((err) => {
             console.error('Error completing try-on session:', err);
-          });
-      }
-    };
-  }, [id, user.id]);
+[id, user.id]);
 
   const handleShare = async ( {
   const start = Date.now();
@@ -107,17 +91,12 @@ export default function TryOnPage() {
           title: 'Check out my virtual try-on!',
           text: 'I just tried on this product virtually at VibeWell!',
           url: window.location.href,
-        });
-      } else {
+else {
         await navigator.clipboard.writeText(window.location.href);
         alert('Link copied to clipboard!');
-      }
-    } catch (err) {
+catch (err) {
       console.error('Error sharing try-on:', err);
-    }
-  };
-
-  const handleCapture = async ( {
+const handleCapture = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     // This would take a screenshot of the current AR view
@@ -135,22 +114,13 @@ export default function TryOnPage() {
 
         await tryOnService.completeSession(sessionId, user.id, {
           screenshots: [mockScreenshotUrl],
-        });
-      } catch (err) {
+catch (err) {
         console.error('Error saving screenshot:', err);
-      }
-    }
-  };
-
-  const handleFinishTryOn = () => {
+const handleFinishTryOn = () => {
     setShowFeedback(true);
-  };
-
-  const handleFeedbackClose = () => {
+const handleFeedbackClose = () => {
     setShowFeedback(false);
-  };
-
-  if (error) {
+if (error) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="mb-4">
@@ -173,10 +143,7 @@ export default function TryOnPage() {
           <ProductRecommendations limit={4} />
         </div>
       </div>
-    );
-  }
-
-  return (
+return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-4">
         <Link href={`/products/${id}`}>
@@ -261,5 +228,3 @@ export default function TryOnPage() {
         />
       )}
     </div>
-  );
-}

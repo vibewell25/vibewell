@@ -4,5 +4,4 @@ import { useNotifications } from '../context/notification-context';
 import { Icons } from '@/components/icons';
 interface NotificationBellProps {
   className?: string;
-}
 export {};

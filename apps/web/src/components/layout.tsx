@@ -1,4 +1,3 @@
-'use client';;
 import React from 'react';
 import { Header } from './layout/Header';
 import { Footer } from './footer';
@@ -13,8 +12,6 @@ interface LayoutProps {
   maxWidth?: string;
   showNav?: boolean;
   className?: string;
-}
-
 export function Layout({
   children,
   showHeader = true,
@@ -23,7 +20,7 @@ export function Layout({
   maxWidth = '1400px',
   showNav = true,
   className,
-}: LayoutProps) {
+: LayoutProps) {
   return (
     <ToastProvider>
       <div className="flex min-h-screen flex-col">
@@ -46,5 +43,3 @@ export function Layout({
         {showFooter && <Footer />}
       </div>
     </ToastProvider>
-  );
-}

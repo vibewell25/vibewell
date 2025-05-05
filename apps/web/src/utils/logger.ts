@@ -25,13 +25,9 @@ export interface LogEntry {
   message: string;
   userId?: string;
   metadata?: Record<string, unknown>;
-}
-
 interface LogPayload {
   message?: string;
   [key: string]: any;
-}
-
 /**
  * Sanitize sensitive data from log entries
  * @param data The data object to sanitize
@@ -68,18 +64,11 @@ function sanitizeLogData<T extends object>(data: T): T {
       if (sensitiveFields.some((field) => key.toLowerCase().includes(field))) {
         if (typeof obj[key] === 'string') {
           obj[key] = '***REDACTED***';
-        }
-      } else if (typeof obj[key] === 'object') {
+else if (typeof obj[key] === 'object') {
         // Recurse into nested objects
         maskSensitiveData(obj[key]);
-      }
-    }
-  }
-
-  maskSensitiveData(result);
+maskSensitiveData(result);
   return result;
-}
-
 /**
  * Format log entries consistently
  * @param level Log level
@@ -94,9 +83,6 @@ function formatLog(level: LogLevel, payload: LogPayload | string): object {
     level,
     timestamp,
     ...sanitizeLogData(data),
-  };
-}
-
 /**
  * Main Logger class providing comprehensive logging functionality
  */
@@ -109,23 +95,16 @@ class Logger {
 
   private constructor() {
     this.initProductionLogger();
-  }
-
-  private initProductionLogger() {
+private initProductionLogger() {
     if (process.env['NODE_ENV'] !== 'production') {
       return;
-    }
-
-    // Initialize Sentry if not already initialized
+// Initialize Sentry if not already initialized
     if (!this.sentryInitialized && process.env['NEXT_PUBLIC_SENTRY_DSN']) {
       try {
         this.sentryInitialized = true;
-      } catch (error) {
+catch (error) {
         console.error('Failed to initialize Sentry:', error);
-      }
-    }
-
-    // Initialize Winston logger for production
+// Initialize Winston logger for production
     try {
       // Create Winston logger with console and file transports
       this.winstonLogger = winston.createLogger({
@@ -136,11 +115,9 @@ class Logger {
           // Console transport for server logs
           new winston.transports.Console({
             format: winston.format.combine(winston.format.colorize(), winston.format.simple()),
-          }),
+),
         ],
-      });
-
-      // Add file transport if file logging is enabled
+// Add file transport if file logging is enabled
       if (process.env['ENABLE_FILE_LOGGING'] === 'true') {
         this.winstonLogger.add(
           new winston.transports.File({
@@ -148,33 +125,23 @@ class Logger {
             level: 'error',
             maxsize: 5242880, // 5MB
             maxFiles: 5,
-          }),
-        );
-
-        this.winstonLogger.add(
+),
+this.winstonLogger.add(
           new winston.transports.File({
             filename: 'logs/combined.log',
             maxsize: 5242880, // 5MB
             maxFiles: 5,
-          }),
-        );
-      }
-    } catch (error) {
+),
+catch (error) {
       console.error('Failed to initialize Winston logger:', error);
-    }
-  }
-
-  /**
+/**
    * Get the singleton instance of the logger
    */
   public static getInstance(): Logger {
     if (!Logger.instance) {
       Logger.instance = new Logger();
-    }
-    return Logger.instance;
-  }
-
-  private createLogEntry(
+return Logger.instance;
+private createLogEntry(
     level: LogLevel,
     message: string,
     userId?: string,
@@ -186,68 +153,44 @@ class Logger {
       message,
       userId,
       metadata: metadata ? sanitizeLogData(metadata) : undefined,
-    };
-  }
-
-  private log(entry: LogEntry) {
+private log(entry: LogEntry) {
     // Add to memory store (with rotation)
     this.logs.push(entry);
     if (this.logs.length > this.MAX_LOGS) {
       this.logs.shift();
-    }
-
-    // Log to console in development
+// Log to console in development
     if (process.env['NODE_ENV'] === 'development') {
       console.log(`[${entry.level.toUpperCase()}] ${entry.message}`, {
         userId: entry.userId,
         ...entry.metadata,
-      });
-    }
-
-    // In production, send logs to services
+// In production, send logs to services
     if (process.env['NODE_ENV'] === 'production') {
       this.logToProductionServices(entry);
-    }
-  }
-
-  private logToProductionServices(entry: LogEntry) {
+private logToProductionServices(entry: LogEntry) {
     // Log to Winston if available
     if (this.winstonLogger) {
       this.winstonLogger.log(entry.level, entry.message, {
         userId: entry.userId,
         ...entry.metadata,
-      });
-    }
-
-    // Log to Sentry for error and security levels
+// Log to Sentry for error and security levels
     if (this.sentryInitialized && (entry.level === 'error' || entry.level === 'security')) {
       Sentry.withScope((scope) => {
         // Add user context if available
         if (entry.userId) {
           scope.setUser({ id: entry.userId });
-        }
-
-        // Add extra metadata
+// Add extra metadata
         if (entry.metadata) {
           Object.entries(entry.metadata).forEach(([key, value]) => {
             scope.setExtra(key, value);
-          });
-        }
-
-        // Set the log level on Sentry
+// Set the log level on Sentry
         scope.setLevel(this.mapLogLevelToSentry(entry.level));
 
         // Capture message or exception
         if (entry.metadata.error instanceof Error) {
           Sentry.captureException(entry.metadata.error);
-        } else {
+else {
           Sentry.captureMessage(entry.message);
-        }
-      });
-    }
-  }
-
-  private mapLogLevelToSentry(level: LogLevel): Sentry.SeverityLevel {
+private mapLogLevelToSentry(level: LogLevel): Sentry.SeverityLevel {
     switch (level) {
       case 'error':
         return 'error';
@@ -260,10 +203,7 @@ class Logger {
       case 'info':
       default:
         return 'info';
-    }
-  }
-
-  /**
+/**
    * Log debug information
    */
   debug(message: string, userId?: string, metadata?: Record<string, unknown>): void;
@@ -271,13 +211,10 @@ class Logger {
   debug(messageOrPayload: string | LogPayload, userId?: string, metadata?: Record<string, unknown>) {
     if (typeof messageOrPayload === 'string') {
       this.log(this.createLogEntry('debug', messageOrPayload, userId, metadata));
-    } else {
+else {
       const { message = 'Debug log', ...rest } = messageOrPayload;
       this.log(this.createLogEntry('debug', message, undefined, rest));
-    }
-  }
-
-  /**
+/**
    * Log informational messages
    */
   info(message: string, userId?: string, metadata?: Record<string, unknown>): void;
@@ -285,13 +222,10 @@ class Logger {
   info(messageOrPayload: string | LogPayload, userId?: string, metadata?: Record<string, unknown>) {
     if (typeof messageOrPayload === 'string') {
       this.log(this.createLogEntry('info', messageOrPayload, userId, metadata));
-    } else {
+else {
       const { message = 'Info log', ...rest } = messageOrPayload;
       this.log(this.createLogEntry('info', message, undefined, rest));
-    }
-  }
-
-  /**
+/**
    * Log warning messages
    */
   warn(message: string, userId?: string, metadata?: Record<string, unknown>): void;
@@ -299,13 +233,10 @@ class Logger {
   warn(messageOrPayload: string | LogPayload, userId?: string, metadata?: Record<string, unknown>) {
     if (typeof messageOrPayload === 'string') {
       this.log(this.createLogEntry('warn', messageOrPayload, userId, metadata));
-    } else {
+else {
       const { message = 'Warning log', ...rest } = messageOrPayload;
       this.log(this.createLogEntry('warn', message, undefined, rest));
-    }
-  }
-
-  /**
+/**
    * Log error messages
    */
   error(message: string, userId?: string, metadata?: Record<string, unknown>): void;
@@ -313,13 +244,10 @@ class Logger {
   error(messageOrPayload: string | LogPayload, userId?: string, metadata?: Record<string, unknown>) {
     if (typeof messageOrPayload === 'string') {
       this.log(this.createLogEntry('error', messageOrPayload, userId, metadata));
-    } else {
+else {
       const { message = 'Error log', ...rest } = messageOrPayload;
       this.log(this.createLogEntry('error', message, undefined, rest));
-    }
-  }
-
-  /**
+/**
    * Log security-related messages
    */
   security(message: string, userId?: string, metadata?: Record<string, unknown>): void;
@@ -327,20 +255,14 @@ class Logger {
   security(messageOrPayload: string | LogPayload, userId?: string, metadata?: Record<string, unknown>) {
     if (typeof messageOrPayload === 'string') {
       this.log(this.createLogEntry('security', messageOrPayload, userId, metadata));
-    } else {
+else {
       const { message = 'Security log', ...rest } = messageOrPayload;
       this.log(this.createLogEntry('security', message, undefined, rest));
-    }
-  }
-
-  /**
+/**
    * Get all stored logs
    */
   getLogs(): LogEntry[] {
     return [...this.logs];
-  }
-}
-
 // Create and export the singleton logger instance
 const logger = Logger.getInstance();
 export default logger;

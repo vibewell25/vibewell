@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import loyalty-points from '../loyalty-points.tsx';
+
+describe('loyalty-points', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<loyalty-points />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -5,17 +5,13 @@ interface ServiceWorkerState {
   registration: ServiceWorkerRegistration | null;
   isUpdating: boolean;
   error: Error | null;
-}
-
 export function useServiceWorker() {
   const [state, setState] = useState<ServiceWorkerState>({
     isSupported: 'serviceWorker' in navigator,
     registration: null,
     isUpdating: false,
     error: null,
-  });
-
-  useEffect(() => {
+useEffect(() => {
     if (!state.isSupported) return;
 
     const registerServiceWorker = async ( {
@@ -27,9 +23,7 @@ export function useServiceWorker() {
 
         const registration = await navigator.serviceWorker.register('/service-worker.js', {
           scope: '/',
-        });
-
-        // Handle updates
+// Handle updates
         registration.addEventListener('updatefound', () => {
           const newWorker = registration.installing;
           if (!newWorker) return;
@@ -39,32 +33,22 @@ export function useServiceWorker() {
               // New content is available, show update prompt
               const shouldUpdate = window.confirm(
                 'A new version of the app is available. Would you like to update now?',
-              );
-
-              if (shouldUpdate) {
+if (shouldUpdate) {
                 newWorker.postMessage({ type: 'SKIP_WAITING' });
                 window.location.reload();
-              }
-            }
-          });
-        });
-
-        setState((prev) => ({
+setState((prev) => ({
           ...prev,
           registration,
           isUpdating: false,
           error: null,
-        }));
-      } catch (error) {
+));
+catch (error) {
         setState((prev) => ({
           ...prev,
           isUpdating: false,
           error: error instanceof Error ? error : new Error('Failed to register service worker'),
-        }));
-      }
-    };
-
-    registerServiceWorker();
+));
+registerServiceWorker();
 
     // Handle service worker updates
     let refreshing = false;
@@ -72,15 +56,10 @@ export function useServiceWorker() {
       if (!refreshing) {
         refreshing = true;
         window.location.reload();
-      }
-    });
-
-    return () => {
+return () => {
       if (state.registration) {
         state.registration.unregister().catch(console.error);
-      }
-    };
-  }, [state.isSupported]);
+[state.isSupported]);
 
   const update = async ( {
   const start = Date.now();
@@ -91,17 +70,12 @@ export function useServiceWorker() {
       setState((prev) => ({ ...prev, isUpdating: true }));
       await state.registration.update();
       setState((prev) => ({ ...prev, isUpdating: false }));
-    } catch (error) {
+catch (error) {
       setState((prev) => ({
         ...prev,
         isUpdating: false,
         error: error instanceof Error ? error : new Error('Failed to update service worker'),
-      }));
-    }
-  };
-
-  return {
+));
+return {
     ...state,
     update,
-  };
-}

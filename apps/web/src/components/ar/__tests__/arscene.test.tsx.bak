@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import arscene from '../arscene.tsx';
+
+describe('arscene', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<arscene />);
+    expect(container).toBeInTheDocument();
+  });
+});

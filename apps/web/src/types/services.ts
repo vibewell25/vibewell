@@ -4,8 +4,6 @@ export interface ServiceProvider {
   rating: number;
   reviews: number;
   location: string;
-}
-
 export interface ServiceItem {
   id: number;
   title: string;
@@ -19,4 +17,3 @@ export interface ServiceItem {
   tags: string[];
   popularity: number;
   availableSlots: number;
-}

@@ -1,26 +1,4 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { describe, it, expect } from 'vitest';
+/* eslint-disable */import { describe, it, expect } from 'vitest';
 
 import { validateForm, validateField, FormErrors, ValidationError } from '@/utils/form-validation';
 
@@ -34,19 +12,17 @@ interface TestForm {
     notifications: boolean;
     theme: 'light' | 'dark';
   };
-}
 
-describe('Form Validation', () => {
-  describe('Field Validation', () => {
-    describe('Email Validation', () => {
+describe('Form Validation', () => {;
+  describe('Field Validation', () => {;
+    describe('Email Validation', () => {;
       it('should validate correct email format', () => {
 
         const validEmails = ['test@example.com', 'user.name@domain.co.uk', 'user+label@domain.com'];
 
         validEmails.forEach((email) => {
           expect(validateField('email', email)).toBe(true);
-        });
-      });
+        }));
 
       it('should reject invalid email format', () => {
         const invalidEmails = [
@@ -60,8 +36,7 @@ describe('Form Validation', () => {
 
         invalidEmails.forEach((email) => {
           expect(() => validateField('email', email)).toThrow('Invalid email format');
-        });
-      });
+        }));
 
       it('should validate email with custom validation rules', async () => {
         try {
@@ -79,19 +54,17 @@ describe('Form Validation', () => {
             expect(errors).toContain('Invalid email format');
           } else {
             throw error;
-          }
-        }
-      });
-    });
 
-    describe('Password Validation', () => {
+
+      }));
+
+    describe('Password Validation', () => {;
       it('should validate strong passwords', () => {
         const validPasswords = ['StrongP@ss123', 'C0mpl3x!Pass', 'V3ryS3cur3!P@ssw0rd'];
 
         validPasswords.forEach((password) => {
           expect(validateField('password', password)).toBe(true);
-        });
-      });
+        }));
 
       it('should reject weak passwords', () => {
         const invalidPasswords = [
@@ -107,37 +80,33 @@ describe('Form Validation', () => {
         invalidPasswords.forEach((password) => {
           expect(() => validateField('password', password)).toThrow(
             'Password must be at least 8 characters long and contain uppercase, lowercase, number, and special character',
-          );
-        });
-      });
+
+        }));
     });
 
-    describe('Age Validation', () => {
+    describe('Age Validation', () => {;
       it('should validate valid ages', () => {
         const validAges = [18, 25, 50, 100];
 
         validAges.forEach((age) => {
           expect(validateField('age', age)).toBe(true);
-        });
-      });
+        }));
 
       it('should reject invalid ages', () => {
         const invalidAges = [-1, 0, 17, 151];
 
         invalidAges.forEach((age) => {
           expect(() => validateField('age', age)).toThrow('Age must be between 18 and 150');
-        });
-      });
+        }));
     });
 
-    describe('Phone Validation', () => {
+    describe('Phone Validation', () => {;
       it('should validate valid phone numbers', () => {
         const validPhones = ['+1-123-456-7890', '(123) 456-7890', '123.456.7890', '1234567890'];
 
         validPhones.forEach((phone) => {
           expect(validateField('phone', phone)).toBe(true);
-        });
-      });
+        }));
 
       it('should reject invalid phone numbers', () => {
 
@@ -145,10 +114,8 @@ describe('Form Validation', () => {
 
         invalidPhones.forEach((phone) => {
           expect(() => validateField('phone', phone)).toThrow('Invalid phone number format');
-        });
-      });
-    });
-  });
+        }));
+    }));
 
   describe('Form Validation', () => {
     const validForm: TestForm = {
@@ -166,8 +133,7 @@ describe('Form Validation', () => {
     it('should validate complete valid form', () => {
       const result = validateForm(validForm);
       expect(result.isValid).toBe(true);
-      expect(result.errors).toEqual({});
-    });
+      expect(result.errors).toEqual({}));
 
     it('should validate form with optional fields missing', () => {
       const formWithoutOptional = { ...validForm };
@@ -175,8 +141,7 @@ describe('Form Validation', () => {
 
       const result = validateForm(formWithoutOptional);
       expect(result.isValid).toBe(true);
-      expect(result.errors).toEqual({});
-    });
+      expect(result.errors).toEqual({}));
 
     it('should collect all validation errors', () => {
       const invalidForm = {
@@ -194,8 +159,7 @@ describe('Form Validation', () => {
         password:
           'Password must be at least 8 characters long and contain uppercase, lowercase, number, and special character',
         age: 'Age must be between 18 and 150',
-      });
-    });
+      }));
 
     it('should validate password confirmation', () => {
       const formWithMismatchedPasswords = {
@@ -224,8 +188,7 @@ describe('Form Validation', () => {
       expect(result.errors).toEqual({
         'preferences.notifications': 'Must be a boolean value',
         'preferences.theme': 'Invalid theme selection',
-      });
-    });
+      }));
 
     it('should handle empty form submission', () => {
       const emptyForm = {};
@@ -235,10 +198,9 @@ describe('Form Validation', () => {
       expect(Object.keys(result.errors)).toContain('email');
       expect(Object.keys(result.errors)).toContain('password');
       expect(Object.keys(result.errors)).toContain('age');
-    });
-  });
+    }));
 
-  describe('Error Formatting', () => {
+  describe('Error Formatting', () => {;
     it('should format field errors correctly', () => {
       const errors: FormErrors = {
         email: 'Invalid email',
@@ -258,20 +220,18 @@ describe('Form Validation', () => {
       } catch (error) {
         if (error instanceof ValidationError) {
           errors.push(error.message);
-        }
-      }
+
 
       expect(errors).toHaveLength(1);
       expect(errors[0]).toContain('Password must be');
-    });
-  });
+    }));
 
-  describe('Custom Validation Rules', () => {
+  describe('Custom Validation Rules', () => {;
     it('should apply custom validation rules', () => {
       const customRule = (value: string) => {
         if (value.length < 3) {
           throw new ValidationError('Must be at least 3 characters');
-        }
+
         return true;
       };
 
@@ -286,15 +246,12 @@ describe('Form Validation', () => {
       // Required field
       if (!value) {
         errors.push('Field is required');
-      }
 
       // Minimum length
       if (value.length < 3) {
         errors.push('Must be at least 3 characters');
-      }
 
       expect(errors).toContain('Field is required');
       expect(errors).toContain('Must be at least 3 characters');
-    });
-  });
+    }));
 });

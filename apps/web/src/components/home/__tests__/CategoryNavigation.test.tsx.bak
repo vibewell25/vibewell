@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import category-navigation from '../category-navigation.tsx';
+
+describe('category-navigation', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<category-navigation />);
+    expect(container).toBeInTheDocument();
+  });
+});

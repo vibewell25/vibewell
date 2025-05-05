@@ -19,9 +19,7 @@ const PayrollRecords: NextPage = () => {
     const res = await fetchWithTimeout('/api/payrollRecords/me');
     const data = await res.json();
     setRecords(data.records || []);
-  };
-
-  useEffect(() => { fetchRecords(); }, []);
+useEffect(() => { fetchRecords(); }, []);
 
   const handleCreate = async (e: FormEvent) => {
     e.preventDefault();
@@ -29,21 +27,16 @@ const PayrollRecords: NextPage = () => {
       method: 'POST', 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId, salary, periodStart, periodEnd })
-    });
-    setUserId(''); 
+setUserId(''); 
     setSalary(0); 
     setPeriodStart(''); 
     setPeriodEnd('');
     fetchRecords();
-  };
-
-  const handleDelete = async (id: string) => {
+const handleDelete = async (id: string) => {
     if (!confirm('Delete this record?')) return;
     await fetchWithTimeout(`/api/payrollRecords/${id}`, { method: 'DELETE' });
     fetchRecords();
-  };
-
-  return (
+return (
     <div className="max-w-2xl mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Payroll Records</h1>
       <form onSubmit={handleCreate} className="space-y-2 mb-6">
@@ -67,7 +60,4 @@ const PayrollRecords: NextPage = () => {
       ))}
       {records.length === 0 && <p>No records.</p>}
     </div>
-  );
-};
-
 export default PayrollRecords;

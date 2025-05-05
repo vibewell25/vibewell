@@ -22,10 +22,8 @@ const PayrollRecordDetail: NextPage = () => {
       setSalary(data.salary);
       setPeriodStart(new Date(data.periodStart).toISOString().substr(0,10));
       setPeriodEnd(new Date(data.periodEnd).toISOString().substr(0,10));
-    };
-    
-    fetchRecord();
-  }, [id]);
+fetchRecord();
+[id]);
 
   const handleUpdate = async (e: FormEvent) => {
     e.preventDefault();
@@ -33,21 +31,14 @@ const PayrollRecordDetail: NextPage = () => {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ salary, periodStart, periodEnd })
-    });
-    if (router) {
+if (router) {
       router.back();
-    }
-  };
-
-  const handleDelete = async () => {
+const handleDelete = async () => {
     if (!confirm('Delete this record?')) return;
     await fetchWithTimeout(`/api/payrollRecords/${id}`, { method: 'DELETE' });
     if (router) {
       router.back();
-    }
-  };
-
-  return (
+return (
     <div className="max-w-md mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Payroll Record Details</h1>
       <form onSubmit={handleUpdate} className="space-y-2">
@@ -61,7 +52,4 @@ const PayrollRecordDetail: NextPage = () => {
         </div>
       </form>
     </div>
-  );
-};
-
 export default PayrollRecordDetail;

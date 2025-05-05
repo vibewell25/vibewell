@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 import { getServerSession } from 'next-auth';
@@ -12,25 +11,16 @@ interface ContentProgress {
   updatedAt: Date;
   content: {
     title: string;
-  };
-}
-
 interface Booking {
   id: string;
   createdAt: Date;
   service: {
     name: string;
-  };
-}
-
 interface Review {
   id: string;
   createdAt: Date;
   service: {
     name: string;
-  };
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); GET() {
@@ -39,64 +29,47 @@ export async function {
 
     if (!session.user.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    // Get recent activities from different sources
+// Get recent activities from different sources
     const [contentProgress, bookings, purchases, reviews] = await Promise.all([
       // Content progress
       prisma.contentProgress.findMany({
         where: {
           userId: session.user.id,
           completed: true,
-        },
-        include: {
+include: {
           content: {
             select: {
               title: true,
-            },
-          },
-        },
-        orderBy: {
+orderBy: {
           updatedAt: 'desc',
-        },
-        take: 5,
-      }),
+take: 5,
+),
       // Bookings
       prisma.serviceBooking.findMany({
         where: {
           userId: session.user.id,
-        },
-        include: {
+include: {
           service: {
             select: {
               name: true,
-            },
-          },
-        },
-        orderBy: {
+orderBy: {
           createdAt: 'desc',
-        },
-        take: 5,
-      }),
+take: 5,
+),
       // Purchases (if implemented)
       Promise.resolve([]),
       // Reviews
       prisma.serviceReview.findMany({
         where: {
           userId: session.user.id,
-        },
-        include: {
+include: {
           service: {
             select: {
               name: true,
-            },
-          },
-        },
-        orderBy: {
+orderBy: {
           createdAt: 'desc',
-        },
-        take: 5,
-      }),
+take: 5,
+),
     ]);
 
     // Format activities
@@ -107,21 +80,21 @@ export async function {
         title: 'Completed Content',
         description: `Completed "${progress.content.title}"`,
         date: progress.updatedAt.toISOString(),
-      })),
+)),
       ...bookings.map((booking: Booking) => ({
         id: booking.id,
         type: 'booking' as const,
         title: 'Booked Service',
         description: `Booked "${booking.service.name}"`,
         date: booking.createdAt.toISOString(),
-      })),
+)),
       ...reviews.map((review: Review) => ({
         id: review.id,
         type: 'review' as const,
         title: 'Left Review',
         description: `Reviewed "${review.service.name}"`,
         date: review.createdAt.toISOString(),
-      })),
+)),
     ];
 
     // Sort activities by date and take the most recent 10
@@ -131,9 +104,6 @@ export async function {
 
     return NextResponse.json({
       activities: sortedActivities,
-    });
-  } catch (error) {
+catch (error) {
     console.error('Error fetching activities:', error);
     return NextResponse.json({ error: 'Failed to fetch activities' }, { status: 500 });
-  }
-}

@@ -6,8 +6,6 @@ interface OverviewCardProps {
   value: string;
   change: number;
   trend: 'up' | 'down';
-}
-
 const OverviewCard: React.FC<OverviewCardProps> = ({ title, value, change, trend }) => {
   return (
     <div className="rounded-lg border bg-white p-6 shadow">
@@ -24,7 +22,4 @@ const OverviewCard: React.FC<OverviewCardProps> = ({ title, value, change, trend
       </div>
       <p className="mt-2 text-3xl font-bold">{value}</p>
     </div>
-  );
-};
-
 export default OverviewCard; 

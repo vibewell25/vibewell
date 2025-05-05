@@ -1,4 +1,3 @@
-// Mock Redis client for tests
 const redisMock = {
   get: jest.fn().mockResolvedValue(null),
   set: jest.fn().mockResolvedValue('OK'),
@@ -11,6 +10,4 @@ const redisMock = {
   ping: jest.fn().mockResolvedValue('PONG'),
   quit: jest.fn().mockResolvedValue('OK'),
   on: jest.fn(),
-};
-
 module.exports = redisMock; 

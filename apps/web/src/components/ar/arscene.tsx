@@ -7,8 +7,6 @@ import { usePerformanceMonitor } from '@/hooks/usePerformanceMonitor';
 
 interface ARSceneProps {
   children: React.ReactNode;
-}
-
 /**
  * Enhanced AR Scene with optimized rendering and performance features
  */
@@ -38,9 +36,7 @@ export const ARScene = React.forwardRef<THREE.Scene, ARSceneProps>(({ children }
     // Set up power preference
     if ('powerPreference' in gl) {
       (gl as any).powerPreference = 'high-performance';
-    }
-
-    // Initialize render targets with proper formats
+// Initialize render targets with proper formats
     const depthTexture = new THREE.DepthTexture();
     depthTexture.format = THREE.DepthFormat;
     depthTexture.type = THREE.UnsignedShortType;
@@ -53,16 +49,12 @@ export const ARScene = React.forwardRef<THREE.Scene, ARSceneProps>(({ children }
         depthBuffer: true,
         stencilBuffer: false,
         generateMipmaps: false,
-      }
-    );
-
-    gl.setRenderTarget(renderTarget);
+gl.setRenderTarget(renderTarget);
 
     return () => {
       renderTarget.dispose();
       depthTexture.dispose();
-    };
-  }, [gl]);
+[gl]);
 
   // Scene optimization setup
   useEffect(() => {
@@ -79,9 +71,7 @@ export const ARScene = React.forwardRef<THREE.Scene, ARSceneProps>(({ children }
         if (object.geometry) {
           object.geometry.computeBoundingSphere();
           object.geometry.computeBoundingBox();
-        }
-
-        // Optimize materials
+// Optimize materials
         if (object.material) {
           const materials = Array.isArray(object.material) ? object.material : [object.material];
           materials.forEach(material => {
@@ -93,16 +83,10 @@ export const ARScene = React.forwardRef<THREE.Scene, ARSceneProps>(({ children }
               material.map.generateMipmaps = false;
               material.map.minFilter = THREE.LinearFilter;
               material.map.magFilter = THREE.LinearFilter;
-            }
-          });
-        }
-      }
-    });
-
-    // Set up scene level optimizations
+// Set up scene level optimizations
     scene.matrixAutoUpdate = false;
     scene.autoUpdate = false;
-  }, []);
+[]);
 
   useFrame((state, delta) => {
     if (!sceneRef.current) return;
@@ -113,42 +97,27 @@ export const ARScene = React.forwardRef<THREE.Scene, ARSceneProps>(({ children }
     // Skip frame if we're running too fast
     if (timeSinceLastFrame < frameSkipThreshold) {
       return;
-    }
-
-    // Update scene matrices selectively
+// Update scene matrices selectively
     sceneRef.current.traverse((object) => {
       if (object.matrixWorldNeedsUpdate) {
         object.updateMatrixWorld(true);
-      }
-    });
-
-    // Update performance metrics
+// Update performance metrics
     updateMetrics({
       fps: 1 / delta,
       triangles: gl.info.render.triangles,
       calls: gl.info.render.calls
-    });
-
-    // Update AR state
+// Update AR state
     if (arState.isTracking) {
       const worldMatrix = camera.matrixWorld.clone();
       updateARState({
         cameraPosition: camera.position.clone(),
         worldMatrix
-      });
-    }
-
-    // Render scene with optimizations
+// Render scene with optimizations
     gl.render(sceneRef.current, camera);
     lastFrameTime.current = currentTime;
-  });
-
-  return (
+return (
     <scene ref={mergeRefs([sceneRef, ref])}>
       <primitive object={camera} />
       {children}
     </scene>
-  );
-});
-
 ARScene.displayName = 'ARScene'; 

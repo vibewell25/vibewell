@@ -1,4 +1,3 @@
-'use client';
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { useParams, useRouter } from 'next/navigation';
@@ -43,8 +42,7 @@ const getContentData = (id: string, category: string) => {
         <p>Begin with just 5 minutes a day. As you get more comfortable with the practice, you can gradually increase the duration.</p>
         <p>Remember that meditation is a skill that develops over time. Be patient and consistent with your practice.</p>
       `,
-    },
-    '2': {
+'2': {
       id: '2',
       title: 'Morning Yoga Flow',
       description: 'Start your day with energizing yoga poses to awaken the body.',
@@ -78,11 +76,8 @@ const getContentData = (id: string, category: string) => {
         <p>Move with your breath, inhaling during expansive movements and exhaling during contractions or folds.</p>
         <p>Listen to your body and modify poses as needed. This is your practice!</p>
       `,
-    },
-    // Add more content as needed...
-  };
-  return contentMap[id] || null;
-};
+// Add more content as needed...
+return contentMap[id] || null;
 export default function ContentDetailPage() {
   const { user, loading: authLoading } = useAuth();
   const params = useParams();
@@ -105,13 +100,10 @@ export default function ContentDetailPage() {
       if (contentData) {
         setContent(contentData);
         setContentType(contentData.contentType);
-      }
-      setLoading(false);
-    };
-    if (id && category) {
+setLoading(false);
+if (id && category) {
       fetchContent();
-    }
-  }, [id, category]);
+[id, category]);
   // Simulate fetching user's progress data
   useEffect(() => {
     if (content && user) {
@@ -122,17 +114,14 @@ export default function ContentDetailPage() {
         contentType: content.contentType,
         lastPosition: 180, // 3 minutes in
         completed: false,
-      };
-      setProgress(userProgress);
-    }
-  }, [content, user]);
+setProgress(userProgress);
+[content, user]);
   // Handle play/pause
   const togglePlayback = () => {
     setIsPlaying(!isPlaying);
     // In a real app, this would control the actual video/audio player
     console.log(isPlaying ? 'Pausing content' : 'Playing content');
-  };
-  // Mark content as completed
+// Mark content as completed
   const markAsCompleted = () => {
     if (!progress) return;
     // Update progress
@@ -140,24 +129,20 @@ export default function ContentDetailPage() {
       ...progress,
       completed: true,
       completedDate: new Date().toISOString(),
-    };
-    setProgress(updatedProgress);
+setProgress(updatedProgress);
     // In a real app, this would be sent to an API
     console.log('Content marked as completed:', updatedProgress);
-  };
-  // Handle saving/bookmarking
+// Handle saving/bookmarking
   const toggleSave = () => {
     setIsBookmarked(!isBookmarked);
     // In a real app, this would be sent to an API
     console.log(isBookmarked ? 'Content removed from saved items' : 'Content saved');
-  };
-  // Handle liking
+// Handle liking
   const toggleLike = () => {
     setIsLiked(!isLiked);
     // In a real app, this would be sent to an API
     console.log(isLiked ? 'Content unliked' : 'Content liked');
-  };
-  // Calculate progress percentage
+// Calculate progress percentage
   const getProgressPercentage = () => {
     if (!progress || !content) return 0;
     if (progress.completed) return 100;
@@ -168,16 +153,12 @@ export default function ContentDetailPage() {
         const durationMinutes = parseInt(durationMatch[1], 10);
         const durationSeconds = durationMinutes * 60;
         return Math.min(100, (progress.lastPosition / durationSeconds) * 100);
-      }
-    }
-    return 0;
-  };
-  const handleEditContent = (updatedContent: any) => {
+return 0;
+const handleEditContent = (updatedContent: any) => {
     import { Icons } from '@/components/icons';
     console.log('Updating content:', updatedContent);
     setIsEditModalOpen(false);
-  };
-  if (loading) {
+if (loading) {
     return (
       <Layout>
         <div className="container-app py-12">
@@ -186,9 +167,7 @@ export default function ContentDetailPage() {
           </div>
         </div>
       </Layout>
-    );
-  }
-  if (!content) {
+if (!content) {
     return (
       <Layout>
         <div className="container-app py-12">
@@ -203,9 +182,7 @@ export default function ContentDetailPage() {
           </div>
         </div>
       </Layout>
-    );
-  }
-  return (
+return (
     <Layout>
       <div className="container-app py-12">
         {/* Back button */}
@@ -505,5 +482,3 @@ export default function ContentDetailPage() {
         content={content}
       />
     </Layout>
-  );
-}

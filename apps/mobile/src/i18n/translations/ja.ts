@@ -23,15 +23,13 @@ export default {
       serverError: 'サーバーエラー。後でもう一度お試しください。',
       noData: 'データがありません',
       unauthorized: '認証されていません。再度ログインしてください。',
-    },
-    search: '検索...',
+search: '検索...',
     seeAll: 'すべて見る',
     noResults: '結果が見つかりません',
     errorOccurred: 'エラーが発生しました',
     tryAgain: 'もう一度お試しください',
     comingSoon: '近日公開',
-  },
-  auth: {
+auth: {
     login: 'ログイン',
     signup: '新規登録',
     email: 'メールアドレス',
@@ -50,8 +48,7 @@ export default {
       passwordRequired: 'パスワードは必須です',
       passwordTooShort: 'パスワードは8文字以上である必要があります',
       passwordsDontMatch: 'パスワードが一致しません',
-    },
-    signIn: 'サインイン',
+signIn: 'サインイン',
     signUp: '登録',
     emailAddress: 'メールアドレス',
     signInWithGoogle: 'Googleでサインイン',
@@ -68,8 +65,7 @@ export default {
     verifyEmailSent: '確認リンクをメールでお送りしました。',
     resetPasswordSuccess: 'パスワードのリセットに成功しました',
     resetPasswordEmail: 'パスワードリセットメールを送信しました',
-  },
-  profile: {
+profile: {
     title: 'マイプロフィール',
     personalInfo: '個人情報',
     firstName: '名',
@@ -100,8 +96,7 @@ export default {
     takePhoto: '写真を撮る',
     chooseFromLibrary: 'ライブラリから選択',
     removePhoto: '写真を削除',
-  },
-  booking: {
+booking: {
     title: '予約',
     myBookings: '私の予約',
     upcoming: '今後の予約',
@@ -140,8 +135,7 @@ export default {
     confirmationSent: '確認詳細がメールで送信されました',
     noAvailability: '選択した日付に空きがありません',
     tryAnotherDate: '別の日付をお試しください',
-  },
-  dashboard: {
+dashboard: {
     title: 'ダッシュボード',
     welcome: 'おかえりなさい',
     todayAppointments: '今日の予約',
@@ -161,8 +155,7 @@ export default {
     noRecentServices: '最近のサービスはありません',
     viewAll: 'すべて表示',
     seeMore: 'もっと見る',
-  },
-  services: {
+services: {
     title: 'サービス',
     categories: 'カテゴリー',
     featured: '特集',
@@ -186,8 +179,7 @@ export default {
     sortByPrice: '価格で並べ替え',
     sortByPopularity: '人気で並べ替え',
     sortByRating: '評価で並べ替え',
-  },
-  practitioners: {
+practitioners: {
     title: '施術者',
     specialties: '専門',
     about: '情報',
@@ -204,8 +196,7 @@ export default {
     clientsSatisfied: '満足したクライアント',
     servicesOffered: '提供サービス',
     contactPractitioner: '施術者に連絡',
-  },
-  payments: {
+payments: {
     title: '支払い',
     history: '支払い履歴',
     methods: '支払い方法',
@@ -236,8 +227,7 @@ export default {
     paymentFailed: '支払い失敗',
     transactionHistory: '取引履歴',
     downloadReceipt: '領収書をダウンロード',
-  },
-  settings: {
+settings: {
     title: '設定',
     account: 'アカウント',
     notifications: '通知',
@@ -260,8 +250,7 @@ export default {
       ja: '日本語',
       zh: '中国語（簡体字）',
       ar: 'アラビア語'
-    },
-    selectLanguage: '言語を選択',
+selectLanguage: '言語を選択',
     darkMode: 'ダークモード',
     soundEffects: '効果音',
     hapticFeedback: '触覚フィードバック',
@@ -272,8 +261,7 @@ export default {
     faq: 'よくある質問',
     termsOfService: '利用規約',
     deleteAccount: 'アカウント削除',
-  },
-  offline: {
+offline: {
     offlineMode: 'オフラインモード',
     limitedFunctionality: 'オフラインモードでは機能が制限されます',
     syncRequired: '同期が必要です',
@@ -283,8 +271,7 @@ export default {
     offlineData: 'オフラインデータ',
     dataWillSync: 'オンラインに戻ると、データが同期されます',
     manageOfflineData: 'オフラインデータを管理',
-  },
-  errors: {
+errors: {
     networkError: 'ネットワークエラー',
     serverError: 'サーバーエラー',
     unknownError: '不明なエラー',
@@ -294,5 +281,3 @@ export default {
     dataNotFound: 'データが見つかりません',
     pleaseCheckConnection: 'インターネット接続を確認してください',
     tryAgainLater: '後でもう一度お試しください'
-  }
-}; 

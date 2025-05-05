@@ -7,29 +7,21 @@ interface Appointment {
   service: string;
   date: Date;
   status: 'confirmed' | 'pending' | 'cancelled';
-}
-
 interface AppointmentsListProps {
   appointments: Appointment[];
-}
-
 const AppointmentsList: React.FC<AppointmentsListProps> = ({ appointments }) => {
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
       month: 'short',
       day: 'numeric',
-    }).format(date);
-  };
-
-  const formatTime = (date: Date) => {
+).format(date);
+const formatTime = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
       hour: 'numeric',
       minute: '2-digit',
       hour12: true,
-    }).format(date);
-  };
-
-  const getStatusColor = (status: Appointment['status']) => {
+).format(date);
+const getStatusColor = (status: Appointment['status']) => {
     switch (status) {
       case 'confirmed':
         return 'bg-green-100 text-green-800';
@@ -39,10 +31,7 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({ appointments }) => 
         return 'bg-red-100 text-red-800';
       default:
         return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  return (
+return (
     <div className="space-y-4">
       {appointments.length === 0 ? (
         <p className="text-center text-gray-500">No upcoming appointments</p>
@@ -78,7 +67,4 @@ const AppointmentsList: React.FC<AppointmentsListProps> = ({ appointments }) => 
         </a>
       </div>
     </div>
-  );
-};
-
 export default AppointmentsList; 

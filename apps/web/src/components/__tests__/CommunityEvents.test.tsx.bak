@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import community-events from '../community-events.tsx';
+
+describe('community-events', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<community-events />);
+    expect(container).toBeInTheDocument();
+  });
+});

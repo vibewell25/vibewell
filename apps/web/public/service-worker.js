@@ -1,4 +1,3 @@
-// VibeWell Service Worker
 const CACHE_VERSION = 'v1';
 const CACHE_NAME = `vibewell-${CACHE_VERSION}`;
 const OFFLINE_CACHE = 'vibewell-offline';
@@ -35,30 +34,22 @@ const cleanupOldCaches = async () => {
   const cacheNames = await caches.keys();
   const oldCaches = cacheNames.filter(name => !cacheKeepList.includes(name));
   return Promise.all(oldCaches.map(name => caches.delete(name)));
-};
-
 /**
  * Helper function to determine if a request is for an API
  */
 const isApiRequest = (request) => {
   const url = new URL(request.url);
   return url.pathname.startsWith('/api/');
-};
-
 /**
  * Helper function to determine if a request is for an image
  */
 const isImageRequest = (request) => {
   return request.destination === 'image';
-};
-
 /**
  * Helper function to determine if a request is for a document
  */
 const isDocumentRequest = (request) => {
   return request.destination === 'document';
-};
-
 /**
  * Install event handler - precaches app shell resources
  */
@@ -69,24 +60,21 @@ self.addEventListener('install', (event) => {
       caches.open(APP_SHELL_CACHE).then((cache) => {
         console.log('Caching app shell resources');
         return cache.addAll(APP_SHELL_RESOURCES);
-      }),
+),
       
       // Cache static assets
       caches.open(CACHE_NAME).then((cache) => {
         console.log('Caching static assets');
         return cache.addAll(STATIC_ASSETS);
-      }),
+),
       
       // Cache offline page
       caches.open(OFFLINE_CACHE).then((cache) => {
         console.log('Caching offline page');
         return cache.add(OFFLINE_PAGE);
-      })
+)
     ])
     .then(() => self.skipWaiting()) // Force activation
-  );
-});
-
 /**
  * Activate event handler - clean up old caches
  */
@@ -96,9 +84,6 @@ self.addEventListener('activate', (event) => {
       cleanupOldCaches(),
       self.clients.claim() // Take control of all clients
     ])
-  );
-});
-
 /**
  * Fetch event handler - different strategies for different requests
  */
@@ -109,14 +94,10 @@ self.addEventListener('fetch', (event) => {
   // Don't cache cross-origin requests
   if (url.origin !== self.location.origin) {
     return;
-  }
-  
-  // Skip non-GET requests
+// Skip non-GET requests
   if (request.method !== 'GET') {
     return;
-  }
-  
-  // Handle API requests - Network first with cache fallback
+// Handle API requests - Network first with cache fallback
   if (isApiRequest(request)) {
     event.respondWith(
       fetch(request)
@@ -128,38 +109,27 @@ self.addEventListener('fetch', (event) => {
           if (response.ok) {
             caches.open(DATA_CACHE).then((cache) => {
               cache.put(request, clonedResponse);
-            });
-          }
-          
-          return response;
-        })
+return response;
+)
         .catch(() => {
           return caches.match(request)
             .then((cachedResponse) => {
               if (cachedResponse) {
                 return cachedResponse;
-              }
-              
-              // If we can't get from cache, return offline JSON for API requests
+// If we can't get from cache, return offline JSON for API requests
               return new Response(
                 JSON.stringify({ 
                   error: 'You are offline and no cached data is available.',
                   offline: true,
                   timestamp: new Date().toISOString() 
-                }),
+),
                 {
                   headers: { 'Content-Type': 'application/json' },
                   status: 503,
                   statusText: 'Service Unavailable'
-                }
-              );
-            });
-        })
-    );
-    return;
-  }
-  
-  // Handle document requests - Network first with offline fallback
+)
+return;
+// Handle document requests - Network first with offline fallback
   if (isDocumentRequest(request)) {
     event.respondWith(
       fetch(request)
@@ -171,36 +141,25 @@ self.addEventListener('fetch', (event) => {
           if (response.ok) {
             caches.open(CACHE_NAME).then((cache) => {
               cache.put(request, clonedResponse);
-            });
-          }
-          
-          return response;
-        })
+return response;
+)
         .catch(() => {
           return caches.match(request)
             .then((cachedResponse) => {
               if (cachedResponse) {
                 return cachedResponse;
-              }
-              
-              // If not found in cache, return the offline page
+// If not found in cache, return the offline page
               return caches.match(OFFLINE_PAGE);
-            });
-        })
-    );
-    return;
-  }
-  
-  // Handle image requests - Cache first with network fallback
+)
+return;
+// Handle image requests - Cache first with network fallback
   if (isImageRequest(request)) {
     event.respondWith(
       caches.match(request)
         .then((cachedResponse) => {
           if (cachedResponse) {
             return cachedResponse;
-          }
-          
-          // Not in cache, get from network
+// Not in cache, get from network
           return fetch(request)
             .then((response) => {
               // Clone the response to store in cache
@@ -210,31 +169,21 @@ self.addEventListener('fetch', (event) => {
               if (response.ok) {
                 caches.open(CACHE_NAME).then((cache) => {
                   cache.put(request, clonedResponse);
-                });
-              }
-              
-              return response;
-            })
+return response;
+)
             .catch(() => {
               // If image is not found and not in cache, 
               // return a placeholder image if appropriate
               if (request.url.match(/\/user\/.*\/avatar/) || 
                   request.url.match(/\/profile\/.*\/image/)) {
                 return caches.match('/images/fallback-avatar.png');
-              }
-              
-              // Otherwise just fail
+// Otherwise just fail
               return new Response('Image not available offline', {
                 status: 404,
                 statusText: 'Not Found'
-              });
-            });
-        })
-    );
-    return;
-  }
-  
-  // For all other requests - Stale-while-revalidate strategy
+)
+return;
+// For all other requests - Stale-while-revalidate strategy
   event.respondWith(
     caches.match(request)
       .then((cachedResponse) => {
@@ -245,20 +194,13 @@ self.addEventListener('fetch', (event) => {
             caches.open(CACHE_NAME)
               .then((cache) => {
                 cache.put(request, networkResponse.clone());
-              });
-            
-            return networkResponse;
-          })
+return networkResponse;
+)
           .catch(() => {
             // Fetch failed, just return the cached response or null
             return cachedResponse;
-          });
-        
-        return cachedResponse || fetchPromise;
-      })
-  );
-});
-
+return cachedResponse || fetchPromise;
+)
 /**
  * Push event handler - display push notifications
  */
@@ -268,15 +210,12 @@ self.addEventListener('push', (event) => {
   let notification;
   try {
     notification = event.data.json();
-  } catch (e) {
+catch (e) {
     notification = {
       title: 'VibeWell',
       body: event.data.text(),
       icon: '/icons/icon-192x192.png'
-    };
-  }
-  
-  const title = notification.title || 'VibeWell Notification';
+const title = notification.title || 'VibeWell Notification';
   const options = {
     body: notification.body,
     icon: notification.icon || '/icons/icon-192x192.png',
@@ -286,13 +225,8 @@ self.addEventListener('push', (event) => {
     vibrate: [100, 50, 100],
     requireInteraction: notification.requireInteraction || false,
     silent: notification.silent || false
-  };
-  
-  event.waitUntil(
+event.waitUntil(
     self.registration.showNotification(title, options)
-  );
-});
-
 /**
  * Notification click event handler
  */
@@ -307,9 +241,7 @@ self.addEventListener('notificationclick', (event) => {
   if (event.action) {
     console.log('Action clicked:', event.action);
     // Handle specific actions here
-  }
-  
-  // Open or focus the relevant page
+// Open or focus the relevant page
   event.waitUntil(
     clients.matchAll({ type: 'window' })
       .then((clientList) => {
@@ -317,28 +249,18 @@ self.addEventListener('notificationclick', (event) => {
         for (const client of clientList) {
           if (client.url === url && 'focus' in client) {
             return client.focus();
-          }
-        }
-        
-        // If no window is open or matching, open a new one
+// If no window is open or matching, open a new one
         if (clients.openWindow) {
           return clients.openWindow(url);
-        }
-      })
-  );
-});
-
+)
 /**
  * Sync event handler for background syncing
  */
 self.addEventListener('sync', (event) => {
   if (event.tag === 'sync-bookings') {
     event.waitUntil(syncBookings());
-  } else if (event.tag === 'sync-userdata') {
+else if (event.tag === 'sync-userdata') {
     event.waitUntil(syncUserData());
-  }
-});
-
 /**
  * Background sync for bookings
  */
@@ -353,31 +275,20 @@ async function syncBookings() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(booking)
-        });
-        
-        if (response.ok) {
+body: JSON.stringify(booking)
+if (response.ok) {
           // Remove from pending queue after successful sync
           await db.delete('pendingBookings', booking.id);
-        }
-      } catch (error) {
+catch (error) {
         console.error('Failed to sync booking:', error);
-      }
-    }
-  } catch (error) {
+catch (error) {
     console.error('Error syncing bookings:', error);
-  }
-}
-
 /**
  * Background sync for user data
  */
 async function syncUserData() {
   // Implementation would be similar to syncBookings
   console.log('Syncing user data in background');
-}
-
 /**
  * Helper to open IndexedDB
  */
@@ -394,11 +305,5 @@ function openIndexedDB() {
       // Create object stores if they don't exist
       if (!db.objectStoreNames.contains('pendingBookings')) {
         db.createObjectStore('pendingBookings', { keyPath: 'id' });
-      }
-      
-      if (!db.objectStoreNames.contains('userSettings')) {
+if (!db.objectStoreNames.contains('userSettings')) {
         db.createObjectStore('userSettings', { keyPath: 'id' });
-      }
-    };
-  });
-} 

@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -27,8 +25,7 @@ export default function ResetPasswordPage() {
     // Redirect if token is missing
     if (!token) {
       router.push('/auth/forgot-password');
-    }
-  }, [token, router]);
+[token, router]);
 
   /**
    * Handle form submission for password reset
@@ -43,31 +40,23 @@ export default function ResetPasswordPage() {
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
       return;
-    }
-
-    // Check password strength
+// Check password strength
     if (password.length < 8) {
       setError('Password must be at least 8 characters long.');
       return;
-    }
-
-    setIsLoading(true);
+setIsLoading(true);
 
     try {
       const { error } = await updatePassword(password);
       if (error) {
         setError(error.message);
-      } else {
+else {
         setIsSuccessful(true);
-      }
-    } catch (err) {
+catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to reset password. Please try again.');
-    } finally {
+finally {
       setIsLoading(false);
-    }
-  };
-
-  if (isSuccessful) {
+if (isSuccessful) {
     return (
       <div className="container mx-auto max-w-md px-4 py-8">
         <div className="mb-8 flex flex-col items-center">
@@ -84,10 +73,7 @@ export default function ResetPasswordPage() {
           Go to login
         </Link>
       </div>
-    );
-  }
-
-  return (
+return (
     <div className="container mx-auto max-w-md px-4 py-8">
       <div className="mb-8 flex flex-col items-center">
         <Icons.logo className="text-primary mb-4 h-12 w-12" />
@@ -152,5 +138,3 @@ export default function ResetPasswordPage() {
         </Link>
       </p>
     </div>
-  );
-}

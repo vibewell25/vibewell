@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import activity-alerts from '../activity-alerts.tsx';
+
+describe('activity-alerts', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<activity-alerts />);
+    expect(container).toBeInTheDocument();
+  });
+});

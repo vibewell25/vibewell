@@ -1,4 +1,3 @@
-
 import { prisma } from '@/lib/database/client';
 
 import { ReactionType } from '@/components/post-reaction';
@@ -9,15 +8,11 @@ export type PostUser = {
   id: string;
   name: string;
   avatar: string;
-};
-
 export type PostComment = {
   id: string;
   user: PostUser;
   content: string;
   createdAt: string;
-};
-
 export type Post = {
   id: number;
   user: PostUser;
@@ -26,10 +21,7 @@ export type Post = {
   createdAt: string;
   reactions: {
     [key in ReactionType]?: number;
-  };
-  comments: PostComment[];
-};
-
+comments: PostComment[];
 // Transform data from Prisma to our frontend model
 function transformPost(post: any): Post {
   return {
@@ -39,8 +31,7 @@ function transformPost(post: any): Post {
       name: post.user.fullName || 'Anonymous',
 
       avatar: post.user.avatarUrl || '/avatar-placeholder.png',
-    },
-    content: post.content,
+content: post.content,
     image: post.imageUrl,
     createdAt: post.createdAt.toISOString(),
     reactions: post.reactions || {
@@ -50,21 +41,16 @@ function transformPost(post: any): Post {
       '😮': 0,
       '😢': 0,
       '😡': 0,
-    },
-    comments: post.comments.map((comment: any) => ({
+comments: post.comments.map((comment: any) => ({
       id: comment.id,
       user: {
         id: comment.user.id,
         name: comment.user.fullName || 'Anonymous',
 
         avatar: comment.user.avatarUrl || '/avatar-placeholder.png',
-      },
-      content: comment.content,
+content: comment.content,
       createdAt: comment.createdAt.toISOString(),
-    })),
-  };
-}
-
+)),
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); getPosts(): Promise<Post[]> {
@@ -75,24 +61,14 @@ export async function {
         comments: {
           include: {
             user: true,
-          },
-          orderBy: {
+orderBy: {
             createdAt: 'asc',
-          },
-        },
-      },
-      orderBy: {
+orderBy: {
         createdAt: 'desc',
-      },
-    });
-
-    return posts.map(transformPost);
-  } catch (error) {
+return posts.map(transformPost);
+catch (error) {
     console.error('Error in getPosts:', error);
     return [];
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); createPost(
@@ -113,25 +89,15 @@ export async function {
           '😮': 0,
           '😢': 0,
           '😡': 0,
-        },
-      },
-      include: {
+include: {
         user: true,
         comments: {
           include: {
             user: true,
-          },
-        },
-      },
-    });
-
-    return transformPost(post);
-  } catch (error) {
+return transformPost(post);
+catch (error) {
     console.error('Error in createPost:', error);
     return null;
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); addComment(
@@ -145,29 +111,20 @@ export async function {
         userId,
         postId,
         content,
-      },
-      include: {
+include: {
         user: true,
-      },
-    });
-
-    return {
+return {
       id: comment.id,
       user: {
         id: comment.user.id,
         name: comment.user.fullName || 'Anonymous',
 
         avatar: comment.user.avatarUrl || '/avatar-placeholder.png',
-      },
-      content: comment.content,
+content: comment.content,
       createdAt: comment.createdAt.toISOString(),
-    };
-  } catch (error) {
+catch (error) {
     console.error('Error in addComment:', error);
     return null;
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); addReaction(
@@ -179,49 +136,18 @@ export async function {
     const post = await prisma.post.findUnique({
       where: { id: postId },
       select: { reactions: true, userReactions: true },
-    });
-
-    if (!post) return false;
+if (!post) return false;
 
     const userReactions = (post.userReactions as Record<string, ReactionType>) || {};
 
-    // Safe array access
-    if (userId < 0 || userId >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     const previousReaction = userReactions[userId];
     const updatedReactions = { ...(post.reactions as Record<ReactionType, number>) };
 
     if (previousReaction) {
 
-    // Safe array access
-    if (previousReaction < 0 || previousReaction >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
+    updatedReactions[previousReaction] = Math.max(0, updatedReactions[previousReaction] - 1);
+updatedReactions[reactionType] = (updatedReactions[reactionType] || 0) + 1;
 
-    // Safe array access
-    if (previousReaction < 0 || previousReaction >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      updatedReactions[previousReaction] = Math.max(0, updatedReactions[previousReaction] - 1);
-    }
-
-
-    // Safe array access
-    if (reactionType < 0 || reactionType >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-
-    // Safe array access
-    if (reactionType < 0 || reactionType >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-    updatedReactions[reactionType] = (updatedReactions[reactionType] || 0) + 1;
-
-    // Safe array access
-    if (userId < 0 || userId >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     const updatedUserReactions = { ...userReactions, [userId]: reactionType };
 
     await prisma.post.update({
@@ -229,16 +155,10 @@ export async function {
       data: {
         reactions: updatedReactions,
         userReactions: updatedUserReactions,
-      },
-    });
-
-    return true;
-  } catch (error) {
+return true;
+catch (error) {
     console.error('Error in addReaction:', error);
     return false;
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); removeReaction(userId: string, postId: number): Promise<boolean> {
@@ -246,38 +166,19 @@ export async function {
     const post = await prisma.post.findUnique({
       where: { id: postId },
       select: { reactions: true, userReactions: true },
-    });
-
-    if (!post) return false;
+if (!post) return false;
 
     const userReactions = (post.userReactions as Record<string, ReactionType>) || {};
 
-    // Safe array access
-    if (userId < 0 || userId >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     const previousReaction = userReactions[userId];
 
     if (!previousReaction) return true;
 
     const updatedReactions = { ...(post.reactions as Record<ReactionType, number>) };
 
-    // Safe array access
-    if (previousReaction < 0 || previousReaction >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-
-    // Safe array access
-    if (previousReaction < 0 || previousReaction >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     updatedReactions[previousReaction] = Math.max(0, updatedReactions[previousReaction] - 1);
 
 
-    // Safe array access
-    if (userId < 0 || userId >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     const { [userId]: _, ...updatedUserReactions } = userReactions;
 
     await prisma.post.update({
@@ -285,16 +186,10 @@ export async function {
       data: {
         reactions: updatedReactions,
         userReactions: updatedUserReactions,
-      },
-    });
-
-    return true;
-  } catch (error) {
+return true;
+catch (error) {
     console.error('Error in removeReaction:', error);
     return false;
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); savePost(userId: string, postId: number): Promise<boolean> {
@@ -303,15 +198,10 @@ export async function {
       data: {
         userId,
         postId,
-      },
-    });
-    return true;
-  } catch (error) {
+return true;
+catch (error) {
     console.error('Error in savePost:', error);
     return false;
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); unsavePost(userId: string, postId: number): Promise<boolean> {
@@ -321,16 +211,10 @@ export async function {
         userId_postId: {
           userId,
           postId,
-        },
-      },
-    });
-    return true;
-  } catch (error) {
+return true;
+catch (error) {
     console.error('Error in unsavePost:', error);
     return false;
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); getSavedPosts(userId: string): Promise<number[]> {
@@ -338,14 +222,10 @@ export async function {
     const savedPosts = await prisma.savedPost.findMany({
       where: { userId },
       select: { postId: true },
-    });
-    return savedPosts.map((sp) => sp.postId);
-  } catch (error) {
+return savedPosts.map((sp) => sp.postId);
+catch (error) {
     console.error('Error in getSavedPosts:', error);
     return [];
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); getUserReactions(userId: string): Promise<{ [key: number]: ReactionType }> {
@@ -354,42 +234,20 @@ export async function {
       where: {
         userReactions: {
 
-    // Safe array access
-    if (userId < 0 || userId >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-          path: [userId],
+    path: [userId],
           not: undefined,
-        },
-      },
-      select: {
+select: {
         id: true,
         userReactions: true,
-      },
-    });
-
-    return posts.reduce(
+return posts.reduce(
       (acc, post) => {
         const userReactions = post.userReactions as Record<string, ReactionType>;
 
-    // Safe array access
-    if (userId < 0 || userId >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-        if (userReactions && userReactions[userId]) {
+    if (userReactions && userReactions[userId]) {
 
-    // Safe array access
-    if (userId < 0 || userId >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-          acc[post.id] = userReactions[userId];
-        }
-        return acc;
-      },
-      {} as { [key: number]: ReactionType },
-    );
-  } catch (error) {
+    acc[post.id] = userReactions[userId];
+return acc;
+{} as { [key: number]: ReactionType },
+catch (error) {
     console.error('Error in getUserReactions:', error);
     return {};
-  }
-}

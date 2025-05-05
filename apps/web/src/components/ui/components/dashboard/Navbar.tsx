@@ -1,5 +1,3 @@
-'use client';
-
 import { Fragment } from 'react';
 import { signOut } from 'next-auth/react';
 import { Menu, Transition } from '@headlessui/react';
@@ -10,9 +8,6 @@ interface NavbarProps {
     name?: string | null;
     email?: string | null;
     image?: string | null;
-  };
-}
-
 export default function Navbar({ user }: NavbarProps) {
   return (
     <nav className="bg-white shadow">
@@ -61,7 +56,7 @@ export default function Navbar({ user }: NavbarProps) {
                         href="/profile"
                         className={`${
                           active ? 'bg-gray-100' : ''
-                        } block px-4 py-2 text-sm text-gray-700`}
+block px-4 py-2 text-sm text-gray-700`}
                       >
                         Your Profile
                       </a>
@@ -73,7 +68,7 @@ export default function Navbar({ user }: NavbarProps) {
                         href="/settings"
                         className={`${
                           active ? 'bg-gray-100' : ''
-                        } block px-4 py-2 text-sm text-gray-700`}
+block px-4 py-2 text-sm text-gray-700`}
                       >
                         Settings
                       </a>
@@ -85,7 +80,7 @@ export default function Navbar({ user }: NavbarProps) {
                         onClick={() => signOut()}
                         className={`${
                           active ? 'bg-gray-100' : ''
-                        } block w-full px-4 py-2 text-left text-sm text-gray-700`}
+block w-full px-4 py-2 text-left text-sm text-gray-700`}
                       >
                         Sign out
                       </button>
@@ -98,5 +93,3 @@ export default function Navbar({ user }: NavbarProps) {
         </div>
       </div>
     </nav>
-  );
-} 

@@ -1,4 +1,3 @@
-'use client';
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { BusinessHubNavigation } from '@/components/business-hub-navigation';
@@ -59,10 +58,8 @@ export default function ContentCalendarPage() {
             userId: '1',
             text: "Let's focus on sustainability aspects",
             createdAt: new Date().toISOString(),
-          },
-        ],
-      },
-      {
+],
+{
         id: '2',
         title: 'Customer Success Story: Emma',
         description: "Highlighting Emma's transformation with our services",
@@ -74,8 +71,7 @@ export default function ContentCalendarPage() {
         attachments: [],
         tags: ['success', 'testimonial', 'transformation'],
         comments: [],
-      },
-      {
+{
         id: '3',
         title: 'Wellness Tips Newsletter',
         description: 'Monthly newsletter with wellness tips and product highlights',
@@ -87,8 +83,7 @@ export default function ContentCalendarPage() {
         attachments: [],
         tags: ['wellness', 'tips', 'newsletter'],
         comments: [],
-      },
-      {
+{
         id: '4',
         title: 'Behind-the-Scenes Video',
         description: 'Video showing our team at work and product creation process',
@@ -100,8 +95,7 @@ export default function ContentCalendarPage() {
         attachments: [],
         tags: ['behind-the-scenes', 'team', 'video'],
         comments: [],
-      },
-      {
+{
         id: '5',
         title: 'Summer Self-Care Guide',
         description: 'Blog post with tips for summer self-care routines',
@@ -113,31 +107,24 @@ export default function ContentCalendarPage() {
         attachments: [],
         tags: ['summer', 'self-care', 'guide'],
         comments: [],
-      },
-    ];
+];
     setContentItems(mockContentItems);
-  }, []);
+[]);
   // Handle drag and drop between columns
   const handleDragAndDrop = (itemId: string, newStatus: string) => {
     setContentItems((prevItems) =>
       prevItems.map((item) => (item.id === itemId ? { ...item, status: newStatus } : item)),
-    );
-  };
-  // Handle creating a new content item
+// Handle creating a new content item
   const handleCreateContentItem = (item: ContentItem) => {
     setContentItems((prevItems) => [...prevItems, item]);
-  };
-  // Handle editing a content item
+// Handle editing a content item
   const handleEditContentItem = (updatedItem: ContentItem) => {
     setContentItems((prevItems) =>
       prevItems.map((item) => (item.id === updatedItem.id ? updatedItem : item)),
-    );
-  };
-  // Handle deleting a content item
+// Handle deleting a content item
   const handleDeleteContentItem = (itemId: string) => {
     setContentItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
-  };
-  return (
+return (
     <Layout>
       <div className="min-h-screen bg-background">
         <BusinessHubNavigation />
@@ -168,9 +155,7 @@ export default function ContentCalendarPage() {
                     attachments: [],
                     tags: [],
                     comments: [],
-                  });
-                }}
-              >
+>
                 <Icons.PlusIcon className="mr-2 h-5 w-5" />
                 Create Content
               </Button>
@@ -269,8 +254,7 @@ export default function ContentCalendarPage() {
                                 {
                                   contentItems.filter((item) => item.assignedTo === member.id)
                                     .length
-                                }
-                              </p>
+</p>
                               <div className="mt-1 flex gap-1">
                                 {statuses.map((status) => {
                                   const count = contentItems.filter(
@@ -284,14 +268,11 @@ export default function ContentCalendarPage() {
                                         style={{
                                           backgroundColor: `${status.color}20`,
                                           color: status.color,
-                                        }}
-                                      >
+>
                                         {status.name}: {count}
                                       </Badge>
-                                    );
-                                  }
-                                  return null;
-                                })}
+return null;
+)}
                               </div>
                             </div>
                           </div>
@@ -306,5 +287,3 @@ export default function ContentCalendarPage() {
         </div>
       </div>
     </Layout>
-  );
-}

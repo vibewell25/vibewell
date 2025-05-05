@@ -249,17 +249,17 @@ export class <span class="cstat-no" title="statement not covered" >BackupCodeSer
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async g</span>enerateCodes(userId: string): Promise&lt;string[]&gt; {
     // Generate random backup codes
-    const codes = <span class="cstat-no" title="statement not covered" >Array?.from({ length: this?.NUM_BACKUP_CODES }, <span class="fstat-no" title="function not covered" >() =&gt;</span></span>
-<span class="cstat-no" title="statement not covered" >      randomBytes(4).toString('hex').slice(0, this?.BACKUP_CODE_LENGTH)</span>
+    const codes = <span class="cstat-no" title="statement not covered" >Array.from({ length: this.NUM_BACKUP_CODES }, <span class="fstat-no" title="function not covered" >() =&gt;</span></span>
+<span class="cstat-no" title="statement not covered" >      randomBytes(4).toString('hex').slice(0, this.BACKUP_CODE_LENGTH)</span>
     );
 &nbsp;
     // Hash and store the codes
 <span class="cstat-no" title="statement not covered" >    await prisma.$transaction(</span>
-      codes?.map(<span class="fstat-no" title="function not covered" >code =&gt; </span>
-<span class="cstat-no" title="statement not covered" >        prisma?.backupCode.create({</span>
+      codes.map(<span class="fstat-no" title="function not covered" >code =&gt; </span>
+<span class="cstat-no" title="statement not covered" >        prisma.backupCode.create({</span>
           data: {
             userId,
-            code: bcrypt?.hashSync(code, this?.SALT_ROUNDS),
+            code: bcrypt.hashSync(code, this.SALT_ROUNDS),
             used: false
           }
         })
@@ -271,7 +271,7 @@ export class <span class="cstat-no" title="statement not covered" >BackupCodeSer
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async v</span>erifyCode(userId: string, code: string): Promise&lt;boolean&gt; {
     // Find all unused backup codes for the user
-    const backupCodes = <span class="cstat-no" title="statement not covered" >await prisma?.backupCode.findMany({</span>
+    const backupCodes = <span class="cstat-no" title="statement not covered" >await prisma.backupCode.findMany({</span>
       where: {
         userId,
         used: false
@@ -281,10 +281,10 @@ export class <span class="cstat-no" title="statement not covered" >BackupCodeSer
 &nbsp;
     // Check each code using timing-safe comparison
 <span class="cstat-no" title="statement not covered" >    for (const backupCode of backupCodes) {</span>
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (await bcrypt?.compare(code, backupCode?.code)) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (await bcrypt.compare(code, backupCode.code)) {</span>
         // Mark the code as used
-<span class="cstat-no" title="statement not covered" >        await prisma?.backupCode.update({</span>
-          where: { id: backupCode?.id },
+<span class="cstat-no" title="statement not covered" >        await prisma.backupCode.update({</span>
+          where: { id: backupCode.id },
           data: {
             used: true,
             usedAt: new Date()
@@ -298,7 +298,7 @@ export class <span class="cstat-no" title="statement not covered" >BackupCodeSer
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async g</span>etRemainingCodes(userId: string): Promise&lt;number&gt; {
-<span class="cstat-no" title="statement not covered" >    return await prisma?.backupCode.count({</span>
+<span class="cstat-no" title="statement not covered" >    return await prisma.backupCode.count({</span>
       where: {
         userId,
         used: false
@@ -307,7 +307,7 @@ export class <span class="cstat-no" title="statement not covered" >BackupCodeSer
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async i</span>nvalidateAllCodes(userId: string): Promise&lt;void&gt; {
-<span class="cstat-no" title="statement not covered" >    await prisma?.backupCode.updateMany({</span>
+<span class="cstat-no" title="statement not covered" >    await prisma.backupCode.updateMany({</span>
       where: {
         userId,
         used: false
@@ -320,9 +320,9 @@ export class <span class="cstat-no" title="statement not covered" >BackupCodeSer
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async s</span>houldGenerateNewCodes(userId: string): Promise&lt;boolean&gt; {
-    const remainingCodes = <span class="cstat-no" title="statement not covered" >await this?.getRemainingCodes(userId);</span>
+    const remainingCodes = <span class="cstat-no" title="statement not covered" >await this.getRemainingCodes(userId);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return remainingCodes &lt; this?.NUM_BACKUP_CODES / 2;</span>
+<span class="cstat-no" title="statement not covered" >    return remainingCodes &lt; this.NUM_BACKUP_CODES / 2;</span>
   }
 } </pre></td></tr></table></pre>
 
@@ -331,7 +331,7 @@ export class <span class="cstat-no" title="statement not covered" >BackupCodeSer
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

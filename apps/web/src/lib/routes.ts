@@ -13,13 +13,11 @@ export const routes = {
     progress: '/wellness/progress',
 
     community: '/wellness/community',
-  },
-  legal: {
+legal: {
     privacy: '/privacy',
     terms: '/terms',
     contact: '/contact',
-  },
-} as const;
+as const;
 
 export type AppRoutes = typeof routes;
 export type WellnessRoutes = typeof routes.wellness;

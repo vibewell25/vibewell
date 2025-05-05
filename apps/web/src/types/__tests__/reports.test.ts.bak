@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import reports from '../reports.ts';
+
+describe('reports', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<reports />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -1,5 +1,3 @@
-'use client';
-
 import React, { Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -9,11 +7,9 @@ function RegisterContent() {
   // Redirect to sign-up page
   React.useEffect(() => {
     router.replace('/auth/sign-up');
-  }, [router]);
+[router]);
 
   return null;
-}
-
 export default function RegisterPage() {
   return (
     <Suspense
@@ -21,5 +17,3 @@ export default function RegisterPage() {
     >
       <RegisterContent />
     </Suspense>
-  );
-}

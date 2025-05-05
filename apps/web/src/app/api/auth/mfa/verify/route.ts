@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -10,8 +9,6 @@ import { getSession } from '@auth0/nextjs-auth0';
 const verifySchema = z.object({
   method: z.enum(['webauthn', 'totp', 'sms']),
   code: z.string().min(1, 'Verification code is required')
-});
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); POST(req: NextRequest) {
@@ -20,9 +17,7 @@ export async function {
     const session = await getSession();
     if (!session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    // Parse and validate request body
+// Parse and validate request body
     const body = await req.json();
     const result = verifySchema.safeParse(body);
 
@@ -30,10 +25,7 @@ export async function {
       return NextResponse.json(
         { error: 'Invalid request data', details: result.error.format() },
         { status: 400 }
-      );
-    }
-
-    const { method, code } = result.data;
+const { method, code } = result.data;
 
     // Get Auth0 Management API token
     const token = await auth0.getAccessToken();
@@ -48,38 +40,26 @@ export async function {
 
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({
+body: JSON.stringify({
         client_id: process.env['AUTH0_CLIENT_ID'],
         challenge_type: method === 'webauthn' ? 'webauthn' : method === 'totp' ? 'otp' : 'sms',
         code
-      })
-    });
-
-    if (!response.ok) {
+)
+if (!response.ok) {
       const error = await response.json();
       console.error('Auth0 MFA verification error:', error);
       return NextResponse.json(
         { error: 'Invalid verification code' },
         { status: 401 }
-      );
-    }
-
-    // Update session to indicate MFA is verified
+// Update session to indicate MFA is verified
     await auth0.updateSession(req as any, {
       ...session,
       user: {
         ...session.user,
         mfa_verified: true
-      }
-    });
-
-    return NextResponse.json({ success: true });
-  } catch (error) {
+return NextResponse.json({ success: true });
+catch (error) {
     console.error('Error in MFA verification:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
-    );
-  }
-} 

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import accessible-notification from '../accessible-notification.tsx';
+
+describe('accessible-notification', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<accessible-notification />);
+    expect(container).toBeInTheDocument();
+  });
+});

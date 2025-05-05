@@ -7,14 +7,10 @@ import { ProductType } from '@/types/product';
 interface TransformOptions {
   productType: ProductType;
   intensity: number;
-}
-
 interface Landmark {
   x: number;
   y: number;
   z: number;
-}
-
 export const useProductTransform = () => {
   const transformProduct = useCallback(
     (
@@ -42,14 +38,8 @@ export const useProductTransform = () => {
         case 'accessory':
           transformAccessory(model, landmarks, faceBounds);
           break;
-      }
-    },
-    []
-  );
-
-  return { transformProduct };
-};
-
+[]
+return { transformProduct };
 const calculateFaceBounds = (landmarks: Landmark[]) => {
   let minX = Infinity;
   let maxX = -Infinity;
@@ -65,9 +55,7 @@ const calculateFaceBounds = (landmarks: Landmark[]) => {
     maxY = Math.max(maxY, point.y);
     minZ = Math.min(minZ, point.z);
     maxZ = Math.max(maxZ, point.z);
-  });
-
-  return {
+return {
 
     width: maxX - minX,
 
@@ -81,10 +69,6 @@ const calculateFaceBounds = (landmarks: Landmark[]) => {
       y: (minY + maxY) / 2,
 
       z: (minZ + maxZ) / 2
-    }
-  };
-};
-
 const calculateFaceCenter = (landmarks: Landmark[]) => {
   const sum = landmarks.reduce(
     (acc, point) => ({
@@ -94,11 +78,9 @@ const calculateFaceCenter = (landmarks: Landmark[]) => {
       y: acc.y + point.y,
 
       z: acc.z + point.z
-    }),
+),
     { x: 0, y: 0, z: 0 }
-  );
-
-  const count = landmarks.length;
+const count = landmarks.length;
   return {
 
     x: sum.x / count,
@@ -106,9 +88,6 @@ const calculateFaceCenter = (landmarks: Landmark[]) => {
     y: sum.y / count,
 
     z: sum.z / count
-  };
-};
-
 const transformMakeup = (
   model: THREE.Object3D,
   landmarks: Landmark[],
@@ -130,11 +109,6 @@ const transformMakeup = (
       const material = child.material as THREE.Material;
       if (material.opacity !== undefined) {
         material.opacity = intensity;
-      }
-    }
-  });
-};
-
 const transformAccessory = (
   model: THREE.Object3D,
   landmarks: Landmark[],
@@ -156,28 +130,21 @@ const transformAccessory = (
 
 
     rotation.z + Math.PI * 0.1 // Slight tilt
-  );
-};
-
 const calculateFaceRotation = (landmarks: Landmark[]) => {
   // Calculate face normal using three points
   const p1 = new THREE.Vector3(
     landmarks[0].x,
     landmarks[0].y,
     landmarks[0].z
-  );
-  const p2 = new THREE.Vector3(
+const p2 = new THREE.Vector3(
     landmarks[1].x,
     landmarks[1].y,
     landmarks[1].z
-  );
-  const p3 = new THREE.Vector3(
+const p3 = new THREE.Vector3(
     landmarks[2].x,
     landmarks[2].y,
     landmarks[2].z
-  );
-
-  const v1 = new THREE.Vector3().subVectors(p2, p1);
+const v1 = new THREE.Vector3().subVectors(p2, p1);
   const v2 = new THREE.Vector3().subVectors(p3, p1);
   const normal = new THREE.Vector3().crossVectors(v1, v2).normalize();
 
@@ -186,4 +153,3 @@ const calculateFaceRotation = (landmarks: Landmark[]) => {
   rotation.setFromVector3(normal);
 
   return rotation;
-}; 

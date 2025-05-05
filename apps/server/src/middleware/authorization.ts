@@ -7,16 +7,11 @@ export function requireRole(role: string) {
       const auth = req.auth as any;
       if (!auth || !auth.sub) {
         return res.status(401).json({ error: 'Unauthorized' });
-      }
-      const auth0Id: string = auth.sub;
+const auth0Id: string = auth.sub;
       const user = await prisma.user.findUnique({ where: { auth0Id } });
       if (!user || user.role !== role) {
         return res.status(403).json({ error: 'Forbidden' });
-      }
-      next();
-    } catch (error) {
+next();
+catch (error) {
       console.error('Authorization error:', error);
       res.status(500).json({ error: 'Server error' });
-    }
-  };
-}

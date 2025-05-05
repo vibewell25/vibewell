@@ -1,4 +1,3 @@
-'use client';
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
@@ -22,7 +21,6 @@ interface Resource {
   viewUrl: string;
   downloadUrl?: string;
   date: string;
-}
 interface SuccessStory {
   id: string;
   businessName: string;
@@ -31,7 +29,6 @@ interface SuccessStory {
   quote: string;
   achievement: string;
   tags: string[];
-}
 interface MarketingTool {
   id: string;
   name: string;
@@ -39,7 +36,6 @@ interface MarketingTool {
   icon: React.ReactNode;
   premium: boolean;
   url: string;
-}
 export default function BusinessHub() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -54,56 +50,49 @@ export default function BusinessHub() {
       icon: <Icons.MegaphoneIcon className="h-8 w-8 text-indigo-500" />,
       premium: false,
       url: '/business-hub/marketing/email-campaigns',
-    },
-    {
+{
       id: 'social-media',
       name: 'Social Media Toolkit',
       description: 'Pre-designed templates and scheduling tools for your social media marketing.',
       icon: <Icons.PhotoIcon className="h-10 w-10 text-purple-500" />,
       url: '/business-hub/tools/social-media',
       premium: false,
-    },
-    {
+{
       id: 'email-templates',
       name: 'Email Campaign Builder',
       description: 'Create professional email campaigns to engage clients and promote offers.',
       icon: <Icons.EnvelopeSolid className="h-10 w-10 text-blue-500" />,
       url: '/business-hub/tools/email-marketing',
       premium: true,
-    },
-    {
+{
       id: 'analytics',
       name: 'Performance Analytics',
       description: 'Track the effectiveness of your marketing efforts and customer engagement.',
       icon: <Icons.ChartBarIcon className="h-10 w-10 text-green-500" />,
       url: '/business-hub/tools/analytics',
       premium: true,
-    },
-    {
+{
       id: 'reviews',
       name: 'Review Management',
       description: 'Tools to collect, manage, and showcase client reviews and testimonials.',
       icon: <Icons.StarSolid className="h-10 w-10 text-yellow-500" />,
       url: '/business-hub/tools/reviews',
       premium: false,
-    },
-    {
+{
       id: 'lead-gen',
       name: 'Lead Generation Tools',
       description: 'Create landing pages and promotional offers to attract new clients.',
       icon: <Icons.UsersSolid className="h-10 w-10 text-red-500" />,
       url: '/business-hub/tools/lead-generation',
       premium: true,
-    },
-    {
+{
       id: 'content-calendar',
       name: 'Content Calendar',
       description: 'Plan and organize your marketing content across all channels.',
       icon: <Icons.CalendarIcon className="h-10 w-10 text-indigo-500" />,
       url: '/business-hub/tools/content-calendar',
       premium: false,
-    },
-  ];
+];
   // Resources data
   const resources: Resource[] = [
     {
@@ -118,8 +107,7 @@ export default function BusinessHub() {
       premium: false,
       viewUrl: '/business-hub/resources/social-media-guide',
       date: '2023-08-15',
-    },
-    {
+{
       id: '2',
       title: 'Email Templates for Client Retention',
       description:
@@ -132,8 +120,7 @@ export default function BusinessHub() {
       downloadUrl: '/downloads/email-templates.zip',
       viewUrl: '/business-hub/resources/email-templates',
       date: '2023-09-21',
-    },
-    {
+{
       id: '3',
       title: 'How to Price Your Services for Maximum Profit',
       description:
@@ -145,8 +132,7 @@ export default function BusinessHub() {
       premium: true,
       viewUrl: '/business-hub/resources/pricing-guide',
       date: '2023-10-05',
-    },
-    {
+{
       id: '4',
       title: 'Client Onboarding Process Walkthrough',
       description:
@@ -158,8 +144,7 @@ export default function BusinessHub() {
       premium: false,
       viewUrl: '/business-hub/resources/client-onboarding-video',
       date: '2023-11-12',
-    },
-    {
+{
       id: '5',
       title: 'Seasonal Promotion Calendar Template',
       description:
@@ -172,8 +157,7 @@ export default function BusinessHub() {
       downloadUrl: '/downloads/seasonal-promotions.xlsx',
       viewUrl: '/business-hub/resources/seasonal-promotions',
       date: '2023-12-03',
-    },
-    {
+{
       id: '6',
       title: 'Converting Leads to Bookings: Sales Techniques for Service Providers',
       description:
@@ -185,8 +169,7 @@ export default function BusinessHub() {
       premium: true,
       viewUrl: '/business-hub/resources/sales-techniques-webinar',
       date: '2024-01-18',
-    },
-  ];
+];
   // Success stories data
   const successStories: SuccessStory[] = [
     {
@@ -198,8 +181,7 @@ export default function BusinessHub() {
         "Using the email templates and social media toolkit, I've managed to increase my client retention by 45% in just three months.",
       achievement: '200% increase in Instagram following, 45% improvement in client retention',
       tags: ['social media', 'email marketing', 'small business'],
-    },
-    {
+{
       id: '2',
       businessName: 'Zen Wellness Center',
       ownerName: 'Michael Rodriguez',
@@ -208,8 +190,7 @@ export default function BusinessHub() {
         'The performance analytics tool helped me identify which services were most profitable, allowing me to restructure my offerings and increase revenue.',
       achievement: '35% increase in monthly revenue, optimized service menu',
       tags: ['analytics', 'business strategy', 'service optimization'],
-    },
-    {
+{
       id: '3',
       businessName: 'Pure Skin Aesthetics',
       ownerName: 'Jennifer Lee',
@@ -218,8 +199,7 @@ export default function BusinessHub() {
         'The lead generation tools transformed my business. I implemented the landing page templates and within weeks saw a dramatic increase in new client inquiries.',
       achievement: '68 new clients in 2 months, 320% ROI on marketing spending',
       tags: ['lead generation', 'website optimization', 'new clients'],
-    },
-  ];
+];
   // Filter resources based on search, category, and type
   const filteredResources = resources.filter((resource) => {
     const matchesSearch =
@@ -230,8 +210,7 @@ export default function BusinessHub() {
     const matchesCategory = selectedCategory === 'all' || resource.category === selectedCategory;
     const matchesType = resourceType === 'all' || resource.type === resourceType;
     return matchesSearch && matchesCategory && matchesType;
-  });
-  return (
+return (
     <Layout>
       <main className="container mx-auto px-4 py-8">
         <h1 className="mb-6 text-3xl font-bold">Business Hub</h1>
@@ -272,7 +251,7 @@ export default function BusinessHub() {
                         selectedCategory === category
                           ? 'bg-blue-100 text-blue-800'
                           : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-                      }`}
+`}
                       onClick={() => setSelectedCategory(category)}
                     >
                       {category}
@@ -563,8 +542,7 @@ export default function BusinessHub() {
                   setSearchTerm('');
                   setSelectedCategory('all');
                   setResourceType('all');
-                }}
-              >
+>
                 Clear all filters
               </Button>
             </div>
@@ -766,5 +744,3 @@ export default function BusinessHub() {
         </section>
       </main>
     </Layout>
-  );
-}

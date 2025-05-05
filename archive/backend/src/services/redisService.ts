@@ -16,49 +16,25 @@ class RedisService {
       password: process.env.REDIS_PASSWORD,
       retryStrategy: (times) => {
 
-    // Safe integer operation
-    if (times > Number.MAX_SAFE_INTEGER || times < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-        const delay = Math.min(times * 50, 2000);
+    const delay = Math.min(times * 50, 2000);
         return delay;
-      }
-    });
-
-    this.client.on('error', (error) => {
+this.client.on('error', (error) => {
       console.error('Redis error:', error);
-    });
-  }
-
-  public static getInstance(): RedisService {
+public static getInstance(): RedisService {
     if (!RedisService.instance) {
       RedisService.instance = new RedisService();
-    }
-    return RedisService.instance;
-  }
-
-  public async setTemporarySecret(userId: string, secret: string): Promise<void> {
+return RedisService.instance;
+public async setTemporarySecret(userId: string, secret: string): Promise<void> {
     const key = this.getKey(userId);
     await this.client.setex(key, this.secretExpiry, secret);
-  }
-
-  public async getTemporarySecret(userId: string): Promise<string | null> {
+public async getTemporarySecret(userId: string): Promise<string | null> {
     const key = this.getKey(userId);
     return await this.client.get(key);
-  }
-
-  public async deleteTemporarySecret(userId: string): Promise<void> {
+public async deleteTemporarySecret(userId: string): Promise<void> {
     const key = this.getKey(userId);
     await this.client.del(key);
-  }
-
-  private getKey(userId: string): string {
+private getKey(userId: string): string {
     return `${this.secretPrefix}${userId}`;
-  }
-
-  public async disconnect(): Promise<void> {
+public async disconnect(): Promise<void> {
     await this.client.quit();
-  }
-}
-
 export default RedisService; 

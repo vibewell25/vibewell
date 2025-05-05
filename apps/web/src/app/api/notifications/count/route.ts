@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 
 
@@ -21,47 +20,29 @@ export async function {
     // Check if the user is authenticated
     if (!(await isAuthenticated())) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    // Get user ID from auth state
+// Get user ID from auth state
     const { user } = await getAuthState();
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
-
-    // Get total notification count
+// Get total notification count
     const totalCount = await prisma.notification.count({
       where: {
         userId: user.id,
-      },
-    });
-
-    // Get unread notification count
+// Get unread notification count
     const unreadCount = await prisma.notification.count({
       where: {
         userId: user.id,
         read: false,
-      },
-    });
-
-    logger.info(
+logger.info(
       `Retrieved notification counts for user ${user.id}: total=${totalCount}, unread=${unreadCount}`,
-    );
-
-    // Return counts
+// Return counts
     return NextResponse.json({
       success: true,
       data: {
         total: totalCount,
         unread: unreadCount,
-      },
-    });
-  } catch (error) {
+catch (error) {
     logger.error(
       'Error retrieving notification counts',
       error instanceof Error ? error.message : String(error),
-    );
-
-    return NextResponse.json({ error: 'Failed to retrieve notification counts' }, { status: 500 });
-  }
-}
+return NextResponse.json({ error: 'Failed to retrieve notification counts' }, { status: 500 });

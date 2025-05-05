@@ -1,12 +1,10 @@
-'use client';
-
 import { Icons } from '@/components/icons';
 import { useState } from 'react';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
-import { PostReaction, ReactionType } from '@/components/post-reaction';
-import { SharePost } from '@/components/share-post';
-import { UserAvatar } from '@/components/user-avatar';
+import { PostReaction, ReactionType } from '@/components/PostReaction';
+import { SharePost } from '@/components/SharePost';
+import { UserAvatar } from '@/components/UserAvatar';
 import { useAuth } from '@/hooks/useAuth';
 
 /**
@@ -20,8 +18,6 @@ export interface PostUser {
   id: string;
   name: string;
   avatar: string;
-}
-
 /**
  * Represents a comment on a post
  * @interface PostComment
@@ -35,8 +31,6 @@ export interface PostComment {
   user: PostUser;
   content: string;
   createdAt: string;
-}
-
 /**
  * Represents a post in the social feed
  * @interface Post
@@ -56,10 +50,7 @@ export interface Post {
   createdAt: string;
   reactions: {
     [key in ReactionType]?: number;
-  };
-  comments: PostComment[];
-}
-
+comments: PostComment[];
 /**
  * Props for the Post component
  * @interface PostProps
@@ -83,8 +74,6 @@ export interface PostProps {
   onToggleSave: () => void;
   onCommentSubmit: (comment: string) => void;
   customActions?: React.ReactNode;
-}
-
 /**
  * Post component for displaying social media posts with reactions and comments
  *
@@ -104,7 +93,7 @@ export function Post({
   onToggleSave,
   onCommentSubmit,
   customActions,
-}: PostProps) {
+: PostProps) {
   const { user: currentUser } = useAuth();
   const [commentText, setCommentText] = useState('');
   const [expandedComments, setExpandedComments] = useState(post.comments.length < 3);
@@ -114,9 +103,7 @@ export function Post({
    */
   const toggleComments = () => {
     setExpandedComments(!expandedComments);
-  };
-
-  /**
+/**
    * Handles submission of a new comment
    * @param {React.FormEvent} e - Form event
    */
@@ -125,9 +112,7 @@ export function Post({
     if (!commentText.trim() || !isAuthenticated) return;
     onCommentSubmit(commentText);
     setCommentText('');
-  };
-
-  /**
+/**
    * Formats a date string for display
    * Uses custom format function if provided, otherwise uses date-fns
    * @param {string} dateString - ISO date string to format
@@ -136,16 +121,12 @@ export function Post({
   const formatDateTime = (dateString: string) => {
     if (formatDate) {
       return formatDate(dateString);
-    }
-    try {
+try {
       const date = new Date(dateString);
       return formatDistanceToNow(date, { addSuffix: true });
-    } catch (error) {
+catch (error) {
       return 'some time ago';
-    }
-  };
-
-  return (
+return (
     <div className="card p-4">
       {/* Post Header */}
       <div className="mb-4 flex items-start space-x-3">
@@ -187,7 +168,7 @@ export function Post({
         <button
           className={`rounded-md p-2 ${
             isSaved ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
-          }`}
+`}
           onClick={onToggleSave}
           disabled={!isAuthenticated}
         >
@@ -226,8 +207,7 @@ export function Post({
                   currentUser.name
                     ? `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.name)}`
                     : undefined
-                }
-                alt={currentUser.name || 'User'}
+alt={currentUser.name || 'User'}
                 fallbackInitials={currentUser.name}
                 size="sm"
               />
@@ -268,5 +248,3 @@ export function Post({
         </button>
       )}
     </div>
-  );
-}

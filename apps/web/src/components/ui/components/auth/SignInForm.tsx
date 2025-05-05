@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -23,26 +21,17 @@ export default function SignInForm() {
         email,
         password,
         redirect: false,
-      });
-
-      if (result.error) {
+if (result.error) {
         setError('Invalid email or password');
         return;
-      }
-
-      router.push('/dashboard');
-    } catch (error) {
+router.push('/dashboard');
+catch (error) {
       setError('An error occurred. Please try again.');
-    } finally {
+finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleGoogleSignIn = () => {
+const handleGoogleSignIn = () => {
     signIn('google', { callbackUrl: '/dashboard' });
-  };
-
-  return (
+return (
     <div className="mt-8">
       {error && (
         <div className="mb-4 p-4 text-sm text-red-700 bg-red-100 rounded-lg">
@@ -123,5 +112,3 @@ export default function SignInForm() {
         </div>
       </div>
     </div>
-  );
-} 

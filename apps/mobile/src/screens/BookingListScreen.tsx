@@ -20,7 +20,7 @@ export const BookingListScreen: React.FC = () => {
       .then(data => setBookings(data))
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, []);
+[]);
 
   if (loading) return <ActivityIndicator size="large" color="#2A9D8F" style={styles.loader} />;
 
@@ -28,9 +28,7 @@ export const BookingListScreen: React.FC = () => {
   const filteredBookings = bookings.filter(item =>
     item.service.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
     (!statusFilter || item.status === statusFilter)
-  );
-
-  return (
+return (
     <View style={styles.container}>
       <TextInput
         placeholder="Search bookings..."
@@ -65,9 +63,6 @@ export const BookingListScreen: React.FC = () => {
         <Text style={styles.addText}>+</Text>
       </TouchableOpacity>
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   loader: { flex: 1, justifyContent: 'center', alignItems: 'center' },
@@ -81,6 +76,4 @@ const styles = StyleSheet.create({
   filterButtonSelected: { backgroundColor: '#2A9D8F' },
   filterButtonText: { color: '#2A9D8F' },
   filterButtonTextSelected: { color: '#fff' },
-});
-
 export default BookingListScreen;

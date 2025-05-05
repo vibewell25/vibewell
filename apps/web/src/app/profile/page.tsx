@@ -1,5 +1,3 @@
-'use client';
-
 import { Suspense } from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -18,7 +16,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+from '@/components/ui/select';
 import { BellIcon, CogIcon, ShieldCheckIcon, UserIcon } from '@heroicons/react/24/outline';
 import { Globe as GlobeIcon } from 'lucide-react';
 import { toast } from 'react-hot-toast';
@@ -33,16 +31,12 @@ interface NotificationPreference {
   email: boolean;
   push: boolean;
   inApp: boolean;
-}
-
 interface ConnectedAccount {
   id: string;
   provider: string;
   email: string;
   connectedAt: string;
   lastUsed: string;
-}
-
 function ProfileContent() {
   const { user, loading } = useAuth();
   const router = useRouter();
@@ -55,24 +49,21 @@ function ProfileContent() {
       email: true,
       push: true,
       inApp: true,
-    },
-    {
+{
       id: 'wellness',
       name: 'Wellness Updates',
       description: 'Receive updates about your wellness journey',
       email: true,
       push: false,
       inApp: true,
-    },
-    {
+{
       id: 'promotions',
       name: 'Promotions & Offers',
       description: 'Stay informed about special offers and discounts',
       email: true,
       push: false,
       inApp: false,
-    },
-  ]);
+]);
   const [connectedAccounts, setConnectedAccounts] = useState<ConnectedAccount[]>([
     {
       id: 'google',
@@ -80,51 +71,39 @@ function ProfileContent() {
       email: 'user@gmail.com',
       connectedAt: '2024-01-01',
       lastUsed: '2024-04-01',
-    },
-  ]);
+]);
   const [isDeletingAccount, setIsDeletingAccount] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) {
       router.push('/auth/signin');
-    }
-  }, [loading, user, router]);
+[loading, user, router]);
 
   const handleNotificationToggle = (id: string, type: 'email' | 'push' | 'inApp') => {
     setNotificationPreferences((prev) =>
       prev.map((pref) => (pref.id === id ? { ...pref, [type]: !pref[type] } : pref)),
-    );
-    toast.success('Notification preferences updated');
-  };
-
-  const handleDisconnectAccount = (id: string) => {
+toast.success('Notification preferences updated');
+const handleDisconnectAccount = (id: string) => {
     setConnectedAccounts((prev) => prev.filter((account) => account.id !== id));
     toast.success('Account disconnected');
-  };
-
-  const handleDeleteAccount = async ( {
+const handleDeleteAccount = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (
       !window.confirm('Are you sure you want to delete your account? This action cannot be undone.')
     ) {
       return;
-    }
-
-    setIsDeletingAccount(true);
+setIsDeletingAccount(true);
     try {
       // Add account deletion logic here
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
       toast.success('Account deleted successfully');
       router.push('/');
-    } catch (error) {
+catch (error) {
       toast.error('Failed to delete account');
-    } finally {
+finally {
       setIsDeletingAccount(false);
-    }
-  };
-
-  if (loading) {
+if (loading) {
     return (
       <Layout>
         <div className="container-app py-12">
@@ -138,14 +117,9 @@ function ProfileContent() {
           </div>
         </div>
       </Layout>
-    );
-  }
-
-  if (!user) {
+if (!user) {
     return null;
-  }
-
-  return (
+return (
     <Layout>
       <div className="container-app py-12">
         <div className="mb-8">
@@ -467,13 +441,8 @@ function ProfileContent() {
         </Tabs>
       </div>
     </Layout>
-  );
-}
-
 export default function ProfilePage() {
   return (
     <Suspense fallback={<div>Loading profile...</div>}>
       <ProfileContent />
     </Suspense>
-  );
-}

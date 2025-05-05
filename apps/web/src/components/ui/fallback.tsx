@@ -1,12 +1,9 @@
-'use client';;
 import { Loader2 } from 'lucide-react';
 
 interface FallbackProps {
   message?: string;
   className?: string;
   spinnerSize?: number;
-}
-
 /**
  * Fallback component to display during loading states
  */
@@ -14,15 +11,12 @@ export function Fallback({
   message = 'Loading...',
   className = '',
   spinnerSize = 24,
-}: FallbackProps) {
+: FallbackProps) {
   return (
     <div className={`flex flex-col items-center justify-center p-8 ${className}`}>
       <Loader2 className="mb-4 animate-spin" size={spinnerSize} />
       <p className="text-center font-medium text-gray-600">{message}</p>
     </div>
-  );
-}
-
 /**
  * Card fallback component with shimmer effect
  */
@@ -47,9 +41,6 @@ export function CardFallback({ count = 1 }: { count?: number }) {
         </div>
       ))}
     </>
-  );
-}
-
 /**
  * Table fallback component with shimmer effect
  */
@@ -73,9 +64,6 @@ export function TableFallback({ rows = 5, columns = 4 }: { rows?: number; column
         ))}
       </div>
     </div>
-  );
-}
-
 /**
  * Profile fallback component with shimmer effect
  */
@@ -96,5 +84,3 @@ export function ProfileFallback() {
       </div>
       <div className="h-10 w-1/4 rounded bg-gray-200" />
     </div>
-  );
-}

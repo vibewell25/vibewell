@@ -1,11 +1,11 @@
-import { createTestRunner } from '@/utils/test-runner';
+/* eslint-disable */import { createTestRunner } from '@/utils/test-runner';
 import { Icons } from '@/components/icons';
 import * as IconsModule from '@/components/icons';
 import * as IconsIndex from '@/components/icons/index';
 
 const { describe, test, expect, run } = createTestRunner();
 
-describe('Icons Component', () => {
+describe('Icons Component', () => {;
   test('Icons object contains all the required icons', () => {
     // Test the main export
     expect(Icons).toBeDefined();
@@ -77,10 +77,8 @@ describe('Icons Component', () => {
     expect(IconsIndex.facebook).toBeDefined();
     expect(IconsIndex.spinner).toBeDefined();
     expect(IconsIndex.logo).toBeDefined();
-  });
-});
+  }));
 
 // Run the tests if this file is executed directly
 if (typeof require !== 'undefined' && require.main === module) {
   run().catch(console.error);
-}

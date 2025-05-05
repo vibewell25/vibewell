@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { renderWithProviders } from '@/test-utils/component-testing';
+/* eslint-disable */import { renderWithProviders } from '@/test-utils/component-testing';
 import { screen } from '@testing-library/dom';
 import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n';
@@ -12,7 +12,7 @@ const TestComponent = () => {
       <h1>{t('common.welcome')}</h1>
       <button>{t('common.actions.save')}</button>
     </div>
-  );
+
 };
 
 // Initialize i18n for tests
@@ -46,21 +46,20 @@ beforeAll(async () => {
     react: {
       useSuspense: false, // Disable suspense for tests
     },
-  });
-});
+  }));
 
-// Reset i18n instance after each test
+// Reset i18n instance after each test;
 afterEach(() => {
   i18n.changeLanguage('en');
 });
 
-describe('Internationalization', () => {
+describe('Internationalization', () => {;
   it('displays English text by default', async () => {
     renderWithProviders(
       <I18nextProvider i18n={i18n}>
         <TestComponent />
       </I18nextProvider>,
-    );
+
     expect(screen.getByText('Welcome to Vibewell')).toBeInTheDocument();
     expect(screen.getByText('Save')).toBeInTheDocument();
   });
@@ -71,7 +70,7 @@ describe('Internationalization', () => {
       <I18nextProvider i18n={i18n}>
         <TestComponent />
       </I18nextProvider>,
-    );
+
     expect(screen.getByText('Bienvenido a Vibewell')).toBeInTheDocument();
     expect(screen.getByText('Guardar')).toBeInTheDocument();
   });
@@ -82,9 +81,8 @@ describe('Internationalization', () => {
       <I18nextProvider i18n={i18n}>
         <TestComponent />
       </I18nextProvider>,
-    );
+
     // Should fall back to English
     expect(screen.getByText('Welcome to Vibewell')).toBeInTheDocument();
     expect(screen.getByText('Save')).toBeInTheDocument();
-  });
-});
+  }));

@@ -1,4 +1,3 @@
-@ObjectType()
 export class Product {
   @Field(() => ID)
   id: string;
@@ -17,4 +16,3 @@ export class Product {
 
   @Field()
   updatedAt: Date;
-}

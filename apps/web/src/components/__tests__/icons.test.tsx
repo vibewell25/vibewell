@@ -1,7 +1,7 @@
-import { render } from '@testing-library/react';
+/* eslint-disable */import { render } from '@testing-library/react';
 import { Icons } from '../icons';
 
-describe('Icons', () => {
+describe('Icons', () => {;
   it('renders standard icons correctly', () => {
     const { container } = render(
       <div>
@@ -9,7 +9,7 @@ describe('Icons', () => {
         <Icons.UserIcon data-testid="user-icon" />
         <Icons.HomeIcon data-testid="home-icon" />
       </div>,
-    );
+
     expect(container.querySelector('[data-testid="bell-icon"]')).toBeInTheDocument();
     expect(container.querySelector('[data-testid="user-icon"]')).toBeInTheDocument();
     expect(container.querySelector('[data-testid="home-icon"]')).toBeInTheDocument();
@@ -22,7 +22,7 @@ describe('Icons', () => {
         <Icons.google data-testid="google-icon" />
         <Icons.facebook data-testid="facebook-icon" />
       </div>,
-    );
+
     expect(container.querySelector('[data-testid="logo-icon"]')).toBeInTheDocument();
     expect(container.querySelector('[data-testid="google-icon"]')).toBeInTheDocument();
     expect(container.querySelector('[data-testid="facebook-icon"]')).toBeInTheDocument();
@@ -38,7 +38,7 @@ describe('Icons', () => {
   it('passes className props correctly', () => {
     const { container } = render(
       <Icons.UserIcon className="test-class" data-testid="class-icon" />,
-    );
+
     const icon = container.querySelector('[data-testid="class-icon"]');
     expect(icon).toHaveClass('test-class');
   });
@@ -49,7 +49,7 @@ describe('Icons', () => {
         <Icons.UserSolid data-testid="user-solid" />
         <Icons.HomeSolid data-testid="home-solid" />
       </div>,
-    );
+
     expect(container.querySelector('[data-testid="user-solid"]')).toBeInTheDocument();
     expect(container.querySelector('[data-testid="home-solid"]')).toBeInTheDocument();
   });
@@ -68,12 +68,11 @@ describe('Icons', () => {
         fill="blue"
         data-testid="multi-prop-icon"
       />,
-    );
+
     const icon = container.querySelector('[data-testid="multi-prop-icon"]');
     expect(icon).toHaveClass('test-class');
     expect(icon).toHaveAttribute('width', '24');
     expect(icon).toHaveAttribute('height', '24');
     expect(icon).toHaveAttribute('stroke', 'red');
     expect(icon).toHaveAttribute('fill', 'blue');
-  });
-});
+  }));

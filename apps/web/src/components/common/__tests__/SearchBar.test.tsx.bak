@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import search-bar from '../search-bar.tsx';
+
+describe('search-bar', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<search-bar />);
+    expect(container).toBeInTheDocument();
+  });
+});

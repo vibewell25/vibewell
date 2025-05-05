@@ -10,22 +10,16 @@ interface ARState {
   worldMatrix?: THREE.Matrix4;
   confidence: number;
   error?: string;
-}
-
 interface ARContextValue {
   arState: ARState;
   updateARState: (update: Partial<ARState>) => void;
   resetARState: () => void;
-}
-
 const initialState: ARState = {
   isInitialized: false,
   isTracking: false,
   faceDetected: false,
   landmarks: [],
   confidence: 0
-};
-
 const ARContext = createContext<ARContextValue | undefined>(undefined);
 
 export const ARProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -35,12 +29,12 @@ export const ARProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     setARState(current => ({
       ...current,
       ...update
-    }));
-  }, []);
+));
+[]);
 
   const resetARState = useCallback(() => {
     setARState(initialState);
-  }, []);
+[]);
 
   return (
     <ARContext.Provider
@@ -48,17 +42,11 @@ export const ARProvider: React.FC<{ children: React.ReactNode }> = ({ children }
         arState,
         updateARState,
         resetARState
-      }}
-    >
+>
       {children}
     </ARContext.Provider>
-  );
-};
-
 export const useARContext = () => {
   const context = useContext(ARContext);
   if (!context) {
     throw new Error('useARContext must be used within an ARProvider');
-  }
-  return context;
-}; 
+return context;

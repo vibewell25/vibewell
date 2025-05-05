@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import theme-provider from '../theme-provider.tsx';
+
+describe('theme-provider', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<theme-provider />);
+    expect(container).toBeInTheDocument();
+  });
+});

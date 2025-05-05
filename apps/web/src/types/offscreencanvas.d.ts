@@ -10,8 +10,6 @@ interface OffscreenCanvasRenderingContext2D extends CanvasRenderingContext2D {
 
   // Worker-specific commit method
   commit(): void;
-}
-
 /**
  * Represents a WebGL rendering context for OffscreenCanvas
  */
@@ -20,8 +18,6 @@ interface OffscreenCanvasWebGLRenderingContext extends WebGLRenderingContext {
   
   // WebGL specific methods for OffscreenCanvas
   makeXRCompatible(): Promise<void>;
-}
-
 /**
  * Represents a WebGL2 rendering context for OffscreenCanvas
  */
@@ -30,8 +26,6 @@ interface OffscreenCanvasWebGL2RenderingContext extends WebGL2RenderingContext {
   
   // WebGL2 specific methods for OffscreenCanvas
   makeXRCompatible(): Promise<void>;
-}
-
 /**
  * Options for creating a bitmap from the OffscreenCanvas
  */
@@ -42,8 +36,6 @@ interface ImageBitmapOptions {
   resizeWidth?: number;
   resizeHeight?: number;
   resizeQuality?: 'pixelated' | 'low' | 'medium' | 'high';
-}
-
 /**
  * Represents an OffscreenCanvas that can be used in a web worker
  */
@@ -79,7 +71,7 @@ interface OffscreenCanvas extends EventTarget {
   convertToBlob(options?: {
     type?: string;
     quality?: number;
-  }): Promise<Blob>;
+): Promise<Blob>;
 
   /**
    * Creates an ImageBitmap from the canvas contents
@@ -87,8 +79,6 @@ interface OffscreenCanvas extends EventTarget {
    * @param options - Optional bitmap creation options
    */
   transferToImageBitmap(options?: ImageBitmapOptions): ImageBitmap;
-}
-
 /**
  * Constructor interface for OffscreenCanvas
  */
@@ -102,4 +92,3 @@ declare let OffscreenCanvas: {
    * @param height - The height of the canvas in pixels
    */
   new(width: number, height: number): OffscreenCanvas;
-}; 

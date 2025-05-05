@@ -8,10 +8,7 @@ export function ZenGarden() {
   useFrame((state) => {
     if (groupRef.current) {
       groupRef.current.rotation.y += 0.001;
-    }
-  });
-
-  return (
+return (
     <group ref={groupRef}>
       {/* Sand Base */}
       <Box args={[20, 0.1, 20]} position={[0, -1, 0]} material-color="#e8d0a9" />
@@ -32,11 +29,9 @@ export function ZenGarden() {
                   rotation={[0, angle, 0]}
                   material-color="#d4c19c"
                 />
-              );
-            })}
+)}
           </group>
-        );
-      })}
+)}
       {/* Rocks */}
       {Array.from({ length: 7 }).map((_, i) => {
         const angle = (i / 7) * Math.PI * 2;
@@ -54,8 +49,7 @@ export function ZenGarden() {
               material-metalness={0.2}
             />
           </group>
-        );
-      })}
+)}
       {/* Bamboo Plants */}
       {Array.from({ length: 4 }).map((_, i) => {
         const angle = (i / 4) * Math.PI * 2;
@@ -81,11 +75,7 @@ export function ZenGarden() {
                     />
                   ))}
                 </group>
-              );
-            })}
+)}
           </group>
-        );
-      })}
+)}
     </group>
-  );
-}

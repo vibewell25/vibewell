@@ -300,26 +300,26 @@ export interface TryOnRequest {
 &nbsp;
 export class <span class="cstat-no" title="statement not covered" >VirtualTryOnService {</span>
 <span class="fstat-no" title="function not covered" >  async c</span>reateTryOn(data: TryOnRequest) {
-    const imageUrl = <span class="cstat-no" title="statement not covered" >await uploadImage(data?.image);</span>
+    const imageUrl = <span class="cstat-no" title="statement not covered" >await uploadImage(data.image);</span>
 &nbsp;
-    const tryOn = <span class="cstat-no" title="statement not covered" >await prisma?.virtualTryOn.create({</span>
+    const tryOn = <span class="cstat-no" title="statement not covered" >await prisma.virtualTryOn.create({</span>
       data: {
-        userId: data?.userId,
-        serviceId: data?.serviceId,
+        userId: data.userId,
+        serviceId: data.serviceId,
         imageUrl,
-        status: TryOnStatus?.PENDING,
+        status: TryOnStatus.PENDING,
       },
     });
 &nbsp;
     // Process image asynchronously
-<span class="cstat-no" title="statement not covered" >    this?.processVirtualTryOn(tryOn?.id).catch(console?.error);</span>
+<span class="cstat-no" title="statement not covered" >    this.processVirtualTryOn(tryOn.id).catch(console.error);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return tryOn;</span>
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async p</span>rocessVirtualTryOn(tryOnId: string) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const tryOn = <span class="cstat-no" title="statement not covered" >await prisma?.virtualTryOn.findUnique({</span>
+      const tryOn = <span class="cstat-no" title="statement not covered" >await prisma.virtualTryOn.findUnique({</span>
         where: { id: tryOnId },
         include: { service: true },
       });
@@ -328,29 +328,29 @@ export class <span class="cstat-no" title="statement not covered" >VirtualTryOnS
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!tryOn) <span class="cstat-no" title="statement not covered" >throw new Error('Try-on not found');</span></span>
 &nbsp;
       // Update status to processing
-<span class="cstat-no" title="statement not covered" >      await prisma?.virtualTryOn.update({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.virtualTryOn.update({</span>
         where: { id: tryOnId },
-        data: { status: TryOnStatus?.PROCESSING },
+        data: { status: TryOnStatus.PROCESSING },
       });
 &nbsp;
 &nbsp;
       // Process the image using AI/ML
-      const resultUrl = <span class="cstat-no" title="statement not covered" >await processImage(tryOn?.imageUrl, tryOn?.service);</span>
+      const resultUrl = <span class="cstat-no" title="statement not covered" >await processImage(tryOn.imageUrl, tryOn.service);</span>
 &nbsp;
       // Update with results
-<span class="cstat-no" title="statement not covered" >      await prisma?.virtualTryOn.update({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.virtualTryOn.update({</span>
         where: { id: tryOnId },
         data: {
           resultUrl,
-          status: TryOnStatus?.COMPLETED,
+          status: TryOnStatus.COMPLETED,
         },
       });
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      await prisma?.virtualTryOn.update({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.virtualTryOn.update({</span>
         where: { id: tryOnId },
         data: {
-          status: TryOnStatus?.FAILED,
-          metadata: { error: error?.message },
+          status: TryOnStatus.FAILED,
+          metadata: { error: error.message },
         },
       });
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
@@ -358,7 +358,7 @@ export class <span class="cstat-no" title="statement not covered" >VirtualTryOnS
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async g</span>etTryOnById(id: string) {
-<span class="cstat-no" title="statement not covered" >    return prisma?.virtualTryOn.findUnique({</span>
+<span class="cstat-no" title="statement not covered" >    return prisma.virtualTryOn.findUnique({</span>
       where: { id },
       include: {
         service: true,
@@ -374,7 +374,7 @@ export class <span class="cstat-no" title="statement not covered" >VirtualTryOnS
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async g</span>etUserTryOns(userId: string) {
-<span class="cstat-no" title="statement not covered" >    return prisma?.virtualTryOn.findMany({</span>
+<span class="cstat-no" title="statement not covered" >    return prisma.virtualTryOn.findMany({</span>
       where: { userId },
       include: {
         service: true,
@@ -384,14 +384,14 @@ export class <span class="cstat-no" title="statement not covered" >VirtualTryOnS
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async d</span>eleteTryOn(id: string, userId: string) {
-    const tryOn = <span class="cstat-no" title="statement not covered" >await prisma?.virtualTryOn.findFirst({</span>
+    const tryOn = <span class="cstat-no" title="statement not covered" >await prisma.virtualTryOn.findFirst({</span>
       where: { id, userId },
     });
 &nbsp;
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!tryOn) <span class="cstat-no" title="statement not covered" >throw new Error('Try-on not found or unauthorized');</span></span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return prisma?.virtualTryOn.delete({</span>
+<span class="cstat-no" title="statement not covered" >    return prisma.virtualTryOn.delete({</span>
       where: { id },
     });
   }
@@ -403,7 +403,7 @@ export class <span class="cstat-no" title="statement not covered" >VirtualTryOnS
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

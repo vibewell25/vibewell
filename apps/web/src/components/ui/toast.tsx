@@ -10,8 +10,6 @@ export interface ToastProps {
   type?: 'default' | 'success' | 'error' | 'warning' | 'info';
   duration?: number;
   onDismiss?: (id: string) => void;
-}
-
 export function Toast({
   id,
   title,
@@ -20,7 +18,7 @@ export function Toast({
   type = 'default',
   duration = 3000,
   onDismiss,
-}: ToastProps) {
+: ToastProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
@@ -28,54 +26,43 @@ export function Toast({
       setIsVisible(false);
       if (onDismiss) {
         setTimeout(() => onDismiss(id), 300); // Allow time for exit animation
-      }
-    }, duration);
+duration);
 
     return () => clearTimeout(timer);
-  }, [id, duration, onDismiss]);
+[id, duration, onDismiss]);
 
   const handleDismiss = () => {
     setIsVisible(false);
     if (onDismiss) {
       setTimeout(() => onDismiss(id), 300); // Allow time for exit animation
-    }
-  };
-
-  // Define background, text, and icon for different toast types
+// Define background, text, and icon for different toast types
   const typeStyles = {
     default: {
       container: 'bg-white',
       title: 'text-gray-900',
       description: 'text-gray-600',
       icon: null,
-    },
-    success: {
+success: {
       container: 'bg-green-50',
       title: 'text-green-800',
       description: 'text-green-700',
       icon: <Icons.checkCircle className="h-5 w-5 text-green-500" aria-hidden="true" />,
-    },
-    error: {
+error: {
       container: 'bg-red-50',
       title: 'text-red-800',
       description: 'text-red-700',
       icon: <Icons.close className="h-5 w-5 text-red-500" aria-hidden="true" />,
-    },
-    warning: {
+warning: {
       container: 'bg-yellow-50',
       title: 'text-yellow-800',
       description: 'text-yellow-700',
       icon: <Icons.bell className="h-5 w-5 text-yellow-500" aria-hidden="true" />,
-    },
-    info: {
+info: {
       container: 'bg-blue-50',
       title: 'text-blue-800',
       description: 'text-blue-700',
       icon: <Icons.bell className="h-5 w-5 text-blue-500" aria-hidden="true" />,
-    },
-  };
-
-  const styles = typeStyles[type];
+const styles = typeStyles[type];
 
   return (
     <div
@@ -107,9 +94,6 @@ export function Toast({
         </div>
       </div>
     </div>
-  );
-}
-
 export interface ToastContainerProps {
   position?:
     | 'top-right'
@@ -119,8 +103,6 @@ export interface ToastContainerProps {
     | 'top-center'
     | 'bottom-center';
   children: React.ReactNode;
-}
-
 export function ToastContainer({ position = 'bottom-right', children }: ToastContainerProps) {
   const positionClasses = {
     'top-right': 'top-0 right-0',
@@ -129,9 +111,7 @@ export function ToastContainer({ position = 'bottom-right', children }: ToastCon
     'bottom-left': 'bottom-0 left-0',
     'top-center': 'top-0 left-1/2 -translate-x-1/2',
     'bottom-center': 'bottom-0 left-1/2 -translate-x-1/2',
-  };
-
-  return (
+return (
     <div
       className={cn(
         'pointer-events-none fixed z-50 flex max-h-screen flex-col gap-2 overflow-hidden p-4',
@@ -140,9 +120,6 @@ export function ToastContainer({ position = 'bottom-right', children }: ToastCon
     >
       {children}
     </div>
-  );
-}
-
 // Toast context and provider
 import React, { createContext, useContext, useCallback, useReducer } from 'react';
 
@@ -161,9 +138,6 @@ function toastReducer(state: ToastState, action: ToastAction): ToastState {
       return state.filter((toast) => toast.id !== action.id);
     default:
       return state;
-  }
-}
-
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, dispatch] = useReducer(toastReducer, []);
 
@@ -182,34 +156,21 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
         </ToastContainer>
       </ToastDispatchContext.Provider>
     </ToastStateContext.Provider>
-  );
-}
-
 export function useToast() {
   const dispatch = useContext(ToastDispatchContext);
 
   if (!dispatch) {
     throw new Error('useToast must be used within a ToastProvider');
-  }
-
-  const toast = useCallback(
+const toast = useCallback(
     (props: Omit<ToastProps, 'id'>) => {
       const id = Math.random().toString(36).substring(2, 9);
       dispatch({
         type: 'ADD_TOAST',
         toast: { id, ...props },
-      });
-      return id;
-    },
-    [dispatch],
-  );
-
-  const dismissToast = useCallback(
+return id;
+[dispatch],
+const dismissToast = useCallback(
     (id: string) => {
       dispatch({ type: 'REMOVE_TOAST', id });
-    },
-    [dispatch],
-  );
-
-  return { toast, dismissToast };
-}
+[dispatch],
+return { toast, dismissToast };

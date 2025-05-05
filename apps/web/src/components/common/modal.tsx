@@ -9,6 +9,4 @@ interface ModalProps extends Omit<BaseModalProps, 'position' | 'variant'> {
   title?: string;
   children: React.ReactNode;
   className?: string;
-}
-
 export {};

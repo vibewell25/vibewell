@@ -1648,17 +1648,17 @@ const examples = <span class="cstat-no" title="statement not covered" >{</span>
   "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
   "user": {
     "id": "user_123",
-    "email": "user@example?.com",
+    "email": "user@example.com",
     "name": "John Doe",
     "role": "customer"
   }
 }`,
   userProfile: `{
   "id": "user_123",
-  "email": "user@example?.com",
+  "email": "user@example.com",
   "name": "John Doe",
   "phone": "+1234567890",
-  "profileImage": "https://storage?.vibewell.com/avatars/user_123?.jpg",
+  "profileImage": "https://storage.vibewell.com/avatars/user_123.jpg",
   "role": "customer",
   "preferences": {
     "notifications": {
@@ -1684,7 +1684,7 @@ const examples = <span class="cstat-no" title="statement not covered" >{</span>
   "startTime": "14:00:00",
   "endTime": "15:00:00",
   "status": "confirmed",
-  "price": 75?.00,
+  "price": 75.00,
   "currency": "USD",
   "notes": "Please arrive 10 minutes early",
   "createdAt": "2023-03-20T10:15:00Z"
@@ -1703,17 +1703,17 @@ const endpoints = <span class="cstat-no" title="statement not covered" >[</span>
         path: '/auth/login',
         description: 'Authenticate a user and get JWT tokens',
         requestBody: `{
-  "email": "user@example?.com",
+  "email": "user@example.com",
   "password": "yourpassword"
 }`,
-        responseExample: examples?.auth,
+        responseExample: examples.auth,
       },
       {
         method: 'POST',
         path: '/auth/register',
         description: 'Register a new user account',
         requestBody: `{
-  "email": "user@example?.com",
+  "email": "user@example.com",
   "password": "yourpassword",
   "name": "John Doe"
 }`,
@@ -1731,7 +1731,7 @@ const endpoints = <span class="cstat-no" title="statement not covered" >[</span>
         path: '/auth/password/reset',
         description: 'Request a password reset',
         requestBody: `{
-  "email": "user@example?.com"
+  "email": "user@example.com"
 }`,
       },
     ],
@@ -1745,7 +1745,7 @@ const endpoints = <span class="cstat-no" title="statement not covered" >[</span>
         method: 'GET',
         path: '/users/me',
         description: "Get the current user's profile",
-        responseExample: examples?.userProfile,
+        responseExample: examples.userProfile,
       },
       {
         method: 'PATCH',
@@ -1800,7 +1800,7 @@ const endpoints = <span class="cstat-no" title="statement not covered" >[</span>
   "startTime": "11:00:00",
   "notes": "First-time client"
 }`,
-        responseExample: examples?.booking,
+        responseExample: examples.booking,
       },
       {
         method: 'POST',
@@ -1922,17 +1922,17 @@ function <span class="fstat-no" title="function not covered" >ApiDocumentationCo
 &nbsp;
   // Filter endpoints based on search query
   const filteredEndpoints =
-<span class="cstat-no" title="statement not covered" >    searchQuery?.length &gt; 0</span>
+<span class="cstat-no" title="statement not covered" >    searchQuery.length &gt; 0</span>
       ? endpoints
           .map(<span class="fstat-no" title="function not covered" >(c</span>ategory) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
             ...category,
-            endpoints: category?.endpoints.filter(
+            endpoints: category.endpoints.filter(
 <span class="fstat-no" title="function not covered" >              (e</span>ndpoint) =&gt;
-<span class="cstat-no" title="statement not covered" >                endpoint?.path.toLowerCase().includes(searchQuery?.toLowerCase()) ||</span>
-                endpoint?.description.toLowerCase().includes(searchQuery?.toLowerCase()),
+<span class="cstat-no" title="statement not covered" >                endpoint.path.toLowerCase().includes(searchQuery.toLowerCase()) ||</span>
+                endpoint.description.toLowerCase().includes(searchQuery.toLowerCase()),
             ),
           }))
-          .filter(<span class="fstat-no" title="function not covered" >(c</span>ategory) =&gt; <span class="cstat-no" title="statement not covered" >category?.endpoints.length &gt; 0)</span>
+          .filter(<span class="fstat-no" title="function not covered" >(c</span>ategory) =&gt; <span class="cstat-no" title="statement not covered" >category.endpoints.length &gt; 0)</span>
       : endpoints;
 &nbsp;
   return (
@@ -1973,7 +1973,7 @@ function <span class="fstat-no" title="function not covered" >ApiDocumentationCo
                   placeholder="Search endpoints..."
                   className="w-full rounded-md border py-2 pl-10 pr-4"
                   value={searchQuery}
-                  onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setSearchQuery(e?.target.value)}</span>
+                  onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setSearchQuery(e.target.value)}</span>
                 /&gt;
               &lt;/div&gt;
 &nbsp;
@@ -1983,7 +1983,7 @@ function <span class="fstat-no" title="function not covered" >ApiDocumentationCo
                   &lt;div&gt;
                     &lt;span className="text-muted-foreground"&gt;Production:&lt;/span&gt;
                     &lt;br /&gt;
-                    &lt;code className="font-mono"&gt;https://api?.vibewell.com/v1&lt;/code&gt;
+                    &lt;code className="font-mono"&gt;https://api.vibewell.com/v1&lt;/code&gt;
                   &lt;/div&gt;
                   &lt;div className="mt-2"&gt;
                     &lt;span className="text-muted-foreground"&gt;Development:&lt;/span&gt;
@@ -1994,40 +1994,40 @@ function <span class="fstat-no" title="function not covered" >ApiDocumentationCo
 &nbsp;
                 &lt;div className="mb-2 font-medium"&gt;API Endpoints&lt;/div&gt;
                 &lt;nav className="mb-4 space-y-1"&gt;
-                  {filteredEndpoints?.map(<span class="fstat-no" title="function not covered" >(c</span>ategory) =&gt; (
-<span class="cstat-no" title="statement not covered" >                    &lt;div key={category?.id} c</span>lassName="mb-2"&gt;
+                  {filteredEndpoints.map(<span class="fstat-no" title="function not covered" >(c</span>ategory) =&gt; (
+<span class="cstat-no" title="statement not covered" >                    &lt;div key={category.id} c</span>lassName="mb-2"&gt;
                       &lt;div className="mb-1 flex items-center text-sm font-medium"&gt;
-                        {category?.icon}
-                        &lt;span className="ml-2"&gt;{category?.name}&lt;/span&gt;
+                        {category.icon}
+                        &lt;span className="ml-2"&gt;{category.name}&lt;/span&gt;
                       &lt;/div&gt;
 &nbsp;
                       &lt;ul className="space-y-1 pl-7"&gt;
-                        {category?.endpoints.map(<span class="fstat-no" title="function not covered" >(e</span>ndpoint, index) =&gt; (
-<span class="cstat-no" title="statement not covered" >                          &lt;li key={`${category?.id}-${index}`}&gt;</span>
+                        {category.endpoints.map(<span class="fstat-no" title="function not covered" >(e</span>ndpoint, index) =&gt; (
+<span class="cstat-no" title="statement not covered" >                          &lt;li key={`${category.id}-${index}`}&gt;</span>
                             &lt;button
                               className={`hover:text-primary flex w-full items-center py-1 text-left text-sm ${
-                                selectedEndpoint === `${category?.id}-${index}`
+                                selectedEndpoint === `${category.id}-${index}`
                                   ? 'text-primary font-medium'
                                   : 'text-muted-foreground'
                               }`}
-                              onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etSelectedEndpoint(`${category?.id}-${index}`)}</span>
+                              onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etSelectedEndpoint(`${category.id}-${index}`)}</span>
                             &gt;
                               &lt;span
                                 className={`inline-block w-12 font-mono ${
-                                  endpoint?.method === 'GET'
+                                  endpoint.method === 'GET'
                                     ? 'text-green-600'
-                                    : endpoint?.method === 'POST'
+                                    : endpoint.method === 'POST'
                                       ? 'text-blue-600'
-                                      : endpoint?.method === 'PATCH'
+                                      : endpoint.method === 'PATCH'
                                         ? 'text-yellow-600'
-                                        : endpoint?.method === 'DELETE'
+                                        : endpoint.method === 'DELETE'
                                           ? 'text-red-600'
                                           : ''
                                 }`}
                               &gt;
-                                {endpoint?.method}
+                                {endpoint.method}
                               &lt;/span&gt;
-                              &lt;span className="truncate"&gt;{endpoint?.path}&lt;/span&gt;
+                              &lt;span className="truncate"&gt;{endpoint.path}&lt;/span&gt;
                             &lt;/button&gt;
                           &lt;/li&gt;
                         ))}
@@ -2150,19 +2150,19 @@ function <span class="fstat-no" title="function not covered" >ApiDocumentationCo
 &nbsp;
             {/* Endpoint list and details */}
             &lt;div className="space-y-8"&gt;
-              {filteredEndpoints?.map(<span class="fstat-no" title="function not covered" >(c</span>ategory) =&gt; (
-<span class="cstat-no" title="statement not covered" >                &lt;div key={category?.id} c</span>lassName="mb-8"&gt;
+              {filteredEndpoints.map(<span class="fstat-no" title="function not covered" >(c</span>ategory) =&gt; (
+<span class="cstat-no" title="statement not covered" >                &lt;div key={category.id} c</span>lassName="mb-8"&gt;
                   &lt;h2 className="mb-4 flex items-center text-xl font-bold"&gt;
-                    {category?.icon}
-                    &lt;span className="ml-2"&gt;{category?.name} API&lt;/span&gt;
+                    {category.icon}
+                    &lt;span className="ml-2"&gt;{category.name} API&lt;/span&gt;
                   &lt;/h2&gt;
 &nbsp;
-                  {category?.endpoints.map(<span class="fstat-no" title="function not covered" >(e</span>ndpoint, index) =&gt; (
+                  {category.endpoints.map(<span class="fstat-no" title="function not covered" >(e</span>ndpoint, index) =&gt; (
 <span class="cstat-no" title="statement not covered" >                    &lt;div</span>
-                      key={`${category?.id}-${index}`}
-                      id={`${category?.id}-${index}`}
+                      key={`${category.id}-${index}`}
+                      id={`${category.id}-${index}`}
                       className={`mb-4 rounded-md border ${
-                        selectedEndpoint === `${category?.id}-${index}`
+                        selectedEndpoint === `${category.id}-${index}`
                           ? 'border-primary ring-primary ring-1'
                           : ''
                       }`}
@@ -2171,49 +2171,49 @@ function <span class="fstat-no" title="function not covered" >ApiDocumentationCo
                         &lt;div className="mb-2 flex items-center"&gt;
                           &lt;span
                             className={`inline-block rounded-md px-2 py-1 text-xs font-medium ${
-                              endpoint?.method === 'GET'
+                              endpoint.method === 'GET'
                                 ? 'bg-green-100 text-green-800'
-                                : endpoint?.method === 'POST'
+                                : endpoint.method === 'POST'
                                   ? 'bg-blue-100 text-blue-800'
-                                  : endpoint?.method === 'PATCH'
+                                  : endpoint.method === 'PATCH'
                                     ? 'bg-yellow-100 text-yellow-800'
-                                    : endpoint?.method === 'DELETE'
+                                    : endpoint.method === 'DELETE'
                                       ? 'bg-red-100 text-red-800'
                                       : ''
                             }`}
                           &gt;
-                            {endpoint?.method}
+                            {endpoint.method}
                           &lt;/span&gt;
-                          &lt;span className="ml-2 font-mono"&gt;{endpoint?.path}&lt;/span&gt;
+                          &lt;span className="ml-2 font-mono"&gt;{endpoint.path}&lt;/span&gt;
                         &lt;/div&gt;
 &nbsp;
-                        &lt;p className="text-muted-foreground"&gt;{endpoint?.description}&lt;/p&gt;
+                        &lt;p className="text-muted-foreground"&gt;{endpoint.description}&lt;/p&gt;
                       &lt;/div&gt;
 &nbsp;
                       &lt;div className="border-t"&gt;
                         &lt;Tabs defaultValue="details"&gt;
                           &lt;TabsList className="w-full rounded-none border-b px-4"&gt;
                             &lt;TabsTrigger value="details"&gt;Details&lt;/TabsTrigger&gt;
-                            {<span class="branch-0 cbranch-no" title="branch not covered" >endpoint?.requestBody &amp;&amp; (</span>
+                            {<span class="branch-0 cbranch-no" title="branch not covered" >endpoint.requestBody </span>&amp;&amp; (
                               &lt;TabsTrigger value="request"&gt;Request&lt;/TabsTrigger&gt;
                             )}
-                            {<span class="branch-0 cbranch-no" title="branch not covered" >endpoint?.responseExample &amp;&amp; (</span>
+                            {<span class="branch-0 cbranch-no" title="branch not covered" >endpoint.responseExample </span>&amp;&amp; (
                               &lt;TabsTrigger value="response"&gt;Response&lt;/TabsTrigger&gt;
                             )}
                           &lt;/TabsList&gt;
 &nbsp;
                           &lt;TabsContent value="details" className="p-4"&gt;
-                            {endpoint?.queryParams &amp;&amp; endpoint?.queryParams.length &gt; 0 &amp;&amp; (
+                            {endpoint.queryParams &amp;&amp; endpoint.queryParams.length &gt; 0 &amp;&amp; (
                               &lt;div className="mb-4"&gt;
                                 &lt;h4 className="mb-2 font-medium"&gt;Query Parameters&lt;/h4&gt;
                                 &lt;ul className="space-y-2"&gt;
-                                  {endpoint?.queryParams.map(<span class="fstat-no" title="function not covered" >(p</span>aram, i) =&gt; (
+                                  {endpoint.queryParams.map(<span class="fstat-no" title="function not covered" >(p</span>aram, i) =&gt; (
 <span class="cstat-no" title="statement not covered" >                                    &lt;li key={i} c</span>lassName="flex"&gt;
                                       &lt;span className="min-w-[100px] font-mono text-sm"&gt;
-                                        {param?.name}
+                                        {param.name}
                                       &lt;/span&gt;
                                       &lt;span className="text-sm text-muted-foreground"&gt;
-                                        {param?.description}
+                                        {param.description}
                                       &lt;/span&gt;
                                     &lt;/li&gt;
                                   ))}
@@ -2221,9 +2221,9 @@ function <span class="fstat-no" title="function not covered" >ApiDocumentationCo
                               &lt;/div&gt;
                             )}
 &nbsp;
-                            {<span class="branch-0 cbranch-no" title="branch not covered" >endpoint?.notes &amp;&amp; (</span>
+                            {<span class="branch-0 cbranch-no" title="branch not covered" >endpoint.notes </span>&amp;&amp; (
                               &lt;div className="rounded-md bg-muted p-3 text-sm"&gt;
-                                &lt;strong&gt;Note:&lt;/strong&gt; {endpoint?.notes}
+                                &lt;strong&gt;Note:&lt;/strong&gt; {endpoint.notes}
                               &lt;/div&gt;
                             )}
 &nbsp;
@@ -2236,11 +2236,11 @@ function <span class="fstat-no" title="function not covered" >ApiDocumentationCo
                             &lt;/div&gt;
                           &lt;/TabsContent&gt;
 &nbsp;
-                          {<span class="branch-0 cbranch-no" title="branch not covered" >endpoint?.requestBody &amp;&amp; (</span>
+                          {<span class="branch-0 cbranch-no" title="branch not covered" >endpoint.requestBody </span>&amp;&amp; (
                             &lt;TabsContent value="request" className="p-4"&gt;
                               &lt;h4 className="mb-2 font-medium"&gt;Request Body&lt;/h4&gt;
                               &lt;div className="overflow-x-auto rounded-md bg-muted p-3 font-mono text-sm"&gt;
-                                &lt;pre&gt;{endpoint?.requestBody}&lt;/pre&gt;
+                                &lt;pre&gt;{endpoint.requestBody}&lt;/pre&gt;
                               &lt;/div&gt;
 &nbsp;
                               &lt;div className="mt-4 flex"&gt;
@@ -2252,11 +2252,11 @@ function <span class="fstat-no" title="function not covered" >ApiDocumentationCo
                             &lt;/TabsContent&gt;
                           )}
 &nbsp;
-                          {<span class="branch-0 cbranch-no" title="branch not covered" >endpoint?.responseExample &amp;&amp; (</span>
+                          {<span class="branch-0 cbranch-no" title="branch not covered" >endpoint.responseExample </span>&amp;&amp; (
                             &lt;TabsContent value="response" className="p-4"&gt;
                               &lt;h4 className="mb-2 font-medium"&gt;Response Example&lt;/h4&gt;
                               &lt;div className="overflow-x-auto rounded-md bg-muted p-3 font-mono text-sm"&gt;
-                                &lt;pre&gt;{endpoint?.responseExample}&lt;/pre&gt;
+                                &lt;pre&gt;{endpoint.responseExample}&lt;/pre&gt;
                               &lt;/div&gt;
 &nbsp;
                               &lt;div className="mt-4 flex"&gt;
@@ -2290,7 +2290,7 @@ function <span class="fstat-no" title="function not covered" >ApiDocumentationCo
               &lt;h3 className="mb-2 mt-4 text-lg font-semibold"&gt;Example webhook payload:&lt;/h3&gt;
               &lt;pre className="mb-4 rounded-md bg-muted p-3 font-mono text-sm"&gt;
                 {`{
-  "event": "booking?.created",
+  "event": "booking.created",
   "timestamp": "2023-03-25T14:20:00Z",
   "data": {
     "bookingId": "booking_123",
@@ -2307,35 +2307,35 @@ function <span class="fstat-no" title="function not covered" >ApiDocumentationCo
               &lt;ul className="mb-4 grid grid-cols-1 gap-2 md:grid-cols-2"&gt;
                 &lt;li className="flex items-center"&gt;
                   &lt;CheckIcon className="mr-2 h-4 w-4 text-green-500" /&gt;
-                  &lt;code className="font-mono text-sm"&gt;booking?.created&lt;/code&gt;
+                  &lt;code className="font-mono text-sm"&gt;booking.created&lt;/code&gt;
                 &lt;/li&gt;
                 &lt;li className="flex items-center"&gt;
                   &lt;CheckIcon className="mr-2 h-4 w-4 text-green-500" /&gt;
-                  &lt;code className="font-mono text-sm"&gt;booking?.confirmed&lt;/code&gt;
+                  &lt;code className="font-mono text-sm"&gt;booking.confirmed&lt;/code&gt;
                 &lt;/li&gt;
                 &lt;li className="flex items-center"&gt;
                   &lt;CheckIcon className="mr-2 h-4 w-4 text-green-500" /&gt;
-                  &lt;code className="font-mono text-sm"&gt;booking?.cancelled&lt;/code&gt;
+                  &lt;code className="font-mono text-sm"&gt;booking.cancelled&lt;/code&gt;
                 &lt;/li&gt;
                 &lt;li className="flex items-center"&gt;
                   &lt;CheckIcon className="mr-2 h-4 w-4 text-green-500" /&gt;
-                  &lt;code className="font-mono text-sm"&gt;booking?.completed&lt;/code&gt;
+                  &lt;code className="font-mono text-sm"&gt;booking.completed&lt;/code&gt;
                 &lt;/li&gt;
                 &lt;li className="flex items-center"&gt;
                   &lt;CheckIcon className="mr-2 h-4 w-4 text-green-500" /&gt;
-                  &lt;code className="font-mono text-sm"&gt;review?.created&lt;/code&gt;
+                  &lt;code className="font-mono text-sm"&gt;review.created&lt;/code&gt;
                 &lt;/li&gt;
                 &lt;li className="flex items-center"&gt;
                   &lt;CheckIcon className="mr-2 h-4 w-4 text-green-500" /&gt;
-                  &lt;code className="font-mono text-sm"&gt;user?.registered&lt;/code&gt;
+                  &lt;code className="font-mono text-sm"&gt;user.registered&lt;/code&gt;
                 &lt;/li&gt;
                 &lt;li className="flex items-center"&gt;
                   &lt;CheckIcon className="mr-2 h-4 w-4 text-green-500" /&gt;
-                  &lt;code className="font-mono text-sm"&gt;payment?.succeeded&lt;/code&gt;
+                  &lt;code className="font-mono text-sm"&gt;payment.succeeded&lt;/code&gt;
                 &lt;/li&gt;
                 &lt;li className="flex items-center"&gt;
                   &lt;CheckIcon className="mr-2 h-4 w-4 text-green-500" /&gt;
-                  &lt;code className="font-mono text-sm"&gt;payment?.failed&lt;/code&gt;
+                  &lt;code className="font-mono text-sm"&gt;payment.failed&lt;/code&gt;
                 &lt;/li&gt;
               &lt;/ul&gt;
 &nbsp;
@@ -2347,7 +2347,7 @@ function <span class="fstat-no" title="function not covered" >ApiDocumentationCo
             &lt;div className="rounded-md border bg-card p-6"&gt;
               &lt;h2 className="mb-4 text-2xl font-bold"&gt;API Versioning&lt;/h2&gt;
               &lt;p className="mb-4"&gt;
-                The API uses URL versioning (e?.g., &lt;code className="font-mono"&gt;/v1/users&lt;/code&gt;).
+                The API uses URL versioning (e.g., &lt;code className="font-mono"&gt;/v1/users&lt;/code&gt;).
                 When breaking changes are introduced, a new API version will be released.
               &lt;/p&gt;
 &nbsp;
@@ -2401,7 +2401,7 @@ function <span class="fstat-no" title="function not covered" >ApiDocumentationSk
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

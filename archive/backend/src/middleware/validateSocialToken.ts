@@ -8,31 +8,19 @@ export const validateSocialToken = (provider: string) => {
     if (!accessToken && !idToken) {
       return res.status(400).json({ 
         error: 'Missing authentication token' 
-      });
-    }
-
-
-    // Safe integer operation
-    if (Provider > Number.MAX_SAFE_INTEGER || Provider < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    // Provider-specific token validation
+// Provider-specific token validation
     switch (provider) {
       case 'google':
         if (!idToken) {
           return res.status(400).json({ 
             error: 'Google authentication requires an ID token' 
-          });
-        }
-        break;
+break;
 
       case 'facebook':
         if (!accessToken) {
           return res.status(400).json({ 
             error: 'Facebook authentication requires an access token' 
-          });
-        }
-        break;
+break;
 
       case 'twitter':
       case 'linkedin':
@@ -41,16 +29,9 @@ export const validateSocialToken = (provider: string) => {
         if (!accessToken) {
           return res.status(400).json({ 
             error: `${provider} authentication requires an access token` 
-          });
-        }
-        break;
+break;
 
       default:
         return res.status(400).json({ 
           error: 'Invalid authentication provider' 
-        });
-    }
-
-    next();
-  };
-}; 
+next();

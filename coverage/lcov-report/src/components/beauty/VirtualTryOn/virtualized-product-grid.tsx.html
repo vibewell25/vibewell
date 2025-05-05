@@ -411,10 +411,10 @@ export default function <span class="cstat-no" title="statement not covered" ><s
 &nbsp;
   // Adjust column count based on container width
 <span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!containerRef?.current) <span class="cstat-no" title="statement not covered" >return;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!containerRef.current) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
     const updateColumnCount = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-      const width = <span class="cstat-no" title="statement not covered" >containerRef?.current?.clientWidth || 0;</span>
+      const width = <span class="cstat-no" title="statement not covered" >containerRef.current.clientWidth || 0;</span>
 <span class="cstat-no" title="statement not covered" >      if (width &lt; 640) {</span>
 <span class="cstat-no" title="statement not covered" >        setColumnCount(2);</span>
       } else <span class="cstat-no" title="statement not covered" >if (width &lt; 1024) {</span>
@@ -425,8 +425,8 @@ export default function <span class="cstat-no" title="statement not covered" ><s
     };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    updateColumnCount();</span>
-<span class="cstat-no" title="statement not covered" >    window?.addEventListener('resize', updateColumnCount);</span>
-<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >w</span>indow?.removeEventListener('resize', updateColumnCount);</span></span>
+<span class="cstat-no" title="statement not covered" >    window.addEventListener('resize', updateColumnCount);</span>
+<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >w</span>indow.removeEventListener('resize', updateColumnCount);</span></span>
   }, []);
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (isLoading) {</span>
@@ -437,7 +437,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
     );
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (products?.length === 0) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (products.length === 0) {</span>
     return (
       &lt;div className="py-4 text-center"&gt;
         &lt;p className="text-gray-500"&gt;No products found&lt;/p&gt;
@@ -446,16 +446,16 @@ export default function <span class="cstat-no" title="statement not covered" ><s
   }
 &nbsp;
   // Calculate row count based on products length and column count
-  const rowCount = <span class="cstat-no" title="statement not covered" >Math?.ceil(products?.length / columnCount);</span>
+  const rowCount = <span class="cstat-no" title="statement not covered" >Math.ceil(products.length / columnCount);</span>
 &nbsp;
   // Cell renderer for the grid
   const ProductCell = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> columnIndex, rowIndex, style }: any) =&gt; {</span>
     const index = <span class="cstat-no" title="statement not covered" >rowIndex * columnCount + columnIndex;</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (index &gt;= products?.length) <span class="cstat-no" title="statement not covered" >return null;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (index &gt;= products.length) <span class="cstat-no" title="statement not covered" >return null;</span></span>
 &nbsp;
     const product = <span class="cstat-no" title="statement not covered" >products[index];</span>
-    const isSelected = <span class="cstat-no" title="statement not covered" >product?.id === selectedProductId;</span>
-    const imageUrl = <span class="cstat-no" title="statement not covered" >product?.images[0]?.url || '/placeholder-product?.jpg';</span>
+    const isSelected = <span class="cstat-no" title="statement not covered" >product.id === selectedProductId;</span>
+    const imageUrl = <span class="cstat-no" title="statement not covered" >product.images[0].url || '/placeholder-product.jpg';</span>
 &nbsp;
     return (
       &lt;div
@@ -470,20 +470,20 @@ export default function <span class="cstat-no" title="statement not covered" ><s
           }`}
           onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >o</span>nSelectProduct(product)}</span>
           onKeyDown={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; {
-<span class="cstat-no" title="statement not covered" >            <span class="missing-if-branch" title="if path not taken" >I</span>if (e?.key === 'Enter' || e?.key === ' ') {</span>
-<span class="cstat-no" title="statement not covered" >              e?.preventDefault();</span>
+<span class="cstat-no" title="statement not covered" >            <span class="missing-if-branch" title="if path not taken" >I</span>if (e.key === 'Enter' || e.key === ' ') {</span>
+<span class="cstat-no" title="statement not covered" >              e.preventDefault();</span>
 <span class="cstat-no" title="statement not covered" >              onSelectProduct(product);</span>
             }
           }}
           tabIndex={0}
           role="button"
-          aria-label={`Select ${product?.name}`}
+          aria-label={`Select ${product.name}`}
           aria-selected={isSelected}
         &gt;
           &lt;div className="relative aspect-square"&gt;
             &lt;Image
               src={imageUrl}
-              alt={product?.name}
+              alt={product.name}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
               className="object-cover"
@@ -491,27 +491,27 @@ export default function <span class="cstat-no" title="statement not covered" ><s
               placeholder="blur"
               blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFdwI2F3h7xgAAAABJRU5ErkJggg=="
             /&gt;
-            {<span class="branch-0 cbranch-no" title="branch not covered" >product?.isNew &amp;&amp; (</span>
+            {<span class="branch-0 cbranch-no" title="branch not covered" >product.isNew </span>&amp;&amp; (
               &lt;div className="absolute right-2 top-2 rounded-full bg-pink-500 px-2 py-1 text-xs text-white"&gt;
                 New
               &lt;/div&gt;
             )}
-            {<span class="branch-0 cbranch-no" title="branch not covered" >product?.isBestSeller &amp;&amp; (</span>
+            {<span class="branch-0 cbranch-no" title="branch not covered" >product.isBestSeller </span>&amp;&amp; (
               &lt;div className="absolute left-2 top-2 rounded-full bg-yellow-500 px-2 py-1 text-xs text-white"&gt;
                 Best Seller
               &lt;/div&gt;
             )}
           &lt;/div&gt;
           &lt;div className="p-3"&gt;
-            &lt;h3 className="line-clamp-1 text-sm font-medium"&gt;{product?.name}&lt;/h3&gt;
-            &lt;p className="line-clamp-1 text-xs text-gray-500"&gt;{product?.brand}&lt;/p&gt;
+            &lt;h3 className="line-clamp-1 text-sm font-medium"&gt;{product.name}&lt;/h3&gt;
+            &lt;p className="line-clamp-1 text-xs text-gray-500"&gt;{product.brand}&lt;/p&gt;
             &lt;div className="mt-2 flex items-center justify-between"&gt;
               &lt;span className="text-sm font-medium"&gt;
-                ${typeof product?.price === 'number' ? product?.price.toFixed(2) : product?.price}
+                ${typeof product.price === 'number' ? product.price.toFixed(2) : product.price}
               &lt;/span&gt;
               &lt;div className="flex items-center"&gt;
                 &lt;span className="mr-1 text-xs text-yellow-500"&gt;★&lt;/span&gt;
-                &lt;span className="text-xs text-gray-500"&gt;{product?.ratingAverage}&lt;/span&gt;
+                &lt;span className="text-xs text-gray-500"&gt;{product.ratingAverage}&lt;/span&gt;
               &lt;/div&gt;
             &lt;/div&gt;
           &lt;/div&gt;
@@ -547,7 +547,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

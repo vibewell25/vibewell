@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import state-manager-compat from '../state-manager-compat.ts';
+
+describe('state-manager-compat', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<state-manager-compat />);
+    expect(container).toBeInTheDocument();
+  });
+});

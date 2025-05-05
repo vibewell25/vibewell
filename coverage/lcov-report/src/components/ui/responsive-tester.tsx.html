@@ -510,7 +510,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (onlyInDevelopment) {</span>
       // Only show in development, not in production
-      const isDevelopment = <span class="cstat-no" title="statement not covered" >process?.env.NODE_ENV === 'development';</span>
+      const isDevelopment = <span class="cstat-no" title="statement not covered" >process.env.NODE_ENV === 'development';</span>
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!isDevelopment) {</span>
 <span class="cstat-no" title="statement not covered" >        return;</span>
       }
@@ -537,33 +537,33 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!showTouchInfo || !isVisible) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
     const handleTouchEvent = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>: TouchEvent) =&gt; {</span>
-      const newEvent = <span class="cstat-no" title="statement not covered" >`${e?.type}: ${e?.touches.length} touch(es)`;</span>
+      const newEvent = <span class="cstat-no" title="statement not covered" >`${e.type}: ${e.touches.length} touch(es)`;</span>
 <span class="cstat-no" title="statement not covered" >      setTouchEvents(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; {</span>
         const updated = <span class="cstat-no" title="statement not covered" >[newEvent, ...prev];</span>
         // Keep only the last 5 events
-<span class="cstat-no" title="statement not covered" >        return updated?.slice(0, 5);</span>
+<span class="cstat-no" title="statement not covered" >        return updated.slice(0, 5);</span>
       });
     };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    document?.addEventListener('touchstart', handleTouchEvent);</span>
-<span class="cstat-no" title="statement not covered" >    document?.addEventListener('touchmove', handleTouchEvent);</span>
-<span class="cstat-no" title="statement not covered" >    document?.addEventListener('touchend', handleTouchEvent);</span>
+<span class="cstat-no" title="statement not covered" >    document.addEventListener('touchstart', handleTouchEvent);</span>
+<span class="cstat-no" title="statement not covered" >    document.addEventListener('touchmove', handleTouchEvent);</span>
+<span class="cstat-no" title="statement not covered" >    document.addEventListener('touchend', handleTouchEvent);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >      document?.removeEventListener('touchstart', handleTouchEvent);</span>
-<span class="cstat-no" title="statement not covered" >      document?.removeEventListener('touchmove', handleTouchEvent);</span>
-<span class="cstat-no" title="statement not covered" >      document?.removeEventListener('touchend', handleTouchEvent);</span>
+<span class="cstat-no" title="statement not covered" >      document.removeEventListener('touchstart', handleTouchEvent);</span>
+<span class="cstat-no" title="statement not covered" >      document.removeEventListener('touchmove', handleTouchEvent);</span>
+<span class="cstat-no" title="statement not covered" >      document.removeEventListener('touchend', handleTouchEvent);</span>
     };
   }, [showTouchInfo, isVisible]);
 &nbsp;
   // Find active breakpoint
   const getActiveBreakpoint = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-    const width = <span class="cstat-no" title="statement not covered" >dimensions?.width;</span>
+    const width = <span class="cstat-no" title="statement not covered" >dimensions.width;</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (width &gt;= breakpoints['2xl']) <span class="cstat-no" title="statement not covered" >return '2xl';</span></span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (width &gt;= breakpoints?.xl) <span class="cstat-no" title="statement not covered" >return 'xl';</span></span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (width &gt;= breakpoints?.lg) <span class="cstat-no" title="statement not covered" >return 'lg';</span></span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (width &gt;= breakpoints?.md) <span class="cstat-no" title="statement not covered" >return 'md';</span></span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (width &gt;= breakpoints?.sm) <span class="cstat-no" title="statement not covered" >return 'sm';</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (width &gt;= breakpoints.xl) <span class="cstat-no" title="statement not covered" >return 'xl';</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (width &gt;= breakpoints.lg) <span class="cstat-no" title="statement not covered" >return 'lg';</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (width &gt;= breakpoints.md) <span class="cstat-no" title="statement not covered" >return 'md';</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (width &gt;= breakpoints.sm) <span class="cstat-no" title="statement not covered" >return 'sm';</span></span>
 <span class="cstat-no" title="statement not covered" >    return 'xs';</span>
   };
 &nbsp;
@@ -611,8 +611,8 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         {<span class="branch-0 cbranch-no" title="branch not covered" >showDimensions &amp;&amp; (</span>
           &lt;div className="space-y-1"&gt;
             &lt;div className="border-b border-gray-700 pb-1 font-bold"&gt;Dimensions&lt;/div&gt;
-            &lt;div&gt;Width: {dimensions?.width}px&lt;/div&gt;
-            &lt;div&gt;Height: {dimensions?.height}px&lt;/div&gt;
+            &lt;div&gt;Width: {dimensions.width}px&lt;/div&gt;
+            &lt;div&gt;Height: {dimensions.height}px&lt;/div&gt;
           &lt;/div&gt;
         )}
 &nbsp;
@@ -633,7 +633,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
           &lt;div className="space-y-1"&gt;
             &lt;div className="border-b border-gray-700 pb-1 font-bold"&gt;Breakpoints&lt;/div&gt;
             &lt;div className="grid grid-cols-6 gap-1"&gt;
-              {Object?.entries(breakpoints).map(<span class="fstat-no" title="function not covered" >([</span>key, value]) =&gt; (
+              {Object.entries(breakpoints).map(<span class="fstat-no" title="function not covered" >([</span>key, value]) =&gt; (
 <span class="cstat-no" title="statement not covered" >                &lt;div</span>
                   key={key}
                   className={cn(
@@ -652,9 +652,9 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         {showTouchInfo &amp;&amp; isTouch &amp;&amp; (
           &lt;div className="space-y-1"&gt;
             &lt;div className="border-b border-gray-700 pb-1 font-bold"&gt;Touch Events&lt;/div&gt;
-            {touchEvents?.length &gt; 0 ? (
+            {touchEvents.length &gt; 0 ? (
 <span class="branch-0 cbranch-no" title="branch not covered" >              &lt;div className="space-y-1"&gt;</span>
-                {touchEvents?.map(<span class="fstat-no" title="function not covered" >(e</span>vent, index) =&gt; (
+                {touchEvents.map(<span class="fstat-no" title="function not covered" >(e</span>vent, index) =&gt; (
 <span class="cstat-no" title="statement not covered" >                  &lt;div key={index} c</span>lassName="text-xs"&gt;
                     {event}
                   &lt;/div&gt;
@@ -676,7 +676,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

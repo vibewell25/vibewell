@@ -12,20 +12,14 @@ interface ResourceStats {
   totalMemory: number;
   textureMemory: number;
   geometryMemory: number;
-}
-
 interface CacheConfig {
   maxGeometries?: number;
   maxTextures?: number;
   maxTotalMemoryMB?: number;
   textureDisposalStrategy?: 'lru' | 'size';
   enableCompression?: boolean;
-}
-
 interface DisposableResource {
   dispose: () => void;
-}
-
 /**
  * Hook for managing AR resources and memory
  */
@@ -36,7 +30,7 @@ export function useARResourceManager(config: CacheConfig = {}) {
     maxTotalMemoryMB = 512,
     textureDisposalStrategy = 'lru',
     enableCompression = true
-  } = config;
+= config;
 
   const { gl } = useThree();
   const renderer = gl as WebGLRenderer;
@@ -53,18 +47,9 @@ export function useARResourceManager(config: CacheConfig = {}) {
       compressionWorker.current.onmessage = (e) => {
         const { textureId, compressedData } = e.data;
         updateTexture(textureId, compressedData);
-      };
-
-      return () => {
+return () => {
         compressionWorker.current.terminate();
-      };
-    }
-
-    // Safe array access
-    if (enableCompression < 0 || enableCompression >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  }, [enableCompression]);
+[enableCompression]);
 
   // Monitor and manage resources
   useEffect(() => {
@@ -76,11 +61,10 @@ export function useARResourceManager(config: CacheConfig = {}) {
           stats.geometryCount > maxGeometries ||
           stats.textureCount > maxTextures) {
         freeResources();
-      }
-    }, 5000);
+5000);
 
     return () => clearInterval(interval);
-  }, [maxGeometries, maxTextures, maxTotalMemoryMB]);
+[maxGeometries, maxTextures, maxTotalMemoryMB]);
 
   // Get current resource statistics
   const getResourceStats = (): ResourceStats => {
@@ -96,17 +80,12 @@ export function useARResourceManager(config: CacheConfig = {}) {
       totalMemory: geometryMemory + textureMemory,
       textureMemory,
       geometryMemory
-    };
-  };
-
-  // Add resource to cache
+// Add resource to cache
   const cacheResource = (id: string, resource: Object3D | Texture | Material) => {
     if (resourceCache.current.has(id)) {
       console.warn(`Resource ${id} already exists in cache`);
       return;
-    }
-
-    resourceCache.current.set(id, resource);
+resourceCache.current.set(id, resource);
     lastAccessTime.current.set(id, Date.now());
 
     // Compress textures if enabled
@@ -114,20 +93,13 @@ export function useARResourceManager(config: CacheConfig = {}) {
       compressionWorker.current.postMessage({
         textureId: id,
         imageData: (resource.image as HTMLImageElement).src
-      });
-    }
-  };
-
-  // Get resource from cache
+// Get resource from cache
   const getResource = (id: string) => {
     const resource = resourceCache.current.get(id);
     if (resource) {
       lastAccessTime.current.set(id, Date.now());
-    }
-    return resource;
-  };
-
-  // Update compressed texture
+return resource;
+// Update compressed texture
   const updateTexture = (id: string, compressedData: ArrayBuffer) => {
     const texture = resourceCache.current.get(id);
     if (texture instanceof THREE.Texture) {
@@ -143,12 +115,8 @@ export function useARResourceManager(config: CacheConfig = {}) {
       // Replace texture
       if ('dispose' in texture) {
         (texture as unknown as DisposableResource).dispose();
-      }
-      resourceCache.current.set(id, compressedTexture);
-    }
-  };
-
-  // Free resources based on strategy
+resourceCache.current.set(id, compressedTexture);
+// Free resources based on strategy
   const freeResources = () => {
     const stats = getResourceStats();
     const entriesToRemove: string[] = [];
@@ -161,26 +129,18 @@ export function useARResourceManager(config: CacheConfig = {}) {
 
       // Remove oldest entries until under limits
 
-    // Safe array access
-    if (id < 0 || id >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      for (const [id] of sorted) {
+    for (const [id] of sorted) {
         if (stats.totalMemory <= maxTotalMemoryMB &&
             stats.textureCount <= maxTextures &&
             stats.geometryCount <= maxGeometries) {
           break;
-        }
-
-        entriesToRemove.push(id);
+entriesToRemove.push(id);
         const resource = resourceCache.current.get(id);
         if (resource && 'dispose' in resource) {
           (resource as unknown as DisposableResource).dispose();
           resourceCache.current.delete(id);
           lastAccessTime.current.delete(id);
-        }
-      }
-    } else {
+else {
       // Sort by texture size
       const textureEntries = Array.from(resourceCache.current.entries())
         .filter(([, resource]) => resource instanceof THREE.Texture)
@@ -189,31 +149,19 @@ export function useARResourceManager(config: CacheConfig = {}) {
           const sizeB = (textureB as THREE.Texture).image.width * (textureB as THREE.Texture).image.height || 0;
 
           return sizeB - sizeA;
-        });
+// Remove largest textures first
 
-      // Remove largest textures first
-
-    // Safe array access
-    if (id < 0 || id >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      for (const [id] of textureEntries) {
+    for (const [id] of textureEntries) {
         if (stats.totalMemory <= maxTotalMemoryMB &&
             stats.textureCount <= maxTextures) {
           break;
-        }
-
-        entriesToRemove.push(id);
+entriesToRemove.push(id);
         const texture = resourceCache.current.get(id);
         if (texture && texture instanceof THREE.Texture && 'dispose' in texture) {
           (texture as unknown as DisposableResource).dispose();
           resourceCache.current.delete(id);
           lastAccessTime.current.delete(id);
-        }
-      }
-    }
-
-    // Add to disposal queue for garbage collection
+// Add to disposal queue for garbage collection
     disposalQueue.current.push(...entriesToRemove);
     
     // Trigger garbage collection hint
@@ -221,26 +169,16 @@ export function useARResourceManager(config: CacheConfig = {}) {
       disposalQueue.current = [];
       if (typeof window.gc === 'function') {
         window.gc();
-      }
-    }
-  };
-
-  // Dispose all resources
+// Dispose all resources
   const disposeAll = () => {
     resourceCache.current.forEach((resource) => {
       if ('dispose' in resource) {
         (resource as unknown as DisposableResource).dispose();
-      }
-    });
-    resourceCache.current.clear();
+resourceCache.current.clear();
     lastAccessTime.current.clear();
     disposalQueue.current = [];
-  };
-
-  return {
+return {
     cacheResource,
     getResource,
     getResourceStats,
     disposeAll
-  };
-} 

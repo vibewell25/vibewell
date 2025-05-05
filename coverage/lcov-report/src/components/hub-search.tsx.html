@@ -692,20 +692,20 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof window !== 'undefined') {</span>
 <span class="cstat-no" title="statement not covered" >      try {</span>
-        const storedSearches = <span class="cstat-no" title="statement not covered" >localStorage?.getItem('vibewell_recent_searches');</span>
+        const storedSearches = <span class="cstat-no" title="statement not covered" >localStorage.getItem('vibewell_recent_searches');</span>
 <span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (storedSearches) {</span>
-<span class="cstat-no" title="statement not covered" >          setRecentSearches(JSON?.parse(storedSearches));</span>
+<span class="cstat-no" title="statement not covered" >          setRecentSearches(JSON.parse(storedSearches));</span>
         }
       } catch (error) {
-<span class="cstat-no" title="statement not covered" >        console?.error('Error loading recent searches:', error);</span>
+<span class="cstat-no" title="statement not covered" >        console.error('Error loading recent searches:', error);</span>
       }
     }
   }, []);
   // Focus input on mount if autoFocus is true
 <span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (autoFocus &amp;&amp; inputRef?.current) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (autoFocus &amp;&amp; inputRef.current) {</span>
 <span class="cstat-no" title="statement not covered" >      setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >        inputRef?.current?.focus();</span>
+<span class="cstat-no" title="statement not covered" >        inputRef.current.focus();</span>
       }, 100);
     }
   }, [autoFocus]);
@@ -713,22 +713,22 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
     const handleKeyDown = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>: KeyboardEvent) =&gt; {</span>
       // "/" shortcut to focus search
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (e?.key === '/' &amp;&amp; document?.activeElement !== inputRef?.current) {</span>
-<span class="cstat-no" title="statement not covered" >        e?.preventDefault();</span>
-<span class="cstat-no" title="statement not covered" >        inputRef?.current?.focus();</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (e.key === '/' &amp;&amp; document.activeElement !== inputRef.current) {</span>
+<span class="cstat-no" title="statement not covered" >        e.preventDefault();</span>
+<span class="cstat-no" title="statement not covered" >        inputRef.current.focus();</span>
       }
       // Escape to blur search
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (e?.key === 'Escape' &amp;&amp; document?.activeElement === inputRef?.current) {</span>
-<span class="cstat-no" title="statement not covered" >        inputRef?.current?.blur();</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (e.key === 'Escape' &amp;&amp; document.activeElement === inputRef.current) {</span>
+<span class="cstat-no" title="statement not covered" >        inputRef.current.blur();</span>
 <span class="cstat-no" title="statement not covered" >        setShowSuggestions(false);</span>
       }
     };
-<span class="cstat-no" title="statement not covered" >    window?.addEventListener('keydown', handleKeyDown);</span>
-<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >w</span>indow?.removeEventListener('keydown', handleKeyDown);</span></span>
+<span class="cstat-no" title="statement not covered" >    window.addEventListener('keydown', handleKeyDown);</span>
+<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >w</span>indow.removeEventListener('keydown', handleKeyDown);</span></span>
   }, []);
   // Update suggestions when query changes
 <span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!debouncedQuery || debouncedQuery?.length &lt; 2) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!debouncedQuery || debouncedQuery.length &lt; 2) {</span>
 <span class="cstat-no" title="statement not covered" >      setSuggestions([]);</span>
 <span class="cstat-no" title="statement not covered" >      setShowSuggestions(false);</span>
 <span class="cstat-no" title="statement not covered" >      return;</span>
@@ -771,13 +771,13 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   const handleSearch = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!query &amp;&amp; !allowEmptySearch) <span class="cstat-no" title="statement not covered" >return;</span></span>
     // Add to recent searches
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (query?.trim() !== '') {</span>
-      const updatedSearches = <span class="cstat-no" title="statement not covered" >[query, ...recentSearches?.filter(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; <span class="cstat-no" title="statement not covered" >s !== query)].</span>slice(0, 5);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (query.trim() !== '') {</span>
+      const updatedSearches = <span class="cstat-no" title="statement not covered" >[query, ...recentSearches.filter(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; <span class="cstat-no" title="statement not covered" >s !== query)].</span>slice(0, 5);</span>
 <span class="cstat-no" title="statement not covered" >      setRecentSearches(updatedSearches);</span>
 <span class="cstat-no" title="statement not covered" >      try {</span>
-<span class="cstat-no" title="statement not covered" >        localStorage?.setItem('vibewell_recent_searches', JSON?.stringify(updatedSearches));</span>
+<span class="cstat-no" title="statement not covered" >        localStorage.setItem('vibewell_recent_searches', JSON.stringify(updatedSearches));</span>
       } catch (error) {
-<span class="cstat-no" title="statement not covered" >        console?.error('Error saving recent searches:', error);</span>
+<span class="cstat-no" title="statement not covered" >        console.error('Error saving recent searches:', error);</span>
       }
     }
     // Call the onSearch callback if provided
@@ -785,7 +785,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="cstat-no" title="statement not covered" >      onSearch(query, category);</span>
     } else {
       // Otherwise redirect to search page
-<span class="cstat-no" title="statement not covered" >      router?.push(`/business-hub/search?q=${encodeURIComponent(query)}&amp;category=${category}`);</span>
+<span class="cstat-no" title="statement not covered" >      router.push(`/business-hub/search?q=${encodeURIComponent(query)}&amp;category=${category}`);</span>
     }
     // Hide suggestions
 <span class="cstat-no" title="statement not covered" >    setShowSuggestions(false);</span>
@@ -793,25 +793,25 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   // Handle clearing the search
   const handleClearSearch = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >    setQuery('');</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (inputRef?.current) {</span>
-<span class="cstat-no" title="statement not covered" >      inputRef?.current.focus();</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (inputRef.current) {</span>
+<span class="cstat-no" title="statement not covered" >      inputRef.current.focus();</span>
     }
   };
   // Handle suggestion click
   const handleSuggestionClick = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>uggestion: SuggestedSearch) =&gt; {</span>
     // Add to recent searches
     const updatedSearches = <span class="cstat-no" title="statement not covered" >[</span>
-      suggestion?.title.split(': ')[1] || suggestion?.title,
-      ...recentSearches?.filter(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; <span class="cstat-no" title="statement not covered" >s !== suggestion?.title),</span>
+      suggestion.title.split(': ')[1] || suggestion.title,
+      ...recentSearches.filter(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; <span class="cstat-no" title="statement not covered" >s !== suggestion.title)</span>,
     ].slice(0, 5);
 <span class="cstat-no" title="statement not covered" >    setRecentSearches(updatedSearches);</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      localStorage?.setItem('vibewell_recent_searches', JSON?.stringify(updatedSearches));</span>
+<span class="cstat-no" title="statement not covered" >      localStorage.setItem('vibewell_recent_searches', JSON.stringify(updatedSearches));</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Error saving recent searches:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Error saving recent searches:', error);</span>
     }
     // Navigate to suggestion URL
-<span class="cstat-no" title="statement not covered" >    router?.push(suggestion?.url);</span>
+<span class="cstat-no" title="statement not covered" >    router.push(suggestion.url);</span>
     // Hide suggestions
 <span class="cstat-no" title="statement not covered" >    setShowSuggestions(false);</span>
   };
@@ -823,17 +823,17 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
           ref={inputRef}
           type="text"
           value={query}
-          onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setQuery(e?.target.value)}</span>
+          onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setQuery(e.target.value)}</span>
           placeholder={placeholder}
           className="pl-10 pr-10"
-          onFocus={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etShowSuggestions(query?.length &gt;= 2)}</span>
+          onFocus={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etShowSuggestions(query.length &gt;= 2)}</span>
           onBlur={<span class="fstat-no" title="function not covered" >() =&gt; {</span>
             // Delay hiding suggestions to allow for clicks
 <span class="cstat-no" title="statement not covered" >            setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etShowSuggestions(false), 2</span>00);</span>
           }}
           onKeyDown={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; {
-<span class="cstat-no" title="statement not covered" >            <span class="missing-if-branch" title="if path not taken" >I</span>if (e?.key === 'Enter') {</span>
-<span class="cstat-no" title="statement not covered" >              e?.preventDefault();</span>
+<span class="cstat-no" title="statement not covered" >            <span class="missing-if-branch" title="if path not taken" >I</span>if (e.key === 'Enter') {</span>
+<span class="cstat-no" title="statement not covered" >              e.preventDefault();</span>
 <span class="cstat-no" title="statement not covered" >              handleSearch();</span>
             }
           }}
@@ -864,7 +864,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
               }`}
               onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etCategory(cat)}</span>
             &gt;
-              {cat?.charAt(0).toUpperCase() + cat?.slice(1)}
+              {cat.charAt(0).toUpperCase() + cat.slice(1)}
             &lt;/button&gt;
           ),
         )}
@@ -874,17 +874,17 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         &lt;div className="absolute z-10 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg"&gt;
           {isLoading ? (
             &lt;div className="p-4 text-center text-sm text-gray-500"&gt;Loading suggestions...&lt;/div&gt;
-          ) : suggestions?.length &gt; 0 ? (
+          ) : suggestions.length &gt; 0 ? (
             &lt;ul&gt;
-              {suggestions?.map(<span class="fstat-no" title="function not covered" >(s</span>uggestion) =&gt; (
-<span class="cstat-no" title="statement not covered" >                &lt;li key={suggestion?.id}&gt;</span>
+              {suggestions.map(<span class="fstat-no" title="function not covered" >(s</span>uggestion) =&gt; (
+<span class="cstat-no" title="statement not covered" >                &lt;li key={suggestion.id}&gt;</span>
                   &lt;button
                     type="button"
                     className="w-full px-4 py-2 text-left transition-colors hover:bg-gray-100"
                     onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleSuggestionClick(suggestion)}</span>
                   &gt;
-                    &lt;div className="font-medium"&gt;{suggestion?.title}&lt;/div&gt;
-                    &lt;div className="text-sm text-gray-500"&gt;{suggestion?.description}&lt;/div&gt;
+                    &lt;div className="font-medium"&gt;{suggestion.title}&lt;/div&gt;
+                    &lt;div className="text-sm text-gray-500"&gt;{suggestion.description}&lt;/div&gt;
                   &lt;/button&gt;
                 &lt;/li&gt;
               ))}
@@ -901,17 +901,17 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                 &lt;/button&gt;
               &lt;/li&gt;
             &lt;/ul&gt;
-          ) : query?.length &gt;= 2 ? (
+          ) : query.length &gt;= 2 ? (
             &lt;div className="p-4 text-center text-sm text-gray-500"&gt;
               No suggestions found for "{query}"
             &lt;/div&gt;
-          ) : recentSearches?.length &gt; 0 ? (
+          ) : recentSearches.length &gt; 0 ? (
             &lt;div&gt;
               &lt;div className="border-b border-gray-100 px-4 py-2 text-xs font-medium text-gray-500"&gt;
                 Recent Searches
               &lt;/div&gt;
               &lt;ul&gt;
-                {recentSearches?.map(<span class="fstat-no" title="function not covered" >(s</span>earch, index) =&gt; (
+                {recentSearches.map(<span class="fstat-no" title="function not covered" >(s</span>earch, index) =&gt; (
 <span class="cstat-no" title="statement not covered" >                  &lt;li key={index}&gt;</span>
                     &lt;button
                       type="button"
@@ -943,7 +943,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

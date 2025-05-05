@@ -4,8 +4,6 @@ import { NextResponse } from 'next/server';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2023-10-16',
-});
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); GET() {
@@ -20,9 +18,7 @@ export async function {
         id: account.id,
         charges_enabled: account.charges_enabled,
         payouts_enabled: account.payouts_enabled,
-      },
-    });
-  } catch (error: any) {
+catch (error: any) {
     console.error('Stripe connection error:', error);
 
     // Return detailed error information
@@ -34,15 +30,9 @@ export async function {
           type: error.type,
           message: error.message,
           code: error.statusCode,
-        },
-        config: {
+config: {
           hasSecretKey: !!process.env.STRIPE_SECRET_KEY,
           hasPublishableKey: !!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
           hasWebhookSecret: !!process.env.STRIPE_WEBHOOK_SECRET,
           appUrl: process.env.NEXT_PUBLIC_APP_URL,
-        },
-      },
-      { status: 500 },
-    );
-  }
-}
+{ status: 500 },

@@ -23,15 +23,13 @@ export default {
       serverError: '服务器错误。请稍后再试。',
       noData: '无可用数据',
       unauthorized: '未授权。请重新登录。',
-    },
-    search: '搜索...',
+search: '搜索...',
     seeAll: '查看全部',
     noResults: '未找到结果',
     errorOccurred: '发生错误',
     tryAgain: '请重试',
     comingSoon: '即将推出',
-  },
-  auth: {
+auth: {
     login: '登录',
     signup: '注册',
     email: '电子邮箱',
@@ -50,8 +48,7 @@ export default {
       passwordRequired: '密码为必填项',
       passwordTooShort: '密码必须至少8个字符',
       passwordsDontMatch: '密码不匹配',
-    },
-    signIn: '登录',
+signIn: '登录',
     signUp: '注册',
     emailAddress: '电子邮箱地址',
     signInWithGoogle: '使用Google登录',
@@ -68,8 +65,7 @@ export default {
     verifyEmailSent: '我们已向您的电子邮箱发送了验证链接。',
     resetPasswordSuccess: '密码重置成功',
     resetPasswordEmail: '密码重置邮件已发送',
-  },
-  profile: {
+profile: {
     title: '我的个人资料',
     personalInfo: '个人信息',
     firstName: '名字',
@@ -100,8 +96,7 @@ export default {
     takePhoto: '拍照',
     chooseFromLibrary: '从图库中选择',
     removePhoto: '删除照片',
-  },
-  booking: {
+booking: {
     title: '预约',
     myBookings: '我的预约',
     upcoming: '即将到来',
@@ -140,8 +135,7 @@ export default {
     confirmationSent: '确认详情已发送至您的电子邮箱',
     noAvailability: '所选日期无可用时间',
     tryAnotherDate: '尝试另一个日期',
-  },
-  dashboard: {
+dashboard: {
     title: '仪表板',
     welcome: '欢迎回来',
     todayAppointments: '今日预约',
@@ -161,8 +155,7 @@ export default {
     noRecentServices: '没有最近的服务',
     viewAll: '查看全部',
     seeMore: '查看更多',
-  },
-  services: {
+services: {
     title: '服务',
     categories: '类别',
     featured: '精选',
@@ -186,8 +179,7 @@ export default {
     sortByPrice: '按价格排序',
     sortByPopularity: '按人气排序',
     sortByRating: '按评分排序',
-  },
-  practitioners: {
+practitioners: {
     title: '专业人员',
     specialties: '专业领域',
     about: '关于',
@@ -204,8 +196,7 @@ export default {
     clientsSatisfied: '满意客户',
     servicesOffered: '提供的服务',
     contactPractitioner: '联系专业人员',
-  },
-  payments: {
+payments: {
     title: '支付',
     history: '支付历史',
     methods: '支付方式',
@@ -236,8 +227,7 @@ export default {
     paymentFailed: '支付失败',
     transactionHistory: '交易历史',
     downloadReceipt: '下载收据',
-  },
-  settings: {
+settings: {
     title: '设置',
     account: '账户',
     notifications: '通知',
@@ -260,8 +250,7 @@ export default {
       ja: '日语',
       zh: '中文（简体）',
       ar: '阿拉伯语'
-    },
-    selectLanguage: '选择语言',
+selectLanguage: '选择语言',
     darkMode: '黑暗模式',
     soundEffects: '音效',
     hapticFeedback: '触觉反馈',
@@ -272,8 +261,7 @@ export default {
     faq: '常见问题',
     termsOfService: '服务条款',
     deleteAccount: '删除账户',
-  },
-  offline: {
+offline: {
     offlineMode: '离线模式',
     limitedFunctionality: '离线模式下功能有限',
     syncRequired: '需要同步',
@@ -283,8 +271,7 @@ export default {
     offlineData: '离线数据',
     dataWillSync: '恢复在线状态后，您的数据将同步',
     manageOfflineData: '管理离线数据',
-  },
-  errors: {
+errors: {
     networkError: '网络错误',
     serverError: '服务器错误',
     unknownError: '未知错误',
@@ -294,5 +281,3 @@ export default {
     dataNotFound: '未找到数据',
     pleaseCheckConnection: '请检查您的互联网连接',
     tryAgainLater: '请稍后再试'
-  }
-}; 

@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
@@ -42,28 +40,21 @@ export default function ProductDetailPage() {
         if (!fetchedProduct) {
           setError('Product not found');
           return;
-        }
-
-        setProduct(fetchedProduct);
+setProduct(fetchedProduct);
 
         // Track product view for logged in users
         if (user.id) {
           try {
             await recommendationService.trackProductView(user.id, fetchedProduct.id);
-          } catch (err) {
+catch (err) {
             console.error('Failed to track product view:', err);
-          }
-        }
-      } catch (err) {
+catch (err) {
         console.error('Error fetching product:', err);
         setError('Failed to load product details');
-      } finally {
+finally {
         setLoading(false);
-      }
-    };
-
-    fetchProduct();
-  }, [productId, user.id]);
+fetchProduct();
+[productId, user.id]);
 
   // Add to cart handler
   const handleAddToCart = async ( {
@@ -77,12 +68,9 @@ export default function ProductDetailPage() {
       setInCart(true);
 
       // Show a toast notification or feedback
-    } catch (err) {
+catch (err) {
       console.error('Error adding to cart:', err);
-    }
-  };
-
-  // Toggle wishlist handler
+// Toggle wishlist handler
   const handleToggleWishlist = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');) => {
@@ -94,12 +82,9 @@ export default function ProductDetailPage() {
       setWishlisted(!wishlisted);
 
       // Show a toast notification or feedback
-    } catch (err) {
+catch (err) {
       console.error('Error updating wishlist:', err);
-    }
-  };
-
-  // Share product handler
+// Share product handler
   const handleShare = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');) => {
@@ -111,26 +96,19 @@ export default function ProductDetailPage() {
           title: product.name,
           text: `Check out ${product.name} on VibeWell`,
           url: window.location.href,
-        });
-      } else {
+else {
         // Fallback - copy to clipboard
         await navigator.clipboard.writeText(window.location.href);
         // Show a toast notification
-      }
-    } catch (err) {
+catch (err) {
       console.error('Error sharing product:', err);
-    }
-  };
-
-  // Format price with currency symbol
+// Format price with currency symbol
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
-    }).format(price);
-  };
-
-  // Loading state
+).format(price);
+// Loading state
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -151,10 +129,7 @@ export default function ProductDetailPage() {
           </div>
         </div>
       </div>
-    );
-  }
-
-  // Error state
+// Error state
   if (error || !product) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -171,10 +146,7 @@ export default function ProductDetailPage() {
           </Link>
         </div>
       </div>
-    );
-  }
-
-  return (
+return (
     <div className="container mx-auto px-4 py-8">
       {/* Back button */}
       <div className="mb-6">
@@ -242,7 +214,7 @@ export default function ProductDetailPage() {
                     i < Math.floor(product.rating)
                       ? 'fill-yellow-500 text-yellow-500'
                       : 'text-gray-300'
-                  }`}
+`}
                 />
               ))}
               <span className="ml-2 text-sm text-muted-foreground">
@@ -477,5 +449,3 @@ export default function ProductDetailPage() {
         />
       </div>
     </div>
-  );
-}

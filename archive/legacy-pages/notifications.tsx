@@ -7,8 +7,6 @@ type NotificationItem = {
   read: boolean;
   createdAt: string;
   [key: string]: any;
-};
-
 const Notifications: NextPage = () => {
   const [items, setItems] = useState<NotificationItem[]>([]);
 
@@ -17,17 +15,13 @@ const Notifications: NextPage = () => {
       const res = await fetchWithTimeout('/api/notifications');
       const data = await res.json();
       setItems(data.notifications || []);
-    };
-    
-    fetchNotifications();
-  }, []);
+fetchNotifications();
+[]);
 
   const markRead = async (id: string) => {
     await fetchWithTimeout(`/api/notifications/read/${id}`, { method: 'POST' });
     setItems(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
-  };
-
-  return (
+return (
     <div>
       <h1>Notifications</h1>
       <ul>
@@ -38,8 +32,7 @@ const Notifications: NextPage = () => {
               marginBottom: '1rem',
               padding: '0.5rem',
               backgroundColor: n.read ? '#e0e0e0' : '#fff'
-            }}
-          >
+>
             <p>
               <strong>{new Date(n.createdAt).toLocaleString()}</strong> - {n.read ? 'Read' : 'Unread'}
             </p>
@@ -49,7 +42,4 @@ const Notifications: NextPage = () => {
         ))}
       </ul>
     </div>
-  );
-};
-
 export default Notifications;

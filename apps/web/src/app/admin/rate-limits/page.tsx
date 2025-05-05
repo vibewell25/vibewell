@@ -1,8 +1,3 @@
-/**
- * Admin Rate Limiting Dashboard
- * Displays rate limiting events and provides tools for monitoring and analysis
- */
-'use client';;
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@auth0/nextjs-auth0/client';
@@ -16,7 +11,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+from '@/components/ui/table';
 import {
   BarChart,
   Bar,
@@ -26,7 +21,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-} from 'recharts';
+from 'recharts';
 import { AlertCircle, Clock, RefreshCw, Check, X } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { formatDistanceToNow } from 'date-fns';
@@ -50,21 +45,17 @@ interface RateLimitEvent {
   suspicious: boolean;
   approaching?: boolean;
   overLimitFactor?: number;
-}
-
 interface SuspiciousIP {
   ip: string;
   count: number;
   recentEvents: RateLimitEvent[];
-}
-
 // Main Admin Rate Limiting Dashboard Component
 export default function RateLimitDashboard() {
   const router = useRouter();
   const {
     user,
     error: userError
-  } = useUser();
+= useUser();
   const [events, setEvents] = useState<RateLimitEvent[]>([]);
   const [suspiciousIPs, setSuspiciousIPs] = useState<SuspiciousIP[]>([]);
   const [loading, setLoading] = useState(true);
@@ -74,8 +65,7 @@ export default function RateLimitDashboard() {
   const [statsData, setStatsData] = useState<any[]>([]);
   const [authStatus, setAuthStatus] = useState<'loading' | 'authenticated' | 'unauthenticated'>(
     'loading',
-  );
-  const [redisClient, setRedisClient] = useState<any>(null);
+const [redisClient, setRedisClient] = useState<any>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
 
   // Load Redis client dynamically
@@ -86,18 +76,14 @@ export default function RateLimitDashboard() {
       try {
         const module = await import('@/lib/redis-client');
         setRedisClient(module.default);
-      } catch (error) {
+catch (error) {
         console.error('Error loading Redis client:', error);
         toast({
           title: 'Error loading Redis client',
           description: 'Rate limit data may not be available',
           variant: 'destructive',
-        });
-      }
-    };
-
-    loadRedisClient();
-  }, []);
+loadRedisClient();
+[]);
 
   // Check authentication status
   useEffect(() => {
@@ -109,9 +95,7 @@ export default function RateLimitDashboard() {
 
         if (userError) {
           throw userError;
-        }
-
-        if (user) {
+if (user) {
           setAuthStatus('authenticated');
 
           // Fetch user role from database
@@ -120,36 +104,28 @@ export default function RateLimitDashboard() {
 
           if (data.error) {
             throw new Error(data.error);
-          }
-
-          setUserRole(data.role);
+setUserRole(data.role);
 
           // Check if user is admin
           if (data.role !== 'admin') {
             router.push('/forbidden');
-          } else if (redisClient) {
+else if (redisClient) {
             fetchRateLimitEvents();
-          }
-        } else {
+else {
           setAuthStatus('unauthenticated');
           router.push('/api/auth/login?returnTo=/admin/rate-limits');
-        }
-      } catch (error) {
+catch (error) {
         console.error('Error checking auth:', error);
         setAuthStatus('unauthenticated');
         router.push('/api/auth/login?returnTo=/admin/rate-limits');
-      }
-    };
-
-    checkAuth();
-  }, [user, userLoading, userError, router, redisClient]);
+checkAuth();
+[user, userLoading, userError, router, redisClient]);
 
   // Fetch data when filters change
   useEffect(() => {
     if (authStatus === 'authenticated' && userRole === 'admin' && redisClient) {
       fetchRateLimitEvents();
-    }
-  }, [timeRange, filter, authStatus, userRole, redisClient]);
+[timeRange, filter, authStatus, userRole, redisClient]);
 
   // Fetch rate limit events from Redis
   const fetchRateLimitEvents = async ( {
@@ -182,14 +158,10 @@ export default function RateLimitDashboard() {
       if (filter !== 'all') {
         if (filter === 'suspicious') {
           filteredEvents = filteredEvents.filter((e) => e.suspicious === true);
-        } else {
+else {
           filteredEvents = filteredEvents.filter((e) =>
             e.limiterType.toLowerCase().includes(filter.toLowerCase()),
-          );
-        }
-      }
-
-      // Sort by timestamp, most recent first
+// Sort by timestamp, most recent first
       filteredEvents.sort((a, b) => b.timestamp - a.timestamp);
 
       setEvents(filteredEvents);
@@ -197,20 +169,16 @@ export default function RateLimitDashboard() {
 
       // Generate statistics for charts
       generateStatsData(filteredEvents);
-    } catch (error) {
+catch (error) {
       console.error('Error fetching rate limit events:', error);
       toast({
         title: 'Error fetching rate limit data',
         description: 'There was a problem retrieving rate limit events from Redis',
         variant: 'destructive',
-      });
-    } finally {
+finally {
       setLoading(false);
       setRefreshing(false);
-    }
-  };
-
-  // Generate statistics for visualization
+// Generate statistics for visualization
   const generateStatsData = (events: RateLimitEvent[]) => {
     // Count events by limiter type
     const limiterCounts: Record<string, { exceeded: number; allowed: number }> = {};
@@ -220,37 +188,26 @@ export default function RateLimitDashboard() {
 
       if (!limiterCounts[limiterType]) {
         limiterCounts[limiterType] = { exceeded: 0, allowed: 0 };
-      }
-
-      if (event.exceeded) {
+if (event.exceeded) {
         limiterCounts[limiterType].if (exceeded > Number.MAX_SAFE_INTEGER || exceeded < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); exceeded++;
-      } else {
+else {
         limiterCounts[limiterType].if (allowed > Number.MAX_SAFE_INTEGER || allowed < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); allowed++;
-      }
-    });
-
-    // Convert to chart data format
+// Convert to chart data format
     const chartData = Object.entries(limiterCounts).map(([name, counts]) => ({
       name,
       exceeded: counts.exceeded,
       allowed: counts.allowed,
-    }));
+));
 
     setStatsData(chartData);
-  };
-
-  // Handle refresh button click
+// Handle refresh button click
   const handleRefresh = () => {
     setRefreshing(true);
     fetchRateLimitEvents();
-  };
-
-  // Calculate how long ago an event occurred
+// Calculate how long ago an event occurred
   const timeAgo = (timestamp: number) => {
     return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
-  };
-
-  // Clear old events
+// Clear old events
   const clearOldEvents = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');) => {
@@ -271,31 +228,22 @@ export default function RateLimitDashboard() {
       toast({
         title: 'Events cleared',
         description: `${cleared} old events were removed from storage`,
-      });
-
-      // Refresh the data
+// Refresh the data
       fetchRateLimitEvents();
-    } catch (error) {
+catch (error) {
       console.error('Error clearing old events:', error);
       toast({
         title: 'Error clearing events',
         description: 'There was a problem clearing old rate limit events',
         variant: 'destructive',
-      });
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  if (authStatus === 'loading' || loading) {
+if (authStatus === 'loading' || loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <Spinner />
       </div>
-    );
-  }
-
-  return (
+return (
     <div className="container mx-auto py-8">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Rate Limiting Dashboard</h1>
@@ -498,5 +446,3 @@ export default function RateLimitDashboard() {
         </GridItem>
       </Grid>
     </div>
-  );
-}

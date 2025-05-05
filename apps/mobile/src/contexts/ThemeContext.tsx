@@ -10,8 +10,6 @@ interface ThemeContextType {
   isDarkMode: boolean;
   setTheme: (theme: ThemeType) => void;
   colors: typeof themeConfig.navigation.colors;
-}
-
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -26,52 +24,38 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         const savedTheme = await SecureStore.getItemAsync('theme');
         if (savedTheme) {
           setThemeState(savedTheme as ThemeType);
-        }
-      } catch (error) {
+catch (error) {
         console.error('Error loading theme from storage:', error);
-      }
-    };
-
-    loadSavedTheme();
-  }, []);
+loadSavedTheme();
+[]);
 
   // Update dark mode state when theme or system preference changes
   useEffect(() => {
     if (theme === 'system') {
       setIsDarkMode(colorScheme === 'dark');
-    } else {
+else {
       setIsDarkMode(theme === 'dark');
-    }
-  }, [theme, colorScheme]);
+[theme, colorScheme]);
 
   // Save theme preference
   const setTheme = async (newTheme: ThemeType) => {
     try {
       await SecureStore.setItemAsync('theme', newTheme);
       setThemeState(newTheme);
-    } catch (error) {
+catch (error) {
       console.error('Error saving theme to storage:', error);
-    }
-  };
-
-  return (
+return (
     <ThemeContext.Provider
       value={{
         theme,
         isDarkMode,
         setTheme,
         colors: themeConfig.navigation.colors,
-      }}
-    >
+>
       {children}
     </ThemeContext.Provider>
-  );
-};
-
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (context === undefined) {
     throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return context;
-}; 
+return context;

@@ -7,30 +7,23 @@ export interface ServicePreference {
   preferredDuration: number;
   notes: string;
   lastUpdated: Date;
-}
-
 export interface PractitionerPreference {
   practitionerId: Types.ObjectId;
   rating: number;
   preferredCommunication: 'email' | 'sms' | 'app' | 'phone';
   notes: string;
   lastUpdated: Date;
-}
-
 export interface SchedulingPreference {
   preferredDays: string[];
   preferredTimeSlots: {
     start: string;
     end: string;
-  }[];
+[];
   flexibility: 'strict' | 'moderate' | 'flexible';
   advanceBooking: number; // days
   reminderPreference: {
     timing: number; // hours before appointment
     method: 'email' | 'sms' | 'app' | 'all';
-  };
-}
-
 export interface CommunicationPreference {
   marketingEmails: boolean;
   promotionalSMS: boolean;
@@ -41,9 +34,6 @@ export interface CommunicationPreference {
   preferredCommunicationTime: {
     start: string;
     end: string;
-  };
-}
-
 export interface ClientPreferences extends Document {
   clientId: Types.ObjectId;
   servicePreferences: ServicePreference[];
@@ -58,11 +48,9 @@ export interface ClientPreferences extends Document {
     description: string;
     targetDate?: Date;
     status: 'active' | 'achieved' | 'abandoned';
-  }[];
+[];
   createdAt: Date;
   updatedAt: Date;
-}
-
 export interface ClientBehavior extends Document {
   clientId: Types.ObjectId;
   bookingPatterns: {
@@ -72,22 +60,21 @@ export interface ClientBehavior extends Document {
     rescheduleRate: number;
     noShowCount: number;
     lastMinuteBookingCount: number;
-  };
-  serviceHistory: {
+serviceHistory: {
     serviceId: Types.ObjectId;
     bookingCount: number;
     lastBooked: Date;
     averageRating: number;
     totalSpent: number;
     notes: string;
-  }[];
+[];
   practitionerHistory: {
     practitionerId: Types.ObjectId;
     bookingCount: number;
     lastBooked: Date;
     averageRating: number;
     notes: string;
-  }[];
+[];
   spendingPatterns: {
     averageSpendPerVisit: number;
     totalSpendYTD: number;
@@ -96,30 +83,23 @@ export interface ClientBehavior extends Document {
       productId: Types.ObjectId;
       purchaseCount: number;
       lastPurchased: Date;
-    }[];
-  };
-  feedback: {
+[];
+feedback: {
     lastFeedbackDate: Date;
     averageRating: number;
     commonThemes: string[];
     improvements: string[];
     compliments: string[];
-  };
-  engagement: {
+engagement: {
     appUsage: {
       lastLogin: Date;
       loginFrequency: number;
       featureUsage: Record<string, number>;
-    };
-    marketingResponses: {
+marketingResponses: {
       emailOpenRate: number;
       smsResponseRate: number;
       promotionRedemptions: number;
-    };
-  };
-  updatedAt: Date;
-}
-
+updatedAt: Date;
 const clientPreferencesSchema = new Schema<ClientPreferences>({
   clientId: { type: Schema.Types.ObjectId, ref: 'Client', required: true },
   servicePreferences: [
@@ -129,12 +109,10 @@ const clientPreferencesSchema = new Schema<ClientPreferences>({
       frequency: {
         type: String,
         enum: ['weekly', 'monthly', 'quarterly', 'annually'],
-      },
-      preferredDuration: Number,
+preferredDuration: Number,
       notes: String,
       lastUpdated: { type: Date, default: Date.now },
-    },
-  ],
+],
   practitionerPreferences: [
     {
       practitionerId: { type: Schema.Types.ObjectId, ref: 'Practitioner', required: true },
@@ -142,40 +120,29 @@ const clientPreferencesSchema = new Schema<ClientPreferences>({
       preferredCommunication: {
         type: String,
         enum: ['email', 'sms', 'app', 'phone'],
-      },
-      notes: String,
+notes: String,
       lastUpdated: { type: Date, default: Date.now },
-    },
-  ],
+],
   schedulingPreferences: {
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     preferredDays: [String],
     preferredTimeSlots: [
       {
         start: String,
         end: String,
-      },
-    ],
+],
     flexibility: {
       type: String,
       enum: ['strict', 'moderate', 'flexible'],
       default: 'moderate',
-    },
-    advanceBooking: { type: Number, default: 7 },
+advanceBooking: { type: Number, default: 7 },
     reminderPreference: {
       timing: { type: Number, default: 24 },
       method: {
         type: String,
         enum: ['email', 'sms', 'app', 'all'],
         default: 'all',
-      },
-    },
-  },
-  communicationPreferences: {
+communicationPreferences: {
     marketingEmails: { type: Boolean, default: true },
     promotionalSMS: { type: Boolean, default: true },
     appointmentReminders: { type: Boolean, default: true },
@@ -185,26 +152,11 @@ const clientPreferencesSchema = new Schema<ClientPreferences>({
     preferredCommunicationTime: {
       start: String,
       end: String,
-    },
-  },
+specialRequirements: [String],
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  specialRequirements: [String],
+    allergies: [String],
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  allergies: [String],
-
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  healthConditions: [String],
+    healthConditions: [String],
   goals: [
     {
       type: String,
@@ -214,13 +166,9 @@ const clientPreferencesSchema = new Schema<ClientPreferences>({
         type: String,
         enum: ['active', 'achieved', 'abandoned'],
         default: 'active',
-      },
-    },
-  ],
+],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
-});
-
 const clientBehaviorSchema = new Schema<ClientBehavior>({
   clientId: { type: Schema.Types.ObjectId, ref: 'Client', required: true },
   bookingPatterns: {
@@ -228,13 +176,11 @@ const clientBehaviorSchema = new Schema<ClientBehavior>({
     preferredBookingChannel: {
       type: String,
       enum: ['web', 'mobile', 'phone'],
-    },
-    cancellationRate: Number,
+cancellationRate: Number,
     rescheduleRate: Number,
     noShowCount: { type: Number, default: 0 },
     lastMinuteBookingCount: { type: Number, default: 0 },
-  },
-  serviceHistory: [
+serviceHistory: [
     {
       serviceId: { type: Schema.Types.ObjectId, ref: 'Service' },
       bookingCount: { type: Number, default: 0 },
@@ -242,8 +188,7 @@ const clientBehaviorSchema = new Schema<ClientBehavior>({
       averageRating: Number,
       totalSpent: { type: Number, default: 0 },
       notes: String,
-    },
-  ],
+],
   practitionerHistory: [
     {
       practitionerId: { type: Schema.Types.ObjectId, ref: 'Practitioner' },
@@ -251,8 +196,7 @@ const clientBehaviorSchema = new Schema<ClientBehavior>({
       lastBooked: Date,
       averageRating: Number,
       notes: String,
-    },
-  ],
+],
   spendingPatterns: {
     averageSpendPerVisit: Number,
     totalSpendYTD: { type: Number, default: 0 },
@@ -262,46 +206,26 @@ const clientBehaviorSchema = new Schema<ClientBehavior>({
         productId: { type: Schema.Types.ObjectId, ref: 'Product' },
         purchaseCount: { type: Number, default: 0 },
         lastPurchased: Date,
-      },
-    ],
-  },
-  feedback: {
+],
+feedback: {
     lastFeedbackDate: Date,
     averageRating: Number,
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     commonThemes: [String],
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     improvements: [String],
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     compliments: [String],
-  },
-  engagement: {
+engagement: {
     appUsage: {
       lastLogin: Date,
       loginFrequency: Number,
       featureUsage: Schema.Types.Mixed,
-    },
-    marketingResponses: {
+marketingResponses: {
       emailOpenRate: Number,
       smsResponseRate: Number,
       promotionRedemptions: { type: Number, default: 0 },
-    },
-  },
-  updatedAt: { type: Date, default: Date.now },
-});
-
+updatedAt: { type: Date, default: Date.now },
 // Add indexes for better query performance
 clientPreferencesSchema.index({ clientId: 1 });
 clientPreferencesSchema.index({ 'servicePreferences.serviceId': 1 });
@@ -316,12 +240,8 @@ clientBehaviorSchema.index({ 'practitionerHistory.practitionerId': 1 });
 clientPreferencesSchema.pre('save', function (next) {
   this.updatedAt = new Date();
   next();
-});
-
 clientBehaviorSchema.pre('save', function (next) {
   this.updatedAt = new Date();
   next();
-});
-
 export {};
 export {};

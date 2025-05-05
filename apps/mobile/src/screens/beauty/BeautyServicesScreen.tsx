@@ -15,8 +15,7 @@ const mockServices = [
     duration: 60,
     rating: 4.8,
     category: 'facial',
-  },
-  {
+{
     id: '2',
     name: 'Haircut & Styling',
     provider: 'Chic Salon',
@@ -24,8 +23,7 @@ const mockServices = [
     duration: 45,
     rating: 4.6,
     category: 'hair',
-  },
-  {
+{
     id: '3',
     name: 'Gel Manicure',
     provider: 'Nail Bar',
@@ -33,8 +31,7 @@ const mockServices = [
     duration: 40,
     rating: 4.7,
     category: 'nails',
-  },
-  {
+{
     id: '4',
     name: 'Full Makeup Session',
     provider: 'Beauty Studio',
@@ -42,8 +39,7 @@ const mockServices = [
     duration: 75,
     rating: 4.9,
     category: 'makeup',
-  },
-  {
+{
     id: '5',
     name: 'Swedish Massage',
     provider: 'Tranquil Spa',
@@ -51,8 +47,7 @@ const mockServices = [
     duration: 60,
     rating: 4.8,
     category: 'spa',
-  },
-  {
+{
     id: '6',
     name: 'Hot Stone Massage',
     provider: 'Wellness Center',
@@ -60,8 +55,7 @@ const mockServices = [
     duration: 75,
     rating: 4.9,
     category: 'spa',
-  },
-  {
+{
     id: '7',
     name: 'Body Scrub & Wrap',
     provider: 'Rejuvenate Spa',
@@ -69,7 +63,6 @@ const mockServices = [
     duration: 90,
     rating: 4.7,
     category: 'body',
-  },
 ];
 
 interface ServiceItemProps {
@@ -81,10 +74,7 @@ interface ServiceItemProps {
     duration: number;
     rating: number;
     category: string;
-  };
-  isDarkMode: boolean;
-}
-
+isDarkMode: boolean;
 const ServiceItem = ({ item, isDarkMode }: ServiceItemProps) => {
   return (
     <View style={[styles.serviceItem, { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }]}>
@@ -106,9 +96,6 @@ const ServiceItem = ({ item, isDarkMode }: ServiceItemProps) => {
         </Text>
       </View>
     </View>
-  );
-};
-
 const BeautyServicesScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [filteredServices, setFilteredServices] = useState(mockServices);
@@ -119,10 +106,9 @@ const BeautyServicesScreen = () => {
   useEffect(() => {
     if (selectedCategory === 'all') {
       setFilteredServices(mockServices);
-    } else {
+else {
       setFilteredServices(mockServices.filter(service => service.category === selectedCategory));
-    }
-  }, [selectedCategory]);
+[selectedCategory]);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: isDarkMode ? '#121212' : '#F5F5F5' }]}>
@@ -144,23 +130,17 @@ const BeautyServicesScreen = () => {
         showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
+header: {
     fontSize: 24,
     fontWeight: 'bold',
     marginHorizontal: 16,
     marginTop: 16,
-  },
-  servicesList: {
+servicesList: {
     padding: 16,
-  },
-  serviceItem: {
+serviceItem: {
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
@@ -169,30 +149,21 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-  },
-  serviceName: {
+serviceName: {
     fontSize: 18,
     fontWeight: '600',
     marginBottom: 4,
-  },
-  serviceProvider: {
+serviceProvider: {
     fontSize: 14,
     marginBottom: 12,
-  },
-  serviceDetails: {
+serviceDetails: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  servicePrice: {
+servicePrice: {
     fontSize: 16,
     fontWeight: '600',
-  },
-  serviceDuration: {
+serviceDuration: {
     fontSize: 14,
-  },
-  serviceRating: {
+serviceRating: {
     fontSize: 14,
-  },
-});
-
 export default BeautyServicesScreen; 

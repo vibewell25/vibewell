@@ -1,4 +1,3 @@
-// BenefitClaim model interface
 export interface BenefitClaim {
   id: string;
   type: string;
@@ -6,4 +5,3 @@ export interface BenefitClaim {
   amount?: number;
   requestedAt: string;
   processedAt?: string;
-}

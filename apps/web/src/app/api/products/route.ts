@@ -1,4 +1,3 @@
-
 import { NextResponse } from "next/server";
 
 import type { NextRequest } from "next/server";
@@ -17,8 +16,6 @@ const productSchema = z.object({
   type: z.enum(["VIRTUAL_TRY_ON", "SKIN_ANALYSIS", "BOTH"]),
   imageUrl: z.string().url().optional(),
   modelUrl: z.string().url().optional(),
-});
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); GET(request: NextRequest) {
@@ -34,15 +31,13 @@ export async function {
     const where = {
       ...(category && { category }),
       ...(type && { type }),
-    };
-
-    const [products, total] = await Promise.all([
+const [products, total] = await Promise.all([
       prisma.product.findMany({
         where,
         skip,
         take: limit,
         orderBy: { createdAt: "desc" },
-      }),
+),
       prisma.product.count({ where }),
     ]);
 
@@ -54,17 +49,11 @@ export async function {
         pages: Math.ceil(total / limit),
         page,
         limit,
-      },
-    });
-  } catch (error) {
+catch (error) {
     console.error("Products GET Error:", error);
     return NextResponse.json(
       { error: "Failed to fetch products" },
       { status: 500 }
-    );
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); POST(request: NextRequest) {
@@ -72,35 +61,23 @@ export async function {
     const token = await getToken({ req: request });
     if (!token) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const body = await request.json();
+const body = await request.json();
     const validatedData = productSchema.parse(body);
 
     const product = await prisma.product.create({
       data: {
         ...validatedData,
         userId: token.sub!,
-      },
-    });
-
-    return NextResponse.json(product, { status: 201 });
-  } catch (error) {
+return NextResponse.json(product, { status: 201 });
+catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: "Invalid product data", details: error.errors },
         { status: 400 }
-      );
-    }
-
-    console.error("Products POST Error:", error);
+console.error("Products POST Error:", error);
     return NextResponse.json(
       { error: "Failed to create product" },
       { status: 500 }
-    );
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); PUT(request: NextRequest) {
@@ -108,42 +85,28 @@ export async function {
     const token = await getToken({ req: request });
     if (!token) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const { searchParams } = new URL(request.url);
+const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     if (!id) {
       return NextResponse.json(
         { error: "Product ID is required" },
         { status: 400 }
-      );
-    }
-
-    const body = await request.json();
+const body = await request.json();
     const validatedData = productSchema.partial().parse(body);
 
     const product = await prisma.product.update({
       where: { id },
       data: validatedData,
-    });
-
-    return NextResponse.json(product);
-  } catch (error) {
+return NextResponse.json(product);
+catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: "Invalid product data", details: error.errors },
         { status: 400 }
-      );
-    }
-
-    console.error("Products PUT Error:", error);
+console.error("Products PUT Error:", error);
     return NextResponse.json(
       { error: "Failed to update product" },
       { status: 500 }
-    );
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); DELETE(request: NextRequest) {
@@ -151,27 +114,17 @@ export async function {
     const token = await getToken({ req: request });
     if (!token) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const { searchParams } = new URL(request.url);
+const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     if (!id) {
       return NextResponse.json(
         { error: "Product ID is required" },
         { status: 400 }
-      );
-    }
-
-    await prisma.product.delete({
+await prisma.product.delete({
       where: { id },
-    });
-
-    return NextResponse.json({ success: true });
-  } catch (error) {
+return NextResponse.json({ success: true });
+catch (error) {
     console.error("Products DELETE Error:", error);
     return NextResponse.json(
       { error: "Failed to delete product" },
       { status: 500 }
-    );
-  }
-} 

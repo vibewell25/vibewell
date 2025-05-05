@@ -86,36 +86,27 @@ export default function Home() {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
-}
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f4f4f8',
-  },
-  scrollContainer: {
+scrollContainer: {
     padding: 20,
-  },
-  header: {
+header: {
     marginBottom: 30,
-  },
-  title: {
+title: {
     fontSize: 32,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 8,
-  },
-  subtitle: {
+subtitle: {
     fontSize: 18,
     color: '#666',
-  },
-  featuresContainer: {
+featuresContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-  },
-  feature: {
+feature: {
     backgroundColor: 'white',
     borderRadius: 16,
     padding: 20,
@@ -126,8 +117,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-  },
-  featureIconContainer: {
+featureIconContainer: {
     width: 60,
     height: 60,
     borderRadius: 30,
@@ -135,42 +125,33 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
-  },
-  featureIcon: {
+featureIcon: {
     width: 30,
     height: 30,
     tintColor: '#6200ee',
-  },
-  featureTitle: {
+featureTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 8,
-  },
-  featureDescription: {
+featureDescription: {
     fontSize: 16,
     color: '#666',
     marginBottom: 16,
     lineHeight: 22,
-  },
-  featureButton: {
+featureButton: {
     backgroundColor: '#6200ee',
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,
     alignItems: 'center',
-  },
-  featureButtonText: {
+featureButtonText: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 16,
-  },
-  comingSoonButton: {
+comingSoonButton: {
     backgroundColor: '#e0e0e0',
-  },
-  comingSoonButtonText: {
+comingSoonButtonText: {
     color: '#666',
     fontWeight: 'bold',
     fontSize: 16,
-  },
-}); 

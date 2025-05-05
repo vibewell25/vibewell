@@ -1,4 +1,3 @@
-'use client';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { Layout } from '@/components/layout';
@@ -18,7 +17,7 @@ import {
   BookmarkIcon,
   ShareIcon,
   UserIcon,
-} from '@heroicons/react/24/outline';
+from '@heroicons/react/24/outline';
 
 interface Provider {
   id: string;
@@ -30,41 +29,30 @@ interface Provider {
   phone: string;
   services: Service[];
   availability: Availability[];
-}
-
 interface Service {
   id: string;
   name: string;
   duration: number;
   price: number;
   description: string;
-}
-
 interface Availability {
   day: string;
   slots: string[];
-}
-
 interface Review {
   id: string;
   user: {
     name: string;
     avatar: string;
-  };
-  rating: number;
+rating: number;
   comment: string;
   date: string;
   service: string;
-}
-
 interface PortfolioItem {
   id: string;
   image: string;
   title: string;
   category: string;
   description: string;
-}
-
 export default function ProviderProfilePage() {
   const { id } = useParams();
   const [provider, setProvider] = useState<Provider | null>(null);
@@ -89,24 +77,19 @@ export default function ProviderProfilePage() {
           duration: 60,
           price: 85,
           description: 'Professional haircut and styling service',
-        },
-        // ... more services
+// ... more services
       ],
       availability: [
         {
           day: 'Monday',
           slots: ['9:00 AM', '10:00 AM', '2:00 PM'],
-        },
-        // ... more availability
+// ... more availability
       ],
-    });
-  }, [id]);
+[id]);
 
   if (!provider) {
     return <div>Loading...</div>;
-  }
-
-  return (
+return (
     <Layout>
       <div className="container-app py-12">
         {/* Header Section */}
@@ -261,5 +244,3 @@ export default function ProviderProfilePage() {
         </Tabs>
       </div>
     </Layout>
-  );
-}

@@ -1,4 +1,3 @@
-'use client';;
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter, notFound } from 'next/navigation';
 import Image from 'next/image';
@@ -10,7 +9,7 @@ import {
   cancelEventRegistration,
   addEventComment,
   isUserRegistered,
-} from '@/lib/api/events';
+from '@/lib/api/events';
 import { useAuth } from '@/hooks/useAuth';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/Button';
@@ -30,9 +29,6 @@ interface UserWithMetadata {
   user_metadata?: {
     full_name?: string;
     avatar_url?: string;
-  };
-}
-
 export default function EventDetailPage() {
   const params = useParams();
   const router = useRouter();
@@ -53,7 +49,7 @@ export default function EventDetailPage() {
     status: 'none' | 'pending' | 'paid' | 'refunded' | 'failed';
     amount?: number;
     paymentDate?: string;
-  } | null>(null);
+| null>(null);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const { toast } = useToast();
 
@@ -68,8 +64,7 @@ export default function EventDetailPage() {
         const eventData = await getEventById(eventId);
         if (!eventData) {
           notFound();
-        }
-        setEvent(eventData);
+setEvent(eventData);
         // Check if user is registered
         if (typedUser.id) {
           setIsRegistered(isUserRegistered(eventId, typedUser.id));
@@ -77,17 +72,13 @@ export default function EventDetailPage() {
           if (eventData.isPaid) {
             const status = await getEventPaymentStatus(eventId, typedUser.id);
             setPaymentStatus(status);
-          }
-        }
-      } catch (err) {
+catch (err) {
         console.error('Error fetching event:', err);
         setError('Failed to load event details. Please try again later.');
-      } finally {
+finally {
         setLoading(false);
-      }
-    };
-    fetchEvent();
-  }, [eventId, typedUser.id]);
+fetchEvent();
+[eventId, typedUser.id]);
 
   // Handle event registration
   const handleRegistration = async ( {
@@ -96,15 +87,11 @@ export default function EventDetailPage() {
     if (!typedUser) {
       router.push('/auth/login?returnUrl=' + encodeURIComponent(`/events/${eventId}`));
       return;
-    }
-
-    // For paid events that require payment
+// For paid events that require payment
     if (event.isPaid && !isRegistered && paymentStatus.status !== 'paid') {
       setShowPaymentForm(true);
       return;
-    }
-
-    try {
+try {
       setRegistering(true);
       setError(null);
       if (isRegistered) {
@@ -116,18 +103,14 @@ export default function EventDetailPage() {
           const updatedEvent = await getEventById(eventId);
           if (updatedEvent) {
             setEvent(updatedEvent);
-          }
-
-          toast({
+toast({
             title: 'Registration cancelled',
             description: 'You have successfully cancelled your registration.',
             type: 'info',
             duration: 5000,
-          });
-        } else {
+else {
           throw new Error('Failed to cancel registration');
-        }
-      } else {
+else {
         // Register for event
         const userData = typedUser.user_metadata || {};
         const success = await registerForEvent(
@@ -135,26 +118,20 @@ export default function EventDetailPage() {
           typedUser.id,
           (userData.full_name as string) || 'Anonymous',
           userData.avatar_url as string,
-        );
-        if (success) {
+if (success) {
           setIsRegistered(true);
           // Update the event data with the updated participant count
           const updatedEvent = await getEventById(eventId);
           if (updatedEvent) {
             setEvent(updatedEvent);
-          }
-
-          toast({
+toast({
             title: 'Registration successful',
             description: 'You have successfully registered for this event.',
             type: 'success',
             duration: 5000,
-          });
-        } else {
+else {
           throw new Error('Failed to register for event');
-        }
-      }
-    } catch (err) {
+catch (err) {
       console.error('Error handling registration:', err);
       setError('Failed to process your registration. Please try again.');
 
@@ -163,13 +140,9 @@ export default function EventDetailPage() {
         description: 'There was an error processing your registration. Please try again.',
         type: 'error',
         duration: 5000,
-      });
-    } finally {
+finally {
       setRegistering(false);
-    }
-  };
-
-  // Handle payment completion
+// Handle payment completion
   const handlePaymentSuccess = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');paymentId: string, method: string) => {
@@ -183,9 +156,7 @@ export default function EventDetailPage() {
         typedUser.id,
         (userData.full_name as string) || 'Anonymous',
         userData.avatar_url as string,
-      );
-
-      if (success) {
+if (success) {
         setIsRegistered(true);
         // Update payment status
         const status = await getEventPaymentStatus(eventId, typedUser.id);
@@ -195,29 +166,21 @@ export default function EventDetailPage() {
         const updatedEvent = await getEventById(eventId);
         if (updatedEvent) {
           setEvent(updatedEvent);
-        }
-
-        setShowPaymentForm(false);
+setShowPaymentForm(false);
 
         toast({
           title: 'Registration complete',
           description: 'Payment processed successfully. You are now registered for this event.',
           type: 'success',
           duration: 5000,
-        });
-      }
-    } catch (err) {
+catch (err) {
       console.error('Error after payment:', err);
       toast({
         title: 'Registration error',
         description: 'Payment was processed but there was an error completing registration.',
         type: 'error',
         duration: 5000,
-      });
-    }
-  };
-
-  // Handle payment error
+// Handle payment error
   const handlePaymentError = (error: Error) => {
     console.error('Payment error:', error);
     toast({
@@ -225,10 +188,7 @@ export default function EventDetailPage() {
       description: error.message || 'There was an error processing your payment.',
       type: 'error',
       duration: 5000,
-    });
-  };
-
-  // Handle comment submission
+// Handle comment submission
   const handleCommentSubmit = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
@@ -243,34 +203,27 @@ export default function EventDetailPage() {
         (userData.full_name as string) || 'Anonymous',
         newComment,
         userData.avatar_url as string,
-      );
-      if (comment) {
+if (comment) {
         setNewComment('');
         // Update the event data to include the new comment
         const updatedEvent = await getEventById(eventId);
         if (updatedEvent) {
           setEvent(updatedEvent);
-        }
-      } else {
+else {
         throw new Error('Failed to add comment');
-      }
-    } catch (err) {
+catch (err) {
       console.error('Error adding comment:', err);
       setError('Failed to add your comment. Please try again.');
-    } finally {
+finally {
       setSubmittingComment(false);
-    }
-  };
-  // Handle check-in
+// Handle check-in
   const handleCheckIn = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');code: string) => {
     if (!typedUser) {
       router.push('/auth/login?returnUrl=' + encodeURIComponent(`/events/${eventId}`));
       return;
-    }
-
-    try {
+try {
       setCheckingIn(true);
       setCheckInError(null);
 
@@ -284,26 +237,20 @@ export default function EventDetailPage() {
         (userData.full_name as string) || 'Anonymous',
         code,
         userData.avatar_url as string,
-      );
-
-      if (success) {
+if (success) {
         // Update the event data with the updated check-in status
         const updatedEvent = await getEventById(eventId);
         if (updatedEvent) {
           setEvent(updatedEvent);
-        }
-
-        // Show success toast
+// Show success toast
         toast({
           title: 'Check-in successful!',
           description: 'You have been checked in to this event.',
           type: 'success',
           duration: 5000,
-        });
-      } else {
+else {
         throw new Error('Failed to check in. Please verify the code and try again.');
-      }
-    } catch (err) {
+catch (err) {
       console.error('Error handling check-in:', err);
       const errorMessage =
         err instanceof Error ? err.message : 'Failed to check in. Please try again.';
@@ -315,22 +262,16 @@ export default function EventDetailPage() {
         description: errorMessage,
         type: 'error',
         duration: 5000,
-      });
-    } finally {
+finally {
       setCheckingIn(false);
-    }
-  };
-
-  // Handle feedback submission
+// Handle feedback submission
   const handleFeedbackSubmit = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');rating: number, comment: string) => {
     if (!typedUser) {
       router.push('/auth/login?returnUrl=' + encodeURIComponent(`/events/${eventId}`));
       return false;
-    }
-
-    try {
+try {
       setSubmittingFeedback(true);
 
       // Import the submitEventFeedback function when needed to avoid circular dependencies
@@ -343,21 +284,16 @@ export default function EventDetailPage() {
         const updatedEvent = await getEventById(eventId);
         if (updatedEvent) {
           setEvent(updatedEvent);
-        }
-
-        // Show success toast
+// Show success toast
         toast({
           title: 'Feedback submitted!',
           description: 'Thank you for your feedback on this event.',
           type: 'success',
           duration: 5000,
-        });
-
-        return true;
-      } else {
+return true;
+else {
         throw new Error('Failed to submit feedback.');
-      }
-    } catch (err) {
+catch (err) {
       console.error('Error submitting feedback:', err);
       const errorMessage =
         err instanceof Error ? err.message : 'Failed to submit feedback. Please try again.';
@@ -368,14 +304,10 @@ export default function EventDetailPage() {
         description: errorMessage,
         type: 'error',
         duration: 5000,
-      });
-
-      return false;
-    } finally {
+return false;
+finally {
       setSubmittingFeedback(false);
-    }
-  };
-  // Share event
+// Share event
   const handleShare = () => {
     if (navigator.share) {
       navigator
@@ -383,14 +315,12 @@ export default function EventDetailPage() {
           title: event.title || 'Community Event',
           text: event.shortDescription || 'Check out this event!',
           url: window.location.href,
-        })
+)
         .catch((error) => console.log('Error sharing', error));
-    } else {
+else {
       // Fallback for browsers that don't support the Web Share API
       alert(`Share this event: ${window.location.href}`);
-    }
-  };
-  if (loading) {
+if (loading) {
     return (
       <Layout>
         <div className="container-app py-8">
@@ -399,9 +329,7 @@ export default function EventDetailPage() {
           </div>
         </div>
       </Layout>
-    );
-  }
-  if (error || !event) {
+if (error || !event) {
     return (
       <Layout>
         <div className="container-app py-8">
@@ -412,9 +340,7 @@ export default function EventDetailPage() {
           </div>
         </div>
       </Layout>
-    );
-  }
-  const startDate = parseISO(event.startDate);
+const startDate = parseISO(event.startDate);
   const endDate = parseISO(event.endDate);
   const isVirtual = event.location.virtual;
   const eventPassed = isPast(endDate);
@@ -427,10 +353,8 @@ export default function EventDetailPage() {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: currency,
-    }).format(price);
-  };
-
-  // Determine current price (standard or early bird)
+).format(price);
+// Determine current price (standard or early bird)
   const getCurrentPrice = () => {
     if (!event.isPaid) return 0;
 
@@ -438,13 +362,8 @@ export default function EventDetailPage() {
       const earlyBirdEnd = new Date(event.earlyBirdEndDate);
       if (new Date() < earlyBirdEnd) {
         return event.earlyBirdPrice;
-      }
-    }
-
-    return event.price || 0;
-  };
-
-  const currentPrice = getCurrentPrice();
+return event.price || 0;
+const currentPrice = getCurrentPrice();
 
   return (
     <Layout>
@@ -476,8 +395,7 @@ export default function EventDetailPage() {
                   <Badge
                     className={
                       eventPassed ? 'bg-gray-100 text-gray-700' : 'bg-green-100 text-green-800'
-                    }
-                  >
+>
                     {event.category}
                   </Badge>
                   {isVirtual && <Badge className="bg-blue-100 text-blue-800">Virtual</Badge>}
@@ -619,8 +537,7 @@ export default function EventDetailPage() {
                       <AvatarImage
                         src={
                           typedUser.user_metadata.avatar_url || '/images/avatar-placeholder.png'
-                        }
-                        alt={typedUser.user_metadata.full_name || 'User'}
+alt={typedUser.user_metadata.full_name || 'User'}
                       />
                       <AvatarFallback>
                         {(typedUser.user_metadata.full_name || 'User').charAt(0)}
@@ -650,8 +567,7 @@ export default function EventDetailPage() {
                       router.push(
                         '/auth/login?returnUrl=' + encodeURIComponent(`/events/${eventId}`),
                       )
-                    }
-                  >
+>
                     Sign In
                   </Button>
                 </div>
@@ -709,7 +625,7 @@ export default function EventDetailPage() {
                         : paymentStatus.status === 'refunded'
                           ? 'bg-blue-50 text-blue-700'
                           : 'bg-yellow-50 text-yellow-700'
-                    }`}
+`}
                   >
                     <div className="font-medium">
                       Payment status:{' '}
@@ -841,5 +757,3 @@ export default function EventDetailPage() {
         </div>
       )}
     </Layout>
-  );
-}

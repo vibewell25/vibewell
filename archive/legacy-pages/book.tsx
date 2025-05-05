@@ -22,7 +22,7 @@ const Book: NextPage = () => {
       .then(res => res.json())
       .then(data => setService(data.service))
       .catch(() => setError('Failed to load service'));
-  }, [serviceId]);
+[serviceId]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -31,30 +31,22 @@ const Book: NextPage = () => {
     if (!service || !date) {
       alert('Please select a service and date');
       return;
-    }
-    
-    try {
+try {
       const res = await fetch('/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ serviceId, date, notes: special })
-      });
-      
-      if (Date.now() - start > 30000) throw new Error('Timeout');
+if (Date.now() - start > 30000) throw new Error('Timeout');
       
       if (res.ok) {
         const data = await res.json();
         router.push(`/bookings/${data.id}`);
-      } else {
+else {
         alert('Failed to create booking');
-      }
-    } catch (error) {
+catch (error) {
       console.error('Booking error:', error);
       alert('An error occurred while booking');
-    }
-  };
-
-  return (
+return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Book Service</h1>
       {service ? (
@@ -77,7 +69,4 @@ const Book: NextPage = () => {
         <p>Loading service...</p>
       )}
     </div>
-  );
-};
-
 export default Book;

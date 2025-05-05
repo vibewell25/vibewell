@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import testimonial-carousel from '../testimonial-carousel.tsx';
+
+describe('testimonial-carousel', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<testimonial-carousel />);
+    expect(container).toBeInTheDocument();
+  });
+});

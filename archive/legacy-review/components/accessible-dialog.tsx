@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useEffect } from 'react';
 import { useFocusTrap, useFocusOnMount, useKeyboardInteraction } from './accessibility-utils';
 import { LiveRegion } from './accessibility-utils';
@@ -10,15 +8,13 @@ interface AccessibleDialogProps {
   title: string;
   children: React.ReactNode;
   description?: string;
-}
-
 export function AccessibleDialog({
   isOpen,
   onClose,
   title,
   children,
   description,
-}: AccessibleDialogProps) {
+: AccessibleDialogProps) {
   const dialogRef = useFocusTrap<HTMLDivElement>(isOpen);
   const titleRef = useFocusOnMount<HTMLHeadingElement>(isOpen);
 
@@ -28,13 +24,11 @@ export function AccessibleDialog({
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
-    } else {
+else {
       document.body.style.overflow = '';
-    }
-    return () => {
+return () => {
       document.body.style.overflow = '';
-    };
-  }, [isOpen]);
+[isOpen]);
 
   if (!isOpen) return null;
 
@@ -93,5 +87,3 @@ export function AccessibleDialog({
       {/* Announce dialog opening to screen readers */}
       <LiveRegion politeness="assertive">{isOpen && `Dialog opened: ${title}`}</LiveRegion>
     </>
-  );
-}

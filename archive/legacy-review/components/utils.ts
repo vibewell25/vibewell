@@ -1,4 +1,3 @@
-
 import { format } from 'date-fns';
 
 /**
@@ -15,11 +14,8 @@ export function formatMessageTime(timestamp: string): string {
     date.getFullYear() === now.getFullYear();
   if (isToday) {
     return format(date, 'HH:mm');
-  } else {
+else {
     return format(date, 'MMM d');
-  }
-}
-
 /**
 
  * Formats the last seen timestamp in a human-readable format
@@ -35,13 +31,11 @@ export function formatLastSeen(timestamp: string): string {
   const diffMins = Math.floor(diffMs / 60000);
   if (diffMins < 1) {
     return 'Just now';
-  } else if (diffMins < 60) {
+else if (diffMins < 60) {
     return `${diffMins} ${diffMins === 1 ? 'minute' : 'minutes'} ago`;
-  } else if (diffMins < 1440) {
+else if (diffMins < 1440) {
 
     const hours = Math.floor(diffMins / 60);
     return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
-  } else {
+else {
     return format(date, 'MMM d, yyyy');
-  }
-}

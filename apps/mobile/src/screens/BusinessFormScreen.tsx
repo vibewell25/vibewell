@@ -18,18 +18,14 @@ const BusinessFormScreen: React.FC = () => {
       setLoading(true);
       if (existing) {
         await updateBusiness(existing.id, { name, address, description });
-      } else {
+else {
         await createBusiness({ providerId: existing.providerId ?? routeProviderId ?? '', name, address, description });
-      }
-      navigation.goBack();
-    } catch {
+navigation.goBack();
+catch {
       Alert.alert('Error', 'Failed to save business');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  return (
+return (
     <View style={{ flex: 1, padding: 16 }}>
       <Text>Name</Text>
       <TextInput value={name} onChangeText={setName} style={{ borderWidth: 1, borderColor: '#ccc', marginBottom: 12, padding: 8 }} />
@@ -43,7 +39,4 @@ const BusinessFormScreen: React.FC = () => {
       />
       <Button title={existing ? 'Update Business' : 'Create Business'} onPress={handleSubmit} disabled={loading || !name.trim()} />
     </View>
-  );
-};
-
 export default BusinessFormScreen;

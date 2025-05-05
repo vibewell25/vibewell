@@ -4,7 +4,7 @@ import {
   createDecipheriv,
   scrypt as scryptCallback,
   timingSafeEqual,
-} from 'crypto';
+from 'crypto';
 import { promisify } from 'util';
 import { Redis } from 'ioredis';
 
@@ -20,8 +20,6 @@ interface EncryptionKey {
   encryptedKey: Buffer; // HSM-encrypted key
   createdAt: Date;
   expiresAt: Date;
-}
-
 export interface EncryptedData {
   encryptedData: string;
   metadata: {
@@ -30,9 +28,6 @@ export interface EncryptedData {
     algorithm: string;
 
     encryptedKey: string; // Base64 encoded HSM-encrypted key
-  };
-}
-
 export class EncryptionService {
   private redis: Redis;
 
@@ -47,9 +42,7 @@ export class EncryptionService {
   constructor() {
     this.redis = new Redis(process.env.REDIS_URL || '');
     this.hsmService = new HSMKeyManagementService();
-  }
-
-  /**
+/**
    * Generate a new encryption key using HSM
    */
   private async generateKey(): Promise<EncryptionKey> {
@@ -64,15 +57,11 @@ export class EncryptionService {
       encryptedKey,
       createdAt: now,
       expiresAt,
-    };
-
-    // Store key in Redis with expiration
+// Store key in Redis with expiration
     await this.storeKey(keyData);
 
     return keyData;
-  }
-
-  /**
+/**
    * Store an encryption key in Redis
    */
   private async storeKey(keyData: EncryptionKey): Promise<void> {
@@ -87,17 +76,13 @@ export class EncryptionService {
           encryptedKey: keyData.encryptedKey.toString('base64'),
           createdAt: keyData.createdAt.toISOString(),
           expiresAt: keyData.expiresAt.toISOString(),
-        }),
+),
         'PX',
         expirationMs,
-      );
-    } catch (error) {
+catch (error) {
       logger.error('Failed to store encryption key', 'encryption', { error, keyId: keyData.id });
       throw new Error('Failed to store encryption key');
-    }
-  }
-
-  /**
+/**
    * Retrieve and decrypt an encryption key from Redis using HSM
    */
   private async getKey(keyId: string): Promise<EncryptionKey | null> {
@@ -118,14 +103,10 @@ export class EncryptionService {
         encryptedKey,
         createdAt: new Date(parsed.createdAt),
         expiresAt: new Date(parsed.expiresAt),
-      };
-    } catch (error) {
+catch (error) {
       logger.error('Failed to retrieve encryption key', 'encryption', { error, keyId });
       throw new Error('Failed to retrieve encryption key');
-    }
-  }
-
-  /**
+/**
    * Get the current active encryption key or generate a new one
    */
   private async getCurrentKey(): Promise<EncryptionKey> {
@@ -134,16 +115,11 @@ export class EncryptionService {
       const key = await this.getKey(currentKeyId);
       if (key && key.expiresAt > new Date()) {
         return key;
-      }
-    }
-
-    // Generate new key if current key doesn't exist or is expired
+// Generate new key if current key doesn't exist or is expired
     const newKey = await this.generateKey();
     await this.redis.set('encryption:current_key_id', newKey.id);
     return newKey;
-  }
-
-  async encrypt(data: string): Promise<EncryptedData> {
+async encrypt(data: string): Promise<EncryptedData> {
     const currentKey = await this.getCurrentKey();
     const iv = randomBytes(this.ivLength);
 
@@ -168,11 +144,7 @@ export class EncryptionService {
         keyId: currentKey.id,
         algorithm: this.algorithm,
         encryptedKey: currentKey.encryptedKey.toString('base64'),
-      },
-    };
-  }
-
-  async decrypt(
+async decrypt(
     encryptedData: string,
     metadata: { iv: string; algorithm: string; keyId: string; encryptedKey: string },
   ): Promise<string> {
@@ -194,18 +166,14 @@ export class EncryptionService {
     decrypted = Buffer.concat([decrypted, decipher.final()]);
 
     return decrypted.toString('utf8');
-  }
-
-  /**
+/**
    * Hash sensitive data (e.g., passwords) using Argon2
    */
   async hash(data: string): Promise<string> {
     const salt = randomBytes(this.saltLength);
     const derivedKey = await scrypt(data, salt, 64);
     return salt.toString('hex') + ':' + derivedKey.toString('hex');
-  }
-
-  /**
+/**
    * Verify hashed data
    */
   async verify(data: string, hash: string): Promise<boolean> {
@@ -213,9 +181,7 @@ export class EncryptionService {
     const keyBuffer = Buffer.from(key, 'hex');
     const derivedKey = await scrypt(data, Buffer.from(salt, 'hex'), 64);
     return timingSafeEqual(keyBuffer, derivedKey);
-  }
-
-  /**
+/**
    * Rotate encryption keys using HSM
    */
   async rotateKeys(): Promise<void> {
@@ -228,33 +194,25 @@ export class EncryptionService {
       logger.info('Starting key rotation', 'encryption', {
         oldKeyId: await this.redis.get('encryption:current_key_id'),
         newKeyId: newKey.id,
-      });
-
-      // Update current key
+// Update current key
       await this.redis.set('encryption:current_key_id', newKey.id);
 
       // Rotate the master key in HSM
       await this.hsmService.rotateMasterKey();
 
       logger.info('Key rotation completed', 'encryption', { newKeyId: newKey.id });
-    } catch (error) {
+catch (error) {
       logger.error('Key rotation failed', 'encryption', { error });
       throw new Error('Key rotation failed');
-    }
-  }
-
-  /**
+/**
    * Schedule regular key rotation
    */
   scheduleKeyRotation(): void {
     setInterval(() => {
       this.rotateKeys().catch((error) => {
         logger.error('Scheduled key rotation failed', 'encryption', { error });
-      });
-    }, this.keyRotationInterval);
-  }
-
-  // Helper method to rotate encryption keys
+this.keyRotationInterval);
+// Helper method to rotate encryption keys
   async reencryptData(data: string, oldKey: Buffer, newKey: Buffer): Promise<EncryptedData> {
     const newService = new EncryptionService();
 
@@ -265,17 +223,13 @@ export class EncryptionService {
       encryptedKey: await this.hsmService.reencryptDataKey(oldKey),
       createdAt: new Date(),
       expiresAt: new Date(Date.now() + this.keyRotationInterval),
-    };
-
-    const newKeyData: EncryptionKey = {
+const newKeyData: EncryptionKey = {
       id: randomBytes(16).toString('hex'),
       key: newKey,
       encryptedKey: await this.hsmService.reencryptDataKey(newKey),
       createdAt: new Date(),
       expiresAt: new Date(Date.now() + this.keyRotationInterval),
-    };
-
-    // Store temporary keys
+// Store temporary keys
     await this.storeKey(oldKeyData);
     await this.storeKey(newKeyData);
 
@@ -285,13 +239,7 @@ export class EncryptionService {
       algorithm: this.algorithm,
       keyId: oldKeyData.id,
       encryptedKey: oldKeyData.encryptedKey.toString('base64'),
-    });
-
-
-    // Re-encrypt with new key
+// Re-encrypt with new key
     return newService.encrypt(decrypted);
-  }
-}
-
 // Export singleton instance
 export {};

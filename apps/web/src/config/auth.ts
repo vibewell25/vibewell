@@ -19,22 +19,17 @@ export const authConfig = {
     callback: '/api/auth/callback',
     login: {
       returnTo: '/dashboard'
-    },
-    logout: {
+logout: {
       returnTo: '/'
-    }
-  },
-  session: {
+session: {
     absoluteDuration: 24 * 60 * 60, // 24 hours in seconds
     rolling: true,
     rollingDuration: 2 * 60 * 60 // 2 hours in seconds
-  },
-  authorizationParams: {
+authorizationParams: {
     response_type: 'code',
     scope: 'openid profile email',
     audience: process.env['AUTH0_AUDIENCE']
-  },
-  hooks: {
+hooks: {
     async afterCallback(req, res, session) {
       if (session.user) {
         // Get the user's roles from the Auth0 token
@@ -47,8 +42,5 @@ export const authConfig = {
         session.user.isAdmin = roles.includes('admin');
         session.user.isProvider = roles.includes('provider');
         session.user.isUser = roles.includes('user');
-      }
-      return session;
-    }
-  }
-} as const; 
+return session;
+as const; 

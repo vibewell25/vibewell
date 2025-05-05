@@ -16,17 +16,13 @@ const TrainingModulesScreen: React.FC = () => {
       .then(data => setModules(data))
       .catch(console.error)
       .finally(() => setLoading(false));
-  };
-
-  useEffect(fetchData, []);
+useEffect(fetchData, []);
 
   const handleDelete = (id: string) => {
     deleteTrainingModule(id)
       .then(fetchData)
       .catch(console.error);
-  };
-
-  if (loading) return <ActivityIndicator style={{ flex: 1 }} color={colors.primary} size="large" />;
+if (loading) return <ActivityIndicator style={{ flex: 1 }} color={colors.primary} size="large" />;
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
@@ -52,9 +48,9 @@ const TrainingModulesScreen: React.FC = () => {
             await createTrainingModule({ title, description, contentUrl });
             setTitle(''); setDescription(''); setContentUrl('');
             const data = await getTrainingModules(); setModules(data);
-          } catch (err) { console.error(err); }
+catch (err) { console.error(err); }
           setLoading(false);
-        }} color={colors.primary} />
+color={colors.primary} />
       </View>
       <FlatList
         data={modules}
@@ -67,13 +63,8 @@ const TrainingModulesScreen: React.FC = () => {
         )}
       />
     </SafeAreaView>
-  );
-};
-
 const styles = StyleSheet.create({
   item: { padding: 16, borderBottomWidth: 1, borderColor: '#ccc' },
   form: { padding: 16 },
   input: { borderWidth: 1, marginBottom: 8, padding: 8, borderRadius: 4 },
-});
-
 export default TrainingModulesScreen;

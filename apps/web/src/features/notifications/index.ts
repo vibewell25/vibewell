@@ -1,5 +1,4 @@
-
-// Re-export components for easier imports
+export components for easier imports
 
 export { NotificationItem } from './components/NotificationItem';
 
@@ -16,4 +15,4 @@ export type {
   NotificationType,
   NotificationState,
   NotificationAction,
-} from './types';
+from './types';

@@ -1,10 +1,3 @@
-// @ts-nocheck
-/**
- * Hook Test Patterns
- *
- * This file provides standardized patterns for testing React hooks.
- */
-
 import * as React from 'react';
 import { render } from '../testing-lib-adapter';
 
@@ -21,8 +14,6 @@ export interface HookTestCase<HookResult, HookArgs extends any[]> {
     ((result: HookResult) => Promise<void> | void) & { waitAfter?: () => Promise<void> | void }
   >;
   assertions?: (result: HookResult) => Promise<void> | void;
-}
-
 /**
  * Standard hook test suite generator
  * Creates a standard set of tests for a React hook
@@ -42,9 +33,7 @@ export function createHookTestSuite<HookResult, HookArgs extends any[]>(
         // Setup the test case
         if (testCase.setup) {
           await testCase.setup();
-        }
-
-        // Initialize the hook with test case arguments
+// Initialize the hook with test case arguments
         const initialArgs = testCase.initialArgs || ([] as unknown as HookArgs);
 
         // Create a stateful variable to capture hook result
@@ -53,33 +42,25 @@ export function createHookTestSuite<HookResult, HookArgs extends any[]>(
         // Create a wrapper component to test the hook
         const HookTestComponent: React.FC<{
           onResult: (res: HookResult) => void;
-        }> = (props) => {
+> = (props) => {
           const result = useHook(...initialArgs);
           React.useEffect(() => {
             props.onResult(result);
-          }, [result, props.onResult]);
+[result, props.onResult]);
           return null;
-        };
-
-        // Create handler to capture the result
+// Create handler to capture the result
         const handleResult = (res: HookResult) => {
           capturedResult = res;
-        };
-
-        // Render the test component and capture the result
+// Render the test component and capture the result
         render(<HookTestComponent onResult={handleResult} />);
 
         // Ensure we have a result
         if (capturedResult === undefined) {
           throw new Error('Hook result was not captured');
-        }
-
-        // Run initial assertions
+// Run initial assertions
         if (testCase.initialAssertions) {
           await testCase.initialAssertions(capturedResult);
-        }
-
-        // Perform actions if defined
+// Perform actions if defined
         if (testCase.actions) {
           for (const action of testCase.actions) {
             await action(capturedResult);
@@ -87,27 +68,14 @@ export function createHookTestSuite<HookResult, HookArgs extends any[]>(
             // Wait after action if needed
             if ('waitAfter' in action && action.waitAfter) {
               await waitFor(action.waitAfter);
-            }
-          }
-        }
-
-        // Run final assertions
+// Run final assertions
         if (testCase.assertions) {
           await testCase.assertions(capturedResult);
-        }
-
-        // Teardown the test case
+// Teardown the test case
         if (testCase.teardown) {
           await testCase.teardown();
-        }
-      });
-    });
-  });
-}
-
 // Helper for waiting after actions
 async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); waitFor(callback: () => Promise<void> | void): Promise<void> {
   await callback();
-}

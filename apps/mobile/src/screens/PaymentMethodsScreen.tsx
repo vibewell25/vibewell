@@ -17,8 +17,6 @@ interface PaymentMethod {
   expiryMonth?: string;
   expiryYear?: string;
   isDefault: boolean;
-}
-
 const PaymentMethodsScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const navigation = useNavigation();
@@ -28,14 +26,14 @@ const PaymentMethodsScreen: React.FC = () => {
 
   useEffect(() => {
     loadPaymentMethods();
-  }, []);
+[]);
 
   const loadPaymentMethods = async () => {
     try {
       const saved = await AsyncStorage.getItem('@vibewell/payment_methods');
       if (saved) {
         setPaymentMethods(JSON.parse(saved));
-      } else {
+else {
         // Mock data for demonstration
         const mockMethods: PaymentMethod[] = [
           {
@@ -46,8 +44,7 @@ const PaymentMethodsScreen: React.FC = () => {
             expiryMonth: '12',
             expiryYear: '24',
             isDefault: true
-          },
-          {
+{
             id: '2',
             type: 'card',
             last4: '8888',
@@ -55,34 +52,26 @@ const PaymentMethodsScreen: React.FC = () => {
             expiryMonth: '06',
             expiryYear: '25',
             isDefault: false
-          }
-        ];
+];
         setPaymentMethods(mockMethods);
         await AsyncStorage.setItem('@vibewell/payment_methods', JSON.stringify(mockMethods));
-      }
-    } catch (error) {
+catch (error) {
       console.error('Error loading payment methods:', error);
       Alert.alert('Error', 'Failed to load payment methods');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  const handleSetDefault = async (id: string) => {
+const handleSetDefault = async (id: string) => {
     try {
       const updated = paymentMethods.map(method => ({
         ...method,
         isDefault: method.id === id
-      }));
+));
       setPaymentMethods(updated);
       await AsyncStorage.setItem('@vibewell/payment_methods', JSON.stringify(updated));
-    } catch (error) {
+catch (error) {
       console.error('Error setting default payment method:', error);
       Alert.alert('Error', 'Failed to set default payment method');
-    }
-  };
-
-  const handleDelete = async (id: string) => {
+const handleDelete = async (id: string) => {
     Alert.alert(
       'Delete Payment Method',
       'Are you sure you want to delete this payment method?',
@@ -96,17 +85,11 @@ const PaymentMethodsScreen: React.FC = () => {
               const updated = paymentMethods.filter(method => method.id !== id);
               setPaymentMethods(updated);
               await AsyncStorage.setItem('@vibewell/payment_methods', JSON.stringify(updated));
-            } catch (error) {
+catch (error) {
               console.error('Error deleting payment method:', error);
               Alert.alert('Error', 'Failed to delete payment method');
-            }
-          }
-        }
-      ]
-    );
-  };
-
-  const getCardIconName = (brand?: string) => {
+]
+const getCardIconName = (brand?: string) => {
     switch (brand.toLowerCase()) {
       case 'visa':
         return 'cc-visa';
@@ -116,10 +99,7 @@ const PaymentMethodsScreen: React.FC = () => {
         return 'cc-amex';
       default:
         return 'credit-card';
-    }
-  };
-
-  const handleAddPaymentMethod = async () => {
+const handleAddPaymentMethod = async () => {
     setLoading(true);
     try {
       const res = await fetch(`${serverBaseUrl}/api/stripe/setup-intent`, { method: 'POST' });
@@ -127,27 +107,21 @@ const PaymentMethodsScreen: React.FC = () => {
       const { error: initError } = await initPaymentSheet({
         setupIntentClientSecret: clientSecret,
         merchantDisplayName: 'VibeWell',
-      });
-      if (initError) {
+if (initError) {
         Alert.alert('Error', initError.message);
         return;
-      }
-      const { error: presentError } = await presentPaymentSheet();
+const { error: presentError } = await presentPaymentSheet();
       if (presentError) {
         Alert.alert('Error', presentError.message);
         return;
-      }
-      Alert.alert('Success', 'Payment method added');
+Alert.alert('Success', 'Payment method added');
       loadPaymentMethods();
-    } catch (error) {
+catch (error) {
       console.error('Error adding payment method:', error);
       Alert.alert('Error', 'Failed to add payment method');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  return (
+return (
     <SafeAreaView style={[styles.container, { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }]}>
       <View style={styles.header}>
         <TouchableOpacity
@@ -234,96 +208,72 @@ const PaymentMethodsScreen: React.FC = () => {
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
+header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
-  },
-  backButton: {
+backButton: {
     marginRight: 16,
-  },
-  title: {
+title: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  content: {
+content: {
     padding: 16,
-  },
-  card: {
+card: {
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
-  },
-  cardHeader: {
+cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 12,
-  },
-  cardImage: {
+cardImage: {
     width: 40,
     height: 25,
-  },
-  defaultBadge: {
+defaultBadge: {
     backgroundColor: '#4F46E5',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 4,
-  },
-  defaultText: {
+defaultText: {
     color: '#FFFFFF',
     fontSize: 12,
     fontWeight: '500',
-  },
-  cardNumber: {
+cardNumber: {
     fontSize: 18,
     fontWeight: '500',
     marginBottom: 8,
-  },
-  cardExpiry: {
+cardExpiry: {
     fontSize: 14,
     marginBottom: 16,
-  },
-  cardActions: {
+cardActions: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-  },
-  actionButton: {
+actionButton: {
     marginLeft: 12,
-  },
-  actionButtonText: {
+actionButtonText: {
     color: '#4F46E5',
     fontSize: 14,
     fontWeight: '500',
-  },
-  deleteButton: {
+deleteButton: {
     marginLeft: 16,
-  },
-  deleteButtonText: {
+deleteButtonText: {
     color: '#FF4444',
-  },
-  addButton: {
+addButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 16,
     borderRadius: 12,
     marginTop: 8,
-  },
-  addButtonText: {
+addButtonText: {
     fontSize: 16,
     fontWeight: '500',
     marginLeft: 8,
-  },
-});
-
 export default PaymentMethodsScreen; 

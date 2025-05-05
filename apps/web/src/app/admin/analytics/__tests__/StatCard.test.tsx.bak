@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import stat-card from '../stat-card.tsx';
+
+describe('stat-card', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<stat-card />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 import { SharingService } from '@/services/sharing-service';
@@ -16,28 +15,18 @@ export async function {
 
     if (!data.email || !data.imageData || !data.type) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-    }
-
-    const result = await SharingService.shareImage({
+const result = await SharingService.shareImage({
       ...data,
       userId: session.user.id,
-    });
-
-    if (!result.success) {
+if (!result.success) {
       return NextResponse.json({ error: result.error }, { status: 500 });
-    }
-
-    return NextResponse.json({
+return NextResponse.json({
       success: true,
       shareId: result.shareId,
       shareUrl: `${process.env.NEXT_PUBLIC_APP_URL}/share/${result.shareId}`,
-    });
-  } catch (error) {
+catch (error) {
     console.error('Error in share API:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); GET(request: Request) {
@@ -47,17 +36,11 @@ export async function {
 
     if (!shareId) {
       return NextResponse.json({ error: 'Share ID is required' }, { status: 400 });
-    }
-
-    const result = await SharingService.getShare(shareId);
+const result = await SharingService.getShare(shareId);
 
     if (!result.success) {
       return NextResponse.json({ error: result.error }, { status: 500 });
-    }
-
-    return NextResponse.json(result.data);
-  } catch (error) {
+return NextResponse.json(result.data);
+catch (error) {
     console.error('Error in share API:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}

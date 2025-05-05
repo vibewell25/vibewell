@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import services-form from '../services-form.tsx';
+
+describe('services-form', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<services-form />);
+    expect(container).toBeInTheDocument();
+  });
+});

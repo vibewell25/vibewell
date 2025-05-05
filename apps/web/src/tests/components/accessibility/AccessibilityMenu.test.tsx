@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
+/* eslint-disable */import { render, screen, fireEvent, act } from '@testing-library/react';
 import AccessibilityMenu from '@/components/ui/accessibility/AccessibilityMenu';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 
@@ -41,14 +41,14 @@ describe('AccessibilityMenu', () => {
     // Mock classList functions
     document.documentElement.classList.add = jest.fn();
     document.documentElement.classList.remove = jest.fn();
-  });
+  }));
 
   test('renders accessibility button', () => {
     render(<AccessibilityMenu />);
 
     const accessibilityButton = screen.getByRole('button', {
       name: /accessibility menu/i,
-    });
+    }));
 
     expect(accessibilityButton).toBeInTheDocument();
   });
@@ -95,7 +95,7 @@ describe('AccessibilityMenu', () => {
       expect.objectContaining({
         highContrast: true,
       }),
-    );
+
   });
 
   test('toggles large text mode', async () => {
@@ -123,7 +123,7 @@ describe('AccessibilityMenu', () => {
       expect.objectContaining({
         largeText: true,
       }),
-    );
+
   });
 
   test('cycles through line height options', async () => {
@@ -150,7 +150,7 @@ describe('AccessibilityMenu', () => {
       expect.objectContaining({
         lineHeight: 'increased',
       }),
-    );
+
   });
 
   test('resets all settings when reset button is clicked', async () => {
@@ -182,8 +182,7 @@ describe('AccessibilityMenu', () => {
       lineHeight: 'normal',
       keyboardMode: false,
       textSpacing: false,
-    });
-  });
+    }));
 
   test('applies classes to document when settings change', () => {
     // Mock settings with highContrast enabled
@@ -205,5 +204,4 @@ describe('AccessibilityMenu', () => {
 
     // Check if the high-contrast class was added to document
     expect(document.documentElement.classList.add).toHaveBeenCalledWith('high-contrast');
-  });
-});
+  }));

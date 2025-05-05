@@ -1,6 +1,4 @@
-
-    
-    import NetInfo from '@react-native-community/netinfo';
+import NetInfo from '@react-native-community/netinfo';
 
     import OfflineStorage from '../utils/offline-storage';
 
@@ -8,7 +6,7 @@
     jest.mock('@react-native-community/netinfo', () => ({
   addEventListener: jest.fn(),
   fetch: jest.fn()
-}));
+));
 
 describe('Network Monitoring', () => {
   let storage: OfflineStorage;
@@ -19,15 +17,10 @@ describe('Network Monitoring', () => {
     (NetInfo.addEventListener as jest.Mock).mockImplementation((callback) => {
       netInfoCallback = callback;
       return jest.fn(); // Return unsubscribe function
-    });
-    storage = OfflineStorage.getInstance();
-  });
-
-  it('should initialize network listener on instance creation', () => {
+storage = OfflineStorage.getInstance();
+it('should initialize network listener on instance creation', () => {
     expect(NetInfo.addEventListener).toHaveBeenCalled();
-  });
-
-  it('should trigger sync when coming back online', async () => {
+it('should trigger sync when coming back online', async () => {
     // Mock going offline
     netInfoCallback({ isConnected: false });
     
@@ -45,9 +38,7 @@ describe('Network Monitoring', () => {
 
         const syncStatus = await storage.getSyncStatus('test-key');
     expect(syncStatus).toBe(true);
-  });
-
-  it('should queue items for sync when offline', async () => {
+it('should queue items for sync when offline', async () => {
     // Mock being offline
     netInfoCallback({ isConnected: false });
     
@@ -65,9 +56,7 @@ describe('Network Monitoring', () => {
 
         const storedData = await storage.getData('test-key');
     expect(storedData).toEqual(testData);
-  });
-
-  it('should handle network state changes gracefully', () => {
+it('should handle network state changes gracefully', () => {
     // Test rapid network state changes
     netInfoCallback({ isConnected: false });
     netInfoCallback({ isConnected: true });
@@ -77,10 +66,8 @@ describe('Network Monitoring', () => {
     // Verify no errors were thrown
     expect(() => {
       netInfoCallback({ isConnected: null });
-    }).not.toThrow();
-  });
-
-  it('should maintain sync queue across network changes', async () => {
+).not.toThrow();
+it('should maintain sync queue across network changes', async () => {
     // Mock being offline
     netInfoCallback({ isConnected: false });
     
@@ -99,5 +86,3 @@ describe('Network Monitoring', () => {
     const status2 = await storage.getSyncStatus('key2');
     expect(status1).toBe(true);
     expect(status2).toBe(true);
-  });
-}); 

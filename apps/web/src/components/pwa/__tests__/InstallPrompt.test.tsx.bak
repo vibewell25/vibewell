@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import install-prompt from '../install-prompt.tsx';
+
+describe('install-prompt', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<install-prompt />);
+    expect(container).toBeInTheDocument();
+  });
+});

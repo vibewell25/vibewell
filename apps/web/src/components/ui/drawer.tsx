@@ -15,14 +15,8 @@ const drawerVariants = cva(
         left: 'data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm',
         right:
           'data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm',
-      },
-    },
-    defaultVariants: {
+defaultVariants: {
       side: 'right',
-    },
-  },
-);
-
 interface DrawerProps extends DialogPrimitive.DialogProps {}
 
 const Drawer = ({ children, ...props }: DrawerProps) => (
@@ -32,7 +26,6 @@ const Drawer = ({ children, ...props }: DrawerProps) => (
       {children}
     </DialogPrimitive.Portal>
   </DialogPrimitive.Root>
-);
 Drawer.displayName = 'Drawer';
 
 interface DrawerTriggerProps extends DialogPrimitive.DialogTriggerProps {}
@@ -67,7 +60,6 @@ interface DrawerHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const DrawerHeader = ({ className, ...props }: DrawerHeaderProps) => (
   <div className={cn('flex flex-col space-y-2 text-center sm:text-left', className)} {...props} />
-);
 DrawerHeader.displayName = 'DrawerHeader';
 
 interface DrawerTitleProps extends DialogPrimitive.DialogTitleProps {}
@@ -105,7 +97,6 @@ const DrawerFooter = ({ className, ...props }: DrawerFooterProps) => (
     className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2', className)}
     {...props}
   />
-);
 DrawerFooter.displayName = 'DrawerFooter';
 
 export {
@@ -117,4 +108,3 @@ export {
   DrawerTitle,
   DrawerDescription,
   DrawerFooter,
-};

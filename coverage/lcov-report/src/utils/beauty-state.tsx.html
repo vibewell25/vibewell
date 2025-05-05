@@ -1649,20 +1649,20 @@ export const <span class="cstat-no" title="statement not covered" >createBeautyC
   const catalogState = <span class="cstat-no" title="statement not covered" >createState&lt;BeautyCatalogState&gt;(initialCatalogState);</span>
 &nbsp;
   // Implement all the methods
-<span class="cstat-no" title="statement not covered" >  catalogState?.setState({</span>
+<span class="cstat-no" title="statement not covered" >  catalogState.setState({</span>
     fetchProducts: <span class="fstat-no" title="function not covered" >async (): Promise&lt;void&gt; =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      catalogState?.setState({ isLoading: true, error: null });</span>
+<span class="cstat-no" title="statement not covered" >      catalogState.setState({ isLoading: true, error: null });</span>
 <span class="cstat-no" title="statement not covered" >      try {</span>
         // In a real implementation, this would be an API call
         const response = <span class="cstat-no" title="statement not covered" >await fetch('/api/beauty/products');</span>
-<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >          throw new Error('Failed to fetch products');</span>
         }
-        const products = <span class="cstat-no" title="statement not covered" >await response?.json();</span>
-<span class="cstat-no" title="statement not covered" >        catalogState?.setState({ products, isLoading: false });</span>
+        const products = <span class="cstat-no" title="statement not covered" >await response.json();</span>
+<span class="cstat-no" title="statement not covered" >        catalogState.setState({ products, isLoading: false });</span>
       } catch (error) {
-<span class="cstat-no" title="statement not covered" >        catalogState?.setState({</span>
-          error: error instanceof Error ? error?.message : 'Unknown error',
+<span class="cstat-no" title="statement not covered" >        catalogState.setState({</span>
+          error: error instanceof Error ? error.message : 'Unknown error',
           isLoading: false,
         });
       }
@@ -1672,31 +1672,31 @@ export const <span class="cstat-no" title="statement not covered" >createBeautyC
       key: K,
       value: BeautyCatalogState['filters'][K],
     ): void =&gt; {
-      const currentState = <span class="cstat-no" title="statement not covered" >catalogState?.getState();</span>
-<span class="cstat-no" title="statement not covered" >      catalogState?.setState({</span>
+      const currentState = <span class="cstat-no" title="statement not covered" >catalogState.getState();</span>
+<span class="cstat-no" title="statement not covered" >      catalogState.setState({</span>
         filters: {
-          ...currentState?.filters,
+          ...currentState.filters,
           [key]: value,
         },
       });
     },
 &nbsp;
     resetFilters: <span class="fstat-no" title="function not covered" >(): void =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      catalogState?.setState({</span>
-        filters: initialCatalogState?.filters,
+<span class="cstat-no" title="statement not covered" >      catalogState.setState({</span>
+        filters: initialCatalogState.filters,
         searchQuery: '',
       });
     },
 &nbsp;
     setSearchQuery: <span class="fstat-no" title="function not covered" >(q</span>uery: string): void =&gt; {
-<span class="cstat-no" title="statement not covered" >      catalogState?.setState({ searchQuery: query });</span>
+<span class="cstat-no" title="statement not covered" >      catalogState.setState({ searchQuery: query });</span>
     },
 &nbsp;
     toggleFavorite: <span class="fstat-no" title="function not covered" >(p</span>roductId: string): void =&gt; {
-      const currentState = <span class="cstat-no" title="statement not covered" >catalogState?.getState();</span>
-<span class="cstat-no" title="statement not covered" >      catalogState?.setState({</span>
-        products: currentState?.products.map(<span class="fstat-no" title="function not covered" >(p</span>roduct) =&gt;
-<span class="cstat-no" title="statement not covered" >          product?.id === productId ? { ...product, isFavorite: !product?.isFavorite } : product,</span>
+      const currentState = <span class="cstat-no" title="statement not covered" >catalogState.getState();</span>
+<span class="cstat-no" title="statement not covered" >      catalogState.setState({</span>
+        products: currentState.products.map(<span class="fstat-no" title="function not covered" >(p</span>roduct) =&gt;
+<span class="cstat-no" title="statement not covered" >          product.id === productId ? { ...product, isFavorite: !product.isFavorite } : product,</span>
         ),
       });
     },
@@ -1778,20 +1778,20 @@ export const <span class="cstat-no" title="statement not covered" >createVirtual
   const tryOnState = <span class="cstat-no" title="statement not covered" >createState&lt;VirtualTryOnState&gt;(initialTryOnState);</span>
 &nbsp;
   // Implement all the methods
-<span class="cstat-no" title="statement not covered" >  tryOnState?.setState({</span>
+<span class="cstat-no" title="statement not covered" >  tryOnState.setState({</span>
     loadTryOnProducts: <span class="fstat-no" title="function not covered" >async (): Promise&lt;void&gt; =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      tryOnState?.setState({ isLoading: true, error: null });</span>
+<span class="cstat-no" title="statement not covered" >      tryOnState.setState({ isLoading: true, error: null });</span>
 <span class="cstat-no" title="statement not covered" >      try {</span>
         // In a real implementation, this would be an API call
         const response = <span class="cstat-no" title="statement not covered" >await fetch('/api/beauty/try-on-products');</span>
-<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >          throw new Error('Failed to fetch try-on products');</span>
         }
-        const products = <span class="cstat-no" title="statement not covered" >await response?.json();</span>
-<span class="cstat-no" title="statement not covered" >        tryOnState?.setState({ availableProducts: products, isLoading: false });</span>
+        const products = <span class="cstat-no" title="statement not covered" >await response.json();</span>
+<span class="cstat-no" title="statement not covered" >        tryOnState.setState({ availableProducts: products, isLoading: false });</span>
       } catch (error) {
-<span class="cstat-no" title="statement not covered" >        tryOnState?.setState({</span>
-          error: error instanceof Error ? error?.message : 'Unknown error',
+<span class="cstat-no" title="statement not covered" >        tryOnState.setState({</span>
+          error: error instanceof Error ? error.message : 'Unknown error',
           isLoading: false,
         });
       }
@@ -1799,61 +1799,61 @@ export const <span class="cstat-no" title="statement not covered" >createVirtual
 &nbsp;
     selectProduct: <span class="fstat-no" title="function not covered" >(p</span>roductId) =&gt; {
       const product =
-<span class="cstat-no" title="statement not covered" >        tryOnState?.getState().availableProducts?.find(<span class="fstat-no" title="function not covered" >(p</span>) =&gt; <span class="cstat-no" title="statement not covered" >p?.id === productId) || n</span>ull;</span>
-      const firstAvailableColor = <span class="cstat-no" title="statement not covered" >product?.colors?.find(<span class="fstat-no" title="function not covered" >(c</span>) =&gt; <span class="cstat-no" title="statement not covered" >c?.isAvailable) || n</span>ull;</span>
+<span class="cstat-no" title="statement not covered" >        tryOnState.getState().availableProducts.find(<span class="fstat-no" title="function not covered" >(p</span>) =&gt; <span class="cstat-no" title="statement not covered" >p.id === productId) || n</span>ull;</span>
+      const firstAvailableColor = <span class="cstat-no" title="statement not covered" >product.colors.find(<span class="fstat-no" title="function not covered" >(c</span>) =&gt; <span class="cstat-no" title="statement not covered" >c.isAvailable)</span> || null;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      tryOnState?.setState({</span>
+<span class="cstat-no" title="statement not covered" >      tryOnState.setState({</span>
         selectedProduct: product,
         selectedColor: firstAvailableColor,
         // Add to recently tried if not already there
         recentlyTriedProducts: product
           ? [
               product,
-              ...tryOnState?.getState().recentlyTriedProducts?.filter(<span class="fstat-no" title="function not covered" >(p</span>) =&gt; <span class="cstat-no" title="statement not covered" >p?.id !== productId),</span>
+              ...tryOnState.getState().recentlyTriedProducts.filter(<span class="fstat-no" title="function not covered" >(p</span>) =&gt; <span class="cstat-no" title="statement not covered" >p.id !== productId),</span>
             ].slice(0, 5) // Keep only 5 most recent
-          : tryOnState?.getState().recentlyTriedProducts,
+          : tryOnState.getState().recentlyTriedProducts,
       });
     },
 &nbsp;
     selectColor: <span class="fstat-no" title="function not covered" >(c</span>olorId) =&gt; {
-      const product = <span class="cstat-no" title="statement not covered" >tryOnState?.getState().selectedProduct;</span>
+      const product = <span class="cstat-no" title="statement not covered" >tryOnState.getState().selectedProduct;</span>
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!product) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
-      const color = <span class="cstat-no" title="statement not covered" >product?.colors.find(<span class="fstat-no" title="function not covered" >(c</span>) =&gt; <span class="cstat-no" title="statement not covered" >c?.id === colorId) || n</span>ull;</span>
-<span class="cstat-no" title="statement not covered" >      tryOnState?.setState({ selectedColor: color });</span>
+      const color = <span class="cstat-no" title="statement not covered" >product.colors.find(<span class="fstat-no" title="function not covered" >(c</span>) =&gt; <span class="cstat-no" title="statement not covered" >c.id === colorId) || n</span>ull;</span>
+<span class="cstat-no" title="statement not covered" >      tryOnState.setState({ selectedColor: color });</span>
     },
 &nbsp;
     toggleCamera: <span class="fstat-no" title="function not covered" >() =&gt; {</span>
-      const currentState = <span class="cstat-no" title="statement not covered" >tryOnState?.getState();</span>
+      const currentState = <span class="cstat-no" title="statement not covered" >tryOnState.getState();</span>
       // If turning off camera, also make sure AR is off
-<span class="cstat-no" title="statement not covered" >      if (currentState?.cameraActive) {</span>
-<span class="cstat-no" title="statement not covered" >        tryOnState?.setState({</span>
+<span class="cstat-no" title="statement not covered" >      if (currentState.cameraActive) {</span>
+<span class="cstat-no" title="statement not covered" >        tryOnState.setState({</span>
           cameraActive: false,
           arActive: false,
           faceDetected: false,
         });
       } else {
-<span class="cstat-no" title="statement not covered" >        tryOnState?.setState({ cameraActive: true });</span>
+<span class="cstat-no" title="statement not covered" >        tryOnState.setState({ cameraActive: true });</span>
         // Start face detection when camera is activated
 <span class="cstat-no" title="statement not covered" >        setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
           // Simulating face detection success after a short delay
           // In a real app, this would use a face tracking library
-<span class="cstat-no" title="statement not covered" >          tryOnState?.setState({ faceDetected: true });</span>
+<span class="cstat-no" title="statement not covered" >          tryOnState.setState({ faceDetected: true });</span>
         }, 2000);
       }
     },
 &nbsp;
     startARExperience: <span class="fstat-no" title="function not covered" >async () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      tryOnState?.setState({ isLoading: true, error: null });</span>
+<span class="cstat-no" title="statement not covered" >      tryOnState.setState({ isLoading: true, error: null });</span>
 <span class="cstat-no" title="statement not covered" >      try {</span>
         // In a real implementation, this would initialize WebXR
         // For simulation purposes, we'll just return success after a delay
 <span class="cstat-no" title="statement not covered" >        await new Promise(<span class="fstat-no" title="function not covered" >(r</span>esolve) =&gt; <span class="cstat-no" title="statement not covered" >setTimeout(resolve, 1000));</span></span>
-<span class="cstat-no" title="statement not covered" >        tryOnState?.setState({ arActive: true, isLoading: false });</span>
+<span class="cstat-no" title="statement not covered" >        tryOnState.setState({ arActive: true, isLoading: false });</span>
 <span class="cstat-no" title="statement not covered" >        return true;</span>
       } catch (error) {
-<span class="cstat-no" title="statement not covered" >        tryOnState?.setState({</span>
-          error: error instanceof Error ? error?.message : 'Failed to start AR',
+<span class="cstat-no" title="statement not covered" >        tryOnState.setState({</span>
+          error: error instanceof Error ? error.message : 'Failed to start AR',
           isLoading: false,
           arActive: false,
         });
@@ -1862,7 +1862,7 @@ export const <span class="cstat-no" title="statement not covered" >createVirtual
     },
 &nbsp;
     stopARExperience: <span class="fstat-no" title="function not covered" >() =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      tryOnState?.setState({ arActive: false });</span>
+<span class="cstat-no" title="statement not covered" >      tryOnState.setState({ arActive: false });</span>
     },
 &nbsp;
     captureImage: <span class="fstat-no" title="function not covered" >async () =&gt; {</span>
@@ -1871,8 +1871,8 @@ export const <span class="cstat-no" title="statement not covered" >createVirtual
         // For simulation, we'll just return a placeholder
 <span class="cstat-no" title="statement not covered" >        return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';</span>
       } catch (error) {
-<span class="cstat-no" title="statement not covered" >        tryOnState?.setState({</span>
-          error: error instanceof Error ? error?.message : 'Failed to capture image',
+<span class="cstat-no" title="statement not covered" >        tryOnState.setState({</span>
+          error: error instanceof Error ? error.message : 'Failed to capture image',
         });
 <span class="cstat-no" title="statement not covered" >        return null;</span>
       }
@@ -1880,18 +1880,18 @@ export const <span class="cstat-no" title="statement not covered" >createVirtual
 &nbsp;
     saveToFavorites: <span class="fstat-no" title="function not covered" >(p</span>roductId, colorId) =&gt; {
       // In a real implementation, this would save to user's favorites
-<span class="cstat-no" title="statement not covered" >      console?.log(`Saved product ${productId} with color ${colorId} to favorites`);</span>
+<span class="cstat-no" title="statement not covered" >      console.log(`Saved product ${productId} with color ${colorId} to favorites`);</span>
     },
 &nbsp;
     shareImage: <span class="fstat-no" title="function not covered" >async (i</span>mageData) =&gt; {
 <span class="cstat-no" title="statement not covered" >      try {</span>
         // In a real implementation, this would use the Web Share API
-<span class="cstat-no" title="statement not covered" >        if (navigator?.share) {</span>
-<span class="cstat-no" title="statement not covered" >          await navigator?.share({</span>
+<span class="cstat-no" title="statement not covered" >        if (navigator.share) {</span>
+<span class="cstat-no" title="statement not covered" >          await navigator.share({</span>
             title: 'My Virtual Try-On',
             text: 'Check out this beauty look I created with Vibewell AR!',
             // In a real app, you'd first upload the image and share the URL
-            url: 'https://vibewell?.com/virtual-try-on',
+            url: 'https://vibewell.com/virtual-try-on',
           });
 <span class="cstat-no" title="statement not covered" >          return true;</span>
         } else {
@@ -1900,8 +1900,8 @@ export const <span class="cstat-no" title="statement not covered" >createVirtual
 <span class="cstat-no" title="statement not covered" >          return false;</span>
         }
       } catch (error) {
-<span class="cstat-no" title="statement not covered" >        tryOnState?.setState({</span>
-          error: error instanceof Error ? error?.message : 'Failed to share image',
+<span class="cstat-no" title="statement not covered" >        tryOnState.setState({</span>
+          error: error instanceof Error ? error.message : 'Failed to share image',
         });
 <span class="cstat-no" title="statement not covered" >        return false;</span>
       }
@@ -2004,78 +2004,78 @@ const initialBookingState: BeautyBookingState = <span class="cstat-no" title="st
 export const <span class="cstat-no" title="statement not covered" >createBeautyBookingState </span>= <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
   const bookingState = <span class="cstat-no" title="statement not covered" >createState&lt;BeautyBookingState&gt;(</span>
     initialBookingState,
-    StateManagerType?.REDUX, // Explicitly keep Redux for complex booking flow with middleware
+    StateManagerType.REDUX, // Explicitly keep Redux for complex booking flow with middleware
   );
 &nbsp;
   // Implement all the methods
-<span class="cstat-no" title="statement not covered" >  bookingState?.setState({</span>
+<span class="cstat-no" title="statement not covered" >  bookingState.setState({</span>
     fetchServices: <span class="fstat-no" title="function not covered" >async (): Promise&lt;void&gt; =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      bookingState?.setState({ isLoading: true, error: null });</span>
+<span class="cstat-no" title="statement not covered" >      bookingState.setState({ isLoading: true, error: null });</span>
 <span class="cstat-no" title="statement not covered" >      try {</span>
         // In a real implementation, this would be an API call
         const response = <span class="cstat-no" title="statement not covered" >await fetch('/api/beauty/services');</span>
-<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >          throw new Error('Failed to fetch beauty services');</span>
         }
-        const services = <span class="cstat-no" title="statement not covered" >await response?.json();</span>
-<span class="cstat-no" title="statement not covered" >        bookingState?.setState({ services, isLoading: false });</span>
+        const services = <span class="cstat-no" title="statement not covered" >await response.json();</span>
+<span class="cstat-no" title="statement not covered" >        bookingState.setState({ services, isLoading: false });</span>
       } catch (error) {
-<span class="cstat-no" title="statement not covered" >        bookingState?.setState({</span>
-          error: error instanceof Error ? error?.message : 'Unknown error',
+<span class="cstat-no" title="statement not covered" >        bookingState.setState({</span>
+          error: error instanceof Error ? error.message : 'Unknown error',
           isLoading: false,
         });
       }
     },
 &nbsp;
     fetchProviders: <span class="fstat-no" title="function not covered" >async (s</span>erviceId) =&gt; {
-<span class="cstat-no" title="statement not covered" >      bookingState?.setState({ isLoading: true, error: null });</span>
+<span class="cstat-no" title="statement not covered" >      bookingState.setState({ isLoading: true, error: null });</span>
 <span class="cstat-no" title="statement not covered" >      try {</span>
         // In a real implementation, this would be an API call
         const response = <span class="cstat-no" title="statement not covered" >await fetch(`/api/beauty/providers?serviceId=${serviceId}`);</span>
-<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >          throw new Error('Failed to fetch beauty providers');</span>
         }
-        const providers = <span class="cstat-no" title="statement not covered" >await response?.json();</span>
-<span class="cstat-no" title="statement not covered" >        bookingState?.setState({ providers, isLoading: false });</span>
+        const providers = <span class="cstat-no" title="statement not covered" >await response.json();</span>
+<span class="cstat-no" title="statement not covered" >        bookingState.setState({ providers, isLoading: false });</span>
       } catch (error) {
-<span class="cstat-no" title="statement not covered" >        bookingState?.setState({</span>
-          error: error instanceof Error ? error?.message : 'Unknown error',
+<span class="cstat-no" title="statement not covered" >        bookingState.setState({</span>
+          error: error instanceof Error ? error.message : 'Unknown error',
           isLoading: false,
         });
       }
     },
 &nbsp;
     fetchAvailability: <span class="fstat-no" title="function not covered" >async (p</span>roviderId, serviceId) =&gt; {
-<span class="cstat-no" title="statement not covered" >      bookingState?.setState({ isLoading: true, error: null });</span>
+<span class="cstat-no" title="statement not covered" >      bookingState.setState({ isLoading: true, error: null });</span>
 <span class="cstat-no" title="statement not covered" >      try {</span>
         // In a real implementation, this would be an API call
         const response = <span class="cstat-no" title="statement not covered" >await fetch(</span>
           `/api/beauty/availability?providerId=${providerId}&amp;serviceId=${serviceId}`,
         );
-<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >          throw new Error('Failed to fetch availability');</span>
         }
 &nbsp;
         // Update provider with availability data
-        const availability = <span class="cstat-no" title="statement not covered" >await response?.json();</span>
-        const currentState = <span class="cstat-no" title="statement not covered" >bookingState?.getState();</span>
+        const availability = <span class="cstat-no" title="statement not covered" >await response.json();</span>
+        const currentState = <span class="cstat-no" title="statement not covered" >bookingState.getState();</span>
 &nbsp;
-        const updatedProviders = <span class="cstat-no" title="statement not covered" >currentState?.providers.map(<span class="fstat-no" title="function not covered" >(p</span>rovider) =&gt;</span>
-<span class="cstat-no" title="statement not covered" >          provider?.id === providerId ? { ...provider, availability } : provider,</span>
+        const updatedProviders = <span class="cstat-no" title="statement not covered" >currentState.providers.map(<span class="fstat-no" title="function not covered" >(p</span>rovider) =&gt;</span>
+<span class="cstat-no" title="statement not covered" >          provider.id === providerId ? { ...provider, availability } : provider,</span>
         );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        bookingState?.setState({ providers: updatedProviders, isLoading: false });</span>
+<span class="cstat-no" title="statement not covered" >        bookingState.setState({ providers: updatedProviders, isLoading: false });</span>
       } catch (error) {
-<span class="cstat-no" title="statement not covered" >        bookingState?.setState({</span>
-          error: error instanceof Error ? error?.message : 'Unknown error',
+<span class="cstat-no" title="statement not covered" >        bookingState.setState({</span>
+          error: error instanceof Error ? error.message : 'Unknown error',
           isLoading: false,
         });
       }
     },
 &nbsp;
     selectService: <span class="fstat-no" title="function not covered" >(s</span>erviceId) =&gt; {
-      const service = <span class="cstat-no" title="statement not covered" >bookingState?.getState().services?.find(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; <span class="cstat-no" title="statement not covered" >s?.id === serviceId) || n</span>ull;</span>
-<span class="cstat-no" title="statement not covered" >      bookingState?.setState({</span>
+      const service = <span class="cstat-no" title="statement not covered" >bookingState.getState().services.find(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; <span class="cstat-no" title="statement not covered" >s.id === serviceId) || n</span>ull;</span>
+<span class="cstat-no" title="statement not covered" >      bookingState.setState({</span>
         selectedService: service,
         selectedProvider: null,
         selectedDate: null,
@@ -2084,60 +2084,60 @@ export const <span class="cstat-no" title="statement not covered" >createBeautyB
 &nbsp;
       // Fetch providers for this service
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (service) {</span>
-<span class="cstat-no" title="statement not covered" >        bookingState?.getState().fetchProviders(serviceId);</span>
+<span class="cstat-no" title="statement not covered" >        bookingState.getState().fetchProviders(serviceId);</span>
       }
     },
 &nbsp;
     selectProvider: <span class="fstat-no" title="function not covered" >(p</span>roviderId) =&gt; {
-      const provider = <span class="cstat-no" title="statement not covered" >bookingState?.getState().providers?.find(<span class="fstat-no" title="function not covered" >(p</span>) =&gt; <span class="cstat-no" title="statement not covered" >p?.id === providerId) || n</span>ull;</span>
-<span class="cstat-no" title="statement not covered" >      bookingState?.setState({</span>
+      const provider = <span class="cstat-no" title="statement not covered" >bookingState.getState().providers.find(<span class="fstat-no" title="function not covered" >(p</span>) =&gt; <span class="cstat-no" title="statement not covered" >p.id === providerId) || n</span>ull;</span>
+<span class="cstat-no" title="statement not covered" >      bookingState.setState({</span>
         selectedProvider: provider,
         selectedDate: null,
         selectedTime: null,
       });
 &nbsp;
       // Fetch availability for this provider and selected service
-      const serviceId = <span class="cstat-no" title="statement not covered" >bookingState?.getState().selectedService?.id;</span>
+      const serviceId = <span class="cstat-no" title="statement not covered" >bookingState.getState().selectedService.id;</span>
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (provider &amp;&amp; serviceId) {</span>
-<span class="cstat-no" title="statement not covered" >        bookingState?.getState().fetchAvailability(providerId, serviceId);</span>
+<span class="cstat-no" title="statement not covered" >        bookingState.getState().fetchAvailability(providerId, serviceId);</span>
       }
     },
 &nbsp;
     selectDate: <span class="fstat-no" title="function not covered" >(d</span>ate) =&gt; {
-<span class="cstat-no" title="statement not covered" >      bookingState?.setState({</span>
+<span class="cstat-no" title="statement not covered" >      bookingState.setState({</span>
         selectedDate: date,
         selectedTime: null,
       });
     },
 &nbsp;
     selectTime: <span class="fstat-no" title="function not covered" >(t</span>ime) =&gt; {
-<span class="cstat-no" title="statement not covered" >      bookingState?.setState({ selectedTime: time });</span>
+<span class="cstat-no" title="statement not covered" >      bookingState.setState({ selectedTime: time });</span>
     },
 &nbsp;
     setCustomerNotes: <span class="fstat-no" title="function not covered" >(n</span>otes) =&gt; {
-<span class="cstat-no" title="statement not covered" >      bookingState?.setState({ customerNotes: notes });</span>
+<span class="cstat-no" title="statement not covered" >      bookingState.setState({ customerNotes: notes });</span>
     },
 &nbsp;
     nextStep: <span class="fstat-no" title="function not covered" >() =&gt; {</span>
-      const currentStep = <span class="cstat-no" title="statement not covered" >bookingState?.getState().currentStep;</span>
-<span class="cstat-no" title="statement not covered" >      bookingState?.setState({ currentStep: currentStep + 1 });</span>
+      const currentStep = <span class="cstat-no" title="statement not covered" >bookingState.getState().currentStep;</span>
+<span class="cstat-no" title="statement not covered" >      bookingState.setState({ currentStep: currentStep + 1 });</span>
     },
 &nbsp;
     prevStep: <span class="fstat-no" title="function not covered" >() =&gt; {</span>
-      const currentStep = <span class="cstat-no" title="statement not covered" >bookingState?.getState().currentStep;</span>
+      const currentStep = <span class="cstat-no" title="statement not covered" >bookingState.getState().currentStep;</span>
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (currentStep &gt; 0) {</span>
-<span class="cstat-no" title="statement not covered" >        bookingState?.setState({ currentStep: currentStep - 1 });</span>
+<span class="cstat-no" title="statement not covered" >        bookingState.setState({ currentStep: currentStep - 1 });</span>
       }
     },
 &nbsp;
     goToStep: <span class="fstat-no" title="function not covered" >(s</span>tep) =&gt; {
-<span class="cstat-no" title="statement not covered" >      bookingState?.setState({ currentStep: step });</span>
+<span class="cstat-no" title="statement not covered" >      bookingState.setState({ currentStep: step });</span>
     },
 &nbsp;
     resetBooking: <span class="fstat-no" title="function not covered" >() =&gt; {</span>
       // Reset all booking data but keep services and providers
-      const { services, providers } = <span class="cstat-no" title="statement not covered" >bookingState?.getState();</span>
-<span class="cstat-no" title="statement not covered" >      bookingState?.setState({</span>
+      const { services, providers } = <span class="cstat-no" title="statement not covered" >bookingState.getState();</span>
+<span class="cstat-no" title="statement not covered" >      bookingState.setState({</span>
         ...initialBookingState,
         services,
         providers,
@@ -2146,16 +2146,16 @@ export const <span class="cstat-no" title="statement not covered" >createBeautyB
 &nbsp;
     submitBooking: <span class="fstat-no" title="function not covered" >async (): Promise&lt;boolean&gt; =&gt; {</span>
       const { selectedService, selectedProvider, selectedDate, selectedTime, customerNotes } =
-<span class="cstat-no" title="statement not covered" >        bookingState?.getState();</span>
+<span class="cstat-no" title="statement not covered" >        bookingState.getState();</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!selectedService || !selectedProvider || !selectedDate || !selectedTime) {</span>
-<span class="cstat-no" title="statement not covered" >        bookingState?.setState({</span>
+<span class="cstat-no" title="statement not covered" >        bookingState.setState({</span>
           error: 'Missing required booking information',
         });
 <span class="cstat-no" title="statement not covered" >        return false;</span>
       }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      bookingState?.setState({ isLoading: true, error: null });</span>
+<span class="cstat-no" title="statement not covered" >      bookingState.setState({ isLoading: true, error: null });</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      try {</span>
         // In a real implementation, this would be an API call
@@ -2164,24 +2164,24 @@ export const <span class="cstat-no" title="statement not covered" >createBeautyB
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON?.stringify({
-            serviceId: selectedService?.id,
-            providerId: selectedProvider?.id,
+          body: JSON.stringify({
+            serviceId: selectedService.id,
+            providerId: selectedProvider.id,
             date: selectedDate,
             time: selectedTime,
             notes: customerNotes,
           }),
         });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >          throw new Error('Failed to create booking');</span>
         }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        bookingState?.setState({ isLoading: false });</span>
+<span class="cstat-no" title="statement not covered" >        bookingState.setState({ isLoading: false });</span>
 <span class="cstat-no" title="statement not covered" >        return true;</span>
       } catch (error) {
-<span class="cstat-no" title="statement not covered" >        bookingState?.setState({</span>
-          error: error instanceof Error ? error?.message : 'Unknown error',
+<span class="cstat-no" title="statement not covered" >        bookingState.setState({</span>
+          error: error instanceof Error ? error.message : 'Unknown error',
           isLoading: false,
         });
 <span class="cstat-no" title="statement not covered" >        return false;</span>
@@ -2257,7 +2257,7 @@ export {};
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

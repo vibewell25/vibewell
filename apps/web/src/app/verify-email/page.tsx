@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -25,45 +23,34 @@ export default function VerifyEmailPage() {
           title: 'Error',
           description: 'Verification token is missing',
           variant: 'destructive',
-        });
-        router.push('/auth/login?error=missing_token');
+router.push('/auth/login?error=missing_token');
         return;
-      }
-
-      try {
+try {
         setIsVerifying(true);
         const response = await fetch(`/api/auth/verify-email?token=${token}`);
         const data = await response.json();
 
         if (!response.ok) {
           throw new Error(data.error || 'Verification failed');
-        }
-
-        setIsSuccess(true);
+setIsSuccess(true);
         toast({
           title: 'Success',
           description: 'Your email has been verified successfully',
-        });
-        
-        // Redirect to dashboard after a short delay
+// Redirect to dashboard after a short delay
         setTimeout(() => {
           router.push('/dashboard');
-        }, 2000);
-      } catch (error) {
+2000);
+catch (error) {
         console.error('Error verifying email:', error);
         toast({
           title: 'Error',
           description: error instanceof Error ? error.message : 'Failed to verify email',
           variant: 'destructive',
-        });
-        router.push('/auth/login?error=verification_failed');
-      } finally {
+router.push('/auth/login?error=verification_failed');
+finally {
         setIsVerifying(false);
-      }
-    };
-
-    verifyEmail();
-  }, [searchParams, router, toast]);
+verifyEmail();
+[searchParams, router, toast]);
 
   return (
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
@@ -96,5 +83,3 @@ export default function VerifyEmailPage() {
         </div>
       </div>
     </div>
-  );
-}

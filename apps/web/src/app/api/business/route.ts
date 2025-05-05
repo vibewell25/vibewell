@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 import { getServerSession } from 'next-auth';
@@ -14,30 +13,19 @@ export async function {
     const session = await getServerSession(authOptions);
     if (!session.user.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const businesses = await prisma.business.findMany({
+const businesses = await prisma.business.findMany({
       where: {
         isActive: true,
-      },
-      include: {
+include: {
         services: {
           select: {
             name: true,
-          },
-        },
-        reviews: {
+reviews: {
           select: {
             rating: true,
-          },
-        },
-      },
-      orderBy: {
+orderBy: {
         rating: 'desc',
-      },
-    });
-
-    const formattedBusinesses = businesses.map((business) => {
+const formattedBusinesses = businesses.map((business) => {
       const totalReviews = business.reviews.length;
       const averageRating =
         totalReviews > 0
@@ -55,12 +43,7 @@ export async function {
         imageUrl: business.imageUrl,
         location: business.location,
         services: business.services.map((service) => service.name),
-      };
-    });
-
-    return NextResponse.json(formattedBusinesses);
-  } catch (error) {
+return NextResponse.json(formattedBusinesses);
+catch (error) {
     console.error('Error fetching businesses:', error);
     return NextResponse.json({ error: 'Failed to fetch businesses' }, { status: 500 });
-  }
-}

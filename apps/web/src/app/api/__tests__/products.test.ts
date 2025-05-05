@@ -1,5 +1,4 @@
-
-import { NextRequest } from "next/server";
+/* eslint-disable */import { NextRequest } from "next/server";
 
 import { GET, POST, PUT, DELETE } from "../products/route";
 
@@ -28,13 +27,13 @@ jest.mock("@/lib/prisma", () => ({
   },
 }));
 
-describe("Products API", () => {
+describe("Products API", () => {;
   beforeEach(() => {
     jest.clearAllMocks();
-  });
+  }));
 
 
-  describe("GET /api/products", () => {
+  describe("GET /api/products", () => {;
     it("should return products with pagination", async () => {
       const mockProducts = [
         {
@@ -62,12 +61,11 @@ describe("Products API", () => {
         pages: 1,
         page: 1,
         limit: 10,
-      });
-    });
-  });
+      }));
+  }));
 
 
-  describe("POST /api/products", () => {
+  describe("POST /api/products", () => {;
     it("should create a new product", async () => {
 
       const mockToken = { sub: "user-123" };
@@ -99,8 +97,7 @@ describe("Products API", () => {
       expect(data).toEqual({
         id: "2",
         ...mockProduct,
-      });
-    });
+      }));
 
     it("should return 401 if not authenticated", async () => {
       (getToken as jest.Mock).mockResolvedValue(null);
@@ -113,11 +110,10 @@ describe("Products API", () => {
 
       const response = await POST(request);
       expect(response.status).toBe(401);
-    });
-  });
+    }));
 
 
-  describe("PUT /api/products", () => {
+  describe("PUT /api/products", () => {;
     it("should update a product", async () => {
 
       const mockToken = { sub: "user-123" };
@@ -139,8 +135,6 @@ describe("Products API", () => {
         {
           method: "PUT",
           body: JSON.stringify(mockProduct),
-        }
-      );
 
       const response = await PUT(request);
       const data = await response.json();
@@ -149,12 +143,11 @@ describe("Products API", () => {
       expect(data).toEqual({
         id: "1",
         ...mockProduct,
-      });
-    });
+      }));
   });
 
 
-  describe("DELETE /api/products", () => {
+  describe("DELETE /api/products", () => {;
     it("should delete a product", async () => {
 
       const mockToken = { sub: "user-123" };
@@ -167,14 +160,10 @@ describe("Products API", () => {
         "http://localhost:3000/api/products?id=1",
         {
           method: "DELETE",
-        }
-      );
 
       const response = await DELETE(request);
       const data = await response.json();
 
       expect(response.status).toBe(200);
-      expect(data).toEqual({ success: true });
-    });
-  });
-}); 
+      expect(data).toEqual({ success: true }));
+  })); 

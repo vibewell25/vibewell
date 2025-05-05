@@ -12,7 +12,5 @@ export const createCheckoutSession = async (priceId: string,
     
         headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ priceId, successUrl, cancelUrl, mode }),
-  });
-  const data = await res.json();
+const data = await res.json();
   return data.url;
-};

@@ -1,4 +1,3 @@
-'use client';
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/Button';
@@ -18,13 +17,12 @@ import { Icons } from '@/components/icons';
   PhotoIcon,
   ShieldCheckIcon,
   UserGroupIcon
-} from '@heroicons/react/24/outline';
+from '@heroicons/react/24/outline';
 interface BusinessHours {
   day: string;
   open: string;
   close: string;
   isClosed: boolean;
-}
 const defaultBusinessHours: BusinessHours[] = [
   { day: 'Monday', open: '09:00', close: '17:00', isClosed: false },
   { day: 'Tuesday', open: '09:00', close: '17:00', isClosed: false },
@@ -44,19 +42,16 @@ export default function SettingsPage() {
     appointmentReminders: true,
     newReviews: true,
     cancellations: true,
-  });
-  const handleBusinessHoursChange = (index: number, field: keyof BusinessHours, value: any) => {
+const handleBusinessHoursChange = (index: number, field: keyof BusinessHours, value: any) => {
     const updatedHours = [...businessHours];
     updatedHours[index] = { ...updatedHours[index], [field]: value };
     setBusinessHours(updatedHours);
-  };
-  const handleNotificationToggle = (key: string) => {
+const handleNotificationToggle = (key: string) => {
     setNotifications(prev => ({
       ...prev,
       [key]: !prev[key as keyof typeof notifications]
-    }));
-  };
-  return (
+));
+return (
     <Layout>
       <div className="container-app py-12">
         <div className="mb-8">
@@ -351,5 +346,3 @@ export default function SettingsPage() {
         </div>
       </div>
     </Layout>
-  );
-} 

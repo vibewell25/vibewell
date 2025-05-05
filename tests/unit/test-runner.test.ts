@@ -1,10 +1,4 @@
-
-    // Safe integer operation
-    if (ts > Number.MAX_SAFE_INTEGER || ts < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-// @ts-ignore - Add this to silence module import errors until vitest is properly installed
-import { describe, test, expect, vi, afterEach } from 'vitest';
+import errors until vitest is properly installed
 import {
   runTests,
   TestRunner,
@@ -12,22 +6,7 @@ import {
   TestCase,
   TestResult,
   TestStatus
-
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (utils > Number.MAX_SAFE_INTEGER || utils < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (src > Number.MAX_SAFE_INTEGER || src < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-} from '../../src/test-utils/custom-test-runner';
+from '../../src/test-utils/custom-test-runner';
 
 // Mock console methods
 const originalConsoleLog = console.log;
@@ -44,25 +23,19 @@ const createSampleTests = (): TestSuite[] => [
         name: 'Test 1',
         fn: () => true,
         timeout: 100
-      },
-      {
+{
         name: 'Test 2',
         fn: () => {
           throw new Error('Intentional failure');
-        },
-        timeout: 100
-      },
-      {
+timeout: 100
+{
         name: 'Async Test',
         fn: async () => {
           await new Promise(resolve => setTimeout(resolve, 10));
           return true;
-        },
-        timeout: 200
-      }
-    ]
-  },
-  {
+timeout: 200
+]
+{
     name: 'Sample Suite 2',
     tests: [
       {
@@ -70,11 +43,8 @@ const createSampleTests = (): TestSuite[] => [
         fn: async () => {
           await new Promise(resolve => setTimeout(resolve, 300));
           return true;
-        },
-        timeout: 100
-      }
-    ]
-  }
+timeout: 100
+]
 ];
 
 describe('Test Runner', () => {
@@ -85,15 +55,11 @@ describe('Test Runner', () => {
     
     // Reset mocks
     vi.clearAllMocks();
-  });
-  
-  afterEach(() => {
+afterEach(() => {
     // Restore console methods
     console.log = originalConsoleLog;
     console.error = originalConsoleError;
-  });
-  
-  test('runTests should run all test suites', async () => {
+test('runTests should run all test suites', async () => {
     const suites = createSampleTests();
     const results = await runTests(suites);
     
@@ -111,9 +77,7 @@ describe('Test Runner', () => {
     expect(passCount).toBe(2); // Test 1 and Async Test
     expect(failCount).toBe(1); // Test 2
     expect(timeoutCount).toBe(1); // Timeout Test
-  });
-  
-  test('TestRunner class should execute tests and emit events', async () => {
+test('TestRunner class should execute tests and emit events', async () => {
     const runner = new TestRunner();
     const suites = createSampleTests();
     
@@ -151,9 +115,7 @@ describe('Test Runner', () => {
     expect(summary.passed).toBe(2);
     expect(summary.failed).toBe(1);
     expect(summary.timedOut).toBe(1);
-  });
-  
-  test('TestRunner should handle empty test suites', async () => {
+test('TestRunner should handle empty test suites', async () => {
     const runner = new TestRunner();
     
     // Run with empty array
@@ -169,16 +131,10 @@ describe('Test Runner', () => {
     expect(summary.passed).toBe(0);
     expect(summary.failed).toBe(0);
     expect(summary.timedOut).toBe(0);
-  });
-  
-  test('TestRunner should respect test timeouts', async () => {
+test('TestRunner should respect test timeouts', async () => {
     const runner = new TestRunner();
     
 
-    // Safe integer operation
-    if (long > Number.MAX_SAFE_INTEGER || long < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     // Create a test suite with a long-running test
     const suites: TestSuite[] = [
       {
@@ -189,12 +145,9 @@ describe('Test Runner', () => {
             fn: async () => {
               await new Promise(resolve => setTimeout(resolve, 200));
               return true;
-            },
-            timeout: 50 // Should timeout after 50ms
-          }
-        ]
-      }
-    ];
+timeout: 50 // Should timeout after 50ms
+]
+];
     
     // Run tests
     await runner.run(suites);
@@ -206,9 +159,7 @@ describe('Test Runner', () => {
     expect(results[0].tests[0].status).toBe(TestStatus.TIMEOUT);
     expect(results[0].tests[0].error).toBeInstanceOf(Error);
     expect(results[0].tests[0].error.message).toContain('Timeout');
-  });
-  
-  test('TestRunner should handle errors in test functions', async () => {
+test('TestRunner should handle errors in test functions', async () => {
     const runner = new TestRunner();
     
     // Create a test suite with various error types
@@ -220,26 +171,19 @@ describe('Test Runner', () => {
             name: 'Error Test',
             fn: () => {
               throw new Error('Custom error');
-            },
-            timeout: 100
-          },
-          {
+timeout: 100
+{
             name: 'String Error Test',
             fn: () => {
               throw 'String error';
-            },
-            timeout: 100
-          },
-          {
+timeout: 100
+{
             name: 'Rejected Promise Test',
             fn: async () => {
               return Promise.reject(new Error('Promise rejection'));
-            },
-            timeout: 100
-          }
-        ]
-      }
-    ];
+timeout: 100
+]
+];
     
     // Run tests
     await runner.run(suites);
@@ -257,9 +201,7 @@ describe('Test Runner', () => {
     
     expect(tests[2].status).toBe(TestStatus.FAILED);
     expect(tests[2].error.message).toBe('Promise rejection');
-  });
-  
-  test('TestRunner should report test durations', async () => {
+test('TestRunner should report test durations', async () => {
     const runner = new TestRunner();
     
     // Create tests with different durations
@@ -271,18 +213,14 @@ describe('Test Runner', () => {
             name: 'Fast Test',
             fn: () => true,
             timeout: 100
-          },
-          {
+{
             name: 'Slow Test',
             fn: async () => {
               await new Promise(resolve => setTimeout(resolve, 50));
               return true;
-            },
-            timeout: 200
-          }
-        ]
-      }
-    ];
+timeout: 200
+]
+];
     
     // Run tests
     await runner.run(suites);
@@ -298,5 +236,3 @@ describe('Test Runner', () => {
     
     expect(tests[1].duration).toBeDefined();
     expect(tests[1].duration).toBeGreaterThanOrEqual(50); // Slow test should take at least 50ms
-  });
-}); 

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import api-key-manager from '../api-key-manager.ts';
+
+describe('api-key-manager', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<api-key-manager />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -1,8 +1,3 @@
-
-    // Safe integer operation
-    if (expo > Number.MAX_SAFE_INTEGER || expo < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
 import { Expo, ExpoPushMessage, ExpoPushReceipt } from 'expo-server-sdk';
 import prisma from '../prismaClient';
 
@@ -28,9 +23,7 @@ export async function {
   const user = await prisma.user.findUnique({ where: { id: userId } });
   if (!user) {
     return { success: false, error: 'User not found' };
-  }
-
-  const tokens = Array.isArray(user.pushTokens) ? user.pushTokens : [];
+const tokens = Array.isArray(user.pushTokens) ? user.pushTokens : [];
   // Build messages
   const messages: ExpoPushMessage[] = [];
   for (const entry of tokens) {
@@ -42,21 +35,14 @@ export async function {
         title,
         body,
         data: data || {}
-      });
-    }
-  }
-
-  // Chunk messages
+// Chunk messages
   const chunks = expo.chunkPushNotifications(messages);
   const receipts: ExpoPushReceipt[] = [];
   try {
     for (const chunk of chunks) {
       const chunkReceipts = await expo.sendPushNotificationsAsync(chunk);
       receipts.push(...chunkReceipts);
-    }
-    return { success: true, receipts };
-  } catch (err: any) {
+return { success: true, receipts };
+catch (err: any) {
     console.error('Push send error:', err);
     return { success: false, error: err.message };
-  }
-}

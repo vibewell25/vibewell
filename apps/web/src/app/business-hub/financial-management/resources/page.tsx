@@ -1,4 +1,3 @@
-'use client';
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/Button';
@@ -18,7 +17,6 @@ interface ResourceType {
   category: string;
   imageUrl: string;
   excerpt: string;
-}
 // Financial resource data - in a real app, this would come from an API
 const financialResources: ResourceType[] = [
   {
@@ -31,8 +29,7 @@ const financialResources: ResourceType[] = [
     imageUrl: '/images/financial-planning.jpg',
     excerpt:
       'Financial planning is critical for the long-term success of any wellness business. This guide will walk you through the essential steps to create a robust financial plan.',
-  },
-  {
+{
     id: '2',
     title: 'Tax Strategies for Wellness Practitioners',
     author: 'Michael Chen, Tax Specialist',
@@ -42,8 +39,7 @@ const financialResources: ResourceType[] = [
     imageUrl: '/images/tax-strategies.jpg',
     excerpt:
       'Understanding the tax implications specific to wellness practitioners can save you significant money and prevent compliance issues.',
-  },
-  {
+{
     id: '3',
     title: 'Pricing Strategies for Wellness Services',
     author: 'Elena Rodriguez, Business Strategist',
@@ -53,8 +49,7 @@ const financialResources: ResourceType[] = [
     imageUrl: '/images/pricing-strategies.jpg',
     excerpt:
       'Pricing wellness services requires a balance between perceived value, market rates, and your financial needs.',
-  },
-  {
+{
     id: '4',
     title: 'Cash Flow Management for Wellness Businesses',
     author: 'Thomas Wright, Financial Advisor',
@@ -64,8 +59,7 @@ const financialResources: ResourceType[] = [
     imageUrl: '/images/cash-flow.jpg',
     excerpt:
       'Cash flow management is particularly important in the wellness industry due to seasonal fluctuations and variable client attendance.',
-  },
-  {
+{
     id: '5',
     title: 'Financial Metrics Dashboard for Wellness Providers',
     author: 'Sophia Garcia, Business Analyst',
@@ -75,8 +69,7 @@ const financialResources: ResourceType[] = [
     imageUrl: '/images/financial-metrics.jpg',
     excerpt:
       'Identifying and tracking the right KPIs is essential for making informed business decisions.',
-  },
-  {
+{
     id: '6',
     title: 'Budgeting Templates for Wellness Entrepreneurs',
     author: 'Daniel Smith, Accountant',
@@ -86,8 +79,7 @@ const financialResources: ResourceType[] = [
     imageUrl: '/images/budgeting-templates.jpg',
     excerpt:
       'Understanding the key components of an effective budget for wellness practices and studios.',
-  },
-  {
+{
     id: '7',
     title: 'Profit Maximization Strategies for Wellness Providers',
     author: 'Rebecca Johnson, Business Coach',
@@ -96,7 +88,6 @@ const financialResources: ResourceType[] = [
     category: 'Profitability',
     imageUrl: '/images/profit-maximization.jpg',
     excerpt: 'Identifying the key factors that influence profitability in wellness businesses.',
-  },
 ];
 const categories = [
   'All',
@@ -118,8 +109,7 @@ export default function FinancialResourcesPage() {
       resource.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || resource.category === selectedCategory;
     return matchesSearch && matchesCategory;
-  });
-  return (
+return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
         <h1 className="mb-2 text-3xl font-bold">Business Hub</h1>
@@ -181,8 +171,7 @@ export default function FinancialResourcesPage() {
                     onClick={() => {
                       setSearchQuery('');
                       setSelectedCategory('All');
-                    }}
-                  >
+>
                     Clear Filters
                   </Button>
                 </div>
@@ -262,5 +251,3 @@ export default function FinancialResourcesPage() {
         </div>
       </div>
     </Layout>
-  );
-}

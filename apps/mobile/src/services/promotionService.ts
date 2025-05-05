@@ -7,15 +7,11 @@ export interface PromotionCode {
   discount: number;
   validFrom: string;
   validTo: string;
-}
-
 export const getPromotionCodes = async (): Promise<PromotionCode[]> => {
 
     fetch(`${serverBaseUrl}/api/promotions`);
   const data = await res.json();
   return data.codes;
-};
-
 export const createPromotionCode = async (payload: Partial<PromotionCode>): Promise<PromotionCode> => {
 
     fetch(`${serverBaseUrl}/api/promotions`, {
@@ -25,4 +21,3 @@ export const createPromotionCode = async (payload: Partial<PromotionCode>): Prom
     method: 'PUT',
 
     fetch(`${serverBaseUrl}/api/promotions/${id}`, { method: 'DELETE' });
-};

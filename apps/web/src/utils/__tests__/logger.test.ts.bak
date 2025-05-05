@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import logger from '../logger.ts';
+
+describe('logger', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<logger />);
+    expect(container).toBeInTheDocument();
+  });
+});

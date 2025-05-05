@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useState } from 'react';
 import { withLazyLoading } from '@/utils/lazyLoad';
 
@@ -10,8 +8,6 @@ const LazyEventCalendar = React.lazy(() => import('@/components/events-calendar'
 // Or using our HOC
 const LazyNotifications = withLazyLoading(
   () => import('@/components/notifications/NotificationCenter'),
-);
-
 export default function LazyLoadingExample() {
   const [showResourceDetail, setShowResourceDetail] = useState(false);
   const [showEventCalendar, setShowEventCalendar] = useState(false);
@@ -97,5 +93,3 @@ export default function LazyLoadingExample() {
         </ul>
       </div>
     </div>
-  );
-}

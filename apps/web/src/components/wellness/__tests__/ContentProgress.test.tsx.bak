@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import content-progress from '../content-progress.tsx';
+
+describe('content-progress', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<content-progress />);
+    expect(container).toBeInTheDocument();
+  });
+});

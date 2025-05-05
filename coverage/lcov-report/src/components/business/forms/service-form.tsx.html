@@ -1180,35 +1180,35 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   const [showCustomDuration, setShowCustomDuration] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
 &nbsp;
   // Get existing services from form or initialize an empty array
-  const services = <span class="cstat-no" title="statement not covered" >form?.watch('services') || [];</span>
+  const services = <span class="cstat-no" title="statement not covered" >form.watch('services') || [];</span>
 &nbsp;
   // Add a new service
   const addService = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
     // Form validation
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!newServiceName?.trim()) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!newServiceName.trim()) {</span>
 <span class="cstat-no" title="statement not covered" >      alert('Please enter a service name');</span>
 <span class="cstat-no" title="statement not covered" >      return;</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!newServicePrice?.trim() || isNaN(parseFloat(newServicePrice))) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!newServicePrice.trim() || isNaN(parseFloat(newServicePrice))) {</span>
 <span class="cstat-no" title="statement not covered" >      alert('Please enter a valid price');</span>
 <span class="cstat-no" title="statement not covered" >      return;</span>
     }
 &nbsp;
     // Create new service object
     const newService = <span class="cstat-no" title="statement not covered" >{</span>
-      id: Date?.now().toString(), // Generate a unique ID
-      name: newServiceName?.trim(),
+      id: Date.now().toString(), // Generate a unique ID
+      name: newServiceName.trim(),
       category: selectedCategory,
       price: parseFloat(newServicePrice),
       duration:
         newServiceDuration === 'custom' ? parseInt(customDuration) : parseInt(newServiceDuration),
-      description: newServiceDescription?.trim(),
+      description: newServiceDescription.trim(),
     };
 &nbsp;
     // Add to existing services
     const updatedServices = <span class="cstat-no" title="statement not covered" >[...services, newService];</span>
-<span class="cstat-no" title="statement not covered" >    form?.setValue('services', updatedServices, { shouldValidate: true });</span>
+<span class="cstat-no" title="statement not covered" >    form.setValue('services', updatedServices, { shouldValidate: true });</span>
 &nbsp;
     // Reset form fields
 <span class="cstat-no" title="statement not covered" >    setNewServiceName('');</span>
@@ -1221,8 +1221,8 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
   // Delete a service
   const deleteService = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>erviceId: string) =&gt; {</span>
-    const updatedServices = <span class="cstat-no" title="statement not covered" >services?.filter(<span class="fstat-no" title="function not covered" >(s</span>ervice) =&gt; <span class="cstat-no" title="statement not covered" >service?.id !== serviceId);</span></span>
-<span class="cstat-no" title="statement not covered" >    form?.setValue('services', updatedServices, { shouldValidate: true });</span>
+    const updatedServices = <span class="cstat-no" title="statement not covered" >services.filter(<span class="fstat-no" title="function not covered" >(s</span>ervice) =&gt; <span class="cstat-no" title="statement not covered" >service.id !== serviceId);</span></span>
+<span class="cstat-no" title="statement not covered" >    form.setValue('services', updatedServices, { shouldValidate: true });</span>
   };
 &nbsp;
   // Handle duration selection
@@ -1250,9 +1250,9 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                 &lt;FormLabel&gt;Service Name&lt;/FormLabel&gt;
                 &lt;FormControl&gt;
                   &lt;Input
-                    placeholder="e?.g. Haircut &amp; Style"
+                    placeholder="e.g. Haircut &amp; Style"
                     value={newServiceName}
-                    onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setNewServiceName(e?.target.value)}</span>
+                    onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setNewServiceName(e.target.value)}</span>
                   /&gt;
                 &lt;/FormControl&gt;
               &lt;/FormItem&gt;
@@ -1266,9 +1266,9 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                     &lt;/SelectTrigger&gt;
                   &lt;/FormControl&gt;
                   &lt;SelectContent&gt;
-                    {SERVICE_CATEGORIES?.map(<span class="fstat-no" title="function not covered" >(c</span>ategory) =&gt; (
-<span class="cstat-no" title="statement not covered" >                      &lt;SelectItem key={category?.value} v</span>alue={category?.value}&gt;
-                        {category?.label}
+                    {SERVICE_CATEGORIES.map(<span class="fstat-no" title="function not covered" >(c</span>ategory) =&gt; (
+<span class="cstat-no" title="statement not covered" >                      &lt;SelectItem key={category.value} v</span>alue={category.value}&gt;
+                        {category.label}
                       &lt;/SelectItem&gt;
                     ))}
                   &lt;/SelectContent&gt;
@@ -1285,9 +1285,9 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                       &lt;/Button&gt;
                     &lt;/DropdownMenuTrigger&gt;
                     &lt;DropdownMenuContent className="w-56"&gt;
-                      {SERVICE_CATEGORIES?.find(
-<span class="fstat-no" title="function not covered" >                        (c</span>) =&gt; <span class="cstat-no" title="statement not covered" >c?.value === selectedCategory,</span>
-                      )?.subcategories?.map(<span class="fstat-no" title="function not covered" >(s</span>ub) =&gt; (
+                      {SERVICE_CATEGORIES.find(
+<span class="fstat-no" title="function not covered" >                        (c</span>) =&gt; <span class="cstat-no" title="statement not covered" >c.value === selectedCategory,</span>
+                      ).subcategories.map(<span class="fstat-no" title="function not covered" >(s</span>ub) =&gt; (
 <span class="cstat-no" title="statement not covered" >                        &lt;DropdownMenuItem key={sub}&gt;{s</span>ub}&lt;/DropdownMenuItem&gt;
                       ))}
                     &lt;/DropdownMenuContent&gt;
@@ -1304,12 +1304,12 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                     &lt;DollarSign className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" /&gt;
                     &lt;Input
                       type="number"
-                      placeholder="e?.g. 75"
+                      placeholder="e.g. 75"
                       className="pl-10"
                       value={newServicePrice}
-                      onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setNewServicePrice(e?.target.value)}</span>
+                      onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setNewServicePrice(e.target.value)}</span>
                       min={0}
-                      step="0?.01"
+                      step="0.01"
                     /&gt;
                   &lt;/div&gt;
                 &lt;/FormControl&gt;
@@ -1324,9 +1324,9 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                     &lt;/SelectTrigger&gt;
                   &lt;/FormControl&gt;
                   &lt;SelectContent&gt;
-                    {SERVICE_DURATIONS?.map(<span class="fstat-no" title="function not covered" >(d</span>uration) =&gt; (
-<span class="cstat-no" title="statement not covered" >                      &lt;SelectItem key={duration?.value} v</span>alue={duration?.value}&gt;
-                        {duration?.label}
+                    {SERVICE_DURATIONS.map(<span class="fstat-no" title="function not covered" >(d</span>uration) =&gt; (
+<span class="cstat-no" title="statement not covered" >                      &lt;SelectItem key={duration.value} v</span>alue={duration.value}&gt;
+                        {duration.label}
                       &lt;/SelectItem&gt;
                     ))}
                   &lt;/SelectContent&gt;
@@ -1341,7 +1341,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                       type="number"
                       placeholder="Enter minutes"
                       value={customDuration}
-                      onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setCustomDuration(e?.target.value)}</span>
+                      onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setCustomDuration(e.target.value)}</span>
                       min={1}
                     /&gt;
                   &lt;/FormControl&gt;
@@ -1356,7 +1356,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
               &lt;Textarea
                 placeholder="Describe what this service includes..."
                 value={newServiceDescription}
-                onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setNewServiceDescription(e?.target.value)}</span>
+                onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setNewServiceDescription(e.target.value)}</span>
                 rows={3}
               /&gt;
             &lt;/FormControl&gt;
@@ -1367,40 +1367,40 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             &lt;Plus className="mr-2 h-4 w-4" /&gt; Add Service
           &lt;/Button&gt;
 &nbsp;
-          {<span class="branch-0 cbranch-no" title="branch not covered" >services?.length &gt; 0 &amp;&amp; (</span>
+          {<span class="branch-0 cbranch-no" title="branch not covered" >services.length &gt; 0 &amp;&amp; (</span>
             &lt;div className="mt-6"&gt;
               &lt;h3 className="mb-3 font-medium"&gt;Your Services&lt;/h3&gt;
               &lt;ScrollArea className="h-[300px] rounded-md border"&gt;
                 &lt;div className="space-y-4 p-4"&gt;
-                  {services?.map(<span class="fstat-no" title="function not covered" >(s</span>ervice) =&gt; (
+                  {services.map(<span class="fstat-no" title="function not covered" >(s</span>ervice) =&gt; (
 <span class="cstat-no" title="statement not covered" >                    &lt;div</span>
-                      key={service?.id}
+                      key={service.id}
                       className="flex items-start justify-between rounded-lg bg-muted/50 p-4"
                     &gt;
                       &lt;div className="space-y-1"&gt;
                         &lt;div className="flex items-center gap-2"&gt;
-                          &lt;h4 className="font-medium"&gt;{service?.name}&lt;/h4&gt;
-                          {<span class="branch-0 cbranch-no" title="branch not covered" >service?.category &amp;&amp; (</span>
+                          &lt;h4 className="font-medium"&gt;{service.name}&lt;/h4&gt;
+                          {<span class="branch-0 cbranch-no" title="branch not covered" >service.category </span>&amp;&amp; (
                             &lt;Badge variant="outline" className="text-xs"&gt;
-                              {SERVICE_CATEGORIES?.find(<span class="fstat-no" title="function not covered" >(c</span>) =&gt; <span class="cstat-no" title="statement not covered" >c?.value === service?.category)</span>
-                                ?.label || service?.category}
+                              {SERVICE_CATEGORIES.find(<span class="fstat-no" title="function not covered" >(c</span>) =&gt; <span class="cstat-no" title="statement not covered" >c.value === service.category)</span>
+                                .label || service.category}
                             &lt;/Badge&gt;
                           )}
                         &lt;/div&gt;
                         &lt;div className="text-sm text-muted-foreground"&gt;
-                          &lt;span className="font-medium"&gt;${service?.price.toFixed(2)}&lt;/span&gt; •{' '}
-                          {service?.duration} minutes
+                          &lt;span className="font-medium"&gt;${service.price.toFixed(2)}&lt;/span&gt; •{' '}
+                          {service.duration} minutes
                         &lt;/div&gt;
-                        {<span class="branch-0 cbranch-no" title="branch not covered" >service?.description &amp;&amp; (</span>
+                        {<span class="branch-0 cbranch-no" title="branch not covered" >service.description </span>&amp;&amp; (
                           &lt;p className="mt-1 text-sm text-muted-foreground"&gt;
-                            {service?.description}
+                            {service.description}
                           &lt;/p&gt;
                         )}
                       &lt;/div&gt;
                       &lt;Button
                         variant="ghost"
                         size="icon"
-                        onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >d</span>eleteService(service?.id)}</span>
+                        onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >d</span>eleteService(service.id)}</span>
                         className="h-8 w-8 text-destructive"
                       &gt;
                         &lt;Trash className="h-4 w-4" /&gt;
@@ -1422,12 +1422,12 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         &lt;CardContent&gt;
           &lt;div className="space-y-4"&gt;
             &lt;FormField
-              control={form?.control}
+              control={form.control}
               name="offersPackages"
               render={({ field }) =&gt; (
                 &lt;FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4"&gt;
                   &lt;FormControl&gt;
-                    &lt;Checkbox checked={field?.value} onCheckedChange={field?.onChange} /&gt;
+                    &lt;Checkbox checked={field.value} onCheckedChange={field.onChange} /&gt;
                   &lt;/FormControl&gt;
                   &lt;div className="space-y-1 leading-none"&gt;
                     &lt;FormLabel&gt;Offer Service Packages&lt;/FormLabel&gt;
@@ -1440,12 +1440,12 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             /&gt;
 &nbsp;
             &lt;FormField
-              control={form?.control}
+              control={form.control}
               name="offersSpecialDiscounts"
               render={({ field }) =&gt; (
                 &lt;FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4"&gt;
                   &lt;FormControl&gt;
-                    &lt;Checkbox checked={field?.value} onCheckedChange={field?.onChange} /&gt;
+                    &lt;Checkbox checked={field.value} onCheckedChange={field.onChange} /&gt;
                   &lt;/FormControl&gt;
                   &lt;div className="space-y-1 leading-none"&gt;
                     &lt;FormLabel&gt;Offer Special Discounts&lt;/FormLabel&gt;
@@ -1458,12 +1458,12 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             /&gt;
 &nbsp;
             &lt;FormField
-              control={form?.control}
+              control={form.control}
               name="offersGiftCards"
               render={({ field }) =&gt; (
                 &lt;FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4"&gt;
                   &lt;FormControl&gt;
-                    &lt;Checkbox checked={field?.value} onCheckedChange={field?.onChange} /&gt;
+                    &lt;Checkbox checked={field.value} onCheckedChange={field.onChange} /&gt;
                   &lt;/FormControl&gt;
                   &lt;div className="space-y-1 leading-none"&gt;
                     &lt;FormLabel&gt;Offer Gift Cards&lt;/FormLabel&gt;
@@ -1477,7 +1477,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
           &lt;/div&gt;
 &nbsp;
           &lt;FormField
-            control={form?.control}
+            control={form.control}
             name="specialOffersDescription"
             render={({ field }) =&gt; (
               &lt;FormItem className="mt-6"&gt;
@@ -1504,7 +1504,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

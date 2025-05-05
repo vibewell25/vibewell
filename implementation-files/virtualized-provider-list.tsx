@@ -10,27 +10,21 @@ interface Provider {
   rating: number;
   reviewCount: number;
   imageUrl: string;
-}
-
 interface VirtualizedProviderListProps {
   providers: Provider[];
   onSelectProvider: (provider: Provider) => void;
   className?: string;
-}
-
 export const VirtualizedProviderList: React.FC<VirtualizedProviderListProps> = ({
   providers,
   onSelectProvider,
   className = '',
-}) => {
+) => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const handleSelectProvider = (provider: Provider) => {
     setSelectedId(provider.id);
     onSelectProvider(provider);
-  };
-
-  const ProviderRow = ({ index, style }: { index: number, style: React.CSSProperties }) => {
+const ProviderRow = ({ index, style }: { index: number, style: React.CSSProperties }) => {
     const provider = providers[index];
     const isSelected = selectedId === provider.id;
     
@@ -67,10 +61,7 @@ export const VirtualizedProviderList: React.FC<VirtualizedProviderListProps> = (
           </div>
         </div>
       </div>
-    );
-  };
-
-  return (
+return (
     <div className={`h-96 ${className}`}>
       <AutoSizer>
         {({ height, width }) => (
@@ -86,5 +77,3 @@ export const VirtualizedProviderList: React.FC<VirtualizedProviderListProps> = (
         )}
       </AutoSizer>
     </div>
-  );
-};

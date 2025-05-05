@@ -22,8 +22,6 @@ export interface IUser extends Document {
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
-}
-
 const userSchema = new Schema({
   email: {
     type: String,
@@ -31,44 +29,35 @@ const userSchema = new Schema({
     unique: true,
     trim: true,
     lowercase: true
-  },
-  password: {
+password: {
     type: String,
     required: function(this: IUser) {
       // Password is required only if no social auth provider is used
       return !this.authProvider;
-    },
-    minlength: 8,
+minlength: 8,
     select: false
-  },
-  name: {
+name: {
     type: String,
     required: true,
     trim: true
-  },
-  picture: {
+picture: {
     type: String,
     trim: true
-  },
-  phoneNumber: {
+phoneNumber: {
     type: String,
     trim: true
-  },
-  role: {
+role: {
     type: String,
     enum: ['user', 'admin'],
     default: 'user'
-  },
-  emailVerified: {
+emailVerified: {
     type: Boolean,
     default: false
-  },
-  authProvider: {
+authProvider: {
     type: String,
     enum: ['google', 'facebook', 'twitter', 'linkedin', 'github', 'apple', null],
     default: null
-  },
-  googleId: String,
+googleId: String,
   facebookId: String,
   twitterId: String,
   linkedinId: String,
@@ -77,24 +66,15 @@ const userSchema = new Schema({
   twoFactorEnabled: {
     type: Boolean,
     default: false
-  },
-  twoFactorSecret: {
+twoFactorSecret: {
     type: String,
     select: false
-  },
-  backupCodes: {
+backupCodes: {
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     type: [String],
     select: false
-  }
-}, {
+{
   timestamps: true
-});
-
 // Hash password before saving
 userSchema.pre('save', async function {
   const start = Date.now();
@@ -103,17 +83,12 @@ userSchema.pre('save', async function {
   
   if (!user.isModified('password') || !user.password) {
     return next();
-  }
-
-  try {
+try {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
     next();
-  } catch (error) {
+catch (error) {
     next(error as Error);
-  }
-});
-
 // Compare password method
 userSchema.methods.comparePassword = async function {
   const start = Date.now();
@@ -122,15 +97,10 @@ userSchema.methods.comparePassword = async function {
   
   if (!user.password) {
     return false;
-  }
-
-  try {
+try {
     return await bcrypt.compare(candidatePassword, user.password);
-  } catch (error) {
+catch (error) {
     return false;
-  }
-};
-
 // Create indexes
 userSchema.index({ email: 1 });
 userSchema.index({ googleId: 1 });

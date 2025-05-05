@@ -18,17 +18,13 @@ const serviceBaseSchema = {
   categoryId: z.string().uuid().optional(),
   practitionerIds: z.array(z.string().uuid()).max(50).optional(),
   consultationFormId: z.string().uuid().optional()
-};
-
 export const createServiceSchema = z.object({
   ...serviceBaseSchema,
   businessId: z.string().uuid()
-});
-
 export const updateServiceSchema = z.object({
   ...serviceBaseSchema,
   id: z.string().uuid()
-}).partial();
+).partial();
 
 export const serviceSearchSchema = z.object({
   isActive: z.boolean().optional(),
@@ -39,8 +35,6 @@ export const serviceSearchSchema = z.object({
   duration: z.number().int().min(1).optional(),
   featured: z.boolean().optional(),
   practitionerId: z.string().uuid().optional()
-});
-
 // Types derived from schemas
 export type CreateServiceDTO = z.infer<typeof createServiceSchema>;
 export type UpdateServiceDTO = z.infer<typeof updateServiceSchema>;
@@ -53,4 +47,3 @@ export interface ServiceWithRelations extends Service {
   customPricing?: CustomPricing[];
   reviews?: ServiceReview[];
   serviceCategory?: ServiceCategory;
-} 

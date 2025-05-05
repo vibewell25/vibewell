@@ -1,20 +1,16 @@
 import OpenAI from 'openai';
 import { env } from '@/config/env';
 import { z } from 'zod';
-import { RateLimiter } from '@/lib/rate-limiter';
+import { RateLimiter } from '@/lib/RateLimiter';
 import { logger } from '@/lib/logger';
 
 if (!env.OPENAI_API_KEY) {
   throw new Error('Missing OPENAI_API_KEY environment variable');
-}
-
 // Initialize OpenAI with proper configuration
 export const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY,
   maxRetries: 3,
   timeout: 30000, // 30 second timeout
-});
-
 // Use configurable model from environment variables
 export const CHAT_MODEL = env.CHAT_MODEL;
 
@@ -43,13 +39,9 @@ export const chatMessageSchema = z.object({
     (content) => !containsSensitivePatterns(content),
     { message: 'Message contains potentially harmful content' }
   ),
-});
-
 export const chatCompletionRequestSchema = z.object({
   messages: z.array(chatMessageSchema).min(1).max(20),
   model: z.string().default(CHAT_MODEL),
-});
-
 export type ChatMessage = z.infer<typeof chatMessageSchema>;
 
 // Rate limiter for AI requests (more restrictive than general API rate limits)
@@ -75,8 +67,6 @@ function containsSensitivePatterns(content: string): boolean {
   ];
 
   return sensitivePatterns.some(pattern => pattern.test(content));
-}
-
 /**
  * Securely sends a chat completion request to OpenAI with proper validation
  */
@@ -97,9 +87,7 @@ export async function secureChatCompletion(
       messageCount: validatedData.messages.length,
       modelUsed: validatedData.model,
       firstUserMessagePreview: validatedData.messages.find(m => m.role === 'user').content.substring(0, 20) + '...',
-    };
-    
-    // Log the request (without full content)
+// Log the request (without full content)
     logger.info('AI chat request', sanitizedLog);
     
     // Send to OpenAI with timeout and retry config
@@ -108,31 +96,20 @@ export async function secureChatCompletion(
       temperature: 0.7,
       max_tokens: 500,
       user: userId, // For OpenAI's abuse monitoring
-    });
-    
-    // Log completion (without full content)
+// Log completion (without full content)
     logger.info('AI chat completed', {
       userId,
       tokens: response.usage.total_tokens,
       modelUsed: response.model,
-    });
-    
-    return response;
-  } catch (error) {
+return response;
+catch (error) {
     if (error instanceof z.ZodError) {
       logger.warn('Invalid AI request format', { userId, error: error.format() });
       throw new Error('Invalid request format');
-    }
-    
-    if (error instanceof Error && error.message.includes('rate limit')) {
+if (error instanceof Error && error.message.includes('rate limit')) {
       logger.warn('AI rate limit exceeded', { userId });
       throw new Error('Rate limit exceeded. Please try again in a minute.');
-    }
-    
-    logger.error('OpenAI request failed', { 
+logger.error('OpenAI request failed', { 
       userId, 
       error: error instanceof Error ? error.message : String(error) 
-    });
-    throw new Error('AI request failed. Please try again later.');
-  }
-} 
+throw new Error('AI request failed. Please try again later.');

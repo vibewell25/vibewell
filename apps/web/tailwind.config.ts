@@ -24,16 +24,13 @@ const config: Config = {
           800: 'rgb(var(--primary-800) / <alpha-value>)',
           900: 'rgb(var(--primary-900) / <alpha-value>)',
           950: 'rgb(var(--primary-950) / <alpha-value>)',
-        },
-        secondary: {
+secondary: {
           DEFAULT: 'rgb(var(--secondary) / <alpha-value>)',
           foreground: 'rgb(var(--secondary-foreground) / <alpha-value>)',
-        },
-        accent: {
+accent: {
           DEFAULT: 'rgb(var(--accent) / <alpha-value>)',
           foreground: 'rgb(var(--accent-foreground) / <alpha-value>)',
-        },
-        background: 'rgb(var(--background) / <alpha-value>)',
+background: 'rgb(var(--background) / <alpha-value>)',
         foreground: 'rgb(var(--foreground) / <alpha-value>)',
         card: 'rgb(var(--card) / <alpha-value>)',
         'card-foreground': 'rgb(var(--card-foreground) / <alpha-value>)',
@@ -46,19 +43,16 @@ const config: Config = {
         border: 'rgb(var(--border) / <alpha-value>)',
         input: 'rgb(var(--input) / <alpha-value>)',
         ring: 'rgb(var(--ring) / <alpha-value>)',
-      },
-      borderRadius: {
+borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
         '2xl': '1rem',
         '3xl': '1.5rem',
-      },
-      fontFamily: {
+fontFamily: {
         sans: ['var(--font-sans, system-ui)', 'system-ui', 'sans-serif'],
         heading: ['var(--font-heading, system-ui)', 'system-ui', 'sans-serif'],
-      },
-      animation: {
+animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'spin-slow': 'spin 3s linear infinite',
@@ -66,36 +60,24 @@ const config: Config = {
         'fade-out': 'fade-out 0.5s ease-out',
         'slide-up': 'slide-up 0.3s ease-out',
         'slide-down': 'slide-down 0.3s ease-out',
-      },
-      keyframes: {
+keyframes: {
         'accordion-down': {
           from: { height: '0' },
           to: { height: 'var(--radix-accordion-content-height)' },
-        },
-        'accordion-up': {
+'accordion-up': {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
-        },
-        'fade-in': {
+'fade-in': {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
-        },
-        'fade-out': {
+'fade-out': {
           '0%': { opacity: '1' },
           '100%': { opacity: '0' },
-        },
-        'slide-up': {
+'slide-up': {
           '0%': { transform: 'translateY(10px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        'slide-down': {
+'slide-down': {
           '0%': { transform: 'translateY(-10px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-      },
-    },
-  },
-  plugins: [require('@tailwindcss/typography'), require('@tailwindcss/forms')],
-};
-
+plugins: [require('@tailwindcss/typography'), require('@tailwindcss/forms')],
 export default config; 

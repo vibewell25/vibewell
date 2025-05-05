@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 import { getServerSession } from 'next-auth';
@@ -15,9 +14,7 @@ export async function {
 
     if (!session.user.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    // Get total content count
+// Get total content count
     const totalContent = await prisma.content.count();
 
     // Get completed content count for the user
@@ -25,10 +22,7 @@ export async function {
       where: {
         userId: session.user.id,
         completed: true,
-      },
-    });
-
-    // Calculate progress percentage
+// Calculate progress percentage
 
     const progress = totalContent > 0 ? Math.round((completedContent / totalContent) * 100) : 0;
 
@@ -36,9 +30,6 @@ export async function {
       progress,
       completedContent,
       totalContent,
-    });
-  } catch (error) {
+catch (error) {
     console.error('Error fetching wellness progress:', error);
     return NextResponse.json({ error: 'Failed to fetch wellness progress' }, { status: 500 });
-  }
-}

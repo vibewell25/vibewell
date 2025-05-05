@@ -6,18 +6,12 @@ export interface ServiceType {
   description?: string;
   price: number;
   images?: string[];
-}
-
 interface ServiceListProps {
   services: ServiceType[];
-}
-
 export default function ServiceList({ services }: ServiceListProps) {
   if (!services.length) {
     return <p className="text-center text-gray-500">No services available in this category.</p>;
-  }
-
-  return (
+return (
     <ul className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
       {services.map((service) => (
         <li
@@ -41,5 +35,3 @@ export default function ServiceList({ services }: ServiceListProps) {
         </li>
       ))}
     </ul>
-  );
-} 

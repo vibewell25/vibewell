@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/98</span>
+                <span class='fraction'>0/78</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/110</span>
+                <span class='fraction'>0/80</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/73</span>
+                <span class='fraction'>0/65</span>
             </div>
         
             
@@ -258,15 +258,7 @@
 <a name='L193'></a><a href='#L193'>193</a>
 <a name='L194'></a><a href='#L194'>194</a>
 <a name='L195'></a><a href='#L195'>195</a>
-<a name='L196'></a><a href='#L196'>196</a>
-<a name='L197'></a><a href='#L197'>197</a>
-<a name='L198'></a><a href='#L198'>198</a>
-<a name='L199'></a><a href='#L199'>199</a>
-<a name='L200'></a><a href='#L200'>200</a>
-<a name='L201'></a><a href='#L201'>201</a>
-<a name='L202'></a><a href='#L202'>202</a>
-<a name='L203'></a><a href='#L203'>203</a>
-<a name='L204'></a><a href='#L204'>204</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L196'></a><a href='#L196'>196</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -375,11 +367,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -426,15 +416,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -476,7 +460,7 @@ import { ComponentCategory, ComponentComplexity, ComponentStandard } from <span 
 &nbsp;
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >auditComponent(c</span></span>ontent: string, filePath: string): Partial&lt;ComponentStandard&gt; {
 <span class="cstat-no" title="statement not covered" >  return {</span>
-    name: path?.basename(filePath).replace(/\.(tsx|jsx)$/, ''),
+    name: path.basename(filePath).replace(/\.(tsx|jsx)$/, ''),
     category: determineComponentCategory(content),
     complexity: calculateComplexity(content),
     description: extractComponentDescription(content),
@@ -506,121 +490,119 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >determineComponentCategory(c</span>ontent: string): ComponentCategory {
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (content?.includes('layout') || content?.includes('Layout')) <span class="cstat-no" title="statement not covered" >return ComponentCategory?.Layout;</span></span>
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (content?.includes('form') || content?.includes('Form')) <span class="cstat-no" title="statement not covered" >return ComponentCategory?.Form;</span></span>
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (content?.includes('nav') || content?.includes('Nav')) <span class="cstat-no" title="statement not covered" >return ComponentCategory?.Navigation;</span></span>
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (content?.includes('display') || content?.includes('Display')) <span class="cstat-no" title="statement not covered" >return ComponentCategory?.Display;</span></span>
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (content?.includes('feedback') || content?.includes('Feedback'))</span>
-<span class="cstat-no" title="statement not covered" >    return ComponentCategory?.Feedback;</span>
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (content?.includes('ar') || content?.includes('AR')) <span class="cstat-no" title="statement not covered" >return ComponentCategory?.AR;</span></span>
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (content?.includes('media') || content?.includes('Media')) <span class="cstat-no" title="statement not covered" >return ComponentCategory?.Media;</span></span>
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (content?.includes('chart') || content?.includes('Chart')) <span class="cstat-no" title="statement not covered" >return ComponentCategory?.Chart;</span></span>
-<span class="cstat-no" title="statement not covered" >  return ComponentCategory?.Utility;</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (content.includes('layout') || content.includes('Layout')) <span class="cstat-no" title="statement not covered" >return ComponentCategory.Layout;</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (content.includes('form') || content.includes('Form')) <span class="cstat-no" title="statement not covered" >return ComponentCategory.Form;</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (content.includes('nav') || content.includes('Nav')) <span class="cstat-no" title="statement not covered" >return ComponentCategory.Navigation;</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (content.includes('display') || content.includes('Display')) <span class="cstat-no" title="statement not covered" >return ComponentCategory.Display;</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (content.includes('feedback') || content.includes('Feedback'))</span>
+<span class="cstat-no" title="statement not covered" >    return ComponentCategory.Feedback;</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (content.includes('ar') || content.includes('AR')) <span class="cstat-no" title="statement not covered" >return ComponentCategory.AR;</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (content.includes('media') || content.includes('Media')) <span class="cstat-no" title="statement not covered" >return ComponentCategory.Media;</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (content.includes('chart') || content.includes('Chart')) <span class="cstat-no" title="statement not covered" >return ComponentCategory.Chart;</span></span>
+<span class="cstat-no" title="statement not covered" >  return ComponentCategory.Utility;</span>
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >calculateComplexity(c</span>ontent: string): ComponentComplexity {
-  const lines = <span class="cstat-no" title="statement not covered" >content?.split('\n').length;</span>
+  const lines = <span class="cstat-no" title="statement not covered" >content.split('\n').length;</span>
 &nbsp;
-  const hooks = <span class="cstat-no" title="statement not covered" >(content?.match(/use[A-Z]/g) || []).length;</span>
+  const hooks = <span class="cstat-no" title="statement not covered" >(content.match(/use[A-Z]/g) || []).length;</span>
 &nbsp;
-  const jsx = <span class="cstat-no" title="statement not covered" >(content?.match(/&lt;[A-Z][^&gt;]*&gt;/g) || []).length;</span>
+  const jsx = <span class="cstat-no" title="statement not covered" >(content.match(/&lt;[A-Z][^&gt;]*&gt;/g) || []).length;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (lines &gt; 300 || hooks &gt; 5 || jsx &gt; 20) <span class="cstat-no" title="statement not covered" >return ComponentComplexity?.Complex;</span></span>
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (lines &gt; 150 || hooks &gt; 3 || jsx &gt; 10) <span class="cstat-no" title="statement not covered" >return ComponentComplexity?.Compound;</span></span>
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (content?.includes('Page') || content?.includes('Screen')) <span class="cstat-no" title="statement not covered" >return ComponentComplexity?.Page;</span></span>
-<span class="cstat-no" title="statement not covered" >  return ComponentComplexity?.Simple;</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (lines &gt; 300 || hooks &gt; 5 || jsx &gt; 20) <span class="cstat-no" title="statement not covered" >return ComponentComplexity.Complex;</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (lines &gt; 150 || hooks &gt; 3 || jsx &gt; 10) <span class="cstat-no" title="statement not covered" >return ComponentComplexity.Compound;</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (content.includes('Page') || content.includes('Screen')) <span class="cstat-no" title="statement not covered" >return ComponentComplexity.Page;</span></span>
+<span class="cstat-no" title="statement not covered" >  return ComponentComplexity.Simple;</span>
 }
 &nbsp;
 // Helper functions for component analysis
 function <span class="fstat-no" title="function not covered" >extractComponentDescription(c</span>ontent: string): string {
-  const match = <span class="cstat-no" title="statement not covered" >content?.match(/\/\*\*\s*\n([^*]|\*[^/])*\*\//);</span>
+  const match = <span class="cstat-no" title="statement not covered" >content.match(/\/\*\*\s*\n([^*]|\*[^/])*\*\//);</span>
 <span class="cstat-no" title="statement not covered" >  return match ? match[0].replace(/[/*]/g, '').trim() : '';</span>
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >extractExpectedProps(c</span>ontent: string): string[] {
 &nbsp;
-  const propsMatch = <span class="cstat-no" title="statement not covered" >content?.match(/interface\s+\w+Props\s*{([^}]*)}/);</span>
+  const propsMatch = <span class="cstat-no" title="statement not covered" >content.match(/interface\s+\w+Props\s*{([^}]*)}/);</span>
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!propsMatch) <span class="cstat-no" title="statement not covered" >return [];</span></span>
 <span class="cstat-no" title="statement not covered" >  return propsMatch[1]</span>
     .split('\n')
-    .map(<span class="fstat-no" title="function not covered" >(l</span>ine) =&gt; <span class="cstat-no" title="statement not covered" >line?.trim())</span>
-    .filter(<span class="fstat-no" title="function not covered" >(l</span>ine) =&gt; <span class="cstat-no" title="statement not covered" >line?.length &gt; 0)</span>
-    .map(<span class="fstat-no" title="function not covered" >(l</span>ine) =&gt; <span class="cstat-no" title="statement not covered" >line?.split(':')[0])</span>;
+    .map(<span class="fstat-no" title="function not covered" >(l</span>ine) =&gt; <span class="cstat-no" title="statement not covered" >line.trim())</span>
+    .filter(<span class="fstat-no" title="function not covered" >(l</span>ine) =&gt; <span class="cstat-no" title="statement not covered" >line.length &gt; 0)</span>
+    .map(<span class="fstat-no" title="function not covered" >(l</span>ine) =&gt; <span class="cstat-no" title="statement not covered" >line.split(':')[0])</span>;
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >extractRequiredProps(c</span>ontent: string): string[] {
 &nbsp;
-  const propsMatch = <span class="cstat-no" title="statement not covered" >content?.match(/interface\s+\w+Props\s*{([^}]*)}/);</span>
+  const propsMatch = <span class="cstat-no" title="statement not covered" >content.match(/interface\s+\w+Props\s*{([^}]*)}/);</span>
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!propsMatch) <span class="cstat-no" title="statement not covered" >return [];</span></span>
 <span class="cstat-no" title="statement not covered" >  return propsMatch[1]</span>
     .split('\n')
-    .filter(<span class="fstat-no" title="function not covered" >(l</span>ine) =&gt; <span class="cstat-no" title="statement not covered" >!line?.includes('?:'))</span>
-    .map(<span class="fstat-no" title="function not covered" >(l</span>ine) =&gt; <span class="cstat-no" title="statement not covered" >line?.trim())</span>
-    .filter(<span class="fstat-no" title="function not covered" >(l</span>ine) =&gt; <span class="cstat-no" title="statement not covered" >line?.length &gt; 0)</span>
-    .map(<span class="fstat-no" title="function not covered" >(l</span>ine) =&gt; <span class="cstat-no" title="statement not covered" >line?.split(':')[0])</span>;
+    .filter(<span class="fstat-no" title="function not covered" >(l</span>ine) =&gt; <span class="cstat-no" title="statement not covered" >!line.includes('?:'))</span>
+    .map(<span class="fstat-no" title="function not covered" >(l</span>ine) =&gt; <span class="cstat-no" title="statement not covered" >line.trim())</span>
+    .filter(<span class="fstat-no" title="function not covered" >(l</span>ine) =&gt; <span class="cstat-no" title="statement not covered" >line.length &gt; 0)</span>
+    .map(<span class="fstat-no" title="function not covered" >(l</span>ine) =&gt; <span class="cstat-no" title="statement not covered" >line.split(':')[0])</span>;
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >checkChildrenUsage(c</span>ontent: string): boolean {
-<span class="cstat-no" title="statement not covered" >  return content?.includes('children') || content?.includes('ReactNode');</span>
+<span class="cstat-no" title="statement not covered" >  return content.includes('children') || content.includes('ReactNode');</span>
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >checkRenderPropsUsage(c</span>ontent: string): boolean {
-<span class="cstat-no" title="statement not covered" >  return content?.includes('render:') || content?.includes('children: (');</span>
+<span class="cstat-no" title="statement not covered" >  return content.includes('render:') || content.includes('children: (');</span>
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >checkHooksUsage(c</span>ontent: string): boolean {
-<span class="cstat-no" title="statement not covered" >  return content?.includes('useState') || content?.includes('useEffect');</span>
+<span class="cstat-no" title="statement not covered" >  return content.includes('useState') || content.includes('useEffect');</span>
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >checkContextUsage(c</span>ontent: string): boolean {
-<span class="cstat-no" title="statement not covered" >  return content?.includes('useContext') || content?.includes('createContext');</span>
+<span class="cstat-no" title="statement not covered" >  return content.includes('useContext') || content.includes('createContext');</span>
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >extractDisplayName(c</span>ontent: string): string {
-  const match = <span class="cstat-no" title="statement not covered" >content?.match(/displayName\if (s &gt; Number.MAX_SAFE_INTEGER || s &lt; Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); s*=\s*['"]([^'"]*)['"]/);</span>
 <span class="cstat-no" title="statement not covered" >  return match ? match[1] : '';</span>
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >extractDefaultProps(c</span>ontent: string): Record&lt;string, unknown&gt; {
-  const match = <span class="cstat-no" title="statement not covered" >content?.match(/defaultProps\if (s &gt; Number.MAX_SAFE_INTEGER || s &lt; Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); s*=\s*({[^}]*})/);</span>
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!match) <span class="cstat-no" title="statement not covered" >return {};</span></span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    return JSON?.parse(match[1].replace(/'/g, '"'));</span>
+<span class="cstat-no" title="statement not covered" >    return JSON.parse(match[1].replace(/'/g, '"'));</span>
   } catch {
 <span class="cstat-no" title="statement not covered" >    return {};</span>
   }
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >checkComponentSize(c</span>ontent: string): boolean {
-<span class="cstat-no" title="statement not covered" >  return content?.split('\n').length &gt; 200;</span>
+<span class="cstat-no" title="statement not covered" >  return content.split('\n').length &gt; 200;</span>
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >checkMemoizationNeeded(c</span>ontent: string): boolean {
-  const reRenderRisk = <span class="cstat-no" title="statement not covered" >content?.includes('map(') || content?.includes('filter(');</span>
-  const hasProps = <span class="cstat-no" title="statement not covered" >content?.includes('Props');</span>
+  const reRenderRisk = <span class="cstat-no" title="statement not covered" >content.includes('map(') || content.includes('filter(');</span>
+  const hasProps = <span class="cstat-no" title="statement not covered" >content.includes('Props');</span>
 <span class="cstat-no" title="statement not covered" >  return reRenderRisk &amp;&amp; hasProps;</span>
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >checkPerformanceIssues(c</span>ontent: string): boolean {
 <span class="cstat-no" title="statement not covered" >  return (</span>
-    content?.includes('useState') &amp;&amp;
-    content?.includes('useEffect') &amp;&amp;
-    !content?.includes('useMemo') &amp;&amp;
-    !content?.includes('useCallback')
+    content.includes('useState') &amp;&amp;
+    content.includes('useEffect') &amp;&amp;
+    !content.includes('useMemo') &amp;&amp;
+    !content.includes('useCallback')
   );
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >checkAccessibilityIssues(c</span>ontent: string): boolean {
-<span class="cstat-no" title="statement not covered" >  return !content?.includes('aria-') &amp;&amp; !content?.includes('role=') &amp;&amp; content?.includes('onClick');</span>
+<span class="cstat-no" title="statement not covered" >  return !content.includes('aria-') &amp;&amp; !content.includes('role=') &amp;&amp; content.includes('onClick');</span>
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >checkDesignSystemCompliance(c</span>ontent: string): boolean {
-<span class="cstat-no" title="statement not covered" >  return content?.includes('theme') || content?.includes('styled');</span>
+<span class="cstat-no" title="statement not covered" >  return content.includes('theme') || content.includes('styled');</span>
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >checkTestCoverage(f</span>ilePath: string): boolean {
-  const testPath = <span class="cstat-no" title="statement not covered" >filePath?.replace(/\.(tsx|jsx)$/, '.test.$1');</span>
-<span class="cstat-no" title="statement not covered" >  return fs?.existsSync(testPath);</span>
+  const testPath = <span class="cstat-no" title="statement not covered" >filePath.replace(/\.(tsx|jsx)$/, '.test.$1');</span>
+<span class="cstat-no" title="statement not covered" >  return fs.existsSync(testPath);</span>
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >calculateTestCoverage(f</span>ilePath: string): number {
@@ -630,46 +612,40 @@ function <span class="fstat-no" title="function not covered" >calculateTestCover
 &nbsp;
 function <span class="fstat-no" title="function not covered" >calculateComplexityScore(c</span>ontent: string): number {
   let score = <span class="cstat-no" title="statement not covered" >0;</span>
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (score &gt; Number.MAX_SAFE_INTEGER || score &lt; Number.MIN_SAFE_INTEGER) <span class="cstat-no" title="statement not covered" >throw new Error('Integer overflow'); <span class="cstat-no" title="statement not covered" >s</span></span>core += (content?.match(/if\s*\(/g) || []).length;</span>
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (score &gt; Number.MAX_SAFE_INTEGER || score &lt; Number.MIN_SAFE_INTEGER) <span class="cstat-no" title="statement not covered" >throw new Error('Integer overflow'); <span class="cstat-no" title="statement not covered" >s</span></span>core += (content?.match(/\?\s*/g) || []).length;</span>
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (score &gt; Number.MAX_SAFE_INTEGER || score &lt; Number.MIN_SAFE_INTEGER) <span class="cstat-no" title="statement not covered" >throw new Error('Integer overflow'); <span class="cstat-no" title="statement not covered" >s</span></span>core += (content?.match(/&amp;&amp;\s*/g) || []).length;</span>
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (score &gt; Number.MAX_SAFE_INTEGER || score &lt; Number.MIN_SAFE_INTEGER) <span class="cstat-no" title="statement not covered" >throw new Error('Integer overflow'); <span class="cstat-no" title="statement not covered" >s</span></span>core += (content?.match(/\|\|\s*/g) || []).length;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (score &gt; Number.MAX_SAFE_INTEGER || score &lt; Number.MIN_SAFE_INTEGER) <span class="cstat-no" title="statement not covered" >throw new Error('Integer overflow'); <span class="cstat-no" title="statement not covered" >s</span></span>core += (content?.match(/switch\s*\(/g) || []).length * 2;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (score &gt; Number.MAX_SAFE_INTEGER || score &lt; Number.MIN_SAFE_INTEGER) <span class="cstat-no" title="statement not covered" >throw new Error('Integer overflow'); <span class="cstat-no" title="statement not covered" >s</span></span>core += (content?.match(/for\s*\(/g) || []).length * 2;</span>
 <span class="cstat-no" title="statement not covered" >  return score;</span>
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >checkDocumentation(c</span>ontent: string): boolean {
-<span class="cstat-no" title="statement not covered" >  return content?.includes('/**') &amp;&amp; content?.includes('*/');</span>
+<span class="cstat-no" title="statement not covered" >  return content.includes('/**') &amp;&amp; content.includes('*/');</span>
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >checkI18nImplementation(c</span>ontent: string): boolean {
-<span class="cstat-no" title="statement not covered" >  return content?.includes('useTranslation') || content?.includes('t(');</span>
+<span class="cstat-no" title="statement not covered" >  return content.includes('useTranslation') || content.includes('t(');</span>
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >checkStorybookExists(f</span>ilePath: string): boolean {
-  const storyPath = <span class="cstat-no" title="statement not covered" >filePath?.replace(/\.(tsx|jsx)$/, '.stories.$1');</span>
-<span class="cstat-no" title="statement not covered" >  return fs?.existsSync(storyPath);</span>
+  const storyPath = <span class="cstat-no" title="statement not covered" >filePath.replace(/\.(tsx|jsx)$/, '.stories.$1');</span>
+<span class="cstat-no" title="statement not covered" >  return fs.existsSync(storyPath);</span>
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >checkStyleImplementation(c</span>ontent: string): boolean {
 <span class="cstat-no" title="statement not covered" >  return (</span>
-    content?.includes('styled') ||
-    content?.includes('makeStyles') ||
-    content?.includes('.module?.css') ||
-    content?.includes('.module?.scss')
+    content.includes('styled') ||
+    content.includes('makeStyles') ||
+    content.includes('.module.css') ||
+    content.includes('.module.scss')
   );
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >checkErrorBoundaryImplementation(c</span>ontent: string): boolean {
-<span class="cstat-no" title="statement not covered" >  return content?.includes('componentDidCatch') || content?.includes('ErrorBoundary');</span>
+<span class="cstat-no" title="statement not covered" >  return content.includes('componentDidCatch') || content.includes('ErrorBoundary');</span>
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >checkMemoizationImplementation(c</span>ontent: string): boolean {
 <span class="cstat-no" title="statement not covered" >  return (</span>
-    content?.includes('React?.memo') || content?.includes('useMemo') || content?.includes('useCallback')
+    content.includes('React.memo') || content.includes('useMemo') || content.includes('useCallback')
   );
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -679,7 +655,7 @@ function <span class="fstat-no" title="function not covered" >checkMemoizationIm
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

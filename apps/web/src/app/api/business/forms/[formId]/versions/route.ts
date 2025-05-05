@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 
 import { prisma } from '@/lib/prisma';
@@ -15,24 +14,15 @@ export async function {
     const session = await getServerSession(authOptions);
     if (!session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const formVersions = await prisma.FormVersion.findMany({
+const formVersions = await prisma.FormVersion.findMany({
       where: {
         formId: params.formId,
-      },
-      orderBy: {
+orderBy: {
         version: 'desc',
-      },
-    });
-
-    return NextResponse.json(formVersions);
-  } catch (error) {
+return NextResponse.json(formVersions);
+catch (error) {
     console.error('Error fetching form versions:', error);
     return NextResponse.json({ error: 'Failed to fetch form versions' }, { status: 500 });
-  }
-}
-
 // Create a new version of a form
 export async function {
   const start = Date.now();
@@ -41,23 +31,16 @@ export async function {
     const session = await getServerSession(authOptions);
     if (!session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const body = await request.json();
+const body = await request.json();
     const { fields } = body;
 
     // Get the latest version number
     const latestVersion = await prisma.FormVersion.findFirst({
       where: {
         formId: params.formId,
-      },
-      orderBy: {
+orderBy: {
         version: 'desc',
-      },
-    });
-
-
-    const newVersion = latestVersion ? latestVersion.version + 1 : 1;
+const newVersion = latestVersion ? latestVersion.version + 1 : 1;
 
     // Create new version
     const formVersion = await prisma.FormVersion.create({
@@ -66,28 +49,17 @@ export async function {
         version: newVersion,
         fields,
         createdBy: session.user.id,
-      },
-    });
-
-    // Deactivate previous version if it exists
+// Deactivate previous version if it exists
     if (latestVersion) {
       await prisma.FormVersion.update({
         where: {
           id: latestVersion.id,
-        },
-        data: {
+data: {
           isActive: false,
-        },
-      });
-    }
-
-    return NextResponse.json(formVersion);
-  } catch (error) {
+return NextResponse.json(formVersion);
+catch (error) {
     console.error('Error creating form version:', error);
     return NextResponse.json({ error: 'Failed to create form version' }, { status: 500 });
-  }
-}
-
 // Update a specific version of a form
 export async function {
   const start = Date.now();
@@ -96,24 +68,16 @@ export async function {
     const session = await getServerSession(authOptions);
     if (!session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const body = await request.json();
+const body = await request.json();
     const { versionId, isActive } = body;
 
     const formVersion = await prisma.FormVersion.update({
       where: {
         id: versionId,
         formId: params.formId,
-      },
-      data: {
+data: {
         isActive,
-      },
-    });
-
-    return NextResponse.json(formVersion);
-  } catch (error) {
+return NextResponse.json(formVersion);
+catch (error) {
     console.error('Error updating form version:', error);
     return NextResponse.json({ error: 'Failed to update form version' }, { status: 500 });
-  }
-}

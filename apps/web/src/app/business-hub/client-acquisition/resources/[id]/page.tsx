@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 import { useParams, notFound } from 'next/navigation';
 import { ResourceDetailTemplate, BaseResource } from '@/components/resource-detail-template';
@@ -40,8 +38,7 @@ const clientAcquisitionResources: BaseResource[] = [
     relatedResources: ['2', '3'],
     type: 'resource',
     tags: ['retention', 'client management', 'loyalty programs'],
-  },
-  {
+{
     id: '2',
     title: 'Referral Marketing for Health and Wellness Providers',
     author: 'Sophia Chen, Referral Marketing Strategist',
@@ -76,8 +73,7 @@ const clientAcquisitionResources: BaseResource[] = [
     type: 'resource',
     tags: ['referrals', 'marketing', 'client acquisition'],
     downloadUrl: '/downloads/referral-program-template.pdf',
-  },
-  {
+{
     id: '3',
     title: 'Converting First-Time Visitors into Regular Clients',
     author: 'Marcus Williams, Conversion Specialist',
@@ -112,14 +108,11 @@ const clientAcquisitionResources: BaseResource[] = [
     type: 'resource',
     tags: ['conversion', 'client experience', 'onboarding'],
     premium: true,
-  },
 ];
 
 // Fetch resource by ID
 const getResourceById = (id: string): BaseResource | undefined => {
   return clientAcquisitionResources.find((resource) => resource.id === id);
-};
-
 export default function ClientAcquisitionResourceDetailPage() {
   const params = useParams();
   const [resource, setResource] = useState<BaseResource | null>(null);
@@ -131,16 +124,12 @@ export default function ClientAcquisitionResourceDetailPage() {
       const foundResource = getResourceById(params.id as string);
       if (foundResource) {
         setResource(foundResource);
-      }
-      setLoading(false);
-    }
-  }, [params.id]);
+setLoading(false);
+[params.id]);
 
   if (!loading && !resource) {
     notFound();
-  }
-
-  // Showing loading or no resource state
+// Showing loading or no resource state
   if (loading || !resource) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -149,17 +138,12 @@ export default function ClientAcquisitionResourceDetailPage() {
           <p className="text-gray-600">Loading resource...</p>
         </div>
       </div>
-    );
-  }
-
-  // Handle download
+// Handle download
   const handleDownload = (resource: BaseResource) => {
     alert(`Downloading ${resource.title}`);
     // In a real app, this would trigger the actual download
     window.open(resource.downloadUrl, '_blank');
-  };
-
-  return (
+return (
     <ResourceDetailTemplate
       resource={resource}
       resourceType={resource.type}
@@ -170,5 +154,3 @@ export default function ClientAcquisitionResourceDetailPage() {
       fetchRelatedResource={getResourceById}
       onDownload={handleDownload}
     />
-  );
-}

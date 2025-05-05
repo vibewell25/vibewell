@@ -1,5 +1,3 @@
-'use client';
-
 import { ReactNode } from 'react';
 import { Layout } from '@/components/layout';
 import { BusinessHubSidebar } from '@/components/business-hub-sidebar';
@@ -7,8 +5,6 @@ import { BusinessHubMobileNav } from '@/components/business-hub-mobile-nav';
 
 interface BusinessHubLayoutProps {
   children: ReactNode;
-}
-
 export default function BusinessHubLayout({ children }: BusinessHubLayoutProps) {
   return (
     <Layout>
@@ -22,5 +18,3 @@ export default function BusinessHubLayout({ children }: BusinessHubLayoutProps) 
         </div>
       </div>
     </Layout>
-  );
-}

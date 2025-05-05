@@ -1,4 +1,3 @@
-'use client';;
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
@@ -19,7 +18,7 @@ import {
   getSavedPosts,
   getUserReactions,
   Post as PostType,
-} from '@/lib/api/social';
+from '@/lib/api/social';
 import { getUpcomingEvents, registerForEvent, cancelEventRegistration } from '@/lib/api/events';
 import { format, parseISO } from 'date-fns';
 import { Send } from 'lucide-react';
@@ -33,8 +32,7 @@ const initialPosts: PostType[] = [
       id: 'user1',
       name: 'Emma Thompson',
       avatar: '/avatar1.png',
-    },
-    content:
+content:
       'Just finished a 30-day meditation challenge! Feeling more centered and focused than ever. Anyone else tried this?',
     image: null,
     createdAt: '2023-07-15T14:30:00.000Z',
@@ -45,32 +43,26 @@ const initialPosts: PostType[] = [
       '😮': 4,
       '😢': 0,
       '😡': 0,
-    },
-    comments: [
+comments: [
       {
         id: 'comment1',
         user: {
           id: 'user2',
           name: 'David Chen',
           avatar: '/avatar2.png',
-        },
-        content:
+content:
           "That's amazing! I've been meditating for about 2 weeks now. Any tips for beginners?",
         createdAt: '2023-07-15T15:45:00.000Z',
-      },
-      {
+{
         id: 'comment2',
         user: {
           id: 'user3',
           name: 'Sarah Williams',
           avatar: '/avatar3.png',
-        },
-        content: 'Congratulations! Which meditation program did you follow?',
+content: 'Congratulations! Which meditation program did you follow?',
         createdAt: '2023-07-15T16:20:00.000Z',
-      },
-    ],
-  },
-  // More fallback posts...
+],
+// More fallback posts...
 ];
 export default function SocialPage() {
   const { user, loading } = useAuth();
@@ -103,18 +95,15 @@ export default function SocialPage() {
           // Fetch saved posts
           const saved = await getSavedPosts(user.id);
           setSavedPosts(saved);
-        }
-      } catch (err) {
+catch (err) {
         console.error('Error fetching social data:', err);
         setError('Failed to load social feed. Please try again later.');
         // Fallback to initial posts if API fails
         setPosts(initialPosts);
-      } finally {
+finally {
         setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, [user.id]);
+fetchData();
+[user.id]);
   const handlePostSubmit = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
@@ -125,10 +114,9 @@ export default function SocialPage() {
       if (createdPost) {
         setPosts([createdPost, ...posts]);
         setNewPost('');
-      } else {
+else {
         throw new Error('Failed to create post');
-      }
-    } catch (err) {
+catch (err) {
       console.error('Error creating post:', err);
       // Optimistic update in case of API failure
       const optimisticPost: PostType = {
@@ -137,8 +125,7 @@ export default function SocialPage() {
           id: user.id,
           name: user.user_metadata.full_name || 'Anonymous',
           avatar: user.user_metadata.avatar_url || '/avatar-placeholder.png',
-        },
-        content: newPost,
+content: newPost,
         image: null,
         createdAt: new Date().toISOString(),
         reactions: {
@@ -148,14 +135,10 @@ export default function SocialPage() {
           '😮': 0,
           '😢': 0,
           '😡': 0,
-        },
-        comments: [],
-      };
-      setPosts([optimisticPost, ...posts]);
+comments: [],
+setPosts([optimisticPost, ...posts]);
       setNewPost('');
-    }
-  };
-  const handleCommentSubmit = async ( {
+const handleCommentSubmit = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');postId: number, comment: string) => {
     if (!comment.trim() || loading || !user.id) return;
@@ -169,15 +152,11 @@ export default function SocialPage() {
               return {
                 ...post,
                 comments: [...post.comments, newComment],
-              };
-            }
-            return post;
-          }),
-        );
-      } else {
+return post;
+),
+else {
         throw new Error('Failed to add comment');
-      }
-    } catch (err) {
+catch (err) {
       console.error('Error adding comment:', err);
       // Optimistic update in case of API failure
       const optimisticComment = {
@@ -186,24 +165,17 @@ export default function SocialPage() {
           id: user.id,
           name: user.user_metadata.full_name || 'Anonymous',
           avatar: user.user_metadata.avatar_url || '/avatar-placeholder.png',
-        },
-        content: comment,
+content: comment,
         createdAt: new Date().toISOString(),
-      };
-      setPosts(
+setPosts(
         posts.map((post) => {
           if (post.id === postId) {
             return {
               ...post,
               comments: [...post.comments, optimisticComment],
-            };
-          }
-          return post;
-        }),
-      );
-    }
-  };
-  const handleReactionChange = async ( {
+return post;
+),
+const handleReactionChange = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');postId: number, reactionType: ReactionType | null) => {
     if (!user.id) return;
@@ -214,7 +186,7 @@ export default function SocialPage() {
     setUserReactions((prev) => ({
       ...prev,
       [postId]: reactionType,
-    }));
+));
     // Update posts with new reaction counts
     setPosts(
       posts.map((post) => {
@@ -223,49 +195,38 @@ export default function SocialPage() {
           // If there was a previous reaction, decrement it
           if (prevReaction) {
             updatedReactions[prevReaction] = Math.max(0, (updatedReactions[prevReaction] || 0) - 1);
-          }
-          // If there's a new reaction, increment it
+// If there's a new reaction, increment it
           if (reactionType) {
             updatedReactions[reactionType] = (updatedReactions[reactionType] || 0) + 1;
-          }
-          return {
+return {
             ...post,
             reactions: updatedReactions,
-          };
-        }
-        return post;
-      }),
-    );
-    // Send to API
+return post;
+),
+// Send to API
     try {
       let success;
       if (reactionType) {
         success = await apiAddReaction(user.id, postId, reactionType);
-      } else {
+else {
         success = await apiRemoveReaction(user.id, postId);
-      }
-      if (!success) {
+if (!success) {
         throw new Error('Failed to update reaction');
-      }
-    } catch (err) {
+catch (err) {
       console.error('Error updating reaction:', err);
       // Revert changes on failure
       setUserReactions((prev) => ({
         ...prev,
         [postId]: prevReaction,
-      }));
+));
       // Revert post reaction counts
       setPosts(
         posts.map((post) => {
           if (post.id === postId) {
             return post; // Revert to original post
-          }
-          return post;
-        }),
-      );
-    }
-  };
-  const toggleSave = async ( {
+return post;
+),
+const toggleSave = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');postId: number) => {
     if (!user.id) return;
@@ -273,36 +234,29 @@ export default function SocialPage() {
     // Optimistic update
     if (isSaved) {
       setSavedPosts(savedPosts.filter((id) => id !== postId));
-    } else {
+else {
       setSavedPosts([...savedPosts, postId]);
-    }
-    // API call
+// API call
     try {
       let success;
       if (isSaved) {
         success = await apiUnsavePost(user.id, postId);
-      } else {
+else {
         success = await apiSavePost(user.id, postId);
-      }
-      if (!success) {
+if (!success) {
         throw new Error('Failed to update saved status');
-      }
-    } catch (err) {
+catch (err) {
       console.error('Error updating saved status:', err);
       // Revert on failure
       if (isSaved) {
         setSavedPosts([...savedPosts, postId]);
-      } else {
+else {
         setSavedPosts(savedPosts.filter((id) => id !== postId));
-      }
-    }
-  };
-  const initiateMessage = (userId: string, userName: string) => {
+const initiateMessage = (userId: string, userName: string) => {
     // In a real app, you'd create a conversation if one doesn't exist
     // For now, we'll just redirect to the messages page
     router.push(`/messages?initiate=${userId}&name=${encodeURIComponent(userName)}`);
-  };
-  const formatDate = (dateString: string) => {
+const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
@@ -310,9 +264,7 @@ export default function SocialPage() {
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-    });
-  };
-  const handleEventShare = async ( {
+const handleEventShare = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');eventId: string) => {
     if (!user.id) return;
@@ -324,12 +276,9 @@ export default function SocialPage() {
       if (createdPost) {
         setPosts([createdPost, ...posts]);
         setSharedEvents((prev) => ({ ...prev, [eventId]: true }));
-      }
-    } catch (err) {
+catch (err) {
       console.error('Error sharing event:', err);
-    }
-  };
-  const handleEventAttendance = async ( {
+const handleEventAttendance = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');eventId: string) => {
     if (!user.id) return;
@@ -337,23 +286,19 @@ export default function SocialPage() {
       const isAttending = sharedEvents[eventId];
       if (isAttending) {
         await cancelEventRegistration(eventId, user.id);
-      } else {
+else {
         await registerForEvent(
           eventId,
           user.id,
           user.user_metadata.full_name || 'Anonymous',
           user.user_metadata.avatar_url,
-        );
-      }
-      setSharedEvents((prev) => ({ ...prev, [eventId]: !isAttending }));
+setSharedEvents((prev) => ({ ...prev, [eventId]: !isAttending }));
       // Refresh upcoming events
       const events = await getUpcomingEvents(3);
       setUpcomingEvents(events);
-    } catch (err) {
+catch (err) {
       console.error('Error updating event attendance:', err);
-    }
-  };
-  // Rest of the component remains the same
+// Rest of the component remains the same
   return (
     <Layout>
       <div className="container-app py-8">
@@ -455,8 +400,7 @@ export default function SocialPage() {
                             <span>Message</span>
                           </button>
                         )
-                      }
-                    />
+/>
                   ))}
                   {posts.length === 0 && (
                     <div className="card p-6 text-center">
@@ -533,5 +477,3 @@ export default function SocialPage() {
         )}
       </div>
     </Layout>
-  );
-}

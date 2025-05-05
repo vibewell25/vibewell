@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import marketing-nav from '../marketing-nav.tsx';
+
+describe('marketing-nav', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<marketing-nav />);
+    expect(container).toBeInTheDocument();
+  });
+});

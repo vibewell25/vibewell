@@ -1,10 +1,3 @@
-/**
- * Unified Rate Limiter Service
- *
- * This module provides a comprehensive rate limiting solution for the VibeWell platform.
- * It supports multiple protocols (HTTP API, GraphQL, WebSocket) and environments.
- */
-
 import { Redis } from 'ioredis';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis as UpstashRedis } from '@upstash/redis';
@@ -17,10 +10,8 @@ try {
   require('./websocket');
   require('./presets');
   require('./core');
-} catch (error) {
+catch (error) {
   // These modules are optional and may not exist in the codebase yet
-}
-
 /**
  * Rate limiting configuration options
  */
@@ -39,8 +30,6 @@ export interface RateLimitConfig {
    * Maximum number of unique users per interval
    */
   uniqueTokenPerInterval?: number;
-}
-
 /**
  * Rate limiting service using either Upstash Redis or standard Redis
  */
@@ -49,24 +38,19 @@ export function rateLimit(config: RateLimitConfig) {
     interval,
     tokensPerInterval,
     uniqueTokenPerInterval = 500
-  } = config;
+= config;
 
   // Use Upstash Redis REST client if available
   if (process.env['UPSTASH_REDIS_REST_URL'] && process.env['UPSTASH_REDIS_REST_TOKEN']) {
     const redis = new UpstashRedis({
       url: process.env['UPSTASH_REDIS_REST_URL'],
       token: process.env['UPSTASH_REDIS_REST_TOKEN'],
-    });
-
-    // Create Upstash rate limiter with sliding window algorithm
+// Create Upstash rate limiter with sliding window algorithm
     return new Ratelimit({
       redis,
       limiter: Ratelimit.slidingWindow(tokensPerInterval, `${interval}ms`),
       analytics: true,
-    });
-  } 
-  
-  // Fall back to standard Redis
+// Fall back to standard Redis
   else if (process.env['REDIS_URL']) {
     // Connect to Redis with standard client
     const redisClient = new Redis(process.env['REDIS_URL']);
@@ -92,20 +76,14 @@ export function rateLimit(config: RateLimitConfig) {
         // Check if adding the cost would exceed the limit
         if (requestCount + cost > tokensPerInterval) {
           throw new Error('Rate limit exceeded');
-        }
-        
-        // Add current request to the sorted set with score as current timestamp
+// Add current request to the sorted set with score as current timestamp
         await redisClient.zadd(key, now, `${now}`);
         
         // Set expiry on the key to clean up
         await redisClient.expire(key, Math.ceil(interval / 1000) * 2);
         
         return;
-      }
-    };
-  } 
-  
-  // Fallback if no Redis is available (memory-based, not suitable for production)
+// Fallback if no Redis is available (memory-based, not suitable for production)
   else {
     console.warn('No Redis configuration found. Using in-memory rate limiting (not suitable for production)');
     
@@ -125,9 +103,7 @@ export function rateLimit(config: RateLimitConfig) {
         // Check if adding the cost would exceed the limit
         if (timestamps.length + cost > tokensPerInterval) {
           throw new Error('Rate limit exceeded');
-        }
-        
-        // Add current timestamp
+// Add current timestamp
         timestamps.push(now);
         ipMap.set(identifier, timestamps);
         
@@ -136,10 +112,4 @@ export function rateLimit(config: RateLimitConfig) {
           const keys = Array.from(ipMap.keys());
           const keysToDelete = keys.slice(0, keys.length - uniqueTokenPerInterval);
           keysToDelete.forEach(key => ipMap.delete(key));
-        }
-        
-        return;
-      }
-    };
-  }
-}
+return;

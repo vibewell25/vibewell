@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui';
 import { getTrainingAnalytics } from '@/lib/api/training';
@@ -14,7 +12,7 @@ import {
   PieChart,
   Pie,
   Cell,
-} from 'recharts';
+from 'recharts';
 
 const COLORS = {
   NOT_STARTED: '#9CA3AF',
@@ -22,12 +20,8 @@ const COLORS = {
   COMPLETED: '#34D399',
   FAILED: '#EF4444',
   UNDER_REVIEW: '#FBBF24',
-};
-
 interface TrainingAnalyticsProps {
   staffId: string;
-}
-
 export default function TrainingAnalytics({ staffId }: TrainingAnalyticsProps) {
   const [analytics, setAnalytics] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -39,32 +33,26 @@ export default function TrainingAnalytics({ staffId }: TrainingAnalyticsProps) {
       try {
         const data = await getTrainingAnalytics(staffId);
         setAnalytics(data);
-      } catch (error) {
+catch (error) {
         console.error('Error loading analytics:', error);
-      } finally {
+finally {
         setLoading(false);
-      }
-    }
-
-    loadAnalytics();
-  }, [staffId]);
+loadAnalytics();
+[staffId]);
 
   if (loading) {
     return <div>Loading...</div>;
-  }
-
-  const statusData = Object.entries(analytics.moduleBreakdown).map(([status, count]) => ({
+const statusData = Object.entries(analytics.moduleBreakdown).map(([status, count]) => ({
     name: status.replace('_', ' '),
     value: count,
-  }));
+));
 
   const progressData = [
     {
       name: 'Completion',
       completed: analytics.completedModules,
       total: analytics.totalModules,
-    },
-  ];
+];
 
   return (
     <div className="space-y-6">
@@ -147,8 +135,7 @@ export default function TrainingAnalytics({ staffId }: TrainingAnalyticsProps) {
               style={{
                 backgroundColor:
                   COLORS[status.name.replace(' ', '_') as keyof typeof COLORS] + '20',
-              }}
-            >
+>
               <h3 className="text-sm font-medium text-gray-500">{status.name}</h3>
               <p className="mt-1 text-2xl font-semibold">{status.value}</p>
             </div>
@@ -156,5 +143,3 @@ export default function TrainingAnalytics({ staffId }: TrainingAnalyticsProps) {
         </div>
       </Card>
     </div>
-  );
-}

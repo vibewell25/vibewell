@@ -1,8 +1,4 @@
-/**
- * CSRF Protection utilities
- *
-
- * This module provides functions for generating and validating CSRF tokens
+functions for generating and validating CSRF tokens
 
  * to protect against Cross-Site Request Forgery attacks.
  */
@@ -23,9 +19,6 @@ const TOKEN_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours
  */
 export function generateCsrfToken(): string {
   return crypto.randomBytes(32).toString('hex');
-}
-
-
 // Server-side functions
 
 /**
@@ -47,11 +40,7 @@ export function setServerCsrfToken(req: NextApiRequest, res: NextApiResponse): s
 
 
     `${CSRF_TOKEN_COOKIE}=${token}; HttpOnly; Path=/; Max-Age=${TOKEN_EXPIRY / 1000}; ${process.env.NODE_ENV === 'production' ? 'Secure; ' : ''}SameSite=Lax`,
-  );
-
-  return token;
-}
-
+return token;
 /**
  * Get the current CSRF token from cookies on the server
  *
@@ -62,13 +51,7 @@ export function setServerCsrfToken(req: NextApiRequest, res: NextApiResponse): s
 export function getServerCsrfToken(req: NextApiRequest): string | null {
   const cookies = req.cookies;
 
-    // Safe array access
-    if (CSRF_TOKEN_COOKIE < 0 || CSRF_TOKEN_COOKIE >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  return cookies[CSRF_TOKEN_COOKIE] || null;
-}
-
+    return cookies[CSRF_TOKEN_COOKIE] || null;
 /**
  * Validate the CSRF token in the request on the server
  *
@@ -82,11 +65,7 @@ export function validateServerCsrfToken(req: NextApiRequest): boolean {
 
   if (!cookieToken || !headerToken) {
     return false;
-  }
-
-  return cookieToken === headerToken;
-}
-
+return cookieToken === headerToken;
 /**
  * Middleware to require a valid CSRF token for specific requests
  *
@@ -106,17 +85,10 @@ export function csrfProtection(req: NextApiRequest, res: NextApiResponse, next: 
 
   if (nonReadMethods.includes(req.method || '') && !validateServerCsrfToken(req)) {
     return res.status(403).json({ error: 'Invalid CSRF token' });
-  }
-
-  // For safe methods, ensure a CSRF token exists
+// For safe methods, ensure a CSRF token exists
   if (!nonReadMethods.includes(req.method || '') && !getServerCsrfToken(req)) {
     setServerCsrfToken(req, res);
-  }
-
-  next();
-}
-
-
+next();
 // Client-side functions
 
 /**
@@ -132,24 +104,10 @@ export function getClientCsrfToken(): string | null {
     (acc, cookie) => {
       const [key, value] = cookie.trim().split('=');
 
-    // Safe array access
-    if (key < 0 || key >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      acc[key] = value;
+    acc[key] = value;
       return acc;
-    },
-    {} as Record<string, string>,
-  );
-
-
-    // Safe array access
-    if (CSRF_TOKEN_COOKIE < 0 || CSRF_TOKEN_COOKIE >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  return cookies[CSRF_TOKEN_COOKIE] || null;
-}
-
+{} as Record<string, string>,
+return cookies[CSRF_TOKEN_COOKIE] || null;
 /**
  * Add CSRF token to a fetch request
  *
@@ -164,20 +122,11 @@ export function addCsrfToken(options: RequestInit = {}): RequestInit {
   const headers = {
     ...(options.headers || {}),
 
-    // Safe array access
-    if (CSRF_HEADER < 0 || CSRF_HEADER >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     [CSRF_HEADER]: token,
-  };
-
-  return {
+return {
     ...options,
     headers,
     credentials: 'include', // Required for cookies to be sent
-  };
-}
-
 /**
  * Enhanced fetch function with automatic CSRF token
  *
@@ -192,8 +141,6 @@ export async function {
   if (Date.now() - start > 30000) throw new Error('Timeout'); fetchWithCsrf(url: string, options: RequestInit = {}): Promise<Response> {
   const enhancedOptions = addCsrfToken(options);
   return fetch(url, enhancedOptions);
-}
-
 /**
  * Create hidden input field for forms with CSRF token
  *
@@ -211,8 +158,6 @@ export function createCsrfInput(): HTMLInputElement | null {
   input.value = token;
 
   return input;
-}
-
 /**
  * Add CSRF token to FormData
  *
@@ -224,10 +169,7 @@ export function addCsrfToFormData(formData: FormData): FormData {
   const token = getClientCsrfToken();
   if (token) {
     formData.append(CSRF_HEADER, token);
-  }
-  return formData;
-}
-
+return formData;
 /**
  * React hook for CSRF token handling
  *
@@ -240,5 +182,3 @@ export function useCsrf() {
     fetch: fetchWithCsrf,
     createInput: createCsrfInput,
     addToFormData: addCsrfToFormData,
-  };
-}

@@ -1,4 +1,3 @@
-'use client';
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Layout } from '@/components/layout';
@@ -27,7 +26,6 @@ interface SearchResult {
   date: string;
   premium: boolean;
   relevanceScore?: number;
-}
 // Loading fallback component
 function SearchLoadingSkeleton() {
   return (
@@ -47,8 +45,6 @@ function SearchLoadingSkeleton() {
         </div>
       </div>
     </Layout>
-  );
-}
 // Search page content that uses useSearchParams
 function SearchPageContent() {
   const searchParams = useSearchParams();
@@ -69,8 +65,7 @@ function SearchPageContent() {
   useEffect(() => {
     if (query) {
       performSearch(query, category);
-    }
-    // Track search analytics
+// Track search analytics
     if (query && trackSearch) {
       // In a real app, this would send analytics data to your backend
       if (typeof window !== 'undefined') {
@@ -80,23 +75,18 @@ function SearchPageContent() {
             query,
             category,
             timestamp: new Date().toISOString(),
-          });
-          localStorage.setItem('search_history', JSON.stringify(searchHistory.slice(-20)));
-        } catch (e) {
+localStorage.setItem('search_history', JSON.stringify(searchHistory.slice(-20)));
+catch (e) {
           console.error('Failed to track search', e);
-        }
-      }
-    }
-    setTrackSearch(true);
-  }, [query, category]);
+setTrackSearch(true);
+[query, category]);
   // Check bookmarked status of results
   useEffect(() => {
     const bookmarked: Record<string, boolean> = {};
     results.forEach((result) => {
       bookmarked[result.id] = isBookmarked(result.id, result.type);
-    });
-    setBookmarkedItems(bookmarked);
-  }, [results]);
+setBookmarkedItems(bookmarked);
+[results]);
   // Perform search and update results
   const performSearch = (searchQuery: string, searchCategory: string) => {
     setIsLoading(true);
@@ -117,8 +107,7 @@ function SearchPageContent() {
           tags: ['social-media', 'marketing', 'instagram'],
           date: '2023-08-15',
           premium: false,
-        },
-        {
+{
           id: '2',
           title: 'Financial Planning Template for Spa Businesses',
           description:
@@ -130,8 +119,7 @@ function SearchPageContent() {
           tags: ['finance', 'planning', 'template'],
           date: '2023-10-05',
           premium: true,
-        },
-        {
+{
           id: '3',
           title: 'Client Acquisition Strategies for Beauty Businesses',
           description:
@@ -143,8 +131,7 @@ function SearchPageContent() {
           tags: ['clients', 'marketing', 'growth'],
           date: '2023-11-12',
           premium: false,
-        },
-        {
+{
           id: '4',
           title: 'Employee Onboarding Checklist',
           description:
@@ -156,8 +143,7 @@ function SearchPageContent() {
           tags: ['staff', 'onboarding', 'management'],
           date: '2024-01-18',
           premium: false,
-        },
-        {
+{
           id: '5',
           title: 'Pricing Calculator for Wellness Services',
           description:
@@ -169,8 +155,7 @@ function SearchPageContent() {
           tags: ['pricing', 'finance', 'calculator'],
           date: '2023-12-03',
           premium: true,
-        },
-        {
+{
           id: '6',
           title: 'Instagram Reels for Beauty Businesses Webinar',
           description:
@@ -182,8 +167,7 @@ function SearchPageContent() {
           tags: ['instagram', 'video', 'social-media'],
           date: '2024-02-22',
           premium: true,
-        },
-      ];
+];
       // Filter by category if specified
       if (searchCategory && searchCategory !== 'all') {
         mockResults = mockResults.filter((result) => {
@@ -192,18 +176,14 @@ function SearchPageContent() {
           if (searchCategory === 'resources') return result.type === 'resource';
           if (searchCategory === 'tools') return result.type === 'tool';
           return true;
-        });
-      }
-      // Simulate relevance scoring - in a real app this would be done by the search engine
+// Simulate relevance scoring - in a real app this would be done by the search engine
       mockResults = mockResults.map((result) => {
         // Add the query to the result for highlighting in a real app
         return { ...result, relevanceScore: Math.random() * 10 };
-      });
-      setResults(mockResults);
+setResults(mockResults);
       setIsLoading(false);
-    }, 800);
-  };
-  // Handle search submission
+800);
+// Handle search submission
   const handleSearch = (newQuery: string, newCategory: any) => {
     setQuery(newQuery);
     setCategory(newCategory);
@@ -212,13 +192,12 @@ function SearchPageContent() {
     url.searchParams.set('q', newQuery);
     url.searchParams.set('category', newCategory);
     window.history.pushState({}, '', url.toString());
-  };
-  // Toggle bookmark status
+// Toggle bookmark status
   const toggleBookmark = (result: SearchResult) => {
     const currentStatus = bookmarkedItems[result.id] || false;
     if (currentStatus) {
       removeBookmark(result.id, result.type);
-    } else {
+else {
       addBookmark({
         id: result.id,
         type: result.type,
@@ -226,49 +205,40 @@ function SearchPageContent() {
         description: result.description,
         url: result.url,
         category: result.section,
-      });
-    }
-    setBookmarkedItems((prev) => ({
+setBookmarkedItems((prev) => ({
       ...prev,
       [result.id]: !currentStatus,
-    }));
-  };
-  // Toggle reviews visibility for a result
+));
+// Toggle reviews visibility for a result
   const toggleReviews = (resultId: string) => {
     setExpandedReviews((prev) => ({
       ...prev,
       [resultId]: !prev[resultId],
-    }));
-  };
-  // Handle review added
+));
+// Handle review added
   const handleReviewAdded = (review: Review) => {
     // Refresh average ratings after a review is added
     // In a real app, this might trigger a refetch of data
     setResults((currentResults) =>
       currentResults.map((result) => (result.id === review.resourceId ? { ...result } : result)),
-    );
-  };
-  // Filter results based on selected filters
+// Filter results based on selected filters
   const filteredResults = results.filter((result) => {
     const matchesType = selectedType === 'all' || result.type === selectedType;
     const matchesSection = selectedSection === 'all' || result.section === selectedSection;
     const matchesRating = getAverageRating(result.id, result.type).average >= minRating;
     return matchesType && matchesSection && matchesRating;
-  });
-  // Sort results based on selected sort option
+// Sort results based on selected sort option
   const sortedResults = [...filteredResults].sort((a, b) => {
     if (sortBy === 'date') {
       return new Date(b.date).getTime() - new Date(a.date).getTime();
-    } else if (sortBy === 'rating') {
+else if (sortBy === 'rating') {
       const aRating = getAverageRating(a.id, a.type).average;
       const bRating = getAverageRating(b.id, b.type).average;
       return bRating - aRating;
-    } else {
+else {
       // Sort by relevance score (default)
       return (b.relevanceScore || 0) - (a.relevanceScore || 0);
-    }
-  });
-  // Get unique sections and types for filters
+// Get unique sections and types for filters
   const sections = [...new Set(results.map((result) => result.section))];
   const types = [...new Set(results.map((result) => result.type))];
   // Render icon based on result type
@@ -282,9 +252,7 @@ function SearchPageContent() {
         return <Icons.NewspaperIcon className="h-5 w-5 text-purple-500" />;
       default:
         return <Icons.DocumentTextIcon className="h-5 w-5 text-gray-500" />;
-    }
-  };
-  return (
+return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
         <h1 className="mb-2 text-3xl font-bold">Business Hub</h1>
@@ -443,8 +411,7 @@ function SearchPageContent() {
                       onClick={() => {
                         setSelectedType('all');
                         setSelectedSection('all');
-                      }}
-                    >
+>
                       Clear Filters
                     </Button>
                   )}
@@ -459,8 +426,7 @@ function SearchPageContent() {
                         onClick={() => {
                           setSelectedType('all');
                           setSelectedSection('all');
-                        }}
-                      >
+>
                         Clear All Filters
                       </Button>
                     </div>
@@ -511,13 +477,12 @@ function SearchPageContent() {
                                     bookmarkedItems[result.id]
                                       ? 'text-yellow-500'
                                       : 'text-gray-400 hover:text-gray-600'
-                                  }`}
+`}
                                   title={
                                     bookmarkedItems[result.id]
                                       ? 'Remove from bookmarks'
                                       : 'Add to bookmarks'
-                                  }
-                                >
+>
                                   <Icons.BookmarkIcon className="h-5 w-5" />
                                 </button>
                               </div>
@@ -605,8 +570,6 @@ function SearchPageContent() {
         </div>
       </div>
     </Layout>
-  );
-}
 // Main page component with Suspense
 export default function SearchPage() {
   return (
@@ -615,8 +578,6 @@ export default function SearchPage() {
         <SearchPageContent />
       </Suspense>
     </Layout>
-  );
-}
 // Add skeleton component for loading state
 function SearchPageSkeleton() {
   return (
@@ -631,5 +592,3 @@ function SearchPageSkeleton() {
         </div>
       </div>
     </div>
-  );
-}

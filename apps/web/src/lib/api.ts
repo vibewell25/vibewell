@@ -7,9 +7,6 @@ export const api = axios.create({
 
 
     'Content-Type': 'application/json',
-  },
-});
-
 // Add a request interceptor to include auth token in requests
 api.interceptors.request.use((config) => {
   // Get token from localStorage
@@ -17,11 +14,7 @@ api.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-    }
-  }
-  return config;
-});
-
+return config;
 // Add a response interceptor to handle auth errors
 api.interceptors.response.use(
   (response) => response,
@@ -33,12 +26,7 @@ api.interceptors.response.use(
         localStorage.removeItem('token');
 
         window.location.href = '/auth/login';
-      }
-    }
-    return Promise.reject(error);
-  },
-);
-
+return Promise.reject(error);
 // Helper function to check if the user is authenticated
 export {};
 

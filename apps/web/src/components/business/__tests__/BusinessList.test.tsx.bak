@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import business-list from '../business-list.tsx';
+
+describe('business-list', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<business-list />);
+    expect(container).toBeInTheDocument();
+  });
+});

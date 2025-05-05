@@ -1,27 +1,4 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { NextApiRequest, NextApiResponse } from '@/types/api';
+/* eslint-disable */import { NextApiRequest, NextApiResponse } from '@/types/api';
 
 import { withSecurity, getToken } from '../../middleware/security';
 
@@ -69,8 +46,7 @@ describe('Security Middleware Tests', () => {
     await withSecurity(handler)(req, res);
 
     expect(res.statusCode).toBe(403);
-    expect(JSON.parse(res._getData())).toEqual({ error: 'Invalid CSRF token' });
-  });
+    expect(JSON.parse(res._getData())).toEqual({ error: 'Invalid CSRF token' }));
 
   it('should allow GET requests without CSRF token', async () => {
     const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
@@ -78,8 +54,7 @@ describe('Security Middleware Tests', () => {
     });
 
     const handler = jest.fn().mockImplementation(() => {
-      res.status(200).json({ success: true });
-    });
+      res.status(200).json({ success: true }));
 
     await withSecurity(handler)(req, res);
 
@@ -108,8 +83,7 @@ describe('Security Middleware Tests', () => {
     process.env = { ...process.env, NODE_ENV: 'production' };
 
     const handler = jest.fn().mockImplementation((req: NextApiRequest, res: NextApiResponse) => {
-      res.status(200).json({ success: true });
-    });
+      res.status(200).json({ success: true }));
 
     // Test a single request to verify middleware setup
     const { req, res } = createMocks<NextApiRequest, NextApiResponse>({

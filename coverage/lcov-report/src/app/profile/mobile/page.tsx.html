@@ -525,12 +525,12 @@ function <span class="fstat-no" title="function not covered" >ProfileMobileConte
   const { user, loading } = <span class="cstat-no" title="statement not covered" >useAuth();</span>
   const router = <span class="cstat-no" title="statement not covered" >useRouter();</span>
   const searchParams = <span class="cstat-no" title="statement not covered" >useSearchParams();</span>
-  const defaultTab = <span class="cstat-no" title="statement not covered" >searchParams?.get('tab') || 'activity';</span>
+  const defaultTab = <span class="cstat-no" title="statement not covered" >searchParams.get('tab') || 'activity';</span>
   const [activeTab, setActiveTab] = <span class="cstat-no" title="statement not covered" >useState(defaultTab);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!loading &amp;&amp; !user) {</span>
-<span class="cstat-no" title="statement not covered" >      router?.push('/auth/login');</span>
+<span class="cstat-no" title="statement not covered" >      router.push('/auth/login');</span>
     }
   }, [user, loading, router]);
 &nbsp;
@@ -539,9 +539,9 @@ function <span class="fstat-no" title="function not covered" >ProfileMobileConte
 <span class="cstat-no" title="statement not covered" >    setActiveTab(tab);</span>
 &nbsp;
     // Update URL without page reload
-    const newParams = <span class="cstat-no" title="statement not covered" >new URLSearchParams(searchParams?.toString());</span>
-<span class="cstat-no" title="statement not covered" >    newParams?.set('tab', tab);</span>
-<span class="cstat-no" title="statement not covered" >    router?.push(`/profile/mobile?${newParams?.toString()}`);</span>
+    const newParams = <span class="cstat-no" title="statement not covered" >new URLSearchParams(searchParams.toString());</span>
+<span class="cstat-no" title="statement not covered" >    newParams.set('tab', tab);</span>
+<span class="cstat-no" title="statement not covered" >    router.push(`/profile/mobile?${newParams.toString()}`);</span>
   };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (loading) {</span>
@@ -564,18 +564,18 @@ function <span class="fstat-no" title="function not covered" >ProfileMobileConte
         {/* Profile Header */}
         &lt;div className="flex flex-col items-center border-b border-border bg-card px-4 pb-4 pt-6"&gt;
           &lt;Avatar className="mb-3 h-20 w-20"&gt;
-            &lt;AvatarImage src={user?.avatarUrl || ''} alt={user?.fullName || 'User'} /&gt;
-            &lt;AvatarFallback&gt;{user?.fullName?.charAt(0) || 'U'}&lt;/AvatarFallback&gt;
+            &lt;AvatarImage src={user.avatarUrl || ''} alt={user.fullName || 'User'} /&gt;
+            &lt;AvatarFallback&gt;{user.fullName.charAt(0) || 'U'}&lt;/AvatarFallback&gt;
           &lt;/Avatar&gt;
-          &lt;h1 className="mb-1 text-xl font-semibold"&gt;{user?.fullName || 'User'}&lt;/h1&gt;
-          &lt;p className="mb-3 text-sm text-muted-foreground"&gt;{user?.email}&lt;/p&gt;
+          &lt;h1 className="mb-1 text-xl font-semibold"&gt;{user.fullName || 'User'}&lt;/h1&gt;
+          &lt;p className="mb-3 text-sm text-muted-foreground"&gt;{user.email}&lt;/p&gt;
 &nbsp;
           &lt;div className="mb-3 flex space-x-2"&gt;
             &lt;Badge variant="outline" className="px-2 py-1 text-xs"&gt;
-              {user?.role || 'Customer'}
+              {user.role || 'Customer'}
             &lt;/Badge&gt;
             &lt;Badge variant="outline" className="px-2 py-1 text-xs"&gt;
-              Member since {format(new Date(user?.createdAt || Date?.now()), 'MMM yyyy')}
+              Member since {format(new Date(user.createdAt || Date.now()), 'MMM yyyy')}
             &lt;/Badge&gt;
           &lt;/div&gt;
 &nbsp;
@@ -674,7 +674,7 @@ function <span class="fstat-no" title="function not covered" >ProfileMobileConte
                     &lt;h3 className="font-medium"&gt;Serenity Spa&lt;/h3&gt;
                     &lt;p className="text-sm text-muted-foreground"&gt;Massage, Facials&lt;/p&gt;
                     &lt;div className="mt-1 flex items-center"&gt;
-                      &lt;span className="mr-1 text-sm"&gt;4?.8&lt;/span&gt;
+                      &lt;span className="mr-1 text-sm"&gt;4.8&lt;/span&gt;
                       &lt;span className="text-yellow-500"&gt;★★★★★&lt;/span&gt;
                     &lt;/div&gt;
                   &lt;/div&gt;
@@ -688,7 +688,7 @@ function <span class="fstat-no" title="function not covered" >ProfileMobileConte
                     &lt;h3 className="font-medium"&gt;Modern Cuts Salon&lt;/h3&gt;
                     &lt;p className="text-sm text-muted-foreground"&gt;Haircuts, Styling&lt;/p&gt;
                     &lt;div className="mt-1 flex items-center"&gt;
-                      &lt;span className="mr-1 text-sm"&gt;4?.6&lt;/span&gt;
+                      &lt;span className="mr-1 text-sm"&gt;4.6&lt;/span&gt;
                       &lt;span className="text-yellow-500"&gt;★★★★★&lt;/span&gt;
                     &lt;/div&gt;
                   &lt;/div&gt;
@@ -702,7 +702,7 @@ function <span class="fstat-no" title="function not covered" >ProfileMobileConte
                     &lt;h3 className="font-medium"&gt;Glow Beauty Lounge&lt;/h3&gt;
                     &lt;p className="text-sm text-muted-foreground"&gt;Facials, Makeup&lt;/p&gt;
                     &lt;div className="mt-1 flex items-center"&gt;
-                      &lt;span className="mr-1 text-sm"&gt;4?.7&lt;/span&gt;
+                      &lt;span className="mr-1 text-sm"&gt;4.7&lt;/span&gt;
                       &lt;span className="text-yellow-500"&gt;★★★★★&lt;/span&gt;
                     &lt;/div&gt;
                   &lt;/div&gt;
@@ -736,7 +736,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

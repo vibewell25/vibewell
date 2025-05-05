@@ -25,12 +25,9 @@ const Inventory: NextPage = () => {
       const res = await fetchWithTimeout('/api/inventory');
       const json = await res.json();
       setItems(json.items || []);
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  useEffect(() => { fetchItems(); }, []);
+useEffect(() => { fetchItems(); }, []);
 
   const handleCreate = async (e: FormEvent) => {
     setCreating(true);
@@ -40,23 +37,17 @@ const Inventory: NextPage = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, description, quantity })
-      });
-      setName(''); 
+setName(''); 
       setDescription(''); 
       setQuantity(0);
       fetchItems();
-    } finally {
+finally {
       setCreating(false);
-    }
-  };
-
-  const handleDelete = async (id: string) => {
+const handleDelete = async (id: string) => {
     if (!confirm('Delete this item?')) return;
     await fetchWithTimeout(`/api/inventory/${id}`, { method: 'DELETE' });
     fetchItems();
-  };
-
-  const handleExportCSV = () => {
+const handleExportCSV = () => {
     setExporting(true);
     try {
       const header = ['id','name','description','quantity'];
@@ -76,15 +67,11 @@ const Inventory: NextPage = () => {
         a.click();
         a.remove();
         URL.revokeObjectURL(url);
-      }
-    } catch {
+catch {
       alert('CSV export failed');
-    } finally {
+finally {
       setExporting(false);
-    }
-  };
-
-  return (
+return (
     <div className="max-w-2xl mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Inventory</h1>
       <form onSubmit={handleCreate} className="space-y-2 mb-6">
@@ -142,7 +129,4 @@ const Inventory: NextPage = () => {
       ))}
       {!loading && items.length === 0 && <p>No inventory items.</p>}
     </div>
-  );
-};
-
 export default Inventory;

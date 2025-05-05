@@ -1,15 +1,4 @@
-/**
- * Checkbox Component
- * 
- * Description: A standardized checkbox input component.
- * 
- * @component
- * 
- * @typedef CheckboxProps
- * @param {React.InputHTMLAttributes<HTMLInputElement>} props - Standard input HTML attributes
- * @param {string} label - Optional label text
- * @param {string} error - Optional error message
- * @param {string} className - Additional CSS classes for the checkbox
+className - Additional CSS classes for the checkbox
  * @param {string} wrapperClassName - Additional CSS classes for the wrapper div
  * @param {string} labelClassName - Additional CSS classes for the label
  * 
@@ -40,8 +29,6 @@ export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputE
   wrapperClassName?: string;
   labelClassName?: string;
   checkboxSize?: 'sm' | 'md' | 'lg';
-}
-
 export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(({
   label,
   error,
@@ -51,7 +38,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(({
   checkboxSize = 'md',
   id,
   ...props
-}, ref) => {
+ref) => {
   // Generate a unique ID if none provided
   const checkboxId = id || `checkbox-${Math.random().toString(36).substring(2, 9)}`;
 
@@ -59,9 +46,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(({
     sm: 'h-3.5 w-3.5',
     md: 'h-4 w-4',
     lg: 'h-5 w-5',
-  };
-
-  return (
+return (
     <div className={cn('flex items-start', wrapperClassName)}>
       <div className="flex items-center h-5">
         <input
@@ -99,9 +84,6 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(({
         </div>
       )}
     </div>
-  );
-});
-
 Checkbox.displayName = 'Checkbox';
 
 export default Checkbox;

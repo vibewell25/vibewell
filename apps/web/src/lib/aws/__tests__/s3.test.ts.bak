@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import s3 from '../s3.ts';
+
+describe('s3', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<s3 />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import practitioner-list from '../practitioner-list.tsx';
+
+describe('practitioner-list', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<practitioner-list />);
+    expect(container).toBeInTheDocument();
+  });
+});

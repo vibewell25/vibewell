@@ -5,8 +5,6 @@ import { validateForm } from '../utils/form-validation';
 
 interface FormProps {
   onSuccess?: (data: any) => void;
-}
-
 /**
  * A form component with built-in validation and CSRF protection
  *
@@ -29,48 +27,37 @@ export function Form({ onSuccess }: FormProps) {
     const validationResult = validateForm(formData);
     setErrors(validationResult.errors);
     return validationResult.isValid;
-  };
-
-  const handleSubmit = async ( {
+const handleSubmit = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateFormData()) {
       return;
-    }
-
-    setIsSubmitting(true);
+setIsSubmitting(true);
 
     try {
       const response = await fetch('/api/submit-form', {
         method: 'POST',
         headers: addTokenToHeaders({
           'Content-Type': 'application/json',
-        }),
+),
         body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
+const data = await response.json();
 
       if (response.ok) {
         if (onSuccess) {
           onSuccess(data);
-        }
-        setEmail('');
+setEmail('');
         setPassword('');
-      } else {
+else {
         setErrors({ form: data.message || 'Form submission failed' });
-      }
-    } catch (error) {
+catch (error) {
       setErrors({ form: 'An error occurred during submission' });
       console.error('Form submission error:', error);
-    } finally {
+finally {
       setIsSubmitting(false);
-    }
-  };
-
-  return (
+return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Hidden CSRF token input */}
       <input type="hidden" name="csrf_token" value={token || ''} />
@@ -125,5 +112,3 @@ export function Form({ onSuccess }: FormProps) {
         {isSubmitting ? 'Submitting...' : 'Submit'}
       </Button>
     </form>
-  );
-}

@@ -23,36 +23,29 @@ const CalendarScreen: React.FC = () => {
     getCalendarPermissions()
       .then(granted => setHasPermission(granted))
       .catch(console.error);
-  }, []);
+[]);
 
   const handleEnable = async () => {
     const granted = await requestCalendarPermissions();
     setHasPermission(granted);
-  };
-
-  const handleDetectCalendar = async () => {
+const handleDetectCalendar = async () => {
     try {
       const id = await getDefaultCalendarId();
       setCalendarId(id);
-    } catch (err) { console.error(err); }
-  };
-
-  const handleLoadEvents = async () => {
+catch (err) { console.error(err); }
+const handleLoadEvents = async () => {
     if (!calendarId) {
       await handleDetectCalendar();
-    }
-    if (!calendarId) return;
+if (!calendarId) return;
     setLoading(true);
     const now = new Date();
     const end = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
     try {
       const evs = await Calendar.getEventsAsync([calendarId], now, end);
       setEvents(evs);
-    } catch (err) { console.error(err); }
+catch (err) { console.error(err); }
     setLoading(false);
-  };
-
-  const handleGoogleConnect = async () => {
+const handleGoogleConnect = async () => {
     try {
       setGoogleLoading(true);
       const { url } = await calendarApi.getAuthUrl();
@@ -62,15 +55,11 @@ const CalendarScreen: React.FC = () => {
         const weekLaterISO = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
         const evs = await calendarApi.getUserEvents(nowISO, weekLaterISO);
         setGoogleEvents(evs);
-      }
-    } catch (err) {
+catch (err) {
       console.error('Google Calendar sync error', err);
-    } finally {
+finally {
       setGoogleLoading(false);
-    }
-  };
-
-  const handleOutlookConnect = async () => {
+const handleOutlookConnect = async () => {
     try {
       setOutlookLoading(true);
       const { url } = await calendarApi.getOutlookAuthUrl();
@@ -80,39 +69,27 @@ const CalendarScreen: React.FC = () => {
         await calendarApi.exchangeOutlookToken(code);
         const evs = await calendarApi.getOutlookEvents();
         setOutlookEvents(evs);
-      }
-    } catch (err) {
+catch (err) {
       console.error('Outlook Calendar sync error', err);
-    } finally {
+finally {
       setOutlookLoading(false);
-    }
-  };
-
-  // Demo: remove synced booking event from server (by bookingId)
+// Demo: remove synced booking event from server (by bookingId)
   const handleDeleteEvent = async (bookingId: string) => {
     try {
       await calendarApi.deleteEventFromCalendar(bookingId);
       Alert.alert('✅ Removed from calendar');
-    } catch (err) {
+catch (err) {
       console.error(err);
       Alert.alert('Failed to remove event');
-    }
-  };
-
-  if (hasPermission === null) {
+if (hasPermission === null) {
     return <ActivityIndicator style={{ flex: 1 }} color={colors.primary} size="large" />;
-  }
-
-  if (!hasPermission) {
+if (!hasPermission) {
     return (
       <View style={styles.container}>
         <Text style={{ color: colors.text }}>Calendar permission required</Text>
         <Button title="Enable Calendar Sync" onPress={handleEnable} color={colors.primary} />
       </View>
-    );
-  }
-
-  return (
+return (
     <View style={styles.container}>
       <Button title="Connect Google Calendar" onPress={handleGoogleConnect} color={colors.primary} />
       {googleLoading && <ActivityIndicator style={{ marginVertical: 16 }} color={colors.primary} />}
@@ -165,12 +142,7 @@ const CalendarScreen: React.FC = () => {
         )}
       />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   item: { marginBottom: 12, padding: 8, borderBottomWidth: 1, borderColor: '#ccc' },
-});
-
 export default CalendarScreen;

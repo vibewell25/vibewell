@@ -5,4 +5,3 @@ export interface InventoryItem {
   quantity: number;
   createdAt: string;
   updatedAt: string;
-}

@@ -13,9 +13,7 @@ export default async function {
 
   if (!session.user) {
     redirect('/auth/login');
-  }
-
-  return (
+return (
     <div className="container mx-auto max-w-4xl py-8">
       <div className="mb-8">
         <h1 className="mb-2 text-3xl font-bold">Trusted Devices</h1>
@@ -45,5 +43,3 @@ export default async function {
         </div>
       </div>
     </div>
-  );
-}

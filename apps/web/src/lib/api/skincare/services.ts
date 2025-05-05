@@ -25,16 +25,7 @@ export async function {
     summer: { season: 'summer', temperature: 28, humidity: 70, uvIndex: 8 },
     fall: { season: 'fall', temperature: 18, humidity: 60, uvIndex: 4 },
     winter: { season: 'winter', temperature: 10, humidity: 55, uvIndex: 2 },
-  };
-
-
-    // Safe array access
-    if (season < 0 || season >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  return weatherData[season];
-}
-
+return weatherData[season];
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); getRecommendedProducts(concerns: string[]): Promise<Product[]> {
@@ -55,8 +46,7 @@ export async function {
 
 
       purchaseUrl: 'https://example.com/products/gentle-cleanser',
-    },
-    {
+{
       id: '2',
       name: 'Hydrating Serum',
       brand: 'HydraPlus',
@@ -70,17 +60,13 @@ export async function {
 
 
       purchaseUrl: 'https://example.com/products/hydrating-serum',
-    },
-    // Add more products as needed
+// Add more products as needed
   ];
 
   return productDatabase.filter((product) =>
     concerns.some((concern) =>
       product.ingredients.some((i) => getIngredientForConcern(concern).includes(i.toLowerCase())),
     ),
-  );
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); trackRecommendationProgress(
@@ -95,30 +81,21 @@ export async function {
         userId_recommendationId: {
           userId,
           recommendationId,
-        },
-      },
-      update: {
+update: {
         status,
         ...(effectiveness && { effectiveness }),
         ...(status === 'completed' && { completionDate: new Date() }),
-      },
-      create: {
+create: {
         userId,
         recommendationId,
         status,
         startDate: new Date(),
         ...(effectiveness && { effectiveness }),
         ...(status === 'completed' && { completionDate: new Date() }),
-      },
-    });
-
-    return progress;
-  } catch (error) {
+return progress;
+catch (error) {
     console.error('Error tracking recommendation progress:', error);
     throw error;
-  }
-}
-
 function getIngredientForConcern(concern: string): string[] {
   const ingredientMap: Record<string, string[]> = {
     acne: ['salicylic acid', 'benzoyl peroxide', 'niacinamide'],
@@ -127,12 +104,4 @@ function getIngredientForConcern(concern: string): string[] {
     sensitivity: ['centella asiatica', 'aloe vera', 'chamomile'],
     dark_spots: ['vitamin c', 'kojic acid', 'alpha arbutin'],
     fine_lines: ['retinol', 'peptides', 'vitamin c'],
-  };
-
-
-    // Safe array access
-    if (concern < 0 || concern >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  return ingredientMap[concern] || [];
-}
+return ingredientMap[concern] || [];

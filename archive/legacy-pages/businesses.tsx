@@ -13,8 +13,6 @@ type Business = {
   address: string;
   phone: string;
   email: string;
-};
-
 const Businesses: NextPage = () => {
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [name, setName] = useState('');
@@ -28,14 +26,11 @@ const Businesses: NextPage = () => {
       const res = await fetchWithTimeout('/api/businesses');
       const data = await res.json();
       setBusinesses(data.businesses || []);
-    } catch (error) {
+catch (error) {
       console.error('Error fetching businesses:', error);
-    }
-  };
-
-  useEffect(() => {
+useEffect(() => {
     fetchBiz();
-  }, []);
+[]);
 
   const handleCreate = async (e: FormEvent) => {
     e.preventDefault();
@@ -44,32 +39,23 @@ const Businesses: NextPage = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, address, phone, email })
-      });
-      setName('');
+setName('');
       setAddress('');
       setPhone('');
       setEmail('');
       fetchBiz();
-    } catch (error) {
+catch (error) {
       console.error('Error creating business:', error);
-    }
-  };
-
-  const handleDelete = async (id: string) => {
+const handleDelete = async (id: string) => {
     try {
       if (!confirm('Delete this business?')) return;
       
       await fetchWithTimeout(`/api/businesses/${id}`, { 
         method: 'DELETE' 
-      });
-      
-      fetchBiz();
-    } catch (error) {
+fetchBiz();
+catch (error) {
       console.error('Error deleting business:', error);
-    }
-  };
-
-  return (
+return (
     <div className="max-w-2xl mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Businesses</h1>
       <form onSubmit={handleCreate} className="space-y-2 mb-6">
@@ -124,7 +110,4 @@ const Businesses: NextPage = () => {
       
       {businesses.length === 0 && <p>No businesses added yet.</p>}
     </div>
-  );
-};
-
 export default Businesses;

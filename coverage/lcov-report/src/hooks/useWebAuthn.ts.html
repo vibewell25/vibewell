@@ -404,19 +404,19 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
 &nbsp;
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify({ options }),
+        body: JSON.stringify({ options }),
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!optionsResponse?.ok) {</span>
-        const error = <span class="cstat-no" title="statement not covered" >await optionsResponse?.json();</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!optionsResponse.ok) {</span>
+        const error = <span class="cstat-no" title="statement not covered" >await optionsResponse.json();</span>
 <span class="cstat-no" title="statement not covered" >        throw new WebAuthnError(</span>
-          error?.error || 'Failed to get registration options',
-          error?.code || 'UNKNOWN_ERROR',
-          error?.details,
+          error.error || 'Failed to get registration options',
+          error.code || 'UNKNOWN_ERROR',
+          error.details,
         );
       }
 &nbsp;
-      const registrationOptions = <span class="cstat-no" title="statement not covered" >await optionsResponse?.json();</span>
+      const registrationOptions = <span class="cstat-no" title="statement not covered" >await optionsResponse.json();</span>
 &nbsp;
       // Start the registration process in the browser
       const registrationResponse = <span class="cstat-no" title="statement not covered" >await startRegistration(registrationOptions);</span>
@@ -429,23 +429,23 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
 &nbsp;
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify({
+        body: JSON.stringify({
           response: registrationResponse,
           options,
         }),
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!verificationResponse?.ok) {</span>
-        const error = <span class="cstat-no" title="statement not covered" >await verificationResponse?.json();</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!verificationResponse.ok) {</span>
+        const error = <span class="cstat-no" title="statement not covered" >await verificationResponse.json();</span>
 <span class="cstat-no" title="statement not covered" >        throw new WebAuthnError(</span>
-          error?.error || 'Registration verification failed',
-          error?.code || 'UNKNOWN_ERROR',
-          error?.details,
+          error.error || 'Registration verification failed',
+          error.code || 'UNKNOWN_ERROR',
+          error.details,
         );
       }
 &nbsp;
-      const verification = <span class="cstat-no" title="statement not covered" >await verificationResponse?.json();</span>
-<span class="cstat-no" title="statement not covered" >      return verification?.verified;</span>
+      const verification = <span class="cstat-no" title="statement not covered" >await verificationResponse.json();</span>
+<span class="cstat-no" title="statement not covered" >      return verification.verified;</span>
     } catch (err) {
       const error = <span class="cstat-no" title="statement not covered" >err instanceof Error ? err : new Error('Registration failed');</span>
 <span class="cstat-no" title="statement not covered" >      setError(error);</span>
@@ -462,27 +462,27 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
       // Get authentication options from server
       const searchParams = <span class="cstat-no" title="statement not covered" >new URLSearchParams({</span>
-        requireBiometrics: options?.requireBiometrics ? 'true' : 'false',
-        userVerification: options?.userVerificationLevel || 'preferred',
+        requireBiometrics: options.requireBiometrics ? 'true' : 'false',
+        userVerification: options.userVerificationLevel || 'preferred',
       });
 &nbsp;
       const optionsResponse = <span class="cstat-no" title="statement not covered" >await fetch(</span>
 &nbsp;
 &nbsp;
-        `/api/auth/webauthn/authenticate?${searchParams?.toString()}`,
+        `/api/auth/webauthn/authenticate?${searchParams.toString()}`,
         { method: 'GET' },
       );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!optionsResponse?.ok) {</span>
-        const error = <span class="cstat-no" title="statement not covered" >await optionsResponse?.json();</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!optionsResponse.ok) {</span>
+        const error = <span class="cstat-no" title="statement not covered" >await optionsResponse.json();</span>
 <span class="cstat-no" title="statement not covered" >        throw new WebAuthnError(</span>
-          error?.error || 'Failed to get authentication options',
-          error?.code || 'UNKNOWN_ERROR',
-          error?.details,
+          error.error || 'Failed to get authentication options',
+          error.code || 'UNKNOWN_ERROR',
+          error.details,
         );
       }
 &nbsp;
-      const authenticationOptions = <span class="cstat-no" title="statement not covered" >await optionsResponse?.json();</span>
+      const authenticationOptions = <span class="cstat-no" title="statement not covered" >await optionsResponse.json();</span>
 &nbsp;
       // Start the authentication process in the browser
       const authenticationResponse = <span class="cstat-no" title="statement not covered" >await startAuthentication(authenticationOptions);</span>
@@ -495,23 +495,23 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
 &nbsp;
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify({
+        body: JSON.stringify({
           response: authenticationResponse,
           options,
         }),
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!verificationResponse?.ok) {</span>
-        const error = <span class="cstat-no" title="statement not covered" >await verificationResponse?.json();</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!verificationResponse.ok) {</span>
+        const error = <span class="cstat-no" title="statement not covered" >await verificationResponse.json();</span>
 <span class="cstat-no" title="statement not covered" >        throw new WebAuthnError(</span>
-          error?.error || 'Authentication verification failed',
-          error?.code || 'UNKNOWN_ERROR',
-          error?.details,
+          error.error || 'Authentication verification failed',
+          error.code || 'UNKNOWN_ERROR',
+          error.details,
         );
       }
 &nbsp;
-      const verification = <span class="cstat-no" title="statement not covered" >await verificationResponse?.json();</span>
-<span class="cstat-no" title="statement not covered" >      return verification?.verified;</span>
+      const verification = <span class="cstat-no" title="statement not covered" >await verificationResponse.json();</span>
+<span class="cstat-no" title="statement not covered" >      return verification.verified;</span>
     } catch (err) {
       const error = <span class="cstat-no" title="statement not covered" >err instanceof Error ? err : new Error('Authentication failed');</span>
 <span class="cstat-no" title="statement not covered" >      setError(error);</span>
@@ -535,7 +535,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

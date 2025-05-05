@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 
 // Add type extension for Navigator to include deviceMemory property
@@ -7,9 +5,6 @@ declare global {
   interface Navigator {
     deviceMemory?: number;
     hardwareConcurrency?: number;
-  }
-}
-
 interface AdaptiveSettings {
   maxTextureSize: number;
   maxPolygons: number;
@@ -17,8 +12,6 @@ interface AdaptiveSettings {
   antialiasing: boolean;
   effects: 'none' | 'basic' | 'advanced';
   targetFrameRate: number;
-}
-
 /**
 
  * Hook that determines the device's capabilities and returns appropriate
@@ -33,8 +26,7 @@ export function useAdaptiveQuality() {
     antialiasing: true,
     effects: 'basic',
     targetFrameRate: 60,
-  });
-  const [isLoading, setIsLoading] = useState(true);
+const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const detectDeviceCapabilities = async ( {
@@ -72,12 +64,9 @@ export function useAdaptiveQuality() {
             antialiasing: false,
             effects: 'none',
             targetFrameRate: 30,
-          });
-          setIsLoading(false);
+setIsLoading(false);
           return;
-        }
-
-        // Check max texture size
+// Check max texture size
         const maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
 
         // Benchmark rendering performance (simple test)
@@ -97,7 +86,7 @@ export function useAdaptiveQuality() {
           const elapsed = performance.now() - startTime;
           if (elapsed < testDuration) {
             requestAnimationFrame(renderTestFrame);
-          } else {
+else {
             // Calculate approximate FPS
 
             const fps = (frameCount / elapsed) * 1000;
@@ -106,12 +95,8 @@ export function useAdaptiveQuality() {
               maxTextureSize,
               Boolean(isLowEndDevice),
               Boolean(isHighEndDevice),
-            );
-          }
-        };
-
-        renderTestFrame();
-      } catch (error) {
+renderTestFrame();
+catch (error) {
         console.error('Error detecting device capabilities:', error);
         // Fallback to medium quality
         setQualityLevel(2);
@@ -122,12 +107,8 @@ export function useAdaptiveQuality() {
           antialiasing: true,
           effects: 'basic',
           targetFrameRate: 60,
-        });
-        setIsLoading(false);
-      }
-    };
-
-    const finalizeSettings = (
+setIsLoading(false);
+const finalizeSettings = (
       fps: number,
       maxTextureSize: number,
       isLowEndDevice: boolean,
@@ -147,8 +128,7 @@ export function useAdaptiveQuality() {
           antialiasing: false,
           effects: 'none',
           targetFrameRate: 30,
-        };
-      } else if (fps > 55 && isHighEndDevice) {
+else if (fps > 55 && isHighEndDevice) {
 
         // High-end device with good performance
         level = 3;
@@ -159,8 +139,7 @@ export function useAdaptiveQuality() {
           antialiasing: true,
           effects: 'advanced',
           targetFrameRate: 60,
-        };
-      } else {
+else {
 
         // Medium-quality device
         level = 2;
@@ -171,15 +150,10 @@ export function useAdaptiveQuality() {
           antialiasing: true,
           effects: 'basic',
           targetFrameRate: 45,
-        };
-      }
-
-      setQualityLevel(level);
+setQualityLevel(level);
       setAdaptiveSettings(settings);
       setIsLoading(false);
-    };
-
-    detectDeviceCapabilities();
+detectDeviceCapabilities();
 
     // Add a separate function for battery level check
     const checkBatteryStatus = () => {
@@ -188,34 +162,10 @@ export function useAdaptiveQuality() {
 
         // @ts-expect-error - getBattery may not be recognized in TypeScript
         navigator.getBattery().then((battery: any) => {
-          if (battery.level < 0.2 && !battery.charging) {
-            // Ensure we have a valid quality level to work with
-            const currentLevel = qualityLevel || 2;
-
-            const newQualityLevel = Math.max(1, currentLevel - 1);
-            setQualityLevel(newQualityLevel);
-            setAdaptiveSettings((prev: AdaptiveSettings) => {
-              // Force boolean type for antialiasing
-              const isHigherQuality = Boolean(newQualityLevel > 1);
-              return {
-                ...prev,
-                shadows: false,
-                antialiasing: isHigherQuality,
-                effects: isHigherQuality ? 'basic' : 'none',
-                targetFrameRate: isHigherQuality ? 45 : 30,
-              };
-            });
-          }
-        });
-      }
-    };
-
-    checkBatteryStatus();
-  }, []);
+checkBatteryStatus();
+[]);
 
   return {
     qualityLevel, // 1=low, 2=medium, 3=high
     adaptiveSettings,
     isLoading,
-  };
-}

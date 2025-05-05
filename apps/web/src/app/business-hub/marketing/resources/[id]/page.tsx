@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 import { useParams, notFound } from 'next/navigation';
 import { ResourceDetailTemplate, BaseResource } from '@/components/resource-detail-template';
@@ -40,8 +38,7 @@ const marketingResources: BaseResource[] = [
     relatedResources: ['2', '3'],
     type: 'resource',
     tags: ['social media', 'digital marketing', 'content strategy'],
-  },
-  {
+{
     id: '2',
     title: 'Email Marketing Automation for Wellness Businesses',
     author: 'Michael Zhang, Email Marketing Consultant',
@@ -75,8 +72,7 @@ const marketingResources: BaseResource[] = [
     type: 'resource',
     tags: ['email marketing', 'automation', 'client nurturing'],
     premium: true,
-  },
-  {
+{
     id: '3',
     title: 'Content Marketing Strategy for Wellness Practitioners',
     author: 'Sophia Martinez, Content Strategist',
@@ -114,14 +110,11 @@ const marketingResources: BaseResource[] = [
     type: 'resource',
     tags: ['content marketing', 'SEO', 'blogging'],
     downloadUrl: '/downloads/content-strategy-template.pdf',
-  },
 ];
 
 // Fetch resource by ID
 const getResourceById = (id: string): BaseResource | undefined => {
   return marketingResources.find((resource) => resource.id === id);
-};
-
 export default function MarketingResourceDetailPage() {
   const params = useParams();
   const [resource, setResource] = useState<BaseResource | null>(null);
@@ -133,16 +126,12 @@ export default function MarketingResourceDetailPage() {
       const foundResource = getResourceById(params.id as string);
       if (foundResource) {
         setResource(foundResource);
-      }
-      setLoading(false);
-    }
-  }, [params.id]);
+setLoading(false);
+[params.id]);
 
   if (!loading && !resource) {
     notFound();
-  }
-
-  // Showing loading or no resource state
+// Showing loading or no resource state
   if (loading || !resource) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -151,17 +140,12 @@ export default function MarketingResourceDetailPage() {
           <p className="text-gray-600">Loading resource...</p>
         </div>
       </div>
-    );
-  }
-
-  // Handle download
+// Handle download
   const handleDownload = (resource: BaseResource) => {
     alert(`Downloading ${resource.title}`);
     // In a real app, this would trigger the actual download
     window.open(resource.downloadUrl, '_blank');
-  };
-
-  return (
+return (
     <ResourceDetailTemplate
       resource={resource}
       resourceType={resource.type}
@@ -172,5 +156,3 @@ export default function MarketingResourceDetailPage() {
       fetchRelatedResource={getResourceById}
       onDownload={handleDownload}
     />
-  );
-}

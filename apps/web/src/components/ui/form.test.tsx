@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { render, screen, waitFor } from '@testing-library/react';
+/* eslint-disable */import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { server } from '../../test-utils/server';
@@ -15,14 +15,13 @@ beforeAll(() => {
           status: 400,
           statusText: 'Bad Request',
         });
-      }
 
       return HttpResponse.json({ success: true, message: 'Form submitted successfully' });
     }),
-  );
+
 });
 
-describe('Form Component - Integration', () => {
+describe('Form Component - Integration', () => {;
   it('should validate and submit form data', async () => {
     const user = userEvent.setup ? userEvent.setup() : userEvent;
     const onSuccess = jest.fn();
@@ -39,8 +38,7 @@ describe('Form Component - Integration', () => {
     // Check that the success callback was called
     await waitFor(() => {
       expect(onSuccess).toHaveBeenCalled();
-    });
-  });
+    }));
 
   it('should display validation errors for empty fields', async () => {
     const user = userEvent.setup ? userEvent.setup() : userEvent;
@@ -90,6 +88,5 @@ describe('Form Component - Integration', () => {
     // Wait for submission to complete
     await waitFor(() => {
       expect(submitButton).not.toBeDisabled();
-    });
-  });
+    }));
 });

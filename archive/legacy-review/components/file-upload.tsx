@@ -5,5 +5,4 @@ interface FileUploadProps {
   accept?: string;
   maxSize?: number;
   className?: string;
-}
 export {};

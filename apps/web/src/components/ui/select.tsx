@@ -1,17 +1,4 @@
-/**
- * Select Component
- * 
- * Description: A standardized select dropdown component.
- * 
- * @component
- * 
- * @typedef SelectProps
- * @param {React.SelectHTMLAttributes<HTMLSelectElement>} props - Standard select HTML attributes
- * @param {string} label - Optional label text
- * @param {string} error - Optional error message
- * @param {Array<{value: string, label: string}>} options - Select options
- * @param {string} placeholder - Placeholder text
- * @param {string} className - Additional CSS classes for the select element
+className - Additional CSS classes for the select element
  * @param {string} wrapperClassName - Additional CSS classes for the wrapper div
  * @param {string} labelClassName - Additional CSS classes for the label
  * 
@@ -44,8 +31,6 @@ export interface SelectOption {
   value: string;
   label: string;
   disabled?: boolean;
-}
-
 export interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'placeholder'> {
   label?: string;
   error?: string;
@@ -54,8 +39,6 @@ export interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectE
   wrapperClassName?: string;
   labelClassName?: string;
   errorClassName?: string;
-}
-
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({
   label,
   error,
@@ -67,7 +50,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({
   errorClassName = '',
   id,
   ...props
-}, ref) => {
+ref) => {
   // Generate a unique ID if none provided
   const selectId = id || `select-${Math.random().toString(36).substring(2, 9)}`;
 
@@ -122,9 +105,6 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({
         </p>
       )}
     </div>
-  );
-});
-
 Select.displayName = 'Select';
 
 export default Select;

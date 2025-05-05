@@ -6,8 +6,6 @@ import { NextResponse } from 'next/server';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2023-10-16',
-});
-
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
 export async function {
@@ -22,12 +20,10 @@ export async function {
 
     try {
       event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-    } catch (err) {
+catch (err) {
       console.error('Webhook signature verification failed:', err);
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
-    }
-
-    switch (event.type) {
+switch (event.type) {
       case 'customer.subscription.created':
         const subscription = event.data.object as Stripe.Subscription;
         // Handle new subscription
@@ -53,51 +49,37 @@ export async function {
         // Handle failed payment
         await handleFailedPayment(event.data.object as Stripe.Invoice);
         break;
-    }
-
-    return NextResponse.json({ received: true });
-  } catch (error) {
+return NextResponse.json({ received: true });
+catch (error) {
     console.error('Webhook error:', error);
     return NextResponse.json({ error: 'Webhook handler failed' }, { status: 500 });
-  }
-}
-
 async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); handleNewSubscription(subscription: Stripe.Subscription) {
   // Update your database with new subscription details
   // Send welcome email to customer
   // Update user's access level
-}
-
 async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); handleSubscriptionUpdate(subscription: Stripe.Subscription) {
   // Update subscription details in your database
   // Handle plan changes
   // Update user's access level if needed
-}
-
 async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); handleSubscriptionCancellation(subscription: Stripe.Subscription) {
   // Update subscription status in your database
   // Remove user's access
   // Send cancellation email
-}
-
 async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); handleSuccessfulPayment(invoice: Stripe.Invoice) {
   // Update payment status in your database
   // Send receipt to customer
   // Update subscription status
-}
-
 async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); handleFailedPayment(invoice: Stripe.Invoice) {
   // Mark payment as failed in your database
   // Send notification to customer
   // Update subscription status
-}

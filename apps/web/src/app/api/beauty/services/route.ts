@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 import { prisma } from '@/lib/prisma';
@@ -11,12 +10,7 @@ export async function {
       take: 10,
       include: {
         reviews: true,
-      },
-    });
-
-    return NextResponse.json(services);
-  } catch (error) {
+return NextResponse.json(services);
+catch (error) {
     console.error('Error fetching beauty services:', error);
     return NextResponse.json({ error: 'Failed to fetch services' }, { status: 500 });
-  }
-}

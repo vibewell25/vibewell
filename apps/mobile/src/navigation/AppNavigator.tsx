@@ -71,27 +71,19 @@ const WellnessScreen = () => (
   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
     <Text>Wellness Screen</Text>
   </View>
-);
-
 // Placeholder Payroll screens
 const PayrollListScreen = () => (
   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
     <Text>Payroll List Screen</Text>
   </View>
-);
-
 const PayrollDetailScreen = () => (
   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
     <Text>Payroll Detail Screen</Text>
   </View>
-);
-
 const PayrollFormScreen = () => (
   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
     <Text>Payroll Form Screen</Text>
   </View>
-);
-
 const ProfileScreen: React.FC = () => {
   const { user, isLoading, signOut } = useAuth();
   
@@ -101,14 +93,10 @@ const ProfileScreen: React.FC = () => {
       Alert.alert(
         success ? 'Success' : 'Error',
         success ? 'Notification service initialized' : 'Failed to initialize notifications'
-      );
-    } catch (error) {
+catch (error) {
       console.error('Error sending notification:', error);
       Alert.alert('Error', 'Failed to send notification');
-    }
-  };
-
-  return (
+return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 16 }}>
       {isLoading ? (
         <ActivityIndicator size="large" color="#2A9D8F" />
@@ -124,9 +112,6 @@ const ProfileScreen: React.FC = () => {
         </>
       )}
     </View>
-  );
-};
-
 const Stack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
 
@@ -139,9 +124,6 @@ const BeautyStack = () => {
       <Stack.Screen name="BeautyBooking" component={BeautyBookingScreen} />
       <Stack.Screen name="BookingConfirmation" component={BookingConfirmationScreen} />
     </Stack.Navigator>
-  );
-};
-
 // Community & Social stack navigator
 const CommunityStack = () => {
   return (
@@ -156,9 +138,6 @@ const CommunityStack = () => {
       <Stack.Screen name="EventDetail" component={EventDetailScreen} options={{ title: 'Event' }} />
       <Stack.Screen name="EventForm" component={EventFormScreen} options={{ title: 'New Event' }} />
     </Stack.Navigator>
-  );
-};
-
 const MainTabNavigator = () => {
   return (
     <Tab.Navigator
@@ -168,57 +147,54 @@ const MainTabNavigator = () => {
 
           if (route.name === 'Home') {
             iconName = 'home';
-          } else if (route.name === 'Wellness') {
+else if (route.name === 'Wellness') {
             iconName = 'activity';
-          } else if (route.name === 'Beauty') {
+else if (route.name === 'Beauty') {
             iconName = 'scissors';
-          } else if (route.name === 'Bookings') {
+else if (route.name === 'Bookings') {
             iconName = 'calendar';
-          } else if (route.name === 'Community') {
+else if (route.name === 'Community') {
             iconName = 'users';
-          } else if (route.name === 'SkinAnalysis') {
+else if (route.name === 'SkinAnalysis') {
             iconName = 'image';
-          } else if (route.name === 'Loyalty') {
+else if (route.name === 'Loyalty') {
             iconName = 'gift';
-          } else if (route.name === 'LoyaltyTransactions') {
+else if (route.name === 'LoyaltyTransactions') {
             iconName = 'list';
-          } else if (route.name === 'PaymentMethods') {
+else if (route.name === 'PaymentMethods') {
             iconName = 'credit-card';
-          } else if (route.name === 'Membership') {
+else if (route.name === 'Membership') {
             iconName = 'gift';
-          } else if (route.name === 'Subscriptions') {
+else if (route.name === 'Subscriptions') {
             iconName = 'layers';
-          } else if (route.name === 'Referral') {
+else if (route.name === 'Referral') {
             iconName = 'gift';
-          } else if (route.name === 'Analytics') {
+else if (route.name === 'Analytics') {
             iconName = 'bar-chart-2';
-          } else if (route.name === 'Promotions') {
+else if (route.name === 'Promotions') {
             iconName = 'tag';
-          } else if (route.name === 'EmailCampaigns') {
+else if (route.name === 'EmailCampaigns') {
             iconName = 'mail';
-          } else if (route.name === 'Notifications') {
+else if (route.name === 'Notifications') {
             iconName = 'bell';
-          } else if (route.name === 'StaffSchedules') {
+else if (route.name === 'StaffSchedules') {
             iconName = 'calendar';
-          } else if (route.name === 'Attendance') {
+else if (route.name === 'Attendance') {
             iconName = 'check-square';
-          } else if (route.name === 'TrainingModules') {
+else if (route.name === 'TrainingModules') {
             iconName = 'book-open';
-          } else if (route.name === 'TrainingProgress') {
+else if (route.name === 'TrainingProgress') {
             iconName = 'trending-up';
-          } else if (route.name === 'Calendar') {
+else if (route.name === 'Calendar') {
             iconName = 'calendar';
-          } else if (route.name === 'FormList') {
+else if (route.name === 'FormList') {
             iconName = 'file-text';
-          } else if (route.name === 'EquipmentList') {
+else if (route.name === 'EquipmentList') {
             iconName = 'tool';
-          }
-
-          return <Feather name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: '#4F46E5',
+return <Feather name={iconName} size={size} color={color} />;
+tabBarActiveTintColor: '#4F46E5',
         tabBarInactiveTintColor: 'gray',
-      })}
+)}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Wellness" component={WellnessScreen} />
@@ -245,18 +221,12 @@ const MainTabNavigator = () => {
       <Tab.Screen name="TrainingProgress" component={TrainingProgressScreen} options={{ title: 'Progress' }} />
       <Tab.Screen name="EquipmentList" component={EquipmentListScreen} options={{ title: 'Equipment' }} />
     </Tab.Navigator>
-  );
-};
-
 const AuthStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
     </Stack.Navigator>
-  );
-};
-
 const AppNavigator = () => {
   const { isLoggedIn, isLoading } = useAuth();
   if (isLoading) {
@@ -264,9 +234,7 @@ const AppNavigator = () => {
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" color="#2A9D8F" />
       </View>
-    );
-  }
-  return (
+return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {isLoggedIn ? (
         <Stack.Screen name="Main" component={MainTabNavigator} />
@@ -307,7 +275,4 @@ const AppNavigator = () => {
       <Stack.Screen name="PayrollDetail" component={PayrollDetailScreen} />
       <Stack.Screen name="PayrollForm" component={PayrollFormScreen} />
     </Stack.Navigator>
-  );
-};
-
 export default AppNavigator;

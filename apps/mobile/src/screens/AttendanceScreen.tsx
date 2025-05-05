@@ -16,11 +16,9 @@ const AttendanceScreen: React.FC = () => {
         ? await getAttendanceBySchedule(scheduleId)
         : await getAttendance();
       setRecords(data);
-    } catch (err) { console.error(err); }
+catch (err) { console.error(err); }
     setLoading(false);
-  };
-
-  useEffect(() => { fetchRecords(); }, []);
+useEffect(() => { fetchRecords(); }, []);
 
   if (loading) return <ActivityIndicator style={{ flex: 1 }} color={colors.primary} size="large" />;
 
@@ -38,17 +36,17 @@ const AttendanceScreen: React.FC = () => {
           try {
             await createAttendance(scheduleId, 'clock-in');
             await fetchRecords();
-          } catch (err) { console.error(err); }
+catch (err) { console.error(err); }
           setLoading(false);
-        }} color={colors.primary} />
+color={colors.primary} />
         <Button title="Clock Out" onPress={async () => {
           setLoading(true);
           try {
             await createAttendance(scheduleId, 'clock-out');
             await fetchRecords();
-          } catch (err) { console.error(err); }
+catch (err) { console.error(err); }
           setLoading(false);
-        }} color={colors.notification} />
+color={colors.notification} />
       </View>
       <FlatList
         data={records}
@@ -61,20 +59,15 @@ const AttendanceScreen: React.FC = () => {
               try {
                 await deleteAttendance(item.id);
                 await fetchRecords();
-              } catch (err) { console.error(err); }
+catch (err) { console.error(err); }
               setLoading(false);
-            }} />
+/>
           </View>
         )}
       />
     </SafeAreaView>
-  );
-};
-
 const styles = StyleSheet.create({
   item: { padding: 16, borderBottomWidth: 1, borderColor: '#ccc' },
   form: { padding: 16 },
   input: { borderWidth: 1, marginBottom: 8, padding: 8, borderRadius: 4 },
-});
-
 export default AttendanceScreen;

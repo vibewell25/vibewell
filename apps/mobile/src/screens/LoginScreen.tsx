@@ -14,9 +14,6 @@ const LoginScreen: React.FC = () => {
         <Button title="Login with Auth0" onPress={() => signIn(false)} color="#2A9D8F" />
       )}
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -24,13 +21,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     backgroundColor: '#FFFFFF',
-  },
-  title: {
+title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 24,
     color: '#2A9D8F',
-  },
-});
-
 export default LoginScreen;

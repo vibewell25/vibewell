@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -14,11 +12,9 @@ export default function SignInRedirect() {
     // Preserve any query parameters
     const params = searchParams.toString() ? `?${searchParams.toString()}` : '';
     router.replace(`/auth/login${params}`);
-  }, [router, searchParams]);
+[router, searchParams]);
 
   return (
     <div className="flex h-screen items-center justify-center">
       <p className="text-gray-500">Redirecting...</p>
     </div>
-  );
-}

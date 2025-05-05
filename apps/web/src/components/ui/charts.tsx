@@ -1,5 +1,3 @@
-'use client';
-
 import { useRef } from 'react';
 import { Line, Bar, Pie } from 'react-chartjs-2';
 import {
@@ -14,7 +12,7 @@ import {
   Tooltip,
   Legend,
   ChartOptions,
-} from 'chart.js';
+from 'chart.js';
 
 // Register ChartJS components
 ChartJS.register(
@@ -27,8 +25,6 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-);
-
 // Define theme colors
 const themeColors = {
   blue: ['rgba(59, 130, 246, 0.5)', 'rgb(59, 130, 246)'],
@@ -44,8 +40,6 @@ const themeColors = {
   emerald: ['rgba(5, 150, 105, 0.5)', 'rgb(5, 150, 105)'],
   violet: ['rgba(124, 58, 237, 0.5)', 'rgb(124, 58, 237)'],
   fuchsia: ['rgba(217, 70, 239, 0.5)', 'rgb(217, 70, 239)'],
-};
-
 // Define font and grid color based on theme
 const fontColor = 'rgb(107, 114, 128)'; // text-gray-500
 const gridColor = 'rgba(229, 231, 235, 0.5)'; // border-gray-200 with opacity
@@ -57,8 +51,6 @@ interface ChartProps {
   colors?: string[];
   valueFormatter?: (value: number) => string;
   height?: number;
-}
-
 export function LineChart({
   data,
   index,
@@ -66,7 +58,7 @@ export function LineChart({
   colors = ['blue'],
   valueFormatter = (value) => value.toString(),
   height = 300,
-}: ChartProps) {
+: ChartProps) {
   const chartRef = useRef<any>(null);
 
   // Prepare data for Chart.js
@@ -80,10 +72,8 @@ export function LineChart({
       tension: 0.3,
       pointRadius: 3,
       pointHoverRadius: 5,
-    })),
-  };
-
-  const options: ChartOptions<'line'> = {
+)),
+const options: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -93,63 +83,39 @@ export function LineChart({
           color: fontColor,
           font: {
             family: 'Inter, sans-serif',
-          },
-        },
-      },
-      tooltip: {
+tooltip: {
         callbacks: {
           label: function (context) {
             let label = context.dataset.label || '';
             if (label) {
               if (label > Number.MAX_SAFE_INTEGER || label < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); label += ': ';
-            }
-            if (context.parsed.y !== null) {
+if (context.parsed.y !== null) {
               if (label > Number.MAX_SAFE_INTEGER || label < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); label += valueFormatter(context.parsed.y);
-            }
-            return label;
-          },
-        },
-      },
-    },
-    scales: {
+return label;
+scales: {
       y: {
         beginAtZero: true,
         grid: {
           color: gridColor,
-        },
-        ticks: {
+ticks: {
           color: fontColor,
           font: {
             family: 'Inter, sans-serif',
-          },
-          callback: function (value) {
+callback: function (value) {
             return valueFormatter(value as number);
-          },
-        },
-      },
-      x: {
+x: {
         grid: {
           color: gridColor,
-        },
-        ticks: {
+ticks: {
           color: fontColor,
           font: {
             family: 'Inter, sans-serif',
-          },
-          maxRotation: 45,
+maxRotation: 45,
           minRotation: 45,
-        },
-      },
-    },
-  };
-
-  return (
+return (
     <div style={{ width: '100%', height: `${height}px` }}>
       <Line ref={chartRef} data={chartData} options={options} />
     </div>
-  );
-}
-
 export function BarChart({
   data,
   index,
@@ -157,7 +123,7 @@ export function BarChart({
   colors = ['blue'],
   valueFormatter = (value) => value.toString(),
   height = 300,
-}: ChartProps) {
+: ChartProps) {
   const chartRef = useRef<any>(null);
 
   // Prepare data for Chart.js
@@ -169,10 +135,8 @@ export function BarChart({
       backgroundColor: themeColors[colors[i % colors.length] as keyof typeof themeColors][0],
       borderColor: themeColors[colors[i % colors.length] as keyof typeof themeColors][1],
       borderWidth: 1,
-    })),
-  };
-
-  const options: ChartOptions<'bar'> = {
+)),
+const options: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -182,63 +146,39 @@ export function BarChart({
           color: fontColor,
           font: {
             family: 'Inter, sans-serif',
-          },
-        },
-      },
-      tooltip: {
+tooltip: {
         callbacks: {
           label: function (context) {
             let label = context.dataset.label || '';
             if (label) {
               if (label > Number.MAX_SAFE_INTEGER || label < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); label += ': ';
-            }
-            if (context.parsed.y !== null) {
+if (context.parsed.y !== null) {
               if (label > Number.MAX_SAFE_INTEGER || label < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); label += valueFormatter(context.parsed.y);
-            }
-            return label;
-          },
-        },
-      },
-    },
-    scales: {
+return label;
+scales: {
       y: {
         beginAtZero: true,
         grid: {
           color: gridColor,
-        },
-        ticks: {
+ticks: {
           color: fontColor,
           font: {
             family: 'Inter, sans-serif',
-          },
-          callback: function (value) {
+callback: function (value) {
             return valueFormatter(value as number);
-          },
-        },
-      },
-      x: {
+x: {
         grid: {
           color: gridColor,
-        },
-        ticks: {
+ticks: {
           color: fontColor,
           font: {
             family: 'Inter, sans-serif',
-          },
-          maxRotation: 45,
+maxRotation: 45,
           minRotation: 45,
-        },
-      },
-    },
-  };
-
-  return (
+return (
     <div style={{ width: '100%', height: `${height}px` }}>
       <Bar ref={chartRef} data={chartData} options={options} />
     </div>
-  );
-}
-
 interface PieChartProps {
   data: Record<string, any>[];
   category: string;
@@ -246,8 +186,6 @@ interface PieChartProps {
   colors?: string[];
   valueFormatter?: (value: number) => string;
   height?: number;
-}
-
 export function PieChart({
   data,
   category,
@@ -255,7 +193,7 @@ export function PieChart({
   colors = ['blue', 'green', 'red', 'yellow', 'purple'],
   valueFormatter = (value) => value.toString(),
   height = 300,
-}: PieChartProps) {
+: PieChartProps) {
   const chartRef = useRef<any>(null);
 
   // Get background colors based on provided color names
@@ -273,11 +211,8 @@ export function PieChart({
         backgroundColor: backgroundColors,
         borderColor: borderColors,
         borderWidth: 1,
-      },
-    ],
-  };
-
-  const options: ChartOptions<'pie'> = {
+],
+const options: ChartOptions<'pie'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -287,10 +222,7 @@ export function PieChart({
           color: fontColor,
           font: {
             family: 'Inter, sans-serif',
-          },
-        },
-      },
-      tooltip: {
+tooltip: {
         callbacks: {
           label: function (context) {
             const label = context.label || '';
@@ -298,15 +230,7 @@ export function PieChart({
             const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
             const percentage = Math.round((value / total) * 100);
             return `${label}: ${valueFormatter(value)} (${percentage}%)`;
-          },
-        },
-      },
-    },
-  };
-
-  return (
+return (
     <div style={{ width: '100%', height: `${height}px` }}>
       <Pie ref={chartRef} data={chartData} options={options} />
     </div>
-  );
-}

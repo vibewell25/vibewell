@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 
 
@@ -21,9 +20,7 @@ export async function {
     if (!code) {
 
       return NextResponse.redirect(new URL('/auth/error?error=missing_code', request.url));
-    }
-
-    // Handle OAuth callback
+// Handle OAuth callback
     const oauthResponse = await OAuthService.handleCallback(provider, code);
 
     // Create a session token
@@ -32,21 +29,16 @@ export async function {
         userId: oauthResponse.user.id,
         email: oauthResponse.user.email,
         provider,
-      },
-      JWT_SECRET,
+JWT_SECRET,
       { expiresIn: '7d' },
-    );
-
-    // Set the session cookie
+// Set the session cookie
     cookies().set('session_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60, // 7 days
       path: '/',
-    });
-
-    // Store refresh token if available
+// Store refresh token if available
     if (oauthResponse.refreshToken) {
       cookies().set(`refresh_token_${provider}`, oauthResponse.refreshToken, {
         httpOnly: true,
@@ -54,14 +46,9 @@ export async function {
         sameSite: 'lax',
         maxAge: 30 * 24 * 60 * 60, // 30 days
         path: '/',
-      });
-    }
-
-    // Redirect to dashboard on success
+// Redirect to dashboard on success
     return NextResponse.redirect(new URL('/dashboard', request.url));
-  } catch (error) {
+catch (error) {
     console.error('OAuth callback error:', error);
 
     return NextResponse.redirect(new URL('/auth/error?error=oauth_failed', request.url));
-  }
-}

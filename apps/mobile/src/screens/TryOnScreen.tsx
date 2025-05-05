@@ -18,17 +18,14 @@ const TryOnScreen: React.FC = () => {
       const { sound } = await Audio.Sound.createAsync(
         require('../assets/sounds/chill-loading.mp3'),
         { isLooping: true }
-      );
-      setSound(sound);
+setSound(sound);
       await sound.playAsync();
-    })();
+)();
     return () => {
       if (sound) {
         sound.stopAsync();
         sound.unloadAsync();
-      }
-    };
-  }, []);
+[]);
 
   return (
     <View style={styles.container}>
@@ -36,16 +33,10 @@ const TryOnScreen: React.FC = () => {
         autofocus={true}
         initialScene={{
           scene: () => <ARScene onLoadEnd={() => setLoaded(true)} source={source} scale={scale} />,
-        }}
-        style={StyleSheet.absoluteFill}
+style={StyleSheet.absoluteFill}
       />
       <LoadingOverlay onLoaded={loaded} sound={sound} />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#000' },
-});
-
 export default TryOnScreen;

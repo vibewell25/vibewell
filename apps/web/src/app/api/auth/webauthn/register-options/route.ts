@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 
@@ -16,14 +15,9 @@ export async function {
     const session = await getServerSession(authOptions);
     if (!session.user.id) {
       return new NextResponse('Unauthorized', { status: 401 });
-    }
-
-    const options = await WebAuthnService.startRegistration(session.user.id);
+const options = await WebAuthnService.startRegistration(session.user.id);
     return NextResponse.json(options);
-  } catch (error) {
+catch (error) {
     console.error('WebAuthn registration options error:', error);
     return new NextResponse(error instanceof Error ? error.message : 'Internal server error', {
       status: 500,
-    });
-  }
-}

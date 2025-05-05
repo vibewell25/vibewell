@@ -25,37 +25,26 @@ export function VirtualTryOn() {
         try {
           const supported = await navigator.xr.isSessionSupported('immersive-ar');
           setIsARSupported(supported);
-        } catch (e) {
+catch (e) {
           console.error('Error checking AR support:', e);
           setIsARSupported(false);
-        }
-      } else {
+else {
         setIsARSupported(false);
-      }
-    };
-
-    checkARSupport();
-  }, []);
+checkARSupport();
+[]);
 
   const handleModelSelect = (id: string) => {
     setModelId(id);
-  };
-
-  if (isARSupported === null) {
+if (isARSupported === null) {
     return <div className="p-8 text-center">Checking AR compatibility...</div>;
-  }
-
-  if (isARSupported === false) {
+if (isARSupported === false) {
     return (
       <div className="p-8 text-center">
         <h2 className="mb-4 text-xl font-bold">AR Not Supported</h2>
         <p className="mb-4">Your device or browser doesn't support AR experiences.</p>
         <p>Please try using a modern mobile device with the latest Chrome, Safari, or Firefox.</p>
       </div>
-    );
-  }
-
-  return (
+return (
     <div className="virtual-try-on">
       <h1 className="mb-6 text-2xl font-bold">Virtual Try-On</h1>
 
@@ -69,7 +58,7 @@ export function VirtualTryOn() {
                 modelId === product.id
                   ? 'border-primary ring-primary/50 ring-2'
                   : 'hover:border-gray-400'
-              }`}
+`}
               onClick={() => handleModelSelect(product.id)}
             >
               <div className="relative mb-2 aspect-square rounded-md bg-gray-100">
@@ -98,9 +87,6 @@ export function VirtualTryOn() {
         </Suspense>
       )}
     </div>
-  );
-}
-
 // Sample product data
 const SAMPLE_PRODUCTS = [
   {
@@ -109,28 +95,24 @@ const SAMPLE_PRODUCTS = [
     price: 19.99,
     thumbnail: '/images/products/lipstick-red-thumb.jpg',
     modelPath: '/models/lipstick-red.glb',
-  },
-  {
+{
     id: 'foundation-medium',
     name: 'Medium Foundation',
     price: 29.99,
     thumbnail: '/images/products/foundation-medium-thumb.jpg',
     modelPath: '/models/foundation-medium.glb',
-  },
-  {
+{
     id: 'eyeshadow-palette',
     name: 'Sunset Eyeshadow Palette',
     price: 39.99,
     thumbnail: '/images/products/eyeshadow-sunset-thumb.jpg',
     modelPath: '/models/eyeshadow-palette.glb',
-  },
-  {
+{
     id: 'blush-pink',
     name: 'Pink Blush',
     price: 24.99,
     thumbnail: '/images/products/blush-pink-thumb.jpg',
     modelPath: '/models/blush-pink.glb',
-  },
 ];
 
 export default VirtualTryOn;

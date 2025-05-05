@@ -17,18 +17,15 @@ const StaffListScreen: React.FC = () => {
       .then(setStaff)
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, [business.id]);
+[business.id]);
 
   const handleDelete = async (id: string) => {
     try {
       await deleteStaff(id);
       setStaff(prev => prev.filter(s => s.id !== id));
-    } catch {
+catch {
       Alert.alert('Error', 'Failed to delete staff');
-    }
-  };
-
-  if (loading) return <ActivityIndicator size="large" color="#2A9D8F" />;
+if (loading) return <ActivityIndicator size="large" color="#2A9D8F" />;
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
@@ -53,7 +50,4 @@ const StaffListScreen: React.FC = () => {
         <Text style={{ color: '#fff', fontSize: 24 }}>+</Text>
       </TouchableOpacity>
     </View>
-  );
-};
-
 export default StaffListScreen;

@@ -1,4 +1,3 @@
-'use client';;
 import { Suspense, useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/Button';
@@ -11,7 +10,6 @@ interface FeatureOption {
   cost: number;
   category: string;
   included: boolean;
-}
 interface PricingTier {
   id: string;
   name: string;
@@ -19,7 +17,6 @@ interface PricingTier {
   price: number;
   features: string[];
   popular: boolean;
-}
 function CustomPricingContent() {
   // Define feature options with pricing
   const [featureOptions, setFeatureOptions] = useState<FeatureOption[]>([
@@ -31,24 +28,21 @@ function CustomPricingContent() {
       cost: 0,
       category: 'core',
       included: true,
-    },
-    {
+{
       id: 'booking-management',
       name: 'Appointment Management',
       description: 'Allow clients to book appointments and manage your calendar',
       cost: 5,
       category: 'core',
       included: false,
-    },
-    {
+{
       id: 'review-management',
       name: 'Review Collection & Management',
       description: 'Collect and respond to customer reviews',
       cost: 3,
       category: 'core',
       included: false,
-    },
-    // Marketing Features
+// Marketing Features
     {
       id: 'featured-listing',
       name: 'Featured Listing',
@@ -56,24 +50,21 @@ function CustomPricingContent() {
       cost: 10,
       category: 'marketing',
       included: false,
-    },
-    {
+{
       id: 'promo-tools',
       name: 'Promotional Tools',
       description: 'Create and manage special offers and promotions',
       cost: 8,
       category: 'marketing',
       included: false,
-    },
-    {
+{
       id: 'social-sharing',
       name: 'Social Media Integration',
       description: 'Share your services and offers directly to social platforms',
       cost: 4,
       category: 'marketing',
       included: false,
-    },
-    // Analytics Features
+// Analytics Features
     {
       id: 'basic-analytics',
       name: 'Basic Analytics',
@@ -81,24 +72,21 @@ function CustomPricingContent() {
       cost: 5,
       category: 'analytics',
       included: false,
-    },
-    {
+{
       id: 'advanced-analytics',
       name: 'Advanced Analytics',
       description: 'Get detailed insights on customer behavior and business performance',
       cost: 12,
       category: 'analytics',
       included: false,
-    },
-    {
+{
       id: 'competitor-analysis',
       name: 'Competitor Analysis',
       description: 'See how your business compares to similar providers in your area',
       cost: 15,
       category: 'analytics',
       included: false,
-    },
-    // Advanced Features
+// Advanced Features
     {
       id: 'messaging',
       name: 'Client Messaging',
@@ -106,24 +94,21 @@ function CustomPricingContent() {
       cost: 7,
       category: 'advanced',
       included: false,
-    },
-    {
+{
       id: 'inventory',
       name: 'Product & Inventory Management',
       description: 'Sell products and manage your inventory',
       cost: 10,
       category: 'advanced',
       included: false,
-    },
-    {
+{
       id: 'staff-management',
       name: 'Staff Management',
       description: 'Add staff members with individual calendars and permissions',
       cost: 8,
       category: 'advanced',
       included: false,
-    },
-  ]);
+]);
   // Sample pre-defined plans for comparison
   const predefinedPlans: PricingTier[] = [
     {
@@ -133,8 +118,7 @@ function CustomPricingContent() {
       price: 9.99,
       features: ['business-profile', 'booking-management', 'review-management', 'basic-analytics'],
       popular: false,
-    },
-    {
+{
       id: 'professional',
       name: 'Professional',
       description: 'Everything you need to grow your business',
@@ -149,8 +133,7 @@ function CustomPricingContent() {
         'messaging',
       ],
       popular: true,
-    },
-    {
+{
       id: 'enterprise',
       name: 'Enterprise',
       description: 'Advanced features for established businesses',
@@ -169,8 +152,7 @@ function CustomPricingContent() {
         'staff-management',
       ],
       popular: false,
-    },
-  ];
+];
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [customPrice, setCustomPrice] = useState<number>(0);
   const [annualBilling, setAnnualBilling] = useState<boolean>(false);
@@ -183,23 +165,20 @@ function CustomPricingContent() {
     const resetFeatures = featureOptions.map((option) => ({
       ...option,
       included: false,
-    }));
+));
     // Set included features based on the plan
     const updatedFeatures = resetFeatures.map((option) => ({
       ...option,
       included: plan.features.includes(option.id),
-    }));
+));
     setFeatureOptions(updatedFeatures);
-  };
-  // Toggle feature selection
+// Toggle feature selection
   const toggleFeature = (featureId: string) => {
     setSelectedPlan('custom');
     const updatedFeatures = featureOptions.map((option) =>
       option.id === featureId ? { ...option, included: !option.included } : option,
-    );
-    setFeatureOptions(updatedFeatures);
-  };
-  // Calculate price based on selected features
+setFeatureOptions(updatedFeatures);
+// Calculate price based on selected features
   useEffect(() => {
     const basePrice = featureOptions.find((f) => f.id === 'business-profile').cost || 0;
     const additionalCost = featureOptions
@@ -209,9 +188,8 @@ function CustomPricingContent() {
     // Apply annual discount if selected
     if (annualBilling) {
       calculatedPrice = calculatedPrice * 10; // 10 months for the price of 12
-    }
-    setCustomPrice(calculatedPrice);
-  }, [featureOptions, annualBilling]);
+setCustomPrice(calculatedPrice);
+[featureOptions, annualBilling]);
   return (
     <Layout>
       <div className="container mx-auto px-4 py-12">
@@ -235,7 +213,7 @@ function CustomPricingContent() {
                   selectedPlan === plan.id
                     ? 'border-indigo-500 ring-2 ring-indigo-200'
                     : 'border-gray-200 hover:border-indigo-200'
-                } ${plan.popular ? 'relative' : ''}`}
+${plan.popular ? 'relative' : ''}`}
               >
                 {plan.popular && (
                   <div className="absolute right-0 top-0 rounded-bl-lg rounded-tr-lg bg-indigo-500 px-3 py-1 text-xs text-white">
@@ -309,11 +287,10 @@ function CustomPricingContent() {
                             feature.included
                               ? 'border-indigo-500 bg-indigo-50'
                               : 'border-gray-200 hover:border-indigo-200'
-                          }`}
+`}
                           onClick={() =>
                             feature.id !== 'business-profile' && toggleFeature(feature.id)
-                          }
-                        >
+>
                           <div className="flex items-start">
                             <div className="flex-grow">
                               <div className="flex items-center">
@@ -333,7 +310,7 @@ function CustomPricingContent() {
                               <div
                                 className={`flex h-5 w-5 items-center justify-center rounded-full ${
                                   feature.included ? 'bg-indigo-500' : 'border border-gray-300'
-                                }`}
+`}
                               >
                                 {feature.included && (
                                   <Icons.CheckSolid className="h-3 w-3 text-white" />
@@ -423,8 +400,6 @@ function CustomPricingContent() {
         </div>
       </div>
     </Layout>
-  );
-}
 export default function CustomPricing() {
   return (
     <Suspense
@@ -432,5 +407,3 @@ export default function CustomPricing() {
     >
       <CustomPricingContent />
     </Suspense>
-  );
-}

@@ -17,16 +17,12 @@ const PaymentScreen: React.FC = () => {
         'https://your-success-url',
         'https://your-cancel-url',
         mode
-      );
-      await Linking.openURL(url);
-    } catch (err) {
+await Linking.openURL(url);
+catch (err) {
       Alert.alert('Error', 'Failed to start checkout');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  return (
+return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       {loading ? (
         <ActivityIndicator size="large" />
@@ -34,7 +30,4 @@ const PaymentScreen: React.FC = () => {
         <Button title="Pay Now" onPress={handlePayment} />
       )}
     </View>
-  );
-};
-
 export default PaymentScreen;

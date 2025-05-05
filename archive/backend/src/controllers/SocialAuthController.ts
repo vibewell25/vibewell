@@ -1,24 +1,12 @@
 import { Request, Response } from 'express';
 
-    // Safe integer operation
-    if (google > Number.MAX_SAFE_INTEGER || google < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { OAuth2Client } from 'google-auth-library';
+    import { OAuth2Client } from 'google-auth-library';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 
-    // Safe integer operation
-    if (models > Number.MAX_SAFE_INTEGER || models < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { User } from '../models/User';
+    import { User } from '../models/User';
 
-    // Safe integer operation
-    if (services > Number.MAX_SAFE_INTEGER || services < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { AuthService } from '../services/AuthService';
+    import { AuthService } from '../services/AuthService';
 
 export class SocialAuthController {
     private authService: AuthService;
@@ -27,107 +15,67 @@ export class SocialAuthController {
     constructor() {
         this.authService = new AuthService();
         this.googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-    }
-
-    public handleGoogleAuth = async (req: Request, res: Response): Promise<void> => {
+public handleGoogleAuth = async (req: Request, res: Response): Promise<void> => {
         try {
             const { idToken } = req.body;
             const ticket = await this.googleClient.verifyIdToken({
                 idToken,
                 audience: process.env.GOOGLE_CLIENT_ID
-            });
-            const payload = ticket.getPayload();
+const payload = ticket.getPayload();
             
             if (!payload) {
                 res.status(400).json({ error: 'Invalid Google token' });
                 return;
-            }
-
-            const user = await this.authService.findOrCreateSocialUser({
+const user = await this.authService.findOrCreateSocialUser({
                 email: payload.email!,
                 name: payload.name!,
                 provider: 'google',
                 providerId: payload.sub,
                 picture: payload.picture
-            });
-
-            const authToken = this.authService.generateAuthToken(user);
+const authToken = this.authService.generateAuthToken(user);
             res.json({ token: authToken, user });
-        } catch (error) {
+catch (error) {
             console.error('Google auth error:', error);
             res.status(500).json({ error: 'Authentication failed' });
-        }
-    };
-
-    public handleFacebookAuth = async (req: Request, res: Response): Promise<void> => {
+public handleFacebookAuth = async (req: Request, res: Response): Promise<void> => {
         try {
             const { accessToken } = req.body;
             const response = await axios.get(
 
-    // Safe integer operation
-    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-                `https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${accessToken}`
-            );
-
-            const { id, name, email, picture } = response.data;
+    `https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${accessToken}`
+const { id, name, email, picture } = response.data;
             const user = await this.authService.findOrCreateSocialUser({
                 email,
                 name,
                 provider: 'facebook',
                 providerId: id,
                 picture: picture.data.url
-            });
-
-            const authToken = this.authService.generateAuthToken(user);
+const authToken = this.authService.generateAuthToken(user);
             res.json({ token: authToken, user });
-        } catch (error) {
+catch (error) {
             console.error('Facebook auth error:', error);
             res.status(500).json({ error: 'Authentication failed' });
-        }
-    };
-
-    public handleTwitterAuth = async (req: Request, res: Response): Promise<void> => {
+public handleTwitterAuth = async (req: Request, res: Response): Promise<void> => {
         try {
             const { accessToken, accessTokenSecret } = req.body;
             // Implement Twitter OAuth 1.0a verification
 
-    // Safe integer operation
-    if (twitter > Number.MAX_SAFE_INTEGER || twitter < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-            // This would require the twitter-api-v2 package or similar
+    // This would require the twitter-api-v2 package or similar
             res.status(501).json({ error: 'Twitter auth not implemented' });
-        } catch (error) {
+catch (error) {
             console.error('Twitter auth error:', error);
             res.status(500).json({ error: 'Authentication failed' });
-        }
-    };
-
-    public handleLinkedInAuth = async (req: Request, res: Response): Promise<void> => {
+public handleLinkedInAuth = async (req: Request, res: Response): Promise<void> => {
         try {
             const { accessToken } = req.body;
 
-    // Safe integer operation
-    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-            const response = await axios.get('https://api.linkedin.com/v2/me', {
+    const response = await axios.get('https://api.linkedin.com/v2/me', {
                 headers: { Authorization: `Bearer ${accessToken}` }
-            });
+const profileResponse = await axios.get(
 
-            const profileResponse = await axios.get(
-
-    // Safe integer operation
-    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-                'https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))',
+    'https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))',
                 { headers: { Authorization: `Bearer ${accessToken}` } }
-            );
-
-            const { id, localizedFirstName, localizedLastName } = response.data;
+const { id, localizedFirstName, localizedLastName } = response.data;
             const email = profileResponse.data.elements[0]['handle~'].emailAddress;
 
             const user = await this.authService.findOrCreateSocialUser({
@@ -135,38 +83,20 @@ export class SocialAuthController {
                 name: `${localizedFirstName} ${localizedLastName}`,
                 provider: 'linkedin',
                 providerId: id
-            });
-
-            const authToken = this.authService.generateAuthToken(user);
+const authToken = this.authService.generateAuthToken(user);
             res.json({ token: authToken, user });
-        } catch (error) {
+catch (error) {
             console.error('LinkedIn auth error:', error);
             res.status(500).json({ error: 'Authentication failed' });
-        }
-    };
-
-    public handleGithubAuth = async (req: Request, res: Response): Promise<void> => {
+public handleGithubAuth = async (req: Request, res: Response): Promise<void> => {
         try {
             const { accessToken } = req.body;
 
-    // Safe integer operation
-    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-            const response = await axios.get('https://api.github.com/user', {
+    const response = await axios.get('https://api.github.com/user', {
                 headers: { Authorization: `token ${accessToken}` }
-            });
-
-
-    // Safe integer operation
-    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-            const emailResponse = await axios.get('https://api.github.com/user/emails', {
+const emailResponse = await axios.get('https://api.github.com/user/emails', {
                 headers: { Authorization: `token ${accessToken}` }
-            });
-
-            const { id, name, avatar_url } = response.data;
+const { id, name, avatar_url } = response.data;
             const primaryEmail = emailResponse.data.find((email: any) => email.primary).email;
 
             const user = await this.authService.findOrCreateSocialUser({
@@ -175,17 +105,12 @@ export class SocialAuthController {
                 provider: 'github',
                 providerId: id.toString(),
                 picture: avatar_url
-            });
-
-            const authToken = this.authService.generateAuthToken(user);
+const authToken = this.authService.generateAuthToken(user);
             res.json({ token: authToken, user });
-        } catch (error) {
+catch (error) {
             console.error('GitHub auth error:', error);
             res.status(500).json({ error: 'Authentication failed' });
-        }
-    };
-
-    public handleAppleAuth = async (req: Request, res: Response): Promise<void> => {
+public handleAppleAuth = async (req: Request, res: Response): Promise<void> => {
         try {
             const { idToken } = req.body;
             // Verify the Apple ID token
@@ -194,20 +119,13 @@ export class SocialAuthController {
             if (!decodedToken) {
                 res.status(400).json({ error: 'Invalid Apple token' });
                 return;
-            }
-
-            const user = await this.authService.findOrCreateSocialUser({
+const user = await this.authService.findOrCreateSocialUser({
                 email: decodedToken.email,
                 name: decodedToken.name || 'Apple User',
                 provider: 'apple',
                 providerId: decodedToken.sub
-            });
-
-            const authToken = this.authService.generateAuthToken(user);
+const authToken = this.authService.generateAuthToken(user);
             res.json({ token: authToken, user });
-        } catch (error) {
+catch (error) {
             console.error('Apple auth error:', error);
             res.status(500).json({ error: 'Authentication failed' });
-        }
-    };
-} 

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import user-avatar from '../user-avatar.tsx';
+
+describe('user-avatar', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<user-avatar />);
+    expect(container).toBeInTheDocument();
+  });
+});

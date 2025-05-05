@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 import webpush from 'web-push';
@@ -19,45 +18,31 @@ export async function {
         success: true,
 
         message: 'Subscription saved successfully (mock response - VAPID keys not configured)',
-      });
-    }
-
-    // Set VAPID details for web push
+// Set VAPID details for web push
     webpush.setVapidDetails(
       'mailto:support@vibewell.com',
       process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY,
       process.env.WEB_PUSH_PRIVATE_KEY,
-    );
-
-    // Save subscription to database (simulated)
+// Save subscription to database (simulated)
     console.log('Received subscription:', subscription);
 
     // Send a test notification
     const payload = JSON.stringify({
       title: 'Welcome to VibeWell',
       body: 'You will now receive notifications for important updates.',
-    });
-
-    await webpush.sendNotification(subscription, payload);
+await webpush.sendNotification(subscription, payload);
 
     return NextResponse.json({
       success: true,
       message: 'Subscription saved and test notification sent',
-    });
-  } catch (error) {
+catch (error) {
     console.error('Error in subscription:', error);
     return NextResponse.json(
       {
         success: false,
         message: 'Failed to process subscription',
-      },
-      { status: 500 },
-    );
-  }
-}
-
+{ status: 500 },
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); GET() {
   return NextResponse.json({ topics: Object.keys(subscriptions) }, { status: 200 });
-}

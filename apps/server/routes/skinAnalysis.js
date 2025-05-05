@@ -9,13 +9,9 @@ const sharp = require('sharp');
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
+filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     cb(null, uniqueSuffix + '-' + file.originalname);
-  }
-});
-
 // Configure upload middleware
 const upload = multer({ 
   storage: storage,
@@ -23,25 +19,17 @@ const upload = multer({
   fileFilter: (req, file, cb) => {
     if (file.mimetype.startsWith('image/')) {
       cb(null, true);
-    } else {
+else {
       cb(new Error('Only image files are allowed'));
-    }
-  }
-});
-
 // Initialize OpenAI client
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
-});
-
 // POST /api/skin-analysis
 router.post('/', upload.single('photo'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
-    }
-
-    // Resize and optimize the image for analysis
+// Resize and optimize the image for analysis
     const resizedImagePath = req.file.path + '-resized.jpg';
     await sharp(req.file.path)
       .resize(800) // Resize to 800px width
@@ -59,8 +47,7 @@ router.post('/', upload.single('photo'), async (req, res) => {
         {
           role: "system",
           content: "You are a dermatology assistant that analyzes skin conditions from photos. Provide a detailed analysis of skin health, focusing on hydration level, oiliness, spots, wrinkles, pores, redness, and overall health. Provide a rating from 0-100 for each parameter."
-        },
-        {
+{
           role: "user",
           content: [
             { type: "text", text: "Analyze this skin image and provide detailed skin metrics and recommendations." },
@@ -68,15 +55,10 @@ router.post('/', upload.single('photo'), async (req, res) => {
               type: "image_url",
               image_url: {
                 url: `data:image/jpeg;base64,${base64Image}`
-              }
-            }
-          ]
-        }
-      ],
+]
+],
       max_tokens: 1500
-    });
-
-    // Parse the response text to extract key metrics
+// Parse the response text to extract key metrics
     const analysisText = response.choices[0].message.content;
     
     // Extract numerical ratings from the analysis
@@ -84,9 +66,7 @@ router.post('/', upload.single('photo'), async (req, res) => {
       const regex = new RegExp(`${parameter}[^0-9]*(\\d+)`, 'i');
       const match = text.match(regex);
       return match ? parseInt(match[1]) : null;
-    };
-    
-    // Build the structured response
+// Build the structured response
     const results = {
       hydration: extractRating(analysisText, 'hydration') || Math.floor(Math.random() * 30) + 60, // Fallback to random if extraction fails
       oiliness: extractRating(analysisText, 'oiliness') || Math.floor(Math.random() * 40) + 30,
@@ -97,17 +77,12 @@ router.post('/', upload.single('photo'), async (req, res) => {
       overall: extractRating(analysisText, 'overall') || Math.floor(Math.random() * 20) + 70,
       analysis: analysisText,
       recommendations: analysisText.split('Recommendations:')[1].trim() || 'Based on the analysis, we recommend a daily skincare routine focused on hydration and protection.'
-    };
-
-    // Cleanup uploaded files
+// Cleanup uploaded files
     fs.unlink(req.file.path, () => {});
     fs.unlink(resizedImagePath, () => {});
     
     res.json({ results });
-  } catch (error) {
+catch (error) {
     console.error('Skin analysis error:', error);
     res.status(500).json({ error: 'Analysis failed', message: error.message });
-  }
-});
-
 module.exports = router;

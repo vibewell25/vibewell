@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 import { Card, Progress, Badge, Button } from '@/components/ui';
 import { getStaffTrainingProgress, getTrainingAnalytics } from '@/lib/api/training';
@@ -12,12 +10,8 @@ const statusColors = {
   COMPLETED: 'green',
   FAILED: 'red',
   UNDER_REVIEW: 'yellow',
-};
-
 interface TrainingDashboardProps {
   staffId: string;
-}
-
 export default function TrainingDashboard({ staffId }: TrainingDashboardProps) {
   const [progress, setProgress] = useState<any[]>([]);
   const [analytics, setAnalytics] = useState<any>(null);
@@ -34,21 +28,16 @@ export default function TrainingDashboard({ staffId }: TrainingDashboardProps) {
         ]);
         setProgress(progressData);
         setAnalytics(analyticsData);
-      } catch (error) {
+catch (error) {
         console.error('Error loading training data:', error);
-      } finally {
+finally {
         setLoading(false);
-      }
-    }
-
-    loadData();
-  }, [staffId]);
+loadData();
+[staffId]);
 
   if (loading) {
     return <div>Loading...</div>;
-  }
-
-  return (
+return (
     <div className="space-y-6">
       {/* Analytics Overview */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -117,5 +106,3 @@ export default function TrainingDashboard({ staffId }: TrainingDashboardProps) {
         </div>
       </Card>
     </div>
-  );
-}

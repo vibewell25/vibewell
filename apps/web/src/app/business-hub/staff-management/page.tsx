@@ -1,4 +1,3 @@
-'use client';
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
@@ -15,7 +14,7 @@ import { Icons } from '@/components/icons';
   ChatBubbleLeftRightIcon,
   ClipboardDocumentCheckIcon,
   CurrencyDollarIcon
-} from '@heroicons/react/24/outline';
+from '@heroicons/react/24/outline';
 // Types
 interface ManagementGuide {
   id: string;
@@ -24,7 +23,6 @@ interface ManagementGuide {
   category: 'hiring' | 'training' | 'retention' | 'performance' | 'communication';
   image: string;
   premium: boolean;
-}
 interface StaffTool {
   id: string;
   title: string;
@@ -32,7 +30,6 @@ interface StaffTool {
   icon: React.ReactNode;
   category: 'hiring' | 'training' | 'retention' | 'performance' | 'communication';
   url: string;
-}
 interface TrainingResource {
   id: string;
   title: string;
@@ -40,7 +37,6 @@ interface TrainingResource {
   type: 'video' | 'template' | 'guide' | 'checklist';
   duration?: string;
   category: 'onboarding' | 'technical' | 'customer-service' | 'sales' | 'management';
-}
 export default function StaffManagementPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -53,48 +49,42 @@ export default function StaffManagementPage() {
       category: 'hiring',
       image: 'https://images.unsplash.com/photo-1595867818082-083862f3aaf4',
       premium: false
-    },
-    {
+{
       id: '2',
       title: 'Effective Staff Training Program for Beauty Businesses',
       description: 'Learn how to develop and implement a training program that ensures consistent service quality and staff development.',
       category: 'training',
       image: 'https://images.unsplash.com/photo-1558403194-611308249627',
       premium: false
-    },
-    {
+{
       id: '3',
       title: 'Setting Up Performance-Based Commission Structures',
       description: 'Design a fair and motivating commission structure that rewards performance and encourages growth.',
       category: 'performance',
       image: 'https://images.unsplash.com/photo-1554224155-8d04cb21ed6c',
       premium: true
-    },
-    {
+{
       id: '4',
       title: 'Reducing Turnover: Staff Retention Strategies',
       description: 'Practical strategies to improve staff satisfaction, engagement, and long-term retention in beauty businesses.',
       category: 'retention',
       image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf',
       premium: false
-    },
-    {
+{
       id: '5',
       title: 'Effective Team Communication Frameworks',
       description: 'Establish clear communication channels and protocols to ensure your team stays aligned and informed.',
       category: 'communication',
       image: 'https://images.unsplash.com/photo-1573497161161-c3e73707e25c',
       premium: true
-    },
-    {
+{
       id: '6',
       title: 'Handling Staff Conflicts and Difficult Conversations',
       description: 'Learn how to address conflicts, provide constructive feedback, and have difficult conversations with staff members.',
       category: 'communication',
       image: 'https://images.unsplash.com/photo-1573497620053-ea5300f94f21',
       premium: false
-    }
-  ];
+];
   // Staff tools data
   const staffTools: StaffTool[] = [
     {
@@ -104,48 +94,42 @@ export default function StaffManagementPage() {
       icon: <Icons.DocumentTextIcon className="h-10 w-10 text-indigo-500" />,
       category: 'hiring',
       url: '/business-hub/staff-management/tools/employee-handbook'
-    },
-    {
+{
       id: 'performance-review',
       title: 'Performance Review Framework',
       description: 'Structured evaluation system for conducting fair and productive staff performance reviews.',
       icon: <Icons.ChartBarIcon className="h-10 w-10 text-teal-500" />,
       category: 'performance',
       url: '/business-hub/staff-management/tools/performance-review'
-    },
-    {
+{
       id: 'team-schedules',
       title: 'Team Scheduling Templates',
       description: 'Templates and tools for creating balanced staff schedules that optimize coverage and satisfaction.',
       icon: <Icons.CalendarIcon className="h-10 w-10 text-blue-500" />,
       category: 'retention',
       url: '/business-hub/staff-management/tools/scheduling-templates'
-    },
-    {
+{
       id: 'one-on-one',
       title: 'One-on-One Meeting Guide',
       description: 'Framework for conducting effective individual meetings with staff members to improve engagement.',
       icon: <Icons.ChatBubbleLeftRightIcon className="h-10 w-10 text-purple-500" />,
       category: 'communication',
       url: '/business-hub/staff-management/tools/one-on-one-meetings'
-    },
-    {
+{
       id: 'compensation-calculator',
       title: 'Compensation & Commission Calculator',
       description: 'Calculate fair and competitive compensation packages and commission structures for your team.',
       icon: <Icons.CurrencyDollarIcon className="h-10 w-10 text-green-500" />,
       category: 'performance',
       url: '/business-hub/staff-management/tools/compensation-calculator'
-    },
-    {
+{
       id: 'training-tracker',
       title: 'Staff Training Tracker',
       description: 'Track training progress, certifications, and skill development for each team member.',
       icon: <Icons.ClipboardDocumentCheckIcon className="h-10 w-10 text-orange-500" />,
       category: 'training',
       url: '/business-hub/staff-management/tools/training-tracker'
-    }
-  ];
+];
   // Training resources data
   const trainingResources: TrainingResource[] = [
     {
@@ -154,45 +138,39 @@ export default function StaffManagementPage() {
       description: 'A complete 30-day onboarding process for new beauty professionals joining your team.',
       type: 'guide',
       category: 'onboarding'
-    },
-    {
+{
       id: '2',
       title: 'Client Consultation Excellence',
       description: 'Training video on conducting thorough client consultations that lead to satisfaction and retention.',
       type: 'video',
       duration: '27 min',
       category: 'customer-service'
-    },
-    {
+{
       id: '3',
       title: 'Retail Sales Training for Beauty Professionals',
       description: 'Learn how to teach your team natural, non-pushy retail recommendation techniques.',
       type: 'video',
       duration: '42 min',
       category: 'sales'
-    },
-    {
+{
       id: '4',
       title: 'Service Protocol Templates',
       description: 'Standardized service protocols to ensure consistency across all team members.',
       type: 'template',
       category: 'technical'
-    },
-    {
+{
       id: '5',
       title: 'New Hire Skills Assessment',
       description: 'Comprehensive skill assessment checklist for evaluating new team members.',
       type: 'checklist',
       category: 'onboarding'
-    },
-    {
+{
       id: '6',
       title: 'Team Leader Development Program',
       description: 'Step-by-step guide to developing senior staff into effective team leaders and managers.',
       type: 'guide',
       category: 'management'
-    }
-  ];
+];
   // Filter guides based on category and search
   const filteredGuides = managementGuides.filter(guide => {
     const matchesCategory = selectedCategory === 'all' || guide.category === selectedCategory;
@@ -200,17 +178,14 @@ export default function StaffManagementPage() {
       guide.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
       guide.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
-  });
-  // Filter tools based on category
+// Filter tools based on category
   const filteredTools = staffTools.filter(tool => 
     selectedCategory === 'all' || tool.category === selectedCategory
-  );
-  // Filter resources based on selected category
+// Filter resources based on selected category
   const filteredResources = trainingResources.filter(resource => 
     selectedCategory === 'all' || 
     (selectedCategory === 'training' && ['onboarding', 'technical', 'customer-service', 'sales', 'management'].includes(resource.category))
-  );
-  // Categories for filtering
+// Categories for filtering
   const categories = [
     { id: 'all', name: 'All Categories' },
     { id: 'hiring', name: 'Hiring & Onboarding' },
@@ -504,5 +479,3 @@ export default function StaffManagementPage() {
         </div>
       </div>
     </div>
-  );
-} 

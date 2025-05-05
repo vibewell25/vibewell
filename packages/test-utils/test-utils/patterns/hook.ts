@@ -1,4 +1,3 @@
-
 import { renderHook, act } from '@testing-library/react';
 
 import type { RenderHookResult } from '@testing-library/react';
@@ -11,8 +10,6 @@ export interface HookTestCase<TProps, TResult> {
   initialProps?: TProps;
   act?: (result: RenderHookResult<TResult, TProps>) => Promise<void> | void;
   assert: (result: RenderHookResult<TResult, TProps>) => void;
-}
-
 /**
  * Creates a test suite for a React hook
  */
@@ -31,15 +28,7 @@ export function createHookTestSuite<TProps, TResult>(
         if (testCase.act) {
           await act(async () => {
             await testCase.act.({ result, rerender } as RenderHookResult<TResult, TProps>);
-          });
-        }
-
-        testCase.assert({ result, rerender } as RenderHookResult<TResult, TProps>);
-      });
-    });
-  });
-}
-
+testCase.assert({ result, rerender } as RenderHookResult<TResult, TProps>);
 /**
  * Creates a test case for hook state updates
  */
@@ -53,10 +42,6 @@ export function createHookStateTestCase<TProps, TResult>(
     act: updateFn,
     assert: ({ result }) => {
       expect(result.current).toEqual(expectedValue);
-    },
-  };
-}
-
 /**
  * Creates a test case for hook error handling
  */
@@ -70,6 +55,3 @@ export function createHookErrorTestCase<TProps, TResult>(
     act: errorFn,
     assert: ({ result }) => {
       expect(result.current).toThrow(expectedError);
-    },
-  };
-}

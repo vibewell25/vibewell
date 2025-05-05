@@ -31,8 +31,6 @@ export function generateCsrfToken(): string {
   const signature = hmac.digest('hex');
 
   return `${rawToken}.${signature}`;
-}
-
 /**
  * Verify a CSRF token is valid
  *
@@ -62,8 +60,6 @@ export function verifyCsrfToken(token: string): boolean {
   const notExpired = age < 24 * 60 * 60 * 1000;
 
   return valid && notExpired;
-}
-
 /**
  * CSRF protection middleware for API routes
  *
@@ -92,13 +88,8 @@ export function csrfMiddleware(req: NextRequest): NextResponse {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-      });
-    }
-
-    return response;
-  }
-
-  // For unsafe methods (POST, PUT, DELETE, etc.), validate CSRF token
+return response;
+// For unsafe methods (POST, PUT, DELETE, etc.), validate CSRF token
   const csrfCookie = req.cookies.get(CSRF_COOKIE_NAME);
   const csrfHeader = req.headers.get(CSRF_HEADER_NAME);
 
@@ -107,35 +98,25 @@ export function csrfMiddleware(req: NextRequest): NextResponse {
       JSON.stringify({
         error: 'CSRF validation failed',
         message: 'Invalid or missing CSRF token',
-      }),
+),
       {
         status: 403,
 
 
         headers: { 'Content-Type': 'application/json' },
-      },
-    );
-  }
-
-  // Verify the token itself
+// Verify the token itself
   if (!verifyCsrfToken(csrfCookie.value)) {
     return new NextResponse(
       JSON.stringify({
         error: 'CSRF validation failed',
         message: 'Invalid CSRF token',
-      }),
+),
       {
         status: 403,
 
 
         headers: { 'Content-Type': 'application/json' },
-      },
-    );
-  }
-
-  return NextResponse.next();
-}
-
+return NextResponse.next();
 /**
 
  * Utility function to get the current CSRF token
@@ -148,9 +129,6 @@ export function getCsrfToken(): string | null {
   const cookieStore = cookies();
   const csrfCookie = cookieStore.get(CSRF_COOKIE_NAME);
   return csrfCookie.value || null;
-}
-
 export function createCsrfFormField(): string {
   const token = getCsrfToken();
   return token ? `<input type="hidden" name="${CSRF_HEADER_NAME}" value="${token}" />` : '';
-}

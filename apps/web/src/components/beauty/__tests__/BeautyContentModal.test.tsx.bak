@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import beauty-content-modal from '../beauty-content-modal.tsx';
+
+describe('beauty-content-modal', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<beauty-content-modal />);
+    expect(container).toBeInTheDocument();
+  });
+});

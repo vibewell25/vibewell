@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getSession } from '@auth0/nextjs-auth0';
@@ -12,8 +11,6 @@ const reviewUpdateSchema = z.object({
   title: z.string().min(3).max(100).optional(),
   content: z.string().min(10).max(1000).optional(),
   status: z.enum(['published', 'pending', 'rejected']).optional(),
-});
-
 // GET a single review
 export async function {
   const start = Date.now();
@@ -29,28 +26,16 @@ export async function {
           select: {
             name: true,
             image: true,
-          },
-        },
-        product: {
+product: {
           select: {
             name: true,
             image: true,
-          },
-        },
-      },
-    });
-
-    if (!review) {
+if (!review) {
       return NextResponse.json({ error: 'Review not found' }, { status: 404 });
-    }
-
-    return NextResponse.json(review);
-  } catch (error) {
+return NextResponse.json(review);
+catch (error) {
     console.error('Error fetching review:', error);
     return NextResponse.json({ error: 'Failed to fetch review' }, { status: 500 });
-  }
-}
-
 // Update a review
 export async function {
   const start = Date.now();
@@ -61,28 +46,18 @@ export async function {
 
   if (!userId) {
     return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
-  }
-
-  try {
+try {
     // Get the existing review
     const existingReview = await prisma.review.findUnique({
       where: { id },
-    });
-
-    if (!existingReview) {
+if (!existingReview) {
       return NextResponse.json({ error: 'Review not found' }, { status: 404 });
-    }
-
-    // Check if the user owns this review or is an admin
+// Check if the user owns this review or is an admin
     const userRole = await prisma.userRole.findFirst({
       where: { userId },
-    });
-
-    if (existingReview.userId !== userId && userRole.role !== 'admin') {
+if (existingReview.userId !== userId && userRole.role !== 'admin') {
       return NextResponse.json({ error: 'Not authorized to update this review' }, { status: 403 });
-    }
-
-    // Validate and parse the update data
+// Validate and parse the update data
     const body = await request.json();
     const result = reviewUpdateSchema.safeParse(body);
 
@@ -90,25 +65,16 @@ export async function {
       return NextResponse.json(
         { error: 'Invalid request data', details: result.error.format() },
         { status: 400 },
-      );
-    }
-
-    // Update the review
+// Update the review
     const updatedReview = await prisma.review.update({
       where: { id },
       data: {
         ...result.data,
         updatedAt: new Date(),
-      },
-    });
-
-    return NextResponse.json(updatedReview);
-  } catch (error) {
+return NextResponse.json(updatedReview);
+catch (error) {
     console.error('Error updating review:', error);
     return NextResponse.json({ error: 'Failed to update review' }, { status: 500 });
-  }
-}
-
 // Delete a review
 export async function {
   const start = Date.now();
@@ -119,35 +85,21 @@ export async function {
 
   if (!userId) {
     return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
-  }
-
-  try {
+try {
     // Get the existing review
     const existingReview = await prisma.review.findUnique({
       where: { id },
-    });
-
-    if (!existingReview) {
+if (!existingReview) {
       return NextResponse.json({ error: 'Review not found' }, { status: 404 });
-    }
-
-    // Check if the user owns this review or is an admin
+// Check if the user owns this review or is an admin
     const userRole = await prisma.userRole.findFirst({
       where: { userId },
-    });
-
-    if (existingReview.userId !== userId && userRole.role !== 'admin') {
+if (existingReview.userId !== userId && userRole.role !== 'admin') {
       return NextResponse.json({ error: 'Not authorized to delete this review' }, { status: 403 });
-    }
-
-    // Delete the review
+// Delete the review
     await prisma.review.delete({
       where: { id },
-    });
-
-    return NextResponse.json({ success: true, message: 'Review deleted successfully' });
-  } catch (error) {
+return NextResponse.json({ success: true, message: 'Review deleted successfully' });
+catch (error) {
     console.error('Error deleting review:', error);
     return NextResponse.json({ error: 'Failed to delete review' }, { status: 500 });
-  }
-}

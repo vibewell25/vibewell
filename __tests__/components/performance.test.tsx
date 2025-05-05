@@ -9,9 +9,7 @@ describe('Performance Tests for Critical Components', () => {
     initialRender: 100, // ms
     interactionResponse: 50, // ms
     memoryUsage: 50, // MB
-  };
-
-  test('VirtualTryOn component performance', async () => {
+test('VirtualTryOn component performance', async () => {
     const startTime = performance.now();
     const startMemory = process.memoryUsage().heapUsed;
 
@@ -32,9 +30,7 @@ describe('Performance Tests for Critical Components', () => {
     const interactionTime = interactionEnd - interactionStart;
 
     expect(interactionTime).toBeLessThan(PERFORMANCE_THRESHOLDS.interactionResponse);
-  });
-
-  test('BookingCalendar component performance', async () => {
+test('BookingCalendar component performance', async () => {
     const startTime = performance.now();
     const startMemory = process.memoryUsage().heapUsed;
 
@@ -55,9 +51,7 @@ describe('Performance Tests for Critical Components', () => {
     const interactionTime = interactionEnd - interactionStart;
 
     expect(interactionTime).toBeLessThan(PERFORMANCE_THRESHOLDS.interactionResponse);
-  });
-
-  test('AnalyticsDashboard component performance', async () => {
+test('AnalyticsDashboard component performance', async () => {
     const startTime = performance.now();
     const startMemory = process.memoryUsage().heapUsed;
 
@@ -78,5 +72,3 @@ describe('Performance Tests for Critical Components', () => {
     const interactionTime = interactionEnd - interactionStart;
 
     expect(interactionTime).toBeLessThan(PERFORMANCE_THRESHOLDS.interactionResponse);
-  });
-}); 

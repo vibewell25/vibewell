@@ -1,18 +1,8 @@
-/**
- * AR Resource Management Context
- * 
- * This context provides centralized management of AR/3D resources to:
- * - Prevent memory leaks by properly disposing unused resources
- * - Track and limit resource usage
- * - Optimize loading and unloading of textures and models
- * - Monitor performance metrics
- */
-
 import React, { createContext, useContext, useEffect, useState, useRef, ReactNode } from 'react';
 import * as THREE from 'three';
 import { useGLTF } from '@react-three/drei';
 import { logger } from '@/lib/logger';
-import { getCacheService, PREFIX, TTL } from '@/lib/cache-service';
+import { getCacheService, PREFIX, TTL } from '@/lib/CacheService';
 
 // Types for resource management
 interface ResourceStats {
@@ -23,17 +13,12 @@ interface ResourceStats {
   drawCalls: number;
   triangles: number;
   fps: number;
-}
-
 interface ResourceMap {
   [key: string]: {
     resource: THREE.Object3D | THREE.Texture | THREE.Material | THREE.BufferGeometry;
     type: 'texture' | 'geometry' | 'model' | 'material';
     lastUsed: number;
     size: number; // Approximate size in bytes
-  };
-}
-
 interface ARResourceContextType {
   registerResource: (
     key: string,
@@ -51,8 +36,6 @@ interface ARResourceContextType {
   pauseRendering: () => void;
   resumeRendering: () => void;
   isRendering: boolean;
-}
-
 // Create context with default values
 const ARResourceContext = createContext<ARResourceContextType>({
   registerResource: () => {},
@@ -68,14 +51,12 @@ const ARResourceContext = createContext<ARResourceContextType>({
     drawCalls: 0,
     triangles: 0,
     fps: 0,
-  }),
+),
   clearResources: () => {},
   optimizeMemoryUsage: () => {},
   pauseRendering: () => {},
   resumeRendering: () => {},
   isRendering: true,
-});
-
 // Resource manager provider component
 export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [resources, setResources] = useState<ResourceMap>({});
@@ -87,8 +68,7 @@ export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children
     drawCalls: 0,
     triangles: 0,
     fps: 0,
-  });
-  const [isRendering, setIsRendering] = useState(true);
+const [isRendering, setIsRendering] = useState(true);
   
   const resourceRef = useRef(resources);
   const textureLoader = useRef(new THREE.TextureLoader());
@@ -99,36 +79,33 @@ export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children
   // Update ref when state changes
   useEffect(() => {
     resourceRef.current = resources;
-  }, [resources]);
+[resources]);
   
   // Handle memory cleanup on unmount
   useEffect(() => {
     return () => {
       clearResources();
-    };
-  }, []);
+[]);
 
   // Update stats periodically
   useEffect(() => {
     const updateInterval = setInterval(() => {
       updateStats();
-    }, 5000);
+5000);
     
     return () => {
       clearInterval(updateInterval);
-    };
-  }, []);
+[]);
   
   // Automatic resource cleanup based on time
   useEffect(() => {
     const cleanupInterval = setInterval(() => {
       disposeUnusedResources();
-    }, 60000); // Check every minute
+60000); // Check every minute
     
     return () => {
       clearInterval(cleanupInterval);
-    };
-  }, []);
+[]);
   
   // Register a new resource
   const registerResource = (
@@ -146,28 +123,22 @@ export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children
         const width = resource.image.width || 512;
         const height = resource.image.height || 512;
         estimatedSize = width * height * 4;
-      } else if (type === 'geometry' && resource instanceof THREE.BufferGeometry) {
+else if (type === 'geometry' && resource instanceof THREE.BufferGeometry) {
         // Estimate geometry size based on vertex count
         const position = resource.getAttribute('position');
         const positionCount = position ? position.count : 0;
         estimatedSize = positionCount * 12; // 3 floats per vertex * 4 bytes per float
-      }
-    }
-    
-    setResources(prev => ({
+setResources(prev => ({
       ...prev,
       [key]: {
         resource,
         type,
         lastUsed: Date.now(),
         size: estimatedSize,
-      },
-    }));
+));
     
     logger.debug(`AR resource registered: ${key} (${type})`);
-  };
-  
-  // Unregister and cleanup a resource
+// Unregister and cleanup a resource
   const unregisterResource = (key: string) => {
     setResources(prev => {
       const newResources = { ...prev };
@@ -178,11 +149,11 @@ export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children
         // Properly dispose based on resource type
         if (type === 'texture' && resource instanceof THREE.Texture) {
           resource.dispose();
-        } else if (type === 'geometry' && resource instanceof THREE.BufferGeometry) {
+else if (type === 'geometry' && resource instanceof THREE.BufferGeometry) {
           resource.dispose();
-        } else if (type === 'material' && resource instanceof THREE.Material) {
+else if (type === 'material' && resource instanceof THREE.Material) {
           resource.dispose();
-        } else if (type === 'model' && resource instanceof THREE.Object3D) {
+else if (type === 'model' && resource instanceof THREE.Object3D) {
           // Traverse and dispose all geometries and materials
           resource.traverse(child => {
             if (child instanceof THREE.Mesh) {
@@ -191,23 +162,12 @@ export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children
               if (child.material) {
                 if (Array.isArray(child.material)) {
                   child.material.forEach(material => material.dispose());
-                } else {
+else {
                   child.material.dispose();
-                }
-              }
-            }
-          });
-        }
-        
-        delete newResources[key];
+delete newResources[key];
         logger.debug(`AR resource unregistered: ${key}`);
-      }
-      
-      return newResources;
-    });
-  };
-  
-  // Preload a 3D model
+return newResources;
+// Preload a 3D model
   const preloadModel = async (url: string): Promise<void> => {
     try {
       const cache = getCacheService();
@@ -221,33 +181,24 @@ export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children
           [url]: {
             ...prev[url],
             lastUsed: Date.now(),
-          },
-        }));
+));
         return;
-      }
-      
-      // Check if model is in cache
+// Check if model is in cache
       const cached = await cache.get(cacheKey);
       if (cached) {
         logger.debug(`AR model loaded from cache: ${url}`);
         // We can't cache the actual model object, just record that it was requested
         return;
-      }
-      
-      logger.debug(`Preloading AR model: ${url}`);
+logger.debug(`Preloading AR model: ${url}`);
       
       // Load the model
       useGLTF.preload(url);
       
       // Add to cache
       await cache.set(cacheKey, { url, timestamp: Date.now() }, TTL.LONG);
-      
-    } catch (error) {
+catch (error) {
       logger.error(`Error preloading model: ${url}`, error);
-    }
-  };
-  
-  // Preload a texture
+// Preload a texture
   const preloadTexture = async (url: string): Promise<THREE.Texture> => {
     return new Promise((resolve, reject) => {
       // Check if we already have this texture
@@ -258,14 +209,11 @@ export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children
           [url]: {
             ...prev[url],
             lastUsed: Date.now(),
-          },
-        }));
+));
         
         resolve(resourceRef.current[url].resource as THREE.Texture);
         return;
-      }
-      
-      // Load new texture
+// Load new texture
       textureLoader.current.load(
         url,
         texture => {
@@ -283,17 +231,11 @@ export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children
           registerResource(url, texture, 'texture', textureSize);
           
           resolve(texture);
-        },
-        undefined, // Progress callback
+undefined, // Progress callback
         error => {
           logger.error(`Error loading texture: ${url}`, error);
           reject(error);
-        }
-      );
-    });
-  };
-  
-  // Dispose resources that haven't been used recently
+// Dispose resources that haven't been used recently
   const disposeUnusedResources = () => {
     const now = Date.now();
     const unusedThreshold = 5 * 60 * 1000; // 5 minutes
@@ -308,16 +250,14 @@ export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children
         // Skip recently used resources
         if (now - resource.lastUsed < unusedThreshold) {
           return;
-        }
-        
-        // Properly dispose based on resource type
+// Properly dispose based on resource type
         if (resource.type === 'texture' && resource.resource instanceof THREE.Texture) {
           resource.resource.dispose();
-        } else if (resource.type === 'geometry' && resource.resource instanceof THREE.BufferGeometry) {
+else if (resource.type === 'geometry' && resource.resource instanceof THREE.BufferGeometry) {
           resource.resource.dispose();
-        } else if (resource.type === 'material' && resource.resource instanceof THREE.Material) {
+else if (resource.type === 'material' && resource.resource instanceof THREE.Material) {
           resource.resource.dispose();
-        } else if (resource.type === 'model' && resource.resource instanceof THREE.Object3D) {
+else if (resource.type === 'model' && resource.resource instanceof THREE.Object3D) {
           // Traverse and dispose all geometries and materials
           resource.resource.traverse(child => {
             if (child instanceof THREE.Mesh) {
@@ -326,27 +266,14 @@ export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children
               if (child.material) {
                 if (Array.isArray(child.material)) {
                   child.material.forEach(material => material.dispose());
-                } else {
+else {
                   child.material.dispose();
-                }
-              }
-            }
-          });
-        }
-        
-        delete newResources[key];
+delete newResources[key];
         disposed++;
-      });
-      
-      if (disposed > 0) {
+if (disposed > 0) {
         logger.debug(`Disposed ${disposed} unused AR resources`);
-      }
-      
-      return newResources;
-    });
-  };
-  
-  // Clear all resources
+return newResources;
+// Clear all resources
   const clearResources = () => {
     setResources(prev => {
       // Dispose all resources
@@ -355,11 +282,11 @@ export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children
         
         if (type === 'texture' && resource instanceof THREE.Texture) {
           resource.dispose();
-        } else if (type === 'geometry' && resource instanceof THREE.BufferGeometry) {
+else if (type === 'geometry' && resource instanceof THREE.BufferGeometry) {
           resource.dispose();
-        } else if (type === 'material' && resource instanceof THREE.Material) {
+else if (type === 'material' && resource instanceof THREE.Material) {
           resource.dispose();
-        } else if (type === 'model' && resource instanceof THREE.Object3D) {
+else if (type === 'model' && resource instanceof THREE.Object3D) {
           resource.traverse(child => {
             if (child instanceof THREE.Mesh) {
               if (child.geometry) child.geometry.dispose();
@@ -367,22 +294,12 @@ export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children
               if (child.material) {
                 if (Array.isArray(child.material)) {
                   child.material.forEach(material => material.dispose());
-                } else {
+else {
                   child.material.dispose();
-                }
-              }
-            }
-          });
-        }
-      });
-      
-      logger.debug(`Cleared all AR resources (${Object.keys(prev).length} items)`);
+logger.debug(`Cleared all AR resources (${Object.keys(prev).length} items)`);
       
       return {};
-    });
-  };
-  
-  // Force garbage collection for unused resources
+// Force garbage collection for unused resources
   const optimizeMemoryUsage = () => {
     // Dispose unused resources
     disposeUnusedResources();
@@ -391,9 +308,7 @@ export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children
     THREE.Cache.clear();
     
     logger.debug('AR resource memory optimized');
-  };
-  
-  // Update performance metrics
+// Update performance metrics
   const updateStats = () => {
     const now = Date.now();
     const elapsedTime = now - lastStatsUpdate.current;
@@ -416,13 +331,10 @@ export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children
       if (type === 'texture') {
         texturesLoaded++;
         textureMemory += size;
-      } else if (type === 'geometry') {
+else if (type === 'geometry') {
         geometriesLoaded++;
         geometryMemory += size;
-      }
-    });
-    
-    // Convert bytes to MB
+// Convert bytes to MB
     textureMemory = Math.round(textureMemory / (1024 * 1024) * 100) / 100;
     geometryMemory = Math.round(geometryMemory / (1024 * 1024) * 100) / 100;
     
@@ -434,28 +346,19 @@ export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children
       drawCalls: stats.drawCalls, // These would be updated by components
       triangles: stats.triangles,
       fps,
-    });
-  };
-  
-  // Track frame for FPS calculation
+// Track frame for FPS calculation
   const trackFrame = () => {
     frameCountRef.current++;
     lastFrameTime.current = Date.now();
-  };
-  
-  // Pause rendering to save resources
+// Pause rendering to save resources
   const pauseRendering = () => {
     setIsRendering(false);
     logger.debug('AR rendering paused');
-  };
-  
-  // Resume rendering
+// Resume rendering
   const resumeRendering = () => {
     setIsRendering(true);
     logger.debug('AR rendering resumed');
-  };
-  
-  // Get current performance stats
+// Get current performance stats
   const getStats = () => stats;
   
   // Context value
@@ -471,15 +374,10 @@ export const ARResourceProvider: React.FC<{ children: ReactNode }> = ({ children
     pauseRendering,
     resumeRendering,
     isRendering,
-  };
-  
-  return (
+return (
     <ARResourceContext.Provider value={contextValue}>
       {children}
     </ARResourceContext.Provider>
-  );
-};
-
 // Custom hook for accessing the context
 export const useARResources = () => useContext(ARResourceContext);
 
@@ -500,14 +398,9 @@ export const useFrameTracker = () => {
       // Here you could update your own FPS counter
       
       frameId = requestAnimationFrame(animate);
-    };
-    
-    frameId = requestAnimationFrame(animate);
+frameId = requestAnimationFrame(animate);
     
     return () => {
       cancelAnimationFrame(frameId);
-    };
-  }, [isRendering]);
-};
-
+[isRendering]);
 export default ARResourceContext; 

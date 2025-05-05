@@ -590,7 +590,7 @@ export const <span class="cstat-no" title="statement not covered" >requestNotifi
   }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!('Notification' in window)) {</span>
-<span class="cstat-no" title="statement not covered" >    console?.warn('Notifications not supported in this browser');</span>
+<span class="cstat-no" title="statement not covered" >    console.warn('Notifications not supported in this browser');</span>
 <span class="cstat-no" title="statement not covered" >    return null;</span>
   }
 &nbsp;
@@ -598,7 +598,7 @@ export const <span class="cstat-no" title="statement not covered" >requestNotifi
     const permission = <span class="cstat-no" title="statement not covered" >await Notification.requestPermission();</span>
 <span class="cstat-no" title="statement not covered" >    return permission;</span>
   } catch (error) {
-<span class="cstat-no" title="statement not covered" >    console?.error('Error requesting notification permission:', error);</span>
+<span class="cstat-no" title="statement not covered" >    console.error('Error requesting notification permission:', error);</span>
 <span class="cstat-no" title="statement not covered" >    return null;</span>
   }
 };
@@ -611,7 +611,7 @@ export const <span class="cstat-no" title="statement not covered" >registerServi
   }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!('serviceWorker' in navigator)) {</span>
-<span class="cstat-no" title="statement not covered" >    console?.warn('Service Workers not supported in this browser');</span>
+<span class="cstat-no" title="statement not covered" >    console.warn('Service Workers not supported in this browser');</span>
 <span class="cstat-no" title="statement not covered" >    return null;</span>
   }
 &nbsp;
@@ -619,7 +619,7 @@ export const <span class="cstat-no" title="statement not covered" >registerServi
     const registration = <span class="cstat-no" title="statement not covered" >await navigator.serviceWorker.register('/service-worker.js');</span>
 <span class="cstat-no" title="statement not covered" >    return registration;</span>
   } catch (error) {
-<span class="cstat-no" title="statement not covered" >    console?.error('Service Worker registration failed:', error);</span>
+<span class="cstat-no" title="statement not covered" >    console.error('Service Worker registration failed:', error);</span>
 <span class="cstat-no" title="statement not covered" >    return null;</span>
   }
 };
@@ -654,7 +654,7 @@ export const <span class="cstat-no" title="statement not covered" >getOrCreatePu
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return subscription;</span>
   } catch (error) {
-<span class="cstat-no" title="statement not covered" >    console?.error('Error getting/creating push subscription:', error);</span>
+<span class="cstat-no" title="statement not covered" >    console.error('Error getting/creating push subscription:', error);</span>
 <span class="cstat-no" title="statement not covered" >    return null;</span>
   }
 };
@@ -695,13 +695,13 @@ export const <span class="cstat-no" title="statement not covered" >saveSubscript
       }),
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('Failed to save subscription');</span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return true;</span>
   } catch (error) {
-<span class="cstat-no" title="statement not covered" >    console?.error('Error saving subscription:', error);</span>
+<span class="cstat-no" title="statement not covered" >    console.error('Error saving subscription:', error);</span>
 <span class="cstat-no" title="statement not covered" >    return false;</span>
   }
 };
@@ -726,13 +726,13 @@ export const <span class="cstat-no" title="statement not covered" >removeSubscri
       }),
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('Failed to remove subscription');</span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return true;</span>
   } catch (error) {
-<span class="cstat-no" title="statement not covered" >    console?.error('Error removing subscription:', error);</span>
+<span class="cstat-no" title="statement not covered" >    console.error('Error removing subscription:', error);</span>
 <span class="cstat-no" title="statement not covered" >    return false;</span>
   }
 };
@@ -740,11 +740,11 @@ export const <span class="cstat-no" title="statement not covered" >removeSubscri
 // Show a notification
 export const <span class="cstat-no" title="statement not covered" >showNotification </span>= <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(t</span>itle: string, options: NotificationOptions = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span>: void =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!('Notification' in window)) {</span>
-<span class="cstat-no" title="statement not covered" >    console?.warn('Notifications not supported');</span>
+<span class="cstat-no" title="statement not covered" >    console.warn('Notifications not supported');</span>
 <span class="cstat-no" title="statement not covered" >    return;</span>
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (Notification?.permission === 'granted') {</span>
+<span class="cstat-no" title="statement not covered" >  if (Notification.permission === 'granted') {</span>
 <span class="cstat-no" title="statement not covered" >    navigator.serviceWorker.ready</span>
       .then(<span class="fstat-no" title="function not covered" >(r</span>egistration) =&gt; {
 <span class="cstat-no" title="statement not covered" >        registration.showNotification(title, {</span>
@@ -754,10 +754,10 @@ export const <span class="cstat-no" title="statement not covered" >showNotificat
         });
       })
       .catch(<span class="fstat-no" title="function not covered" >(e</span>rror) =&gt; {
-<span class="cstat-no" title="statement not covered" >        console?.error('Error showing notification:', error);</span>
+<span class="cstat-no" title="statement not covered" >        console.error('Error showing notification:', error);</span>
       });
   } else {
-<span class="cstat-no" title="statement not covered" >    console?.warn('Notification permission not granted');</span>
+<span class="cstat-no" title="statement not covered" >    console.warn('Notification permission not granted');</span>
   }
 };
 &nbsp;
@@ -786,11 +786,11 @@ export interface PushNotificationPayload {
  *
 &nbsp;
  * // Initialize on app start
- * const publicVapidKey = process?.env.NEXT_PUBLIC_VAPID_KEY;
+ * const publicVapidKey = process.env.NEXT_PUBLIC_VAPID_KEY;
  * if (publicVapidKey) {
  *   initPushNotifications(publicVapidKey, userId).then(success =&gt; {
  *     if (success) {
- *       console?.log('Push notifications initialized successfully');
+ *       console.log('Push notifications initialized successfully');
  *     }
  *   });
  * }
@@ -814,7 +814,7 @@ export interface PushNotificationPayload {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -15,13 +15,12 @@ const EquipmentListScreen: React.FC = () => {
       try {
         const data = await equipmentApi.getItems();
         setItems(data);
-      } catch (err) {
+catch (err) {
         console.error(err);
-      } finally {
+finally {
         setLoading(false);
-      }
-    })();
-  }, []);
+)();
+[]);
 
   if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
@@ -42,13 +41,8 @@ const EquipmentListScreen: React.FC = () => {
         )}
       />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   item: { padding: 12, borderBottomWidth: 1, borderColor: '#ccc' },
   title: { fontSize: 16, fontWeight: 'bold' }
-});
-
 export default EquipmentListScreen;

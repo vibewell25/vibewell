@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Layout } from '@/components/layout';
@@ -17,25 +15,18 @@ function ReviewsContent() {
   // Get reviews for the specified provider
   const { reviews, isLoading, error, addReview, getAverageRating } = useReviews(
     providerId || undefined,
-  );
-
-  const handleAddReview = async ( {
+const handleAddReview = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');data: { title: string; text: string; rating: number }) => {
     if (!providerId) {
       alert('Provider ID is required to submit a review');
       return;
-    }
-
-    try {
+try {
       await addReview(data, providerId);
       setShowReviewForm(false);
-    } catch (error) {
+catch (error) {
       console.error('Failed to submit review:', error);
-    }
-  };
-
-  if (!providerId) {
+if (!providerId) {
     return (
       <Layout>
         <div className="container mx-auto max-w-4xl px-4 py-8">
@@ -53,10 +44,7 @@ function ReviewsContent() {
           </div>
         </div>
       </Layout>
-    );
-  }
-
-  return (
+return (
     <Layout>
       <div className="container mx-auto max-w-4xl px-4 py-8">
         <div className="mb-8 rounded-lg bg-white p-6 shadow">
@@ -73,7 +61,7 @@ function ReviewsContent() {
                           star <= Math.round(getAverageRating())
                             ? 'text-yellow-400'
                             : 'text-gray-300'
-                        }`}
+`}
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="currentColor"
@@ -121,9 +109,6 @@ function ReviewsContent() {
         <ReviewsList reviews={reviews} isLoading={isLoading} />
       </div>
     </Layout>
-  );
-}
-
 export default function ReviewsPage() {
   return (
     <Suspense
@@ -131,5 +116,3 @@ export default function ReviewsPage() {
     >
       <ReviewsContent />
     </Suspense>
-  );
-}

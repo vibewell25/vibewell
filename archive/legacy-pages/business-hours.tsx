@@ -13,8 +13,6 @@ type BusinessHour = {
   openTime: string;
   closeTime: string;
   isOpen: boolean;
-};
-
 const BusinessHours: NextPage = () => {
   const [hours, setHours] = useState<BusinessHour[]>([]);
   const [dayOfWeek, setDayOfWeek] = useState('');
@@ -28,14 +26,11 @@ const BusinessHours: NextPage = () => {
       const res = await fetchWithTimeout('/api/businessHours');
       const data = await res.json();
       setHours(data.hours || []);
-    } catch (error) {
+catch (error) {
       console.error('Error fetching business hours:', error);
-    }
-  };
-
-  useEffect(() => { 
+useEffect(() => { 
     fetchHours(); 
-  }, []);
+[]);
 
   const handleCreate = async (e: FormEvent) => {
     e.preventDefault();
@@ -44,32 +39,23 @@ const BusinessHours: NextPage = () => {
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ dayOfWeek, openTime, closeTime, isOpen })
-      });
-      setDayOfWeek(''); 
+setDayOfWeek(''); 
       setOpenTime(''); 
       setCloseTime('');
       setIsOpen(true);
       fetchHours();
-    } catch (error) {
+catch (error) {
       console.error('Error creating business hours:', error);
-    }
-  };
-
-  const handleDelete = async (id: string) => {
+const handleDelete = async (id: string) => {
     try {
       if (!confirm('Delete these business hours?')) return;
       
       await fetchWithTimeout(`/api/businessHours/${id}`, { 
         method: 'DELETE' 
-      });
-      
-      fetchHours();
-    } catch (error) {
+fetchHours();
+catch (error) {
       console.error('Error deleting business hours:', error);
-    }
-  };
-
-  return (
+return (
     <div className="max-w-2xl mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Business Hours</h1>
       <form onSubmit={handleCreate} className="space-y-2 mb-6">
@@ -129,7 +115,4 @@ const BusinessHours: NextPage = () => {
       
       {hours.length === 0 && <p>No business hours defined.</p>}
     </div>
-  );
-};
-
 export default BusinessHours;

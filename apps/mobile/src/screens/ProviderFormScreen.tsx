@@ -18,18 +18,14 @@ const ProviderFormScreen: React.FC = () => {
       setLoading(true);
       if (existing) {
         await updateProvider(existing.id, { name, businessName, description });
-      } else {
+else {
         await createProvider({ name, businessName, description });
-      }
-      navigation.goBack();
-    } catch (e) {
+navigation.goBack();
+catch (e) {
       Alert.alert('Error', 'Failed to save provider');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  return (
+return (
     <View style={{ flex: 1, padding: 16 }}>
       <Text style={{ marginBottom: 4 }}>Name</Text>
       <TextInput
@@ -56,7 +52,4 @@ const ProviderFormScreen: React.FC = () => {
         disabled={loading || !name.trim()}
       />
     </View>
-  );
-};
-
 export default ProviderFormScreen;

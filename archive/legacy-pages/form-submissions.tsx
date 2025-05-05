@@ -15,17 +15,13 @@ const FormSubmissions: NextPage = () => {
     const res = await fetchWithTimeout('/api/formSubmissions');
     const json = await res.json();
     setSubs(json.submissions || []);
-  };
-
-  useEffect(() => { fetchSubs(); }, []);
+useEffect(() => { fetchSubs(); }, []);
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this submission?')) return;
     await fetchWithTimeout(`/api/formSubmissions/${id}`, { method: 'DELETE' });
     fetchSubs();
-  };
-
-  return (
+return (
     <div className="max-w-2xl mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Form Submissions</h1>
       {subs.map(s => (
@@ -42,7 +38,4 @@ const FormSubmissions: NextPage = () => {
       ))}
       {subs.length === 0 && <p>No submissions.</p>}
     </div>
-  );
-};
-
 export default FormSubmissions;

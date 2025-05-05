@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import sheet from '../sheet.tsx';
+
+describe('sheet', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<sheet />);
+    expect(container).toBeInTheDocument();
+  });
+});

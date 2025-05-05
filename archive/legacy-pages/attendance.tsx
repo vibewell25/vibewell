@@ -20,31 +20,23 @@ const Attendance: NextPage = () => {
       if (Date.now() - start > 30000) throw new Error('Timeout');
       const json = await res.json();
       return json;
-    } catch (error) {
+catch (error) {
       console.error('Failed to fetch attendance records:', error);
       return [];
-    }
-  };
-
-  useEffect(() => { fetchRecords().then(setRecords); }, []);
+useEffect(() => { fetchRecords().then(setRecords); }, []);
 
   const handleCreate = async (e: FormEvent) => {
     e.preventDefault();
     await fetch('/api/attendance', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ scheduleId, status })
-    });
-    setScheduleId(''); setStatus('');
+setScheduleId(''); setStatus('');
     fetchRecords().then(setRecords);
-  };
-
-  const handleDelete = async (id: string) => {
+const handleDelete = async (id: string) => {
     if (!confirm('Delete this attendance record?')) return;
     await fetch(`/api/attendance/${id}`, { method: 'DELETE' });
     fetchRecords().then(setRecords);
-  };
-
-  return (
+return (
     <div className="max-w-2xl mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Attendance Records</h1>
       <form onSubmit={handleCreate} className="space-y-2 mb-6">
@@ -66,7 +58,4 @@ const Attendance: NextPage = () => {
       ))}
       {records.length === 0 && <p>No attendance records.</p>}
     </div>
-  );
-};
-
 export default Attendance;

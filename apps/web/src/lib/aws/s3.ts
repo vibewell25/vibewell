@@ -1,4 +1,3 @@
-
 import AWS from 'aws-sdk';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -8,8 +7,6 @@ AWS.config.update({
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 
   region: process.env.AWS_REGION || 'us-east-1',
-});
-
 const s3 = new AWS.S3();
 
 const BUCKET_NAME = process.env.AWS_S3_BUCKET_NAME || 'vibewell-uploads';
@@ -33,16 +30,11 @@ export async function {
       Key: fileKey,
       Body: buffer,
       ContentType: file.type,
-    };
-
-    await s3.upload(params).promise();
+await s3.upload(params).promise();
     return fileKey;
-  } catch (error) {
+catch (error) {
     console.error('Error uploading file to S3:', error);
     throw new Error('Failed to upload file');
-  }
-}
-
 /**
  * Get a signed URL for an S3 object
  * @param key The key (path) of the object
@@ -55,15 +47,10 @@ export function getSignedUrl(key: string, expiresIn: number = 3600): string {
       Bucket: BUCKET_NAME,
       Key: key,
       Expires: expiresIn,
-    };
-
-    return s3.getSignedUrl('getObject', params);
-  } catch (error) {
+return s3.getSignedUrl('getObject', params);
+catch (error) {
     console.error('Error generating signed URL:', error);
     throw new Error('Failed to generate signed URL');
-  }
-}
-
 /**
  * Delete an object from S3
  * @param key The key (path) of the object to delete
@@ -75,11 +62,7 @@ export async function {
     const params = {
       Bucket: BUCKET_NAME,
       Key: key,
-    };
-
-    await s3.deleteObject(params).promise();
-  } catch (error) {
+await s3.deleteObject(params).promise();
+catch (error) {
     console.error('Error deleting file from S3:', error);
     throw new Error('Failed to delete file');
-  }
-}

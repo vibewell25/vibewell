@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import safe-user-menu from '../safe-user-menu.tsx';
+
+describe('safe-user-menu', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<safe-user-menu />);
+    expect(container).toBeInTheDocument();
+  });
+});

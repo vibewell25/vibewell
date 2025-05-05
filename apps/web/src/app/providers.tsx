@@ -1,8 +1,7 @@
-'use client';;
-import { AuthProvider } from '@/contexts/auth-context';
-import { AnalyticsProvider } from '@/providers/analytics-provider';
+import { AuthProvider } from '@/contexts/AuthContext';
+import { AnalyticsProvider } from '@/providers/AnalyticsProvider';
 import { ThemeProvider } from 'next-themes';
-import { PushNotificationProvider } from '@/providers/push-notification-provider';
+import { PushNotificationProvider } from '@/providers/PushNotificationProvider';
 import { AccessibilityProvider } from '@/contexts/AccessibilityContext';
 import RootErrorBoundary from '@/components/RootErrorBoundary';
 import { I18nextProvider } from 'react-i18next';
@@ -18,9 +17,6 @@ interface ProvidersProps {
     isMobile: boolean;
     theme: string;
     language: string;
-  };
-}
-
 export function Providers({ children, initialState }: ProvidersProps) {
   return (
     <RootErrorBoundary>
@@ -29,8 +25,7 @@ export function Providers({ children, initialState }: ProvidersProps) {
           set({ key: 'deviceType', value: initialState.isMobile ? 'mobile' : 'desktop' });
           set({ key: 'theme', value: initialState.theme });
           set({ key: 'language', value: initialState.language });
-        }}
-      >
+>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <I18nextProvider i18n={i18n}>
             <TranslationErrorBoundary>
@@ -48,5 +43,3 @@ export function Providers({ children, initialState }: ProvidersProps) {
         </ThemeProvider>
       </RecoilRoot>
     </RootErrorBoundary>
-  );
-}

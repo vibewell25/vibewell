@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
@@ -10,16 +9,12 @@ const defaultConfig = {
     memoryUsage: true,
     cpuUsage: true,
     networkLatency: true,
-  },
-  alertThresholds: {
+alertThresholds: {
     responseTime: 1000,
     memoryUsage: 80,
     cpuUsage: 70,
     networkLatency: 200,
-  },
-  samplingRate: 1,
-};
-
+samplingRate: 1,
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); GET() {
@@ -35,18 +30,13 @@ export async function {
       const config = JSON.parse(configFile);
 
       return NextResponse.json(config.performance || defaultConfig);
-    }
-
-    // Return default configuration if file doesn't exist
+// Return default configuration if file doesn't exist
     return NextResponse.json(defaultConfig);
-  } catch (error) {
+catch (error) {
     console.error('Error fetching performance configuration:', error);
 
     // Return default configuration in case of error
     return NextResponse.json(defaultConfig);
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); POST(request: Request) {
@@ -56,9 +46,7 @@ export async function {
     // Validate the configuration
     if (!data || typeof data !== 'object') {
       return NextResponse.json({ error: 'Invalid configuration format' }, { status: 400 });
-    }
-
-    // Path to configuration file
+// Path to configuration file
 
     const configPath = path.join(process.cwd(), 'config', 'performance-monitoring.json');
     const configDir = path.join(process.cwd(), 'config');
@@ -66,34 +54,24 @@ export async function {
     // Create config directory if it doesn't exist
     if (!fs.existsSync(configDir)) {
       fs.mkdirSync(configDir, { recursive: true });
-    }
-
-    // Current config (if exists)
+// Current config (if exists)
     let currentConfig = { performance: defaultConfig };
     if (fs.existsSync(configPath)) {
 
       const configFile = fs.readFileSync(configPath, 'utf-8');
       currentConfig = JSON.parse(configFile);
-    }
-
-    // Update configuration
+// Update configuration
     currentConfig.performance = {
       ...currentConfig.performance,
       ...data,
-    };
-
-    // Save updated configuration
+// Save updated configuration
     fs.writeFileSync(configPath, JSON.stringify(currentConfig, null, 2));
 
     return NextResponse.json({
       success: true,
       config: currentConfig.performance,
-    });
-  } catch (error) {
+catch (error) {
     console.error('Error updating performance configuration:', error);
     return NextResponse.json(
       { error: 'Failed to update performance configuration' },
       { status: 500 },
-    );
-  }
-}

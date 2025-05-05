@@ -709,19 +709,19 @@ export default function <span class="cstat-no" title="statement not covered" ><s
           &lt;div className="flex-1"&gt;
             &lt;div className="mb-4 flex items-center gap-4"&gt;
               &lt;Avatar className="h-24 w-24"&gt;
-                &lt;AvatarImage src={provider?.avatar} alt={provider?.name} /&gt;
+                &lt;AvatarImage src={provider.avatar} alt={provider.name} /&gt;
                 &lt;AvatarFallback&gt;
                   &lt;UserIcon className="h-12 w-12" /&gt;
                 &lt;/AvatarFallback&gt;
               &lt;/Avatar&gt;
               &lt;div&gt;
-                &lt;h1 className="text-4xl font-bold"&gt;{provider?.name}&lt;/h1&gt;
+                &lt;h1 className="text-4xl font-bold"&gt;{provider.name}&lt;/h1&gt;
                 &lt;div className="mt-1 flex items-center gap-2"&gt;
                   &lt;div className="flex items-center"&gt;
                     &lt;StarIcon className="h-5 w-5 text-yellow-500" /&gt;
-                    &lt;span className="ml-1 font-medium"&gt;{provider?.rating}&lt;/span&gt;
+                    &lt;span className="ml-1 font-medium"&gt;{provider.rating}&lt;/span&gt;
                   &lt;/div&gt;
-                  &lt;span className="text-muted-foreground"&gt;({provider?.reviewCount} reviews)&lt;/span&gt;
+                  &lt;span className="text-muted-foreground"&gt;({provider.reviewCount} reviews)&lt;/span&gt;
                 &lt;/div&gt;
                 &lt;div className="mt-2 flex gap-2"&gt;{/* Add specialty badges here */}&lt;/div&gt;
               &lt;/div&gt;
@@ -753,11 +753,11 @@ export default function <span class="cstat-no" title="statement not covered" ><s
               &lt;CardContent className="space-y-4"&gt;
                 &lt;div className="flex items-center gap-2"&gt;
                   &lt;MapPinIcon className="h-5 w-5 text-muted-foreground" /&gt;
-                  &lt;span&gt;{provider?.location}&lt;/span&gt;
+                  &lt;span&gt;{provider.location}&lt;/span&gt;
                 &lt;/div&gt;
                 &lt;div className="flex items-center gap-2"&gt;
                   &lt;PhoneIcon className="h-5 w-5 text-muted-foreground" /&gt;
-                  &lt;span&gt;{provider?.phone}&lt;/span&gt;
+                  &lt;span&gt;{provider.phone}&lt;/span&gt;
                 &lt;/div&gt;
                 &lt;div className="flex items-center gap-2"&gt;
                   &lt;EnvelopeIcon className="h-5 w-5 text-muted-foreground" /&gt;
@@ -799,20 +799,20 @@ export default function <span class="cstat-no" title="statement not covered" ><s
                 &lt;/CardHeader&gt;
                 &lt;CardContent&gt;
                   &lt;div className="space-y-4"&gt;
-                    {provider?.services.slice(0, 3).map(<span class="fstat-no" title="function not covered" >(s</span>ervice) =&gt; (
+                    {provider.services.slice(0, 3).map(<span class="fstat-no" title="function not covered" >(s</span>ervice) =&gt; (
 <span class="cstat-no" title="statement not covered" >                      &lt;div</span>
-                        key={service?.id}
+                        key={service.id}
                         className="flex items-center justify-between rounded-lg border p-4"
                       &gt;
                         &lt;div&gt;
-                          &lt;h3 className="font-medium"&gt;{service?.name}&lt;/h3&gt;
+                          &lt;h3 className="font-medium"&gt;{service.name}&lt;/h3&gt;
                           &lt;div className="flex items-center text-sm text-gray-500"&gt;
                             &lt;ClockIcon className="mr-1 h-4 w-4" /&gt;
-                            {service?.duration} min
+                            {service.duration} min
                           &lt;/div&gt;
                         &lt;/div&gt;
                         &lt;div className="text-right"&gt;
-                          &lt;div className="font-medium"&gt;${service?.price}&lt;/div&gt;
+                          &lt;div className="font-medium"&gt;${service.price}&lt;/div&gt;
                           &lt;Button variant="outline" size="sm"&gt;
                             Book Now
                           &lt;/Button&gt;
@@ -827,17 +827,17 @@ export default function <span class="cstat-no" title="statement not covered" ><s
           {/* Services Tab */}
           &lt;TabsContent value="services" className="mt-6"&gt;
             &lt;div className="grid gap-4"&gt;
-              {provider?.services.map(<span class="fstat-no" title="function not covered" >(s</span>ervice) =&gt; (
-<span class="cstat-no" title="statement not covered" >                &lt;Card key={service?.id}&gt;</span>
+              {provider.services.map(<span class="fstat-no" title="function not covered" >(s</span>ervice) =&gt; (
+<span class="cstat-no" title="statement not covered" >                &lt;Card key={service.id}&gt;</span>
                   &lt;CardContent className="p-4"&gt;
                     &lt;div className="flex items-start justify-between"&gt;
                       &lt;div&gt;
-                        &lt;h3 className="font-medium"&gt;{service?.name}&lt;/h3&gt;
-                        &lt;p className="text-sm text-muted-foreground"&gt;{service?.description}&lt;/p&gt;
+                        &lt;h3 className="font-medium"&gt;{service.name}&lt;/h3&gt;
+                        &lt;p className="text-sm text-muted-foreground"&gt;{service.description}&lt;/p&gt;
                       &lt;/div&gt;
                       &lt;div className="text-right"&gt;
-                        &lt;p className="font-medium"&gt;${service?.price}&lt;/p&gt;
-                        &lt;p className="text-sm text-muted-foreground"&gt;{service?.duration} min&lt;/p&gt;
+                        &lt;p className="font-medium"&gt;${service.price}&lt;/p&gt;
+                        &lt;p className="text-sm text-muted-foreground"&gt;{service.duration} min&lt;/p&gt;
                       &lt;/div&gt;
                     &lt;/div&gt;
                   &lt;/CardContent&gt;
@@ -865,7 +865,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

@@ -1,4 +1,3 @@
-'use client';
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
@@ -22,30 +21,28 @@ interface ProviderData {
   coordinates: {
     lat: number;
     lng: number;
-  };
-  services: {
+services: {
     id: string;
     name: string;
     price: number;
     duration: number;
     description: string;
-  }[];
+[];
   certifications: {
     id: string;
     name: string;
     issuer: string;
     year: number;
-  }[];
+[];
   availability: {
     day: string;
     slots: {
       start: string;
       end: string;
-    }[];
-  }[];
+[];
+[];
   rating: number;
   reviewCount: number;
-}
 export default function ProviderProfilePage() {
   const { id } = useParams();
   const [provider, setProvider] = useState<ProviderData | null>(null);
@@ -59,7 +56,7 @@ export default function ProviderProfilePage() {
     isLoading: reviewsLoading,
     addReview,
     getRatingPercentage,
-  } = useProviderReviews(id as string);
+= useProviderReviews(id as string);
   // Fetch provider data
   useEffect(() => {
     const fetchProviderData = async ( {
@@ -85,44 +82,38 @@ export default function ProviderProfilePage() {
             coordinates: {
               lat: 40.7128,
               lng: -74.006,
-            },
-            services: [
+services: [
               {
                 id: 's1',
                 name: 'Haircut & Styling',
                 price: 85,
                 duration: 60,
                 description: 'Includes consultation, shampoo, cut, and style.',
-              },
-              {
+{
                 id: 's2',
                 name: 'Full Makeup Application',
                 price: 120,
                 duration: 75,
                 description: 'Complete makeup look for any occasion.',
-              },
-              {
+{
                 id: 's3',
                 name: 'Hair Coloring',
                 price: 150,
                 duration: 120,
                 description: 'Custom hair color including consultation.',
-              },
-            ],
+],
             certifications: [
               {
                 id: 'c1',
                 name: 'Professional Makeup Artist Certificate',
                 issuer: 'Beauty Academy of New York',
                 year: 2015,
-              },
-              {
+{
                 id: 'c2',
                 name: 'Advanced Hair Coloring Techniques',
                 issuer: 'International Hair Association',
                 year: 2018,
-              },
-            ],
+],
             availability: [
               {
                 day: 'Monday',
@@ -130,38 +121,31 @@ export default function ProviderProfilePage() {
                   { start: '09:00', end: '12:00' },
                   { start: '13:00', end: '17:00' },
                 ],
-              },
-              {
+{
                 day: 'Wednesday',
                 slots: [
                   { start: '09:00', end: '12:00' },
                   { start: '13:00', end: '17:00' },
                 ],
-              },
-              {
+{
                 day: 'Friday',
                 slots: [
                   { start: '10:00', end: '14:00' },
                   { start: '15:00', end: '19:00' },
                 ],
-              },
-            ],
+],
             rating: 4.8,
             reviewCount: summary.totalReviews || 24,
-          };
-          setProvider(mockProvider);
+setProvider(mockProvider);
           setIsLoading(false);
-        }, 1000);
-      } catch (err) {
+1000);
+catch (err) {
         setError('Failed to load provider data');
         setIsLoading(false);
         console.error('Error fetching provider data:', err);
-      }
-    };
-    if (id) {
+if (id) {
       fetchProviderData();
-    }
-  }, [id, summary.totalReviews]);
+[id, summary.totalReviews]);
   // Handle review submission
   const handleAddReview = async ( {
   const start = Date.now();
@@ -169,11 +153,9 @@ export default function ProviderProfilePage() {
     try {
       await addReview(data, id as string);
       setShowReviewForm(false);
-    } catch (error) {
+catch (error) {
       console.error('Failed to submit review:', error);
-    }
-  };
-  if (isLoading) {
+if (isLoading) {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-8">
@@ -196,9 +178,7 @@ export default function ProviderProfilePage() {
           </div>
         </div>
       </Layout>
-    );
-  }
-  if (error || !provider) {
+if (error || !provider) {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-8">
@@ -207,9 +187,7 @@ export default function ProviderProfilePage() {
           </div>
         </div>
       </Layout>
-    );
-  }
-  return (
+return (
     <Layout>
       <div className="relative h-64 w-full">
         <Image
@@ -393,5 +371,3 @@ export default function ProviderProfilePage() {
         </div>
       </div>
     </Layout>
-  );
-}

@@ -6,7 +6,7 @@ import webauthnRoutes from './routes/webauthn.routes';
 
 import twoFactorRoutes from './routes/2fa.routes';
 
-import { errorHandler } from './middleware/error-handler';
+import { errorHandler } from './middleware/ErrorHandler';
 
 const app = express();
 

@@ -6,9 +6,6 @@ import { ShareView } from '@/components/ar/share-view';
 interface SharePageProps {
   params: {
     id: string;
-  };
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); generateMetadata({ params }: SharePageProps): Promise<Metadata> {
@@ -18,10 +15,7 @@ export async function {
     return {
       title: 'Share Not Found',
       description: 'The requested share could not be found.',
-    };
-  }
-
-  const title = `My ${shareData.type} try-on look${shareData.productName ? ` with ${shareData.productName}` : ''}`;
+const title = `My ${shareData.type} try-on look${shareData.productName ? ` with ${shareData.productName}` : ''}`;
   const description = `Check out my ${shareData.type} try-on look using VibeWell!${shareData.productName ? ` I'm trying on ${shareData.productName}.` : ''}`;
 
   return {
@@ -36,20 +30,14 @@ export async function {
           width: 1200,
           height: 630,
           alt: title,
-        },
-      ],
+],
       type: 'website',
       url: `${process.env.NEXT_PUBLIC_APP_URL}/share/${params.id}`,
-    },
-    twitter: {
+twitter: {
       card: 'summary_large_image',
       title,
       description,
       images: [shareData.imageData],
-    },
-  };
-}
-
 export default async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); SharePage({ params }: SharePageProps) {
@@ -57,7 +45,4 @@ export default async function {
 
   if (!shareData) {
     notFound();
-  }
-
-  return <ShareView shareData={shareData} />;
-}
+return <ShareView shareData={shareData} />;

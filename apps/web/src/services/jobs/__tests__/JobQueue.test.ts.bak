@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import job-queue from '../job-queue.ts';
+
+describe('job-queue', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<job-queue />);
+    expect(container).toBeInTheDocument();
+  });
+});

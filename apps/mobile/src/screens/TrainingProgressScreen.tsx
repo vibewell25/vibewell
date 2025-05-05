@@ -14,7 +14,7 @@ const TrainingProgressScreen: React.FC = () => {
       .then(data => setProgress(data))
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, []);
+[]);
 
   if (loading) return <ActivityIndicator style={{ flex: 1 }} color={colors.primary} size="large" />;
 
@@ -35,12 +35,10 @@ const TrainingProgressScreen: React.FC = () => {
               const data = await getTrainingProgress();
               setProgress(data);
               setModuleId('');
-            } catch (err) {
+catch (err) {
               console.error(err);
-            }
-            setLoading(false);
-          }}
-          color={colors.primary}
+setLoading(false);
+color={colors.primary}
         />
       </View>
       <FlatList
@@ -55,20 +53,15 @@ const TrainingProgressScreen: React.FC = () => {
                 await deleteTrainingProgress(item.id);
                 const data = await getTrainingProgress();
                 setProgress(data);
-              } catch (err) { console.error(err); }
+catch (err) { console.error(err); }
               setLoading(false);
-            }} />
+/>
           </View>
         )}
       />
     </SafeAreaView>
-  );
-};
-
 const styles = StyleSheet.create({
   item: { padding: 16, borderBottomWidth: 1, borderColor: '#ccc' },
   form: { padding: 16 },
   input: { borderWidth: 1, marginBottom: 8, padding: 8, borderRadius: 4 },
-});
-
 export default TrainingProgressScreen;

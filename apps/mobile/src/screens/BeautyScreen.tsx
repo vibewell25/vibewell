@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   TextInput,
   StatusBar
-} from 'react-native';
+from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -23,7 +23,7 @@ import {
   getBeautyCategories, 
   getFeaturedBeautyServices,
   searchBeautyServices
-} from '../services/beautyService';
+from '../services/beautyService';
 
 const BeautyScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
@@ -42,23 +42,17 @@ const BeautyScreen: React.FC = () => {
       try {
         const categoriesData = await getBeautyCategories();
         setCategories(categoriesData);
-      } catch (error) {
+catch (error) {
         console.error('Error fetching beauty categories:', error);
-      }
-    };
-    
-    const fetchFeaturedServices = async () => {
+const fetchFeaturedServices = async () => {
       try {
         const featuredData = await getFeaturedBeautyServices();
         setFeaturedServices(featuredData);
-      } catch (error) {
+catch (error) {
         console.error('Error fetching featured services:', error);
-      }
-    };
-    
-    fetchCategories();
+fetchCategories();
     fetchFeaturedServices();
-  }, []);
+[]);
   
   useEffect(() => {
     const fetchServices = async () => {
@@ -67,44 +61,29 @@ const BeautyScreen: React.FC = () => {
         // Combine category selection with other filters
         const combinedFilters: BeautyFilter = {
           ...filters
-        };
-        
-        if (selectedCategoryId) {
+if (selectedCategoryId) {
           combinedFilters.categoryId = selectedCategoryId;
-        }
-        
-        const servicesData = await searchBeautyServices(searchTerm, combinedFilters);
+const servicesData = await searchBeautyServices(searchTerm, combinedFilters);
         setServices(servicesData);
-      } catch (error) {
+catch (error) {
         console.error('Error fetching beauty services:', error);
-      } finally {
+finally {
         setLoading(false);
-      }
-    };
-    
-    fetchServices();
-  }, [selectedCategoryId, filters, searchTerm]);
+fetchServices();
+[selectedCategoryId, filters, searchTerm]);
   
   const handleServicePress = (serviceId: string) => {
     navigation.navigate('BeautyServiceDetail', { serviceId });
-  };
-  
-  const handleApplyFilters = (newFilters: BeautyFilter) => {
+const handleApplyFilters = (newFilters: BeautyFilter) => {
     setFilters(newFilters);
     setShowFilters(false);
-  };
-  
-  const handleClearFilters = () => {
+const handleClearFilters = () => {
     setFilters({});
     setSelectedCategoryId('');
     setSearchTerm('');
-  };
-  
-  const handleSearchChange = (text: string) => {
+const handleSearchChange = (text: string) => {
     setSearchTerm(text);
-  };
-  
-  const getAppliedFiltersCount = () => {
+const getAppliedFiltersCount = () => {
     let count = 0;
     if (filters.minPrice !== undefined || filters.maxPrice !== undefined) if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
     if (filters.minDuration !== undefined || filters.maxDuration !== undefined) if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
@@ -114,9 +93,7 @@ const BeautyScreen: React.FC = () => {
     if (selectedCategoryId) if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
     
     return count;
-  };
-  
-  const renderFeaturedSection = () => {
+const renderFeaturedSection = () => {
     if (featuredServices.length === 0) return null;
     
     return (
@@ -143,10 +120,7 @@ const BeautyScreen: React.FC = () => {
           ))}
         </ScrollView>
       </View>
-    );
-  };
-  
-  const filtersCount = getAppliedFiltersCount();
+const filtersCount = getAppliedFiltersCount();
   
   return (
     <View style={[styles.container, {backgroundColor: isDarkMode ? '#121212' : '#F5F5F5'}]}>
@@ -174,7 +148,7 @@ const BeautyScreen: React.FC = () => {
           <Text style={{
             color: isDarkMode ? '#FFFFFF' : '#000000',
             marginRight: 5
-          }}>
+>
             Filter
           </Text>
           <Feather name="filter" size={18} color={isDarkMode ? '#FFFFFF' : '#000000'} />
@@ -234,8 +208,7 @@ const BeautyScreen: React.FC = () => {
                   break;
                 default:
                   filterText = `${key}: ${value}`;
-              }
-              return (
+return (
                 <TouchableOpacity 
                   key={key}
                   style={[
@@ -246,13 +219,11 @@ const BeautyScreen: React.FC = () => {
                     const newFilters = { ...filters };
                     delete newFilters[key];
                     setFilters(newFilters);
-                  }}
-                >
+>
                   <Text style={{color: isDarkMode ? '#FFFFFF' : '#000000'}}>{filterText}</Text>
                   <Feather name="x" size={16} color={isDarkMode ? '#FFFFFF' : '#000000'} />
                 </TouchableOpacity>
-              );
-            })}
+)}
             <TouchableOpacity 
               style={[
                 styles.clearFiltersButton,
@@ -331,120 +302,92 @@ const BeautyScreen: React.FC = () => {
         isDarkMode={isDarkMode}
       />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-  },
-  headerContainer: {
+headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-  },
-  header: {
+header: {
     fontSize: 28,
     fontWeight: 'bold',
     marginRight: 10,
-  },
-  filterButton: {
+filterButton: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 20,
     borderWidth: 1,
-  },
-  activeFiltersContainer: {
+activeFiltersContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
-  },
-  filterTag: {
+filterTag: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 20,
     marginRight: 10,
-  },
-  clearFiltersButton: {
+clearFiltersButton: {
     backgroundColor: '#4F46E5',
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 8,
-  },
-  clearFiltersText: {
+clearFiltersText: {
     color: '#FFFFFF',
     fontWeight: '600',
     fontSize: 14,
-  },
-  categoriesContainer: {
+categoriesContainer: {
     marginBottom: 20,
-  },
-  categoryButton: {
+categoryButton: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 20,
     marginRight: 10,
-  },
-  categoryText: {
+categoryText: {
     fontSize: 14,
     fontWeight: '500',
-  },
-  mainContent: {
+mainContent: {
     flex: 1,
-  },
-  featuredSection: {
+featuredSection: {
     marginBottom: 20,
-  },
-  featuredContainer: {
+featuredContainer: {
     marginTop: 10,
-  },
-  featuredItem: {
+featuredItem: {
     marginRight: 12,
     width: 280,
-  },
-  sectionTitle: {
+sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
-  },
-  servicesSection: {
+servicesSection: {
     marginBottom: 20,
-  },
-  servicesGrid: {
+servicesGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-  },
-  serviceCardContainer: {
+serviceCardContainer: {
     width: '48%',
     marginBottom: 16,
-  },
-  loader: {
+loader: {
     marginTop: 30,
-  },
-  emptyState: {
+emptyState: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 40,
-  },
-  emptyStateText: {
+emptyStateText: {
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 16,
     marginBottom: 8,
-  },
-  emptyStateSubtext: {
+emptyStateSubtext: {
     fontSize: 14,
     textAlign: 'center',
     marginBottom: 16,
-  },
-});
-
 export default BeautyScreen; 

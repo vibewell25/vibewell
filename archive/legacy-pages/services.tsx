@@ -14,7 +14,7 @@ const Services: NextPage = () => {
     fetch('/api/services')
       .then(res => res.json())
       .then(data => setServices(data.services || []));
-  }, []);
+[]);
 
   return (
     <div>
@@ -33,7 +33,4 @@ const Services: NextPage = () => {
         <p>No services available.</p>
       )}
     </div>
-  );
-};
-
 export default Services;

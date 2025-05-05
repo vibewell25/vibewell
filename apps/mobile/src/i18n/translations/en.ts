@@ -23,9 +23,7 @@ export default {
       serverError: 'Server error. Please try again later.',
       noData: 'No data available',
       unauthorized: 'Unauthorized. Please login again.',
-    },
-  },
-  auth: {
+auth: {
     login: 'Login',
     signup: 'Sign Up',
     email: 'Email',
@@ -44,9 +42,7 @@ export default {
       passwordRequired: 'Password is required',
       passwordTooShort: 'Password must be at least 8 characters',
       passwordsDontMatch: 'Passwords do not match',
-    },
-  },
-  profile: {
+profile: {
     title: 'My Profile',
     personalInfo: 'Personal Information',
     firstName: 'First Name',
@@ -64,8 +60,7 @@ export default {
     version: 'Version',
     darkMode: 'Dark Mode',
     biometricLogin: 'Biometric Login',
-  },
-  booking: {
+booking: {
     title: 'Bookings',
     myBookings: 'My Bookings',
     upcoming: 'Upcoming',
@@ -90,8 +85,7 @@ export default {
     bookingSuccess: 'Booking confirmed!',
     bookingCancelled: 'Booking cancelled',
     cancellationPolicy: 'Cancellation Policy',
-  },
-  dashboard: {
+dashboard: {
     title: 'Dashboard',
     welcome: 'Welcome back',
     todayAppointments: "Today's Appointments",
@@ -100,8 +94,7 @@ export default {
     quickActions: 'Quick Actions',
     insights: 'Insights',
     dailyTip: 'Daily Tip',
-  },
-  services: {
+services: {
     title: 'Services',
     categories: 'Categories',
     featured: 'Featured',
@@ -113,8 +106,7 @@ export default {
     bookNow: 'Book Now',
     details: 'Service Details',
     practitioners: 'Practitioners',
-  },
-  practitioners: {
+practitioners: {
     title: 'Practitioners',
     specialties: 'Specialties',
     about: 'About',
@@ -126,8 +118,7 @@ export default {
     availability: 'Availability',
     reviews: 'Reviews',
     rating: 'Rating',
-  },
-  payments: {
+payments: {
     title: 'Payments',
     history: 'Payment History',
     methods: 'Payment Methods',
@@ -145,8 +136,7 @@ export default {
     promoCode: 'Promo Code',
     apply: 'Apply',
     payNow: 'Pay Now',
-  },
-  settings: {
+settings: {
     title: 'Settings',
     account: 'Account',
     notifications: 'Notifications',
@@ -164,6 +154,3 @@ export default {
       en: 'English',
       es: 'Spanish',
       fr: 'French',
-    },
-  },
-}; 

@@ -3,7 +3,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 
-import { AuthService } from '@/lib/auth/auth-service';
+import { AuthService } from '@/lib/auth/AuthService';
 
 interface AuthState {
   isLoading: boolean;
@@ -13,8 +13,6 @@ interface AuthState {
   isMFARequired: boolean;
   isMFAEnrolled: boolean;
   mfaMethod: 'webauthn' | 'totp' | 'sms' | null;
-}
-
 export function useAuth() {
   const router = useRouter();
   const [state, setState] = useState<AuthState>({
@@ -25,12 +23,10 @@ export function useAuth() {
     isMFARequired: false,
     isMFAEnrolled: false,
     mfaMethod: null
-  });
-
-  // Check session on mount
+// Check session on mount
   useEffect(() => {
     checkSession();
-  }, []);
+[]);
 
   // Check current session
   const checkSession = useCallback(async () => {
@@ -44,15 +40,14 @@ export function useAuth() {
         isMFARequired: session.user.mfa_required || false,
         isMFAEnrolled: session.user.mfa_enrolled || false,
         mfaMethod: session.user.mfa_method || null
-      }));
-    } catch (error) {
+));
+catch (error) {
       setState(prev => ({
         ...prev,
         isLoading: false,
         error: 'Failed to check session'
-      }));
-    }
-  }, []);
+));
+[]);
 
   // Login
   const login = useCallback(async (email: string, password: string) => {
@@ -67,13 +62,11 @@ export function useAuth() {
           isMFARequired: true,
           isAuthenticated: true,
           user: response.user
-        }));
+));
 
         router.push('/auth/mfa-setup');
         return;
-      }
-
-      if (response.mfa_required && response.mfa_enrolled) {
+if (response.mfa_required && response.mfa_enrolled) {
         setState(prev => ({
           ...prev,
           isLoading: false,
@@ -82,32 +75,24 @@ export function useAuth() {
           mfaMethod: response.mfa_method,
           isAuthenticated: true,
           user: response.user
-        }));
+));
 
         router.push('/auth/mfa-verify');
         return;
-      }
-
-      setState(prev => ({
+setState(prev => ({
         ...prev,
         isLoading: false,
         isAuthenticated: true,
         user: response.user
-      }));
+));
       router.push('/dashboard');
-    } catch (error) {
+catch (error) {
       setState(prev => ({
         ...prev,
         isLoading: false,
         error: error instanceof Error ? error.message : 'Login failed'
-      }));
-    }
-
-    // Safe array access
-    if (router < 0 || router >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  }, [router]);
+));
+[router]);
 
   // Signup
   const signup = useCallback(async (data: {
@@ -115,7 +100,7 @@ export function useAuth() {
     password: string;
     name: string;
     role?: 'user' | 'provider';
-  }) => {
+) => {
     try {
       setState(prev => ({ ...prev, isLoading: true, error: null }));
       const response = await AuthService.signup(data);
@@ -126,22 +111,16 @@ export function useAuth() {
         isAuthenticated: true,
         user: response.user,
         isMFARequired: true
-      }));
+));
 
       router.push('/auth/mfa-setup');
-    } catch (error) {
+catch (error) {
       setState(prev => ({
         ...prev,
         isLoading: false,
         error: error instanceof Error ? error.message : 'Signup failed'
-      }));
-    }
-
-    // Safe array access
-    if (router < 0 || router >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  }, [router]);
+));
+[router]);
 
   // Enroll MFA
   const enrollMFA = useCallback(async (method: 'webauthn' | 'totp' | 'sms') => {
@@ -154,18 +133,17 @@ export function useAuth() {
         isLoading: false,
         isMFAEnrolled: true,
         mfaMethod: method
-      }));
+));
       
       return response.data;
-    } catch (error) {
+catch (error) {
       setState(prev => ({
         ...prev,
         isLoading: false,
         error: error instanceof Error ? error.message : 'MFA enrollment failed'
-      }));
+));
       throw error;
-    }
-  }, []);
+[]);
 
   // Verify MFA
   const verifyMFA = useCallback(async (method: 'webauthn' | 'totp' | 'sms', code: string) => {
@@ -177,22 +155,16 @@ export function useAuth() {
         ...prev,
         isLoading: false,
         isMFARequired: false
-      }));
+));
       router.push('/dashboard');
-    } catch (error) {
+catch (error) {
       setState(prev => ({
         ...prev,
         isLoading: false,
         error: error instanceof Error ? error.message : 'MFA verification failed'
-      }));
+));
       throw error;
-    }
-
-    // Safe array access
-    if (router < 0 || router >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  }, [router]);
+[router]);
 
   // Logout
   const logout = useCallback(async () => {
@@ -208,21 +180,14 @@ export function useAuth() {
         isMFARequired: false,
         isMFAEnrolled: false,
         mfaMethod: null
-      });
-      router.push('/');
-    } catch (error) {
+router.push('/');
+catch (error) {
       setState(prev => ({
         ...prev,
         isLoading: false,
         error: error instanceof Error ? error.message : 'Logout failed'
-      }));
-    }
-
-    // Safe array access
-    if (router < 0 || router >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  }, [router]);
+));
+[router]);
 
   return {
     ...state,
@@ -231,5 +196,3 @@ export function useAuth() {
     logout,
     enrollMFA,
     verifyMFA
-  };
-} 

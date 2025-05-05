@@ -23,13 +23,10 @@ const Staff: NextPage = () => {
       const res = await fetchWithTimeout('/api/staff');
       const data = await res.json();
       setStaff(data.staff || []);
-    } catch (error) {
+catch (error) {
       console.error('Error fetching staff:', error);
       alert('Failed to load staff');
-    }
-  };
-
-  useEffect(() => { fetchStaff(); }, []);
+useEffect(() => { fetchStaff(); }, []);
 
   const handleCreate = async (e: FormEvent) => {
     e.preventDefault();
@@ -38,27 +35,20 @@ const Staff: NextPage = () => {
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ businessId, name, role, email, phone })
-      });
-      setBusinessId(''); setName(''); setRole(''); setEmail(''); setPhone('');
+setBusinessId(''); setName(''); setRole(''); setEmail(''); setPhone('');
       fetchStaff();
-    } catch (error) {
+catch (error) {
       console.error('Error creating staff member:', error);
       alert('Failed to add staff member');
-    }
-  };
-
-  const handleDelete = async (id: string) => {
+const handleDelete = async (id: string) => {
     if (!confirm('Delete this staff member?')) return;
     try {
       await fetchWithTimeout(`/api/staff/${id}`, { method: 'DELETE' });
       fetchStaff();
-    } catch (error) {
+catch (error) {
       console.error('Error deleting staff member:', error);
       alert('Failed to delete staff member');
-    }
-  };
-
-  return (
+return (
     <div className="max-w-2xl mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Staff Members</h1>
       <form onSubmit={handleCreate} className="space-y-2 mb-6">
@@ -83,7 +73,4 @@ const Staff: NextPage = () => {
       ))}
       {staff.length === 0 && <p>No staff members.</p>}
     </div>
-  );
-};
-
 export default Staff;

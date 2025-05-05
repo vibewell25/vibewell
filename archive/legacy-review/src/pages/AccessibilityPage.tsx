@@ -16,7 +16,7 @@ const AccessibilityPage: React.FC = () => {
     setKeyboardFocusVisible,
     setLanguage,
     resetPreferences,
-  } = useAccessibilityContext();
+= useAccessibilityContext();
 
   const handleToggleChange = (preference: keyof typeof preferences) => (checked: boolean) => {
     switch (preference) {
@@ -32,10 +32,7 @@ const AccessibilityPage: React.FC = () => {
       case 'keyboardFocusVisible':
         setKeyboardFocusVisible(checked);
         break;
-    }
-  };
-
-  return (
+return (
     <div className="container mx-auto px-4 py-8">
       <LiveAnnouncer>
         <h1 className="mb-6 text-3xl font-bold">Accessibility Settings</h1>
@@ -176,8 +173,7 @@ const AccessibilityPage: React.FC = () => {
             onClick={() => {
               resetPreferences();
               return <Announce>Accessibility settings have been reset to default values</Announce>;
-            }}
-            variant="outline"
+variant="outline"
             className="w-full sm:w-auto"
           >
             Reset to Default
@@ -269,7 +265,4 @@ const AccessibilityPage: React.FC = () => {
         </div>
       </LiveAnnouncer>
     </div>
-  );
-};
-
 export default AccessibilityPage;

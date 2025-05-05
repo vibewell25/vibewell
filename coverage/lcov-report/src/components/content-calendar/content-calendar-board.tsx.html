@@ -619,10 +619,10 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   const [currentItem, setCurrentItem] = <span class="cstat-no" title="statement not covered" >useState&lt;ContentItem | null&gt;(null);</span>
 &nbsp;
   const handleDragEnd = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(r</span>esult: DropResult) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!result?.destination) <span class="cstat-no" title="statement not covered" >return;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!result.destination) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
     const { draggableId, destination } = <span class="cstat-no" title="statement not covered" >result;</span>
-    const newStatus = <span class="cstat-no" title="statement not covered" >destination?.droppableId;</span>
+    const newStatus = <span class="cstat-no" title="statement not covered" >destination.droppableId;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    onDragAndDrop(draggableId, newStatus);</span>
   };
@@ -633,59 +633,59 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   };
 &nbsp;
   const getPlatformById = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(i</span>d: string) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    return platforms?.find(<span class="fstat-no" title="function not covered" >(p</span>latform) =&gt; <span class="cstat-no" title="statement not covered" >platform?.id === id);</span></span>
+<span class="cstat-no" title="statement not covered" >    return platforms.find(<span class="fstat-no" title="function not covered" >(p</span>latform) =&gt; <span class="cstat-no" title="statement not covered" >platform.id === id);</span></span>
   };
 &nbsp;
   const getTeamMemberById = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(i</span>d: string) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    return teamMembers?.find(<span class="fstat-no" title="function not covered" >(m</span>ember) =&gt; <span class="cstat-no" title="statement not covered" >member?.id === id);</span></span>
+<span class="cstat-no" title="statement not covered" >    return teamMembers.find(<span class="fstat-no" title="function not covered" >(m</span>ember) =&gt; <span class="cstat-no" title="statement not covered" >member.id === id);</span></span>
   };
 &nbsp;
   return (
     &lt;&gt;
       &lt;DragDropContext onDragEnd={handleDragEnd}&gt;
         &lt;div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"&gt;
-          {statuses?.map(<span class="fstat-no" title="function not covered" >(s</span>tatus) =&gt; (
-<span class="cstat-no" title="statement not covered" >            &lt;div key={status?.id} c</span>lassName="flex flex-col"&gt;
+          {statuses.map(<span class="fstat-no" title="function not covered" >(s</span>tatus) =&gt; (
+<span class="cstat-no" title="statement not covered" >            &lt;div key={status.id} c</span>lassName="flex flex-col"&gt;
               &lt;div
                 className="mb-3 flex items-center rounded-md px-2 py-1 font-medium"
-                style={{ backgroundColor: `${status?.color}20` }}
+                style={{ backgroundColor: `${status.color}20` }}
               &gt;
                 &lt;div
                   className="mr-2 h-3 w-3 rounded-full"
-                  style={{ backgroundColor: status?.color }}
+                  style={{ backgroundColor: status.color }}
                 &gt;&lt;/div&gt;
-                &lt;span&gt;{status?.name}&lt;/span&gt;
-                &lt;span className="ml-2 rounded-full bg-background px-2 py-0?.5 text-xs text-muted-foreground"&gt;
-                  {contentItems?.filter(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item?.status === status?.id).l</span>ength}
+                &lt;span&gt;{status.name}&lt;/span&gt;
+                &lt;span className="ml-2 rounded-full bg-background px-2 py-0.5 text-xs text-muted-foreground"&gt;
+                  {contentItems.filter(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item.status === status.id)</span>.length}
                 &lt;/span&gt;
               &lt;/div&gt;
 &nbsp;
-              &lt;Droppable droppableId={status?.id}&gt;
+              &lt;Droppable droppableId={status.id}&gt;
                 {(provided) =&gt; (
                   &lt;div
-                    ref={provided?.innerRef}
-                    {...provided?.droppableProps}
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
                     className="min-h-[500px] flex-1"
                   &gt;
                     {contentItems
-                      .filter(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item?.status === status?.id)</span>
+                      .filter(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item.status === status.id)</span>
                       .map(<span class="fstat-no" title="function not covered" >(i</span>tem, index) =&gt; (
-<span class="cstat-no" title="statement not covered" >                        &lt;Draggable key={item?.id} d</span>raggableId={item?.id} index={index}&gt;
+<span class="cstat-no" title="statement not covered" >                        &lt;Draggable key={item.id} d</span>raggableId={item.id} index={index}&gt;
                           {(provided) =&gt; (
                             &lt;Card
-                              ref={provided?.innerRef}
-                              {...provided?.draggableProps}
-                              {...provided?.dragHandleProps}
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
                               className="mb-3 cursor-pointer transition-shadow hover:shadow-md"
                               onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >o</span>penItemModal(item)}</span>
                             &gt;
                               &lt;CardHeader className="p-3 pb-0"&gt;
                                 &lt;div className="flex items-start justify-between"&gt;
-                                  &lt;h3 className="truncate text-sm font-medium"&gt;{item?.title}&lt;/h3&gt;
+                                  &lt;h3 className="truncate text-sm font-medium"&gt;{item.title}&lt;/h3&gt;
                                   &lt;DropdownMenu&gt;
                                     &lt;DropdownMenuTrigger
                                       asChild
-                                      onClick={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >e?.stopPropagation()}</span>
+                                      onClick={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >e.stopPropagation()}</span>
                                     &gt;
                                       &lt;Button variant="ghost" className="h-8 w-8 p-0"&gt;
                                         &lt;MoreHorizontal className="h-4 w-4" /&gt;
@@ -694,7 +694,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                                     &lt;DropdownMenuContent align="end"&gt;
                                       &lt;DropdownMenuItem
                                         onClick={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; {
-<span class="cstat-no" title="statement not covered" >                                          e?.stopPropagation();</span>
+<span class="cstat-no" title="statement not covered" >                                          e.stopPropagation();</span>
 <span class="cstat-no" title="statement not covered" >                                          openItemModal(item);</span>
                                         }}
                                       &gt;
@@ -703,8 +703,8 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                                       &lt;DropdownMenuItem
                                         className="text-destructive"
                                         onClick={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; {
-<span class="cstat-no" title="statement not covered" >                                          e?.stopPropagation();</span>
-<span class="cstat-no" title="statement not covered" >                                          onDeleteItem(item?.id);</span>
+<span class="cstat-no" title="statement not covered" >                                          e.stopPropagation();</span>
+<span class="cstat-no" title="statement not covered" >                                          onDeleteItem(item.id);</span>
                                         }}
                                       &gt;
                                         Delete
@@ -715,29 +715,29 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                               &lt;/CardHeader&gt;
                               &lt;CardContent className="space-y-2 p-3 text-xs"&gt;
                                 &lt;p className="line-clamp-2 text-muted-foreground"&gt;
-                                  {item?.description}
+                                  {item.description}
                                 &lt;/p&gt;
 &nbsp;
-                                {<span class="branch-0 cbranch-no" title="branch not covered" >item?.platformIds.length &gt; 0 &amp;&amp; (</span>
+                                {<span class="branch-0 cbranch-no" title="branch not covered" >item.platformIds.length &gt; 0 &amp;&amp; (</span>
                                   &lt;div className="mt-2 flex flex-wrap gap-1"&gt;
-                                    {item?.platformIds.slice(0, 3).map(<span class="fstat-no" title="function not covered" >(p</span>latformId) =&gt; {
+                                    {item.platformIds.slice(0, 3).map(<span class="fstat-no" title="function not covered" >(p</span>latformId) =&gt; {
                                       const platform = <span class="cstat-no" title="statement not covered" >getPlatformById(platformId);</span>
 <span class="cstat-no" title="statement not covered" >                                      return platform ? (</span>
                                         &lt;Badge
                                           key={platformId}
                                           className="h-4 px-1 text-[10px]"
                                           style={{
-                                            backgroundColor: `${platform?.color}20`,
-                                            color: platform?.color,
+                                            backgroundColor: `${platform.color}20`,
+                                            color: platform.color,
                                           }}
                                         &gt;
-                                          {platform?.name}
+                                          {platform.name}
                                         &lt;/Badge&gt;
                                       ) : null;
                                     })}
-                                    {<span class="branch-0 cbranch-no" title="branch not covered" >item?.platformIds.length &gt; 3 &amp;&amp; (</span>
+                                    {<span class="branch-0 cbranch-no" title="branch not covered" >item.platformIds.length &gt; 3 &amp;&amp; (</span>
                                       &lt;Badge variant="outline" className="h-4 px-1 text-[10px]"&gt;
-                                        +{item?.platformIds.length - 3}
+                                        +{item.platformIds.length - 3}
                                       &lt;/Badge&gt;
                                     )}
                                   &lt;/div&gt;
@@ -745,52 +745,52 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                               &lt;/CardContent&gt;
                               &lt;CardFooter className="flex items-center justify-between p-3 pt-0 text-xs"&gt;
                                 &lt;div className="flex items-center gap-2"&gt;
-                                  {<span class="branch-0 cbranch-no" title="branch not covered" >item?.dueDate &amp;&amp; (</span>
+                                  {<span class="branch-0 cbranch-no" title="branch not covered" >item.dueDate </span>&amp;&amp; (
                                     &lt;Tooltip&gt;
                                       &lt;TooltipTrigger asChild&gt;
                                         &lt;div className="flex items-center text-muted-foreground"&gt;
                                           &lt;Calendar className="mr-1 h-3 w-3" /&gt;
-                                          &lt;span&gt;{format(new Date(item?.dueDate), 'MMM d')}&lt;/span&gt;
+                                          &lt;span&gt;{format(new Date(item.dueDate), 'MMM d')}&lt;/span&gt;
                                         &lt;/div&gt;
                                       &lt;/TooltipTrigger&gt;
                                       &lt;TooltipContent&gt;
-                                        Due {format(new Date(item?.dueDate), 'MMMM d, yyyy')}
+                                        Due {format(new Date(item.dueDate), 'MMMM d, yyyy')}
                                       &lt;/TooltipContent&gt;
                                     &lt;/Tooltip&gt;
                                   )}
 &nbsp;
-                                  {<span class="branch-0 cbranch-no" title="branch not covered" >item?.comments.length &gt; 0 &amp;&amp; (</span>
+                                  {<span class="branch-0 cbranch-no" title="branch not covered" >item.comments.length &gt; 0 &amp;&amp; (</span>
                                     &lt;div className="flex items-center text-muted-foreground"&gt;
                                       &lt;MessageSquare className="mr-1 h-3 w-3" /&gt;
-                                      &lt;span&gt;{item?.comments.length}&lt;/span&gt;
+                                      &lt;span&gt;{item.comments.length}&lt;/span&gt;
                                     &lt;/div&gt;
                                   )}
 &nbsp;
-                                  {<span class="branch-0 cbranch-no" title="branch not covered" >item?.attachments.length &gt; 0 &amp;&amp; (</span>
+                                  {<span class="branch-0 cbranch-no" title="branch not covered" >item.attachments.length &gt; 0 &amp;&amp; (</span>
                                     &lt;div className="flex items-center text-muted-foreground"&gt;
                                       &lt;Paperclip className="mr-1 h-3 w-3" /&gt;
-                                      &lt;span&gt;{item?.attachments.length}&lt;/span&gt;
+                                      &lt;span&gt;{item.attachments.length}&lt;/span&gt;
                                     &lt;/div&gt;
                                   )}
                                 &lt;/div&gt;
 &nbsp;
-                                {<span class="branch-0 cbranch-no" title="branch not covered" >item?.assignedTo &amp;&amp; (</span>
+                                {<span class="branch-0 cbranch-no" title="branch not covered" >item.assignedTo </span>&amp;&amp; (
                                   &lt;Tooltip&gt;
                                     &lt;TooltipTrigger asChild&gt;
                                       &lt;Avatar className="h-6 w-6"&gt;
                                         &lt;AvatarImage
-                                          src={getTeamMemberById(item?.assignedTo)?.avatar}
-                                          alt={getTeamMemberById(item?.assignedTo)?.name || ''}
+                                          src={getTeamMemberById(item.assignedTo).avatar}
+                                          alt={getTeamMemberById(item.assignedTo).name || ''}
                                         /&gt;
                                         &lt;AvatarFallback&gt;
-                                          {getTeamMemberById(item?.assignedTo)
-                                            ?.name?.slice(0, 2)
+                                          {getTeamMemberById(item.assignedTo)
+                                            .name.slice(0, 2)
                                             .toUpperCase() || '--'}
                                         &lt;/AvatarFallback&gt;
                                       &lt;/Avatar&gt;
                                     &lt;/TooltipTrigger&gt;
                                     &lt;TooltipContent&gt;
-                                      {getTeamMemberById(item?.assignedTo)?.name || 'Unassigned'}
+                                      {getTeamMemberById(item.assignedTo).name || 'Unassigned'}
                                     &lt;/TooltipContent&gt;
                                   &lt;/Tooltip&gt;
                                 )}
@@ -799,7 +799,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                           )}
                         &lt;/Draggable&gt;
                       ))}
-                    {provided?.placeholder}
+                    {provided.placeholder}
                   &lt;/div&gt;
                 )}
               &lt;/Droppable&gt;
@@ -832,7 +832,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

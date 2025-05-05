@@ -1,21 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-    // Safe integer operation
-    if (models > Number.MAX_SAFE_INTEGER || models < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { User, IUser } from '../models/User';
+    import { User, IUser } from '../models/User';
 
 // Extend Express Request type to include user
 declare global {
   namespace Express {
     interface Request {
       user?: IUser;
-    }
-  }
-}
-
 export const authenticateToken = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');
@@ -31,40 +23,21 @@ export const authenticateToken = async ( {
       return res.status(401).json({
         success: false,
         message: 'Access token is required'
-      });
-    }
-
-
-    // Safe integer operation
-    if (your > Number.MAX_SAFE_INTEGER || your < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key') as {
+const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key') as {
       userId: string;
-    };
-
-    const user = await User.findById(decoded.userId);
+const user = await User.findById(decoded.userId);
     if (!user) {
       return res.status(401).json({
         success: false,
         message: 'Invalid token'
-      });
-    }
-
-    req.user = user;
+req.user = user;
     next();
-  } catch (error) {
+catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
       return res.status(401).json({
         success: false,
         message: 'Invalid token'
-      });
-    }
-
-    console.error('Error authenticating token:', error);
+console.error('Error authenticating token:', error);
     res.status(500).json({
       success: false,
       message: 'Internal server error'
-    });
-  }
-}; 

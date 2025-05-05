@@ -397,8 +397,8 @@ const PRIORITY = <span class="cstat-no" title="statement not covered" >{</span>
 export const <span class="cstat-no" title="statement not covered" >splitChunksConfig: NonNullable&lt;Configuration['optimization']&gt;['splitChunks'] = <span class="cstat-no" title="statement not covered" >{</span></span>
   chunks: 'all',
   maxInitialRequests: 25,
-  minSize: CHUNK_SIZE_THRESHOLDS?.MIN,
-  maxSize: CHUNK_SIZE_THRESHOLDS?.MAX,
+  minSize: CHUNK_SIZE_THRESHOLDS.MIN,
+  maxSize: CHUNK_SIZE_THRESHOLDS.MAX,
   hidePathInfo: true, // Reduces bundle size by removing path info
   automaticNameDelimiter: '-',
   cacheGroups: {
@@ -411,7 +411,7 @@ export const <span class="cstat-no" title="statement not covered" >splitChunksCo
 &nbsp;
 &nbsp;
       test: /[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription)[\\/]/,
-      priority: PRIORITY?.FRAMEWORK,
+      priority: PRIORITY.FRAMEWORK,
       enforce: true,
       reuseExistingChunk: true,
     },
@@ -419,7 +419,7 @@ export const <span class="cstat-no" title="statement not covered" >splitChunksCo
       chunks: 'all',
       name: 'nextjs',
       test: /[\\/]node_modules[\\/](next|@next)[\\/]/,
-      priority: PRIORITY?.NEXTJS,
+      priority: PRIORITY.NEXTJS,
       enforce: true,
       reuseExistingChunk: true,
     },
@@ -431,7 +431,7 @@ export const <span class="cstat-no" title="statement not covered" >splitChunksCo
       test: /[\\/]node_modules[\\/](@mui|@emotion|@headlessui|@radix-ui|framer-motion|@chakra-ui|@material-ui)[\\/]/,
 &nbsp;
       name: 'ui-lib',
-      priority: PRIORITY?.UI,
+      priority: PRIORITY.UI,
       enforce: true,
       reuseExistingChunk: true,
     },
@@ -441,7 +441,7 @@ export const <span class="cstat-no" title="statement not covered" >splitChunksCo
       test: /[\\/]node_modules[\\/](@tanstack|swr|zustand|react-query|react-hook-form|@apollo|graphql)[\\/]/,
 &nbsp;
       name: 'data-lib',
-      priority: PRIORITY?.DATA,
+      priority: PRIORITY.DATA,
       enforce: true,
       reuseExistingChunk: true,
     },
@@ -449,7 +449,7 @@ export const <span class="cstat-no" title="statement not covered" >splitChunksCo
 &nbsp;
       test: /[\\/]node_modules[\\/](lodash|date-fns|zod|yup|formik|ramda|moment|axios|qs)[\\/]/,
       name: 'utils',
-      priority: PRIORITY?.UTILS,
+      priority: PRIORITY.UTILS,
       enforce: true,
       reuseExistingChunk: true,
     },
@@ -458,7 +458,7 @@ export const <span class="cstat-no" title="statement not covered" >splitChunksCo
       test: /[\\/]node_modules[\\/](@segment|@amplitude|@google-analytics|@sentry)[\\/]/,
       name: 'analytics',
 &nbsp;
-      priority: PRIORITY?.UTILS - 1,
+      priority: PRIORITY.UTILS - 1,
       enforce: true,
       reuseExistingChunk: true,
     },
@@ -466,20 +466,20 @@ export const <span class="cstat-no" title="statement not covered" >splitChunksCo
       chunks: 'all',
       name: 'commons',
       test: /[\\/]node_modules[\\/]/,
-      priority: PRIORITY?.COMMONS,
+      priority: PRIORITY.COMMONS,
       minChunks: 2,
       reuseExistingChunk: true,
     },
     lib: {
 <span class="fstat-no" title="function not covered" >      test(m</span>odule: any): boolean {
-<span class="cstat-no" title="statement not covered" >        return (module?.size() &gt; CHUNK_SIZE_THRESHOLDS?.LARGE &amp;&amp; /node_modules[/\\]/.test(module?.identifier()));</span>
+<span class="cstat-no" title="statement not covered" >        return (module.size() &gt; CHUNK_SIZE_THRESHOLDS.LARGE &amp;&amp; /node_modules[/\\]/.test(module.identifier()));</span>
       },
 <span class="fstat-no" title="function not covered" >      name(m</span>odule: any): string {
-        const hash = <span class="cstat-no" title="statement not covered" >crypto?.createHash('sha1');</span>
-<span class="cstat-no" title="statement not covered" >        hash?.update(module?.identifier());</span>
-<span class="cstat-no" title="statement not covered" >        return 'lib-' + hash?.digest('hex').substring(0, 8);</span>
+        const hash = <span class="cstat-no" title="statement not covered" >crypto.createHash('sha1');</span>
+<span class="cstat-no" title="statement not covered" >        hash.update(module.identifier());</span>
+<span class="cstat-no" title="statement not covered" >        return 'lib-' + hash.digest('hex').substring(0, 8);</span>
       },
-      priority: PRIORITY?.LIB,
+      priority: PRIORITY.LIB,
       minChunks: 1,
       reuseExistingChunk: true,
     },
@@ -488,19 +488,19 @@ export const <span class="cstat-no" title="statement not covered" >splitChunksCo
       test: /\.(css|scss|sass)$/,
       chunks: 'all',
       enforce: true,
-      priority: PRIORITY?.STYLES,
+      priority: PRIORITY.STYLES,
     },
     routes: {
       test: /[\\/]src[\\/]pages[\\/]/,
       name: 'routes',
-      priority: PRIORITY?.ROUTES,
+      priority: PRIORITY.ROUTES,
       enforce: true,
       reuseExistingChunk: true,
     },
     components: {
       test: /[\\/]src[\\/]components[\\/]/,
       name: 'components',
-      priority: PRIORITY?.COMPONENTS,
+      priority: PRIORITY.COMPONENTS,
       enforce: true,
       reuseExistingChunk: true,
       minSize: 10000,
@@ -508,13 +508,13 @@ export const <span class="cstat-no" title="statement not covered" >splitChunksCo
     shared: {
       chunks: 'async',
 <span class="fstat-no" title="function not covered" >      name(m</span>odule: any, chunks: any[]): string {
-        const hash = <span class="cstat-no" title="statement not covered" >crypto?.createHash('sha1');</span>
-<span class="cstat-no" title="statement not covered" >        chunks?.forEach(<span class="fstat-no" title="function not covered" >(c</span>hunk) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >          hash?.update(chunk?.name || '');</span>
+        const hash = <span class="cstat-no" title="statement not covered" >crypto.createHash('sha1');</span>
+<span class="cstat-no" title="statement not covered" >        chunks.forEach(<span class="fstat-no" title="function not covered" >(c</span>hunk) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >          hash.update(chunk.name || '');</span>
         });
-<span class="cstat-no" title="statement not covered" >        return 'shared-' + hash?.digest('hex').substring(0, 8);</span>
+<span class="cstat-no" title="statement not covered" >        return 'shared-' + hash.digest('hex').substring(0, 8);</span>
       },
-      priority: PRIORITY?.SHARED,
+      priority: PRIORITY.SHARED,
       minChunks: 2,
       reuseExistingChunk: true,
     },
@@ -529,7 +529,7 @@ export {};
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

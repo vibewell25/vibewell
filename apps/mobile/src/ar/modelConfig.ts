@@ -1,12 +1,8 @@
-// Central configuration for AR models
-
 export interface ARModel {
   key: string;
   label: string;
   source: any;
   scale: [number, number, number];
-}
-
 export const AR_MODELS: ARModel[] = [
 
       { key: 'hair1', label: 'Hair Style 1', source: require('../assets/models/hair_model.glb'), scale: [0.2, 0.2, 0.2] },

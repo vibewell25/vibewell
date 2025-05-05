@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import activity-page from '../activity-page.tsx';
+
+describe('activity-page', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<activity-page />);
+    expect(container).toBeInTheDocument();
+  });
+});

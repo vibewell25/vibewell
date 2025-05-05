@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import image-optimizer from '../image-optimizer.ts';
+
+describe('image-optimizer', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<image-optimizer />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 import { getServerSession } from 'next-auth';
@@ -14,12 +13,8 @@ interface Appointment {
   status: string;
   service: {
     name: string;
-  };
-  provider: {
+provider: {
     name: string;
-  };
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); GET() {
@@ -28,9 +23,7 @@ export async function {
 
     if (!session.user.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const now = new Date();
+const now = new Date();
 
     // Get upcoming appointments
     const appointments = await prisma.serviceBooking.findMany({
@@ -38,30 +31,19 @@ export async function {
         userId: session.user.id,
         date: {
           gte: now,
-        },
-        status: {
+status: {
           not: 'cancelled',
-        },
-      },
-      include: {
+include: {
         service: {
           select: {
             name: true,
-          },
-        },
-        provider: {
+provider: {
           select: {
             name: true,
-          },
-        },
-      },
-      orderBy: {
+orderBy: {
         date: 'asc',
-      },
-      take: 5, // Limit to 5 upcoming appointments
-    });
-
-    // Format appointments for the response
+take: 5, // Limit to 5 upcoming appointments
+// Format appointments for the response
     const formattedAppointments = appointments.map((appointment: Appointment) => ({
       id: appointment.id,
       serviceName: appointment.service.name,
@@ -69,14 +51,11 @@ export async function {
       time: appointment.time,
       providerName: appointment.provider.name,
       status: appointment.status,
-    }));
+));
 
     return NextResponse.json({
       appointments: formattedAppointments,
       count: appointments.length,
-    });
-  } catch (error) {
+catch (error) {
     console.error('Error fetching upcoming appointments:', error);
     return NextResponse.json({ error: 'Failed to fetch upcoming appointments' }, { status: 500 });
-  }
-}

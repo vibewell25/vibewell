@@ -5,4 +5,3 @@ export {};
 
 export default function TryOnAnalyticsPage() {
   return <TryOnAnalytics />;
-}

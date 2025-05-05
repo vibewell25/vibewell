@@ -4,8 +4,6 @@ interface SkipLinkProps {
   contentId?: string;
   className?: string;
   label?: string;
-}
-
 /**
  * SkipLink component provides a way for keyboard users to bypass navigation
  * and skip directly to the main content of the page.
@@ -17,7 +15,7 @@ export function SkipLink({
   contentId = 'main-content',
   className,
   label = 'Skip to content',
-}: SkipLinkProps) {
+: SkipLinkProps) {
   return (
     <a
       href={`#${contentId}`}
@@ -28,7 +26,4 @@ export function SkipLink({
     >
       {label}
     </a>
-  );
-}
-
 export default SkipLink;

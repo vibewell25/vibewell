@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import radio-group from '../radio-group.tsx';
+
+describe('radio-group', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<radio-group />);
+    expect(container).toBeInTheDocument();
+  });
+});

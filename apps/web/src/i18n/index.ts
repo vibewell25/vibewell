@@ -34,22 +34,16 @@ i18n
     backend: {
 
       loadPath: '/api/translations/{{lng}}/{{ns}}',
-    },
-    detection: {
+detection: {
       order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag'],
       lookupQuerystring: 'lng',
       lookupCookie: 'i18next',
       lookupLocalStorage: 'i18nextLng',
       caches: ['localStorage', 'cookie'],
-    },
-    interpolation: {
+interpolation: {
       escapeValue: false,
-    },
-    react: {
+react: {
       useSuspense: true,
-    },
-  });
-
 export const isRtl = (language: string) => rtlLanguages.includes(language);
 
 export const changeLanguage = async (language: string) => {
@@ -62,9 +56,6 @@ export const changeLanguage = async (language: string) => {
 
     // Ensure translations are loaded
     await Promise.all(namespaces.map((ns) => i18n.loadNamespaces(ns)));
-  }
-};
-
 // Helper function to load translations dynamically
 export {};
 

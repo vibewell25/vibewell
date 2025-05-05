@@ -1,19 +1,13 @@
-'use client';
-
 import { Component, ErrorInfo, ReactNode } from 'react';
 import Link from 'next/link';
 import { Icons } from '@/components/ui/icons';
 
 interface RootErrorBoundaryProps {
   children: ReactNode;
-}
-
 interface RootErrorBoundaryState {
   hasError: boolean;
   error: Error | null;
   errorInfo: ErrorInfo | null;
-}
-
 /**
  * A Root Error Boundary component for wrapping the entire application.
  * This catches any errors that occur during rendering and provides a user-friendly error screen.
@@ -25,15 +19,10 @@ export class RootErrorBoundary extends Component<RootErrorBoundaryProps, RootErr
       hasError: false,
       error: null,
       errorInfo: null,
-    };
-  }
-
-  static getDerivedStateFromError(error: Error): Partial<RootErrorBoundaryState> {
+static getDerivedStateFromError(error: Error): Partial<RootErrorBoundaryState> {
     // Update state so the next render will show the fallback UI
     return { hasError: true, error };
-  }
-
-  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     // You could log the error to an error reporting service here
     console.error('Application error caught by RootErrorBoundary:', error);
     console.error('Component stack:', errorInfo.componentStack);
@@ -42,20 +31,14 @@ export class RootErrorBoundary extends Component<RootErrorBoundaryProps, RootErr
 
     // You could also send the error to your analytics or error tracking service
     // Example: sendErrorToAnalytics(error, errorInfo);
-  }
-
-  handleReload = (): void => {
+handleReload = (): void => {
     // Reset the error state and refresh the page
     this.setState({ hasError: false, error: null, errorInfo: null });
     window.location.reload();
-  };
-
-  handleGoHome = (): void => {
+handleGoHome = (): void => {
     // Reset the error state (navigation will happen via Next.js)
     this.setState({ hasError: false, error: null, errorInfo: null });
-  };
-
-  render(): ReactNode {
+render(): ReactNode {
     if (this.state.hasError) {
       return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
@@ -104,11 +87,5 @@ export class RootErrorBoundary extends Component<RootErrorBoundaryProps, RootErr
             )}
           </div>
         </div>
-      );
-    }
-
-    return this.props.children;
-  }
-}
-
+return this.props.children;
 export default RootErrorBoundary;

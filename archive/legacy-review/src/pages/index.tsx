@@ -22,7 +22,4 @@ const LandingPage: NextPage = () => {
         </div>
       </main>
     </MarketingLayout>
-  );
-};
-
 export default LandingPage; 

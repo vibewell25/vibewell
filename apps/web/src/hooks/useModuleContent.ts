@@ -16,20 +16,15 @@ export function useModuleContent(moduleId: string) {
       const response = await fetch(`/api/training/module/${moduleId}/content`);
       if (!response.ok) {
         throw new Error('Failed to fetch module content');
-      }
-
-      const data = await response.json();
+const data = await response.json();
       setContent(data);
-    } catch (err) {
+catch (err) {
       const message = err instanceof Error ? err.message : 'An error occurred';
       setError(message);
       toast.error('Failed to fetch module content');
-    } finally {
+finally {
       setIsLoading(false);
-    }
-  };
-
-  const createContent = async (data: CreateModuleContentInput) => {
+const createContent = async (data: CreateModuleContentInput) => {
     try {
       setIsLoading(true);
       setError(null);
@@ -38,29 +33,21 @@ export function useModuleContent(moduleId: string) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
+body: JSON.stringify(data),
+if (!response.ok) {
         throw new Error('Failed to create module content');
-      }
-
-      const newContent = await response.json();
+const newContent = await response.json();
       setContent((prev) => [...prev, newContent]);
       toast.success('Module content created successfully');
       return newContent;
-    } catch (err) {
+catch (err) {
       const message = err instanceof Error ? err.message : 'An error occurred';
       setError(message);
       toast.error('Failed to create module content');
       throw err;
-    } finally {
+finally {
       setIsLoading(false);
-    }
-  };
-
-  const updateContent = async (data: UpdateModuleContentInput) => {
+const updateContent = async (data: UpdateModuleContentInput) => {
     try {
       setIsLoading(true);
       setError(null);
@@ -69,56 +56,40 @@ export function useModuleContent(moduleId: string) {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
+body: JSON.stringify(data),
+if (!response.ok) {
         throw new Error('Failed to update module content');
-      }
-
-      const updatedContent = await response.json();
+const updatedContent = await response.json();
       setContent((prev) =>
         prev.map((item) => (item.id === updatedContent.id ? updatedContent : item)),
-      );
-      toast.success('Module content updated successfully');
+toast.success('Module content updated successfully');
       return updatedContent;
-    } catch (err) {
+catch (err) {
       const message = err instanceof Error ? err.message : 'An error occurred';
       setError(message);
       toast.error('Failed to update module content');
       throw err;
-    } finally {
+finally {
       setIsLoading(false);
-    }
-  };
-
-  const deleteContent = async () => {
+const deleteContent = async () => {
     try {
       setIsLoading(true);
       setError(null);
 
       const response = await fetch(`/api/training/module/${moduleId}/content`, {
         method: 'DELETE',
-      });
-
-      if (!response.ok) {
+if (!response.ok) {
         throw new Error('Failed to delete module content');
-      }
-
-      setContent([]);
+setContent([]);
       toast.success('Module content deleted successfully');
-    } catch (err) {
+catch (err) {
       const message = err instanceof Error ? err.message : 'An error occurred';
       setError(message);
       toast.error('Failed to delete module content');
       throw err;
-    } finally {
+finally {
       setIsLoading(false);
-    }
-  };
-
-  return {
+return {
     content,
     isLoading,
     error,
@@ -126,5 +97,3 @@ export function useModuleContent(moduleId: string) {
     createContent,
     updateContent,
     deleteContent,
-  };
-}

@@ -18,16 +18,12 @@ const BookingTrendScreen: React.FC = () => {
     try {
       const res = await fetch(`${serverBaseUrl}/api/analytics/bookings/monthly`, {
         headers: { Authorization: `Bearer ${token}` },
-      });
-      const json: DataItem[] = await res.json();
+const json: DataItem[] = await res.json();
       setData(json);
-    } catch (e) {
+catch (e) {
       console.error(e);
-    }
-    setLoading(false);
-  };
-
-  if (loading) return <ActivityIndicator style={styles.loader} size="large" />;
+setLoading(false);
+if (loading) return <ActivityIndicator style={styles.loader} size="large" />;
   return (
     <View style={styles.container}>
       <LineChart
@@ -41,16 +37,10 @@ const BookingTrendScreen: React.FC = () => {
           decimalPlaces: 0,
           color: (opacity = 1) => `rgba(74,144,226,${opacity})`,
           labelColor: (opacity = 1) => `rgba(0,0,0,${opacity})`,
-        }}
-        style={{ marginVertical: 8 }}
+style={{ marginVertical: 8 }}
       />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   loader: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-});
-
 export default BookingTrendScreen;

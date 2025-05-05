@@ -1,10 +1,3 @@
-/**
- * GraphQL Rate Limiter Implementation
- *
- * This module provides rate limiting adapters for GraphQL operations,
- * supporting Apollo Server and other GraphQL implementations.
- */
-
 import { GraphQLError } from 'graphql';
 
 import { logger } from '@/lib/logger';
@@ -18,9 +11,7 @@ export function createGraphQLRateLimiter(options: RateLimitOptions = {}) {
   const mergedOptions: RateLimitOptions = {
     ...DEFAULT_OPTIONS,
     ...options,
-  };
-
-  return async function {
+return async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); graphqlRateLimiter(
     context: GraphQLContext,
@@ -29,9 +20,7 @@ export function createGraphQLRateLimiter(options: RateLimitOptions = {}) {
     // Skip rate limiting if specified
     if (mergedOptions.skip && mergedOptions.skip({ context, fieldName })) {
       return;
-    }
-
-    // Get identifier from IP in context
+// Get identifier from IP in context
     const keyPrefix = mergedOptions.keyPrefix || DEFAULT_OPTIONS.keyPrefix!;
     const identifier = `${keyPrefix}graphql:${fieldName}:${context.ip}`;
 
@@ -62,14 +51,6 @@ export function createGraphQLRateLimiter(options: RateLimitOptions = {}) {
 
 
               'X-RateLimit-Reset': String(Math.ceil(result.resetTime / 1000)),
-            },
-          },
-        },
-      });
-    }
-  };
-}
-
 /**
  * Create a GraphQL rate limiting plugin for Apollo Server
  */
@@ -85,24 +66,15 @@ export function createGraphQLRateLimitMiddleware(options: RateLimitOptions = {})
             if (
               operation.selectionSet.selections.some((selection: any) => {
                 return selection.name.value === '__schema' || selection.name.value === '__type';
-              })
+)
             ) {
               return;
-            }
-
-            // Apply rate limiting to the operation
+// Apply rate limiting to the operation
             await rateLimiter(context, operationName || 'anonymous');
-          } catch (error) {
+catch (error) {
 
             // Log error but don't re-throw to allow the GraphQL error to be properly formatted
             logger.error(`GraphQL rate limit error: ${error}`, 'graphql', { error });
-          }
-        },
-      };
-    },
-  };
-}
-
 /**
 
  * Higher-order function to wrap a resolver with rate limiting
@@ -124,9 +96,6 @@ export function withGraphQLRateLimit(
 
     // Call the original resolver
     return resolver(...args);
-  };
-}
-
 /**
  * Calculate the complexity of a GraphQL operation
  * (This helps identify potentially expensive queries)
@@ -146,17 +115,9 @@ export function calculateComplexity(operation: any): number {
       if (selection.selectionSet) {
 
         countSelections(selection.selectionSet, depth + 1);
-      }
-    }
-  }
-
-  if (operation && operation.selectionSet) {
+if (operation && operation.selectionSet) {
     countSelections(operation.selectionSet);
-  }
-
-  return complexity;
-}
-
+return complexity;
 /**
  * Default GraphQL rate limiter
  */
@@ -164,8 +125,6 @@ export const graphqlRateLimiter = createGraphQLRateLimiter({
   windowMs: 60 * 1000, // 1 minute
   max: 100, // 100 operations per minute
   message: 'Too many GraphQL operations, please try again later',
-});
-
 /**
  * Apollo Server plugin for rate limiting
  */

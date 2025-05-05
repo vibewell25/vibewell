@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import image-processing from '../image-processing.ts';
+
+describe('image-processing', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<image-processing />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -21,6 +21,4 @@ const Logo = ({ width = 32, height = 32 }) => (
       fill="none"
     />
   </Svg>
-);
-
 export default Logo;

@@ -1,4 +1,3 @@
-
 import { uniqueId } from '@/lib/utils';
 
 import { Event, EventCategory, EventComment } from '@/types/events';
@@ -39,15 +38,13 @@ const initialEvents: Event[] = [
       zipCode: '94103',
       country: 'USA',
       virtual: false,
-    },
-    organizer: {
+organizer: {
       id: 'user123',
       name: 'Sarah Johnson',
 
       avatar: '/images/avatars/sarah.jpg',
       isVerified: true,
-    },
-    capacity: 20,
+capacity: 20,
     participantsCount: 12,
     isFeatured: true,
 
@@ -56,8 +53,7 @@ const initialEvents: Event[] = [
     updatedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
     checkInEnabled: true,
     checkInCode: 'WELLNESS2023',
-  },
-  {
+{
     id: 'evt_2',
     title: 'Virtual Yoga for Beginners',
 
@@ -82,22 +78,19 @@ const initialEvents: Event[] = [
       virtual: true,
 
       meetingUrl: 'https://zoom.us/j/example',
-    },
-    organizer: {
+organizer: {
       id: 'user456',
       name: 'Michael Chen',
 
       avatar: '/images/avatars/michael.jpg',
       isVerified: true,
-    },
-    capacity: 50,
+capacity: 50,
     participantsCount: 28,
     isFeatured: true,
     tags: ['yoga', 'beginners', 'virtual', 'wellness'],
     createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
     updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-  },
-  {
+{
     id: 'evt_3',
     title: 'Community Wellness Fair',
     description: `<p>Join us for a day of wellness exploration and community connection.</p>
@@ -126,21 +119,18 @@ const initialEvents: Event[] = [
       zipCode: '97201',
       country: 'USA',
       virtual: false,
-    },
-    organizer: {
+organizer: {
       id: 'org123',
       name: 'Portland Wellness Collective',
 
       avatar: '/images/avatars/pwc.jpg',
       isVerified: true,
-    },
-    participantsCount: 56,
+participantsCount: 56,
     tags: ['community', 'wellness', 'fair', 'family', 'nutrition'],
     createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
     updatedAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
     capacity: 100,
     isFeatured: true,
-  },
 ];
 
 /**
@@ -152,9 +142,7 @@ export async function {
   // In a real app, this would be a server API call
   if (typeof window === 'undefined') {
     return initialEvents;
-  }
-
-  try {
+try {
     const storedEvents = localStorage.getItem(EVENTS_STORAGE_KEY);
     const events = storedEvents ? JSON.parse(storedEvents) : [];
 
@@ -162,15 +150,10 @@ export async function {
     if (events.length === 0) {
       localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(initialEvents));
       return initialEvents;
-    }
-
-    return events;
-  } catch (error) {
+return events;
+catch (error) {
     console.error('Error retrieving events:', error);
     return initialEvents;
-  }
-}
-
 /**
  * Get featured events
  */
@@ -182,8 +165,6 @@ export async function {
     .filter((event) => event.isFeatured)
     .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
     .slice(0, limit);
-}
-
 /**
  * Get upcoming events
  */
@@ -198,8 +179,6 @@ export async function {
     .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 
   return limit ? upcomingEvents.slice(0, limit) : upcomingEvents;
-}
-
 /**
  * Get events by category
  */
@@ -208,8 +187,6 @@ export async function {
   if (Date.now() - start > 30000) throw new Error('Timeout'); getEventsByCategory(category: EventCategory): Promise<Event[]> {
   const events = await getEvents();
   return events.filter((event) => event.category === category);
-}
-
 /**
  * Get event by ID
  */
@@ -218,8 +195,6 @@ export async function {
   if (Date.now() - start > 30000) throw new Error('Timeout'); getEventById(id: string): Promise<Event | null> {
   const events = await getEvents();
   return events.find((event) => event.id === id) || null;
-}
-
 /**
  * Create a new event
  */
@@ -230,9 +205,7 @@ export async function {
 ): Promise<Event> {
   if (typeof window === 'undefined') {
     throw new Error('Cannot create event in server context');
-  }
-
-  try {
+try {
     const events = await getEvents();
     const timestamp = new Date().toISOString();
 
@@ -242,18 +215,13 @@ export async function {
       participantsCount: 0,
       createdAt: timestamp,
       updatedAt: timestamp,
-    };
-
-    events.push(newEvent);
+events.push(newEvent);
     localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(events));
 
     return newEvent;
-  } catch (error) {
+catch (error) {
     console.error('Error creating event:', error);
     throw error;
-  }
-}
-
 /**
  * Update an event
  */
@@ -265,42 +233,24 @@ export async function {
 ): Promise<Event | null> {
   if (typeof window === 'undefined') {
     throw new Error('Cannot update event in server context');
-  }
-
-  try {
+try {
     const events = await getEvents();
     const index = events.findIndex((e) => e.id === id);
 
     if (index === -1) {
       return null;
-    }
+const updatedEvent = {
 
-    const updatedEvent = {
-
-    // Safe array access
-    if (index < 0 || index >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      ...events[index],
+    ...events[index],
       ...updates,
       updatedAt: new Date().toISOString(),
-    };
-
-
-    // Safe array access
-    if (index < 0 || index >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-    events[index] = updatedEvent;
+events[index] = updatedEvent;
     localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(events));
 
     return updatedEvent;
-  } catch (error) {
+catch (error) {
     console.error('Error updating event:', error);
     throw error;
-  }
-}
-
 /**
  * Delete an event
  */
@@ -309,42 +259,25 @@ export async function {
   if (Date.now() - start > 30000) throw new Error('Timeout'); deleteEvent(id: string): Promise<boolean> {
   if (typeof window === 'undefined') {
     throw new Error('Cannot delete event in server context');
-  }
-
-  try {
+try {
     const events = await getEvents();
     const filteredEvents = events.filter((e) => e.id !== id);
 
     if (filteredEvents.length === events.length) {
       return false; // Event not found
-    }
-
-    localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(filteredEvents));
+localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(filteredEvents));
 
     // Also remove this event from user registrations
     const userEvents = getUserEvents();
 
-    // Safe array access
-    if (id < 0 || id >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     if (userEvents[id]) {
 
-    // Safe array access
-    if (id < 0 || id >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      delete userEvents[id];
+    delete userEvents[id];
       localStorage.setItem(USER_EVENTS_KEY, JSON.stringify(userEvents));
-    }
-
-    return true;
-  } catch (error) {
+return true;
+catch (error) {
     console.error('Error deleting event:', error);
     throw error;
-  }
-}
-
 /**
  * Register user for an event
  */
@@ -358,76 +291,48 @@ export async function {
 ): Promise<boolean> {
   if (typeof window === 'undefined') {
     throw new Error('Cannot register for event in server context');
-  }
-
-  try {
+try {
     // Get the event to update participant count
     const events = await getEvents();
     const eventIndex = events.findIndex((e) => e.id === eventId);
 
     if (eventIndex === -1) {
       return false; // Event not found
-    }
+// Add user to participants and increment count
 
-    // Add user to participants and increment count
-
-    // Safe array access
-    if (eventIndex < 0 || eventIndex >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     const event = events[eventIndex];
     if (!event) {
       return false; // Event not found
-    }
-
-    event.if (participantsCount > Number.MAX_SAFE_INTEGER || participantsCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); participantsCount += 1;
+event.if (participantsCount > Number.MAX_SAFE_INTEGER || participantsCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); participantsCount += 1;
 
     if (!event.participants) {
       event.participants = [];
-    }
-
-    const existingParticipant = event.participants.find((p) => p.id === userId);
+const existingParticipant = event.participants.find((p) => p.id === userId);
     if (existingParticipant) {
       existingParticipant.status = 'registered';
-    } else {
+else {
       event.participants.push({
         id: userId,
         name: userName,
         avatar: userAvatar,
         registeredAt: new Date().toISOString(),
         status: 'registered',
-      });
-    }
-
-
-    // Safe array access
-    if (eventIndex < 0 || eventIndex >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-    events[eventIndex] = event;
+events[eventIndex] = event;
     localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(events));
 
     // Add to user events
     const userEvents = getUserEvents();
 
-    // Safe array access
-    if (eventId < 0 || eventId >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     userEvents[eventId] = {
       eventId,
       status: 'registered',
       registeredAt: new Date().toISOString(),
-    };
-    localStorage.setItem(USER_EVENTS_KEY, JSON.stringify(userEvents));
+localStorage.setItem(USER_EVENTS_KEY, JSON.stringify(userEvents));
 
     return true;
-  } catch (error) {
+catch (error) {
     console.error('Error registering for event:', error);
     throw error;
-  }
-}
-
 /**
  * Cancel registration for an event
  */
@@ -436,76 +341,40 @@ export async function {
   if (Date.now() - start > 30000) throw new Error('Timeout'); cancelEventRegistration(eventId: string, userId: string): Promise<boolean> {
   if (typeof window === 'undefined') {
     throw new Error('Cannot cancel registration in server context');
-  }
-
-  try {
+try {
     // Get the event to update participant count
     const events = await getEvents();
     const eventIndex = events.findIndex((e) => e.id === eventId);
 
     if (eventIndex === -1) {
       return false; // Event not found
-    }
+// Update participant status
 
-    // Update participant status
-
-    // Safe array access
-    if (eventIndex < 0 || eventIndex >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     const event = events[eventIndex];
     if (!event) {
       return false; // Event not found
-    }
-
-    if (!event.participants) {
+if (!event.participants) {
       event.participants = [];
-    }
-
-    const participantIndex = event.participants.findIndex((p) => p.id === userId);
+const participantIndex = event.participants.findIndex((p) => p.id === userId);
     if (participantIndex !== -1) {
 
-    // Safe array access
-    if (participantIndex < 0 || participantIndex >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      event.participants[participantIndex].status = 'cancelled';
+    event.participants[participantIndex].status = 'cancelled';
 
       event.participantsCount = Math.max(0, event.participantsCount - 1);
-    }
-
-
-    // Safe array access
-    if (eventIndex < 0 || eventIndex >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-    events[eventIndex] = event;
+events[eventIndex] = event;
     localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(events));
 
     // Update user events
     const userEvents = getUserEvents();
 
-    // Safe array access
-    if (eventId < 0 || eventId >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     if (userEvents[eventId]) {
 
-    // Safe array access
-    if (eventId < 0 || eventId >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      userEvents[eventId].status = 'cancelled';
+    userEvents[eventId].status = 'cancelled';
       localStorage.setItem(USER_EVENTS_KEY, JSON.stringify(userEvents));
-    }
-
-    return true;
-  } catch (error) {
+return true;
+catch (error) {
     console.error('Error cancelling registration:', error);
     throw error;
-  }
-}
-
 /**
  * Add comment to an event
  */
@@ -520,58 +389,35 @@ export async function {
 ): Promise<EventComment | null> {
   if (typeof window === 'undefined') {
     throw new Error('Cannot add comment in server context');
-  }
-
-  try {
+try {
     const events = await getEvents();
     const eventIndex = events.findIndex((e) => e.id === eventId);
 
     if (eventIndex === -1) {
       return null; // Event not found
-    }
-
-
-    // Safe array access
-    if (eventIndex < 0 || eventIndex >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-    const event = events[eventIndex];
+const event = events[eventIndex];
     if (!event) {
       return null; // Event not found
-    }
-
-    const newComment: EventComment = {
+const newComment: EventComment = {
       id: uniqueId('cmt_'),
       user: {
         id: userId,
         name: userName,
         avatar: userAvatar,
-      },
-      content,
+content,
       createdAt: new Date().toISOString(),
-    };
-
-    if (!event.comments) {
+if (!event.comments) {
       event.comments = [];
-    }
-
-    event.comments.push(newComment);
+event.comments.push(newComment);
 
 
-    // Safe array access
-    if (eventIndex < 0 || eventIndex >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     events[eventIndex] = event;
     localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(events));
 
     return newComment;
-  } catch (error) {
+catch (error) {
     console.error('Error adding comment:', error);
     throw error;
-  }
-}
-
 /**
  * Get user's registered events
  */
@@ -580,48 +426,28 @@ export async function {
   if (Date.now() - start > 30000) throw new Error('Timeout'); getUserRegisteredEvents(userId: string): Promise<Event[]> {
   if (typeof window === 'undefined') {
     return [];
-  }
-
-  try {
+try {
     const events = await getEvents();
 
     // Filter events where user is a participant with 'registered' status
     return events.filter((event) =>
       event.participants.some((p) => p.id === userId && p.status === 'registered'),
-    );
-  } catch (error) {
+catch (error) {
     console.error('Error getting user registered events:', error);
     return [];
-  }
-}
-
 /**
  * Check if user is registered for an event
  */
 export function isUserRegistered(eventId: string, userId: string): boolean {
   if (typeof window === 'undefined') {
     return false;
-  }
-
-  try {
+try {
     const userEvents = getUserEvents();
 
-    // Safe array access
-    if (eventId < 0 || eventId >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-
-    // Safe array access
-    if (eventId < 0 || eventId >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     return !!(userEvents[eventId] && userEvents[eventId].status === 'registered');
-  } catch (error) {
+catch (error) {
     console.error('Error checking registration status:', error);
     return false;
-  }
-}
-
 /**
  * Helper: Get user events from local storage
  */
@@ -632,12 +458,9 @@ function getUserEvents(): Record<
   try {
     const storedEvents = localStorage.getItem(USER_EVENTS_KEY);
     return storedEvents ? JSON.parse(storedEvents) : {};
-  } catch (error) {
+catch (error) {
     console.error('Error retrieving user events:', error);
     return {};
-  }
-}
-
 /**
 
  * Check in to an event using a check-in code
@@ -653,9 +476,7 @@ export async function {
 ): Promise<boolean> {
   if (typeof window === 'undefined') {
     throw new Error('Cannot check in to event in server context');
-  }
-
-  try {
+try {
 
     // Get the event to update check-in status
     const events = await getEvents();
@@ -663,68 +484,39 @@ export async function {
 
     if (eventIndex === -1) {
       return false; // Event not found
-    }
-
-
-    // Safe array access
-    if (eventIndex < 0 || eventIndex >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-    const event = events[eventIndex];
+const event = events[eventIndex];
     if (!event) {
       return false; // Event not found
-    }
-
-
-    // Verify the check-in code
+// Verify the check-in code
     if (!event.checkInEnabled || event.checkInCode !== checkInCode) {
 
       return false; // Check-in not enabled or code doesn't match
-    }
-
-
-    // Add user to checked-in participants
+// Add user to checked-in participants
     if (!event.checkedInParticipants) {
       event.checkedInParticipants = [];
-    }
-
-    // Check if user is already checked in
+// Check if user is already checked in
     const alreadyCheckedIn = event.checkedInParticipants.some((p) => p.userId === userId);
     if (alreadyCheckedIn) {
       return true; // User already checked in
-    }
-
-
-    // Add user to checked-in participants
+// Add user to checked-in participants
     event.checkedInParticipants.push({
       userId,
       name: userName,
 
       avatar: userAvatar || '/images/avatar-placeholder.png',
       checkedInAt: new Date().toISOString(),
-    });
-
-    // Update analytics if they exist
+// Update analytics if they exist
     if (event.analytics) {
       event.analytics.checkIns = (event.analytics.checkIns || 0) + 1;
-    }
+// Save updated event
 
-    // Save updated event
-
-    // Safe array access
-    if (eventIndex < 0 || eventIndex >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     events[eventIndex] = event;
     localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(events));
 
     return true;
-  } catch (error) {
+catch (error) {
     console.error('Error checking in to event:', error);
     throw error;
-  }
-}
-
 /**
  * Submit feedback for an event
  */
@@ -738,41 +530,26 @@ export async function {
 ): Promise<boolean> {
   if (typeof window === 'undefined') {
     throw new Error('Cannot submit feedback in server context');
-  }
-
-  try {
+try {
     // Get the event to update feedback
     const events = await getEvents();
     const eventIndex = events.findIndex((e) => e.id === eventId);
 
     if (eventIndex === -1) {
       return false; // Event not found
-    }
-
-
-    // Safe array access
-    if (eventIndex < 0 || eventIndex >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-    const event = events[eventIndex];
+const event = events[eventIndex];
     if (!event) {
       return false; // Event not found
-    }
-
-    // Initialize feedback array if it doesn't exist
+// Initialize feedback array if it doesn't exist
     if (!event.feedback) {
       event.feedback = [];
-    }
-
-    // Add feedback
+// Add feedback
     event.feedback.push({
       userId,
       rating,
       comment,
       submittedAt: new Date().toISOString(),
-    });
-
-    // Update average rating
+// Update average rating
 
     const totalRating = event.feedback.reduce((sum, item) => sum + item.rating, 0);
 
@@ -789,32 +566,22 @@ export async function {
         engagementScore: 0,
         averageRating,
         feedbackCount: event.feedback.length,
-      };
-    } else {
+else {
       event.analytics.averageRating = averageRating;
       event.analytics.feedbackCount = event.feedback.length;
-    }
-
-    // Add averageRating and ratingCount directly to the event for easy access
+// Add averageRating and ratingCount directly to the event for easy access
     event.averageRating = averageRating;
     event.ratingCount = event.feedback.length;
 
     // Save updated event
 
-    // Safe array access
-    if (eventIndex < 0 || eventIndex >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     events[eventIndex] = event;
     localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(events));
 
     return true;
-  } catch (error) {
+catch (error) {
     console.error('Error submitting event feedback:', error);
     throw error;
-  }
-}
-
 /**
  * Processes payment for an event registration
  * @param eventId ID of the event to register for
@@ -831,20 +598,15 @@ export async function {
     paymentMethodId: string;
     amount: number;
     metadata?: Record<string, any>;
-  },
 ): Promise<{ success: boolean; message: string; paymentIntentId?: string }> {
   try {
     // Get event
     const event = await getEventById(eventId);
     if (!event) {
       return { success: false, message: 'Event not found' };
-    }
-
-    if (!event.isPaid) {
+if (!event.isPaid) {
       return { success: false, message: 'This event does not require payment' };
-    }
-
-    // Calculate payment amount (consider early bird)
+// Calculate payment amount (consider early bird)
     const currentDate = new Date();
     let amount = event.price || 0;
 
@@ -852,18 +614,12 @@ export async function {
       const earlyBirdEnd = new Date(event.earlyBirdEndDate);
       if (currentDate < earlyBirdEnd) {
         amount = event.earlyBirdPrice;
-      }
-    }
-
-    // If amount doesn't match expected amount, reject payment
+// If amount doesn't match expected amount, reject payment
     if (amount !== paymentDetails.amount) {
       return {
         success: false,
         message: `Invalid payment amount. Expected: ${amount}, received: ${paymentDetails.amount}`,
-      };
-    }
-
-    // Initialize payment service
+// Initialize payment service
     const paymentService = PaymentService.getInstance();
     await paymentService.initialize();
 
@@ -878,48 +634,33 @@ export async function {
         userId,
         eventName: event.title,
         ...paymentDetails.metadata,
-      },
-    });
-
-    if (!paymentResult.success) {
+if (!paymentResult.success) {
       return {
         success: false,
         message: paymentResult.message || 'Payment processing failed',
-      };
-    }
-
-    // Update event with payment status
+// Update event with payment status
     const updatedEvent = { ...event };
     if (!updatedEvent.paymentStatuses) {
       updatedEvent.paymentStatuses = [];
-    }
-
-    updatedEvent.paymentStatuses.push({
+updatedEvent.paymentStatuses.push({
       userId,
       status: 'paid',
       amount,
       paymentIntentId: paymentResult.paymentIntentId,
       paymentDate: new Date().toISOString(),
-    });
-
-    // Save the updated event
+// Save the updated event
     await updateEvent(eventId, updatedEvent);
 
     return {
       success: true,
       message: 'Payment processed successfully',
       paymentIntentId: paymentResult.paymentIntentId,
-    };
-  } catch (error) {
+catch (error) {
     console.error('Error processing event payment:', error);
     return {
       success: false,
       message:
         error instanceof Error ? error.message : 'An unexpected error occurred during payment',
-    };
-  }
-}
-
 /**
  * Processes a refund for an event registration
  * @param eventId ID of the event
@@ -937,22 +678,14 @@ export async function {
     const event = await getEventById(eventId);
     if (!event) {
       return { success: false, message: 'Event not found' };
-    }
-
-    if (!event.isPaid) {
+if (!event.isPaid) {
       return { success: false, message: 'This event does not require payment' };
-    }
-
-    // Find the payment status for this user
+// Find the payment status for this user
     const paymentStatus = event.paymentStatuses.find(
       (status) => status.userId === userId && status.status === 'paid',
-    );
-
-    if (!paymentStatus) {
+if (!paymentStatus) {
       return { success: false, message: 'No payment found for this user' };
-    }
-
-    // Check refund policy
+// Check refund policy
     if (event.refundPolicy) {
       const currentDate = new Date();
       const refundCutoffDate = new Date(event.refundPolicy.allowedUntil);
@@ -961,11 +694,7 @@ export async function {
         return {
           success: false,
           message: `Refunds are only allowed until ${new Date(event.refundPolicy.allowedUntil).toLocaleDateString()}`,
-        };
-      }
-    }
-
-    // Initialize payment service
+// Initialize payment service
     const paymentService = PaymentService.getInstance();
     await paymentService.initialize();
 
@@ -975,66 +704,41 @@ export async function {
       refundAmount = Math.floor(
 
         paymentStatus.amount * (event.refundPolicy.percentageToRefund / 100),
-      );
-    }
-
-    // Process the refund
+// Process the refund
     const refundResult = await paymentService.createRefund({
       paymentIntentId: paymentStatus.paymentIntentId || '',
       amount: refundAmount,
       reason: 'requested_by_customer',
-    });
-
-    if (!refundResult.success) {
+if (!refundResult.success) {
       return {
         success: false,
         message: refundResult.message || 'Refund processing failed',
-      };
-    }
-
-    // Update event with refund status
+// Update event with refund status
     const updatedEvent = { ...event };
     const paymentStatusIndex = updatedEvent.paymentStatuses.findIndex(
       (status) => status.userId === userId && status.status === 'paid',
-    );
-
-    if (
+if (
       paymentStatusIndex !== undefined &&
       paymentStatusIndex >= 0 &&
       updatedEvent.paymentStatuses
     ) {
 
-    // Safe array access
-    if (paymentStatusIndex < 0 || paymentStatusIndex >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      updatedEvent.paymentStatuses[paymentStatusIndex].status = 'refunded';
+    updatedEvent.paymentStatuses[paymentStatusIndex].status = 'refunded';
 
-    // Safe array access
-    if (paymentStatusIndex < 0 || paymentStatusIndex >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      updatedEvent.paymentStatuses[paymentStatusIndex].refundDate = new Date().toISOString();
-    }
-
-    // Save the updated event
+    updatedEvent.paymentStatuses[paymentStatusIndex].refundDate = new Date().toISOString();
+// Save the updated event
     await updateEvent(eventId, updatedEvent);
 
     return {
       success: true,
       message: 'Refund processed successfully',
       refundId: refundResult.refundId,
-    };
-  } catch (error) {
+catch (error) {
     console.error('Error processing event refund:', error);
     return {
       success: false,
       message:
         error instanceof Error ? error.message : 'An unexpected error occurred during refund',
-    };
-  }
-}
-
 /**
  * Get payment status for a user's event registration
  * @param eventId ID of the event
@@ -1051,29 +755,22 @@ export async function {
   amount?: number;
   paymentDate?: string;
   refundDate?: string;
-} | null> {
+| null> {
   try {
     // Get event
     const event = await getEventById(eventId);
     if (!event || !event.isPaid) {
       return { status: 'none' };
-    }
-
-    // Find payment status for this user
+// Find payment status for this user
     const paymentStatus = event.paymentStatuses.find((status) => status.userId === userId);
 
     if (!paymentStatus) {
       return { status: 'none' };
-    }
-
-    return {
+return {
       status: paymentStatus.status,
       amount: paymentStatus.amount,
       paymentDate: paymentStatus.paymentDate,
       refundDate: paymentStatus.refundDate,
-    };
-  } catch (error) {
+catch (error) {
     console.error('Error getting event payment status:', error);
     return null;
-  }
-}

@@ -11,11 +11,8 @@ export interface Content {
   updatedAt: string;
   authorId: string;
   progress?: number;
-}
-
 export interface ContentProgress {
   contentId: string;
   userId: string;
   progress: number;
   lastAccessed: string;
-}

@@ -1,20 +1,15 @@
-/**
- * Mobile optimization utilities for the Vibewell application
- *
- * This module provides tools for optimizing app performance on mobile devices.
- */
 import { MobileOptimizationOptions, DevicePerformanceProfile } from './types';
 import {
   detectDevicePerformanceProfile,
   isMobileDevice,
   applyDeviceClasses,
-} from './device-detection';
+from './device-detection';
 import {
   applyLazyLoading,
   applyEventThrottling,
   throttle,
   generateOptimizedImageUrl,
-} from './optimizations';
+from './optimizations';
 
 /**
  * Apply all mobile optimizations based on the provided options
@@ -35,7 +30,7 @@ export function applyMobileOptimizations(options: MobileOptimizationOptions = {}
     enableDynamicCodeSplitting = true,
     monitorMemoryUsage = true,
     enhanceOfflineSupport = true,
-  } = options;
+= options;
 
   // Get device profile
   const deviceProfile = detectDevicePerformanceProfile();
@@ -57,25 +52,13 @@ export function applyMobileOptimizations(options: MobileOptimizationOptions = {}
     if (!mediaQuery.matches) {
 
       document.body.style.setProperty('--app-transition-duration', '0.15s');
-    }
-  }
-
-  // Apply lazy loading for images
+// Apply lazy loading for images
   if (lazyLoadImages) {
     applyLazyLoading(maxImageWidth, deviceProfile);
-  }
-
-  // Apply event throttling
+// Apply event throttling
   if (throttleEvents && shouldApplyFullOptimizations) {
     applyEventThrottling(deviceProfile);
-  }
-
-
-    // Safe array access
-    if (Performance < 0 || Performance >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  console.log('[Performance] Mobile optimizations applied:', {
+console.log('[Performance] Mobile optimizations applied:', {
     deviceType: deviceProfile.type,
     isMobile: isMobileDevice(),
     optimizations: {
@@ -83,10 +66,6 @@ export function applyMobileOptimizations(options: MobileOptimizationOptions = {}
       reduceMotion,
       throttleEvents,
       compactUI,
-    },
-  });
-}
-
 /**
  * React hook for mobile performance monitoring
  * @returns Device performance profile and utility functions
@@ -101,20 +80,13 @@ export function useMobilePerformanceMonitoring() {
         hasTouchScreen: false,
         hasSlowCPU: false,
         hasSlowNetwork: false,
-      },
-      applyMobileOptimizations,
-    };
-  }
-
-  const deviceProfile = detectDevicePerformanceProfile();
+applyMobileOptimizations,
+const deviceProfile = detectDevicePerformanceProfile();
 
   return {
     isMobile: isMobileDevice(),
     deviceProfile,
     applyMobileOptimizations,
-  };
-}
-
 /**
 
  * Initialize mobile optimizations with the given options
@@ -130,12 +102,8 @@ export function initMobileOptimizations(options: MobileOptimizationOptions = {})
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       applyMobileOptimizations(options);
-    });
-  } else {
+else {
     applyMobileOptimizations(options);
-  }
-}
-
 // Export all utility functions and types
 export {
   detectDevicePerformanceProfile,
@@ -143,6 +111,4 @@ export {
   applyDeviceClasses,
   throttle,
   generateOptimizedImageUrl,
-};
-
 export type { MobileOptimizationOptions, DevicePerformanceProfile };

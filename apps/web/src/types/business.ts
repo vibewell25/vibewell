@@ -10,10 +10,8 @@ export interface Business {
   openingHours: {
     day: string;
     hours: string;
-  }[];
+[];
   contact: {
     phone: string;
     email: string;
     website?: string;
-  };
-}

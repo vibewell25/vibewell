@@ -1,4 +1,3 @@
-'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Layout } from '@/components/layout';
@@ -14,7 +13,7 @@ export default function CreateEventPage() {
   const router = useRouter();
   const {
     user
-  } = useAuth();
+= useAuth();
   // Event form state
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -33,8 +32,7 @@ export default function CreateEventPage() {
     country: 'USA',
     virtual: false,
     meetingUrl: '',
-  });
-  const [capacity, setCapacity] = useState<string>('');
+const [capacity, setCapacity] = useState<string>('');
   const [imageUrl, setImageUrl] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
@@ -44,8 +42,7 @@ export default function CreateEventPage() {
   if (!authLoading && !user) {
     router.push('/auth/login?returnUrl=' + encodeURIComponent('/events/create'));
     return null;
-  }
-  // Available categories
+// Available categories
   const categories: EventCategory[] = [
     'Wellness',
     'Fitness',
@@ -63,20 +60,15 @@ export default function CreateEventPage() {
     if (tagInput.trim() && !tags.includes(tagInput.trim())) {
       setTags([...tags, tagInput.trim()]);
       setTagInput('');
-    }
-  };
-  // Remove a tag
+// Remove a tag
   const removeTag = (tagToRemove: string) => {
     setTags(tags.filter((tag) => tag !== tagToRemove));
-  };
-  // Update location fields
+// Update location fields
   const updateLocation = (field: string, value: string) => {
     setLocation({
       ...location,
       [field]: value,
-    });
-  };
-  // Toggle virtual event
+// Toggle virtual event
   const toggleVirtual = () => {
     setIsVirtual(!isVirtual);
     setLocation({
@@ -90,10 +82,8 @@ export default function CreateEventPage() {
             city: '',
             state: '',
             zipCode: '',
-          }),
-    });
-  };
-  // Handle form submission
+),
+// Handle form submission
   const handleSubmit = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
@@ -101,9 +91,7 @@ export default function CreateEventPage() {
     if (!user) {
       router.push('/auth/login?returnUrl=' + encodeURIComponent('/events/create'));
       return;
-    }
-
-    // Create form data object
+// Create form data object
     const formData = {
       title,
       description,
@@ -118,10 +106,8 @@ export default function CreateEventPage() {
             city: location.city,
             state: location.state,
             zipCode: location.zipCode,
-          }),
-    };
-
-    // Validate using the standardized utility
+),
+// Validate using the standardized utility
     const validationResult = validateForm(formData);
 
     // Add custom validations for dates
@@ -131,16 +117,11 @@ export default function CreateEventPage() {
       if (endDateTime <= startDateTime) {
         validationResult.errors.endDate = 'End date/time must be after start date/time';
         validationResult.isValid = false;
-      }
-    }
-
-    setErrors(validationResult.errors);
+setErrors(validationResult.errors);
 
     if (!validationResult.isValid) {
       return;
-    }
-
-    try {
+try {
       setSubmitting(true);
       // Prepare dates
       const startDateTime = new Date(`${startDate}T${startTime}`);
@@ -156,32 +137,26 @@ export default function CreateEventPage() {
         location: {
           ...location,
           virtual: isVirtual,
-        },
-        organizer: {
+organizer: {
           id: user.id,
           name: user.user_metadata.full_name || 'Anonymous',
           avatar: user.user_metadata.avatar_url,
           isVerified: false,
-        },
-        capacity: capacity ? parseInt(capacity) : undefined,
+capacity: capacity ? parseInt(capacity) : undefined,
         imageUrl: imageUrl || undefined,
         tags: tags.length > 0 ? tags : undefined,
         isFeatured: false,
-      };
-      // Submit event
+// Submit event
       const createdEvent = await createEvent(eventData);
       // Navigate to the created event
       router.push(`/events/${createdEvent.id}`);
-    } catch (err) {
+catch (err) {
       console.error('Error creating event:', err);
       setErrors({
         form: 'Failed to create event. Please try again.',
-      });
-    } finally {
+finally {
       setSubmitting(false);
-    }
-  };
-  // Set default dates if not set
+// Set default dates if not set
   const setDefaultDates = () => {
     if (!startDate || !startTime) {
       const now = new Date();
@@ -194,9 +169,7 @@ export default function CreateEventPage() {
       const endDateTime = addHours(startDateTime, 1);
       setEndDate(format(endDateTime, 'yyyy-MM-dd'));
       setEndTime(format(endDateTime, 'HH:mm'));
-    }
-  };
-  return (
+return (
     <Layout>
       <div className="container-app py-8">
         {/* Back button */}
@@ -636,5 +609,3 @@ export default function CreateEventPage() {
         </div>
       </div>
     </Layout>
-  );
-}

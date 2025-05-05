@@ -1,4 +1,3 @@
-'use client';
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/Button';
@@ -13,7 +12,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
@@ -23,14 +22,12 @@ interface Service {
   duration: number;
   price: number;
   category: string;
-}
 interface Client {
   id: string;
   name: string;
   email: string;
   phone: string;
   avatar?: string;
-}
 const dummyServices: Service[] = [
   {
     id: '1',
@@ -38,21 +35,18 @@ const dummyServices: Service[] = [
     duration: 30,
     price: 50,
     category: 'Hair',
-  },
-  {
+{
     id: '2',
     name: 'Highlights',
     duration: 120,
     price: 150,
     category: 'Hair',
-  },
-  {
+{
     id: '3',
     name: 'Manicure',
     duration: 45,
     price: 35,
     category: 'Nails',
-  },
 ];
 const dummyClients: Client[] = [
   {
@@ -61,14 +55,12 @@ const dummyClients: Client[] = [
     email: 'sarah@example.com',
     phone: '+1 (555) 123-4567',
     avatar: '/users/sarah.jpg',
-  },
-  {
+{
     id: '2',
     name: 'Michael Brown',
     email: 'michael@example.com',
     phone: '+1 (555) 987-6543',
     avatar: '/users/michael.jpg',
-  },
 ];
 export default function CreateAppointmentPage() {
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
@@ -83,12 +75,9 @@ export default function CreateAppointmentPage() {
     const service = dummyServices.find((s) => s.id === serviceId);
     if (service && !selectedServices.find((s) => s.id === serviceId)) {
       setSelectedServices([...selectedServices, service]);
-    }
-  };
-  const handleServiceRemove = (serviceId: string) => {
+const handleServiceRemove = (serviceId: string) => {
     setSelectedServices(selectedServices.filter((s) => s.id !== serviceId));
-  };
-  const handleSubmit = (e: React.FormEvent) => {
+const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log({
       client: selectedClient,
@@ -98,9 +87,7 @@ export default function CreateAppointmentPage() {
       notes,
       totalDuration,
       totalPrice,
-    });
-  };
-  return (
+return (
     <Layout>
       <div className="container-app py-12">
         <div className="mb-8">
@@ -156,8 +143,7 @@ export default function CreateAppointmentPage() {
                       onValueChange={(value) => {
                         const client = dummyClients.find((c) => c.id === value);
                         setSelectedClient(client || null);
-                      }}
-                    >
+>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a client" />
                       </SelectTrigger>
@@ -288,5 +274,3 @@ export default function CreateAppointmentPage() {
         </form>
       </div>
     </Layout>
-  );
-}

@@ -6,6 +6,4 @@ import { AlertConfig, DashboardData } from '@/types/monitoring';
 interface DashboardProps {
   refreshInterval?: number;
   onAlert?: (alert: AlertConfig) => void;
-}
-
 export {};

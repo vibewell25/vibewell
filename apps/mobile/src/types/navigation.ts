@@ -13,8 +13,6 @@ export interface Provider {
   name: string;
   rating: number;
   reviewCount: number;
-}
-
 export interface Review {
   id: string;
   userId?: string;
@@ -23,8 +21,6 @@ export interface Review {
   comment: string;
   date: string;
   userAvatar?: string;
-}
-
 export interface BeautyServiceDetails {
   id: string;
   title: string;
@@ -45,10 +41,7 @@ export interface BeautyServiceDetails {
       id: string;
       time: string;
       available: boolean;
-    }[];
-  };
-}
-
+[];
 export interface BookingConfirmationParams {
   bookingId: string;
   serviceId: string;
@@ -64,9 +57,6 @@ export interface BookingConfirmationParams {
     name: string;
     email: string;
     phone: string;
-  };
-}
-
 // Service model interface
 export interface Service {
   id: string;
@@ -74,8 +64,6 @@ export interface Service {
   name: string;
   price: number;
   duration: number;
-}
-
 // Business & related models
 export interface Business {
   id: string;
@@ -83,16 +71,12 @@ export interface Business {
   name: string;
   address?: string;
   description?: string;
-}
-
 export interface BusinessHour {
   id: string;
   businessId: string;
   dayOfWeek: number;
   openTime: string;
   closeTime: string;
-}
-
 export interface Staff {
   id: string;
   businessId: string;
@@ -100,8 +84,6 @@ export interface Staff {
   role: string;
   email?: string;
   phone?: string;
-}
-
 // AR & Skin Analysis
 export interface SkinAnalysisResult {
   id: string;
@@ -116,15 +98,13 @@ export interface SkinAnalysisResult {
     name: string;
     severity: number;
     description: string;
-  }>;
+>;
   recommendations: Array<{
     type: string;
     product: string;
     description: string;
-  }>;
+>;
   imageUri?: string;
-}
-
 // Inventory model interface
 export interface InventoryItem {
   id: string;
@@ -132,8 +112,6 @@ export interface InventoryItem {
   description: string;
   quantity: number;
   price: number;
-}
-
 // Equipment model interface
 export interface EquipmentItem {
   id: string;
@@ -141,8 +119,6 @@ export interface EquipmentItem {
   description: string;
   quantity: number;
   price: number;
-}
-
 // Main Stack Navigator Param List
 export type RootStackParamList = {
   // Auth Stack
@@ -228,8 +204,6 @@ export type RootStackParamList = {
   BenefitList: undefined;
   BenefitDetail: { id: string };
   BenefitForm: { claim?: BenefitClaim };
-};
-
 // Navigation prop types for each screen
 export type AuthScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Auth'>;
 export type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;

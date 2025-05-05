@@ -18,8 +18,6 @@ export function useNetwork() {
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
-    };
-  }, []);
+[]);
 
   return { isOnline };
-}

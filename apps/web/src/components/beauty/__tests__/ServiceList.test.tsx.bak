@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import service-list from '../service-list.tsx';
+
+describe('service-list', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<service-list />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -1,10 +1,3 @@
-/**
- * Type definitions for reports
- */
-
-/**
- * Options for generating reports
- */
 export interface ReportOptions {
   /**
    * Start date for the report period
@@ -35,8 +28,6 @@ export interface ReportOptions {
    * Whether to include geographic data
    */
   includeGeo?: boolean;
-}
-
 /**
  * Analytics report data structure
  */
@@ -135,8 +126,6 @@ export interface AnalyticsReportData {
    * JSON string for geographic chart data
    */
   geo_data: string;
-}
-
 /**
  * Performance report data structure
  */
@@ -174,9 +163,7 @@ export interface PerformanceReportData {
      * Browser versions tested
      */
     browser_versions: string;
-  };
-
-  /**
+/**
    * Performance metrics summary
    */
   metrics_summary: {
@@ -219,9 +206,7 @@ export interface PerformanceReportData {
      * Total blocking time in milliseconds
      */
     tbt: number;
-  };
-
-  /**
+/**
    * Resources summary
    */
   resources_summary: {
@@ -254,9 +239,7 @@ export interface PerformanceReportData {
      * Total number of requests
      */
     request_count: number;
-  };
-
-  /**
+/**
    * JSON string for performance chart data
    */
   performance_chart_data: string;
@@ -270,4 +253,3 @@ export interface PerformanceReportData {
    * JSON string for browser comparison chart data
    */
   browser_chart_data: string;
-}

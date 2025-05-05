@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import loyalty-email-templates from '../loyalty-email-templates.ts';
+
+describe('loyalty-email-templates', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<loyalty-email-templates />);
+    expect(container).toBeInTheDocument();
+  });
+});

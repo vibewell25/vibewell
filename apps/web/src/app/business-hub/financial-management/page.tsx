@@ -1,4 +1,3 @@
-'use client';;
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
@@ -10,7 +9,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/Card';
+from '@/components/ui/Card';
 import Link from 'next/link';
 import Image from 'next/image';
 import { BusinessHubNavigation } from '@/components/business-hub-navigation';
@@ -25,7 +24,6 @@ interface FinancialTool {
   category: 'budgeting' | 'pricing' | 'tax' | 'reporting' | 'cash-flow';
   premium: boolean;
   url: string;
-}
 interface FinancialResource {
   id: string;
   title: string;
@@ -33,7 +31,6 @@ interface FinancialResource {
   type: 'guide' | 'template' | 'calculator' | 'checklist';
   category: 'budgeting' | 'pricing' | 'tax' | 'reporting' | 'cash-flow';
   premium: boolean;
-}
 export default function FinancialManagementPage() {
   const [activeTab, setActiveTab] = useState('tools');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -48,8 +45,7 @@ export default function FinancialManagementPage() {
       category: 'pricing',
       premium: false,
       url: '/business-hub/financial-management/tools/profit-calculator',
-    },
-    {
+{
       id: 'pricing-strategy',
       title: 'Pricing Strategy Builder',
       description:
@@ -58,8 +54,7 @@ export default function FinancialManagementPage() {
       category: 'pricing',
       premium: true,
       url: '/business-hub/financial-management/tools/pricing-strategy',
-    },
-    {
+{
       id: 'tax-planner',
       title: 'Tax Planning & Deduction Tracker',
       description:
@@ -68,8 +63,7 @@ export default function FinancialManagementPage() {
       category: 'tax',
       premium: false,
       url: '/business-hub/financial-management/tools/tax-planner',
-    },
-    {
+{
       id: 'cash-flow',
       title: 'Cash Flow Forecasting Tool',
       description:
@@ -78,8 +72,7 @@ export default function FinancialManagementPage() {
       category: 'cash-flow',
       premium: true,
       url: '/business-hub/financial-management/tools/cash-flow',
-    },
-    {
+{
       id: 'budget-template',
       title: 'Salon & Spa Budget Template',
       description:
@@ -88,8 +81,7 @@ export default function FinancialManagementPage() {
       category: 'budgeting',
       premium: false,
       url: '/business-hub/financial-management/tools/budget-template',
-    },
-    {
+{
       id: 'financial-dashboard',
       title: 'Financial KPI Dashboard',
       description:
@@ -98,8 +90,7 @@ export default function FinancialManagementPage() {
       category: 'reporting',
       premium: true,
       url: '/business-hub/financial-management/tools/financial-dashboard',
-    },
-  ];
+];
   // Financial resources data
   const financialResources: FinancialResource[] = [
     {
@@ -110,8 +101,7 @@ export default function FinancialManagementPage() {
       type: 'guide',
       category: 'budgeting',
       premium: false,
-    },
-    {
+{
       id: '2',
       title: 'Tax Strategies for Wellness Practitioners',
       description:
@@ -119,8 +109,7 @@ export default function FinancialManagementPage() {
       type: 'guide',
       category: 'tax',
       premium: false,
-    },
-    {
+{
       id: '3',
       title: 'Pricing Strategies for Wellness Services',
       description:
@@ -128,32 +117,28 @@ export default function FinancialManagementPage() {
       type: 'guide',
       category: 'pricing',
       premium: false,
-    },
-    {
+{
       id: '4',
       title: 'Cash Flow Management for Wellness Businesses',
       description: 'Strategies for managing cash flow during slow seasons or unexpected downturns.',
       type: 'guide',
       category: 'cash-flow',
       premium: false,
-    },
-    {
+{
       id: '5',
       title: 'Financial Metrics Dashboard for Wellness Providers',
       description: 'Calculate key financial ratios to assess the overall health of your business.',
       type: 'calculator',
       category: 'reporting',
       premium: true,
-    },
-    {
+{
       id: '6',
       title: 'Budgeting Templates for Wellness Entrepreneurs',
       description: 'Ready-to-use budget templates specifically designed for wellness businesses.',
       type: 'template',
       category: 'budgeting',
       premium: false,
-    },
-    {
+{
       id: '7',
       title: 'Profit Maximization Strategies for Wellness Providers',
       description:
@@ -161,17 +146,14 @@ export default function FinancialManagementPage() {
       type: 'guide',
       category: 'pricing',
       premium: true,
-    },
-  ];
+];
   // Filter tools based on category
   const filteredTools = financialTools.filter(
     (tool) => selectedCategory === 'all' || tool.category === selectedCategory,
-  );
-  // Filter resources based on category
+// Filter resources based on category
   const filteredResources = financialResources.filter(
     (resource) => selectedCategory === 'all' || resource.category === selectedCategory,
-  );
-  return (
+return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
         <h1 className="mb-2 text-3xl font-bold">Business Hub</h1>
@@ -607,5 +589,3 @@ export default function FinancialManagementPage() {
         </div>
       </div>
     </Layout>
-  );
-}

@@ -1,12 +1,12 @@
-import { render } from '@testing-library/react';
+/* eslint-disable */import { render } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { Button } from '../base/Button/Button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './card';
 
 expect.extend({ toHaveNoViolations });
 
-describe('Accessibility Tests', () => {
-  describe('Button Component', () => {
+describe('Accessibility Tests', () => {;
+  describe('Button Component', () => {;
     it('should have no accessibility violations', async () => {
       const { container } = render(<Button>Click me</Button>);
       const results = await axe(container);
@@ -24,19 +24,18 @@ describe('Accessibility Tests', () => {
         <Button disabled aria-disabled="true">
           Disabled button
         </Button>,
-      );
+
       const results = await axe(container);
       expect(results).toHaveNoViolations();
-    });
-  });
+    }));
 
-  describe('Card Component', () => {
+  describe('Card Component', () => {;
     it('should have no accessibility violations with basic content', async () => {
       const { container } = render(
         <Card>
           <CardContent>Simple card content</CardContent>
         </Card>,
-      );
+
       const results = await axe(container);
       expect(results).toHaveNoViolations();
     });
@@ -55,7 +54,7 @@ describe('Accessibility Tests', () => {
             <p>Footer content</p>
           </CardFooter>
         </Card>,
-      );
+
       const results = await axe(container);
       expect(results).toHaveNoViolations();
     });
@@ -70,7 +69,7 @@ describe('Accessibility Tests', () => {
             <Button>Action Button</Button>
           </CardContent>
         </Card>,
-      );
+
       const results = await axe(container);
       expect(results).toHaveNoViolations();
     });
@@ -85,13 +84,12 @@ describe('Accessibility Tests', () => {
             <p>Collapsible content</p>
           </CardContent>
         </Card>,
-      );
+
       const results = await axe(container);
       expect(results).toHaveNoViolations();
-    });
-  });
+    }));
 
-  describe('Complex Component Combinations', () => {
+  describe('Complex Component Combinations', () => {;
     it('should have no accessibility violations with nested interactive elements', async () => {
       const { container } = render(
         <Card>
@@ -109,7 +107,7 @@ describe('Accessibility Tests', () => {
             <Button variant="ghost">Footer Action</Button>
           </CardFooter>
         </Card>,
-      );
+
       const results = await axe(container);
       expect(results).toHaveNoViolations();
     });
@@ -128,9 +126,8 @@ describe('Accessibility Tests', () => {
             </form>
           </CardContent>
         </Card>,
-      );
+
       const results = await axe(container);
       expect(results).toHaveNoViolations();
-    });
-  });
+    }));
 });

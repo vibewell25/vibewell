@@ -7,8 +7,6 @@ interface ContainerProps {
   children: React.ReactNode;
   maxWidth?: MaxWidth;
   className?: string;
-}
-
 const maxWidthClasses: Record<MaxWidth, string> = {
   xs: 'max-w-xs',
   sm: 'max-w-sm',
@@ -17,8 +15,6 @@ const maxWidthClasses: Record<MaxWidth, string> = {
   xl: 'max-w-xl',
   '2xl': 'max-w-2xl',
   full: 'max-w-full',
-};
-
 /**
  * Container - A simple container component for layout structure
  *
@@ -30,5 +26,3 @@ export function Container({ children, maxWidth = 'xl', className }: ContainerPro
     <div className={cn('container mx-auto px-4 md:px-6', maxWidthClasses[maxWidth], className)}>
       {children}
     </div>
-  );
-}

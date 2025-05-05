@@ -1,4 +1,3 @@
-'use client';;
 import { Suspense, useEffect, useState } from 'react';
 import { Layout } from '@/components/layout';
 import { EventsCalendar } from '@/components/events-calendar';
@@ -27,14 +26,12 @@ function EventsContent() {
         setLoading(true);
         const allEvents = await getEvents();
         setEvents(allEvents);
-      } catch (error) {
+catch (error) {
         console.error('Error fetching events:', error);
-      } finally {
+finally {
         setLoading(false);
-      }
-    };
-    fetchEvents();
-  }, []);
+fetchEvents();
+[]);
   // Filter events based on search and category
   const filteredEvents = events
     .filter((event) => {
@@ -45,7 +42,7 @@ function EventsContent() {
         event.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
       const matchesCategory = selectedCategory === 'all' || event.category === selectedCategory;
       return matchesSearch && matchesCategory;
-    })
+)
     .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
   // Get unique categories
   const categories = Array.from(new Set(events.map((event) => event.category)));
@@ -56,11 +53,9 @@ function EventsContent() {
     try {
       // In a real app, this would create a post in the social feed
       console.log('Sharing event:', event.title);
-    } catch (err) {
+catch (err) {
       console.error('Error sharing event:', err);
-    }
-  };
-  const handleEventAttendance = async ( {
+const handleEventAttendance = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');event: Event) => {
     if (!user.id) return;
@@ -70,15 +65,12 @@ function EventsContent() {
         user.id,
         user.user_metadata.full_name || 'Anonymous',
         user.user_metadata.avatar_url,
-      );
-      // Refresh events
+// Refresh events
       const allEvents = await getEvents();
       setEvents(allEvents);
-    } catch (err) {
+catch (err) {
       console.error('Error registering for event:', err);
-    }
-  };
-  return (
+return (
     <Layout>
       <div className="container-app py-8">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
@@ -162,8 +154,7 @@ function EventsContent() {
                     onClick={() => {
                       setSearchQuery('');
                       setSelectedCategory('all');
-                    }}
-                  >
+>
                     Clear all filters
                   </button>
                 )}
@@ -195,12 +186,8 @@ function EventsContent() {
         </div>
       </div>
     </Layout>
-  );
-}
 export default function EventsPage() {
   return (
     <Suspense fallback={<div>Loading events...</div>}>
       <EventsContent />
     </Suspense>
-  );
-}

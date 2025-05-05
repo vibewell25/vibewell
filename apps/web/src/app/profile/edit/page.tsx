@@ -1,4 +1,3 @@
-'use client';;
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ProfileForm } from '@/components/profile/profile-form';
@@ -21,35 +20,27 @@ export default function EditProfilePage() {
         setLoading(true);
         const {
           error: sessionError
-        } = await supabase.auth.getSession();
+= await supabase.auth.getSession();
 
         if (sessionError) {
           throw sessionError;
-        }
-
-        if (session.user.id) {
+if (session.user.id) {
           setUserId(session.user.id);
-        } else {
+else {
           setError('You must be logged in to edit your profile');
           setTimeout(() => router.push('/login'), 3000);
-        }
-      } catch (err) {
+catch (err) {
         console.error('Error fetching session:', err);
         setError('Failed to authenticate user');
-      } finally {
+finally {
         setLoading(false);
-      }
-    }
-
-    getUserSession();
-  }, [router]);
+getUserSession();
+[router]);
 
   const handleProfileUpdateSuccess = () => {
     // Show success message or trigger any additional actions
     setTimeout(() => router.push('/profile'), 1500);
-  };
-
-  if (loading) {
+if (loading) {
     return (
       <div className="container mx-auto px-4 py-10">
         <Card>
@@ -73,10 +64,7 @@ export default function EditProfilePage() {
           </CardContent>
         </Card>
       </div>
-    );
-  }
-
-  if (error || !userId) {
+if (error || !userId) {
     return (
       <div className="container mx-auto px-4 py-10">
         <Alert variant="destructive">
@@ -86,10 +74,7 @@ export default function EditProfilePage() {
           </AlertDescription>
         </Alert>
       </div>
-    );
-  }
-
-  return (
+return (
     <div className="container mx-auto px-4 py-10">
       <div className="mb-8">
         <div className="flex items-center justify-between">
@@ -112,5 +97,3 @@ export default function EditProfilePage() {
         </CardContent>
       </Card>
     </div>
-  );
-}

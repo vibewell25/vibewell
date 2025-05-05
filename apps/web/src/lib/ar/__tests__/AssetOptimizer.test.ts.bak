@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import asset-optimizer from '../asset-optimizer.ts';
+
+describe('asset-optimizer', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<asset-optimizer />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert
-} from 'react-native';
+from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { addServiceReview, ReviewInput } from '../../services/beautyService';
 import { validateForm } from '../../utils/form-validation';
@@ -17,13 +17,11 @@ interface BeautyReviewFormProps {
   serviceId: string;
   onReviewAdded: () => void;
   isDarkMode: boolean;
-}
-
 const BeautyReviewForm: React.FC<BeautyReviewFormProps> = ({
   serviceId,
   onReviewAdded,
   isDarkMode
-}) => {
+) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [name, setName] = useState('');
@@ -31,32 +29,24 @@ const BeautyReviewForm: React.FC<BeautyReviewFormProps> = ({
 
   const handleRatingPress = (newRating: number) => {
     setRating(newRating);
-  };
-
-  const handleSubmit = async () => {
+const handleSubmit = async () => {
     Keyboard.dismiss();
     
     const formData = {
       rating,
       comment: comment.trim(),
       name: name.trim()
-    };
-    
-    const validationResult = validateForm(formData);
+const validationResult = validateForm(formData);
     
     // Add custom validation for rating
     if (rating === 0) {
       validationResult.errors.rating = 'Please select a rating';
       validationResult.isValid = false;
-    }
-    
-    if (!validationResult.isValid) {
+if (!validationResult.isValid) {
       const errorMessage = Object.values(validationResult.errors)[0];
       Alert.alert('Error', errorMessage);
       return;
-    }
-    
-    setIsSubmitting(true);
+setIsSubmitting(true);
     
     try {
       const reviewData: ReviewInput = {
@@ -64,9 +54,7 @@ const BeautyReviewForm: React.FC<BeautyReviewFormProps> = ({
         rating,
         comment: comment.trim(),
         userName: name.trim()
-      };
-      
-      const success = await addServiceReview(reviewData);
+const success = await addServiceReview(reviewData);
       
       if (success) {
         // Clear the form
@@ -78,19 +66,14 @@ const BeautyReviewForm: React.FC<BeautyReviewFormProps> = ({
           'Thank You!', 
           'Your review has been submitted successfully',
           [{ text: 'OK', onPress: onReviewAdded }]
-        );
-      } else {
+else {
         Alert.alert('Error', 'There was a problem submitting your review. Please try again.');
-      }
-    } catch (error) {
+catch (error) {
       console.error('Error submitting review:', error);
       Alert.alert('Error', 'There was a problem submitting your review. Please try again.');
-    } finally {
+finally {
       setIsSubmitting(false);
-    }
-  };
-
-  const renderStars = (): JSX.Element[] => {
+const renderStars = (): JSX.Element[] => {
     const stars: JSX.Element[] = [];
     
     for (let i = 1; i <= 5; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
@@ -106,13 +89,8 @@ const BeautyReviewForm: React.FC<BeautyReviewFormProps> = ({
             color="#FFD700"
           />
         </TouchableOpacity>
-      );
-    }
-    
-    return stars;
-  };
-
-  return (
+return stars;
+return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={[
         styles.container,
@@ -153,8 +131,7 @@ const BeautyReviewForm: React.FC<BeautyReviewFormProps> = ({
                 color: isDarkMode ? '#FFFFFF' : '#000000',
                 backgroundColor: isDarkMode ? '#2A2A2A' : '#F7F7F7',
                 borderColor: isDarkMode ? '#444444' : '#E0E0E0'
-              }
-            ]}
+]}
             placeholder="Share your experience with this service..."
             placeholderTextColor={isDarkMode ? '#BBBBBB' : '#AAAAAA'}
             value={comment}
@@ -180,8 +157,7 @@ const BeautyReviewForm: React.FC<BeautyReviewFormProps> = ({
                 color: isDarkMode ? '#FFFFFF' : '#000000',
                 backgroundColor: isDarkMode ? '#2A2A2A' : '#F7F7F7',
                 borderColor: isDarkMode ? '#444444' : '#E0E0E0'
-              }
-            ]}
+]}
             placeholder="Enter your name"
             placeholderTextColor={isDarkMode ? '#BBBBBB' : '#AAAAAA'}
             value={name}
@@ -204,9 +180,6 @@ const BeautyReviewForm: React.FC<BeautyReviewFormProps> = ({
         </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     borderRadius: 12,
@@ -217,39 +190,31 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-  },
-  title: {
+title: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 16,
-  },
-  ratingContainer: {
+ratingContainer: {
     marginBottom: 16,
-  },
-  label: {
+label: {
     fontSize: 16,
     marginBottom: 8,
     fontWeight: '500',
-  },
-  starsContainer: {
+starsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  starButton: {
+starButton: {
     marginRight: 8,
     padding: 2,
-  },
-  inputContainer: {
+inputContainer: {
     marginBottom: 16,
-  },
-  input: {
+input: {
     height: 48,
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 16,
     fontSize: 16,
-  },
-  textArea: {
+textArea: {
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 16,
@@ -257,20 +222,15 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
     fontSize: 16,
     minHeight: 120,
-  },
-  submitButton: {
+submitButton: {
     backgroundColor: '#4F46E5',
     borderRadius: 8,
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 10,
-  },
-  submitButtonText: {
+submitButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-});
-
 export default BeautyReviewForm; 

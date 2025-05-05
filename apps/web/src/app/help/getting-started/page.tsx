@@ -1,4 +1,3 @@
-'use client';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
@@ -13,7 +12,7 @@ import { Icons } from '@/components/icons';
   CogIcon,
   BellAlertIcon,
   LockClosedIcon
-} from '@heroicons/react/24/outline';
+from '@heroicons/react/24/outline';
 export default function GettingStartedGuides() {
   // List of articles in this category
   const articles = [
@@ -24,48 +23,42 @@ export default function GettingStartedGuides() {
       description: 'Learn how to create and set up your Vibewell account, verify your email, and configure important security settings.',
       path: '/help/getting-started/account-setup',
       timeToRead: '5 min',
-    },
-    {
+{
       id: 'profile-setup',
       title: 'Setting Up Your Profile',
       icon: <Icons.UserCircleIcon className="h-6 w-6" />,
       description: 'Complete your profile with wellness goals, preferences, and customize your experience on Vibewell.',
       path: '/help/getting-started/profile-setup',
       timeToRead: '4 min',
-    },
-    {
+{
       id: 'navigation',
       title: 'Navigating the App',
       icon: <Icons.DevicePhoneMobileIcon className="h-6 w-6" />,
       description: 'An overview of the Vibewell interface, main features, and how to navigate between different sections.',
       path: '/help/getting-started/navigation',
       timeToRead: '6 min',
-    },
-    {
+{
       id: 'notification-setup',
       title: 'Setting Up Notifications',
       icon: <Icons.BellAlertIcon className="h-6 w-6" />,
       description: 'Configure your notification preferences for appointments, wellness reminders, and app updates.',
       path: '/help/getting-started/notification-setup',
       timeToRead: '3 min',
-    },
-    {
+{
       id: 'privacy-settings',
       title: 'Privacy & Security Settings',
       icon: <Icons.LockClosedIcon className="h-6 w-6" />,
       description: 'Manage your privacy settings, learn about data protection, and set up two-factor authentication.',
       path: '/help/getting-started/privacy-settings',
       timeToRead: '7 min',
-    },
-    {
+{
       id: 'preferences',
       title: 'Customizing Your Preferences',
       icon: <Icons.CogIcon className="h-6 w-6" />,
       description: 'Personalize your app experience by setting content preferences, theme options, and language settings.',
       path: '/help/getting-started/preferences',
       timeToRead: '4 min',
-    },
-  ];
+];
   // Popular articles
   const popularArticles = [
     articles[0], // Account Setup
@@ -256,5 +249,3 @@ export default function GettingStartedGuides() {
         </div>
       </div>
     </Layout>
-  );
-} 

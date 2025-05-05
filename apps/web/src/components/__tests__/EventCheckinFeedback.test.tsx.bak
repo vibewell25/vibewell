@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import event-checkin-feedback from '../event-checkin-feedback.tsx';
+
+describe('event-checkin-feedback', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<event-checkin-feedback />);
+    expect(container).toBeInTheDocument();
+  });
+});

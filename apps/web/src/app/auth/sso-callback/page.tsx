@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
@@ -13,8 +11,7 @@ export default function SSOCallbackPage() {
     if (!loading && user) {
       // Redirect to dashboard after successful login
       router.push('/dashboard');
-    }
-  }, [user, loading, router]);
+[user, loading, router]);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -87,5 +84,3 @@ export default function SSOCallbackPage() {
         )}
       </div>
     </div>
-  );
-}

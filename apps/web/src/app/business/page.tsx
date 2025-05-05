@@ -1,4 +1,3 @@
-'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getServerSession } from 'next-auth';
@@ -13,7 +12,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+from '@/components/ui/select';
 import { toast } from 'react-hot-toast';
 import { Icons } from '@/components/icons';
 interface Business {
@@ -26,7 +25,6 @@ interface Business {
   imageUrl: string;
   location: string;
   services: string[];
-}
 const CATEGORIES = [
   'All Categories',
   'Spa & Massage',
@@ -49,9 +47,7 @@ export default function BusinessDirectoryPage() {
       const session = await getServerSession(authOptions);
       if (!session) {
         router.push('/login');
-      }
-    };
-    checkAuth();
+checkAuth();
     const fetchBusinesses = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');) => {
@@ -59,18 +55,15 @@ export default function BusinessDirectoryPage() {
         const response = await fetch('/api/business');
         if (!response.ok) {
           throw new Error('Failed to fetch businesses');
-        }
-        const data = await response.json();
+const data = await response.json();
         setBusinesses(data);
-      } catch (error) {
+catch (error) {
         console.error('Error fetching businesses:', error);
         toast.error('Failed to load businesses');
-      } finally {
+finally {
         setLoading(false);
-      }
-    };
-    fetchBusinesses();
-  }, [router]);
+fetchBusinesses();
+[router]);
   const filteredBusinesses = businesses.filter((business) => {
     const matchesSearch =
       business.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -79,8 +72,7 @@ export default function BusinessDirectoryPage() {
       selectedCategory === 'All Categories' || business.category === selectedCategory;
     const matchesRating = business.rating >= minRating;
     return matchesSearch && matchesCategory && matchesRating;
-  });
-  if (loading) {
+if (loading) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="mx-auto max-w-6xl space-y-8">
@@ -94,9 +86,7 @@ export default function BusinessDirectoryPage() {
           </div>
         </div>
       </div>
-    );
-  }
-  return (
+return (
     <div className="container mx-auto px-4 py-8">
       <div className="mx-auto max-w-6xl space-y-8">
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
@@ -168,5 +158,3 @@ export default function BusinessDirectoryPage() {
         </div>
       </div>
     </div>
-  );
-}

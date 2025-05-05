@@ -1,32 +1,4 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping *//**
-
- * @vitest-environment jsdom
- */
-
-
-import { renderHookWithProviders, testHookUpdates } from '../../test-utils/hook-testing';
+/* eslint-disable */import { renderHookWithProviders, testHookUpdates } from '../../test-utils/hook-testing';
 import { useLocalStorage } from '../useLocalStorage';
 
 import { act } from '@testing-library/react';
@@ -41,14 +13,14 @@ describe('useLocalStorage', () => {
     // Safe array access
     if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
-    }
+
       getItem: vi.fn((key: string) => store[key] || null),
       setItem: vi.fn((key: string, value: string) => {
 
     // Safe array access
     if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
-    }
+
         store[key] = value;
       }),
       removeItem: vi.fn((key: string) => {
@@ -56,7 +28,7 @@ describe('useLocalStorage', () => {
     // Safe array access
     if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
-    }
+
         delete store[key];
       }),
       clear: vi.fn(() => {
@@ -69,8 +41,7 @@ describe('useLocalStorage', () => {
   beforeAll(() => {
     Object.defineProperty(window, 'localStorage', {
       value: localStorageMock,
-    });
-  });
+    }));
 
   beforeEach(() => {
     localStorageMock.clear();
@@ -120,12 +91,12 @@ describe('useLocalStorage', () => {
             expect(localStorageMock.setItem).toHaveBeenCalledWith(
               'testKey',
               JSON.stringify('newValue'),
-            );
+
             expect(result.result.current[0]).toBe('newValue');
           },
         },
       ],
-    );
+
   });
 
   it('should update the value using a function', async () => {
@@ -148,7 +119,7 @@ describe('useLocalStorage', () => {
           },
         },
       ],
-    );
+
   });
 
   it('should handle errors when reading from localStorage', () => {
@@ -197,9 +168,7 @@ describe('useLocalStorage', () => {
           },
         },
       ],
-    );
 
     // Cleanup
     console.warn = originalConsoleWarn;
-  });
-});
+  }));

@@ -309,7 +309,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
 &nbsp;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i?.test(navigator?.userAgent);</span>
+<span class="cstat-no" title="statement not covered" >  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);</span>
 }
 &nbsp;
 /**
@@ -328,19 +328,19 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   }
 &nbsp;
   // Check hardware concurrency
-  const hasSlowCPU = <span class="cstat-no" title="statement not covered" >!navigator?.hardwareConcurrency || navigator?.hardwareConcurrency &lt;= 4;</span>
+  const hasSlowCPU = <span class="cstat-no" title="statement not covered" >!navigator.hardwareConcurrency || navigator.hardwareConcurrency &lt;= 4;</span>
 &nbsp;
   // Detect memory constraints
-  const hasLowMemory = <span class="cstat-no" title="statement not covered" >process?.env['HASLOWMEMORY'] in navigator &amp;&amp; (navigator as any).deviceMemory &lt; 4;</span>
+  const hasLowMemory = <span class="cstat-no" title="statement not covered" >process.env['HASLOWMEMORY'] in navigator &amp;&amp; (navigator as any).deviceMemory &lt; 4;</span>
 &nbsp;
   // Detect touch screen
-  const hasTouchScreen = <span class="cstat-no" title="statement not covered" >process?.env['HASTOUCHSCREEN'] in navigator &amp;&amp; navigator?.maxTouchPoints &gt; 0;</span>
+  const hasTouchScreen = <span class="cstat-no" title="statement not covered" >process.env['HASTOUCHSCREEN'] in navigator &amp;&amp; navigator.maxTouchPoints &gt; 0;</span>
 &nbsp;
   // Detect network speed (if available)
-  const hasSlowNetwork = <span class="cstat-no" title="statement not covered" >process?.env['HASSLOWNETWORK'] in navigator &amp;&amp;</span>
-    ((navigator as any).connection?.effectiveType === '2g' ||
-      (navigator as any).connection?.effectiveType === '3g' ||
-      (navigator as any).connection?.downlink &lt; 1);
+  const hasSlowNetwork = <span class="cstat-no" title="statement not covered" >process.env['HASSLOWNETWORK'] in navigator &amp;&amp;</span>
+    ((navigator as any).connection.effectiveType === '2g' ||
+      (navigator as any).connection.effectiveType === '3g' ||
+      (navigator as any).connection.downlink &lt; 1);
 &nbsp;
   // Check battery status if available
   let batteryStatus: DevicePerformanceProfile['batteryStatus'] = <span class="cstat-no" title="statement not covered" >undefined;</span>
@@ -350,8 +350,8 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
       .getBattery()
       .then(<span class="fstat-no" title="function not covered" >(b</span>attery: any) =&gt; {
 <span class="cstat-no" title="statement not covered" >        batteryStatus = {</span>
-          level: battery?.level,
-          charging: battery?.charging,
+          level: battery.level,
+          charging: battery.charging,
         };
       })
       .catch(<span class="fstat-no" title="function not covered" >() =&gt; {</span>
@@ -368,12 +368,12 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
     hasSlowNetwork,
 &nbsp;
     // Legacy mobile detection
-    /Android (5|6|7)\./i?.test(navigator?.userAgent),
+    /Android (5|6|7)\./i.test(navigator.userAgent),
 &nbsp;
-    /iPhone OS ([7-9]|10)_|iPad.*OS ([7-9]|10)_/i?.test(navigator?.userAgent),
+    /iPhone OS ([7-9]|10)_|iPad.*OS ([7-9]|10)_/i.test(navigator.userAgent),
   ];
 &nbsp;
-  const lowEndSignals = <span class="cstat-no" title="statement not covered" >signals?.filter(Boolean).length;</span>
+  const lowEndSignals = <span class="cstat-no" title="statement not covered" >signals.filter(Boolean).length;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  if (lowEndSignals &gt;= 3) {</span>
 <span class="cstat-no" title="statement not covered" >    type = 'low';</span>
@@ -401,14 +401,14 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   const deviceProfile = <span class="cstat-no" title="statement not covered" >detectDevicePerformanceProfile();</span>
 &nbsp;
   // Add device profile class to body for CSS optimizations
-<span class="cstat-no" title="statement not covered" >  document?.body.classList?.add(`device-${deviceProfile?.type}`);</span>
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (deviceProfile?.hasTouchScreen) {</span>
+<span class="cstat-no" title="statement not covered" >  document.body.classList.add(`device-${deviceProfile.type}`);</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (deviceProfile.hasTouchScreen) {</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    document?.body.classList?.add('touch-device');</span>
+<span class="cstat-no" title="statement not covered" >    document.body.classList.add('touch-device');</span>
   }
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (isMobileDevice()) {</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    document?.body.classList?.add('mobile-device');</span>
+<span class="cstat-no" title="statement not covered" >    document.body.classList.add('mobile-device');</span>
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -418,7 +418,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

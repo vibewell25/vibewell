@@ -10,14 +10,12 @@ interface BeautyReviewCardProps {
   onLike?: () => void;
   onReport?: () => void;
   isDarkMode: boolean;
-}
-
 const BeautyReviewCard: React.FC<BeautyReviewCardProps> = ({
   review,
   onLike,
   onReport,
   isDarkMode
-}) => {
+) => {
   // Format date to relative time (e.g., "2 days ago")
   const formattedDate = formatDistanceToNow(new Date(review.date), { addSuffix: true });
 
@@ -38,10 +36,7 @@ const BeautyReviewCard: React.FC<BeautyReviewCardProps> = ({
           color="#FFD700" 
           style={styles.star}
         />
-      );
-    }
-
-    // Add half star if needed
+// Add half star if needed
     if (hasHalfStar) {
       stars.push(
         <MaterialIcons 
@@ -51,10 +46,7 @@ const BeautyReviewCard: React.FC<BeautyReviewCardProps> = ({
           color="#FFD700" 
           style={styles.star}
         />
-      );
-    }
-
-    // Add empty stars
+// Add empty stars
     const emptyStars = 5 - Math.ceil(rating);
     for (let i = 0; i < emptyStars; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
       stars.push(
@@ -65,13 +57,8 @@ const BeautyReviewCard: React.FC<BeautyReviewCardProps> = ({
           color="#FFD700" 
           style={styles.star}
         />
-      );
-    }
-
-    return stars;
-  };
-
-  return (
+return stars;
+return (
     <View style={[
       styles.container,
       { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
@@ -154,9 +141,6 @@ const BeautyReviewCard: React.FC<BeautyReviewCardProps> = ({
         </TouchableOpacity>
       </View>
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     borderRadius: 12,
@@ -167,18 +151,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 3,
     elevation: 2,
-  },
-  header: {
+header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 12,
-  },
-  userInfo: {
+userInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  avatarContainer: {
+avatarContainer: {
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -186,53 +167,39 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
-  },
-  avatarText: {
+avatarText: {
     color: '#FFFFFF',
     fontSize: 18,
     fontWeight: 'bold',
-  },
-  nameAndDate: {
+nameAndDate: {
     flexDirection: 'column',
-  },
-  userName: {
+userName: {
     fontSize: 15,
     fontWeight: '600',
     marginBottom: 2,
-  },
-  date: {
+date: {
     fontSize: 12,
-  },
-  rating: {
+rating: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  star: {
+star: {
     marginLeft: 2,
-  },
-  ratingText: {
+ratingText: {
     marginLeft: 5,
     fontSize: 14,
     fontWeight: 'bold',
-  },
-  comment: {
+comment: {
     fontSize: 15,
     lineHeight: 22,
     marginBottom: 16,
-  },
-  actions: {
+actions: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-  },
-  actionButton: {
+actionButton: {
     flexDirection: 'row',
     alignItems: 'center',
     marginRight: 20,
-  },
-  actionText: {
+actionText: {
     fontSize: 14,
     marginLeft: 6,
-  },
-});
-
 export default BeautyReviewCard; 

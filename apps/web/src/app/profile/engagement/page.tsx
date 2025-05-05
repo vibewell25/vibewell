@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect, useState, Suspense } from 'react';
 import { useSession } from 'next-auth/react';
 import { BadgesDisplay } from '@/components/engagement/badges-display';
@@ -14,7 +12,7 @@ import { Trophy, Star, History } from 'lucide-react';
 function EngagementContent() {
   const {
     status
-  } = useSession();
+= useSession();
   const isLoading = status === 'loading';
   const isAuthenticated = status === 'authenticated';
 
@@ -25,10 +23,7 @@ function EngagementContent() {
         <div className="h-24 w-full rounded-lg bg-gray-200" />
         <div className="h-64 w-full rounded-lg bg-gray-200" />
       </div>
-    );
-  }
-
-  if (!isAuthenticated) {
+if (!isAuthenticated) {
     return (
       <div className="container mx-auto py-8">
         <Card>
@@ -38,10 +33,7 @@ function EngagementContent() {
           </CardHeader>
         </Card>
       </div>
-    );
-  }
-
-  return (
+return (
     <EngagementProvider>
       <div className="container mx-auto space-y-6 py-8">
         <h1 className="text-3xl font-bold">Your Engagement Profile</h1>
@@ -99,9 +91,6 @@ function EngagementContent() {
         </Tabs>
       </div>
     </EngagementProvider>
-  );
-}
-
 // Export default component with proper client-side protection
 export default function EngagementPage() {
   // Move the client-state management to the wrapper component
@@ -110,18 +99,7 @@ export default function EngagementPage() {
   // Simple effect to ensure we're only rendering on the client
   useEffect(() => {
     setHasMounted(true);
-  }, []);
-
-  // Safeguard against server-rendering session-dependent components
-  if (!hasMounted) {
-    return (
-      <div className="container mx-auto animate-pulse space-y-6 py-8">
-        <div className="h-8 w-48 rounded-lg bg-gray-200" />
-        <div className="h-24 w-full rounded-lg bg-gray-200" />
-        <div className="h-64 w-full rounded-lg bg-gray-200" />
-      </div>
-    );
-  }
+[]);
 
   return (
     <Suspense
@@ -131,9 +109,6 @@ export default function EngagementPage() {
           <div className="h-24 w-full rounded-lg bg-gray-200" />
           <div className="h-64 w-full rounded-lg bg-gray-200" />
         </div>
-      }
-    >
+>
       <EngagementContent />
     </Suspense>
-  );
-}

@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 import type { NextRequest } from 'next/server';
@@ -10,14 +9,10 @@ interface SecurityConfig {
   isDev: boolean;
   allowedHosts: string[];
   trustedOrigins: string[];
-}
-
 const defaultConfig: SecurityConfig = {
   isDev: process.env.NODE_ENV !== 'production',
   allowedHosts: ['localhost', 'vibewell.com'], // Add your domains
   trustedOrigins: ['https://vibewell.com'], // Add your trusted origins
-};
-
 // CSP Directives
 const getCSPDirectives = (config: SecurityConfig, nonce: string): string => {
   const directives = {
@@ -62,16 +57,12 @@ const getCSPDirectives = (config: SecurityConfig, nonce: string): string => {
     'child-src': ["'self'", 'blob:'],
 
     'upgrade-insecure-requests': [],
-  };
-
-  return Object.entries(directives)
+return Object.entries(directives)
     .map(([key, values]) => {
       if (values.length === 0) return key;
       return `${key} ${values.join(' ')}`;
-    })
+)
     .join('; ');
-};
-
 // Permissions Policy Directives
 const getPermissionsPolicy = (): string => {
   const directives = {
@@ -108,16 +99,12 @@ const getPermissionsPolicy = (): string => {
     'web-share': ['self'],
 
     'xr-spatial-tracking': [],
-  };
-
-  return Object.entries(directives)
+return Object.entries(directives)
     .map(([key, values]) => {
       if (values.length === 0) return `${key}=()`;
       return `${key}=(${values.join(' ')})`;
-    })
+)
     .join(', ');
-};
-
 // Security Headers Configuration
 const getSecurityHeaders = (config: SecurityConfig): Record<string, string> => {
   const nonce = nanoid();
@@ -171,35 +158,18 @@ const getSecurityHeaders = (config: SecurityConfig): Record<string, string> => {
 
 
     'Cross-Origin-Resource-Policy': 'same-origin',
-  };
-
-  // Remove empty headers
+// Remove empty headers
   Object.keys(headers).forEach(key => {
 
-    // Safe array access
-    if (key < 0 || key >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     if (!headers[key]) {
 
-    // Safe array access
-    if (key < 0 || key >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      delete headers[key];
-    }
-  });
-
-  return headers;
-};
-
+    delete headers[key];
+return headers;
 // Request Correlation ID Middleware
 const addCorrelationId = (req: NextRequest): string => {
 
   const correlationId = req.headers.get('x-correlation-id') || nanoid();
   return correlationId;
-};
-
 // API Key Validation
 const validateApiKey = (req: NextRequest): boolean => {
 
@@ -210,11 +180,7 @@ const validateApiKey = (req: NextRequest): boolean => {
   if (!validApiKey) {
     logger.error('API_KEY environment variable is not set');
     return false;
-  }
-
-  return apiKey === validApiKey;
-};
-
+return apiKey === validApiKey;
 // Main Security Middleware
 export async function {
   const start = Date.now();
@@ -229,37 +195,27 @@ export async function {
   if (req.nextUrl.pathname.startsWith('/_next/') || 
       req.nextUrl.pathname.startsWith('/public/')) {
     return null;
-  }
-
-  // Validate host header
+// Validate host header
   const host = req.headers.get('host');
   if (!host || !finalConfig.allowedHosts.includes(host.split(':')[0])) {
     logger.warn(`Invalid host header detected: ${host || 'none'} (${correlationId})`);
     return NextResponse.json(
       { error: 'Invalid host header' },
       { status: 400 }
-    );
-  }
-
-  // Validate API key for API routes
+// Validate API key for API routes
   if (req.nextUrl.pathname.startsWith('/api/') && !validateApiKey(req)) {
     logger.warn(`Invalid API key for path: ${req.nextUrl.pathname} (${correlationId})`);
     return NextResponse.json(
       { error: 'Invalid API key' },
       { status: 401 }
-    );
-  }
-
-  // Apply security headers
+// Apply security headers
   const headers = getSecurityHeaders(finalConfig);
   const response = NextResponse.next();
   
   // Add headers to response
   Object.entries(headers).forEach(([key, value]) => {
     response.headers.set(key, value);
-  });
-
-  // Add correlation ID to response headers
+// Add correlation ID to response headers
 
   response.headers.set('x-correlation-id', correlationId);
 
@@ -268,8 +224,6 @@ export async function {
   response.headers.set('x-nonce', nanoid());
 
   return response;
-}
-
 // Export types and configurations
 export type { SecurityConfig };
 export { getSecurityHeaders, validateApiKey }; 

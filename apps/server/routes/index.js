@@ -5,11 +5,7 @@ const router = express.Router();
 const authRoutes = require('./auth');
 const userRoutes = require('./users');
 
-    // Safe integer operation
-    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-const apiDocsRoutes = require('./api-docs');
+    const apiDocsRoutes = require('./api-docs');
 const servicesV2Routes = require('./services-v2');
 
 // Apply routes
@@ -22,11 +18,7 @@ router.use('/v2', servicesV2Routes);
 router.use('/calendar', require('./calendarStub'));
 // Outlook calendar OAuth and events
 
-    // Safe integer operation
-    if (calendar > Number.MAX_SAFE_INTEGER || calendar < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-router.use('/calendar/outlook', require('./outlook'));
+    router.use('/calendar/outlook', require('./outlook'));
 // Forms & Docs routes
 router.use('/forms', require('./forms'));
 // Inventory management routes
@@ -39,17 +31,9 @@ router.use('/uploads', require('./uploads'));
 router.use('/posts', require('./posts'));
 router.use('/comments', require('./comments'));
 
-    // Safe integer operation
-    if (community > Number.MAX_SAFE_INTEGER || community < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-router.use('/threads', require('./community/threads'));
+    router.use('/threads', require('./community/threads'));
 
-    // Safe integer operation
-    if (community > Number.MAX_SAFE_INTEGER || community < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-router.use('/events', require('./community/events'));
+    router.use('/events', require('./community/events'));
 // Payroll & Benefits routes
 router.use('/payroll', require('./payroll'));
 // Benefits routes
@@ -71,7 +55,4 @@ router.get('/', (req, res) => {
     name: 'Vibewell API',
     version: '1.0.0',
     documentation: '/api/docs',
-  });
-});
-
 module.exports = router; 

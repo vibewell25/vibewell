@@ -22,13 +22,10 @@ const StaffSchedules: NextPage = () => {
       const res = await fetchWithTimeout('/api/staffSchedules');
       const json = await res.json();
       setSchedules(json.schedules || []);
-    } catch (error) {
+catch (error) {
       console.error('Error fetching schedules:', error);
       alert('Failed to load schedules');
-    }
-  };
-
-  useEffect(() => { fetchSchedules(); }, []);
+useEffect(() => { fetchSchedules(); }, []);
 
   const handleCreate = async (e: FormEvent) => {
     e.preventDefault();
@@ -37,27 +34,20 @@ const StaffSchedules: NextPage = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ staffId, date, startTime, endTime })
-      });
-      setStaffId(''); setDate(''); setStartTime(''); setEndTime('');
+setStaffId(''); setDate(''); setStartTime(''); setEndTime('');
       fetchSchedules();
-    } catch (error) {
+catch (error) {
       console.error('Error creating schedule:', error);
       alert('Failed to create schedule');
-    }
-  };
-
-  const handleDelete = async (id: string) => {
+const handleDelete = async (id: string) => {
     if (!confirm('Delete this schedule?')) return;
     try {
       await fetchWithTimeout(`/api/staffSchedules/${id}`, { method: 'DELETE' });
       fetchSchedules();
-    } catch (error) {
+catch (error) {
       console.error('Error deleting schedule:', error);
       alert('Failed to delete schedule');
-    }
-  };
-
-  return (
+return (
     <div className="max-w-2xl mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Staff Schedules</h1>
       <form onSubmit={handleCreate} className="space-y-2 mb-6">
@@ -81,7 +71,4 @@ const StaffSchedules: NextPage = () => {
       ))}
       {schedules.length === 0 && <p>No schedules.</p>}
     </div>
-  );
-};
-
 export default StaffSchedules;

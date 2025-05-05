@@ -5,6 +5,4 @@ interface BadgeProps {
   variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'error';
   size?: 'sm' | 'md' | 'lg';
   className?: string;
-}
-
 export {};

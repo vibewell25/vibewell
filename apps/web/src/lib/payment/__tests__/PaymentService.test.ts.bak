@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import payment-service from '../payment-service.ts';
+
+describe('payment-service', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<payment-service />);
+    expect(container).toBeInTheDocument();
+  });
+});

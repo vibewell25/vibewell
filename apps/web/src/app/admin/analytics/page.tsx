@@ -1,5 +1,3 @@
-'use client';
-
 import { Layout } from '@/components/layout';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -31,9 +29,7 @@ export default function AnalyticsDashboardPage() {
         const totalParticipants = events.reduce(
           (sum, event) => sum + (event.participantsCount || 0),
           0,
-        );
-
-        // Get general analytics data for the last 30 days
+// Get general analytics data for the last 30 days
         const end = new Date();
         const start = new Date();
         start.setDate(start.getDate() - 30);
@@ -59,16 +55,12 @@ export default function AnalyticsDashboardPage() {
           conversionRate: analyticsData.conversionRate.toFixed(1),
           engagementScore:
             analyticsData.sessionsByDay.reduce((sum: number, val: number) => sum + val, 0) / 30,
-        });
-      } catch (error) {
+catch (error) {
         console.error('Error loading summary data:', error);
-      } finally {
+finally {
         setLoading(false);
-      }
-    }
-
-    loadSummaryData();
-  }, []);
+loadSummaryData();
+[]);
 
   const analyticsModules = [
     {
@@ -77,29 +69,25 @@ export default function AnalyticsDashboardPage() {
       icon: <Icons.calendar className="text-primary h-12 w-12" />,
       path: '/admin/analytics/events',
       badge: 'New',
-    },
-    {
+{
       title: 'User Analytics',
       description: 'User engagement, retention, and behavior analysis',
       icon: <Icons.user className="h-12 w-12 text-purple-500" />,
       path: '/admin/analytics/users',
       comingSoon: true,
-    },
-    {
+{
       title: 'Content Performance',
       description: 'Analyze performance of content and resources',
       icon: <Icons.activity className="h-12 w-12 text-blue-500" />,
       path: '/admin/analytics/content',
       comingSoon: true,
-    },
-    {
+{
       title: 'Business Insights',
       description: 'Revenue, growth, and business metrics',
       icon: <Icons.dollarSign className="h-12 w-12 text-green-500" />,
       path: '/admin/analytics/business',
       comingSoon: true,
-    },
-  ];
+];
 
   return (
     <Layout>
@@ -141,12 +129,11 @@ export default function AnalyticsDashboardPage() {
                           i < Math.round(summary.averageFeedback || 0)
                             ? 'text-yellow-400'
                             : 'text-gray-300'
-                        }`}
+`}
                       />
                     ))}
                   </div>
-                }
-              />
+/>
 
               <AnalyticsCard
                 title="Monthly Active Users"
@@ -194,5 +181,3 @@ export default function AnalyticsDashboardPage() {
         )}
       </div>
     </Layout>
-  );
-}

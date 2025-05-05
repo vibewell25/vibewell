@@ -1,4 +1,3 @@
-// Booking model interface
 export interface Booking {
   id: string;
   userId: string;
@@ -17,5 +16,3 @@ export interface Booking {
     duration: number;
     createdAt: string;
     updatedAt: string;
-  };
-}

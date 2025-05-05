@@ -1,18 +1,14 @@
-'use client';
-
 import React from 'react';
 
 interface FormErrorMessageProps {
   id: string;
   error?: string;
   className?: string;
-}
-
 export const FormErrorMessage: React.FC<FormErrorMessageProps> = ({
   id,
   error,
   className = ''
-}) => {
+) => {
   if (!error) return null;
 
   return (
@@ -24,7 +20,4 @@ export const FormErrorMessage: React.FC<FormErrorMessageProps> = ({
     >
       {error}
     </p>
-  );
-};
-
 export default FormErrorMessage;

@@ -22,18 +22,14 @@ const EventDetail: NextPage = () => {
       const regsRes = await fetchWithTimeout(`/api/eventRegistrations/event/${id}`);
       const regsData = await regsRes.json();
       setRegs(regsData.registrations || []);
-    };
-    
-    fetchEventData();
-  }, [id]);
+fetchEventData();
+[id]);
 
   const unregister = async (regId: string) => {
     if (!confirm('Unregister this user?')) return;
     await fetchWithTimeout(`/api/eventRegistrations/${regId}`, { method: 'DELETE' });
     setRegs(prev => prev.filter(r => r.id !== regId));
-  };
-
-  return (
+return (
     <div className="max-w-2xl mx-auto py-6">
       {event && (
         <>
@@ -54,7 +50,4 @@ const EventDetail: NextPage = () => {
         <p>No registrations.</p>
       )}
     </div>
-  );
-};
-
 export default EventDetail;

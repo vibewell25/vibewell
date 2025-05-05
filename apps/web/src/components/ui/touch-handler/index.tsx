@@ -14,8 +14,6 @@ export interface TouchHandlerProps {
   longPressThreshold?: number; // in milliseconds
   enabled?: boolean;
   className?: string;
-}
-
 /**
  * TouchHandler - A component that provides enhanced touch interaction support
  *
@@ -33,7 +31,7 @@ export function TouchHandler({
   longPressThreshold = 500,
   enabled = true,
   className,
-}: TouchHandlerProps) {
+: TouchHandlerProps) {
   const { isTouch } = useResponsive();
 
   // Use the custom hook to handle touch events
@@ -45,14 +43,10 @@ export function TouchHandler({
     onRotate,
     onLongPress,
     longPressThreshold,
-  });
-
-  // Don't add handlers if not a touch device or component is disabled
+// Don't add handlers if not a touch device or component is disabled
   if (!isTouch || !enabled) {
     return <div className={className}>{children}</div>;
-  }
-
-  return (
+return (
     <div
       className={className}
       onTouchStart={handleTouchStart}
@@ -62,9 +56,6 @@ export function TouchHandler({
     >
       {children}
     </div>
-  );
-}
-
 // Re-export types and utilities for easy access
 export * from './utils';
 export * from './gesture-handlers';

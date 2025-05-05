@@ -7,8 +7,6 @@ import type { ReactNode } from 'react';
 export default function WellnessLayout({ children }: { children: ReactNode }) {
   redirect('/services');
   return null;
-}
-
 const WellnessLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
@@ -17,33 +15,27 @@ const WellnessLayout = ({ children }: { children: React.ReactNode }) => {
       name: 'Dashboard',
       ...createTypedLink(routes.wellness.root),
       icon: '📊',
-    },
-    {
+{
       name: 'AR Experience',
       ...createTypedLink(routes.wellness.ar),
       icon: '🎯',
-    },
-    {
+{
       name: 'Workouts',
       ...createTypedLink(routes.wellness.workouts),
       icon: '💪',
-    },
-    {
+{
       name: 'Meditation',
       ...createTypedLink(routes.wellness.meditation),
       icon: '🧘',
-    },
-    {
+{
       name: 'Progress',
       ...createTypedLink(routes.wellness.progress),
       icon: '📈',
-    },
-    {
+{
       name: 'Community',
       ...createTypedLink(routes.wellness.community),
       icon: '👥',
-    },
-  ] as const;
+] as const;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -67,7 +59,7 @@ const WellnessLayout = ({ children }: { children: React.ReactNode }) => {
                     pathname === item.href
                       ? 'bg-primary text-white'
                       : 'text-gray-600 hover:bg-gray-100'
-                  }`}
+`}
                 >
                   <span className="mr-2">{item.icon}</span>
                   {item.name}
@@ -102,7 +94,7 @@ const WellnessLayout = ({ children }: { children: React.ReactNode }) => {
               {...item}
               className={`block rounded-md px-3 py-2 text-base font-medium ${
                 pathname === item.href ? 'bg-primary text-white' : 'text-gray-600 hover:bg-gray-100'
-              }`}
+`}
             >
               <span className="mr-2">{item.icon}</span>
               {item.name}
@@ -145,5 +137,3 @@ const WellnessLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </footer>
     </div>
-  );
-}

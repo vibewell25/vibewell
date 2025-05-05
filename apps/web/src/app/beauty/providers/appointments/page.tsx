@@ -1,4 +1,3 @@
-'use client';;
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/Button';
@@ -16,14 +15,12 @@ interface Appointment {
     avatar?: string;
     email: string;
     phone: string;
-  };
-  service: {
+service: {
     id: string;
     name: string;
     duration: number;
     price: number;
-  };
-  date: string;
+date: string;
   time: string;
   status: 'scheduled' | 'confirmed' | 'completed' | 'cancelled' | 'no-show';
   notes?: string;
@@ -31,8 +28,6 @@ interface Appointment {
     status: 'pending' | 'paid' | 'refunded';
     amount: number;
     method?: string;
-  };
-}
 const dummyAppointments: Appointment[] = [
   {
     id: '1',
@@ -42,14 +37,12 @@ const dummyAppointments: Appointment[] = [
       avatar: '/users/sarah.jpg',
       email: 'sarah@example.com',
       phone: '+1 (555) 123-4567',
-    },
-    service: {
+service: {
       id: '1',
       name: 'Haircut & Highlights',
       duration: 120,
       price: 180,
-    },
-    date: '2024-03-20',
+date: '2024-03-20',
     time: '14:00',
     status: 'scheduled',
     notes: 'Client requested natural-looking highlights',
@@ -57,8 +50,6 @@ const dummyAppointments: Appointment[] = [
       status: 'pending',
       amount: 180,
       method: 'Credit Card',
-    },
-  },
 ];
 // Add new interface for calendar events
 interface CalendarEvent {
@@ -69,12 +60,9 @@ interface CalendarEvent {
   client: {
     name: string;
     avatar?: string;
-  };
-  service: {
+service: {
     name: string;
-  };
-  status: Appointment['status'];
-}
+status: Appointment['status'];
 export default function AppointmentsPage() {
   const [activeTab, setActiveTab] = useState('calendar');
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -85,8 +73,7 @@ export default function AppointmentsPage() {
   const handleStatusChange = (appointmentId: string, newStatus: Appointment['status']) => {
     import { Icons } from '@/components/icons';
     console.log(`Changing status for appointment ${appointmentId} to ${newStatus}`);
-  };
-  // Add function to convert appointments to calendar events
+// Add function to convert appointments to calendar events
   const getCalendarEvents = (appointments: Appointment[]): CalendarEvent[] => {
     return appointments.map((appointment) => ({
       id: appointment.id,
@@ -99,14 +86,11 @@ export default function AppointmentsPage() {
       client: {
         name: appointment.client.name,
         avatar: appointment.client.avatar,
-      },
-      service: {
+service: {
         name: appointment.service.name,
-      },
-      status: appointment.status,
-    }));
-  };
-  // Add calendar view component
+status: appointment.status,
+));
+// Add calendar view component
   const CalendarView = () => {
     const events = getCalendarEvents(dummyAppointments);
     return (
@@ -118,20 +102,16 @@ export default function AppointmentsPage() {
           tileClassName={({ date }: TileArgs) => {
             const hasAppointments = events.some(
               (event) => date.toDateString() === event.start.toDateString(),
-            );
-            return hasAppointments ? 'bg-primary/10' : '';
-          }}
-          tileContent={({ date }: TileArgs) => {
+return hasAppointments ? 'bg-primary/10' : '';
+tileContent={({ date }: TileArgs) => {
             const dayAppointments = events.filter(
               (event) => date.toDateString() === event.start.toDateString(),
-            );
-            return dayAppointments.length > 0 ? (
+return dayAppointments.length > 0 ? (
               <div className="absolute bottom-1 left-1/2 -translate-x-1/2 transform">
                 <div className="bg-primary h-1.5 w-1.5 rounded-full" />
               </div>
             ) : null;
-          }}
-        />
+/>
         <Card>
           <CardHeader>
             <CardTitle>Appointments for {calendarDate.toLocaleDateString()}</CardTitle>
@@ -148,8 +128,7 @@ export default function AppointmentsPage() {
                       setSelectedAppointment(
                         dummyAppointments.find((a) => a.id === event.id) || null,
                       )
-                    }
-                  >
+>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <Avatar>
@@ -162,12 +141,12 @@ export default function AppointmentsPage() {
                             {event.start.toLocaleTimeString([], {
                               hour: '2-digit',
                               minute: '2-digit',
-                            })}{' '}
+)}{' '}
                             -{' '}
                             {event.end.toLocaleTimeString([], {
                               hour: '2-digit',
                               minute: '2-digit',
-                            })}
+)}
                           </p>
                         </div>
                       </div>
@@ -180,8 +159,7 @@ export default function AppointmentsPage() {
                               : event.status === 'no-show'
                                 ? 'warning'
                                 : 'outline'
-                        }
-                      >
+>
                         {event.status}
                       </Badge>
                     </div>
@@ -192,9 +170,7 @@ export default function AppointmentsPage() {
           </CardContent>
         </Card>
       </div>
-    );
-  };
-  return (
+return (
     <Layout>
       <div className="container-app py-12">
         <div className="mb-8">
@@ -266,7 +242,7 @@ export default function AppointmentsPage() {
                               selectedAppointment.id === appointment.id
                                 ? 'bg-primary/10'
                                 : 'hover:bg-muted'
-                            }`}
+`}
                             onClick={() => setSelectedAppointment(appointment)}
                           >
                             <div className="flex items-center gap-4">
@@ -340,8 +316,7 @@ export default function AppointmentsPage() {
                                       : selectedAppointment.status === 'no-show'
                                         ? 'warning'
                                         : 'outline'
-                                }
-                              >
+>
                                 {selectedAppointment.status}
                               </Badge>
                             </div>
@@ -355,8 +330,7 @@ export default function AppointmentsPage() {
                                       : selectedAppointment.payment.status === 'refunded'
                                         ? 'destructive'
                                         : 'warning'
-                                  }
-                                >
+>
                                   {selectedAppointment.payment.status}
                                 </Badge>
                                 <span>${selectedAppointment.payment.amount}</span>
@@ -446,5 +420,3 @@ export default function AppointmentsPage() {
         </div>
       </div>
     </Layout>
-  );
-}

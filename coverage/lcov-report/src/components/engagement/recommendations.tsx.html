@@ -309,7 +309,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   const { recommendations, isLoading } = <span class="cstat-no" title="statement not covered" >useEngagement();</span>
 &nbsp;
   // Limit the number of recommendations to display
-  const displayRecommendations = <span class="cstat-no" title="statement not covered" >recommendations?.slice(0, maxItems);</span>
+  const displayRecommendations = <span class="cstat-no" title="statement not covered" >recommendations.slice(0, maxItems);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (isLoading) {</span>
     return (
@@ -328,7 +328,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
     );
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (displayRecommendations?.length === 0) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (displayRecommendations.length === 0) {</span>
 <span class="cstat-no" title="statement not covered" >    return null;</span>
   }
 &nbsp;
@@ -342,19 +342,19 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
       )}
 &nbsp;
       &lt;div className="grid grid-cols-1 gap-4 md:grid-cols-3"&gt;
-        {displayRecommendations?.map(<span class="fstat-no" title="function not covered" >(p</span>roduct) =&gt; (
-<span class="cstat-no" title="statement not covered" >          &lt;Card key={product?.id} c</span>lassName="group overflow-hidden"&gt;
+        {displayRecommendations.map(<span class="fstat-no" title="function not covered" >(p</span>roduct) =&gt; (
+<span class="cstat-no" title="statement not covered" >          &lt;Card key={product.id} c</span>lassName="group overflow-hidden"&gt;
             &lt;div className="relative h-36"&gt;
               &lt;Image
-                src={product?.image_url || '/images/placeholder?.jpg'}
-                alt={product?.name}
+                src={product.image_url || '/images/placeholder.jpg'}
+                alt={product.name}
                 fill
                 className="object-cover transition-transform group-hover:scale-105"
               /&gt;
               &lt;div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-3"&gt;
                 &lt;div className="text-white"&gt;
-                  &lt;h4 className="font-medium"&gt;{product?.name}&lt;/h4&gt;
-                  &lt;p className="text-xs opacity-90"&gt;{product?.type}&lt;/p&gt;
+                  &lt;h4 className="font-medium"&gt;{product.name}&lt;/h4&gt;
+                  &lt;p className="text-xs opacity-90"&gt;{product.type}&lt;/p&gt;
                 &lt;/div&gt;
               &lt;/div&gt;
             &lt;/div&gt;
@@ -362,18 +362,18 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
               &lt;div className="flex items-center justify-between"&gt;
                 &lt;div className="flex items-center"&gt;
                   &lt;div className="flex"&gt;
-                    {[...Array(Math?.floor(product?.rating))].map(<span class="fstat-no" title="function not covered" >(_</span>, i) =&gt; (
+                    {[...Array(Math.floor(product.rating))].map(<span class="fstat-no" title="function not covered" >(_</span>, i) =&gt; (
 <span class="cstat-no" title="statement not covered" >                      &lt;span key={i} c</span>lassName="text-xs text-yellow-400"&gt;
                         ★
                       &lt;/span&gt;
                     ))}
-                    {<span class="branch-0 cbranch-no" title="branch not covered" >product?.rating % 1 &gt; 0 &amp;&amp; &lt;</span>span className="text-xs text-yellow-400"&gt;☆&lt;/span&gt;}
+                    {<span class="branch-0 cbranch-no" title="branch not covered" >product.rating % 1 &gt; 0 &amp;&amp; &lt;</span>span className="text-xs text-yellow-400"&gt;☆&lt;/span&gt;}
                   &lt;/div&gt;
                   &lt;span className="ml-1 text-xs text-muted-foreground"&gt;
-                    {product?.rating.toFixed(1)}
+                    {product.rating.toFixed(1)}
                   &lt;/span&gt;
                 &lt;/div&gt;
-                &lt;Link href={`/try-on/${product?.id}`}&gt;
+                &lt;Link href={`/try-on/${product.id}`}&gt;
                   &lt;Button variant="ghost" size="sm" className="h-8 px-2"&gt;
                     Try on &lt;MoveRight className="ml-1 h-3 w-3" /&gt;
                   &lt;/Button&gt;
@@ -384,7 +384,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         ))}
       &lt;/div&gt;
 &nbsp;
-      {<span class="branch-0 cbranch-no" title="branch not covered" >recommendations?.length &gt; maxItems &amp;&amp; (</span>
+      {<span class="branch-0 cbranch-no" title="branch not covered" >recommendations.length &gt; maxItems &amp;&amp; (</span>
         &lt;div className="mt-4 flex justify-center"&gt;
           &lt;Link href="/recommendations"&gt;
             &lt;Button variant="outline" size="sm"&gt;
@@ -403,7 +403,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

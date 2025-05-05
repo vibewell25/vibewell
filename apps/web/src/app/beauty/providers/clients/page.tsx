@@ -1,4 +1,3 @@
-'use client';
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/Button';
@@ -18,7 +17,7 @@ import {
   PlusIcon,
   PencilIcon,
   TrashIcon,
-} from '@heroicons/react/24/outline';
+from '@heroicons/react/24/outline';
 
 interface Client {
   id: string;
@@ -35,10 +34,7 @@ interface Client {
     communication: string[];
     allergies: string[];
     concerns: string[];
-  };
-  status: 'active' | 'inactive';
-}
-
+status: 'active' | 'inactive';
 interface Appointment {
   id: string;
   date: string;
@@ -47,8 +43,6 @@ interface Appointment {
   status: 'completed' | 'cancelled' | 'no-show';
   amount: number;
   notes?: string;
-}
-
 const mockClients: Client[] = [
   {
     id: '1',
@@ -69,10 +63,8 @@ const mockClients: Client[] = [
       communication: ['Email', 'SMS'],
       allergies: ['Certain hair dyes'],
       concerns: ['Dry scalp'],
-    },
-    status: 'active',
-  },
-  // Add more mock clients here
+status: 'active',
+// Add more mock clients here
 ];
 
 const mockAppointments: Appointment[] = [
@@ -84,7 +76,6 @@ const mockAppointments: Appointment[] = [
     status: 'completed',
     amount: 180,
     notes: 'Client requested natural-looking highlights',
-  },
 ];
 
 export default function ClientsPage() {
@@ -98,9 +89,7 @@ export default function ClientsPage() {
       client.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       client.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
       client.phone.includes(searchQuery),
-  );
-
-  return (
+return (
     <Layout>
       <div className="container-app py-12">
         <div className="mb-8">
@@ -148,7 +137,7 @@ export default function ClientsPage() {
                         key={client.id}
                         className={`cursor-pointer rounded-lg p-4 transition-colors ${
                           selectedClient.id === client.id ? 'bg-primary/10' : 'hover:bg-muted'
-                        }`}
+`}
                         onClick={() => setSelectedClient(client)}
                       >
                         <div className="flex items-center gap-4">
@@ -267,8 +256,7 @@ export default function ClientsPage() {
                                         : appointment.status === 'cancelled'
                                           ? 'destructive'
                                           : 'warning'
-                                    }
-                                  >
+>
                                     {appointment.status}
                                   </Badge>
                                   <p className="mt-2 font-medium">${appointment.amount}</p>
@@ -366,5 +354,3 @@ export default function ClientsPage() {
         </div>
       </div>
     </Layout>
-  );
-}

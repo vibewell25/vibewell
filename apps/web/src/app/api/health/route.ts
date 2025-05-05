@@ -5,14 +5,10 @@ import { logger } from '@/lib/logger';
 function isAllowedIP(ip: string): boolean {
   const allowedIPs = process.env['HEALTH_CHECK_ALLOWED_IPS'].split(',') || ['127.0.0.1', '::1'];
   return allowedIPs.includes(ip);
-}
-
 // Helper to validate API key
 function isValidApiKey(apiKey: string | null): boolean {
   const validApiKey = process.env['HEALTH_CHECK_API_KEY'];
   return validApiKey !== undefined && apiKey === validApiKey;
-}
-
 // Simple rate limiter for health check endpoint
 const ipRequestCounts = new Map<string, { count: number, resetTime: number }>();
 async function checkRateLimit(ip: string): Promise<{ 
@@ -20,7 +16,7 @@ async function checkRateLimit(ip: string): Promise<{
   limit: number, 
   remaining: number, 
   reset: number 
-}> {
+> {
   const MAX_REQUESTS = 10;
   const WINDOW_MS = 60 * 1000; // 1 minute
   
@@ -31,9 +27,7 @@ async function checkRateLimit(ip: string): Promise<{
   if (now > record.resetTime) {
     record.count = 0;
     record.resetTime = now + WINDOW_MS;
-  }
-  
-  record.count += 1;
+record.count += 1;
   ipRequestCounts.set(ip, record);
   
   return {
@@ -41,19 +35,13 @@ async function checkRateLimit(ip: string): Promise<{
     limit: MAX_REQUESTS,
     remaining: Math.max(0, MAX_REQUESTS - record.count),
     reset: record.resetTime
-  };
-}
-
 // Simple function to get client IP from request
 function getClientIp(request: Request): string {
   const forwarded = request.headers.get('x-forwarded-for');
   if (forwarded) {
     const firstIp = forwarded.split(',')[0];
     return firstIp ? firstIp.trim() : '127.0.0.1';
-  }
-  return '127.0.0.1';
-}
-
+return '127.0.0.1';
 export async function GET(request: Request) {
   const start = Date.now();
   
@@ -82,22 +70,13 @@ export async function GET(request: Request) {
               'X-RateLimit-Limit': limit.toString(),
               'X-RateLimit-Remaining': remaining.toString(),
               'X-RateLimit-Reset': reset.toString(),
-            }
-          }
-        );
-      }
-    }
-    
-    // Check authorization - either valid API key or allowed IP
+// Check authorization - either valid API key or allowed IP
     if (!isValidApiKey(apiKey) && !isAllowedIP(ip)) {
       logger.warn(`Unauthorized health check access attempt from IP: ${ip}`);
       return NextResponse.json(
         { status: 'error', message: 'Unauthorized' },
         { status: 401 }
-      );
-    }
-    
-    // Perform actual health check
+// Perform actual health check
     // Add any critical service checks here
     
     const responseTime = Date.now() - start;
@@ -108,15 +87,11 @@ export async function GET(request: Request) {
         status: 'healthy', 
         timestamp: new Date().toISOString(),
         responseTime: `${responseTime}ms`
-      },
-      { 
+{ 
         status: 200,
         headers: {
           'Cache-Control': 'no-store, max-age=0',
-        }
-      }
-    );
-  } catch (error) {
+catch (error) {
     logger.error('Health check failed:', error);
     return NextResponse.json(
       { status: 'unhealthy', error: 'Service check failed' },
@@ -124,8 +99,3 @@ export async function GET(request: Request) {
         status: 503,
         headers: {
           'Cache-Control': 'no-store, max-age=0',
-        }
-      }
-    );
-  }
-}

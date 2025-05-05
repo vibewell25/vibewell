@@ -12,8 +12,6 @@ interface GridProps extends React.HTMLAttributes<HTMLDivElement> {
   flow?: 'row' | 'column' | 'dense' | 'row-dense' | 'column-dense';
   className?: string;
   minWidth?: string;
-}
-
 /**
  * Grid - A flexible Grid layout component
  *
@@ -32,7 +30,7 @@ export function Grid({
   className,
   minWidth,
   ...props
-}: GridProps) {
+: GridProps) {
   // Map column counts to Tailwind classes
   const columnsClasses = {
     1: 'grid-cols-1',
@@ -44,9 +42,7 @@ export function Grid({
     12: 'grid-cols-12',
     'auto-fill': 'grid-cols-auto-fill',
     'auto-fit': 'grid-cols-auto-fit',
-  };
-
-  // Map gap sizes to Tailwind classes
+// Map gap sizes to Tailwind classes
   const gapClasses = {
     none: 'gap-0',
     xs: 'gap-1',
@@ -54,9 +50,7 @@ export function Grid({
     md: 'gap-4',
     lg: 'gap-6',
     xl: 'gap-8',
-  };
-
-  // Map row gap sizes to Tailwind classes
+// Map row gap sizes to Tailwind classes
   const rowGapClasses = {
     none: 'row-gap-0',
     xs: 'row-gap-1',
@@ -64,9 +58,7 @@ export function Grid({
     md: 'row-gap-4',
     lg: 'row-gap-6',
     xl: 'row-gap-8',
-  };
-
-  // Map column gap sizes to Tailwind classes
+// Map column gap sizes to Tailwind classes
   const columnGapClasses = {
     none: 'col-gap-0',
     xs: 'col-gap-1',
@@ -74,18 +66,14 @@ export function Grid({
     md: 'col-gap-4',
     lg: 'col-gap-6',
     xl: 'col-gap-8',
-  };
-
-  // Map alignment to Tailwind classes
+// Map alignment to Tailwind classes
   const alignClasses = {
     start: 'items-start',
     center: 'items-center',
     end: 'items-end',
     stretch: 'items-stretch',
     baseline: 'items-baseline',
-  };
-
-  // Map justification to Tailwind classes
+// Map justification to Tailwind classes
   const justifyClasses = {
     start: 'justify-start',
     center: 'justify-center',
@@ -93,26 +81,19 @@ export function Grid({
     between: 'justify-between',
     around: 'justify-around',
     evenly: 'justify-evenly',
-  };
-
-  // Map flow to Tailwind classes
+// Map flow to Tailwind classes
   const flowClasses = {
     row: 'grid-flow-row',
     column: 'grid-flow-col',
     dense: 'grid-flow-dense',
     'row-dense': 'grid-flow-row-dense',
     'column-dense': 'grid-flow-col-dense',
-  };
-
-  // Generate auto-fill or auto-fit grid style if needed
+// Generate auto-fill or auto-fit grid style if needed
   let gridAutoStyle = {};
   if (columns === 'auto-fill' || columns === 'auto-fit') {
     gridAutoStyle = {
       gridTemplateColumns: `repeat(${columns}, minmax(${minWidth || '250px'}, 1fr))`,
-    };
-  }
-
-  // Combine classes
+// Combine classes
   const gridClasses = cn(
     'grid',
     typeof columns === 'number' || typeof columns === 'string' ? columnsClasses[columns] : null,
@@ -123,23 +104,16 @@ export function Grid({
     justify ? justifyClasses[justify] : null,
     flow ? flowClasses[flow] : null,
     className,
-  );
-
-  return (
+return (
     <div className={gridClasses} style={gridAutoStyle} {...props}>
       {children}
     </div>
-  );
-}
-
 interface GridItemProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   span?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 'full';
   start?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 'auto';
   end?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 'auto';
   className?: string;
-}
-
 /**
  * GridItem - Individual grid item component
  */
@@ -159,9 +133,7 @@ export function GridItem({ children, span, start, end, className, ...props }: Gr
     11: 'col-span-11',
     12: 'col-span-12',
     full: 'col-span-full',
-  };
-
-  // Map start values to Tailwind classes
+// Map start values to Tailwind classes
   const startClasses = {
     1: 'col-start-1',
     2: 'col-start-2',
@@ -176,9 +148,7 @@ export function GridItem({ children, span, start, end, className, ...props }: Gr
     11: 'col-start-11',
     12: 'col-start-12',
     auto: 'col-start-auto',
-  };
-
-  // Map end values to Tailwind classes
+// Map end values to Tailwind classes
   const endClasses = {
     1: 'col-end-1',
     2: 'col-end-2',
@@ -194,19 +164,13 @@ export function GridItem({ children, span, start, end, className, ...props }: Gr
     12: 'col-end-12',
     13: 'col-end-13',
     auto: 'col-end-auto',
-  };
-
-  // Combine classes
+// Combine classes
   const itemClasses = cn(
     span ? spanClasses[span] : null,
     start ? startClasses[start] : null,
     end ? endClasses[end] : null,
     className,
-  );
-
-  return (
+return (
     <div className={itemClasses} {...props}>
       {children}
     </div>
-  );
-}

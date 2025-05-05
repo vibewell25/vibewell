@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getServerSession } from 'next-auth';
@@ -16,8 +15,6 @@ const contentSchema = z.object({
   sequence: z.number().int().positive(),
   duration: z.number().int().positive().optional(),
   isRequired: z.boolean(),
-});
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); GET(
@@ -28,26 +25,16 @@ export async function {
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const moduleContent = await prisma.moduleContent.findUnique({
+const moduleContent = await prisma.moduleContent.findUnique({
       where: {
         id: params.contentId,
         moduleId: params.moduleId,
-      },
-    });
-
-    if (!moduleContent) {
+if (!moduleContent) {
       return NextResponse.json({ error: 'Module content not found' }, { status: 404 });
-    }
-
-    return NextResponse.json(moduleContent);
-  } catch (error) {
+return NextResponse.json(moduleContent);
+catch (error) {
     console.error('Error fetching module content:', error);
     return NextResponse.json({ error: 'Failed to fetch module content' }, { status: 500 });
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); PUT(
@@ -58,32 +45,22 @@ export async function {
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const body = await request.json();
+const body = await request.json();
     const validatedData = contentSchema.partial().parse(body);
 
     const moduleContent = await prisma.moduleContent.update({
       where: {
         id: params.contentId,
         moduleId: params.moduleId,
-      },
-      data: validatedData,
-    });
-
-    return NextResponse.json(moduleContent);
-  } catch (error) {
+data: validatedData,
+return NextResponse.json(moduleContent);
+catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: 'Invalid input data', details: error.errors },
         { status: 400 },
-      );
-    }
-    console.error('Error updating module content:', error);
+console.error('Error updating module content:', error);
     return NextResponse.json({ error: 'Failed to update module content' }, { status: 500 });
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); DELETE(
@@ -94,18 +71,11 @@ export async function {
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    await prisma.moduleContent.delete({
+await prisma.moduleContent.delete({
       where: {
         id: params.contentId,
         moduleId: params.moduleId,
-      },
-    });
-
-    return NextResponse.json({ message: 'Module content deleted successfully' });
-  } catch (error) {
+return NextResponse.json({ message: 'Module content deleted successfully' });
+catch (error) {
     console.error('Error deleting module content:', error);
     return NextResponse.json({ error: 'Failed to delete module content' }, { status: 500 });
-  }
-}

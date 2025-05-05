@@ -881,27 +881,27 @@ const NotificationItem = <span class="cstat-no" title="statement not covered" ><
   const router = <span class="cstat-no" title="statement not covered" >useRouter();</span>
 &nbsp;
   const handleClick = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!notification?.read) {</span>
-<span class="cstat-no" title="statement not covered" >      onRead(notification?.id);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!notification.read) {</span>
+<span class="cstat-no" title="statement not covered" >      onRead(notification.id);</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (notification?.linkUrl) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (notification.linkUrl) {</span>
 <span class="cstat-no" title="statement not covered" >      if (onNavigate) {</span>
-<span class="cstat-no" title="statement not covered" >        onNavigate(notification?.linkUrl);</span>
+<span class="cstat-no" title="statement not covered" >        onNavigate(notification.linkUrl);</span>
       } else {
-<span class="cstat-no" title="statement not covered" >        router?.push(notification?.linkUrl);</span>
+<span class="cstat-no" title="statement not covered" >        router.push(notification.linkUrl);</span>
       }
     }
   };
 &nbsp;
   // Function to get icon based on notification type
   const getTypeIcon = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >    switch (notification?.type) {</span>
+<span class="cstat-no" title="statement not covered" >    switch (notification.type) {</span>
       case 'BOOKING':
         return (
           &lt;div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600"&gt;
             &lt;svg
-              xmlns="http://www?.w3.org/2000/svg"
+              xmlns="http://www.w3.org/2000/svg"
               width="16"
               height="16"
               viewBox="0 0 24 24"
@@ -922,7 +922,7 @@ const NotificationItem = <span class="cstat-no" title="statement not covered" ><
         return (
           &lt;div className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-100 text-purple-600"&gt;
             &lt;svg
-              xmlns="http://www?.w3.org/2000/svg"
+              xmlns="http://www.w3.org/2000/svg"
               width="16"
               height="16"
               viewBox="0 0 24 24"
@@ -932,7 +932,7 @@ const NotificationItem = <span class="cstat-no" title="statement not covered" ><
               strokeLinecap="round"
               strokeLinejoin="round"
             &gt;
-              &lt;polygon points="12 2 15?.09 8?.26 22 9?.27 17 14?.14 18?.18 21?.02 12 17?.77 5?.82 21?.02 7 14?.14 2 9?.27 8?.91 8?.26 12 2"&gt;&lt;/polygon&gt;
+              &lt;polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"&gt;&lt;/polygon&gt;
             &lt;/svg&gt;
           &lt;/div&gt;
         );
@@ -940,7 +940,7 @@ const NotificationItem = <span class="cstat-no" title="statement not covered" ><
         return (
           &lt;div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 text-green-600"&gt;
             &lt;svg
-              xmlns="http://www?.w3.org/2000/svg"
+              xmlns="http://www.w3.org/2000/svg"
               width="16"
               height="16"
               viewBox="0 0 24 24"
@@ -950,8 +950,8 @@ const NotificationItem = <span class="cstat-no" title="statement not covered" ><
               strokeLinecap="round"
               strokeLinejoin="round"
             &gt;
-              &lt;path d="M21?.5 12H16c-.7 0-1?.4.5-1?.5 1?.2l-1 7?.8"&gt;&lt;/path&gt;
-              &lt;path d="M11?.3 8?.8L8.9 5?.3C8.4 4?.5 7?.4 4?.1 6?.5 4?.3L3.9 5c-1?.7.4-2?.7 2?.3-2?.3 4l3?.2 12?.5c.4 1?.7 2?.3 2?.7 4 2?.3l2.6-.7c?.9-.2 1?.6-1 1?.7-1?.9l.8-6?.7c.1-.7-.2-1?.5-.7-1?.9l-1?.9-1?.8z"&gt;&lt;/path&gt;
+              &lt;path d="M21.5 12H16c-.7 0-1.4.5-1.5 1.2l-1 7.8"&gt;&lt;/path&gt;
+              &lt;path d="M11.3 8.8L8.9 5.3C8.4 4.5 7.4 4.1 6.5 4.3L3.9 5c-1.7.4-2.7 2.3-2.3 4l3.2 12.5c.4 1.7 2.3 2.7 4 2.3l2.6-.7c.9-.2 1.6-1 1.7-1.9l.8-6.7c.1-.7-.2-1.5-.7-1.9l-1.9-1.8z"&gt;&lt;/path&gt;
             &lt;/svg&gt;
           &lt;/div&gt;
         );
@@ -959,7 +959,7 @@ const NotificationItem = <span class="cstat-no" title="statement not covered" ><
         return (
           &lt;div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600"&gt;
             &lt;svg
-              xmlns="http://www?.w3.org/2000/svg"
+              xmlns="http://www.w3.org/2000/svg"
               width="16"
               height="16"
               viewBox="0 0 24 24"
@@ -971,7 +971,7 @@ const NotificationItem = <span class="cstat-no" title="statement not covered" ><
             &gt;
               &lt;circle cx="12" cy="12" r="10"&gt;&lt;/circle&gt;
               &lt;line x1="12" y1="8" x2="12" y2="12"&gt;&lt;/line&gt;
-              &lt;line x1="12" y1="16" x2="12?.01" y2="16"&gt;&lt;/line&gt;
+              &lt;line x1="12" y1="16" x2="12.01" y2="16"&gt;&lt;/line&gt;
             &lt;/svg&gt;
           &lt;/div&gt;
         );
@@ -982,7 +982,7 @@ const NotificationItem = <span class="cstat-no" title="statement not covered" ><
     &lt;div
       className={cn(
         'flex cursor-pointer gap-3 rounded-md p-3 transition-colors',
-        notification?.read ? 'bg-white hover:bg-gray-50' : 'bg-blue-50 hover:bg-blue-100',
+        notification.read ? 'bg-white hover:bg-gray-50' : 'bg-blue-50 hover:bg-blue-100',
       )}
       onClick={handleClick}
     &gt;
@@ -993,44 +993,44 @@ const NotificationItem = <span class="cstat-no" title="statement not covered" ><
           &lt;h4
             className={cn(
               'line-clamp-1 text-sm font-medium',
-              !notification?.read &amp;&amp; 'font-semibold',
+              !notification.read &amp;&amp; 'font-semibold',
             )}
           &gt;
-            {notification?.title}
+            {notification.title}
           &lt;/h4&gt;
           &lt;div className="flex items-center"&gt;
-            {<span class="branch-0 cbranch-no" title="branch not covered" >notification?.linkUrl &amp;&amp; (</span>
-              &lt;ExternalLinkIcon className="mr-1 h-3?.5 w-3?.5 flex-shrink-0 text-gray-400" /&gt;
+            {<span class="branch-0 cbranch-no" title="branch not covered" >notification.linkUrl </span>&amp;&amp; (
+              &lt;ExternalLinkIcon className="mr-1 h-3.5 w-3.5 flex-shrink-0 text-gray-400" /&gt;
             )}
             &lt;Button
               variant="ghost"
               size="icon"
               className="h-6 w-6 text-gray-400 hover:text-red-500 focus:ring-0"
               onClick={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; {
-<span class="cstat-no" title="statement not covered" >                e?.stopPropagation();</span>
-<span class="cstat-no" title="statement not covered" >                onDelete(notification?.id);</span>
+<span class="cstat-no" title="statement not covered" >                e.stopPropagation();</span>
+<span class="cstat-no" title="statement not covered" >                onDelete(notification.id);</span>
               }}
             &gt;
-              &lt;TrashIcon className="h-3?.5 w-3?.5" /&gt;
+              &lt;TrashIcon className="h-3.5 w-3.5" /&gt;
               &lt;span className="sr-only"&gt;Delete&lt;/span&gt;
             &lt;/Button&gt;
           &lt;/div&gt;
         &lt;/div&gt;
 &nbsp;
-        &lt;p className="mt-1 line-clamp-2 text-sm text-gray-600"&gt;{notification?.message}&lt;/p&gt;
+        &lt;p className="mt-1 line-clamp-2 text-sm text-gray-600"&gt;{notification.message}&lt;/p&gt;
 &nbsp;
         &lt;div className="mt-2 flex items-center justify-between"&gt;
           &lt;span className="text-xs text-gray-500"&gt;
-            {formatDistanceToNow(new Date(notification?.createdAt), { addSuffix: true })}
+            {formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true })}
           &lt;/span&gt;
-          {<span class="branch-0 cbranch-no" title="branch not covered" >!notification?.read &amp;&amp; (</span>
+          {<span class="branch-0 cbranch-no" title="branch not covered" >!notification.read </span>&amp;&amp; (
             &lt;Button
               variant="ghost"
               size="sm"
               className="h-6 px-2 py-0 text-xs text-gray-500 hover:text-blue-600"
               onClick={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; {
-<span class="cstat-no" title="statement not covered" >                e?.stopPropagation();</span>
-<span class="cstat-no" title="statement not covered" >                onRead(notification?.id);</span>
+<span class="cstat-no" title="statement not covered" >                e.stopPropagation();</span>
+<span class="cstat-no" title="statement not covered" >                onRead(notification.id);</span>
               }}
             &gt;
               Mark as read
@@ -1075,12 +1075,12 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
       &lt;PopoverTrigger asChild&gt;
         &lt;Button variant="ghost" size="icon" className="relative"&gt;
           &lt;BellIcon className="h-5 w-5" /&gt;
-          {<span class="branch-0 cbranch-no" title="branch not covered" >counts?.unread &gt; 0 &amp;&amp; (</span>
+          {<span class="branch-0 cbranch-no" title="branch not covered" >counts.unread &gt; 0 &amp;&amp; (</span>
             &lt;Badge
               variant="destructive"
               className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center px-1 text-xs"
             &gt;
-              {counts?.unread &gt; 99 ? '99+' : counts?.unread}
+              {counts.unread &gt; 99 ? '99+' : counts.unread}
             &lt;/Badge&gt;
           )}
           &lt;span className="sr-only"&gt;Notifications&lt;/span&gt;
@@ -1098,7 +1098,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
               size="sm"
               onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >m</span>arkAllAsRead()}</span>
               className="h-8 px-2"
-              disabled={counts?.unread === 0}
+              disabled={counts.unread === 0}
             &gt;
               &lt;CheckCheckIcon className="mr-1 h-4 w-4" /&gt;
               Mark all read
@@ -1107,16 +1107,16 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         &lt;/div&gt;
 &nbsp;
         &lt;Tabs defaultValue="all" value={activeTab} onValueChange={handleTabChange}&gt;
-          &lt;div className="border-b px-1?.5"&gt;
+          &lt;div className="border-b px-1.5"&gt;
             &lt;TabsList className="grid w-full grid-cols-3"&gt;
               &lt;TabsTrigger value="all" className="text-xs"&gt;
-                All ({counts?.total})
+                All ({counts.total})
               &lt;/TabsTrigger&gt;
               &lt;TabsTrigger value="unread" className="text-xs"&gt;
-                Unread ({counts?.unread})
+                Unread ({counts.unread})
               &lt;/TabsTrigger&gt;
               &lt;TabsTrigger value="read" className="text-xs"&gt;
-                Read ({counts?.total - counts?.unread})
+                Read ({counts.total - counts.unread})
               &lt;/TabsTrigger&gt;
             &lt;/TabsList&gt;
           &lt;/div&gt;
@@ -1158,7 +1158,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
               variant="ghost"
               size="sm"
               onClick={goToPrevPage}
-              disabled={!pagination?.hasPrevPage}
+              disabled={!pagination.hasPrevPage}
               className="h-8 px-2"
             &gt;
               &lt;ChevronLeftIcon className="mr-1 h-4 w-4" /&gt;
@@ -1166,14 +1166,14 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             &lt;/Button&gt;
 &nbsp;
             &lt;span className="text-xs text-gray-500"&gt;
-              Page {pagination?.page} of {pagination?.totalPages}
+              Page {pagination.page} of {pagination.totalPages}
             &lt;/span&gt;
 &nbsp;
             &lt;Button
               variant="ghost"
               size="sm"
               onClick={goToNextPage}
-              disabled={!pagination?.hasNextPage}
+              disabled={!pagination.hasNextPage}
               className="h-8 px-2"
             &gt;
               Next
@@ -1209,7 +1209,7 @@ const NotificationList = <span class="cstat-no" title="statement not covered" ><
     );
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (notifications?.length === 0) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (notifications.length === 0) {</span>
     return (
       &lt;div className="flex flex-col items-center justify-center p-8 text-center"&gt;
         &lt;BellIcon className="mb-2 h-10 w-10 text-gray-300" /&gt;
@@ -1221,9 +1221,9 @@ const NotificationList = <span class="cstat-no" title="statement not covered" ><
   return (
     &lt;ScrollArea className="h-[320px]"&gt;
       &lt;div className="flex flex-col divide-y"&gt;
-        {notifications?.map(<span class="fstat-no" title="function not covered" >(n</span>otification) =&gt; (
+        {notifications.map(<span class="fstat-no" title="function not covered" >(n</span>otification) =&gt; (
 <span class="cstat-no" title="statement not covered" >          &lt;NotificationItem</span>
-            key={notification?.id}
+            key={notification.id}
             notification={notification}
             onRead={onRead}
             onDelete={onDelete}
@@ -1243,7 +1243,7 @@ const NotificationList = <span class="cstat-no" title="statement not covered" ><
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

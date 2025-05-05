@@ -1,13 +1,5 @@
 import React from 'react';
 import { Button } from '@/components/ui/Button';
-import {
-  renderWithProviders,
-  testAccessibility,
-  measurePerformance,
-  screen,
-  fireEvent,
-} from '../../utils/test-utils';
-import { vi } from 'vitest';
 
 describe('Button Component', () => {
   // Rendering tests
@@ -16,13 +8,10 @@ describe('Button Component', () => {
       renderWithProviders(<Button>Click me</Button>);
       expect(screen.getByRole('button')).toBeInTheDocument();
       expect(screen.getByText('Click me')).toBeInTheDocument();
-    });
-
-    it('renders with different variants', () => {
+it('renders with different variants', () => {
       const { rerender } = renderWithProviders(
         <Button variant="default">Default</Button>
-      );
-      expect(screen.getByRole('button')).toHaveClass('bg-primary');
+expect(screen.getByRole('button')).toHaveClass('bg-primary');
 
       rerender(<Button variant="destructive">Destructive</Button>);
       expect(screen.getByRole('button')).toHaveClass('bg-destructive');
@@ -32,9 +21,7 @@ describe('Button Component', () => {
 
       rerender(<Button variant="ghost">Ghost</Button>);
       expect(screen.getByRole('button')).toHaveClass('hover:bg-accent');
-    });
-
-    it('renders with different sizes', () => {
+it('renders with different sizes', () => {
       const { rerender } = renderWithProviders(<Button size="default">Default</Button>);
       let button = screen.getByRole('button');
       expect(button).toHaveClass('h-10 px-4 py-2');
@@ -46,10 +33,7 @@ describe('Button Component', () => {
       rerender(<Button size="lg">Large</Button>);
       button = screen.getByRole('button');
       expect(button).toHaveClass('h-11 px-8');
-    });
-  });
-
-  // Interaction tests
+// Interaction tests
   describe('Interactions', () => {
     it('calls onClick handler when clicked', () => {
       const handleClick = vi.fn();
@@ -57,63 +41,40 @@ describe('Button Component', () => {
       
       fireEvent.click(screen.getByRole('button'));
       expect(handleClick).toHaveBeenCalledTimes(1);
-    });
-
-    it('is disabled when disabled prop is true', () => {
+it('is disabled when disabled prop is true', () => {
       renderWithProviders(<Button disabled>Disabled</Button>);
       expect(screen.getByRole('button')).toBeDisabled();
-    });
-
-    it('handles loading state correctly', () => {
+it('handles loading state correctly', () => {
       renderWithProviders(<Button loading>Loading</Button>);
       expect(screen.getByRole('button')).toHaveAttribute('aria-busy', 'true');
       expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
-    });
-  });
-
-  // Accessibility tests
+// Accessibility tests
   describe('Accessibility', () => {
     it('meets accessibility guidelines', async () => {
       await testAccessibility(<Button>Accessible Button</Button>);
-    });
-
-    it('has correct ARIA attributes', () => {
+it('has correct ARIA attributes', () => {
       renderWithProviders(
         <Button aria-label="Custom Label" aria-describedby="desc">
           Button
         </Button>
-      );
-      const button = screen.getByRole('button');
+const button = screen.getByRole('button');
       expect(button).toHaveAttribute('aria-label', 'Custom Label');
       expect(button).toHaveAttribute('aria-describedby', 'desc');
-    });
-  });
-
-  // Performance tests
+// Performance tests
   describe('Performance', () => {
     it('renders efficiently', async () => {
       const performance = await measurePerformance(<Button>Performance Test</Button>);
       expect(performance.average).toBeLessThan(50); // 50ms threshold
-    });
-  });
-
-  // Edge cases
+// Edge cases
   describe('Edge Cases', () => {
     it('handles long text content', () => {
       const longText = 'This is a very long button text that might cause issues with layout';
       renderWithProviders(<Button>{longText}</Button>);
       expect(screen.getByText(longText)).toBeInTheDocument();
-    });
-
-    it('handles empty content', () => {
+it('handles empty content', () => {
       renderWithProviders(<Button />);
       expect(screen.getByRole('button')).toBeInTheDocument();
-    });
-
-    it('handles special characters', () => {
+it('handles special characters', () => {
       const specialChars = '!@#$%^&*()_+';
       renderWithProviders(<Button>{specialChars}</Button>);
       expect(screen.getByText(specialChars)).toBeInTheDocument();
-    });
-  });
-}); 

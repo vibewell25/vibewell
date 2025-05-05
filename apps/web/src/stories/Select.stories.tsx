@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectContent,
   SelectItem,
-} from '../components/ui/select';
+from '../components/ui/select';
 
 const SelectDemo = () => {
   return (
@@ -24,9 +24,6 @@ const SelectDemo = () => {
         </SelectGroup>
       </SelectContent>
     </Select>
-  );
-};
-
 const meta = {
   title: 'Components/Select',
   component: SelectDemo,
@@ -72,7 +69,7 @@ import {
   SelectTrigger,
   SelectContent,
   SelectItem,
-} from '@/components/ui/select';
+from '@/components/ui/select';
 
 function MyComponent() {
   return (
@@ -88,15 +85,10 @@ function MyComponent() {
         </SelectGroup>
       </SelectContent>
     </Select>
-  );
-}
 \`\`\`
 `,
-      },
-    },
-  },
-  tags: ['autodocs'],
-} satisfies Meta<typeof SelectDemo>;
+tags: ['autodocs'],
+satisfies Meta<typeof SelectDemo>;
 
 export default meta;
 type Story = StoryObj<typeof SelectDemo>;
@@ -106,11 +98,6 @@ export const Default: Story = {
     docs: {
       description: {
         story: 'Default select component with a list of options.',
-      },
-    },
-  },
-};
-
 export const WithGroups = {
   render: () => (
     <Select>
@@ -141,11 +128,6 @@ export const WithGroups = {
     docs: {
       description: {
         story: 'Select with grouped options.',
-      },
-    },
-  },
-};
-
 export const Disabled = {
   render: () => (
     <Select disabled>
@@ -165,11 +147,6 @@ export const Disabled = {
     docs: {
       description: {
         story: 'Disabled select component.',
-      },
-    },
-  },
-};
-
 export const WithDisabledOptions = {
   render: () => (
     <Select>
@@ -194,11 +171,6 @@ export const WithDisabledOptions = {
     docs: {
       description: {
         story: 'Select with some disabled options.',
-      },
-    },
-  },
-};
-
 export const CustomTrigger = {
   render: () => (
     <Select>
@@ -218,7 +190,3 @@ export const CustomTrigger = {
     docs: {
       description: {
         story: 'Select with custom trigger styling.',
-      },
-    },
-  },
-};

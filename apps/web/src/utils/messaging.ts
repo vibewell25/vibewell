@@ -1,4 +1,3 @@
-
 import type { MessagingConfig } from '../types/third-party';
 
 
@@ -16,16 +15,12 @@ export interface EmailMessage {
     filename: string;
     content: string | Buffer;
     contentType?: string;
-  }>;
-}
-
+>;
 export interface SMSMessage {
   to: string | string[];
   body: string;
   from?: string;
   mediaUrl?: string[];
-}
-
 export interface PushNotification {
   tokens: string[];
   title: string;
@@ -34,8 +29,6 @@ export interface PushNotification {
   imageUrl?: string;
   priority?: 'normal' | 'high';
   ttl?: number;
-}
-
 export class MessagingUtils {
   private static manager = ThirdPartyManager.getInstance();
 
@@ -62,35 +55,22 @@ export class MessagingUtils {
                 ? attachment.content.toString('base64')
                 : attachment.content,
               type: attachment.contentType,
-            })),
-          };
-
-          return await messaging.send(msg);
-        }
-
-        case 'twilio': {
+)),
+return await messaging.send(msg);
+case 'twilio': {
           if (!message.templateId) {
             throw new Error('Template ID is required for Twilio email service');
-          }
-
-          return await messaging.messages.create({
+return await messaging.messages.create({
             to: Array.isArray(message.to) ? message.to[0] : message.to,
             from: message.from || config.sender.email,
             templateId: message.templateId,
             dynamicTemplateData: message.templateData,
-          });
-        }
-
-        default:
+default:
           throw new Error(`Unsupported email service: ${config.service}`);
-      }
-    } catch (error) {
+catch (error) {
       console.error('Failed to send email:', error);
       throw error;
-    }
-  }
-
-  static async sendSMS(message: SMSMessage): Promise<any> {
+static async sendSMS(message: SMSMessage): Promise<any> {
     const messaging = this.manager.getService('messaging');
     if (!messaging) throw new Error('Messaging service not initialized');
 
@@ -107,22 +87,15 @@ export class MessagingUtils {
                 from: message.from || config.sender.phone,
                 body: message.body,
                 mediaUrl: message.mediaUrl,
-              }),
+),
             ),
-          );
-          return responses;
-        }
-
-        default:
+return responses;
+default:
           throw new Error(`Unsupported SMS service: ${config.service}`);
-      }
-    } catch (error) {
+catch (error) {
       console.error('Failed to send SMS:', error);
       throw error;
-    }
-  }
-
-  static async sendPushNotification(notification: PushNotification): Promise<any> {
+static async sendPushNotification(notification: PushNotification): Promise<any> {
     const messaging = this.manager.getService('messaging');
     if (!messaging) throw new Error('Messaging service not initialized');
 
@@ -137,29 +110,19 @@ export class MessagingUtils {
               title: notification.title,
               body: notification.body,
               imageUrl: notification.imageUrl,
-            },
-            data: notification.data,
+data: notification.data,
             android: {
               priority: notification.priority === 'high' ? 'high' : 'normal',
 
               ttl: notification.ttl ? notification.ttl * 1000 : undefined,
-            },
-            tokens: notification.tokens,
-          };
-
-          return await messaging.sendMulticast(message);
-        }
-
-        default:
+tokens: notification.tokens,
+return await messaging.sendMulticast(message);
+default:
           throw new Error(`Unsupported push notification service: ${config.service}`);
-      }
-    } catch (error) {
+catch (error) {
       console.error('Failed to send push notification:', error);
       throw error;
-    }
-  }
-
-  static async validateEmailTemplate(
+static async validateEmailTemplate(
     templateId: string,
     data: Record<string, any>,
   ): Promise<boolean> {
@@ -177,19 +140,12 @@ export class MessagingUtils {
           return requiredVariables.every((variable) => {
             const key = variable.replace(/[{}]/g, '').trim();
             return data.hasOwnProperty(key);
-          });
-        }
-
-        default:
+default:
           return true;
-      }
-    } catch (error) {
+catch (error) {
       console.error('Failed to validate email template:', error);
       return false;
-    }
-  }
-
-  static async getDeliveryStatus(messageId: string): Promise<string> {
+static async getDeliveryStatus(messageId: string): Promise<string> {
     const messaging = this.manager.getService('messaging');
     if (!messaging) throw new Error('Messaging service not initialized');
 
@@ -200,25 +156,14 @@ export class MessagingUtils {
         case 'twilio': {
           const message = await messaging.messages(messageId).fetch();
           return message.status;
-        }
-
-        case 'sendgrid': {
+case 'sendgrid': {
           const events = await messaging.eventWebhook.getEventWebhookSettings();
           return events.processed ? 'delivered' : 'pending';
-        }
-
-
-        case 'firebase-fcm': {
+case 'firebase-fcm': {
           const result = await messaging.messaging().getMessagingCondition(messageId);
           return result.success ? 'delivered' : 'failed';
-        }
-
-        default:
+default:
           throw new Error(`Unsupported delivery status check for service: ${config.service}`);
-      }
-    } catch (error) {
+catch (error) {
       console.error('Failed to get delivery status:', error);
       throw error;
-    }
-  }
-}

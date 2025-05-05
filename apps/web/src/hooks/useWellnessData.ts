@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect, useCallback } from 'react';
 
 import { Goal, HabitLog, WellnessDay } from '@/types/progress';
@@ -26,8 +24,7 @@ const DUMMY_GOALS: Goal[] = [
     color: '#8B5CF6',
     reminders: true,
     reminderTime: '07:00',
-  },
-  {
+{
     id: '2',
     title: 'Weekly Workouts',
     description: 'Complete 3 workout sessions per week',
@@ -39,8 +36,7 @@ const DUMMY_GOALS: Goal[] = [
     startDate: '2023-08-01T00:00:00.000Z',
     status: 'in_progress',
     color: '#EC4899',
-  },
-  {
+{
     id: '3',
     title: 'Hydration',
     description: 'Drink 8 glasses of water daily',
@@ -52,8 +48,7 @@ const DUMMY_GOALS: Goal[] = [
     startDate: '2023-08-01T00:00:00.000Z',
     status: 'in_progress',
     color: '#0EA5E9',
-  },
-  {
+{
     id: '4',
     title: 'Sleep Goal',
     description: 'Get 8 hours of sleep per night',
@@ -65,8 +60,7 @@ const DUMMY_GOALS: Goal[] = [
     startDate: '2023-08-01T00:00:00.000Z',
     status: 'in_progress',
     color: '#6366F1',
-  },
-  {
+{
     id: '5',
     title: 'Daily Steps',
     description: 'Walk 10,000 steps per day',
@@ -78,7 +72,6 @@ const DUMMY_GOALS: Goal[] = [
     startDate: '2023-08-01T00:00:00.000Z',
     status: 'in_progress',
     color: '#84CC16',
-  },
 ];
 
 // Dummy data for habit logs
@@ -136,8 +129,7 @@ const DUMMY_WELLNESS_DAYS: WellnessDay[] = [
     sleep: 7.5,
     steps: 9200,
     mood: 4,
-  },
-  {
+{
     date: '2023-08-02T00:00:00.000Z',
     meditation: 5,
     workout: 0,
@@ -145,8 +137,7 @@ const DUMMY_WELLNESS_DAYS: WellnessDay[] = [
     sleep: 6,
     steps: 8500,
     mood: 3,
-  },
-  {
+{
     date: '2023-08-03T00:00:00.000Z',
     meditation: 12,
     workout: 45,
@@ -154,8 +145,7 @@ const DUMMY_WELLNESS_DAYS: WellnessDay[] = [
     sleep: 8,
     steps: 12000,
     mood: 5,
-  },
-  {
+{
     date: '2023-08-04T00:00:00.000Z',
     meditation: 8,
     workout: 0,
@@ -163,8 +153,7 @@ const DUMMY_WELLNESS_DAYS: WellnessDay[] = [
     sleep: 7,
     steps: 7800,
     mood: 4,
-  },
-  {
+{
     date: '2023-08-05T00:00:00.000Z',
     meditation: 15,
     workout: 0,
@@ -172,8 +161,7 @@ const DUMMY_WELLNESS_DAYS: WellnessDay[] = [
     sleep: 6.5,
     steps: 10500,
     mood: 4,
-  },
-  {
+{
     date: '2023-08-06T00:00:00.000Z',
     meditation: 10,
     workout: 60,
@@ -181,8 +169,7 @@ const DUMMY_WELLNESS_DAYS: WellnessDay[] = [
     sleep: 7.5,
     steps: 6300,
     mood: 3,
-  },
-  {
+{
     date: '2023-08-07T00:00:00.000Z',
     meditation: 7,
     workout: 30,
@@ -190,13 +177,12 @@ const DUMMY_WELLNESS_DAYS: WellnessDay[] = [
     sleep: 6.5,
     steps: 8543,
     mood: 4,
-  },
 ];
 
 export function useWellnessData() {
   const {
     user
-  } = useAuth();
+= useAuth();
   const [goals, setGoals] = useState<Goal[]>([]);
   const [habitLogs, setHabitLogs] = useState<HabitLog[]>([]);
   const [wellnessDays, setWellnessDays] = useState<WellnessDay[]>([]);
@@ -233,11 +219,10 @@ export function useWellnessData() {
       const fetchedSummary = await wellnessAPI.getProgressSummary(user.id);
       if (fetchedSummary) {
         setSummary(fetchedSummary);
-      } else {
+else {
         // Generate fallback summary if API fails
         generateFallbackSummary(fetchedGoals.length > 0 ? fetchedGoals : DUMMY_GOALS);
-      }
-    } catch (err) {
+catch (err) {
       console.error('Error fetching wellness data:', err);
       setError('Failed to load wellness data');
 
@@ -246,10 +231,9 @@ export function useWellnessData() {
       setHabitLogs(DUMMY_HABIT_LOGS);
       setWellnessDays(DUMMY_WELLNESS_DAYS);
       generateFallbackSummary(DUMMY_GOALS);
-    } finally {
+finally {
       setIsLoading(false);
-    }
-  }, [user.id]);
+[user.id]);
 
   // Generate fallback summary from goal data
   const generateFallbackSummary = (goalsData: Goal[]) => {
@@ -263,34 +247,22 @@ export function useWellnessData() {
       water: 0,
       sleep: 0,
       steps: 0,
-    };
-
-    const improvement = {
+const improvement = {
       meditation: 0,
       workout: 0,
       water: 0,
       sleep: 0,
       steps: 0,
-    };
-
-    setSummary({
+setSummary({
       activeGoals,
       completedGoals,
       dailyStreak,
       thisWeekProgress,
       improvement,
-    });
-  };
-
-  // Load data on component mount and when user changes
+// Load data on component mount and when user changes
   useEffect(() => {
     fetchData();
-
-    // Safe array access
-    if (fetchData < 0 || fetchData >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  }, [fetchData]);
+[fetchData]);
 
   // Create a new goal
   const createGoal = async ( {
@@ -304,10 +276,9 @@ export function useWellnessData() {
 
       if (createdGoal) {
         setGoals((prevGoals) => [createdGoal, ...prevGoals]);
-      } else {
+else {
         throw new Error('Failed to create goal');
-      }
-    } catch (err) {
+catch (err) {
       console.error('Error creating goal:', err);
       setError('Failed to create goal');
 
@@ -317,15 +288,10 @@ export function useWellnessData() {
         ...newGoal,
         current: 0,
         status: 'not_started',
-      };
-
-      setGoals((prevGoals) => [tempGoal, ...prevGoals]);
-    } finally {
+setGoals((prevGoals) => [tempGoal, ...prevGoals]);
+finally {
       setIsLoading(false);
-    }
-  };
-
-  // Update an existing goal
+// Update an existing goal
   const updateGoal = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');goalId: string, updatedData: Partial<Omit<Goal, 'id'>>) => {
@@ -335,23 +301,18 @@ export function useWellnessData() {
 
       if (updatedGoal) {
         setGoals((prevGoals) => prevGoals.map((goal) => (goal.id === goalId ? updatedGoal : goal)));
-      } else {
+else {
         throw new Error('Failed to update goal');
-      }
-    } catch (err) {
+catch (err) {
       console.error('Error updating goal:', err);
       setError('Failed to update goal');
 
       // Optimistic update
       setGoals((prevGoals) =>
         prevGoals.map((goal) => (goal.id === goalId ? { ...goal, ...updatedData } : goal)),
-      );
-    } finally {
+finally {
       setIsLoading(false);
-    }
-  };
-
-  // Delete a goal
+// Delete a goal
   const deleteGoal = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');goalId: string) => {
@@ -361,18 +322,14 @@ export function useWellnessData() {
 
       if (success) {
         setGoals((prevGoals) => prevGoals.filter((goal) => goal.id !== goalId));
-      } else {
+else {
         throw new Error('Failed to delete goal');
-      }
-    } catch (err) {
+catch (err) {
       console.error('Error deleting goal:', err);
       setError('Failed to delete goal');
-    } finally {
+finally {
       setIsLoading(false);
-    }
-  };
-
-  // Log progress for a goal
+// Log progress for a goal
   const logHabit = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');goalId: string, value: number) => {
@@ -395,18 +352,13 @@ export function useWellnessData() {
 
                 current: goal.current + value,
                 status: goal.status === 'not_started' ? 'in_progress' : goal.status,
-              };
-            }
-            return goal;
-          }),
-        );
-
-        // Refresh data to update summary
+return goal;
+),
+// Refresh data to update summary
         fetchData();
-      } else {
+else {
         throw new Error('Failed to log habit');
-      }
-    } catch (err) {
+catch (err) {
       console.error('Error logging habit:', err);
       setError('Failed to log habit progress');
 
@@ -416,9 +368,7 @@ export function useWellnessData() {
         goalId,
         date: new Date().toISOString(),
         value,
-      };
-
-      setHabitLogs((prevLogs) => [tempLog, ...prevLogs]);
+setHabitLogs((prevLogs) => [tempLog, ...prevLogs]);
 
       // Update the goal's current value optimistically
       setGoals((prevGoals) =>
@@ -429,22 +379,14 @@ export function useWellnessData() {
 
               current: goal.current + value,
               status: goal.status === 'not_started' ? 'in_progress' : goal.status,
-            };
-          }
-          return goal;
-        }),
-      );
-    } finally {
+return goal;
+),
+finally {
       setIsLoading(false);
-    }
-  };
-
-  // Refresh all data
+// Refresh all data
   const refreshData = () => {
     fetchData();
-  };
-
-  return {
+return {
     goals,
     habitLogs,
     wellnessDays,
@@ -456,5 +398,3 @@ export function useWellnessData() {
     deleteGoal,
     logHabit,
     refreshData,
-  };
-}

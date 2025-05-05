@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -28,22 +26,18 @@ export default function PaymentConfirmationPage() {
         setStatus('success');
         setIsLoading(false);
         return;
-      }
-
-      try {
+try {
         // In a real app, you would check the payment status with your backend
         // For now, we'll just use the redirect_status from the URL
         if (redirectStatus === 'succeeded') {
           setStatus('success');
-        } else if (redirectStatus === 'processing') {
+else if (redirectStatus === 'processing') {
           setStatus('processing');
-        } else if (redirectStatus === 'failed') {
+else if (redirectStatus === 'failed') {
           setStatus('error');
-        } else {
+else {
           setStatus('unknown');
-        }
-
-        // Fetch payment details (in a real app)
+// Fetch payment details (in a real app)
         // const response = await fetch(`/api/payments/${paymentIntentId}`);
         // const data = await response.json();
         // setPaymentDetails(data);
@@ -55,17 +49,13 @@ export default function PaymentConfirmationPage() {
           date: new Date().toLocaleDateString(),
           id: paymentIntentId,
           status: redirectStatus,
-        });
-      } catch (err) {
+catch (err) {
         console.error('Error getting payment status:', err);
         setStatus('error');
-      } finally {
+finally {
         setIsLoading(false);
-      }
-    };
-
-    checkPaymentStatus();
-  }, [searchParams]);
+checkPaymentStatus();
+[searchParams]);
 
   return (
     <div className="container mx-auto py-12">
@@ -104,7 +94,7 @@ export default function PaymentConfirmationPage() {
                           {new Intl.NumberFormat('en-US', {
                             style: 'currency',
                             currency: paymentDetails.currency,
-                          }).format(paymentDetails.amount)}
+).format(paymentDetails.amount)}
                         </span>
                         <span className="text-gray-600">Date:</span>
                         <span>{paymentDetails.date}</span>
@@ -154,5 +144,3 @@ export default function PaymentConfirmationPage() {
         </CardFooter>
       </Card>
     </div>
-  );
-}

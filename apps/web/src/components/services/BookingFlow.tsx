@@ -1,4 +1,3 @@
-'use client';
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { BaseButton as Button } from '@/components/ui/base-button';
@@ -17,7 +16,6 @@ interface Service {
   duration: number;
   price: number;
   description: string;
-}
 interface Provider {
   id: string;
   name: string;
@@ -25,8 +23,6 @@ interface Provider {
   rating: number;
   specialties: string[];
   availableSlots: string[];
-}
-
 const services: Service[] = [
   { id: 'hair1', name: 'Haircut & Styling', category: 'hair', duration: 60, price: 75, description: 'Professional haircut and styling service' },
   { id: 'makeup1', name: 'Full Face Makeup', category: 'makeup', duration: 90, price: 120, description: 'Complete makeup application for any occasion' },
@@ -231,5 +227,3 @@ export default function BookingFlow() {
         </div>
       </div>
     </Layout>
-  );
-} 

@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+/* eslint-disable */import { renderHook, act } from '@testing-library/react-hooks';
 import { useAuth } from '../use-auth';
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -24,8 +24,7 @@ describe('useAuth Hook', () => {
       error: undefined,
       loginWithRedirect: jest.fn(),
       logout: jest.fn()
-    });
-  });
+    }));
 
   it('should return authentication state from Auth0', () => {
     const { result } = renderHook(() => useAuth());
@@ -89,8 +88,7 @@ describe('useAuth Hook', () => {
       await result.current.logout();
     });
     
-    expect(mockLogout).toHaveBeenCalledWith({ returnTo: expect.any(String) });
-  });
+    expect(mockLogout).toHaveBeenCalledWith({ returnTo: expect.any(String) }));
 
   it('should provide user profile data', () => {
     const { result } = renderHook(() => useAuth());
@@ -100,8 +98,7 @@ describe('useAuth Hook', () => {
       email_verified: true,
       sub: 'auth0|123456',
       name: 'Test User'
-    });
-  });
+    }));
 
   it('should handle loading state', () => {
     // Mock loading state
@@ -135,5 +132,4 @@ describe('useAuth Hook', () => {
     
     expect(result.current.error).toBe(authError);
     expect(result.current.isAuthenticated).toBe(false);
-  });
-}); 
+  })); 

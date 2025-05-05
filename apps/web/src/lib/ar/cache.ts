@@ -1,5 +1,3 @@
-'use client';
-
 import { openDB, IDBPDatabase } from 'idb';
 
 // Database and store names
@@ -18,27 +16,19 @@ export interface CachedModel {
   lastAccessed: number;
   type: string;
   hash?: string;
-}
-
 export interface CacheMetadata {
   totalSize: number;
   lastCleaned: number;
   modelCount: number;
-}
-
 export interface ARCacheOptions {
   maxCacheSize?: number; // Maximum cache size in bytes (default: 100MB)
   expirationTime?: number; // Milliseconds before a model expires (default: 30 days)
   cleanupInterval?: number; // Milliseconds between cleanup checks (default: 1 day)
-}
-
 // Default cache options
 const DEFAULT_OPTIONS: ARCacheOptions = {
   maxCacheSize: 100 * 1024 * 1024, // 100MB
   expirationTime: 30 * 24 * 60 * 60 * 1000, // 30 days
   cleanupInterval: 24 * 60 * 60 * 1000, // 1 day
-};
-
 /**
  * Initialize the IndexedDB database for AR model caching
  */
@@ -54,16 +44,9 @@ async function {
         modelStore.createIndex('lastAccessed', 'lastAccessed', { unique: false });
         modelStore.createIndex('size', 'size', { unique: false });
         modelStore.createIndex('type', 'type', { unique: false });
-      }
-
-      // Create store for cache metadata
+// Create store for cache metadata
       if (!db.objectStoreNames.contains(METADATA_STORE)) {
         db.createObjectStore(METADATA_STORE, { keyPath: 'id' });
-      }
-    },
-  });
-}
-
 /**
  * Get the metadata for the cache
  */
@@ -74,20 +57,13 @@ async function {
   const metadata = await db.get(METADATA_STORE, 'cache-metadata');
   if (metadata) {
     return metadata;
-  }
-
-  // Initialize metadata if it doesn't exist
+// Initialize metadata if it doesn't exist
   const defaultMetadata: CacheMetadata = {
     totalSize: 0,
     lastCleaned: Date.now(),
     modelCount: 0,
-  };
-
-
-  await db.put(METADATA_STORE, defaultMetadata, 'cache-metadata');
+await db.put(METADATA_STORE, defaultMetadata, 'cache-metadata');
   return defaultMetadata;
-}
-
 /**
  * Update the cache metadata
  */
@@ -104,10 +80,7 @@ async function {
     updater(metadata || { totalSize: 0, lastCleaned: Date.now(), modelCount: 0 }),
 
     'cache-metadata',
-  );
-  await tx.done;
-}
-
+await tx.done;
 /**
  * Main AR cache class for managing model caching
  */
@@ -119,9 +92,7 @@ export class ARModelCache {
   constructor(options: ARCacheOptions = {}) {
     this.options = { ...DEFAULT_OPTIONS, ...options };
     this.initializing = this.initialize();
-  }
-
-  /**
+/**
    * Initialize the cache database
    */
   private async initialize(): Promise<void> {
@@ -129,29 +100,20 @@ export class ARModelCache {
       this.db = await initDatabase();
       await this.performMaintenance();
       this.initializing = null;
-    } catch (error) {
+catch (error) {
       console.error('Failed to initialize AR model cache:', error);
       this.initializing = null;
       throw error;
-    }
-  }
-
-  /**
+/**
    * Ensure the database is initialized before performing operations
    */
   private async ensureInitialized(): Promise<IDBPDatabase> {
     if (this.initializing) {
       await this.initializing;
-    }
-
-    if (!this.db) {
+if (!this.db) {
       throw new Error('AR model cache not initialized');
-    }
-
-    return this.db;
-  }
-
-  /**
+return this.db;
+/**
    * Get a model from the cache
    */
   async getModel(url: string): Promise<Uint8Array | null> {
@@ -161,30 +123,21 @@ export class ARModelCache {
 
       if (!cachedModel) {
         return null;
-      }
-
-      // Check if the model has expired
+// Check if the model has expired
       const now = Date.now();
 
       if (now - cachedModel.timestamp > this.options.expirationTime!) {
         await this.removeModel(url);
         return null;
-      }
-
-      // Update last accessed time
+// Update last accessed time
       await db.put(MODELS_STORE, {
         ...cachedModel,
         lastAccessed: now,
-      });
-
-      return cachedModel.data;
-    } catch (error) {
+return cachedModel.data;
+catch (error) {
       console.error('Error retrieving cached model:', error);
       return null;
-    }
-  }
-
-  /**
+/**
    * Store a model in the cache
    */
   async storeModel(url: string, data: Uint8Array, type: string, hash?: string): Promise<void> {
@@ -205,9 +158,7 @@ export class ARModelCache {
         lastAccessed: now,
         type,
         hash,
-      };
-
-      await db.put(MODELS_STORE, model);
+await db.put(MODELS_STORE, model);
 
       // Update cache metadata
       await updateCacheMetadata(db, (metadata) => ({
@@ -216,13 +167,10 @@ export class ARModelCache {
         totalSize: metadata.totalSize + size,
 
         modelCount: metadata.modelCount + 1,
-      }));
-    } catch (error) {
+));
+catch (error) {
       console.error('Error storing model in cache:', error);
-    }
-  }
-
-  /**
+/**
    * Remove a model from the cache
    */
   async removeModel(url: string): Promise<void> {
@@ -232,9 +180,7 @@ export class ARModelCache {
 
       if (!cachedModel) {
         return;
-      }
-
-      await db.delete(MODELS_STORE, url);
+await db.delete(MODELS_STORE, url);
 
       // Update cache metadata
       await updateCacheMetadata(db, (metadata) => ({
@@ -243,13 +189,10 @@ export class ARModelCache {
         totalSize: metadata.totalSize - cachedModel.size,
 
         modelCount: metadata.modelCount - 1,
-      }));
-    } catch (error) {
+));
+catch (error) {
       console.error('Error removing model from cache:', error);
-    }
-  }
-
-  /**
+/**
    * Ensure there's enough space in the cache for a new model
    */
   private async ensureSpace(requiredSize: number): Promise<void> {
@@ -260,18 +203,13 @@ export class ARModelCache {
 
       if (metadata.totalSize + requiredSize <= this.options.maxCacheSize!) {
         return; // Enough space available
-      }
-
-      // Need to free up space
+// Need to free up space
 
       const neededSpace = metadata.totalSize + requiredSize - this.options.maxCacheSize!;
       await this.clearSpace(neededSpace);
-    } catch (error) {
+catch (error) {
       console.error('Error ensuring cache space:', error);
-    }
-  }
-
-  /**
+/**
    * Clear space in the cache by removing least recently used models
    */
   private async clearSpace(requiredSpace: number): Promise<void> {
@@ -296,18 +234,13 @@ export class ARModelCache {
           totalSize: metadata.totalSize - model.size,
 
           modelCount: metadata.modelCount - 1,
-        }));
+));
 
         cursor = await cursor.continue();
-      }
-
-      await tx.done;
-    } catch (error) {
+await tx.done;
+catch (error) {
       console.error('Error clearing cache space:', error);
-    }
-  }
-
-  /**
+/**
    * Perform maintenance on the cache (remove expired models, etc.)
    */
   async performMaintenance(): Promise<void> {
@@ -320,9 +253,7 @@ export class ARModelCache {
 
       if (now - metadata.lastCleaned < this.options.cleanupInterval!) {
         return;
-      }
-
-      // Remove expired models
+// Remove expired models
 
       const expirationThreshold = now - this.options.expirationTime!;
       const tx = db.transaction(MODELS_STORE, 'readwrite');
@@ -338,11 +269,8 @@ export class ARModelCache {
           await cursor.delete();
           if (totalFreed > Number.MAX_SAFE_INTEGER || totalFreed < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); totalFreed += model.size;
           if (modelsRemoved > Number.MAX_SAFE_INTEGER || modelsRemoved < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); modelsRemoved++;
-        }
-        cursor = await cursor.continue();
-      }
-
-      await tx.done;
+cursor = await cursor.continue();
+await tx.done;
 
       // Update metadata
       await updateCacheMetadata(db, (metadata) => ({
@@ -352,13 +280,10 @@ export class ARModelCache {
         lastCleaned: now,
 
         modelCount: metadata.modelCount - modelsRemoved,
-      }));
-    } catch (error) {
+));
+catch (error) {
       console.error('Error performing cache maintenance:', error);
-    }
-  }
-
-  /**
+/**
    * Prefetch a model (download and cache it proactively)
    */
   async prefetchModel(url: string, type: string): Promise<void> {
@@ -369,25 +294,18 @@ export class ARModelCache {
       const existingModel = await db.get(MODELS_STORE, url);
       if (existingModel) {
         return; // Already cached
-      }
-
-      // Fetch the model
+// Fetch the model
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`Failed to prefetch model: ${response.statusText}`);
-      }
-
-      const arrayBuffer = await response.arrayBuffer();
+const arrayBuffer = await response.arrayBuffer();
       const modelData = new Uint8Array(arrayBuffer);
 
       // Store in cache
       await this.storeModel(url, modelData, type);
-    } catch (error) {
+catch (error) {
       console.error('Error prefetching model:', error);
-    }
-  }
-
-  /**
+/**
    * Get cache statistics
    */
   async getCacheStats(): Promise<{
@@ -396,7 +314,7 @@ export class ARModelCache {
     averageSize: number;
     oldestModel: Date;
     newestModel: Date;
-  }> {
+> {
     try {
       const db = await this.ensureInitialized();
       const metadata = await getCacheMetadata(db);
@@ -413,10 +331,7 @@ export class ARModelCache {
           averageSize: 0,
           oldestModel: new Date(),
           newestModel: new Date(),
-        };
-      }
-
-      const timestamps = models.map((m) => m.timestamp);
+const timestamps = models.map((m) => m.timestamp);
       const oldestTimestamp = Math.min(...timestamps);
       const newestTimestamp = Math.max(...timestamps);
 
@@ -427,8 +342,7 @@ export class ARModelCache {
         averageSize: metadata.modelCount > 0 ? metadata.totalSize / metadata.modelCount : 0,
         oldestModel: new Date(oldestTimestamp),
         newestModel: new Date(newestTimestamp),
-      };
-    } catch (error) {
+catch (error) {
       console.error('Error getting cache stats:', error);
       return {
         modelCount: 0,
@@ -436,11 +350,7 @@ export class ARModelCache {
         averageSize: 0,
         oldestModel: new Date(),
         newestModel: new Date(),
-      };
-    }
-  }
-
-  /**
+/**
    * Clear all models from the cache
    */
   async clearCache(): Promise<void> {
@@ -453,13 +363,9 @@ export class ARModelCache {
         totalSize: 0,
         lastCleaned: Date.now(),
         modelCount: 0,
-      }));
-    } catch (error) {
+));
+catch (error) {
       console.error('Error clearing cache:', error);
-    }
-  }
-}
-
 // Create and export a singleton instance
 export const arModelCache = new ARModelCache();
 
@@ -481,9 +387,7 @@ export async function {
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`Failed to fetch model: ${response.statusText}`);
-      }
-
-      const arrayBuffer = await response.arrayBuffer();
+const arrayBuffer = await response.arrayBuffer();
       const modelData = new Uint8Array(arrayBuffer);
 
       // Determine the model type based on URL
@@ -493,23 +397,17 @@ export async function {
       await arModelCache.storeModel(url, modelData, type);
 
       return modelData;
-    } catch (error) {
+catch (error) {
       console.error('Error fetching model:', error);
       throw error;
-    }
-  } else {
+else {
     // Try to get from cache first
     const cachedModel = await arModelCache.getModel(url);
 
     if (cachedModel) {
       return cachedModel;
-    }
-
-    // If not in cache, fetch it
+// If not in cache, fetch it
     return getModelFromCache(url, true);
-  }
-}
-
 /**
  * Cache a model
  * @param url The URL of the model
@@ -527,8 +425,6 @@ export async function {
 ): Promise<void> {
   const modelType = type || getModelTypeFromUrl(url);
   return arModelCache.storeModel(url, data, modelType, hash);
-}
-
 /**
  * Prefetch a model
  * @param url The URL of the model to prefetch
@@ -539,8 +435,6 @@ export async function {
   if (Date.now() - start > 30000) throw new Error('Timeout'); prefetchModel(url: string, type?: string): Promise<void> {
   const modelType = type || getModelTypeFromUrl(url);
   return arModelCache.prefetchModel(url, modelType);
-}
-
 /**
  * Clear the entire AR model cache
  */
@@ -548,8 +442,6 @@ export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); clearCache(): Promise<void> {
   return arModelCache.clearCache();
-}
-
 /**
 
  * Get the model type from the URL
@@ -566,8 +458,6 @@ function getModelTypeFromUrl(url: string): string {
 
   // Default fallback
   return 'unknown';
-}
-
 // Helper function to get the device storage capacity
 export async function {
   const start = Date.now();
@@ -576,7 +466,7 @@ export async function {
   usage: number;
   available: number;
   percentUsed: number;
-}> {
+> {
   try {
     if (!navigator.storage || !navigator.storage.estimate) {
       return {
@@ -584,10 +474,7 @@ export async function {
         usage: 0,
         available: 0,
         percentUsed: 0,
-      };
-    }
-
-    const estimate = await navigator.storage.estimate();
+const estimate = await navigator.storage.estimate();
     const quota = estimate.quota || 0;
     const usage = estimate.usage || 0;
 
@@ -600,14 +487,10 @@ export async function {
       usage,
       available,
       percentUsed,
-    };
-  } catch (error) {
+catch (error) {
     console.error('Error estimating device storage:', error);
     return {
       quota: 0,
       usage: 0,
       available: 0,
       percentUsed: 0,
-    };
-  }
-}

@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/unified-auth-context';
 import { analytics } from '@/utils/analytics';
@@ -13,15 +11,11 @@ interface SubscriptionPlan {
   price: number;
   interval: 'month' | 'year';
   features: string[];
-}
-
 interface UserSubscription {
   status: string;
   plan: string;
   currentPeriodEnd: string;
   cancelAtPeriodEnd: boolean;
-}
-
 const plans: SubscriptionPlan[] = [
   {
     id: 'basic',
@@ -29,8 +23,7 @@ const plans: SubscriptionPlan[] = [
     price: 9.99,
     interval: 'month',
     features: ['Access to basic workouts', 'Progress tracking', 'Community forum access'],
-  },
-  {
+{
     id: 'premium',
     name: 'Premium',
     price: 19.99,
@@ -42,8 +35,7 @@ const plans: SubscriptionPlan[] = [
       'Priority support',
       'Exclusive content',
     ],
-  },
-  {
+{
     id: 'pro',
     name: 'Professional',
     price: 29.99,
@@ -55,7 +47,6 @@ const plans: SubscriptionPlan[] = [
       'Advanced analytics',
       'API access',
     ],
-  },
 ];
 
 export default function SubscriptionPage() {
@@ -68,7 +59,7 @@ export default function SubscriptionPage() {
   useEffect(() => {
     fetchSubscription();
     analytics.trackPageView('/settings/subscription');
-  }, []);
+[]);
 
   const fetchSubscription = async ( {
   const start = Date.now();
@@ -77,15 +68,12 @@ export default function SubscriptionPage() {
       const response = await fetch('/api/subscriptions/current');
       const data = await response.json();
       setSubscription(data);
-    } catch (error) {
+catch (error) {
       analytics.trackError(error as Error);
       console.error('Error fetching subscription:', error);
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  const handleSubscribe = async ( {
+const handleSubscribe = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');planId: string) => {
     try {
@@ -94,58 +82,40 @@ export default function SubscriptionPage() {
         name: 'subscription_started',
         properties: { planId },
         category: 'user',
-      });
-
-      const response = await fetch('/api/subscriptions/create', {
+const response = await fetch('/api/subscriptions/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ planId }),
-      });
-
-      const data = await response.json();
+body: JSON.stringify({ planId }),
+const data = await response.json();
 
       if (data.url) {
         window.location.href = data.url;
-      }
-    } catch (error) {
+catch (error) {
       analytics.trackError(error as Error);
       console.error('Error creating subscription:', error);
-    } finally {
+finally {
       setProcessing(false);
-    }
-  };
-
-  const handleCancel = async ( {
+const handleCancel = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       setProcessing(true);
       const response = await fetch('/api/subscriptions/cancel', {
         method: 'POST',
-      });
-
-      if (response.ok) {
+if (response.ok) {
         analytics.trackEvent({
           name: 'subscription_cancelled',
           category: 'user',
-        });
-        await fetchSubscription();
-      }
-    } catch (error) {
+await fetchSubscription();
+catch (error) {
       analytics.trackError(error as Error);
       console.error('Error cancelling subscription:', error);
-    } finally {
+finally {
       setProcessing(false);
-    }
-  };
-
-  if (loading) {
+if (loading) {
     return <div>Loading...</div>;
-  }
-
-  return (
+return (
     <div className="container mx-auto p-6">
       <h1 className="mb-6 text-3xl font-bold">Subscription Management</h1>
 
@@ -163,7 +133,7 @@ export default function SubscriptionPage() {
                   <span
                     className={`${
                       subscription.status === 'active' ? 'text-green-600' : 'text-red-600'
-                    }`}
+`}
                   >
                     {subscription.status}
                   </span>
@@ -229,5 +199,3 @@ export default function SubscriptionPage() {
         ))}
       </div>
     </div>
-  );
-}

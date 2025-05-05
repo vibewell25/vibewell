@@ -26,10 +26,8 @@ const PromotionCodeDetail: NextPage = () => {
       setDiscount(data.discount);
       setValidFrom(new Date(data.validFrom).toISOString().substr(0,10));
       setValidTo(new Date(data.validTo).toISOString().substr(0,10));
-    };
-    
-    fetchPromotionCode();
-  }, [id]);
+fetchPromotionCode();
+[id]);
 
   const handleUpdate = async (e: FormEvent) => {
     e.preventDefault();
@@ -37,21 +35,14 @@ const PromotionCodeDetail: NextPage = () => {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ code, description, discount, validFrom, validTo })
-    });
-    if (router) {
+if (router) {
       router.back();
-    }
-  };
-
-  const handleDelete = async () => {
+const handleDelete = async () => {
     if (!confirm('Delete this code?')) return;
     await fetchWithTimeout(`/api/promotionCodes/${id}`, { method: 'DELETE' });
     if (router) {
       router.back();
-    }
-  };
-
-  return (
+return (
     <div className="max-w-md mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Promotion Code Detail</h1>
       <form onSubmit={handleUpdate} className="space-y-2">
@@ -67,7 +58,4 @@ const PromotionCodeDetail: NextPage = () => {
         </div>
       </form>
     </div>
-  );
-};
-
 export default PromotionCodeDetail;

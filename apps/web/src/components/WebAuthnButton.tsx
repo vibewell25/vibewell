@@ -1,15 +1,13 @@
 import { useState } from 'react';
 import { startAuthentication, startRegistration } from '@simplewebauthn/browser';
 import { Button } from '@/components/ui/Button';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/components/ui/UseToast';
 import { useAuth } from '@/hooks/useAuth';
 
 interface WebAuthnButtonProps {
   mode: 'register' | 'authenticate';
   onSuccess?: () => void;
   onError?: (error: Error) => void;
-}
-
 export function WebAuthnButton({ mode, onSuccess, onError }: WebAuthnButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -24,11 +22,8 @@ export function WebAuthnButton({ mode, onSuccess, onError }: WebAuthnButtonProps
         title: 'Error',
         description: 'You must be logged in to use biometric authentication',
         variant: 'destructive',
-      });
-      return;
-    }
-
-    setIsLoading(true);
+return;
+setIsLoading(true);
 
     try {
       if (mode === 'register') {
@@ -36,9 +31,7 @@ export function WebAuthnButton({ mode, onSuccess, onError }: WebAuthnButtonProps
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId: user.id }),
-        });
-
-        const options = await optionsResponse.json();
+const options = await optionsResponse.json();
         const attResp = await startRegistration(options);
 
         const verificationResponse = await fetch('/api/auth/webauthn/verify-registration', {
@@ -47,26 +40,20 @@ export function WebAuthnButton({ mode, onSuccess, onError }: WebAuthnButtonProps
           body: JSON.stringify({
             userId: user.id,
             attestationResponse: attResp,
-          }),
-        });
-
-        const verification = await verificationResponse.json();
+),
+const verification = await verificationResponse.json();
 
         if (verification.verified) {
           toast({
             title: 'Success',
             description: 'Biometric authentication registered successfully',
-          });
-          onSuccess.();
-        }
-      } else {
+onSuccess.();
+else {
         const optionsResponse = await fetch('/api/auth/webauthn/auth-options', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId: user.id }),
-        });
-
-        const options = await optionsResponse.json();
+const options = await optionsResponse.json();
         const assertResp = await startAuthentication(options);
 
         const verificationResponse = await fetch('/api/auth/webauthn/verify-authentication', {
@@ -75,33 +62,24 @@ export function WebAuthnButton({ mode, onSuccess, onError }: WebAuthnButtonProps
           body: JSON.stringify({
             userId: user.id,
             assertionResponse: assertResp,
-          }),
-        });
-
-        const verification = await verificationResponse.json();
+),
+const verification = await verificationResponse.json();
 
         if (verification.verified) {
           toast({
             title: 'Success',
             description: 'Biometric authentication successful',
-          });
-          onSuccess.();
-        }
-      }
-    } catch (error) {
+onSuccess.();
+catch (error) {
       console.error('WebAuthn error:', error);
       toast({
         title: 'Error',
         description: error instanceof Error ? error.message : 'An error occurred',
         variant: 'destructive',
-      });
-      onError.(error instanceof Error ? error : new Error('An error occurred'));
-    } finally {
+onError.(error instanceof Error ? error : new Error('An error occurred'));
+finally {
       setIsLoading(false);
-    }
-  };
-
-  return (
+return (
     <Button onClick={handleWebAuthn} disabled={isLoading} variant="outline" className="w-full">
       {isLoading ? (
         <span className="loading loading-spinner" />
@@ -111,5 +89,3 @@ export function WebAuthnButton({ mode, onSuccess, onError }: WebAuthnButtonProps
         'Sign in with Biometric'
       )}
     </Button>
-  );
-}

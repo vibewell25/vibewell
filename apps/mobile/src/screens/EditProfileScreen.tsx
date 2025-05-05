@@ -9,7 +9,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform
-} from 'react-native';
+from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Feather } from '@expo/vector-icons';
@@ -24,8 +24,6 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required'),
   phone: Yup.string().matches(/^[0-9]{10}$/, 'Invalid phone number'),
   bio: Yup.string().max(200, 'Bio must be less than 200 characters'),
-});
-
 const EditProfileScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const navigation = useNavigation();
@@ -38,16 +36,13 @@ const EditProfileScreen: React.FC = () => {
       const current = item ? JSON.parse(item) : {};
       setInitialValues({ name: current.name || '', email: current.email || '', phone: current.phone || '', bio: current.bio || '' });
       setLoadingProfile(false);
-    });
-  }, []);
+[]);
 
   if (loadingProfile) return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size="large" />
     </View>
-  );
-
-  const handleSave = async (values: any) => {
+const handleSave = async (values: any) => {
     setSaving(true);
     try {
       const savedProfile = await AsyncStorage.getItem('@vibewell/user_profile');
@@ -59,19 +54,14 @@ const EditProfileScreen: React.FC = () => {
         email: values.email,
         phone: values.phone,
         bio: values.bio
-      };
-
-      await AsyncStorage.setItem('@vibewell/user_profile', JSON.stringify(updatedProfile));
+await AsyncStorage.setItem('@vibewell/user_profile', JSON.stringify(updatedProfile));
       navigation.goBack();
-    } catch (error) {
+catch (error) {
       console.error('Error saving profile:', error);
       Alert.alert('Error', 'Failed to save profile changes');
-    } finally {
+finally {
       setSaving(false);
-    }
-  };
-
-  return (
+return (
     <SafeAreaView style={[styles.container, { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -112,8 +102,7 @@ const EditProfileScreen: React.FC = () => {
                       { 
                         backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5',
                         color: isDarkMode ? '#FFFFFF' : '#000000'
-                      }
-                    ]}
+]}
                     placeholder="Enter your name"
                     placeholderTextColor={isDarkMode ? '#888888' : '#666666'}
                     value={values.name}
@@ -135,8 +124,7 @@ const EditProfileScreen: React.FC = () => {
                       { 
                         backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5',
                         color: isDarkMode ? '#FFFFFF' : '#000000'
-                      }
-                    ]}
+]}
                     placeholder="Enter your email"
                     placeholderTextColor={isDarkMode ? '#888888' : '#666666'}
                     value={values.email}
@@ -160,8 +148,7 @@ const EditProfileScreen: React.FC = () => {
                       { 
                         backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5',
                         color: isDarkMode ? '#FFFFFF' : '#000000'
-                      }
-                    ]}
+]}
                     placeholder="Enter your phone number"
                     placeholderTextColor={isDarkMode ? '#888888' : '#666666'}
                     value={values.phone}
@@ -185,8 +172,7 @@ const EditProfileScreen: React.FC = () => {
                       { 
                         backgroundColor: isDarkMode ? '#1E1E1E' : '#F5F5F5',
                         color: isDarkMode ? '#FFFFFF' : '#000000'
-                      }
-                    ]}
+]}
                     placeholder="Tell us about yourself"
                     placeholderTextColor={isDarkMode ? '#888888' : '#666666'}
                     value={values.bio}
@@ -219,67 +205,50 @@ const EditProfileScreen: React.FC = () => {
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
+header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
-  },
-  backButton: {
+backButton: {
     marginRight: 16,
-  },
-  title: {
+title: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  form: {
+form: {
     padding: 16,
-  },
-  inputGroup: {
+inputGroup: {
     marginBottom: 20,
-  },
-  label: {
+label: {
     fontSize: 16,
     marginBottom: 8,
     fontWeight: '500',
-  },
-  input: {
+input: {
     height: 48,
     borderRadius: 8,
     paddingHorizontal: 16,
     fontSize: 16,
-  },
-  bioInput: {
+bioInput: {
     height: 120,
     paddingTop: 12,
     paddingBottom: 12,
-  },
-  errorText: {
+errorText: {
     color: '#FF4444',
     fontSize: 14,
     marginTop: 4,
-  },
-  saveButton: {
+saveButton: {
     backgroundColor: '#4F46E5',
     height: 48,
     borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 24,
-  },
-  saveButtonText: {
+saveButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-});
-
 export default EditProfileScreen;

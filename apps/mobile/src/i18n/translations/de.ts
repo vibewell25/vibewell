@@ -14,8 +14,7 @@ export default {
     errorOccurred: 'Ein Fehler ist aufgetreten',
     tryAgain: 'Bitte versuchen Sie es erneut',
     comingSoon: 'Demnächst verfügbar',
-  },
-  auth: {
+auth: {
     signIn: 'Anmelden',
     signUp: 'Registrieren',
 
@@ -45,8 +44,7 @@ export default {
     resetPasswordSuccess: 'Passwort erfolgreich zurückgesetzt',
 
         resetPasswordEmail: 'E-Mail zur Passwortzurücksetzung gesendet',
-  },
-  profile: {
+profile: {
     title: 'Profil',
     editProfile: 'Profil bearbeiten',
     personalInfo: 'Persönliche Informationen',
@@ -71,8 +69,7 @@ export default {
     takePhoto: 'Foto aufnehmen',
     chooseFromLibrary: 'Aus Galerie auswählen',
     removePhoto: 'Foto entfernen',
-  },
-  booking: {
+booking: {
     title: 'Buchung',
     selectService: 'Dienstleistung auswählen',
     selectDateTime: 'Datum und Uhrzeit auswählen',
@@ -98,8 +95,7 @@ export default {
     cancellationPolicy: 'Stornierungsrichtlinie',
     noAvailability: 'Keine Verfügbarkeit für das ausgewählte Datum',
     tryAnotherDate: 'Versuchen Sie ein anderes Datum',
-  },
-  dashboard: {
+dashboard: {
     title: 'Dashboard',
     upcomingAppointments: 'Bevorstehende Termine',
     recentServices: 'Kürzlich genutzte Dienstleistungen',
@@ -114,8 +110,7 @@ export default {
     noRecentServices: 'Keine kürzlich genutzten Dienstleistungen',
     viewAll: 'Alle anzeigen',
     seeMore: 'Mehr anzeigen',
-  },
-  services: {
+services: {
     title: 'Dienstleistungen',
     categories: 'Kategorien',
     popular: 'Beliebt',
@@ -136,8 +131,7 @@ export default {
     sortByPrice: 'Nach Preis sortieren',
     sortByPopularity: 'Nach Beliebtheit sortieren',
     sortByRating: 'Nach Bewertung sortieren',
-  },
-  practitioners: {
+practitioners: {
     title: 'Anbieter',
     experience: 'Erfahrung',
     rating: 'Bewertung',
@@ -152,8 +146,7 @@ export default {
     servicesOffered: 'Angebotene Dienstleistungen',
     viewProfile: 'Profil anzeigen',
     contactPractitioner: 'Anbieter kontaktieren',
-  },
-  payments: {
+payments: {
     title: 'Zahlungen',
     paymentMethods: 'Zahlungsmethoden',
     addPaymentMethod: 'Zahlungsmethode hinzufügen',
@@ -172,8 +165,7 @@ export default {
     paymentFailed: 'Zahlung fehlgeschlagen',
     transactionHistory: 'Transaktionsverlauf',
     downloadReceipt: 'Quittung herunterladen',
-  },
-  settings: {
+settings: {
     title: 'Einstellungen',
     account: 'Konto',
     privacy: 'Datenschutz',
@@ -205,9 +197,7 @@ export default {
       ja: 'Japanisch',
       zh: 'Chinesisch (Vereinfacht)',
       ar: 'Arabisch'
-    }
-  },
-  offline: {
+offline: {
 
         offlineMode: 'Offline-Modus',
 
@@ -221,8 +211,7 @@ export default {
     dataWillSync: 'Ihre Daten werden synchronisiert, sobald Sie wieder online sind',
 
         manageOfflineData: 'Offline-Daten verwalten',
-  },
-  errors: {
+errors: {
     networkError: 'Netzwerkfehler',
     serverError: 'Serverfehler',
     unknownError: 'Unbekannter Fehler',
@@ -232,5 +221,3 @@ export default {
     dataNotFound: 'Daten nicht gefunden',
     pleaseCheckConnection: 'Bitte überprüfen Sie Ihre Internetverbindung',
     tryAgainLater: 'Bitte versuchen Sie es später erneut'
-  }
-}; 

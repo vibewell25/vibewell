@@ -315,18 +315,18 @@ class AuthService {
   // Mock API functions - in real implementation these would call your backend API
 <span class="fstat-no" title="function not covered" >  async g</span>etCurrentUser(): Promise&lt;User | null&gt; {
     // Check local storage or secure storage for token
-    const token = <span class="cstat-no" title="statement not covered" >localStorage?.getItem('auth_token');</span>
+    const token = <span class="cstat-no" title="statement not covered" >localStorage.getItem('auth_token');</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!token) {</span>
 <span class="cstat-no" title="statement not covered" >      return null;</span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // In a real app, you would validate the token with your backend
-      const userData = <span class="cstat-no" title="statement not covered" >JSON?.parse(localStorage?.getItem('auth_user') || 'null');</span>
+      const userData = <span class="cstat-no" title="statement not covered" >JSON.parse(localStorage.getItem('auth_user') || 'null');</span>
 <span class="cstat-no" title="statement not covered" >      return userData;</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      localStorage?.removeItem('auth_token');</span>
-<span class="cstat-no" title="statement not covered" >      localStorage?.removeItem('auth_user');</span>
+<span class="cstat-no" title="statement not covered" >      localStorage.removeItem('auth_token');</span>
+<span class="cstat-no" title="statement not covered" >      localStorage.removeItem('auth_user');</span>
 <span class="cstat-no" title="statement not covered" >      return null;</span>
     }
   }
@@ -345,19 +345,19 @@ class AuthService {
 &nbsp;
         'Content-Type': 'application/json',
       },
-      body: JSON?.stringify({ email, password, name }),
+      body: JSON.stringify({ email, password, name }),
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
-      const error = <span class="cstat-no" title="statement not covered" >await response?.json();</span>
-<span class="cstat-no" title="statement not covered" >      throw new Error(error?.message || 'Failed to sign up');</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
+      const error = <span class="cstat-no" title="statement not covered" >await response.json();</span>
+<span class="cstat-no" title="statement not covered" >      throw new Error(error.message || 'Failed to sign up');</span>
     }
 &nbsp;
-    const data = <span class="cstat-no" title="statement not covered" >await response?.json();</span>
+    const data = <span class="cstat-no" title="statement not covered" >await response.json();</span>
 &nbsp;
     // Save auth data to local storage
-<span class="cstat-no" title="statement not covered" >    localStorage?.setItem('auth_token', data?.session.token);</span>
-<span class="cstat-no" title="statement not covered" >    localStorage?.setItem('auth_user', JSON?.stringify(data?.user));</span>
+<span class="cstat-no" title="statement not covered" >    localStorage.setItem('auth_token', data.session.token);</span>
+<span class="cstat-no" title="statement not covered" >    localStorage.setItem('auth_user', JSON.stringify(data.user));</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return data;</span>
   }
@@ -372,19 +372,19 @@ class AuthService {
 &nbsp;
         'Content-Type': 'application/json',
       },
-      body: JSON?.stringify({ email, password }),
+      body: JSON.stringify({ email, password }),
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
-      const error = <span class="cstat-no" title="statement not covered" >await response?.json();</span>
-<span class="cstat-no" title="statement not covered" >      throw new Error(error?.message || 'Failed to sign in');</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
+      const error = <span class="cstat-no" title="statement not covered" >await response.json();</span>
+<span class="cstat-no" title="statement not covered" >      throw new Error(error.message || 'Failed to sign in');</span>
     }
 &nbsp;
-    const data = <span class="cstat-no" title="statement not covered" >await response?.json();</span>
+    const data = <span class="cstat-no" title="statement not covered" >await response.json();</span>
 &nbsp;
     // Save auth data to local storage
-<span class="cstat-no" title="statement not covered" >    localStorage?.setItem('auth_token', data?.session.token);</span>
-<span class="cstat-no" title="statement not covered" >    localStorage?.setItem('auth_user', JSON?.stringify(data?.user));</span>
+<span class="cstat-no" title="statement not covered" >    localStorage.setItem('auth_token', data.session.token);</span>
+<span class="cstat-no" title="statement not covered" >    localStorage.setItem('auth_user', JSON.stringify(data.user));</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return data;</span>
   }
@@ -398,13 +398,13 @@ class AuthService {
 &nbsp;
 &nbsp;
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage?.getItem('auth_token')}`,
+        Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
       },
     });
 &nbsp;
     // Remove auth data from local storage
-<span class="cstat-no" title="statement not covered" >    localStorage?.removeItem('auth_token');</span>
-<span class="cstat-no" title="statement not covered" >    localStorage?.removeItem('auth_user');</span>
+<span class="cstat-no" title="statement not covered" >    localStorage.removeItem('auth_token');</span>
+<span class="cstat-no" title="statement not covered" >    localStorage.removeItem('auth_user');</span>
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async r</span>esetPassword(email: string): Promise&lt;void&gt; {
@@ -418,12 +418,12 @@ class AuthService {
 &nbsp;
         'Content-Type': 'application/json',
       },
-      body: JSON?.stringify({ email }),
+      body: JSON.stringify({ email }),
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
-      const error = <span class="cstat-no" title="statement not covered" >await response?.json();</span>
-<span class="cstat-no" title="statement not covered" >      throw new Error(error?.message || 'Failed to reset password');</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
+      const error = <span class="cstat-no" title="statement not covered" >await response.json();</span>
+<span class="cstat-no" title="statement not covered" >      throw new Error(error.message || 'Failed to reset password');</span>
     }
   }
 }
@@ -436,7 +436,7 @@ export {};
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

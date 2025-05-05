@@ -1,4 +1,3 @@
-'use client';;
 import ProductMetricsDashboard from '@/components/analytics/product-metrics-dashboard';
 import FeedbackDashboard from '@/components/analytics/feedback-dashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -19,10 +18,7 @@ export default function ProductAnalytics() {
           <p>Product ID is required to view analytics.</p>
         </CardContent>
       </Card>
-    );
-  }
-
-  return (
+return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Product Analytics</h2>
 
@@ -59,5 +55,3 @@ export default function ProductAnalytics() {
         </TabsContent>
       </Tabs>
     </div>
-  );
-}

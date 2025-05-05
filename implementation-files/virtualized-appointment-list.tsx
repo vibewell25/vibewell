@@ -9,27 +9,21 @@ interface Appointment {
   date: string;
   time: string;
   status: string;
-}
-
 interface VirtualizedAppointmentListProps {
   appointments: Appointment[];
   onSelectAppointment: (appointment: Appointment) => void;
   className?: string;
-}
-
 export const VirtualizedAppointmentList: React.FC<VirtualizedAppointmentListProps> = ({
   appointments,
   onSelectAppointment,
   className = '',
-}) => {
+) => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const handleSelectAppointment = (appointment: Appointment) => {
     setSelectedId(appointment.id);
     onSelectAppointment(appointment);
-  };
-
-  const AppointmentRow = ({ index, style }: { index: number, style: React.CSSProperties }) => {
+const AppointmentRow = ({ index, style }: { index: number, style: React.CSSProperties }) => {
     const appointment = appointments[index];
     const isSelected = selectedId === appointment.id;
     
@@ -57,17 +51,14 @@ export const VirtualizedAppointmentList: React.FC<VirtualizedAppointmentListProp
                   : appointment.status === 'pending'
                   ? 'bg-yellow-100 text-yellow-800'
                   : 'bg-red-100 text-red-800'
-              }`}
+`}
             >
               {appointment.status}
             </span>
           </div>
         </div>
       </div>
-    );
-  };
-
-  return (
+return (
     <div className={`h-96 ${className}`}>
       <AutoSizer>
         {({ height, width }) => (
@@ -83,5 +74,3 @@ export const VirtualizedAppointmentList: React.FC<VirtualizedAppointmentListProp
         )}
       </AutoSizer>
     </div>
-  );
-};

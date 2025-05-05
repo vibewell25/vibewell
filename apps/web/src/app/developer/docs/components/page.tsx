@@ -1,4 +1,3 @@
-'use client';
 import React, { Suspense, useState } from 'react';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
@@ -24,7 +23,7 @@ import { Icons } from '@/components/icons';
   CogIcon,
   Bars3Icon,
   ChevronDoubleRightIcon
-} from '@heroicons/react/24/outline';
+from '@heroicons/react/24/outline';
 function ComponentsDocumentationContent() {
   const [searchQuery, setSearchQuery] = useState('');
   const searchParams = useSearchParams();
@@ -41,8 +40,7 @@ function ComponentsDocumentationContent() {
         { name: 'Tabs', path: '/developer/docs/components/tabs' },
         { name: 'Card', path: '/developer/docs/components/card' }
       ]
-    },
-    {
+{
       name: 'Navigation',
       description: 'Components for navigating between pages and content',
       icon: <Icons.ChevronDoubleRightIcon className="h-6 w-6" />,
@@ -52,8 +50,7 @@ function ComponentsDocumentationContent() {
         { name: 'Navbar', path: '/developer/docs/components/navbar' },
         { name: 'Sidebar', path: '/developer/docs/components/sidebar' },
       ]
-    },
-    {
+{
       name: 'Forms',
       description: 'Components for collecting user input and data entry',
       icon: <Icons.DocumentTextIcon className="h-6 w-6" />,
@@ -66,8 +63,7 @@ function ComponentsDocumentationContent() {
         { name: 'Switch', path: '/developer/docs/components/switch' },
         { name: 'Textarea', path: '/developer/docs/components/textarea' },
       ]
-    },
-    {
+{
       name: 'Feedback',
       description: 'Components for providing feedback to users',
       icon: <Icons.ChatBubbleLeftRightIcon className="h-6 w-6" />,
@@ -77,8 +73,7 @@ function ComponentsDocumentationContent() {
         { name: 'Progress', path: '/developer/docs/components/progress' },
         { name: 'Spinner', path: '/developer/docs/components/spinner' },
       ]
-    },
-    {
+{
       name: 'Overlays',
       description: 'Components that overlay on the main content',
       icon: <Icons.SquaresPlusIcon className="h-6 w-6" />,
@@ -88,8 +83,7 @@ function ComponentsDocumentationContent() {
         { name: 'Popover', path: '/developer/docs/components/popover' },
         { name: 'Tooltip', path: '/developer/docs/components/tooltip' },
       ]
-    },
-    {
+{
       name: 'Data Display',
       description: 'Components for displaying data in structured formats',
       icon: <Icons.FolderIcon className="h-6 w-6" />,
@@ -99,8 +93,7 @@ function ComponentsDocumentationContent() {
         { name: 'Badge', path: '/developer/docs/components/badge' },
         { name: 'List', path: '/developer/docs/components/list' },
       ]
-    },
-  ];
+];
   // Filter components based on search query
   const filteredCategories = searchQuery 
     ? componentCategories.map(category => ({
@@ -108,7 +101,7 @@ function ComponentsDocumentationContent() {
         components: category.components.filter(component => 
           component.name.toLowerCase().includes(searchQuery.toLowerCase())
         )
-      })).filter(category => category.components.length > 0)
+)).filter(category => category.components.length > 0)
     : componentCategories;
   return (
     <Layout>
@@ -374,15 +367,11 @@ function ComponentsDocumentationContent() {
         </div>
       </div>
     </Layout>
-  );
-}
 export default function ComponentsDocumentationPage() {
   return (
     <Suspense fallback={<ComponentsDocumentationSkeleton />}>
       <ComponentsDocumentationContent />
     </Suspense>
-  );
-}
 // Add skeleton component for loading state
 function ComponentsDocumentationSkeleton() {
   return (
@@ -397,5 +386,3 @@ function ComponentsDocumentationSkeleton() {
         </div>
       </div>
     </div>
-  );
-}

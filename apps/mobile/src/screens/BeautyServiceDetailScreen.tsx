@@ -12,7 +12,7 @@ import {
   ActivityIndicator,
   RefreshControl,
   Alert
-} from 'react-native';
+from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -21,7 +21,7 @@ import {
   BeautyServiceDetailRouteProp,
   BeautyServiceDetails,
   Review
-} from '../types/navigation';
+from '../types/navigation';
 import { BeautyService } from '../types/beauty';
 import { getBeautyServiceById, getSimilarBeautyServices, getServiceReviews } from '../services/beautyService';
 import ReviewList from '../components/beauty/ReviewList';
@@ -46,7 +46,7 @@ const BeautyServiceDetailScreen: React.FC = () => {
   
   useEffect(() => {
     fetchServiceDetails();
-  }, [serviceId]);
+[serviceId]);
   
   const fetchServiceDetails = async () => {
     setLoading(true);
@@ -57,9 +57,7 @@ const BeautyServiceDetailScreen: React.FC = () => {
         // Handle service not found
         setLoading(false);
         return;
-      }
-      
-      setService(serviceData);
+setService(serviceData);
       
       // Fetch similar services in parallel
       const similarServicesData = await getSimilarBeautyServices(serviceId);
@@ -74,41 +72,27 @@ const BeautyServiceDetailScreen: React.FC = () => {
         return {
           ...prevService,
           reviews: reviewsData
-        };
-      });
-      
-      // If service has reviews, use them
+// If service has reviews, use them
       if (serviceData.reviews) {
         setReviews(serviceData.reviews);
-      } else {
+else {
         // Otherwise fetch reviews separately
         const fetchedReviews = await getServiceReviews(serviceId);
         setReviews(fetchedReviews);
-      }
-    } catch (error) {
+catch (error) {
       console.error("Error fetching service details:", error);
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-  
-  const handleRefresh = async () => {
+const handleRefresh = async () => {
     setRefreshing(true);
     await fetchServiceDetails();
     setRefreshing(false);
-  };
-  
-  const handleBookNow = () => {
+const handleBookNow = () => {
     if (service) {
       navigation.navigate('BeautyBooking', { service });
-    }
-  };
-  
-  const handleSimilarServicePress = (similarServiceId: string) => {
+const handleSimilarServicePress = (similarServiceId: string) => {
     navigation.replace('BeautyServiceDetail', { serviceId: similarServiceId });
-  };
-  
-  if (loading) {
+if (loading) {
     return (
       <View 
         style={[
@@ -118,10 +102,7 @@ const BeautyServiceDetailScreen: React.FC = () => {
       >
         <ActivityIndicator size="large" color="#4F46E5" />
       </View>
-    );
-  }
-  
-  if (!service) {
+if (!service) {
     return (
       <View 
         style={[
@@ -145,10 +126,7 @@ const BeautyServiceDetailScreen: React.FC = () => {
           <Text style={styles.backButtonText}>Go Back</Text>
         </TouchableOpacity>
       </View>
-    );
-  }
-  
-  return (
+return (
     <View 
       style={[
         styles.container,
@@ -189,8 +167,7 @@ const BeautyServiceDetailScreen: React.FC = () => {
             colors={['#4F46E5']}
             tintColor={isDarkMode ? '#4F46E5' : '#4F46E5'}
           />
-        }
-      >
+>
         {/* Main Image */}
         <Image 
           source={{ uri: service.imageUrls[activeImageIndex] }}
@@ -358,9 +335,7 @@ const BeautyServiceDetailScreen: React.FC = () => {
                   // Reload reviews
                   getServiceReviews(serviceId).then(fetchedReviews => {
                     setReviews(fetchedReviews);
-                  });
-                }}
-                isDarkMode={isDarkMode}
+isDarkMode={isDarkMode}
               />
             )}
             
@@ -381,11 +356,8 @@ const BeautyServiceDetailScreen: React.FC = () => {
                         { 
                           text: 'Report', 
                           onPress: () => Alert.alert('Thanks', 'Thank you for reporting this review. We will review it shortly.') 
-                        }
-                      ]
-                    );
-                  }}
-                />
+]
+/>
               ))
             ) : (
               <Text style={[
@@ -469,40 +441,31 @@ const BeautyServiceDetailScreen: React.FC = () => {
         </TouchableOpacity>
       </View>
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  loadingContainer: {
+loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  errorContainer: {
+errorContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-  },
-  errorText: {
+errorText: {
     fontSize: 18,
     marginTop: 10,
     marginBottom: 20,
-  },
-  backButton: {
+backButton: {
     backgroundColor: '#4F46E5',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 8,
-  },
-  backButtonText: {
+backButtonText: {
     color: '#FFFFFF',
     fontWeight: '600',
-  },
-  header: {
+header: {
     position: 'absolute',
     top: 50,
     left: 0,
@@ -511,130 +474,100 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 15,
     zIndex: 10,
-  },
-  headerButton: {
+headerButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  scrollContent: {
+scrollContent: {
     paddingBottom: 90,
-  },
-  mainImage: {
+mainImage: {
     width: '100%',
     height: 300,
-  },
-  contentContainer: {
+contentContainer: {
     marginTop: 15,
     marginHorizontal: 15,
     borderRadius: 15,
     padding: 15,
-  },
-  titleContainer: {
+titleContainer: {
     marginBottom: 15,
-  },
-  serviceTitle: {
+serviceTitle: {
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 8,
-  },
-  providerContainer: {
+providerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  providerText: {
+providerText: {
     fontSize: 14,
-  },
-  ratingContainer: {
+ratingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  ratingText: {
+ratingText: {
     fontSize: 14,
     marginLeft: 4,
-  },
-  detailsContainer: {
+detailsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 20,
     paddingBottom: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
-  },
-  detailItem: {
+detailItem: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  detailText: {
+detailText: {
     marginLeft: 6,
     fontSize: 14,
-  },
-  descriptionContainer: {
+descriptionContainer: {
     marginBottom: 20,
-  },
-  sectionTitle: {
+sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
-  },
-  descriptionText: {
+descriptionText: {
     fontSize: 14,
     lineHeight: 22,
-  },
-  highlightsContainer: {
+highlightsContainer: {
     marginBottom: 20,
-  },
-  highlightsList: {
+highlightsList: {
     marginTop: 5,
-  },
-  highlightItem: {
+highlightItem: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 8,
-  },
-  bulletPoint: {
+bulletPoint: {
     width: 6,
     height: 6,
     borderRadius: 3,
     marginRight: 10,
-  },
-  highlightText: {
+highlightText: {
     fontSize: 14,
-  },
-  reviewsContainer: {
+reviewsContainer: {
     marginBottom: 20,
-  },
-  similarServicesContainer: {
+similarServicesContainer: {
     marginBottom: 10,
-  },
-  similarServicesList: {
+similarServicesList: {
     paddingVertical: 5,
-  },
-  similarServiceItem: {
+similarServiceItem: {
     width: 140,
     borderRadius: 10,
     overflow: 'hidden',
     marginRight: 10,
-  },
-  similarServiceImage: {
+similarServiceImage: {
     width: '100%',
     height: 100,
-  },
-  similarServiceInfo: {
+similarServiceInfo: {
     padding: 10,
-  },
-  similarServiceTitle: {
+similarServiceTitle: {
     fontSize: 14,
     fontWeight: '600',
     marginBottom: 4,
-  },
-  similarServicePrice: {
+similarServicePrice: {
     fontSize: 12,
-  },
-  bookNowContainer: {
+bookNowContainer: {
     position: 'absolute',
     bottom: 0,
     left: 0,
@@ -642,44 +575,34 @@ const styles = StyleSheet.create({
     padding: 15,
     borderTopWidth: 1,
     borderTopColor: '#E0E0E0',
-  },
-  bookNowButton: {
+bookNowButton: {
     backgroundColor: '#4F46E5',
     height: 50,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  bookNowText: {
+bookNowText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  section: {
+section: {
     marginBottom: 20,
-  },
-  sectionHeader: {
+sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 10,
-  },
-  writeReviewButton: {
+writeReviewButton: {
     backgroundColor: '#4F46E5',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 20,
-  },
-  writeReviewText: {
+writeReviewText: {
     color: '#FFFFFF',
     fontWeight: '500',
     fontSize: 14,
-  },
-  noReviewsText: {
+noReviewsText: {
     fontSize: 16,
     textAlign: 'center',
     marginVertical: 20,
-  },
-});
-
 export default BeautyServiceDetailScreen; 

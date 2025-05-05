@@ -304,10 +304,10 @@ import { S3Client, PutObjectCommand } from <span class="cstat-no" title="stateme
 // Configure AWS S3 client for file storage
 const s3Client = <span class="cstat-no" title="statement not covered" >new S3Client({</span>
 &nbsp;
-  region: process?.env.AWS_REGION || 'us-east-1',
+  region: process.env.AWS_REGION || 'us-east-1',
   credentials: {
-    accessKeyId: process?.env.AWS_ACCESS_KEY_ID || '',
-    secretAccessKey: process?.env.AWS_SECRET_ACCESS_KEY || '',
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
   },
 });
 &nbsp;
@@ -327,20 +327,20 @@ export class <span class="cstat-no" title="statement not covered" >SharingServic
       const shareId = <span class="cstat-no" title="statement not covered" >uuidv4();</span>
 &nbsp;
       // Upload image to AWS S3 Storage
-      const imageBuffer = <span class="cstat-no" title="statement not covered" >Buffer?.from(data?.imageData.split(',')[1], 'base64');</span>
+      const imageBuffer = <span class="cstat-no" title="statement not covered" >Buffer.from(data.imageData.split(',')[1], 'base64');</span>
 &nbsp;
       // Determine if we're in development mode and handle file storage differently
       let imageUrl: string;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (process?.env.NODE_ENV === 'development' &amp;&amp; !process?.env.AWS_ACCESS_KEY_ID) {</span>
+<span class="cstat-no" title="statement not covered" >      if (process.env.NODE_ENV === 'development' &amp;&amp; !process.env.AWS_ACCESS_KEY_ID) {</span>
         // For development without S3, store locally in the public directory
-        const uploadsDir = <span class="cstat-no" title="statement not covered" >path?.join(process?.cwd(), 'public', 'uploads', 'shares');</span>
+        const uploadsDir = <span class="cstat-no" title="statement not covered" >path.join(process.cwd(), 'public', 'uploads', 'shares');</span>
 &nbsp;
         // Ensure directory exists
-<span class="cstat-no" title="statement not covered" >        await fs?.mkdir(uploadsDir, { recursive: true });</span>
+<span class="cstat-no" title="statement not covered" >        await fs.mkdir(uploadsDir, { recursive: true });</span>
 &nbsp;
         // Save the file
-<span class="cstat-no" title="statement not covered" >        await fs?.writeFile(path?.join(uploadsDir, `${shareId}.png`), imageBuffer);</span>
+<span class="cstat-no" title="statement not covered" >        await fs.writeFile(path.join(uploadsDir, `${shareId}.png`), imageBuffer);</span>
 &nbsp;
         // URL for local development
 &nbsp;
@@ -349,27 +349,27 @@ export class <span class="cstat-no" title="statement not covered" >SharingServic
         // Upload to S3
         const command = <span class="cstat-no" title="statement not covered" >new PutObjectCommand({</span>
 &nbsp;
-          Bucket: process?.env.AWS_S3_BUCKET_NAME || 'vibewell-uploads',
+          Bucket: process.env.AWS_S3_BUCKET_NAME || 'vibewell-uploads',
           Key: `shares/${shareId}.png`,
           Body: imageBuffer,
 &nbsp;
           ContentType: 'image/png',
         });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        await s3Client?.send(command);</span>
+<span class="cstat-no" title="statement not covered" >        await s3Client.send(command);</span>
 &nbsp;
         // Construct S3 URL
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        imageUrl = `https://${process?.env.AWS_S3_BUCKET_NAME}.s3.${process?.env.AWS_REGION}.amazonaws?.com/shares/${shareId}.png`;</span>
+<span class="cstat-no" title="statement not covered" >        imageUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/shares/${shareId}.png`;</span>
       }
 &nbsp;
       // Create share record in database using Prisma
-<span class="cstat-no" title="statement not covered" >      await prisma?.share.create({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.share.create({</span>
         data: {
           id: shareId,
-          userId: data?.userId,
-          email: data?.email,
-          type: data?.type,
+          userId: data.userId,
+          email: data.email,
+          type: data.type,
           imageUrl: imageUrl,
           createdAt: new Date(),
         },
@@ -377,17 +377,17 @@ export class <span class="cstat-no" title="statement not covered" >SharingServic
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return { success: true, shareId };</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Error sharing image:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Error sharing image:', error);</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
         success: false,
-        error: error instanceof Error ? error?.message : 'Failed to share image',
+        error: error instanceof Error ? error.message : 'Failed to share image',
       };
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async g</span>etShare(shareId: string) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const data = <span class="cstat-no" title="statement not covered" >await prisma?.share.findUnique({</span>
+      const data = <span class="cstat-no" title="statement not covered" >await prisma.share.findUnique({</span>
         where: { id: shareId },
       });
 &nbsp;
@@ -397,10 +397,10 @@ export class <span class="cstat-no" title="statement not covered" >SharingServic
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return { success: true, data };</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Error getting share:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Error getting share:', error);</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
         success: false,
-        error: error instanceof Error ? error?.message : 'Failed to get share',
+        error: error instanceof Error ? error.message : 'Failed to get share',
       };
     }
   }
@@ -412,7 +412,7 @@ export class <span class="cstat-no" title="statement not covered" >SharingServic
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

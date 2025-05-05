@@ -1,7 +1,4 @@
-
-    
-    
-    import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
     
     import NetInfo from '@react-native-community/netinfo';
@@ -10,8 +7,6 @@ interface StorageItem<T> {
   data: T;
   timestamp: number;
   synced: boolean;
-}
-
 class OfflineStorage {
   private static instance: OfflineStorage;
   private syncQueue: Map<string, StorageItem<any>>;
@@ -21,70 +16,49 @@ class OfflineStorage {
     this.syncQueue = new Map();
     this.isOnline = true;
     this.initNetworkListener();
-  }
-
-  public static getInstance(): OfflineStorage {
+public static getInstance(): OfflineStorage {
     if (!OfflineStorage.instance) {
       OfflineStorage.instance = new OfflineStorage();
-    }
-    return OfflineStorage.instance;
-  }
-
-  private initNetworkListener() {
+return OfflineStorage.instance;
+private initNetworkListener() {
     NetInfo.addEventListener(state => {
       const wasOffline = !this.isOnline;
       this.isOnline = state.isConnected ?? false;
       
       if (wasOffline && this.isOnline) {
         this.processSyncQueue();
-      }
-    });
-  }
-
-  public async storeData<T>(key: string, value: T): Promise<boolean> {
+public async storeData<T>(key: string, value: T): Promise<boolean> {
     try {
       const item: StorageItem<T> = {
         data: value,
         timestamp: Date.now(),
         synced: false
-      };
-      await AsyncStorage.setItem(key, JSON.stringify(item));
+await AsyncStorage.setItem(key, JSON.stringify(item));
       if (!this.isOnline) {
         this.syncQueue.set(key, item);
-      }
-      return true;
-    } catch (error) {
+return true;
+catch (error) {
       console.error('Error storing data:', error);
       return false;
-    }
-  }
-
-  public async getData<T>(key: string): Promise<T | null> {
+public async getData<T>(key: string): Promise<T | null> {
     try {
       const jsonValue = await AsyncStorage.getItem(key);
       if (jsonValue != null) {
         const item: StorageItem<T> = JSON.parse(jsonValue);
         return item.data;
-      }
-      return null;
-    } catch (error) {
+return null;
+catch (error) {
       console.error('Error reading data:', error);
       return null;
-    }
-  }
-
-  public async removeData(key: string): Promise<boolean> {
+public async removeData(key: string): Promise<boolean> {
     try {
       await AsyncStorage.removeItem(key);
       this.syncQueue.delete(key);
       return true;
-    } catch (error) {
+catch (error) {
       console.error('Error removing data:', error);
       return false;
-    }
-  }
-
-  private async processSyncQueue(): Promise<void> {
+private async processSyncQueue(): Promise<void> {
     for (const [key, item] of this.syncQueue.entries()) {
       try {
         // Implement your sync logic here
@@ -95,48 +69,34 @@ class OfflineStorage {
         item.synced = true;
         await AsyncStorage.setItem(key, JSON.stringify(item));
         this.syncQueue.delete(key);
-      } catch (error) {
+catch (error) {
         console.error(`Error syncing item ${key}:`, error);
         item.synced = false;
         await AsyncStorage.setItem(key, JSON.stringify(item));
-      }
-    }
-  }
-
-  private async syncWithServer(item: StorageItem<any>): Promise<void> {
+private async syncWithServer(item: StorageItem<any>): Promise<void> {
     // Implement your server sync logic here
     // This is a placeholder for actual API calls
     return new Promise((resolve) => {
       setTimeout(resolve, 1000);
-    });
-  }
-
-  public async clearAll(): Promise<boolean> {
+public async clearAll(): Promise<boolean> {
     try {
       await AsyncStorage.clear();
       this.syncQueue.clear();
       return true;
-    } catch (error) {
+catch (error) {
       console.error('Error clearing storage:', error);
       return false;
-    }
-  }
-
-  public async getSyncStatus(key: string): Promise<boolean> {
+public async getSyncStatus(key: string): Promise<boolean> {
     try {
       const jsonValue = await AsyncStorage.getItem(key);
       if (jsonValue != null) {
         const item: StorageItem<unknown> = JSON.parse(jsonValue);
         return item.synced;
-      }
-      return false;
-    } catch (error) {
+return false;
+catch (error) {
       console.error('Error getting sync status:', error);
       return false;
-    }
-  }
-
-  public async setSyncStatus(key: string, synced: boolean): Promise<boolean> {
+public async setSyncStatus(key: string, synced: boolean): Promise<boolean> {
     try {
       const jsonValue = await AsyncStorage.getItem(key);
       if (jsonValue != null) {
@@ -144,23 +104,15 @@ class OfflineStorage {
         item.synced = synced;
         await AsyncStorage.setItem(key, JSON.stringify(item));
         return true;
-      }
-      return false;
-    } catch (error) {
+return false;
+catch (error) {
       console.error('Error setting sync status:', error);
       return false;
-    }
-  }
-
-  public async getAllKeys(): Promise<string[]> {
+public async getAllKeys(): Promise<string[]> {
     try {
       const keys = await AsyncStorage.getAllKeys();
       return [...keys];
-    } catch (error) {
+catch (error) {
       console.error('Error getting all keys:', error);
       return [];
-    }
-  }
-}
-
 export default OfflineStorage; 

@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 
 import { prisma } from '@/lib/database/client';
@@ -13,9 +12,6 @@ import { prisma } from '@/lib/prisma';
 interface RouteParams {
   params: {
     id: string;
-  };
-}
-
 // GET a single booking
 export async function {
   const start = Date.now();
@@ -26,41 +22,26 @@ export async function {
 
     if (!session.user.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const booking = await prisma.serviceBooking.findFirst({
+const booking = await prisma.serviceBooking.findFirst({
       where: {
         id,
         userId: session.user.id,
-      },
-      include: {
+include: {
         service: {
           select: {
             name: true,
             description: true,
             price: true,
             duration: true,
-          },
-        },
-        provider: {
+provider: {
           select: {
             name: true,
-          },
-        },
-      },
-    });
-
-    if (!booking) {
+if (!booking) {
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
-    }
-
-    return NextResponse.json({ booking });
-  } catch (error) {
+return NextResponse.json({ booking });
+catch (error) {
     console.error('Error fetching booking:', error);
     return NextResponse.json({ error: 'Failed to fetch booking' }, { status: 500 });
-  }
-}
-
 // Update a booking
 export async function {
   const start = Date.now();
@@ -71,37 +52,23 @@ export async function {
 
     if (!session.user.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const body = await request.json();
+const body = await request.json();
     const { status } = body;
 
     const booking = await prisma.serviceBooking.findFirst({
       where: {
         id,
-      },
-    });
-
-    if (!booking) {
+if (!booking) {
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
-    }
-
-    const updatedBooking = await prisma.serviceBooking.update({
+const updatedBooking = await prisma.serviceBooking.update({
       where: {
         id,
-      },
-      data: {
+data: {
         status: status || booking.status,
-      },
-    });
-
-    return NextResponse.json({ booking: updatedBooking });
-  } catch (error) {
+return NextResponse.json({ booking: updatedBooking });
+catch (error) {
     console.error('Error updating booking:', error);
     return NextResponse.json({ error: 'Failed to update booking' }, { status: 500 });
-  }
-}
-
 // Delete a booking
 export async function {
   const start = Date.now();
@@ -112,35 +79,21 @@ export async function {
 
     if (!session.user.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const booking = await prisma.serviceBooking.findFirst({
+const booking = await prisma.serviceBooking.findFirst({
       where: {
         id,
         userId: session.user.id,
-      },
-    });
-
-    if (!booking) {
+if (!booking) {
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
-    }
-
-    await prisma.serviceBooking.update({
+await prisma.serviceBooking.update({
       where: {
         id,
-      },
-      data: {
+data: {
         status: 'CANCELLED',
-      },
-    });
-
-    return NextResponse.json({ message: 'Booking cancelled successfully' });
-  } catch (error) {
+return NextResponse.json({ message: 'Booking cancelled successfully' });
+catch (error) {
     console.error('Error cancelling booking:', error);
     return NextResponse.json({ error: 'Failed to cancel booking' }, { status: 500 });
-  }
-}
-
 // Update booking status (PATCH)
 export async function {
   const start = Date.now();
@@ -151,37 +104,22 @@ export async function {
 
     if (!session.user.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const body = await request.json();
+const body = await request.json();
     const { status } = body;
 
     if (!status) {
       return NextResponse.json({ error: 'Status is required' }, { status: 400 });
-    }
-
-    const booking = await prisma.serviceBooking.findUnique({
+const booking = await prisma.serviceBooking.findUnique({
       where: {
         id,
-      },
-    });
-
-    if (!booking) {
+if (!booking) {
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
-    }
-
-    const updatedBooking = await prisma.serviceBooking.update({
+const updatedBooking = await prisma.serviceBooking.update({
       where: {
         id,
-      },
-      data: {
+data: {
         status,
-      },
-    });
-
-    return NextResponse.json({ booking: updatedBooking });
-  } catch (error) {
+return NextResponse.json({ booking: updatedBooking });
+catch (error) {
     console.error('Error updating booking status:', error);
     return NextResponse.json({ error: 'Failed to update booking status' }, { status: 500 });
-  }
-}

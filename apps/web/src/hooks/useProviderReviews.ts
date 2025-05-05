@@ -15,9 +15,6 @@ interface Review {
     id: string;
     name: string;
     avatar_url?: string;
-  };
-}
-
 // Extend the Review interface to include categories
 interface ReviewWithCategories extends Review {
   categories?: {
@@ -26,9 +23,6 @@ interface ReviewWithCategories extends Review {
     service?: number;
     communication?: number;
     expertise?: number;
-  };
-}
-
 export interface ReviewSummary {
   averageRating: number;
   totalReviews: number;
@@ -38,16 +32,12 @@ export interface ReviewSummary {
     3: number;
     2: number;
     1: number;
-  };
-  categories?: {
+categories?: {
     cleanliness: number;
     value: number;
     service: number;
     communication: number;
     expertise: number;
-  };
-}
-
 /**
  * Custom hook that provides enhanced review functionality specifically for provider profiles
  */
@@ -61,17 +51,13 @@ export default function useProviderReviews(providerId?: string) {
       3: 0,
       2: 0,
       1: 0,
-    },
-    categories: {
+categories: {
       cleanliness: 0,
       value: 0,
       service: 0,
       communication: 0,
       expertise: 0,
-    },
-  });
-
-  // Use the base reviews hook
+// Use the base reviews hook
   const {
     reviews: baseReviews,
     isLoading,
@@ -81,7 +67,7 @@ export default function useProviderReviews(providerId?: string) {
     updateReview,
     deleteReview,
     getAverageRating,
-  } = useReviews(providerId);
+= useReviews(providerId);
 
   // Cast reviews to include the categories
   const reviews = baseReviews as ReviewWithCategories[];
@@ -99,34 +85,22 @@ export default function useProviderReviews(providerId?: string) {
           service: 0,
           communication: 0,
           expertise: 0,
-        },
-      });
-      return;
-    }
-
-    // Calculate rating distribution
+return;
+// Calculate rating distribution
     const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
     reviews.forEach((review) => {
       // Increment the corresponding rating count
       const rating = Math.floor(review.rating) as 1 | 2 | 3 | 4 | 5;
 
-    // Safe array access
-    if (rating < 0 || rating >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      distribution[rating]++;
-    });
-
-    // Calculate category averages if available
+    distribution[rating]++;
+// Calculate category averages if available
     const categoryTotals = {
       cleanliness: 0,
       value: 0,
       service: 0,
       communication: 0,
       expertise: 0,
-    };
-
-    let categoryCount = 0;
+let categoryCount = 0;
 
     reviews.forEach((review) => {
       if (review.categories) {
@@ -136,10 +110,7 @@ export default function useProviderReviews(providerId?: string) {
         categoryTotals.if (service > Number.MAX_SAFE_INTEGER || service < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); service += review.categories.service || 0;
         categoryTotals.if (communication > Number.MAX_SAFE_INTEGER || communication < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); communication += review.categories.communication || 0;
         categoryTotals.if (expertise > Number.MAX_SAFE_INTEGER || expertise < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); expertise += review.categories.expertise || 0;
-      }
-    });
-
-    const categoryAverages =
+const categoryAverages =
       categoryCount > 0
         ? {
 
@@ -152,39 +123,27 @@ export default function useProviderReviews(providerId?: string) {
             communication: parseFloat((categoryTotals.communication / categoryCount).toFixed(1)),
 
             expertise: parseFloat((categoryTotals.expertise / categoryCount).toFixed(1)),
-          }
-        : undefined;
+: undefined;
 
     setSummary({
       averageRating: getAverageRating(),
       totalReviews: reviews.length,
       ratingDistribution: distribution,
       categories: categoryAverages,
-    });
-  }, [reviews, getAverageRating]);
+[reviews, getAverageRating]);
 
   // Get the percentage of each rating
   const getRatingPercentage = (rating: 1 | 2 | 3 | 4 | 5): number => {
     if (summary.totalReviews === 0) return 0;
 
-    // Safe array access
-    if (rating < 0 || rating >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     return (summary.ratingDistribution[rating] / summary.totalReviews) * 100;
-  };
-
-  // Get the most recent n reviews
+// Get the most recent n reviews
   const getRecentReviews = (count: number = 3) => {
     return reviews.slice(0, count);
-  };
-
-  // Get reviews filtered by rating
+// Get reviews filtered by rating
   const getReviewsByRating = (rating: number) => {
     return reviews.filter((review) => Math.floor(review.rating) === rating);
-  };
-
-  return {
+return {
     reviews,
     summary,
     isLoading,
@@ -196,5 +155,3 @@ export default function useProviderReviews(providerId?: string) {
     getRatingPercentage,
     getRecentReviews,
     getReviewsByRating,
-  };
-}

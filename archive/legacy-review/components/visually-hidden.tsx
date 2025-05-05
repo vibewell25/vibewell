@@ -9,8 +9,6 @@ export interface VisuallyHiddenProps extends React.HTMLAttributes<HTMLSpanElemen
   hidden?: boolean;
   children: React.ReactNode;
   as?: 'span' | 'div' | 'p';
-}
-
 /**
  * VisuallyHidden component renders content that is invisible to sighted users
  * but still accessible to screen readers - a common accessibility pattern.
@@ -28,17 +26,10 @@ export const VisuallyHidden = forwardRef<HTMLElement, VisuallyHiddenProps>(
         <Component ref={ref as any} className={className} {...props}>
           {children}
         </Component>
-      );
-    }
-
-    return (
+return (
       <Component ref={ref as any} className={cn(visuallyHiddenClassName, className)} {...props}>
         {children}
       </Component>
-    );
-  },
-);
-
 VisuallyHidden.displayName = 'VisuallyHidden';
 
 export default VisuallyHidden;
@@ -49,41 +40,31 @@ export default VisuallyHidden;
 
 export function ScreenReaderOnly({ children, ...props }: Omit<VisuallyHiddenProps, 'hidden'>) {
   return <VisuallyHidden {...props}>{children}</VisuallyHidden>;
-}
-
 export function ScreenReaderText({
   text,
   ...props
-}: Omit<VisuallyHiddenProps, 'hidden' | 'children'> & { text: string }) {
+: Omit<VisuallyHiddenProps, 'hidden' | 'children'> & { text: string }) {
   return <VisuallyHidden {...props}>{text}</VisuallyHidden>;
-}
-
 export function IconLabel({
   icon,
   label,
   ...props
-}: { icon: React.ReactNode; label: string } & Omit<VisuallyHiddenProps, 'hidden' | 'children'>) {
+: { icon: React.ReactNode; label: string } & Omit<VisuallyHiddenProps, 'hidden' | 'children'>) {
   return (
     <>
       {icon}
       <VisuallyHidden {...props}>{label}</VisuallyHidden>
     </>
-  );
-}
-
 export function A11yButton({
   children,
   a11yLabel,
   ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & { a11yLabel: string }) {
+: React.ButtonHTMLAttributes<HTMLButtonElement> & { a11yLabel: string }) {
   return (
     <button {...props}>
       {children}
       <VisuallyHidden>{a11yLabel}</VisuallyHidden>
     </button>
-  );
-}
-
 /**
  * Use this when a heading is needed for screen readers but should be visually styled differently
  */
@@ -93,10 +74,10 @@ export function A11yHeading({
   children,
   className,
   ...props
-}: React.HTMLAttributes<HTMLHeadingElement> & {
+: React.HTMLAttributes<HTMLHeadingElement> & {
   visualLevel?: 1 | 2 | 3 | 4 | 5 | 6;
   a11yLevel: 1 | 2 | 3 | 4 | 5 | 6;
-}) {
+) {
   const A11yHeadingTag = `h${a11yLevel}` as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
   // Apply styles based on visual heading level if specified
@@ -123,12 +104,7 @@ export function A11yHeading({
         break;
       default:
         headingStyles = '';
-    }
-  }
-
-  return (
+return (
     <A11yHeadingTag className={cn(headingStyles, className)} {...props}>
       {children}
     </A11yHeadingTag>
-  );
-}

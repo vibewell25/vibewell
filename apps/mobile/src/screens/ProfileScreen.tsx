@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   Alert,
   Platform
-} from 'react-native';
+from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -27,14 +27,10 @@ interface UserProfile {
     notifications: boolean;
     marketing: boolean;
     darkMode: boolean;
-  };
-  stats: {
+stats: {
     bookings: number;
     reviews: number;
     favoriteServices: number;
-  };
-}
-
 const ProfileScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const { user, logout } = useAuth();
@@ -44,7 +40,7 @@ const ProfileScreen: React.FC = () => {
 
   useEffect(() => {
     loadProfile();
-  }, []);
+[]);
 
   const loadProfile = async () => {
     try {
@@ -52,7 +48,7 @@ const ProfileScreen: React.FC = () => {
       const savedProfile = await AsyncStorage.getItem('@vibewell/user_profile');
       if (savedProfile) {
         setProfile(JSON.parse(savedProfile));
-      } else {
+else {
         // Mock data for demonstration
         const mockProfile: UserProfile = {
           id: user.id || '1',
@@ -62,60 +58,44 @@ const ProfileScreen: React.FC = () => {
             notifications: true,
             marketing: false,
             darkMode: isDarkMode
-          },
-          stats: {
+stats: {
             bookings: 5,
             reviews: 3,
             favoriteServices: 8
-          }
-        };
-        setProfile(mockProfile);
+setProfile(mockProfile);
         await AsyncStorage.setItem('@vibewell/user_profile', JSON.stringify(mockProfile));
-      }
-    } catch (error) {
+catch (error) {
       console.error('Error loading profile:', error);
       Alert.alert('Error', 'Failed to load profile data');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  const handleImagePick = async () => {
+const handleImagePick = async () => {
     try {
       const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (!permissionResult.granted) {
         Alert.alert('Permission Required', 'Please allow access to your photo library');
         return;
-      }
-
-      const result = await ImagePicker.launchImageLibraryAsync({
+const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [1, 1],
         quality: 0.8,
-      });
-
-      if (!result.canceled && result.assets[0] && profile) {
+if (!result.canceled && result.assets[0] && profile) {
         setUploadingImage(true);
         try {
           // In a real app, upload image to server
           const updatedProfile: UserProfile = { ...profile, avatar: result.assets[0].uri };
           setProfile(updatedProfile);
           await AsyncStorage.setItem('@vibewell/user_profile', JSON.stringify(updatedProfile));
-        } catch (error) {
+catch (error) {
           console.error('Error uploading image:', error);
           Alert.alert('Error', 'Failed to update profile picture');
-        } finally {
+finally {
           setUploadingImage(false);
-        }
-      }
-    } catch (error) {
+catch (error) {
       console.error('Error picking image:', error);
       Alert.alert('Error', 'Failed to select image');
-    }
-  };
-
-  const handleLogout = async () => {
+const handleLogout = async () => {
     Alert.alert(
       'Confirm Logout',
       'Are you sure you want to log out?',
@@ -128,25 +108,16 @@ const ProfileScreen: React.FC = () => {
             try {
               await AsyncStorage.clear();
               await logout();
-            } catch (error) {
+catch (error) {
               console.error('Error during logout:', error);
               Alert.alert('Error', 'Failed to log out');
-            }
-          },
-        },
-      ]
-    );
-  };
-
-  if (loading) {
+]
+if (loading) {
     return (
       <View style={[styles.container, styles.centered]}>
         <ActivityIndicator size="large" color="#4F46E5" />
       </View>
-    );
-  }
-
-  return (
+return (
     <SafeAreaView style={[styles.container, { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Profile Header */}
@@ -287,35 +258,26 @@ const ProfileScreen: React.FC = () => {
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  centered: {
+centered: {
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  header: {
+header: {
     alignItems: 'center',
     padding: 20,
-  },
-  avatarContainer: {
+avatarContainer: {
     marginBottom: 16,
-  },
-  avatar: {
+avatar: {
     width: 120,
     height: 120,
     borderRadius: 60,
-  },
-  placeholderAvatar: {
+placeholderAvatar: {
     backgroundColor: '#E0E0E0',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  editIconContainer: {
+editIconContainer: {
     position: 'absolute',
     right: 0,
     bottom: 0,
@@ -325,56 +287,45 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  name: {
+name: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 4,
-  },
-  email: {
+email: {
     fontSize: 16,
-  },
-  statsContainer: {
+statsContainer: {
     flexDirection: 'row',
     marginHorizontal: 20,
     marginBottom: 24,
     borderRadius: 12,
     padding: 16,
-  },
-  statItem: {
+statItem: {
     flex: 1,
     alignItems: 'center',
-  },
-  statNumber: {
+statNumber: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 4,
-  },
-  statLabel: {
+statLabel: {
     fontSize: 14,
-  },
-  section: {
+section: {
     marginBottom: 24,
     paddingHorizontal: 20,
-  },
-  sectionTitle: {
+sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 12,
-  },
-  actionItem: {
+actionItem: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
     borderRadius: 12,
     marginBottom: 8,
-  },
-  actionText: {
+actionText: {
     flex: 1,
     fontSize: 16,
     marginLeft: 12,
-  },
-  logoutButton: {
+logoutButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -382,10 +333,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     padding: 16,
     borderRadius: 12,
-  },
-  logoutText: {
+logoutText: {
     fontSize: 16,
     fontWeight: 'bold',
     marginLeft: 8,
-  },
-}); 

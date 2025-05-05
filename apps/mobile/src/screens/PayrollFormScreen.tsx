@@ -20,30 +20,24 @@ const PayrollFormScreen: React.FC = () => {
     if (!salary.trim() || !periodStart.trim() || !periodEnd.trim()) {
       Alert.alert('Error', 'All fields are required');
       return;
-    }
-    setLoading(true);
+setLoading(true);
     try {
       let result: PayrollRecord;
       const payload = {
         salary: parseFloat(salary),
         periodStart: periodStart,
         periodEnd: periodEnd
-      };
-      if (isEdit && record) {
+if (isEdit && record) {
         result = await payrollApi.updateRecord(record.id, payload);
-      } else {
+else {
         result = await payrollApi.createRecord(payload);
-      }
-      navigation.navigate('PayrollDetail', { id: result.id });
-    } catch (err) {
+navigation.navigate('PayrollDetail', { id: result.id });
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to save payroll record');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
+if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
     <View style={styles.container}>
@@ -68,12 +62,7 @@ const PayrollFormScreen: React.FC = () => {
       />
       <Button title={isEdit ? 'Update Record' : 'Create Record'} onPress={handleSubmit} />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   input: { borderWidth: 1, borderColor: '#ccc', padding: 8, borderRadius: 4, marginBottom: 12 }
-});
-
 export default PayrollFormScreen;

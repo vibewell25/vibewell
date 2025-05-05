@@ -12,31 +12,20 @@ export function middleware(request: NextRequest) {
   const subdomains: Record<string, string> = {
     'app.getvibewell.com': '/app',
     'admin.getvibewell.com': '/admin',
-  };
-
-  // Check if we are on a subdomain
+// Check if we are on a subdomain
   for (const [domain, path] of Object.entries(subdomains)) {
     if (hostname === domain) {
       // Rewrite the URL to include the subdomain path
       url.pathname = `${path}${url.pathname}`;
       return NextResponse.rewrite(url);
-    }
-  }
-
-  // For the main domain (with or without www), serve the marketing pages
+// For the main domain (with or without www), serve the marketing pages
   if (hostname === 'getvibewell.com' || hostname === 'www.getvibewell.com') {
     return NextResponse.next();
-  }
-
-  // Handle localhost for development
+// Handle localhost for development
   if (hostname.includes('localhost')) {
     return NextResponse.next();
-  }
-
-  // Redirect unknown domains to the main site
+// Redirect unknown domains to the main site
   return NextResponse.redirect(new URL('https://www.getvibewell.com'));
-}
-
 /**
  * Configure the middleware to run on specific paths
  */
@@ -45,4 +34,3 @@ export const config = {
     // Match all paths except static files and api routes
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
-};

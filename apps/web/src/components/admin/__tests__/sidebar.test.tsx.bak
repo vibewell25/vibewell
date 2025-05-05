@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import sidebar from '../sidebar.tsx';
+
+describe('sidebar', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<sidebar />);
+    expect(container).toBeInTheDocument();
+  });
+});

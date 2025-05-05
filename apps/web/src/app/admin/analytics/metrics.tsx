@@ -1,5 +1,3 @@
-'use client';
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { ArrowUpIcon, ArrowDownIcon, Users, Calendar, CreditCard, BarChart3 } from 'lucide-react';
 
@@ -11,9 +9,6 @@ interface MetricCardProps {
   change?: {
     value: string;
     type: 'increase' | 'decrease';
-  };
-}
-
 function MetricCard({ title, value, description, icon, change }: MetricCardProps) {
   return (
     <Card>
@@ -38,9 +33,6 @@ function MetricCard({ title, value, description, icon, change }: MetricCardProps
         )}
       </CardContent>
     </Card>
-  );
-}
-
 export function Metrics() {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -52,8 +44,7 @@ export function Metrics() {
         change={{
           value: '+20.1% from last month',
           type: 'increase',
-        }}
-      />
+/>
       <MetricCard
         title="Active Users"
         value="2,350"
@@ -62,8 +53,7 @@ export function Metrics() {
         change={{
           value: '+12.5% from last month',
           type: 'increase',
-        }}
-      />
+/>
       <MetricCard
         title="New Bookings"
         value="142"
@@ -72,8 +62,7 @@ export function Metrics() {
         change={{
           value: '-3.2% from last week',
           type: 'decrease',
-        }}
-      />
+/>
       <MetricCard
         title="Conversion Rate"
         value="3.2%"
@@ -82,8 +71,5 @@ export function Metrics() {
         change={{
           value: '+1.1% from last month',
           type: 'increase',
-        }}
-      />
+/>
     </div>
-  );
-}

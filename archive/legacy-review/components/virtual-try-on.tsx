@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect, useRef } from 'react';
 import { ARSupportCheck } from './ar-support-check';
 import { ModelErrorBoundary } from './model-error-boundary';
@@ -19,15 +17,11 @@ interface ModelInfo {
   type: 'makeup' | 'hairstyle' | 'accessory';
   name: string;
   id: string;
-}
-
 interface VirtualTryOnProps {
   models: ModelInfo[];
   onModelLoaded?: () => void;
   onModelError?: (error: Error) => void;
   userId?: string;
-}
-
 export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: VirtualTryOnProps) {
   const [selectedModelIndex, setSelectedModelIndex] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -51,12 +45,10 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
     loadingProgress: cacheLoadingProgress,
     error: cacheError,
     stats
-  } = useARCache({
+= useARCache({
     autoAdjustCacheSize: true,
     prefetchEnabled: true,
-  });
-
-  const selectedModel = models[selectedModelIndex];
+const selectedModel = models[selectedModelIndex];
 
   // Start session timing when component mounts
   useEffect(() => {
@@ -74,16 +66,11 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
           duration,
           intensity,
           success: !error,
-        });
-
-        // Track achievement for engagement features
+// Track achievement for engagement features
         if (!error) {
           trackAchievement('try_on_complete');
           trackAchievement(`try_on_${selectedModel.type}`);
-        }
-      }
-    };
-  }, []);
+[]);
 
   // Get models from cache
   useEffect(() => {
@@ -100,23 +87,17 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
           // Get model data from cache with progress tracking
           const data = await getModel(selectedModel.url, selectedModel.type, (progress) =>
             setLoadingProgress(progress),
-          );
-
-          setModelData(data);
+setModelData(data);
           setLoading(false);
 
           if (onModelLoaded) {
             onModelLoaded();
-          }
-
-          trackEvent('virtual_try_on_model_loaded', {
+trackEvent('virtual_try_on_model_loaded', {
             type: selectedModel.type,
             modelName: selectedModel.name,
             modelId: selectedModel.id,
             intensity,
-          });
-
-          // Prefetch next models
+// Prefetch next models
           const currentIndex = selectedModelIndex;
           if (prefetchModels) {
             // Prefetch the next 2 models with decreasing priority
@@ -129,12 +110,8 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
                 url: model.url,
                 type: model.type,
                 priority: 10 - i * 2, // Higher priority for the next model
-              });
-            }
-
-            prefetchModels(modelsToFetch);
-          }
-        } catch (error) {
+prefetchModels(modelsToFetch);
+catch (error) {
           console.error('Error loading model:', error);
           const err = error instanceof Error ? error : new Error('Unknown error loading model');
           setError(err);
@@ -142,34 +119,23 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
 
           if (onModelError) {
             onModelError(err);
-          }
-
-          trackEvent('virtual_try_on_error', {
+trackEvent('virtual_try_on_error', {
             type: selectedModel.type,
             error: err.message,
             modelId: selectedModel.id,
             modelName: selectedModel.name,
-          });
-
-          toast({
+toast({
             title: 'Error',
             description: 'Failed to load the 3D model. Please try again.',
             variant: 'destructive',
-          });
-        }
-      };
-
-      loadModel();
+loadModel();
 
       // Clean up on unmount or when model changes
       return () => {
         // Cancel any active loading
         if (cancelLoading && selectedModel) {
           cancelLoading(selectedModel.url);
-        }
-      };
-    }
-  }, [
+[
     selectedModel,
     selectedModelIndex,
     getModel,
@@ -191,46 +157,33 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
       title: 'AR Not Supported',
       description: 'Your device does not support AR. You can still view the model in 3D mode.',
       variant: 'default',
-    });
-    trackEvent('ar_unsupported', {
+trackEvent('ar_unsupported', {
       type: selectedModel.type,
       modelId: selectedModel.id,
       modelName: selectedModel.name,
-    });
-  };
-
-  const handleCapture = (dataUrl: string) => {
+const handleCapture = (dataUrl: string) => {
     setCapturedImage(dataUrl);
     setShowShareDialog(true);
     trackEvent('virtual_try_on_captured', {
       type: selectedModel.type,
       modelId: selectedModel.id,
       modelName: selectedModel.name,
-    });
-
-    // Track capture achievement
+// Track capture achievement
     trackAchievement('capture');
-  };
-
-  const handleModelChange = (i: number) => {
+const handleModelChange = (i: number) => {
     if (!models || models.length === 0) return;
 
     // Calculate next model index
     const nextIndex = (selectedModelIndex + i) % models.length;
     setSelectedModelIndex(nextIndex);
-  };
-
-  const handleIntensityChange = (newIntensity: number) => {
+const handleIntensityChange = (newIntensity: number) => {
     setIntensity(newIntensity);
     trackEvent('virtual_try_on_intensity_change', {
       type: selectedModel.type,
       intensity: newIntensity,
       modelId: selectedModel.id,
       modelName: selectedModel.name,
-    });
-  };
-
-  return (
+return (
     <div className="flex flex-col space-y-4">
       <ARSupportCheck onARUnsupported={handleARUnsupported}>
         <ModelErrorBoundary onError={onModelError}>
@@ -284,8 +237,7 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
                     setLoading(true);
                     setLoadingProgress(0);
                     setError(null);
-                  }}
-                >
+>
                   Retry Loading
                 </Button>
               </div>
@@ -329,5 +281,3 @@ export function VirtualTryOn({ models, onModelLoaded, onModelError, userId }: Vi
         </ModelErrorBoundary>
       </ARSupportCheck>
     </div>
-  );
-}

@@ -8,100 +8,68 @@ const UserSchema = new mongoose.Schema({
     unique: true,
     match: [
 
-    // Safe integer operation
-    if (a > Number.MAX_SAFE_INTEGER || a < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (a > Number.MAX_SAFE_INTEGER || a < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       'Please provide a valid email',
     ],
-  },
-  password: {
+password: {
     type: String,
     required: [true, 'Please provide a password'],
     minlength: 8,
     select: false, // Don't return password in queries
-  },
-  userType: {
+userType: {
     type: String,
     enum: ['customer', 'provider', 'admin'],
     default: 'customer',
-  },
-  firstName: {
+firstName: {
     type: String,
     required: [true, 'Please provide a first name'],
-  },
-  lastName: {
+lastName: {
     type: String,
     required: [true, 'Please provide a last name'],
-  },
-  phoneNumber: {
+phoneNumber: {
     type: String,
     required: [true, 'Please provide a phone number'],
-  },
-  isEmailVerified: {
+isEmailVerified: {
     type: Boolean,
     default: false,
-  },
-  isPhoneVerified: {
+isPhoneVerified: {
     type: Boolean,
     default: false,
-  },
-  authProvider: {
+authProvider: {
     type: String,
     enum: ['local', 'google', 'apple', 'facebook'],
     default: 'local',
-  },
-  authProviderId: {
+authProviderId: {
     type: String,
-  },
-  resetPasswordToken: String,
+resetPasswordToken: String,
   resetPasswordExpire: Date,
   emailVerificationToken: String,
   emailVerificationExpire: Date,
   createdAt: {
     type: Date,
     default: Date.now,
-  },
-  updatedAt: {
+updatedAt: {
     type: Date,
     default: Date.now,
-  },
-  lastLoginAt: Date,
+lastLoginAt: Date,
   isActive: {
     type: Boolean,
     default: true,
-  },
-});
-
 // Encrypt password using bcrypt
 UserSchema.pre('save', async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); (next) {
   if (!this.isModified('password')) {
     next();
-  }
-
-  this.updatedAt = Date.now();
+this.updatedAt = Date.now();
 
   if (this.isModified('password')) {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
-  }
-
-  next();
-});
-
+next();
 // Match user entered password to hashed password in database
 UserSchema.methods.matchPassword = async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
-};
-
 export default mongoose.model('User', UserSchema);

@@ -1,6 +1,3 @@
-/**
- * Utilities for testing React hooks
- */
 import React from 'react';
 import { renderHook, act } from '@testing-library/react';
 
@@ -15,10 +12,7 @@ export function createWrapperWithProviders(providers: Provider[] = []) {
   return ({ children }: { children: React.ReactNode }) => {
     return providers.reduceRight((acc, Provider) => {
       return <Provider>{acc}</Provider>;
-    }, children);
-  };
-}
-
+children);
 /**
  * Render a hook with the specified providers
  * @param hook - The hook to render
@@ -30,12 +24,10 @@ export function renderHookWithProviders<TProps, TResult>(
   {
     providers = [],
     ...options
-  }: { providers?: Provider[] } & Parameters<typeof renderHook>[1] = {},
+: { providers?: Provider[] } & Parameters<typeof renderHook>[1] = {},
 ) {
   const wrapper = createWrapperWithProviders(providers);
   return renderHook(hook, { wrapper, ...options });
-}
-
 /**
  * Wait for an async event to complete
  * @param callback - Callback to run after waiting
@@ -47,14 +39,9 @@ export async function {
   await act(async () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
     if (callback) callback();
-  });
-}
-
 interface HookAction<TResult> {
   act?: (result: ReturnType<typeof renderHook<unknown, TResult>>) => void | Promise<void>;
   assert?: (result: ReturnType<typeof renderHook<unknown, TResult>>) => void;
-}
-
 /**
  * Test hook updates
  * @param hook - The hook to test
@@ -76,13 +63,6 @@ export async function {
       await act(async () => {
         actFn(result);
         await new Promise((resolve) => setTimeout(resolve, 0));
-      });
-    }
-
-    if (assert) {
+if (assert) {
       assert(result);
-    }
-  }
-
-  return result;
-}
+return result;

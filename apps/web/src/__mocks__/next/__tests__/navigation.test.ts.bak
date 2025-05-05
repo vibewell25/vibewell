@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import navigation from '../navigation.ts';
+
+describe('navigation', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<navigation />);
+    expect(container).toBeInTheDocument();
+  });
+});

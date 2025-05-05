@@ -4,12 +4,8 @@ import React, { useEffect, useState, useCallback, createContext, useContext } fr
 interface LiveAnnouncerContextType {
   announce: (message: string, politeness?: 'polite' | 'assertive') => void;
   clear: () => void;
-}
-
 interface LiveAnnouncerProps {
   children: React.ReactNode;
-}
-
 // Create context for the live announcer
 const LiveAnnouncerContext = createContext<LiveAnnouncerContextType | null>(null);
 
@@ -34,22 +30,19 @@ export function LiveAnnouncerProvider({ children }: LiveAnnouncerProps) {
         { message, politeness, id: newId },
       ]);
       return newId;
-    });
-
-    // Clean up announcements after they've been read
+// Clean up announcements after they've been read
     // Most screen readers will stop reading when content changes,
     // so we maintain announcements for a short period to ensure they're read
     setTimeout(() => {
       setAnnouncements((prevAnnouncements) =>
         prevAnnouncements.filter((a) => a.message !== message),
-      );
-    }, 10000);
-  }, []);
+10000);
+[]);
 
   // Clear all announcements
   const clear = useCallback(() => {
     setAnnouncements([]);
-  }, []);
+[]);
 
   return (
     <LiveAnnouncerContext.Provider value={{ announce, clear }}>
@@ -70,8 +63,7 @@ export function LiveAnnouncerProvider({ children }: LiveAnnouncerProps) {
           clip: 'rect(0, 0, 0, 0)',
           whiteSpace: 'nowrap',
           border: 0,
-        }}
-      >
+>
         {announcements
           .filter((a) => a.politeness === 'polite')
           .map((a) => (
@@ -94,8 +86,7 @@ export function LiveAnnouncerProvider({ children }: LiveAnnouncerProps) {
           clip: 'rect(0, 0, 0, 0)',
           whiteSpace: 'nowrap',
           border: 0,
-        }}
-      >
+>
         {announcements
           .filter((a) => a.politeness === 'assertive')
           .map((a) => (
@@ -103,9 +94,6 @@ export function LiveAnnouncerProvider({ children }: LiveAnnouncerProps) {
           ))}
       </div>
     </LiveAnnouncerContext.Provider>
-  );
-}
-
 /**
  * Hook to use the live announcer
  */
@@ -114,11 +102,7 @@ export function useLiveAnnouncer() {
 
   if (!context) {
     throw new Error('useLiveAnnouncer must be used within a LiveAnnouncerProvider');
-  }
-
-  return context;
-}
-
+return context;
 /**
  * Component that announces content changes to screen readers
  */
@@ -126,32 +110,29 @@ export function Announce({
   message,
   politeness = 'polite',
   children,
-}: {
+: {
   message: string;
   politeness?: 'polite' | 'assertive';
   children?: React.ReactNode;
-}) {
+) {
   const { announce } = useLiveAnnouncer();
 
   useEffect(() => {
     if (message) {
       announce(message, politeness);
-    }
-  }, [message, politeness, announce]);
+[message, politeness, announce]);
 
   return <>{children}</>;
-}
-
 /**
  * Component that announces form errors to screen readers
  */
 export function AnnounceFormErrors({
   errors,
   politeness = 'assertive',
-}: {
+: {
   errors: Record<string, string> | null | undefined;
   politeness?: 'polite' | 'assertive';
-}) {
+) {
   const { announce } = useLiveAnnouncer();
 
   useEffect(() => {
@@ -159,12 +140,9 @@ export function AnnounceFormErrors({
       const errorMessages = Object.values(errors).join('. ');
       const announcement = `Form contains errors: ${errorMessages}`;
       announce(announcement, politeness);
-    }
-  }, [errors, announce, politeness]);
+[errors, announce, politeness]);
 
   return null;
-}
-
 /**
  * Component that announces loading states to screen readers
  */
@@ -172,11 +150,11 @@ export function AnnounceLoadingState({
   isLoading,
   loadingMessage = 'Loading content',
   completedMessage = 'Content loaded',
-}: {
+: {
   isLoading: boolean;
   loadingMessage?: string;
   completedMessage?: string;
-}) {
+) {
   const { announce } = useLiveAnnouncer();
   const [wasLoading, setWasLoading] = useState(false);
 
@@ -184,13 +162,10 @@ export function AnnounceLoadingState({
     if (isLoading) {
       announce(loadingMessage, 'polite');
       setWasLoading(true);
-    } else if (wasLoading) {
+else if (wasLoading) {
       announce(completedMessage, 'polite');
       setWasLoading(false);
-    }
-  }, [isLoading, loadingMessage, completedMessage, announce, wasLoading]);
+[isLoading, loadingMessage, completedMessage, announce, wasLoading]);
 
   return null;
-}
-
 export default LiveAnnouncerProvider;

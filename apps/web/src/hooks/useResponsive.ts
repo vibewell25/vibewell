@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 
 export interface ResponsiveState {
@@ -14,8 +12,6 @@ export interface ResponsiveState {
   isStandalone: boolean;  // True when running as installed PWA
   viewportWidth: number;  // Current viewport width in pixels
   viewportHeight: number; // Current viewport height in pixels
-}
-
 /**
  * Hook for responsive web design that provides viewport information and device capabilities
  */
@@ -33,9 +29,7 @@ export function useResponsive(): ResponsiveState {
     isStandalone: false,
     viewportWidth: 1200, // Sensible default
     viewportHeight: 800,
-  });
-
-  useEffect(() => {
+useEffect(() => {
     // Function to update all responsive states
     const updateState = () => {
       // Get viewport dimensions
@@ -80,10 +74,7 @@ export function useResponsive(): ResponsiveState {
         isStandalone,
         viewportWidth: width,
         viewportHeight: height,
-      });
-    };
-    
-    // Initial update
+// Initial update
     updateState();
     
     // Set up event listeners
@@ -98,12 +89,9 @@ export function useResponsive(): ResponsiveState {
       window.removeEventListener('orientationchange', updateState);
       window.removeEventListener('online', updateState);
       window.removeEventListener('offline', updateState);
-    };
-  }, []); // Empty dependency array means this effect runs once on mount
+[]); // Empty dependency array means this effect runs once on mount
 
   return state;
-}
-
 /**
  * Get a CSS breakpoint value (in pixels)
  */
@@ -115,11 +103,7 @@ export function getBreakpoint(name: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'): n
     lg: 1024,  // Large devices (desktops)
     xl: 1280,  // Extra large devices
     '2xl': 1536 // 2X Extra large devices
-  };
-  
-  return breakpoints[name];
-}
-
+return breakpoints[name];
 /**
  * Check if the current viewport is at least the specified size
  */
@@ -128,4 +112,3 @@ export function useBreakpoint(size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'): b
   const breakpoint = getBreakpoint(size);
   
   return viewportWidth >= breakpoint;
-}

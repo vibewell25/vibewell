@@ -7,25 +7,19 @@ const sidebarNavItems = [
   {
     title: 'Profile',
     href: '/settings',
-  },
-  {
+{
     title: 'Security',
     href: '/settings/security',
-  },
-  {
+{
     title: 'Notifications',
     href: '/settings/notifications',
-  },
-  {
+{
     title: 'Display',
     href: '/settings/display',
-  },
 ];
 
 interface SettingsLayoutProps {
   children: React.ReactNode;
-}
-
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <div className="space-y-6 p-10 pb-16">
@@ -40,5 +34,3 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
         <div className="flex-1 lg:max-w-2xl">{children}</div>
       </div>
     </div>
-  );
-}

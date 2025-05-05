@@ -4,11 +4,9 @@ interface StepsProps {
   steps: Array<{
     id: string;
     title: string;
-  }>;
+>;
   currentStep: number;
   className?: string;
-}
-
 export function Steps({ steps, currentStep, className }: StepsProps) {
   return (
     <div className={cn('flex w-full items-center justify-center', className)}>
@@ -48,5 +46,3 @@ export function Steps({ steps, currentStep, className }: StepsProps) {
         </div>
       ))}
     </div>
-  );
-}

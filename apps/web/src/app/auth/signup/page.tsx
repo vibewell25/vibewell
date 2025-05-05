@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
@@ -32,17 +30,13 @@ export default function SignupPage() {
       const { error } = await signUp(email, password, name);
       if (error) {
         setError(error.message);
-      } else {
+else {
         setShowVerificationMessage(true);
-      }
-    } catch (err) {
+catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to sign up. Please try again.');
-    } finally {
+finally {
       setIsLoading(false);
-    }
-  };
-
-  if (showVerificationMessage) {
+if (showVerificationMessage) {
     return (
       <div className="container mx-auto max-w-md px-4 py-8">
         <div className="mb-8 flex flex-col items-center">
@@ -57,10 +51,7 @@ export default function SignupPage() {
           Back to login
         </Link>
       </div>
-    );
-  }
-
-  return (
+return (
     <div className="container mx-auto max-w-md px-4 py-8">
       <div className="mb-8 flex flex-col items-center">
         <Icons.logo className="text-primary mb-4 h-12 w-12" />
@@ -176,5 +167,3 @@ export default function SignupPage() {
         </Link>
       </p>
     </div>
-  );
-}

@@ -339,7 +339,7 @@ import { exists, isString } from <span class="cstat-no" title="statement not cov
  * @returns True if the response has data
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >hasData&lt;</span></span>T&gt;(response: ApiResponse&lt;T&gt;): response is ApiResponse&lt;T&gt; &amp; { data: T } {
-<span class="cstat-no" title="statement not covered" >  return exists(response?.data);</span>
+<span class="cstat-no" title="statement not covered" >  return exists(response.data);</span>
 }
 &nbsp;
 /**
@@ -350,7 +350,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >hasError&lt;</span></span>T&gt;(
   response: ApiResponse&lt;T&gt;,
 ): response is ApiResponse&lt;T&gt; &amp; { error: string } {
-<span class="cstat-no" title="statement not covered" >  return exists(response?.error) &amp;&amp; isString(response?.error);</span>
+<span class="cstat-no" title="statement not covered" >  return exists(response.error) &amp;&amp; isString(response.error);</span>
 }
 &nbsp;
 /**
@@ -360,7 +360,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
  * @returns The data or the default value
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getResponseData&lt;</span></span>T, D = T&gt;(response: ApiResponse&lt;T&gt;, defaultValue: D): T | D {
-<span class="cstat-no" title="statement not covered" >  return hasData(response) ? response?.data : defaultValue;</span>
+<span class="cstat-no" title="statement not covered" >  return hasData(response) ? response.data : defaultValue;</span>
 }
 &nbsp;
 /**
@@ -373,7 +373,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   response: ApiResponse&lt;T&gt;,
   defaultError = <span class="branch-0 cbranch-no" title="branch not covered" >'Unknown error',</span>
 ): string {
-<span class="cstat-no" title="statement not covered" >  return hasError(response) ? response?.error : defaultError;</span>
+<span class="cstat-no" title="statement not covered" >  return hasError(response) ? response.error : defaultError;</span>
 }
 &nbsp;
 /**
@@ -382,7 +382,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
  * @returns True if the response is successful
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >isSuccessResponse&lt;</span></span>T&gt;(response: ApiResponse&lt;T&gt;): boolean {
-<span class="cstat-no" title="statement not covered" >  return response?.success &amp;&amp; !hasError(response);</span>
+<span class="cstat-no" title="statement not covered" >  return response.success &amp;&amp; !hasError(response);</span>
 }
 &nbsp;
 /**
@@ -398,7 +398,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   onError: (error: string) =&gt; E,
 ): S | E {
 <span class="cstat-no" title="statement not covered" >  if (isSuccessResponse(response) &amp;&amp; hasData(response)) {</span>
-<span class="cstat-no" title="statement not covered" >    return onSuccess(response?.data);</span>
+<span class="cstat-no" title="statement not covered" >    return onSuccess(response.data);</span>
   } else {
 <span class="cstat-no" title="statement not covered" >    return onError(getResponseError(response));</span>
   }
@@ -417,7 +417,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   defaultValue: D,
 ): R | D {
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (hasData(response)) {</span>
-<span class="cstat-no" title="statement not covered" >    return mapFn(response?.data);</span>
+<span class="cstat-no" title="statement not covered" >    return mapFn(response.data);</span>
   }
 <span class="cstat-no" title="statement not covered" >  return defaultValue;</span>
 }
@@ -429,7 +429,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
  * @returns True if the response status matches
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >isResponseStatus&lt;</span></span>T&gt;(response: ApiResponse&lt;T&gt;, status: number): boolean {
-<span class="cstat-no" title="statement not covered" >  return response?.status === status;</span>
+<span class="cstat-no" title="statement not covered" >  return response.status === status;</span>
 }
 &nbsp;
 /**
@@ -448,7 +448,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="cstat-no" title="statement not covered" >      return {</span>
         status: 0,
         success: false,
-        error: error instanceof Error ? error?.message : 'Unknown error occurred',
+        error: error instanceof Error ? error.message : 'Unknown error occurred',
       };
     }
   };
@@ -460,7 +460,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

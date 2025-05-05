@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -11,7 +9,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/Card';
+from '@/components/ui/Card';
 import { CheckCircle } from 'lucide-react';
 
 // Component that uses useSearchParams
@@ -30,9 +28,7 @@ function PaymentSuccessContent() {
         setError('Invalid payment information');
         setLoading(false);
         return;
-      }
-
-      try {
+try {
         // In a real application, you would fetch payment details from your backend
         // This is just a simulated response
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -45,17 +41,13 @@ function PaymentSuccessContent() {
           status: 'succeeded',
           customerName: 'John Doe',
           customerEmail: 'john@example.com',
-        });
-      } catch (err) {
+catch (err) {
         setError('Could not retrieve payment details');
         console.error('Error fetching payment details:', err);
-      } finally {
+finally {
         setLoading(false);
-      }
-    }
-
-    getPaymentDetails();
-  }, [paymentId]);
+getPaymentDetails();
+[paymentId]);
 
   if (loading) {
     return (
@@ -66,10 +58,7 @@ function PaymentSuccessContent() {
           <p className="mt-2 text-gray-500">Please wait while we confirm your payment...</p>
         </div>
       </div>
-    );
-  }
-
-  if (error || !paymentDetails) {
+if (error || !paymentDetails) {
     return (
       <div className="flex min-h-screen items-center justify-center p-4">
         <Card className="w-full max-w-md">
@@ -87,18 +76,13 @@ function PaymentSuccessContent() {
           </CardFooter>
         </Card>
       </div>
-    );
-  }
-
-  const formattedDate = new Date(paymentDetails.date).toLocaleDateString('en-US', {
+const formattedDate = new Date(paymentDetails.date).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
-  });
-
-  return (
+return (
     <div className="flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
@@ -120,7 +104,7 @@ function PaymentSuccessContent() {
                 {new Intl.NumberFormat('en-US', {
                   style: 'currency',
                   currency: paymentDetails.currency,
-                }).format(paymentDetails.amount)}
+).format(paymentDetails.amount)}
               </span>
             </div>
             <div className="flex justify-between border-b pb-2">
@@ -153,9 +137,6 @@ function PaymentSuccessContent() {
         </CardFooter>
       </Card>
     </div>
-  );
-}
-
 // Export with Suspense boundary
 export default function PaymentSuccessPage() {
   return (
@@ -168,9 +149,6 @@ export default function PaymentSuccessPage() {
             <p className="mt-2 text-gray-500">Please wait...</p>
           </div>
         </div>
-      }
-    >
+>
       <PaymentSuccessContent />
     </Suspense>
-  );
-}

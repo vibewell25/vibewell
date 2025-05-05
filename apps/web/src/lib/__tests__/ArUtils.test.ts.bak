@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import ar-utils from '../ar-utils.ts';
+
+describe('ar-utils', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<ar-utils />);
+    expect(container).toBeInTheDocument();
+  });
+});

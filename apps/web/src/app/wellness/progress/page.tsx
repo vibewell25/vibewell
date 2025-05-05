@@ -1,4 +1,3 @@
-'use client';;
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { ProgressCharts } from '@/components/wellness/ProgressCharts';
@@ -14,7 +13,7 @@ import { Icons } from '@/components/icons';
 export default function ProgressPage() {
   const {
     user
-  } = useAuth();
+= useAuth();
   const {
     goals,
     habitLogs,
@@ -25,7 +24,7 @@ export default function ProgressPage() {
     createGoal,
     updateGoal,
     deleteGoal,
-  } = useWellnessData();
+= useWellnessData();
   const [selectedType, setSelectedType] = useState<GoalType>('meditation');
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d'>('7d');
   const [activeView, setActiveView] = useState<'summary' | 'charts' | 'tracker'>('summary');
@@ -35,17 +34,14 @@ export default function ProgressPage() {
   // Handle goal tracking
   const handleLogProgress = (goalId: string, value: number) => {
     logHabit(goalId, value);
-  };
-  // Handle creating a new goal
+// Handle creating a new goal
   const handleCreateGoal = (newGoal: Omit<Goal, 'id' | 'current' | 'status'>) => {
     createGoal(newGoal);
-  };
-  // Handle editing a goal
+// Handle editing a goal
   const handleEditGoal = (goal: Goal) => {
     setGoalToEdit(goal);
     setShowGoalCreationModal(true);
-  };
-  // Handle saving edits to a goal
+// Handle saving edits to a goal
   const handleSaveEdit = (editedGoal: Omit<Goal, 'id' | 'current' | 'status'>) => {
     if (goalToEdit) {
       updateGoal(goalToEdit.id, {
@@ -53,30 +49,22 @@ export default function ProgressPage() {
         // Keep the current value and status from the original goal
         current: goalToEdit.current,
         status: goalToEdit.status,
-      });
-      setGoalToEdit(undefined);
-    }
-  };
-  // Handle deleting a goal
+setGoalToEdit(undefined);
+// Handle deleting a goal
   const handleDeleteGoal = (goalId: string) => {
     const goal = goals.find((g) => g.id === goalId);
     if (goal) {
       setGoalToDelete({ id: goal.id, title: goal.title });
-    }
-  };
-  // Handle confirming goal deletion
+// Handle confirming goal deletion
   const handleConfirmDelete = () => {
     if (goalToDelete) {
       deleteGoal(goalToDelete.id);
       setGoalToDelete(null);
-    }
-  };
-  // Handle modal close actions
+// Handle modal close actions
   const handleCloseCreationModal = () => {
     setShowGoalCreationModal(false);
     setGoalToEdit(undefined);
-  };
-  if (authLoading || isLoading) {
+if (authLoading || isLoading) {
     return (
       <Layout>
         <div className="container-app py-12">
@@ -85,9 +73,7 @@ export default function ProgressPage() {
           </div>
         </div>
       </Layout>
-    );
-  }
-  if (!user) {
+if (!user) {
     return (
       <Layout>
         <div className="container-app py-12">
@@ -102,9 +88,7 @@ export default function ProgressPage() {
           </div>
         </div>
       </Layout>
-    );
-  }
-  return (
+return (
     <Layout>
       <div className="container-app py-12">
         <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
@@ -131,7 +115,7 @@ export default function ProgressPage() {
               activeView === 'summary'
                 ? 'text-primary border-primary border-b-2'
                 : 'text-muted-foreground hover:text-foreground'
-            }`}
+`}
             onClick={() => setActiveView('summary')}
           >
             Summary
@@ -141,7 +125,7 @@ export default function ProgressPage() {
               activeView === 'charts'
                 ? 'text-primary border-primary border-b-2'
                 : 'text-muted-foreground hover:text-foreground'
-            }`}
+`}
             onClick={() => setActiveView('charts')}
           >
             Charts
@@ -151,7 +135,7 @@ export default function ProgressPage() {
               activeView === 'tracker'
                 ? 'text-primary border-primary border-b-2'
                 : 'text-muted-foreground hover:text-foreground'
-            }`}
+`}
             onClick={() => setActiveView('tracker')}
           >
             Habit Tracker
@@ -184,7 +168,7 @@ export default function ProgressPage() {
                   selectedType === 'meditation'
                     ? 'bg-purple-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
-                }`}
+`}
                 onClick={() => setSelectedType('meditation')}
               >
                 Meditation
@@ -194,7 +178,7 @@ export default function ProgressPage() {
                   selectedType === 'workout'
                     ? 'bg-pink-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
-                }`}
+`}
                 onClick={() => setSelectedType('workout')}
               >
                 Workout
@@ -204,7 +188,7 @@ export default function ProgressPage() {
                   selectedType === 'water'
                     ? 'bg-blue-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
-                }`}
+`}
                 onClick={() => setSelectedType('water')}
               >
                 Water
@@ -214,7 +198,7 @@ export default function ProgressPage() {
                   selectedType === 'sleep'
                     ? 'bg-indigo-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
-                }`}
+`}
                 onClick={() => setSelectedType('sleep')}
               >
                 Sleep
@@ -224,7 +208,7 @@ export default function ProgressPage() {
                   selectedType === 'steps'
                     ? 'bg-green-500 text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
-                }`}
+`}
                 onClick={() => setSelectedType('steps')}
               >
                 Steps
@@ -237,7 +221,7 @@ export default function ProgressPage() {
                   timeRange === '7d'
                     ? 'bg-primary text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
-                }`}
+`}
                 onClick={() => setTimeRange('7d')}
               >
                 7 Days
@@ -247,7 +231,7 @@ export default function ProgressPage() {
                   timeRange === '30d'
                     ? 'bg-primary text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
-                }`}
+`}
                 onClick={() => setTimeRange('30d')}
               >
                 30 Days
@@ -257,7 +241,7 @@ export default function ProgressPage() {
                   timeRange === '90d'
                     ? 'bg-primary text-white'
                     : 'bg-muted text-muted-foreground hover:bg-muted-foreground/20'
-                }`}
+`}
                 onClick={() => setTimeRange('90d')}
               >
                 90 Days
@@ -352,5 +336,3 @@ export default function ProgressPage() {
         />
       </div>
     </Layout>
-  );
-}

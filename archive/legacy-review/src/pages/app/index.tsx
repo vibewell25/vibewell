@@ -76,7 +76,4 @@ const AppHome: NextPage = () => {
         </div>
       </div>
     </AppLayout>
-  );
-};
-
 export default AppHome; 

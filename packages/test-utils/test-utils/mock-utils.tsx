@@ -1,10 +1,3 @@
-/**
- * Mock utilities for testing
- *
- * This file provides utilities for mocking various parts of the application
- * including API responses, services, localStorage, and more.
- */
-import { vi, type Mock } from 'vitest';
 import type { Procedure } from '@trpc/server';
 
 /**
@@ -17,15 +10,11 @@ export interface MockApiResponse<T = any> {
   ok: boolean;
   json: Mock;
   text: Mock;
-}
-
 /**
  * Create a mock API response
  */
 export function mockApiResponse<T>(data: T): Mock {
   return vi.fn().mockResolvedValue({ data });
-}
-
 /**
  * Mock fetch for API testing
  * @param response - The response to return from fetch
@@ -35,8 +24,6 @@ export function mockFetch<T = any>(
   response: MockApiResponse<T> | (() => MockApiResponse<T>),
 ): vi.Mock {
   return vi.fn().mockResolvedValue(typeof response === 'function' ? response() : response);
-}
-
 /**
  * Mock storage interface
  */
@@ -48,8 +35,6 @@ export interface MockStorage {
   key: Mock;
   length: number;
   _getStore: () => Record<string, string>;
-}
-
 /**
  * Create a mock storage object (localStorage/sessionStorage)
  */
@@ -59,27 +44,22 @@ export function createMockStorage(): MockStorage {
     getItem: vi.fn((key: string) => store[key] || null),
     setItem: vi.fn((key: string, value: string) => {
       store[key] = String(value);
-    }),
+),
     removeItem: vi.fn((key: string) => {
       store[key] = undefined;
-    }),
+),
     clear: vi.fn(() => {
       Object.keys(store).forEach((key) => {
         store[key] = undefined;
-      });
-    }),
+),
     key: vi.fn((index: number) => Object.keys(store)[index] || null),
     get length() {
       return Object.keys(store).length;
-    },
-    _getStore: () =>
+_getStore: () =>
       Object.fromEntries(Object.entries(store).filter(([_, v]) => v !== undefined)) as Record<
         string,
         string
       >,
-  };
-}
-
 /**
  * Mock MediaQueryList interface
  */
@@ -92,8 +72,6 @@ export interface MockMediaQueryList {
   addEventListener: Mock;
   removeEventListener: Mock;
   dispatchEvent: Mock;
-}
-
 /**
  * Mock window.matchMedia
  */
@@ -107,16 +85,12 @@ export function setupMatchMediaMock(): Mock {
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
-  }));
+));
 
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
     value: matchMediaMock,
-  });
-
-  return matchMediaMock;
-}
-
+return matchMediaMock;
 /**
  * Mock IntersectionObserver interface
  */
@@ -128,8 +102,6 @@ export interface MockIntersectionObserver {
   unobserve: Mock;
   disconnect: Mock;
   takeRecords: Mock;
-}
-
 /**
  * Mock IntersectionObserver
  */
@@ -146,17 +118,10 @@ export function setupIntersectionObserverMock(): Mock {
       unobserve: vi.fn(),
       disconnect: vi.fn(),
       takeRecords: vi.fn().mockReturnValue([]),
-    };
-  });
-
-  Object.defineProperty(window, 'IntersectionObserver', {
+Object.defineProperty(window, 'IntersectionObserver', {
     writable: true,
     value: mockIntersectionObserver,
-  });
-
-  return mockIntersectionObserver;
-}
-
+return mockIntersectionObserver;
 /**
  * Mock ResizeObserver interface
  */
@@ -164,8 +129,6 @@ export interface MockResizeObserver {
   observe: Mock;
   unobserve: Mock;
   disconnect: Mock;
-}
-
 /**
  * Mock ResizeObserver
  */
@@ -175,17 +138,10 @@ export function setupResizeObserverMock(): Mock {
       observe: vi.fn(),
       unobserve: vi.fn(),
       disconnect: vi.fn(),
-    };
-  });
-
-  Object.defineProperty(window, 'ResizeObserver', {
+Object.defineProperty(window, 'ResizeObserver', {
     writable: true,
     value: mockResizeObserver,
-  });
-
-  return mockResizeObserver;
-}
-
+return mockResizeObserver;
 /**
  * Interface for all browser mocks
  */
@@ -198,8 +154,6 @@ export interface BrowserMocks {
     [callback: IntersectionObserverCallback, options?: IntersectionObserverInit]
   >;
   resizeObserver: vi.Mock<MockResizeObserver, []>;
-}
-
 /**
  * Setup all common browser mocks
  * @returns All mock objects
@@ -211,9 +165,6 @@ export function setupAllBrowserMocks(): BrowserMocks {
     matchMedia: setupMatchMediaMock(),
     intersectionObserver: setupIntersectionObserverMock(),
     resizeObserver: setupResizeObserverMock(),
-  };
-}
-
 /**
  * Create a mock service with all methods stubbed
  * @param methods - Methods to implement
@@ -225,12 +176,9 @@ export function createMockService<T extends Record<string, any>>(methods: Partia
       (acc, key) => {
         acc[key] = vi.fn(methods[key]);
         return acc;
-      },
-      {} as Record<string, vi.Mock>,
+{} as Record<string, vi.Mock>,
     ),
-  } as T;
-}
-
+as T;
 /**
  * Mock window.location
  * @param {Object} properties - Properties to override
@@ -254,13 +202,8 @@ export function mockWindowLocation(properties = {}) {
     protocol: 'http:',
     search: '',
     ...properties,
-  };
-
-  return () => {
+return () => {
     window.location = originalLocation;
-  };
-}
-
 /**
  * Mock console methods
  */
@@ -273,18 +216,10 @@ export function mockConsole(
     if (console[method]) {
       originalMethods[method] = console[method];
       (console[method] as any) = vi.fn();
-    }
-  });
-
-  return () => {
+return () => {
     methods.forEach((method) => {
       if (originalMethods[method]) {
         console[method] = originalMethods[method];
-      }
-    });
-  };
-}
-
 /**
  * Mock global Date object
  */
@@ -297,22 +232,13 @@ export function mockDate(mockDate: string | number | Date): () => void {
       super();
       if (args.length) {
         return new RealDate(...args);
-      }
-      return mockDateObj;
-    }
-
-    static override now() {
+return mockDateObj;
+static override now() {
       return mockDateObj.getTime();
-    }
-  }
-
-  global.Date = MockDate as DateConstructor;
+global.Date = MockDate as DateConstructor;
 
   return () => {
     global.Date = RealDate;
-  };
-}
-
 export function mockLocation(): void {
   const mockLocation = {
     assign: vi.fn(),
@@ -328,19 +254,14 @@ export function mockLocation(): void {
     port: '',
     protocol: '',
     search: '',
-  } as unknown as Location;
+as unknown as Location;
 
   Object.defineProperty(window, 'location', {
     configurable: true,
     value: mockLocation,
     writable: true,
-  });
-}
-
 export function mockProcedure<T>(data: T): Procedure<any, any, any, any> {
   return {
     _def: {
       query: vi.fn().mockResolvedValue(data),
-    },
-  } as unknown as Procedure<any, any, any, any>;
-}
+as unknown as Procedure<any, any, any, any>;

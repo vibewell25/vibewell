@@ -10,20 +10,13 @@ export function reportWebVitals(metric: NextWebVitalsMetric) {
     // Include additional fields only if they exist
     ...((metric as any).rating !== undefined && { rating: (metric as any).rating }),
     ...((metric as any).delta !== undefined && { delta: (metric as any).delta }),
-  };
-
-  // Send to analytics endpoint
+// Send to analytics endpoint
   if (process.env['NEXT_PUBLIC_ANALYTICS_ENDPOINT']) {
     fetch(process.env['NEXT_PUBLIC_ANALYTICS_ENDPOINT'], {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {
         'Content-Type': 'application/json',
-      },
-    });
-  }
-}
-
 // Performance monitoring
 export const performanceMonitoring = {
   // Track page load performance
@@ -42,22 +35,14 @@ export const performanceMonitoring = {
         // Use safe property access for properties that might not exist in newer specs
         domLoad: navigation.domComplete - (navigation as any).domLoading || 0,
         fullPageLoad: navigation.loadEventEnd - (navigation as any).startTime || 0,
-      };
-
-      // Send metrics to analytics
+// Send metrics to analytics
       if (process.env['NEXT_PUBLIC_ANALYTICS_ENDPOINT']) {
         fetch(`${process.env['NEXT_PUBLIC_ANALYTICS_ENDPOINT']}/performance`, {
           method: 'POST',
           body: JSON.stringify(metrics),
           headers: {
             'Content-Type': 'application/json',
-          },
-        });
-      }
-    }
-  },
-
-  // For tracking web vitals metrics
+// For tracking web vitals metrics
   trackWebVitals: (metric: any) => {
     if (process.env['NEXT_PUBLIC_ANALYTICS_ENDPOINT'] && metric) {
       fetch(`${process.env['NEXT_PUBLIC_ANALYTICS_ENDPOINT']}/web-vitals`, {
@@ -65,12 +50,7 @@ export const performanceMonitoring = {
         body: JSON.stringify(metric),
         headers: {
           'Content-Type': 'application/json',
-        },
-      });
-    }
-  },
-
-  // Track API performance
+// Track API performance
   trackApiCall: async (url: string, startTime: number) => {
     const endTime = performance.now();
     const duration = endTime - startTime;
@@ -79,49 +59,32 @@ export const performanceMonitoring = {
       url,
       duration,
       timestamp: new Date().toISOString(),
-    };
-
-    // Send metrics to analytics
+// Send metrics to analytics
     if (process.env['NEXT_PUBLIC_ANALYTICS_ENDPOINT']) {
       await fetch(`${process.env['NEXT_PUBLIC_ANALYTICS_ENDPOINT']}/api-performance`, {
         method: 'POST',
         body: JSON.stringify(metrics),
         headers: {
           'Content-Type': 'application/json',
-        },
-      });
-    }
-  },
-
-  // Track client-side errors
+// Track client-side errors
   trackError: (error: Error, componentStack?: string) => {
     const errorMetrics = {
       message: error.message,
       stack: error.stack,
       componentStack,
       timestamp: new Date().toISOString(),
-    };
-
-    // Send error metrics to analytics
+// Send error metrics to analytics
     if (process.env['NEXT_PUBLIC_ANALYTICS_ENDPOINT']) {
       fetch(`${process.env['NEXT_PUBLIC_ANALYTICS_ENDPOINT']}/error`, {
         method: 'POST',
         body: JSON.stringify(errorMetrics),
         headers: {
           'Content-Type': 'application/json',
-        },
-      });
-    }
-  },
-
-  // Start timing for performance tracking
+// Start timing for performance tracking
   start: (markName: string) => {
     if (typeof window !== 'undefined' && performance) {
       performance.mark(`${markName}-start`);
-    }
-  },
-
-  // End timing and report performance data
+// End timing and report performance data
   end: (markName: string) => {
     if (typeof window !== 'undefined' && performance) {
       performance.mark(`${markName}-end`);
@@ -140,20 +103,11 @@ export const performanceMonitoring = {
                 name: markName,
                 duration,
                 timestamp: new Date().toISOString(),
-              }),
+),
               headers: {
                 'Content-Type': 'application/json',
-              },
-            });
-          }
-        }
-      } catch (error) {
+catch (error) {
         console.error('Error measuring performance:', error);
-      }
-    }
-  },
-};
-
 /**
  * Performance monitoring utilities
  */
@@ -163,13 +117,9 @@ export const performanceMarks = {
     if (typeof performance !== 'undefined') {
       try {
         performance.mark(`${markId}:start`);
-      } catch (error) {
+catch (error) {
         console.error('Error creating performance mark:', error);
-      }
-    }
-  },
-  
-  end: (markId: string) => {
+end: (markId: string) => {
     if (typeof performance !== 'undefined') {
       try {
         performance.mark(`${markId}:end`);
@@ -181,27 +131,16 @@ export const performanceMarks = {
           const duration = entries[0].duration;
           if (duration > 1000) { // Only log slow operations (> 1s)
             console.warn(`Performance: ${markId} took ${duration.toFixed(2)}ms`);
-          }
-        }
-      } catch (error) {
+catch (error) {
         console.error('Error measuring performance:', error);
-      }
-    }
-  },
-  
-  clearMarks: (markId: string) => {
+clearMarks: (markId: string) => {
     if (typeof performance !== 'undefined') {
       try {
         performance.clearMarks(`${markId}:start`);
         performance.clearMarks(`${markId}:end`);
         performance.clearMeasures(markId);
-      } catch (error) {
+catch (error) {
         console.error('Error clearing performance marks:', error);
-      }
-    }
-  }
-};
-
 /**
  * Track an event for analytics
  */
@@ -216,12 +155,8 @@ export const trackEvent = (
   if (typeof window !== 'undefined' && window.gtag) {
     try {
       window.gtag('event', eventName, properties);
-    } catch (error) {
+catch (error) {
       console.error('Error sending event to analytics:', error);
-    }
-  }
-};
-
 /**
  * Monitor errors
  */
@@ -235,12 +170,8 @@ export const captureError = (
   if (typeof window !== 'undefined' && window.Sentry) {
     try {
       window.Sentry.captureException(error, { extra: context });
-    } catch (err) {
+catch (err) {
       console.error('Error sending to monitoring service:', err);
-    }
-  }
-};
-
 // Add types for window globals
 declare global {
   interface Window {
@@ -254,11 +185,6 @@ declare global {
         error: Error,
         context?: { extra: Record<string, any> }
       ) => void;
-    };
-  }
-}
-
 export default {
   reportWebVitals,
   performanceMonitoring,
-};

@@ -15,17 +15,13 @@ const ThreadFormScreen: React.FC = () => {
     try {
       if (thread) {
         await communityApi.updateThread(thread.id, { title });
-      } else {
+else {
         await communityApi.createThread(title);
-      }
-      navigation.goBack();
-    } catch (err) {
+navigation.goBack();
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to save thread');
-    }
-  };
-
-  return (
+return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
@@ -35,12 +31,7 @@ const ThreadFormScreen: React.FC = () => {
       />
       <Button title={thread ? 'Update' : 'Create'} onPress={handleSubmit} />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   input: { borderWidth: 1, borderColor: '#ccc', padding: 8, borderRadius: 4, marginBottom: 12 }
-});
-
 export default ThreadFormScreen;

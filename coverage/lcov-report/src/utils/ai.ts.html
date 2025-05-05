@@ -1313,302 +1313,302 @@ export interface ModelInfo {
 }
 &nbsp;
 export class <span class="cstat-no" title="statement not covered" >AIUtils {</span>
-  private static <span class="cstat-no" title="statement not covered" >manager = ThirdPartyManager?.getInstance();</span>
+  private static <span class="cstat-no" title="statement not covered" >manager = ThirdPartyManager.getInstance();</span>
   private static <span class="cstat-no" title="statement not covered" >cache = new Map&lt;string, any&gt;();</span>
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private static g</span>etCacheKey(prefix: string, request: any): string {
-<span class="cstat-no" title="statement not covered" >    return `${prefix}:${JSON?.stringify(request)}`;</span>
+<span class="cstat-no" title="statement not covered" >    return `${prefix}:${JSON.stringify(request)}`;</span>
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async c</span>reateCompletion(request: CompletionRequest): Promise&lt;string&gt; {
-    const ai = <span class="cstat-no" title="statement not covered" >this?.manager.getService('ai');</span>
+    const ai = <span class="cstat-no" title="statement not covered" >this.manager.getService('ai');</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!ai) <span class="cstat-no" title="statement not covered" >throw new Error('AI service not initialized');</span></span>
 &nbsp;
-    const config = <span class="cstat-no" title="statement not covered" >this?.manager.getServiceConfig('ai') as AIConfig;</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.manager.getServiceConfig('ai') as AIConfig;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (config?.caching?.enabled) {</span>
-      const cacheKey = <span class="cstat-no" title="statement not covered" >this?.getCacheKey('completion', request);</span>
-      const cached = <span class="cstat-no" title="statement not covered" >this?.cache.get(cacheKey);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (config.caching.enabled) {</span>
+      const cacheKey = <span class="cstat-no" title="statement not covered" >this.getCacheKey('completion', request);</span>
+      const cached = <span class="cstat-no" title="statement not covered" >this.cache.get(cacheKey);</span>
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (cached) <span class="cstat-no" title="statement not covered" >return cached;</span></span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >      switch (config.service) {</span>
         case 'openai': {
-          const completion = <span class="cstat-no" title="statement not covered" >await ai?.completions.create({</span>
-            model: request?.model || config?.models[0],
-            prompt: request?.prompt,
-            max_tokens: request?.maxTokens || config?.maxTokens,
-            temperature: request?.temperature || config?.temperature,
-            top_p: request?.topP,
-            stop: request?.stop,
-            stream: request?.stream,
+          const completion = <span class="cstat-no" title="statement not covered" >await ai.completions.create({</span>
+            model: request.model || config.models[0],
+            prompt: request.prompt,
+            max_tokens: request.maxTokens || config.maxTokens,
+            temperature: request.temperature || config.temperature,
+            top_p: request.topP,
+            stop: request.stop,
+            stream: request.stream,
           });
 &nbsp;
-          const result = <span class="cstat-no" title="statement not covered" >completion?.choices[0].text;</span>
+          const result = <span class="cstat-no" title="statement not covered" >completion.choices[0].text;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (config?.caching?.enabled) {</span>
-            const cacheKey = <span class="cstat-no" title="statement not covered" >this?.getCacheKey('completion', request);</span>
-<span class="cstat-no" title="statement not covered" >            this?.cache.set(cacheKey, result);</span>
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (config.caching.enabled) {</span>
+            const cacheKey = <span class="cstat-no" title="statement not covered" >this.getCacheKey('completion', request);</span>
+<span class="cstat-no" title="statement not covered" >            this.cache.set(cacheKey, result);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >            setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >t</span>his?.cache.delete(cacheKey), c</span>onfig?.caching.ttl * 1000);</span>
+<span class="cstat-no" title="statement not covered" >            setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >t</span>his.cache.delete(cacheKey), c</span>onfig.caching.ttl * 1000);</span>
           }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >          return result;</span>
         }
 &nbsp;
         case 'cohere': {
-          const response = <span class="cstat-no" title="statement not covered" >await ai?.generate({</span>
-            model: request?.model || config?.models[0],
-            prompt: request?.prompt,
-            max_tokens: request?.maxTokens || config?.maxTokens,
-            temperature: request?.temperature || config?.temperature,
-            stop_sequences: request?.stop,
-            stream: request?.stream,
+          const response = <span class="cstat-no" title="statement not covered" >await ai.generate({</span>
+            model: request.model || config.models[0],
+            prompt: request.prompt,
+            max_tokens: request.maxTokens || config.maxTokens,
+            temperature: request.temperature || config.temperature,
+            stop_sequences: request.stop,
+            stream: request.stream,
           });
 &nbsp;
-          const result = <span class="cstat-no" title="statement not covered" >response?.generations[0].text;</span>
+          const result = <span class="cstat-no" title="statement not covered" >response.generations[0].text;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (config?.caching?.enabled) {</span>
-            const cacheKey = <span class="cstat-no" title="statement not covered" >this?.getCacheKey('completion', request);</span>
-<span class="cstat-no" title="statement not covered" >            this?.cache.set(cacheKey, result);</span>
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (config.caching.enabled) {</span>
+            const cacheKey = <span class="cstat-no" title="statement not covered" >this.getCacheKey('completion', request);</span>
+<span class="cstat-no" title="statement not covered" >            this.cache.set(cacheKey, result);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >            setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >t</span>his?.cache.delete(cacheKey), c</span>onfig?.caching.ttl * 1000);</span>
+<span class="cstat-no" title="statement not covered" >            setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >t</span>his.cache.delete(cacheKey), c</span>onfig.caching.ttl * 1000);</span>
           }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >          return result;</span>
         }
 &nbsp;
         case 'anthropic': {
-          const completion = <span class="cstat-no" title="statement not covered" >await ai?.complete({</span>
-            prompt: request?.prompt,
-            model: request?.model || config?.models[0],
-            max_tokens_to_sample: request?.maxTokens || config?.maxTokens,
-            temperature: request?.temperature || config?.temperature,
-            stop_sequences: request?.stop,
+          const completion = <span class="cstat-no" title="statement not covered" >await ai.complete({</span>
+            prompt: request.prompt,
+            model: request.model || config.models[0],
+            max_tokens_to_sample: request.maxTokens || config.maxTokens,
+            temperature: request.temperature || config.temperature,
+            stop_sequences: request.stop,
           });
 &nbsp;
-          const result = <span class="cstat-no" title="statement not covered" >completion?.completion;</span>
+          const result = <span class="cstat-no" title="statement not covered" >completion.completion;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (config?.caching?.enabled) {</span>
-            const cacheKey = <span class="cstat-no" title="statement not covered" >this?.getCacheKey('completion', request);</span>
-<span class="cstat-no" title="statement not covered" >            this?.cache.set(cacheKey, result);</span>
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (config.caching.enabled) {</span>
+            const cacheKey = <span class="cstat-no" title="statement not covered" >this.getCacheKey('completion', request);</span>
+<span class="cstat-no" title="statement not covered" >            this.cache.set(cacheKey, result);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >            setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >t</span>his?.cache.delete(cacheKey), c</span>onfig?.caching.ttl * 1000);</span>
+<span class="cstat-no" title="statement not covered" >            setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >t</span>his.cache.delete(cacheKey), c</span>onfig.caching.ttl * 1000);</span>
           }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >          return result;</span>
         }
 &nbsp;
         default:
-<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported AI service: ${config?.service}`);</span>
+<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported AI service: ${config.service}`);</span>
       }
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Failed to create completion:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to create completion:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async c</span>reateChatCompletion(request: ChatRequest): Promise&lt;string&gt; {
-    const ai = <span class="cstat-no" title="statement not covered" >this?.manager.getService('ai');</span>
+    const ai = <span class="cstat-no" title="statement not covered" >this.manager.getService('ai');</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!ai) <span class="cstat-no" title="statement not covered" >throw new Error('AI service not initialized');</span></span>
 &nbsp;
-    const config = <span class="cstat-no" title="statement not covered" >this?.manager.getServiceConfig('ai') as AIConfig;</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.manager.getServiceConfig('ai') as AIConfig;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (config?.caching?.enabled) {</span>
-      const cacheKey = <span class="cstat-no" title="statement not covered" >this?.getCacheKey('chat', request);</span>
-      const cached = <span class="cstat-no" title="statement not covered" >this?.cache.get(cacheKey);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (config.caching.enabled) {</span>
+      const cacheKey = <span class="cstat-no" title="statement not covered" >this.getCacheKey('chat', request);</span>
+      const cached = <span class="cstat-no" title="statement not covered" >this.cache.get(cacheKey);</span>
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (cached) <span class="cstat-no" title="statement not covered" >return cached;</span></span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >      switch (config.service) {</span>
         case 'openai': {
-          const completion = <span class="cstat-no" title="statement not covered" >await ai?.chat.completions?.create({</span>
-            model: request?.model || config?.models[0],
-            messages: request?.messages,
-            max_tokens: request?.maxTokens || config?.maxTokens,
-            temperature: request?.temperature || config?.temperature,
-            top_p: request?.topP,
-            stop: request?.stop,
-            stream: request?.stream,
+          const completion = <span class="cstat-no" title="statement not covered" >await ai.chat.completions.create({</span>
+            model: request.model || config.models[0],
+            messages: request.messages,
+            max_tokens: request.maxTokens || config.maxTokens,
+            temperature: request.temperature || config.temperature,
+            top_p: request.topP,
+            stop: request.stop,
+            stream: request.stream,
           });
 &nbsp;
-          const result = <span class="cstat-no" title="statement not covered" >completion?.choices[0].message?.content;</span>
+          const result = <span class="cstat-no" title="statement not covered" >completion.choices[0].message.content;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (config?.caching?.enabled) {</span>
-            const cacheKey = <span class="cstat-no" title="statement not covered" >this?.getCacheKey('chat', request);</span>
-<span class="cstat-no" title="statement not covered" >            this?.cache.set(cacheKey, result);</span>
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (config.caching.enabled) {</span>
+            const cacheKey = <span class="cstat-no" title="statement not covered" >this.getCacheKey('chat', request);</span>
+<span class="cstat-no" title="statement not covered" >            this.cache.set(cacheKey, result);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >            setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >t</span>his?.cache.delete(cacheKey), c</span>onfig?.caching.ttl * 1000);</span>
+<span class="cstat-no" title="statement not covered" >            setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >t</span>his.cache.delete(cacheKey), c</span>onfig.caching.ttl * 1000);</span>
           }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >          return result;</span>
         }
 &nbsp;
         case 'anthropic': {
-          const messages = <span class="cstat-no" title="statement not covered" >request?.messages.map(<span class="fstat-no" title="function not covered" >(m</span>sg) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
-            role: msg?.role,
-            content: msg?.content,
+          const messages = <span class="cstat-no" title="statement not covered" >request.messages.map(<span class="fstat-no" title="function not covered" >(m</span>sg) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+            role: msg.role,
+            content: msg.content,
           }));
 &nbsp;
-          const completion = <span class="cstat-no" title="statement not covered" >await ai?.messages.create({</span>
-            model: request?.model || config?.models[0],
+          const completion = <span class="cstat-no" title="statement not covered" >await ai.messages.create({</span>
+            model: request.model || config.models[0],
             messages,
-            max_tokens: request?.maxTokens || config?.maxTokens,
-            temperature: request?.temperature || config?.temperature,
-            stop_sequences: request?.stop,
+            max_tokens: request.maxTokens || config.maxTokens,
+            temperature: request.temperature || config.temperature,
+            stop_sequences: request.stop,
           });
 &nbsp;
-          const result = <span class="cstat-no" title="statement not covered" >completion?.content[0].text;</span>
+          const result = <span class="cstat-no" title="statement not covered" >completion.content[0].text;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (config?.caching?.enabled) {</span>
-            const cacheKey = <span class="cstat-no" title="statement not covered" >this?.getCacheKey('chat', request);</span>
-<span class="cstat-no" title="statement not covered" >            this?.cache.set(cacheKey, result);</span>
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (config.caching.enabled) {</span>
+            const cacheKey = <span class="cstat-no" title="statement not covered" >this.getCacheKey('chat', request);</span>
+<span class="cstat-no" title="statement not covered" >            this.cache.set(cacheKey, result);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >            setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >t</span>his?.cache.delete(cacheKey), c</span>onfig?.caching.ttl * 1000);</span>
+<span class="cstat-no" title="statement not covered" >            setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >t</span>his.cache.delete(cacheKey), c</span>onfig.caching.ttl * 1000);</span>
           }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >          return result;</span>
         }
 &nbsp;
         default:
-<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported chat service: ${config?.service}`);</span>
+<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported chat service: ${config.service}`);</span>
       }
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Failed to create chat completion:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to create chat completion:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async c</span>reateEmbedding(request: EmbeddingRequest): Promise&lt;number[][]&gt; {
-    const ai = <span class="cstat-no" title="statement not covered" >this?.manager.getService('ai');</span>
+    const ai = <span class="cstat-no" title="statement not covered" >this.manager.getService('ai');</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!ai) <span class="cstat-no" title="statement not covered" >throw new Error('AI service not initialized');</span></span>
 &nbsp;
-    const config = <span class="cstat-no" title="statement not covered" >this?.manager.getServiceConfig('ai') as AIConfig;</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.manager.getServiceConfig('ai') as AIConfig;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (config?.caching?.enabled) {</span>
-      const cacheKey = <span class="cstat-no" title="statement not covered" >this?.getCacheKey('embedding', request);</span>
-      const cached = <span class="cstat-no" title="statement not covered" >this?.cache.get(cacheKey);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (config.caching.enabled) {</span>
+      const cacheKey = <span class="cstat-no" title="statement not covered" >this.getCacheKey('embedding', request);</span>
+      const cached = <span class="cstat-no" title="statement not covered" >this.cache.get(cacheKey);</span>
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (cached) <span class="cstat-no" title="statement not covered" >return cached;</span></span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >      switch (config.service) {</span>
         case 'openai': {
-          const response = <span class="cstat-no" title="statement not covered" >await ai?.embeddings.create({</span>
+          const response = <span class="cstat-no" title="statement not covered" >await ai.embeddings.create({</span>
 &nbsp;
 &nbsp;
-            model: request?.model || 'text-embedding-ada-002',
-            input: request?.input,
+            model: request.model || 'text-embedding-ada-002',
+            input: request.input,
           });
 &nbsp;
-          const result = <span class="cstat-no" title="statement not covered" >response?.data.map(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item?.embedding);</span></span>
+          const result = <span class="cstat-no" title="statement not covered" >response.data.map(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item.embedding)</span>;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (config?.caching?.enabled) {</span>
-            const cacheKey = <span class="cstat-no" title="statement not covered" >this?.getCacheKey('embedding', request);</span>
-<span class="cstat-no" title="statement not covered" >            this?.cache.set(cacheKey, result);</span>
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (config.caching.enabled) {</span>
+            const cacheKey = <span class="cstat-no" title="statement not covered" >this.getCacheKey('embedding', request);</span>
+<span class="cstat-no" title="statement not covered" >            this.cache.set(cacheKey, result);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >            setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >t</span>his?.cache.delete(cacheKey), c</span>onfig?.caching.ttl * 1000);</span>
+<span class="cstat-no" title="statement not covered" >            setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >t</span>his.cache.delete(cacheKey), c</span>onfig.caching.ttl * 1000);</span>
           }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >          return result;</span>
         }
 &nbsp;
         case 'cohere': {
-          const response = <span class="cstat-no" title="statement not covered" >await ai?.embed({</span>
-            model: request?.model || config?.models[0],
-            texts: Array?.isArray(request?.input) ? request?.input : [request?.input],
+          const response = <span class="cstat-no" title="statement not covered" >await ai.embed({</span>
+            model: request.model || config.models[0],
+            texts: Array.isArray(request.input) ? request.input : [request.input],
           });
 &nbsp;
-          const result = <span class="cstat-no" title="statement not covered" >response?.embeddings;</span>
+          const result = <span class="cstat-no" title="statement not covered" >response.embeddings;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (config?.caching?.enabled) {</span>
-            const cacheKey = <span class="cstat-no" title="statement not covered" >this?.getCacheKey('embedding', request);</span>
-<span class="cstat-no" title="statement not covered" >            this?.cache.set(cacheKey, result);</span>
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (config.caching.enabled) {</span>
+            const cacheKey = <span class="cstat-no" title="statement not covered" >this.getCacheKey('embedding', request);</span>
+<span class="cstat-no" title="statement not covered" >            this.cache.set(cacheKey, result);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >            setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >t</span>his?.cache.delete(cacheKey), c</span>onfig?.caching.ttl * 1000);</span>
+<span class="cstat-no" title="statement not covered" >            setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >t</span>his.cache.delete(cacheKey), c</span>onfig.caching.ttl * 1000);</span>
           }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >          return result;</span>
         }
 &nbsp;
         default:
-<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported embedding service: ${config?.service}`);</span>
+<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported embedding service: ${config.service}`);</span>
       }
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Failed to create embedding:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to create embedding:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async g</span>enerateImage(request: ImageGenerationRequest): Promise&lt;string[]&gt; {
-    const ai = <span class="cstat-no" title="statement not covered" >this?.manager.getService('ai');</span>
+    const ai = <span class="cstat-no" title="statement not covered" >this.manager.getService('ai');</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!ai) <span class="cstat-no" title="statement not covered" >throw new Error('AI service not initialized');</span></span>
 &nbsp;
-    const config = <span class="cstat-no" title="statement not covered" >this?.manager.getServiceConfig('ai') as AIConfig;</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.manager.getServiceConfig('ai') as AIConfig;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >      switch (config.service) {</span>
         case 'openai': {
-          const response = <span class="cstat-no" title="statement not covered" >await ai?.images.generate({</span>
+          const response = <span class="cstat-no" title="statement not covered" >await ai.images.generate({</span>
 &nbsp;
             model: 'dall-e-3',
-            prompt: request?.prompt,
-            n: request?.n || 1,
-            size: request?.size || '1024x1024',
-            response_format: request?.responseFormat || 'url',
+            prompt: request.prompt,
+            n: request.n || 1,
+            size: request.size || '1024x1024',
+            response_format: request.responseFormat || 'url',
           });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          return response?.data.map(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt;</span>
-<span class="cstat-no" title="statement not covered" >            request?.responseFormat === 'b64_json' ? item?.b64_json : item?.url,</span>
+<span class="cstat-no" title="statement not covered" >          return response.data.map(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt;</span>
+<span class="cstat-no" title="statement not covered" >            request.responseFormat === 'b64_json' ? item.b64_json : item.url,</span>
           );
         }
 &nbsp;
         default:
-<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported image generation service: ${config?.service}`);</span>
+<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported image generation service: ${config.service}`);</span>
       }
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Failed to generate image:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to generate image:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async m</span>oderateContent(request: ModerationRequest): Promise&lt;ModerationResult&gt; {
-    const ai = <span class="cstat-no" title="statement not covered" >this?.manager.getService('ai');</span>
+    const ai = <span class="cstat-no" title="statement not covered" >this.manager.getService('ai');</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!ai) <span class="cstat-no" title="statement not covered" >throw new Error('AI service not initialized');</span></span>
 &nbsp;
-    const config = <span class="cstat-no" title="statement not covered" >this?.manager.getServiceConfig('ai') as AIConfig;</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.manager.getServiceConfig('ai') as AIConfig;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >      switch (config.service) {</span>
         case 'openai': {
-          const response = <span class="cstat-no" title="statement not covered" >await ai?.moderations.create({</span>
-            input: request?.input,
+          const response = <span class="cstat-no" title="statement not covered" >await ai.moderations.create({</span>
+            input: request.input,
 &nbsp;
-            model: request?.model || 'text-moderation-latest',
+            model: request.model || 'text-moderation-latest',
           });
 &nbsp;
-          const result = <span class="cstat-no" title="statement not covered" >response?.results[0];</span>
+          const result = <span class="cstat-no" title="statement not covered" >response.results[0];</span>
 <span class="cstat-no" title="statement not covered" >          return {</span>
-            flagged: result?.flagged,
+            flagged: result.flagged,
             categories: {
-              hate: result?.categories.hate,
-              threatening: result?.categories.threatening,
+              hate: result.categories.hate,
+              threatening: result.categories.threatening,
 &nbsp;
-              selfHarm: result?.categories['self-harm'],
-              sexual: result?.categories.sexual,
-              violence: result?.categories.violence,
-              graphic: result?.categories.graphic,
+              selfHarm: result.categories['self-harm'],
+              sexual: result.categories.sexual,
+              violence: result.categories.violence,
+              graphic: result.categories.graphic,
             },
             scores: {
-              hate: result?.category_scores.hate,
-              threatening: result?.category_scores.threatening,
+              hate: result.category_scores.hate,
+              threatening: result.category_scores.threatening,
 &nbsp;
-              selfHarm: result?.category_scores['self-harm'],
-              sexual: result?.category_scores.sexual,
-              violence: result?.category_scores.violence,
-              graphic: result?.category_scores.graphic,
+              selfHarm: result.category_scores['self-harm'],
+              sexual: result.category_scores.sexual,
+              violence: result.category_scores.violence,
+              graphic: result.category_scores.graphic,
             },
           };
         }
@@ -1619,139 +1619,139 @@ export class <span class="cstat-no" title="statement not covered" >AIUtils {</sp
         }
 &nbsp;
         default:
-<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported moderation service: ${config?.service}`);</span>
+<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported moderation service: ${config.service}`);</span>
       }
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Failed to moderate content:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to moderate content:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async c</span>reateFineTune(request: FineTuneRequest): Promise&lt;string&gt; {
-    const ai = <span class="cstat-no" title="statement not covered" >this?.manager.getService('ai');</span>
+    const ai = <span class="cstat-no" title="statement not covered" >this.manager.getService('ai');</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!ai) <span class="cstat-no" title="statement not covered" >throw new Error('AI service not initialized');</span></span>
 &nbsp;
-    const config = <span class="cstat-no" title="statement not covered" >this?.manager.getServiceConfig('ai') as AIConfig;</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.manager.getServiceConfig('ai') as AIConfig;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >      switch (config.service) {</span>
         case 'openai': {
-          const fineTune = <span class="cstat-no" title="statement not covered" >await ai?.fineTuning.jobs?.create({</span>
-            training_file: request?.trainingFile,
+          const fineTune = <span class="cstat-no" title="statement not covered" >await ai.fineTuning.jobs.create({</span>
+            training_file: request.trainingFile,
 &nbsp;
-            model: request?.model || 'gpt-3?.5-turbo',
-            validation_file: request?.validationFile,
+            model: request.model || 'gpt-3.5-turbo',
+            validation_file: request.validationFile,
             hyperparameters: {
-              n_epochs: request?.epochs,
-              batch_size: request?.batchSize,
-              learning_rate_multiplier: request?.learningRate,
+              n_epochs: request.epochs,
+              batch_size: request.batchSize,
+              learning_rate_multiplier: request.learningRate,
             },
           });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          return fineTune?.id;</span>
+<span class="cstat-no" title="statement not covered" >          return fineTune.id;</span>
         }
 &nbsp;
         default:
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported fine-tuning service: ${config?.service}`);</span>
+<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported fine-tuning service: ${config.service}`);</span>
       }
     } catch (error) {
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      console?.error('Failed to create fine-tune:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to create fine-tune:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async g</span>etFineTuneStatus(fineTuneId: string): Promise&lt;FineTuneStatus&gt; {
-    const ai = <span class="cstat-no" title="statement not covered" >this?.manager.getService('ai');</span>
+    const ai = <span class="cstat-no" title="statement not covered" >this.manager.getService('ai');</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!ai) <span class="cstat-no" title="statement not covered" >throw new Error('AI service not initialized');</span></span>
 &nbsp;
-    const config = <span class="cstat-no" title="statement not covered" >this?.manager.getServiceConfig('ai') as AIConfig;</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.manager.getServiceConfig('ai') as AIConfig;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >      switch (config.service) {</span>
         case 'openai': {
-          const job = <span class="cstat-no" title="statement not covered" >await ai?.fineTuning.jobs?.retrieve(fineTuneId);</span>
+          const job = <span class="cstat-no" title="statement not covered" >await ai.fineTuning.jobs.retrieve(fineTuneId);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >          return {</span>
-            id: job?.id,
-            status: job?.status as 'pending' | 'running' | 'succeeded' | 'failed',
-            model: job?.fine_tuned_model || job?.model,
+            id: job.id,
+            status: job.status as 'pending' | 'running' | 'succeeded' | 'failed',
+            model: job.fine_tuned_model || job.model,
 &nbsp;
-            createdAt: new Date(job?.created_at * 1000),
+            createdAt: new Date(job.created_at * 1000),
 &nbsp;
-            finishedAt: job?.finished_at ? new Date(job?.finished_at * 1000) : undefined,
-            trainingLoss: job?.training_metrics?.training_loss,
-            validationLoss: job?.training_metrics?.validation_loss,
+            finishedAt: job.finished_at ? new Date(job.finished_at * 1000) : undefined,
+            trainingLoss: job.training_metrics.training_loss,
+            validationLoss: job.training_metrics.validation_loss,
           };
         }
 &nbsp;
         default:
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported fine-tuning service: ${config?.service}`);</span>
+<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported fine-tuning service: ${config.service}`);</span>
       }
     } catch (error) {
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      console?.error('Failed to get fine-tune status:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to get fine-tune status:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async l</span>istModels(): Promise&lt;ModelInfo[]&gt; {
-    const ai = <span class="cstat-no" title="statement not covered" >this?.manager.getService('ai');</span>
+    const ai = <span class="cstat-no" title="statement not covered" >this.manager.getService('ai');</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!ai) <span class="cstat-no" title="statement not covered" >throw new Error('AI service not initialized');</span></span>
 &nbsp;
-    const config = <span class="cstat-no" title="statement not covered" >this?.manager.getServiceConfig('ai') as AIConfig;</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.manager.getServiceConfig('ai') as AIConfig;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >      switch (config.service) {</span>
         case 'openai': {
-          const models = <span class="cstat-no" title="statement not covered" >await ai?.models.list();</span>
+          const models = <span class="cstat-no" title="statement not covered" >await ai.models.list();</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          return models?.data.map(<span class="fstat-no" title="function not covered" >(m</span>odel) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
-            id: model?.id,
-            name: model?.id,
+<span class="cstat-no" title="statement not covered" >          return models.data.map(<span class="fstat-no" title="function not covered" >(m</span>odel) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+            id: model.id,
+            name: model.id,
 &nbsp;
-            type: model?.id.startsWith('ft:') ? 'fine-tuned' : 'base',
+            type: model.id.startsWith('ft:') ? 'fine-tuned' : 'base',
             provider: 'openai',
-            capabilities: this?.getModelCapabilities(model?.id),
-            maxTokens: model?.context_window || 4096,
+            capabilities: this.getModelCapabilities(model.id),
+            maxTokens: model.context_window || 4096,
 &nbsp;
-            createdAt: new Date(model?.created * 1000),
+            createdAt: new Date(model.created * 1000),
           }));
         }
 &nbsp;
         case 'anthropic': {
-<span class="cstat-no" title="statement not covered" >          return config?.models.map(<span class="fstat-no" title="function not covered" >(m</span>odelId) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >          return config.models.map(<span class="fstat-no" title="function not covered" >(m</span>odelId) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
             id: modelId,
             name: modelId,
             type: 'base',
             provider: 'anthropic',
-            capabilities: this?.getModelCapabilities(modelId),
+            capabilities: this.getModelCapabilities(modelId),
             maxTokens: 100000, // Claude models typically support very long contexts
             createdAt: new Date(),
           }));
         }
 &nbsp;
         case 'cohere': {
-          const models = <span class="cstat-no" title="statement not covered" >await ai?.listModels();</span>
+          const models = <span class="cstat-no" title="statement not covered" >await ai.listModels();</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          return models?.map(<span class="fstat-no" title="function not covered" >(m</span>odel) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
-            id: model?.id,
-            name: model?.name,
+<span class="cstat-no" title="statement not covered" >          return models.map(<span class="fstat-no" title="function not covered" >(m</span>odel) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+            id: model.id,
+            name: model.name,
             type: 'base',
             provider: 'cohere',
-            capabilities: this?.getModelCapabilities(model?.id),
-            maxTokens: model?.max_tokens || 4096,
+            capabilities: this.getModelCapabilities(model.id),
+            maxTokens: model.max_tokens || 4096,
             createdAt: new Date(),
           }));
         }
 &nbsp;
         default:
-<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported model listing service: ${config?.service}`);</span>
+<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported model listing service: ${config.service}`);</span>
       }
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Failed to list models:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to list models:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -1761,25 +1761,25 @@ export class <span class="cstat-no" title="statement not covered" >AIUtils {</sp
     const capabilities: string[] = <span class="cstat-no" title="statement not covered" >['text-generation'];</span>
 &nbsp;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (modelId?.includes('gpt-4') || modelId?.includes('claude')) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (modelId.includes('gpt-4') || modelId.includes('claude')) {</span>
 &nbsp;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      capabilities?.push('advanced-reasoning', 'code-generation');</span>
+<span class="cstat-no" title="statement not covered" >      capabilities.push('advanced-reasoning', 'code-generation');</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (modelId?.includes('vision')) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (modelId.includes('vision')) {</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      capabilities?.push('image-understanding');</span>
+<span class="cstat-no" title="statement not covered" >      capabilities.push('image-understanding');</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (modelId?.includes('embedding')) {</span>
-<span class="cstat-no" title="statement not covered" >      capabilities?.push('embeddings');</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (modelId.includes('embedding')) {</span>
+<span class="cstat-no" title="statement not covered" >      capabilities.push('embeddings');</span>
     }
 &nbsp;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (modelId?.includes('dall-e')) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (modelId.includes('dall-e')) {</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      capabilities?.push('image-generation');</span>
+<span class="cstat-no" title="statement not covered" >      capabilities.push('image-generation');</span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return capabilities;</span>
@@ -1792,7 +1792,7 @@ export class <span class="cstat-no" title="statement not covered" >AIUtils {</sp
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -1,15 +1,11 @@
-'use client';
-
 import React, { useEffect } from 'react';
 import { useAccessibilityContext } from '@/contexts/AccessibilityContext';
 
 interface AccessibilityStyleProviderProps {
   children: React.ReactNode;
-}
-
 export const AccessibilityStyleProvider: React.FC<AccessibilityStyleProviderProps> = ({
   children,
-}) => {
+) => {
   const { preferences } = useAccessibilityContext();
 
   useEffect(() => {
@@ -22,25 +18,18 @@ export const AccessibilityStyleProvider: React.FC<AccessibilityStyleProviderProp
     // Apply additional styling for high contrast if needed
     if (preferences.highContrast) {
       document.documentElement.style.setProperty('--text-contrast-multiplier', '1.2');
-    } else {
+else {
       document.documentElement.style.removeProperty('--text-contrast-multiplier');
-    }
-
-    // Apply additional styling for large text if needed
+// Apply additional styling for large text if needed
     if (preferences.largeText) {
       document.documentElement.style.setProperty('--base-font-size-multiplier', '1.25');
-    } else {
+else {
       document.documentElement.style.removeProperty('--base-font-size-multiplier');
-    }
-
-    // Cleanup function to reset styles when component unmounts
+// Cleanup function to reset styles when component unmounts
     return () => {
       document.documentElement.style.removeProperty('--text-contrast-multiplier');
       document.documentElement.style.removeProperty('--base-font-size-multiplier');
-    };
-  }, [preferences]);
+[preferences]);
 
   return <>{children}</>;
-};
-
 export default AccessibilityStyleProvider;

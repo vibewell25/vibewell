@@ -1,4 +1,3 @@
-'use client';
 import { useState, useRef, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/Button';
@@ -18,7 +17,7 @@ import { Icons } from '@/components/icons';
   ScissorsIcon,
   PaintBrushIcon,
   FaceSmileIcon
-} from '@heroicons/react/24/outline';
+from '@heroicons/react/24/outline';
 interface VirtualStyle {
   id: string;
   name: string;
@@ -27,7 +26,6 @@ interface VirtualStyle {
   intensity: number;
   color?: string;
   variations: string[];
-}
 const virtualStyles: VirtualStyle[] = [
   {
     id: 'hair1',
@@ -37,16 +35,14 @@ const virtualStyles: VirtualStyle[] = [
     intensity: 0.5,
     color: '#8B4513',
     variations: ['Straight', 'Wavy', 'Curly']
-  },
-  {
+{
     id: 'makeup1',
     name: 'Natural Glow',
     category: 'makeup',
     thumbnail: '/virtual-styles/makeup/natural-glow.jpg',
     intensity: 0.7,
     variations: ['Light', 'Medium', 'Full']
-  },
-  // Add more styles...
+// Add more styles...
 ];
 export default function VirtualTryOnPage() {
   const [activeTab, setActiveTab] = useState('hair');
@@ -60,36 +56,28 @@ export default function VirtualTryOnPage() {
   useEffect(() => {
     if (isCameraActive) {
       startCamera();
-    } else {
+else {
       stopCamera();
-    }
-  }, [isCameraActive]);
+[isCameraActive]);
   const startCamera = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ 
         video: { facingMode: 'user' } 
-      });
-      if (videoRef.current) {
+if (videoRef.current) {
         videoRef.current.srcObject = stream;
-      }
-    } catch (error) {
+catch (error) {
       console.error('Error accessing camera:', error);
-    }
-  };
-  const stopCamera = () => {
+const stopCamera = () => {
     if (videoRef.current.srcObject) {
       const stream = videoRef.current.srcObject as MediaStream;
       stream.getTracks().forEach(track => track.stop());
       videoRef.current.srcObject = null;
-    }
-  };
-  const handleStyleSelect = (style: VirtualStyle) => {
+const handleStyleSelect = (style: VirtualStyle) => {
     setSelectedStyle(style);
     setStyleIntensity(style.intensity);
-  };
-  const handleCapture = () => {
+const handleCapture = () => {
     if (canvasRef.current && videoRef.current) {
       const context = canvasRef.current.getContext('2d');
       if (context) {
@@ -98,10 +86,7 @@ export default function VirtualTryOnPage() {
         context.drawImage(videoRef.current, 0, 0);
         // Apply virtual style to the captured image
         // This would be handled by your AR/ML model
-      }
-    }
-  };
-  return (
+return (
     <Layout>
       <div className="container-app py-12">
         <div className="mb-8">
@@ -206,7 +191,7 @@ export default function VirtualTryOnPage() {
                             key={style.id}
                             className={`cursor-pointer transition-all ${
                               selectedStyle.id === style.id ? 'border-primary' : ''
-                            }`}
+`}
                             onClick={() => handleStyleSelect(style)}
                           >
                             <CardContent className="p-4">
@@ -226,7 +211,7 @@ export default function VirtualTryOnPage() {
                             key={style.id}
                             className={`cursor-pointer transition-all ${
                               selectedStyle.id === style.id ? 'border-primary' : ''
-                            }`}
+`}
                             onClick={() => handleStyleSelect(style)}
                           >
                             <CardContent className="p-4">
@@ -303,5 +288,3 @@ export default function VirtualTryOnPage() {
         </div>
       </div>
     </Layout>
-  );
-} 

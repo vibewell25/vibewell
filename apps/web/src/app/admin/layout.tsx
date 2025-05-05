@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
@@ -10,8 +8,6 @@ import { AlertTriangle } from 'lucide-react';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
-}
-
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const router = useRouter();
   const { user, isLoading, isAdmin } = useAuth();
@@ -19,10 +15,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   useEffect(() => {
     if (!isLoading && !user) {
       router.push('/login');
-    } else if (!isLoading && !isAdmin) {
+else if (!isLoading && !isAdmin) {
       router.push('/');
-    }
-  }, [isLoading, user, isAdmin, router]);
+[isLoading, user, isAdmin, router]);
 
   if (isLoading) {
     return (
@@ -34,10 +29,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <Skeleton className="h-[200px] w-full" />
         </div>
       </div>
-    );
-  }
-
-  if (!user || !isAdmin) {
+if (!user || !isAdmin) {
     return (
       <div className="container mx-auto py-6">
         <Alert variant="destructive">
@@ -46,13 +38,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <AlertDescription>You do not have permission to access this area.</AlertDescription>
         </Alert>
       </div>
-    );
-  }
-
-  return (
+return (
     <div className="flex h-screen">
       <Sidebar />
       <div className="flex-1 overflow-auto">{children}</div>
     </div>
-  );
-}

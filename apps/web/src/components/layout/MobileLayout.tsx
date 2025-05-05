@@ -9,8 +9,6 @@ import { ThemeSelector } from '@/components/theme-selector';
 interface MobileLayoutProps {
   children: React.ReactNode;
   hideNavigation?: boolean;
-}
-
 export function MobileLayout({ children, hideNavigation = false }: MobileLayoutProps) {
   const pathname = usePathname();
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -22,29 +20,25 @@ export function MobileLayout({ children, hideNavigation = false }: MobileLayoutP
       icon: Icons.HomeIcon,
       activeIcon: Icons.HomeSolid,
       isActive: pathname === '/feed' || pathname === '/',
-    },
-    {
+{
       name: 'Bookings',
       href: '/bookings',
       icon: Icons.MapPinIcon,
       activeIcon: Icons.MapPinSolid,
       isActive: pathname.includes('/bookings'),
-    },
-    {
+{
       name: 'Messages',
       href: '/messages',
       icon: Icons.ChatBubbleLeftIcon,
       activeIcon: Icons.ChatBubbleLeftSolid,
       isActive: pathname.includes('/messages'),
-    },
-    {
+{
       name: 'Profile',
       href: '/profile',
       icon: Icons.UserIcon,
       activeIcon: Icons.UserSolid,
       isActive: pathname.includes('/profile'),
-    },
-  ];
+];
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -65,7 +59,7 @@ export function MobileLayout({ children, hideNavigation = false }: MobileLayoutP
                       item.isActive
                         ? 'text-primary font-medium'
                         : 'text-gray-500 dark:text-gray-400'
-                    }`}
+`}
                   >
                     <Icon className="mb-1 h-6 w-6" />
                     <span>{item.name}</span>
@@ -73,8 +67,7 @@ export function MobileLayout({ children, hideNavigation = false }: MobileLayoutP
                       <div className="bg-primary absolute bottom-0 h-0.5 w-12 rounded-t-full" />
                     )}
                   </Link>
-                );
-              })}
+)}
 
               <Sheet open={settingsOpen} onOpenChange={setSettingsOpen}>
                 <SheetTrigger asChild>
@@ -115,5 +108,3 @@ export function MobileLayout({ children, hideNavigation = false }: MobileLayoutP
         </>
       )}
     </div>
-  );
-}

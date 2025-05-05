@@ -1,4 +1,3 @@
-
 import { PrismaClient, Service } from '@prisma/client';
 
 import { AppError, handleError } from '../utils/error';
@@ -17,22 +16,15 @@ export class ServiceService {
           ...serviceData,
           practitioners: practitionerIds ? {
             connect: practitionerIds.map(id => ({ id }))
-          } : undefined
-        },
-        include: {
+: undefined
+include: {
           business: true,
           practitioners: true,
           customPricing: true
-        }
-      });
-
-      return service;
-    } catch (error) {
+return service;
+catch (error) {
       throw handleError(error);
-    }
-  }
-
-  async getServiceById(id: string): Promise<ServiceWithRelations> {
+async getServiceById(id: string): Promise<ServiceWithRelations> {
     try {
       const service = await this.prisma.service.findUnique({
         where: { id },
@@ -40,20 +32,12 @@ export class ServiceService {
           business: true,
           practitioners: true,
           customPricing: true
-        }
-      });
-
-      if (!service) {
+if (!service) {
         throw new AppError('Service not found', 404);
-      }
-
-      return service;
-    } catch (error) {
+return service;
+catch (error) {
       throw handleError(error);
-    }
-  }
-
-  async updateService(id: string, data: UpdateServiceDTO): Promise<ServiceWithRelations> {
+async updateService(id: string, data: UpdateServiceDTO): Promise<ServiceWithRelations> {
     try {
       const { practitionerIds, ...updateData } = data;
       
@@ -63,32 +47,21 @@ export class ServiceService {
           ...updateData,
           practitioners: practitionerIds ? {
             set: practitionerIds.map(id => ({ id }))
-          } : undefined
-        },
-        include: {
+: undefined
+include: {
           business: true,
           practitioners: true,
           customPricing: true
-        }
-      });
-
-      return service;
-    } catch (error) {
+return service;
+catch (error) {
       throw handleError(error);
-    }
-  }
-
-  async deleteService(id: string): Promise<void> {
+async deleteService(id: string): Promise<void> {
     try {
       await this.prisma.service.delete({
         where: { id }
-      });
-    } catch (error) {
+catch (error) {
       throw handleError(error);
-    }
-  }
-
-  async getServicesByBusiness(businessId: string): Promise<ServiceWithRelations[]> {
+async getServicesByBusiness(businessId: string): Promise<ServiceWithRelations[]> {
     try {
       const services = await this.prisma.service.findMany({
         where: { businessId },
@@ -96,75 +69,46 @@ export class ServiceService {
           business: true,
           practitioners: true,
           customPricing: true
-        }
-      });
-
-      return services;
-    } catch (error) {
+return services;
+catch (error) {
       throw handleError(error);
-    }
-  }
-
-  async getServicesByPractitioner(practitionerId: string): Promise<ServiceWithRelations[]> {
+async getServicesByPractitioner(practitionerId: string): Promise<ServiceWithRelations[]> {
     try {
       const services = await this.prisma.service.findMany({
         where: {
           practitioners: {
             some: {
               id: practitionerId
-            }
-          }
-        },
-        include: {
+include: {
           business: true,
           practitioners: true,
           customPricing: true
-        }
-      });
-
-      return services;
-    } catch (error) {
+return services;
+catch (error) {
       throw handleError(error);
-    }
-  }
-
-  async getActiveServices(businessId: string): Promise<ServiceWithRelations[]> {
+async getActiveServices(businessId: string): Promise<ServiceWithRelations[]> {
     try {
       const services = await this.prisma.service.findMany({
         where: {
           businessId,
           isActive: true
-        },
-        include: {
+include: {
           business: true,
           practitioners: true,
           customPricing: true
-        }
-      });
-
-      return services;
-    } catch (error) {
+return services;
+catch (error) {
       throw handleError(error);
-    }
-  }
-
-  async getServicesByCategory(businessId: string, category: string): Promise<ServiceWithRelations[]> {
+async getServicesByCategory(businessId: string, category: string): Promise<ServiceWithRelations[]> {
     try {
       const services = await this.prisma.service.findMany({
         where: {
           businessId,
           category
-        },
-        include: {
+include: {
           business: true,
           practitioners: true,
           customPricing: true
-        }
-      });
-
-      return services;
-    } catch (error) {
+return services;
+catch (error) {
       throw handleError(error);
-    }
-  }
-} 

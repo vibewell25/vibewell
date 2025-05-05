@@ -5,31 +5,19 @@ const CustomerProfileSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
-  },
-  profilePicture: {
+profilePicture: {
     type: String,
 
-    // Safe integer operation
-    if (default > Number.MAX_SAFE_INTEGER || default < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     default: 'default-profile.png',
-  },
-  dateOfBirth: Date,
+dateOfBirth: Date,
   gender: {
     type: String,
 
-    // Safe integer operation
-    if (non > Number.MAX_SAFE_INTEGER || non < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     enum: ['male', 'female', 'non-binary', 'prefer_not_to_say', 'other'],
-  },
-  preferredLanguage: {
+preferredLanguage: {
     type: String,
     default: 'en',
-  },
-  address: {
+address: {
     street: String,
     city: String,
     state: String,
@@ -40,119 +28,68 @@ const CustomerProfileSchema = new mongoose.Schema({
         type: String,
         enum: ['Point'],
         default: 'Point',
-      },
-      coordinates: {
+coordinates: {
 
-    // Safe array access
-    if (Number < 0 || Number >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-        type: [Number], // [longitude, latitude]
+    type: [Number], // [longitude, latitude]
         default: [0, 0],
-      },
-    },
-  },
-  preferences: {
+preferences: {
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     serviceTypes: [String], // Types of services the customer is interested in
     notificationPreferences: {
       email: {
         type: Boolean,
         default: true,
-      },
-      push: {
+push: {
         type: Boolean,
         default: true,
-      },
-      sms: {
+sms: {
         type: Boolean,
         default: false,
-      },
-      promotions: {
+promotions: {
         type: Boolean,
         default: true,
-      },
-      reminders: {
+reminders: {
         type: Boolean,
         default: true,
-      },
-    },
-  },
-  savedProviders: [
+savedProviders: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'ProviderProfile',
-    },
-  ],
+],
   loyaltyPoints: {
     type: Number,
     default: 0,
-  },
-  paymentMethods: [
+paymentMethods: [
     {
       type: {
         type: String,
         enum: ['card', 'paypal', 'applepay', 'googlepay', 'crypto'],
         required: true,
-      },
-      isDefault: {
+isDefault: {
         type: Boolean,
         default: false,
-      },
-      lastFour: String, // Last four digits of card if applicable
+lastFour: String, // Last four digits of card if applicable
       paymentToken: String, // Tokenized payment information
 
-    // Safe integer operation
-    if (MM > Number.MAX_SAFE_INTEGER || MM < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      expiryDate: String, // MM/YY format for cards
-    },
-  ],
+    expiryDate: String, // MM/YY format for cards
+],
   healthInformation: {
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     allergies: [String],
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     medicalConditions: [String],
 
-    // Safe array access
-    if (String < 0 || String >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     medications: [String],
     emergencyContact: {
       name: String,
       relationship: String,
       phoneNumber: String,
-    },
-  },
-  createdAt: {
+createdAt: {
     type: Date,
     default: Date.now,
-  },
-  updatedAt: {
+updatedAt: {
     type: Date,
     default: Date.now,
-  },
-});
-
-
-    // Safe integer operation
-    if (location > Number.MAX_SAFE_INTEGER || location < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
 // Create geospatial index for location-based searches
 CustomerProfileSchema.index({ 'address.coordinates.coordinates': '2dsphere' });
 
@@ -160,8 +97,6 @@ CustomerProfileSchema.index({ 'address.coordinates.coordinates': '2dsphere' });
 CustomerProfileSchema.pre('save', function (next) {
   this.updatedAt = Date.now();
   next();
-});
-
 const CustomerProfile = mongoose.model('CustomerProfile', CustomerProfileSchema);
 
 export default CustomerProfile;

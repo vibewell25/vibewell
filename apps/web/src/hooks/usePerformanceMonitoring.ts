@@ -1,9 +1,9 @@
 import { useRef, useEffect } from 'react';
 
 
-import { startComponentRender, endComponentRender } from '../utils/performance-monitoring-legacy';
+import { startComponentRender, endComponentRender } from '../utils/PerformanceMonitoringLegacy';
 
-import { exists } from '../utils/type-guards';
+import { exists } from '../utils/TypeGuards';
 
 interface UsePerformanceMonitoringOptions {
   /**
@@ -27,8 +27,6 @@ interface UsePerformanceMonitoringOptions {
    * Custom metadata to associate with this performance measurement
    */
   metadata?: Record<string, any>;
-}
-
 /**
  * Hook for monitoring performance of React components
  *
@@ -76,40 +74,26 @@ export function usePerformanceMonitoring(options: UsePerformanceMonitoringOption
     if (exists(markRef.current)) {
       // If we already have a mark, end it first to avoid leaks
       endMeasure();
-    }
-
-    const mark = startComponentRender(id);
+const mark = startComponentRender(id);
     markRef.current = mark;
     return mark;
-  };
-
-  // End measure function
+// End measure function
   const endMeasure = (): void => {
     if (exists(markRef.current)) {
       endComponentRender(id, markRef.current);
       markRef.current = null;
-    }
-  };
-
-  // Automatically start measuring on mount if autoStart is true
+// Automatically start measuring on mount if autoStart is true
   useEffect(() => {
     if (autoStart) {
       startMeasure();
-    }
-
-    // Automatically end measuring on unmount if autoEnd is true
+// Automatically end measuring on unmount if autoEnd is true
     return () => {
       if (autoEnd && exists(markRef.current)) {
         endMeasure();
-      }
-    };
-  }, [autoStart, autoEnd, id]);
+[autoStart, autoEnd, id]);
 
   return {
     startMeasure,
     endMeasure,
     isActive: markRef.current !== null,
-  };
-}
-
 export default usePerformanceMonitoring;

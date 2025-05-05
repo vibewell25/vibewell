@@ -1,12 +1,3 @@
-/**
- * Rate Limiter Types and Interfaces
- *
- * This module contains shared type definitions used across the rate limiter services.
- */
-
-/**
- * Configuration options for rate limiters
- */
 export interface RateLimitOptions {
   // Core options
   windowMs?: number;
@@ -22,8 +13,6 @@ export interface RateLimitOptions {
   // Additional options
   burstFactor?: number;
   burstDurationMs?: number;
-}
-
 /**
  * Result of a rate limit check
  */
@@ -33,8 +22,6 @@ export interface RateLimitResult {
   remaining: number;
   retryAfter?: number;
   resetTime: number;
-}
-
 /**
  * Rate limit event data structure
  */
@@ -56,8 +43,6 @@ export interface RateLimitEvent {
   overLimitFactor?: number;
   blocked?: boolean;
   userId?: string;
-}
-
 /**
  * WebSocket specific rate limit options
  */
@@ -69,8 +54,6 @@ export interface WebSocketRateLimitOptions extends RateLimitOptions {
   // Message limits
   maxMessagesPerMinute?: number;
   maxMessageSizeBytes?: number;
-}
-
 /**
  * GraphQL context object for rate limiting
  */
@@ -78,8 +61,6 @@ export interface GraphQLContext {
   userId?: string;
   userRole?: string;
   ip: string;
-}
-
 /**
  * Default rate limit options
  */
@@ -89,8 +70,6 @@ export const DEFAULT_OPTIONS: RateLimitOptions = {
   message: { error: 'Too many requests, please try again later.' },
   keyPrefix: 'ratelimit:',
   statusCode: 429,
-};
-
 /**
  * Default WebSocket rate limit options
  */

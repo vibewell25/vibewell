@@ -11,19 +11,14 @@ export const schema = makeSchema({
     typegen: join(process.cwd(), 'src/generated/nexus-typegen.ts'),
 
     schema: join(process.cwd(), 'src/generated/schema.graphql'),
-  },
-  contextType: {
+contextType: {
 
     module: join(process.cwd(), 'src/graphql/context.ts'),
     export: 'Context',
-  },
-  sourceTypes: {
+sourceTypes: {
     modules: [
       {
 
         module: '@prisma/client',
         alias: 'prisma',
-      },
-    ],
-  },
-});
+],

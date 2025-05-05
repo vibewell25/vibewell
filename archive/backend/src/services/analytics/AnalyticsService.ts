@@ -1,51 +1,27 @@
 import { Analytics } from 'analytics';
 
-    // Safe integer operation
-    if (analytics > Number.MAX_SAFE_INTEGER || analytics < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import googleAnalytics from '@analytics/google-analytics';
+    import googleAnalytics from '@analytics/google-analytics';
 
-    // Safe integer operation
-    if (analytics > Number.MAX_SAFE_INTEGER || analytics < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import mixpanel from '@analytics/mixpanel';
+    import mixpanel from '@analytics/mixpanel';
 
-    // Safe integer operation
-    if (analytics > Number.MAX_SAFE_INTEGER || analytics < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import segment from '@analytics/segment';
+    import segment from '@analytics/segment';
 
-    // Safe integer operation
-    if (analytics > Number.MAX_SAFE_INTEGER || analytics < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import amplitude from '@analytics/amplitude';
+    import amplitude from '@analytics/amplitude';
 
 interface AnalyticsConfig {
   google?: {
     trackingId: string;
-  };
-  mixpanel?: {
+mixpanel?: {
     token: string;
-  };
-  segment?: {
+segment?: {
     writeKey: string;
-  };
-  amplitude?: {
+amplitude?: {
     apiKey: string;
-  };
-}
-
 interface EventData {
   event: string;
   properties?: Record<string, any>;
   userId?: string;
   timestamp?: Date;
-}
-
 class AnalyticsService {
   private static instance: AnalyticsService;
   private analytics: Analytics;
@@ -57,41 +33,27 @@ class AnalyticsService {
     if (config.google) {
       plugins.push(googleAnalytics({
         trackingId: config.google.trackingId
-      }));
-    }
-
-    if (config.mixpanel) {
+));
+if (config.mixpanel) {
       plugins.push(mixpanel({
         token: config.mixpanel.token
-      }));
-    }
-
-    if (config.segment) {
+));
+if (config.segment) {
       plugins.push(segment({
         writeKey: config.segment.writeKey
-      }));
-    }
-
-    if (config.amplitude) {
+));
+if (config.amplitude) {
       plugins.push(amplitude({
         apiKey: config.amplitude.apiKey
-      }));
-    }
-
-    this.analytics = Analytics({
+));
+this.analytics = Analytics({
       app: 'vibewell',
       plugins
-    });
-  }
-
-  public static getInstance(config?: AnalyticsConfig): AnalyticsService {
+public static getInstance(config?: AnalyticsConfig): AnalyticsService {
     if (!AnalyticsService.instance && config) {
       AnalyticsService.instance = new AnalyticsService(config);
-    }
-    return AnalyticsService.instance;
-  }
-
-  public async trackEvent(data: EventData): Promise<void> {
+return AnalyticsService.instance;
+public async trackEvent(data: EventData): Promise<void> {
     if (!this.enabled) return;
 
     try {
@@ -99,76 +61,49 @@ class AnalyticsService {
         ...data.properties,
         userId: data.userId,
         timestamp: data.timestamp || new Date()
-      });
-    } catch (error) {
+catch (error) {
       console.error('Analytics tracking error:', error);
-    }
-  }
-
-  public async identifyUser(userId: string, traits?: Record<string, any>): Promise<void> {
+public async identifyUser(userId: string, traits?: Record<string, any>): Promise<void> {
     if (!this.enabled) return;
 
     try {
       await this.analytics.identify(userId, traits);
-    } catch (error) {
+catch (error) {
       console.error('Analytics identify error:', error);
-    }
-  }
-
-  public async page(name: string, properties?: Record<string, any>): Promise<void> {
+public async page(name: string, properties?: Record<string, any>): Promise<void> {
     if (!this.enabled) return;
 
     try {
       await this.analytics.page({
         name,
         properties
-      });
-    } catch (error) {
+catch (error) {
       console.error('Analytics page tracking error:', error);
-    }
-  }
-
-  public async group(groupId: string, traits?: Record<string, any>): Promise<void> {
+public async group(groupId: string, traits?: Record<string, any>): Promise<void> {
     if (!this.enabled) return;
 
     try {
       await this.analytics.group(groupId, traits);
-    } catch (error) {
+catch (error) {
       console.error('Analytics group error:', error);
-    }
-  }
-
-  public enable(): void {
+public enable(): void {
     this.enabled = true;
-  }
-
-  public disable(): void {
+public disable(): void {
     this.enabled = false;
-  }
-
-  public async reset(): Promise<void> {
+public async reset(): Promise<void> {
     if (!this.enabled) return;
 
     try {
       await this.analytics.reset();
-    } catch (error) {
+catch (error) {
       console.error('Analytics reset error:', error);
-    }
-  }
-
-  public getState(): object {
+public getState(): object {
     return this.analytics.getState();
-  }
-
-  public async flush(): Promise<void> {
+public async flush(): Promise<void> {
     if (!this.enabled) return;
 
     try {
       await this.analytics.flush();
-    } catch (error) {
+catch (error) {
       console.error('Analytics flush error:', error);
-    }
-  }
-}
-
 export default AnalyticsService; 

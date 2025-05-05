@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/use-unified-auth';
@@ -8,8 +6,6 @@ interface ProtectedRouteProps {
   children: React.ReactNode;
   requiredRole?: UserRole;
   redirectTo?: string;
-}
-
 /**
  * ProtectedRoute Component
  *
@@ -23,7 +19,7 @@ export function ProtectedRoute({
   children,
   requiredRole,
   redirectTo = '/auth/login',
-}: ProtectedRouteProps) {
+: ProtectedRouteProps) {
   const { isAuthenticated, loading, hasRole } = useAuth();
   const router = useRouter();
 
@@ -33,12 +29,10 @@ export function ProtectedRoute({
       if (!isAuthenticated) {
         // Add the current path to the redirect query parameter
         router.push(`${redirectTo}?redirectTo=${window.location.pathname}`);
-      } else if (requiredRole && !hasRole(requiredRole)) {
+else if (requiredRole && !hasRole(requiredRole)) {
         // If the user doesn't have the required role, redirect to unauthorized page
         router.push('/error/unauthorized');
-      }
-    }
-  }, [isAuthenticated, loading, hasRole, requiredRole, redirectTo, router]);
+[isAuthenticated, loading, hasRole, requiredRole, redirectTo, router]);
 
   // Show loading state while checking authentication
   if (loading) {
@@ -47,14 +41,8 @@ export function ProtectedRoute({
         <div className="border-primary h-12 w-12 animate-spin rounded-full border-b-2 border-t-2"></div>
         <p className="mt-4 text-muted-foreground">Loading...</p>
       </div>
-    );
-  }
-
-  // Show nothing while redirecting (avoid flash of content)
+// Show nothing while redirecting (avoid flash of content)
   if (!isAuthenticated || (requiredRole && !hasRole(requiredRole))) {
     return null;
-  }
-
-  // If authenticated and role check passes, render the children
+// If authenticated and role check passes, render the children
   return <>{children}</>;
-}

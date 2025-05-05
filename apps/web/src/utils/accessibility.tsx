@@ -6,14 +6,10 @@ export interface FocusManagerOptions {
   returnFocus?: boolean;
   lockFocus?: boolean;
   preventScroll?: boolean;
-}
-
 export interface AriaLiveOptions {
   'aria-live': 'polite' | 'assertive' | 'off';
   'aria-atomic'?: boolean;
   'aria-relevant'?: 'additions' | 'removals' | 'text' | 'all';
-}
-
 // Focus management
 export function useFocusTrap(
   containerRef: RefObject<HTMLElement>,
@@ -30,26 +26,18 @@ export function useFocusTrap(
 
     if (initialFocus.current) {
       initialFocus.current.focus({ preventScroll });
-    } else {
+else {
       const firstFocusable = getFocusableElements(container)[0];
       if (firstFocusable) {
         firstFocusable.focus({ preventScroll });
-      }
-    }
-
-    if (lockFocus) {
+if (lockFocus) {
       document.addEventListener('keydown', handleTabKey);
-    }
-
-    return () => {
+return () => {
       if (lockFocus) {
         document.removeEventListener('keydown', handleTabKey);
-      }
-      if (returnFocus && previousFocus.current) {
+if (returnFocus && previousFocus.current) {
         previousFocus.current.focus({ preventScroll });
-      }
-    };
-  }, [containerRef, initialFocus, returnFocus, lockFocus, preventScroll]);
+[containerRef, initialFocus, returnFocus, lockFocus, preventScroll]);
 
   const handleTabKey = (event: KeyboardEvent) => {
     if (!containerRef.current || event.key !== 'Tab') return;
@@ -64,16 +52,10 @@ export function useFocusTrap(
       if (document.activeElement === firstElement) {
         event.preventDefault();
         lastElement.focus({ preventScroll });
-      }
-    } else {
+else {
       if (document.activeElement === lastElement) {
         event.preventDefault();
         firstElement.focus({ preventScroll });
-      }
-    }
-  };
-}
-
 // ARIA announcements
 export function useAriaAnnounce() {
   const announceRef = useRef<HTMLDivElement>(null);
@@ -84,10 +66,7 @@ export function useAriaAnnounce() {
       // Force a DOM reflow
       void announceRef.current.offsetHeight;
       announceRef.current.textContent = message;
-    }
-  };
-
-  const Announcer = React.memo(() => (
+const Announcer = React.memo(() => (
     <div
       ref={announceRef}
       style={{
@@ -100,16 +79,13 @@ export function useAriaAnnounce() {
         clip: 'rect(0, 0, 0, 0)',
         whiteSpace: 'nowrap',
         border: 0,
-      }}
-      role="status"
+role="status"
       aria-live="polite"
       aria-atomic="true"
     />
   ));
 
   return { announce, Announcer };
-}
-
 // Keyboard navigation
 export function useKeyboardNavigation(
   containerRef: RefObject<HTMLElement>,
@@ -125,8 +101,7 @@ export function useKeyboardNavigation(
 
     return () => {
       container.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [containerRef, orientation]);
+[containerRef, orientation]);
 
   const handleKeyDown = (event: KeyboardEvent) => {
     const target = event.target as HTMLElement;
@@ -140,26 +115,22 @@ export function useKeyboardNavigation(
         if (orientation !== 'vertical') {
           event.preventDefault();
           focusNext(focusableElements, currentIndex);
-        }
-        break;
+break;
       case 'ArrowLeft':
         if (orientation !== 'vertical') {
           event.preventDefault();
           focusPrevious(focusableElements, currentIndex);
-        }
-        break;
+break;
       case 'ArrowDown':
         if (orientation !== 'horizontal') {
           event.preventDefault();
           focusNext(focusableElements, currentIndex);
-        }
-        break;
+break;
       case 'ArrowUp':
         if (orientation !== 'horizontal') {
           event.preventDefault();
           focusPrevious(focusableElements, currentIndex);
-        }
-        break;
+break;
       case 'Home':
         event.preventDefault();
         focusableElements[0].focus();
@@ -168,10 +139,6 @@ export function useKeyboardNavigation(
         event.preventDefault();
         focusableElements[focusableElements.length - 1].focus();
         break;
-    }
-  };
-}
-
 // Helper functions
 function getFocusableElements(container: HTMLElement): HTMLElement[] {
   const selector = [
@@ -190,20 +157,13 @@ function getFocusableElements(container: HTMLElement): HTMLElement[] {
       !element.getAttribute('aria-hidden') &&
       element.offsetWidth > 0 &&
       element.offsetHeight > 0
-    );
-  }) as HTMLElement[];
-}
-
+) as HTMLElement[];
 function focusNext(elements: HTMLElement[], currentIndex: number) {
   const nextIndex = currentIndex + 1 < elements.length ? currentIndex + 1 : 0;
   elements[nextIndex].focus();
-}
-
 function focusPrevious(elements: HTMLElement[], currentIndex: number) {
   const previousIndex = currentIndex - 1 >= 0 ? currentIndex - 1 : elements.length - 1;
   elements[previousIndex].focus();
-}
-
 // Skip link component
 export {};
 
@@ -216,28 +176,18 @@ export function useFocusVisible() {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Tab') {
         document.body.classList.add('focus-visible');
-      }
-    };
-
-    const handleMouseDown = () => {
+const handleMouseDown = () => {
       document.body.classList.remove('focus-visible');
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
+document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('mousedown', handleMouseDown);
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('mousedown', handleMouseDown);
-    };
-  }, []);
-}
-
+[]);
 // Semantic heading level context
 export const HeadingLevelContext = React.createContext(1);
 
 export function useHeadingLevel() {
   return React.useContext(HeadingLevelContext);
-}
-
 export {};

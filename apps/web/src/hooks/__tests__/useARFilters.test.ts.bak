@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import useARFilters from '../useARFilters.ts';
+
+describe('useARFilters', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<useARFilters />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import conversation-list from '../conversation-list.tsx';
+
+describe('conversation-list', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<conversation-list />);
+    expect(container).toBeInTheDocument();
+  });
+});

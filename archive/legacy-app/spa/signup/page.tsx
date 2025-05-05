@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import LoadingSpinner from '../../../src/components/common/LoadingSpinner';
 
@@ -12,15 +10,14 @@ export default function SignupPage() {
     password: '',
     confirmPassword: '',
     agreeTerms: false,
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
+const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
-    }));
+));
     
     // Clear error when field is modified
     if (errors[name]) {
@@ -28,46 +25,28 @@ export default function SignupPage() {
         const newErrors = { ...prev };
         delete newErrors[name];
         return newErrors;
-      });
-    }
-  };
-
-  const validateForm = () => {
+const validateForm = () => {
     const newErrors: Record<string, string> = {};
     
     if (!formData.firstName.trim()) {
       newErrors['firstName'] = 'First name is required';
-    }
-    
-    if (!formData.lastName.trim()) {
+if (!formData.lastName.trim()) {
       newErrors['lastName'] = 'Last name is required';
-    }
-    
-    if (!formData.email.trim()) {
+if (!formData.email.trim()) {
       newErrors['email'] = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors['email'] = 'Invalid email format';
-    }
-    
-    if (!formData.password) {
+if (!formData.password) {
       newErrors['password'] = 'Password is required';
-    } else if (formData.password.length < 8) {
+else if (formData.password.length < 8) {
       newErrors['password'] = 'Password must be at least 8 characters';
-    }
-    
-    if (formData.password !== formData.confirmPassword) {
+if (formData.password !== formData.confirmPassword) {
       newErrors['confirmPassword'] = 'Passwords do not match';
-    }
-    
-    if (!formData.agreeTerms) {
+if (!formData.agreeTerms) {
       newErrors['agreeTerms'] = 'You must agree to the terms and conditions';
-    }
-    
-    setErrors(newErrors);
+setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (validateForm()) {
@@ -78,11 +57,8 @@ export default function SignupPage() {
         setIsLoading(false);
         alert('Account created successfully!');
         // Redirect would happen here in a real app
-      }, 1500);
-    }
-  };
-
-  return (
+1500);
+return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
@@ -105,7 +81,7 @@ export default function SignupPage() {
                   onChange={handleChange}
                   className={`mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm ${
                     errors['firstName'] ? 'border-destructive' : 'border-input'
-                  }`}
+`}
                 />
                 {errors['firstName'] && (
                   <p className="mt-1 text-xs text-destructive">{errors['firstName']}</p>
@@ -124,7 +100,7 @@ export default function SignupPage() {
                   onChange={handleChange}
                   className={`mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm ${
                     errors['lastName'] ? 'border-destructive' : 'border-input'
-                  }`}
+`}
                 />
                 {errors['lastName'] && (
                   <p className="mt-1 text-xs text-destructive">{errors['lastName']}</p>
@@ -144,7 +120,7 @@ export default function SignupPage() {
                 onChange={handleChange}
                 className={`mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm ${
                   errors['email'] ? 'border-destructive' : 'border-input'
-                }`}
+`}
               />
               {errors['email'] && (
                 <p className="mt-1 text-xs text-destructive">{errors['email']}</p>
@@ -163,7 +139,7 @@ export default function SignupPage() {
                 onChange={handleChange}
                 className={`mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm ${
                   errors['password'] ? 'border-destructive' : 'border-input'
-                }`}
+`}
               />
               {errors['password'] && (
                 <p className="mt-1 text-xs text-destructive">{errors['password']}</p>
@@ -182,7 +158,7 @@ export default function SignupPage() {
                 onChange={handleChange}
                 className={`mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm ${
                   errors['confirmPassword'] ? 'border-destructive' : 'border-input'
-                }`}
+`}
               />
               {errors['confirmPassword'] && (
                 <p className="mt-1 text-xs text-destructive">{errors['confirmPassword']}</p>
@@ -242,5 +218,3 @@ export default function SignupPage() {
         </div>
       </div>
     </div>
-  );
-} 

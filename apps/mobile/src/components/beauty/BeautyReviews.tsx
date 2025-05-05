@@ -10,7 +10,7 @@ import {
   Alert,
   Image,
   Platform
-} from 'react-native';
+from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { Review } from '../../types/navigation';
 
@@ -19,8 +19,6 @@ interface BeautyReviewsProps {
   serviceId: string;
   isDarkMode: boolean;
   onAddReview?: (review: Omit<Review, 'id'>) => Promise<void>;
-}
-
 const BeautyReviews = ({ reviews, serviceId, isDarkMode, onAddReview }: BeautyReviewsProps) => {
   const [showAddReview, setShowAddReview] = useState(false);
   const [rating, setRating] = useState(5);
@@ -31,9 +29,7 @@ const BeautyReviews = ({ reviews, serviceId, isDarkMode, onAddReview }: BeautyRe
     if (!comment.trim()) {
       Alert.alert('Error', 'Please add a comment to your review');
       return;
-    }
-
-    setIsSubmitting(true);
+setIsSubmitting(true);
     
     try {
       if (onAddReview) {
@@ -43,21 +39,15 @@ const BeautyReviews = ({ reviews, serviceId, isDarkMode, onAddReview }: BeautyRe
           userName: 'You',
           date: new Date().toISOString(),
           userAvatar: 'https://ui-avatars.com/api/?name=You&background=4F46E5&color=fff'
-        });
-      }
-      
-      setShowAddReview(false);
+setShowAddReview(false);
       setRating(5);
       setComment('');
       Alert.alert('Success', 'Your review has been submitted!');
-    } catch (error) {
+catch (error) {
       Alert.alert('Error', 'Failed to submit your review. Please try again.');
-    } finally {
+finally {
       setIsSubmitting(false);
-    }
-  };
-
-  const renderStars = (rating: number) => {
+const renderStars = (rating: number) => {
     return (
       <View style={styles.starsContainer}>
         {[1, 2, 3, 4, 5].map((star) => (
@@ -70,10 +60,7 @@ const BeautyReviews = ({ reviews, serviceId, isDarkMode, onAddReview }: BeautyRe
           />
         ))}
       </View>
-    );
-  };
-
-  const renderReviewItem = ({ item }: { item: Review }) => (
+const renderReviewItem = ({ item }: { item: Review }) => (
     <View style={[
       styles.reviewItem,
       { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }
@@ -106,9 +93,7 @@ const BeautyReviews = ({ reviews, serviceId, isDarkMode, onAddReview }: BeautyRe
         {item.comment}
       </Text>
     </View>
-  );
-
-  return (
+return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={[
@@ -218,8 +203,7 @@ const BeautyReviews = ({ reviews, serviceId, isDarkMode, onAddReview }: BeautyRe
                     backgroundColor: isDarkMode ? '#333333' : '#F5F5F5',
                     color: isDarkMode ? '#FFFFFF' : '#000000',
                     borderColor: isDarkMode ? '#444444' : '#E0E0E0'
-                  }
-                ]}
+]}
                 placeholder="What did you think about this service?"
                 placeholderTextColor={isDarkMode ? '#AAAAAA' : '#999999'}
                 multiline
@@ -244,39 +228,30 @@ const BeautyReviews = ({ reviews, serviceId, isDarkMode, onAddReview }: BeautyRe
         </View>
       </Modal>
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
-  },
-  header: {
+header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 15,
-  },
-  title: {
+title: {
     fontSize: 18,
     fontWeight: 'bold',
-  },
-  addButton: {
+addButton: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 16,
-  },
-  addButtonText: {
+addButtonText: {
     marginLeft: 5,
     fontSize: 14,
     fontWeight: '500',
-  },
-  reviewsList: {
+reviewsList: {
     paddingBottom: 10,
-  },
-  reviewItem: {
+reviewItem: {
     marginBottom: 12,
     padding: 15,
     borderRadius: 10,
@@ -285,119 +260,90 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 2,
-  },
-  reviewHeader: {
+reviewHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
-  },
-  avatar: {
+avatar: {
     width: 36,
     height: 36,
     borderRadius: 18,
     marginRight: 10,
-  },
-  reviewHeaderText: {
+reviewHeaderText: {
     flex: 1,
-  },
-  userName: {
+userName: {
     fontWeight: '600',
     fontSize: 14,
-  },
-  reviewDate: {
+reviewDate: {
     fontSize: 12,
-  },
-  starsContainer: {
+starsContainer: {
     flexDirection: 'row',
-  },
-  starIcon: {
+starIcon: {
     marginLeft: 2,
-  },
-  reviewComment: {
+reviewComment: {
     fontSize: 14,
     lineHeight: 20,
-  },
-  emptyContainer: {
+emptyContainer: {
     paddingVertical: 30,
     alignItems: 'center',
-  },
-  emptyText: {
+emptyText: {
     marginTop: 10,
     fontSize: 16,
     textAlign: 'center',
-  },
-  modalContainer: {
+modalContainer: {
     flex: 1,
     justifyContent: 'flex-end',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
+modalContent: {
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
     ...Platform.select({
       ios: {
         paddingBottom: 40
-      },
-      android: {
+android: {
         paddingBottom: 20
-      }
-    })
-  },
-  modalHeader: {
+)
+modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
-  },
-  modalTitle: {
+modalTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  closeButton: {
+closeButton: {
     padding: 5,
-  },
-  ratingContainer: {
+ratingContainer: {
     marginBottom: 20,
-  },
-  ratingLabel: {
+ratingLabel: {
     fontSize: 16,
     fontWeight: '600',
     marginBottom: 10,
-  },
-  starsRow: {
+starsRow: {
     flexDirection: 'row',
     justifyContent: 'center',
-  },
-  starButton: {
+starButton: {
     padding: 5,
-  },
-  commentContainer: {
+commentContainer: {
     marginBottom: 20,
-  },
-  commentLabel: {
+commentLabel: {
     fontSize: 16,
     fontWeight: '600',
     marginBottom: 10,
-  },
-  commentInput: {
+commentInput: {
     height: 120,
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
     textAlignVertical: 'top',
-  },
-  submitButton: {
+submitButton: {
     backgroundColor: '#4F46E5',
     borderRadius: 10,
     padding: 15,
     alignItems: 'center',
-  },
-  submitButtonText: {
+submitButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
-  },
-});
-
 export default BeautyReviews; 

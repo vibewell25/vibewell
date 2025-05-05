@@ -16,8 +16,6 @@ import ChatBot from '@/components/ChatBot';
 export const metadata: Metadata = {
   title: 'VibeWell – Your Wellness Journey Starts Here',
   description: 'VibeWell connects you with wellness services, events, and community.',
-};
-
 const inter = Inter({ subsets: ['latin'] });
 
 type RootLayoutProps = { children: ReactNode };
@@ -49,5 +47,3 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         </UserProvider>
       </body>
     </html>
-  );
-}

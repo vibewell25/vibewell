@@ -14,12 +14,9 @@ const ProviderDetailScreen: React.FC = () => {
     try {
       await deleteProvider(provider.id);
       navigation.navigate('ProviderList');
-    } catch (e) {
+catch (e) {
       Alert.alert('Error', 'Failed to delete provider');
-    }
-  };
-
-  return (
+return (
     <View style={{ flex: 1, padding: 16 }}>
       <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{provider.name}</Text>
       {provider.businessName ? <Text style={{ marginVertical: 8 }}>Business: {provider.businessName}</Text> : null}
@@ -29,7 +26,4 @@ const ProviderDetailScreen: React.FC = () => {
         <Button title="Delete" onPress={handleDelete} color="#E63946" />
       </View>
     </View>
-  );
-};
-
 export default ProviderDetailScreen;

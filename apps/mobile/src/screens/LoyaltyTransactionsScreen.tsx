@@ -8,16 +8,12 @@ interface Tier {
   id: string;
   name: string;
   discount: number;
-}
-
 interface Transaction {
   id: string;
   points: number;
   type: 'EARN' | 'REDEEM';
   createdAt: string;
   tier?: Tier;
-}
-
 const LoyaltyTransactionsScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const { user } = useAuth();
@@ -30,25 +26,21 @@ const LoyaltyTransactionsScreen: React.FC = () => {
       try {
         const res = await fetch(
           `${serverBaseUrl}/api/loyalty/transactions?userId=${user.id}`
-        );
-        const data = await res.json();
+const data = await res.json();
         setTransactions(data.transactions || []);
-      } catch (err) {
+catch (err) {
         Alert.alert('Error', 'Failed to load transactions');
-      } finally {
+finally {
         setLoading(false);
-      }
-    })();
-  }, [user]);
+)();
+[user]);
 
   if (loading) return <ActivityIndicator size="large" />;
 
   const balance = transactions.reduce((sum, tx) =>
     sum + (tx.type === 'EARN' ? tx.points : -tx.points),
     0
-  );
-
-  return (
+return (
     <View style={{ flex: 1, backgroundColor: isDarkMode ? '#121212' : '#FFFFFF', padding: 16 }}>
       <Text style={{ color: isDarkMode ? '#FFFFFF' : '#000000', fontSize: 18, marginBottom: 12 }}>
         Points Balance: {balance}
@@ -70,7 +62,4 @@ const LoyaltyTransactionsScreen: React.FC = () => {
         )}
       />
     </View>
-  );
-};
-
 export default LoyaltyTransactionsScreen;

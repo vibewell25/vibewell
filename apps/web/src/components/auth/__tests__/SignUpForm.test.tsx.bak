@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import sign-up-form from '../sign-up-form.tsx';
+
+describe('sign-up-form', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<sign-up-form />);
+    expect(container).toBeInTheDocument();
+  });
+});

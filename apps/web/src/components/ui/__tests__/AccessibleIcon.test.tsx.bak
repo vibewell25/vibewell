@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import accessible-icon from '../accessible-icon.tsx';
+
+describe('accessible-icon', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<accessible-icon />);
+    expect(container).toBeInTheDocument();
+  });
+});

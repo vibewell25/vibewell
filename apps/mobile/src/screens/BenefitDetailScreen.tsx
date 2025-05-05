@@ -17,13 +17,12 @@ const BenefitDetailScreen: React.FC = () => {
       try {
         const data = await benefitsApi.getClaimById(id);
         setClaim(data);
-      } catch (err) {
+catch (err) {
         console.error(err);
-      } finally {
+finally {
         setLoading(false);
-      }
-    })();
-  }, [id]);
+)();
+[id]);
 
   const handleDelete = () => {
     Alert.alert('Confirm Delete', 'Are you sure you want to delete this claim?', [
@@ -31,11 +30,8 @@ const BenefitDetailScreen: React.FC = () => {
       { text: 'Delete', style: 'destructive', onPress: async () => {
         await benefitsApi.deleteClaim(id);
         navigation.navigate('BenefitList');
-      } }
-    ]);
-  };
-
-  if (loading || !claim) return <ActivityIndicator style={{ flex: 1 }} />;
+]);
+if (loading || !claim) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
     <View style={styles.container}>
@@ -47,12 +43,7 @@ const BenefitDetailScreen: React.FC = () => {
       <Button title="Edit" onPress={() => navigation.navigate('BenefitForm', { claim })} />
       <Button title="Delete" onPress={handleDelete} color="red" />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   title: { fontSize: 20, fontWeight: 'bold', marginBottom: 12 },
-});
-
 export default BenefitDetailScreen;

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import business-profile-edit from '../business-profile-edit.tsx';
+
+describe('business-profile-edit', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<business-profile-edit />);
+    expect(container).toBeInTheDocument();
+  });
+});

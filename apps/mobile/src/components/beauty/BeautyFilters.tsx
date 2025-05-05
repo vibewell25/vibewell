@@ -9,7 +9,7 @@ import {
   TextInput,
   Platform,
   Switch,
-} from 'react-native';
+from 'react-native';
 import Slider from '@react-native-community/slider';
 import { MaterialIcons } from '@expo/vector-icons';
 import { BeautyFilter } from '../../types/beauty';
@@ -20,8 +20,6 @@ interface BeautyFiltersProps {
   onApply: (filters: BeautyFilter) => void;
   initialFilters: BeautyFilter;
   isDarkMode: boolean;
-}
-
 const DEFAULT_FILTERS: BeautyFilter = {
   minPrice: 0,
   maxPrice: 500,
@@ -29,36 +27,27 @@ const DEFAULT_FILTERS: BeautyFilter = {
   maxDuration: 180,
   minRating: 0,
   featured: undefined
-};
-
 const BeautyFilters: React.FC<BeautyFiltersProps> = ({
   visible,
   onClose,
   onApply,
   initialFilters,
   isDarkMode
-}) => {
+) => {
   const [filters, setFilters] = useState<BeautyFilter>(initialFilters || DEFAULT_FILTERS);
   
   useEffect(() => {
     if (visible) {
       setFilters(initialFilters || DEFAULT_FILTERS);
-    }
-  }, [visible, initialFilters]);
+[visible, initialFilters]);
 
   const handleReset = () => {
     setFilters(DEFAULT_FILTERS);
-  };
-
-  const handleApplyFilters = () => {
+const handleApplyFilters = () => {
     onApply(filters);
-  };
-
-  const updateFilter = <K extends keyof BeautyFilter>(key: K, value: BeautyFilter[K]) => {
+const updateFilter = <K extends keyof BeautyFilter>(key: K, value: BeautyFilter[K]) => {
     setFilters(prev => ({ ...prev, [key]: value }));
-  };
-
-  const themeText = isDarkMode ? styles.darkText : styles.lightText;
+const themeText = isDarkMode ? styles.darkText : styles.lightText;
   const themeBackground = isDarkMode ? styles.darkBackground : styles.lightBackground;
   const themeInput = isDarkMode ? styles.darkInput : styles.lightInput;
 
@@ -193,22 +182,16 @@ const BeautyFilters: React.FC<BeautyFiltersProps> = ({
         </View>
       </View>
     </Modal>
-  );
-};
-
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-  },
-  lightOverlay: {
+lightOverlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  darkOverlay: {
+darkOverlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
-  },
-  modalView: {
+modalView: {
     width: '100%',
     height: '80%',
     borderTopLeftRadius: 20,
@@ -219,110 +202,85 @@ const styles = StyleSheet.create({
     shadowOffset: {
       width: 0,
       height: -2,
-    },
-    shadowOpacity: 0.25,
+shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-  },
-  lightBackground: {
+lightBackground: {
     backgroundColor: 'white',
-  },
-  darkBackground: {
+darkBackground: {
     backgroundColor: '#222',
-  },
-  modalHeader: {
+modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
-  },
-  modalTitle: {
+modalTitle: {
     fontSize: 22,
     fontWeight: 'bold',
-  },
-  lightText: {
+lightText: {
     color: '#000',
-  },
-  darkText: {
+darkText: {
     color: '#fff',
-  },
-  filtersContainer: {
+filtersContainer: {
     flex: 1,
-  },
-  filterSection: {
+filterSection: {
     marginBottom: 24,
-  },
-  filterTitle: {
+filterTitle: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 12,
-  },
-  searchInput: {
+searchInput: {
     borderWidth: 1,
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
-  },
-  lightInput: {
+lightInput: {
     borderColor: '#ddd',
     backgroundColor: '#f9f9f9',
     color: '#000',
-  },
-  darkInput: {
+darkInput: {
     borderColor: '#444',
     backgroundColor: '#333',
     color: '#fff',
-  },
-  rangeLabels: {
+rangeLabels: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 8,
-  },
-  rangeLabel: {
+rangeLabel: {
     fontSize: 14,
-  },
-  slider: {
+slider: {
     width: '100%',
     height: 40,
-  },
-  ratingContainer: {
+ratingContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
-  },
-  ratingButton: {
+ratingButton: {
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 16,
     backgroundColor: '#f0f0f0',
     marginRight: 8,
     marginBottom: 8,
-  },
-  ratingText: {
+ratingText: {
     fontSize: 14,
     color: '#000',
-  },
-  darkRatingText: {
+darkRatingText: {
     color: '#eee',
-  },
-  selectedRating: {
+selectedRating: {
     fontWeight: 'bold',
     color: '#007bff',
-  },
-  toggleContainer: {
+toggleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  toggleLabel: {
+toggleLabel: {
     marginLeft: 10,
     fontSize: 14,
-  },
-  actionButtons: {
+actionButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 20,
-  },
-  resetButton: {
+resetButton: {
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,
@@ -331,33 +289,24 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 10,
     alignItems: 'center',
-  },
-  darkResetButton: {
+darkResetButton: {
     borderColor: '#444',
-  },
-  applyButton: {
+applyButton: {
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,
     backgroundColor: '#4F46E5',
     flex: 2,
     alignItems: 'center',
-  },
-  darkApplyButton: {
+darkApplyButton: {
     backgroundColor: '#4F46E5',
-  },
-  buttonText: {
+buttonText: {
     fontSize: 16,
     color: '#007bff',
-  },
-  darkButtonText: {
+darkButtonText: {
     color: '#5f9ea0',
-  },
-  applyButtonText: {
+applyButtonText: {
     fontSize: 16,
     fontWeight: 'bold',
     color: 'white',
-  },
-});
-
 export default BeautyFilters; 

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import arcontrols from '../arcontrols.tsx';
+
+describe('arcontrols', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<arcontrols />);
+    expect(container).toBeInTheDocument();
+  });
+});

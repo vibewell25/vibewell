@@ -1,8 +1,3 @@
-/**
- * CSRF Protection Middleware and Utilities
- *
- * This module provides CSRF protection for the VibeWell application using double-submit cookies.
- */
 import { doubleCsrf } from 'csrf-csrf';
 import type { NextRequest, NextResponse } from 'next/server';
 import { env } from '@/config/env';
@@ -16,10 +11,8 @@ const { generateToken, doubleCsrfProtection } = doubleCsrf({
     if (!secret) {
       logger.error('CSRF_SECRET environment variable is missing');
       throw new Error('CSRF_SECRET environment variable is required');
-    }
-    return secret;
-  },
-  cookieName: '__Host-vibewell.csrf-token',
+return secret;
+cookieName: '__Host-vibewell.csrf-token',
   cookieOptions: {
     httpOnly: true,
     sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
@@ -27,8 +20,7 @@ const { generateToken, doubleCsrfProtection } = doubleCsrf({
     secure: process.env.NODE_ENV === 'production',
     // Set to 8 hours - balance between security and usability
     maxAge: 8 * 60 * 60, 
-  },
-  size: 64, // 64 bytes token for enhanced security
+size: 64, // 64 bytes token for enhanced security
   ignoredMethods: ['GET', 'HEAD', 'OPTIONS'],
   // Look for token in headers, then in form data, then in query string (priority order)
   getCsrfTokenFromRequest: (req: any) => {
@@ -42,9 +34,6 @@ const { generateToken, doubleCsrfProtection } = doubleCsrf({
     // Last resort - URL query parameter (least secure, but sometimes necessary)
     const urlToken = new URL(req.url).searchParams.get('csrf-token');
     return urlToken || '';
-  },
-});
-
 /**
  * Validates CSRF token on incoming requests
  * @param req - Next.js request object
@@ -56,20 +45,14 @@ export async function validateCsrfToken(req: NextRequest): Promise<boolean> {
     const method = req.method.toUpperCase();
     if (['GET', 'HEAD', 'OPTIONS'].includes(method)) {
       return true;
-    }
-    
-    const result = await doubleCsrfProtection(req as any, {} as any, {} as any);
+const result = await doubleCsrfProtection(req as any, {} as any, {} as any);
     return true;
-  } catch (error) {
+catch (error) {
     logger.warn('CSRF validation failed', { 
       url: req.url,
       method: req.method,
       error: error instanceof Error ? error.message : String(error)
-    });
-    return false;
-  }
-}
-
+return false;
 /**
  * Middleware to check CSRF token and return appropriate error response
  */
@@ -78,44 +61,31 @@ export function csrfMiddleware(req: NextRequest): NextResponse | null {
   const method = req.method.toUpperCase();
   if (['GET', 'HEAD', 'OPTIONS'].includes(method)) {
     return null;
-  }
-  
-  // Skip for certain endpoints that have their own CSRF protection
+// Skip for certain endpoints that have their own CSRF protection
   const url = new URL(req.url);
   if (url.pathname.startsWith('/api/auth/') || url.pathname.startsWith('/api/webhook/')) {
     return null;
-  }
-  
-  try {
+try {
     doubleCsrfProtection(req as any, {} as any, {} as any);
     return null;
-  } catch (error) {
+catch (error) {
     logger.warn('CSRF middleware blocked request', { 
       url: req.url,
       method: req.method,
       error: error instanceof Error ? error.message : String(error)
-    });
-    
-    return Response.json(
+return Response.json(
       { 
         error: 'Invalid CSRF token', 
         message: 'CSRF validation failed. Please refresh the page and try again.'
-      },
-      { status: 403 }
+{ status: 403 }
     ) as unknown as NextResponse;
-  }
-}
-
 // Export utilities for the CSRF protection
 export const csrfConfig = {
   generateToken,
   validateCsrfToken,
   csrfMiddleware,
-};
-
 // Helper to add CSRF token to responses
 export function addCsrfTokenToResponse(res: NextResponse): NextResponse {
   const token = generateToken(res as any);
   res.headers.set('X-CSRF-Token', token);
   return res;
-}

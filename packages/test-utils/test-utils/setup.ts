@@ -1,6 +1,3 @@
-import { vi } from 'vitest';
-
-// Mock ResizeObserver
 class ResizeObserver {
   observe = vi.fn();
   unobserve = vi.fn();
@@ -10,9 +7,6 @@ class ResizeObserver {
     this.observe = vi.fn();
     this.unobserve = vi.fn();
     this.disconnect = vi.fn();
-  }
-}
-
 global.ResizeObserver = ResizeObserver;
 
 // Mock window.matchMedia
@@ -27,9 +21,7 @@ Object.defineProperty(window, 'matchMedia', {
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
-  })),
-});
-
+)),
 // Mock localStorage
 const localStorageMock = {
   getItem: vi.fn(),
@@ -38,12 +30,8 @@ const localStorageMock = {
   clear: vi.fn(),
   length: 0,
   key: vi.fn(),
-};
-
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
-});
-
 // Mock sessionStorage
 const sessionStorageMock = {
   getItem: vi.fn(),
@@ -52,12 +40,8 @@ const sessionStorageMock = {
   clear: vi.fn(),
   length: 0,
   key: vi.fn(),
-};
-
 Object.defineProperty(window, 'sessionStorage', {
   value: sessionStorageMock,
-});
-
 // Mock IntersectionObserver
 class IntersectionObserver {
   observe = vi.fn();
@@ -71,9 +55,6 @@ class IntersectionObserver {
     this.observe = vi.fn();
     this.unobserve = vi.fn();
     this.disconnect = vi.fn();
-  }
-}
-
 global.IntersectionObserver = IntersectionObserver;
 
 
@@ -81,15 +62,9 @@ global.IntersectionObserver = IntersectionObserver;
 class TextDecoderMock {
   decode(input?: BufferSource): string {
     return typeof input === 'undefined' ? '' : String(input);
-  }
-}
-
 class TextEncoderMock {
   encode(input?: string): Uint8Array {
     return new Uint8Array(Buffer.from(input || ''));
-  }
-}
-
 global.TextDecoder = TextDecoderMock as any;
 global.TextEncoder = TextEncoderMock as any;
 
@@ -100,5 +75,5 @@ vi.mock('next/router', () => ({
   useRouter: () => ({
     push: vi.fn(),
     query: {},
-  }),
-}));
+),
+));

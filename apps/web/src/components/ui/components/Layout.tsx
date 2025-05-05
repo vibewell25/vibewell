@@ -16,6 +16,4 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
       © {new Date().getFullYear()} VibeWell - All rights reserved
     </footer>
   </div>
-);
-
 export default Layout;

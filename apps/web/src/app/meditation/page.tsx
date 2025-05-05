@@ -1,5 +1,3 @@
-'use client';
-
 import { MeditationEnvironment } from '@/components/ar/MeditationEnvironment';
 
 export default function MeditationPage() {
@@ -15,10 +13,7 @@ export default function MeditationPage() {
             particleEffects={true}
             onStateChange={(state) => {
               console.log('Environment state changed:', state);
-            }}
-          />
+/>
         </div>
       </div>
     </div>
-  );
-}

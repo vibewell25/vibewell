@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   Image
-} from 'react-native';
+from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { Review } from '../../types/navigation';
 import ReviewForm from './ReviewForm';
@@ -16,14 +16,12 @@ interface ReviewListProps {
   serviceId: string;
   isDarkMode: boolean;
   onReviewAdded: () => void;
-}
-
 const ReviewList: React.FC<ReviewListProps> = ({
   reviews,
   serviceId,
   isDarkMode,
   onReviewAdded
-}) => {
+) => {
   const [showReviewForm, setShowReviewForm] = useState<boolean>(false);
 
   // Calculate average rating
@@ -35,15 +33,11 @@ const ReviewList: React.FC<ReviewListProps> = ({
   const ratingDistribution = [0, 0, 0, 0, 0]; // 5, 4, 3, 2, 1 stars
   reviews.forEach(review => {
     ratingDistribution[5 - review.rating]++;
-  });
-
-  // Get percentage for rating bar
+// Get percentage for rating bar
   const getRatingPercentage = (count: number) => {
     if (reviews.length === 0) return 0;
     return (count / reviews.length) * 100;
-  };
-
-  // Format date to be more readable
+// Format date to be more readable
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -54,17 +48,11 @@ const ReviewList: React.FC<ReviewListProps> = ({
       if (diffDays === 0) return 'Today';
       if (diffDays === 1) return 'Yesterday';
       return `${diffDays} days ago`;
-    }
-
-    if (diffDays < 30) {
+if (diffDays < 30) {
       const weeks = Math.floor(diffDays / 7);
       return `${weeks} ${weeks === 1 ? 'week' : 'weeks'} ago`;
-    }
-
-    return dateString;
-  };
-
-  // Render a review item
+return dateString;
+// Render a review item
   const renderReviewItem = ({ item }: { item: Review }) => {
     return (
       <View
@@ -129,10 +117,7 @@ const ReviewList: React.FC<ReviewListProps> = ({
           {item.comment}
         </Text>
       </View>
-    );
-  };
-
-  return (
+return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text
@@ -161,8 +146,7 @@ const ReviewList: React.FC<ReviewListProps> = ({
               color: isDarkMode ? '#FFFFFF' : '#000000',
               fontSize: 12,
               fontWeight: '500'
-            }}
-          >
+>
             Write a Review
           </Text>
         </TouchableOpacity>
@@ -224,8 +208,7 @@ const ReviewList: React.FC<ReviewListProps> = ({
                         {
                           width: `${getRatingPercentage(ratingDistribution[5 - rating])}%`,
                           backgroundColor: '#FFD700'
-                        }
-                      ]}
+]}
                     />
                   </View>
                   <Text
@@ -275,141 +258,108 @@ const ReviewList: React.FC<ReviewListProps> = ({
         isDarkMode={isDarkMode}
       />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     marginTop: 20
-  },
-  header: {
+header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 15
-  },
-  title: {
+title: {
     fontSize: 18,
     fontWeight: 'bold'
-  },
-  writeReviewButton: {
+writeReviewButton: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 16
-  },
-  summaryContainer: {
+summaryContainer: {
     flexDirection: 'row',
     marginBottom: 20
-  },
-  averageRatingContainer: {
+averageRatingContainer: {
     alignItems: 'center',
     width: 100
-  },
-  averageRating: {
+averageRating: {
     fontSize: 36,
     fontWeight: 'bold'
-  },
-  starsRow: {
+starsRow: {
     flexDirection: 'row',
     marginVertical: 5
-  },
-  reviewCount: {
+reviewCount: {
     fontSize: 12,
     marginTop: 4
-  },
-  ratingBarsContainer: {
+ratingBarsContainer: {
     flex: 1,
     marginLeft: 15
-  },
-  ratingBar: {
+ratingBar: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 5
-  },
-  ratingLabel: {
+ratingLabel: {
     width: 15,
     fontSize: 12,
     marginRight: 5
-  },
-  ratingBarBackground: {
+ratingBarBackground: {
     flex: 1,
     height: 8,
     borderRadius: 4,
     overflow: 'hidden'
-  },
-  ratingBarFill: {
+ratingBarFill: {
     height: '100%'
-  },
-  ratingCount: {
+ratingCount: {
     width: 20,
     fontSize: 12,
     marginLeft: 5,
     textAlign: 'right'
-  },
-  reviewList: {
+reviewList: {
     marginTop: 10
-  },
-  reviewItem: {
+reviewItem: {
     borderRadius: 10,
     padding: 15,
     marginBottom: 10
-  },
-  reviewHeader: {
+reviewHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     marginBottom: 10
-  },
-  userInfo: {
+userInfo: {
     flexDirection: 'row',
     alignItems: 'center'
-  },
-  userAvatar: {
+userAvatar: {
     width: 40,
     height: 40,
     borderRadius: 20,
     marginRight: 10
-  },
-  userAvatarPlaceholder: {
+userAvatarPlaceholder: {
     width: 40,
     height: 40,
     borderRadius: 20,
     marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  userInitial: {
+userInitial: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#666'
-  },
-  userName: {
+userName: {
     fontWeight: '600',
     fontSize: 14,
     marginBottom: 2
-  },
-  reviewDate: {
+reviewDate: {
     fontSize: 12
-  },
-  ratingContainer: {
+ratingContainer: {
     flexDirection: 'row'
-  },
-  reviewComment: {
+reviewComment: {
     fontSize: 14,
     lineHeight: 20
-  },
-  emptyContainer: {
+emptyContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 30
-  },
-  emptyText: {
+emptyText: {
     marginTop: 10,
     fontSize: 14,
     textAlign: 'center'
-  }
-});
-
 export default ReviewList; 

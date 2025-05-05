@@ -8,10 +8,7 @@ export function Forest() {
   useFrame((state) => {
     if (groupRef.current) {
       groupRef.current.rotation.y += 0.001;
-    }
-  });
-
-  return (
+return (
     <group ref={groupRef}>
       {/* Ground */}
       <Box args={[20, 0.1, 20]} position={[0, -1, 0]} material-color="#4a5d23" />
@@ -29,8 +26,5 @@ export function Forest() {
             {/* Tree top */}
             <Sphere args={[1, 16, 16]} position={[0, height + 0.5, 0]} material-color="#2d5a27" />
           </group>
-        );
-      })}
+)}
     </group>
-  );
-}

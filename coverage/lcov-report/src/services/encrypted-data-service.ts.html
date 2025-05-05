@@ -496,48 +496,48 @@ export class <span class="cstat-no" title="statement not covered" >EncryptedData
     metadata?: Partial&lt;EncryptionMetadata&gt;,
   ): Promise&lt;string&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const key = <span class="cstat-no" title="statement not covered" >await this?.keyManagementService.getCurrentKey();</span>
-      const iv = <span class="cstat-no" title="statement not covered" >crypto?.randomBytes(this?.ivLength);</span>
-      const cipher = <span class="cstat-no" title="statement not covered" >crypto?.createCipheriv(this?.algorithm, key, iv, {</span>
-        authTagLength: this?.tagLength,
+      const key = <span class="cstat-no" title="statement not covered" >await this.keyManagementService.getCurrentKey();</span>
+      const iv = <span class="cstat-no" title="statement not covered" >crypto.randomBytes(this.ivLength);</span>
+      const cipher = <span class="cstat-no" title="statement not covered" >crypto.createCipheriv(this.algorithm, key, iv, {</span>
+        authTagLength: this.tagLength,
       });
 &nbsp;
-      const encryptedValue = <span class="cstat-no" title="statement not covered" >Buffer?.concat([</span>
-        cipher?.update(JSON?.stringify(data), 'utf8'),
-        cipher?.final(),
+      const encryptedValue = <span class="cstat-no" title="statement not covered" >Buffer.concat([</span>
+        cipher.update(JSON.stringify(data), 'utf8'),
+        cipher.final(),
       ]);
 &nbsp;
-      const tag = <span class="cstat-no" title="statement not covered" >cipher?.getAuthTag();</span>
+      const tag = <span class="cstat-no" title="statement not covered" >cipher.getAuthTag();</span>
 &nbsp;
       const encryptionMetadata: EncryptionMetadata = <span class="cstat-no" title="statement not covered" >{</span>
-        algorithm: this?.algorithm,
-        keyId: await this?.keyManagementService.getCurrentKeyId(),
-        version: '1?.0',
+        algorithm: this.algorithm,
+        keyId: await this.keyManagementService.getCurrentKeyId(),
+        version: '1.0',
         purpose: dataType,
         ...metadata,
       };
 &nbsp;
-      const encryptedData = <span class="cstat-no" title="statement not covered" >await this?.prisma.encryptedData?.create({</span>
+      const encryptedData = <span class="cstat-no" title="statement not covered" >await this.prisma.encryptedData.create({</span>
         data: {
           userId,
           dataType,
-          encryptedValue: encryptedValue?.toString('base64'),
-          iv: iv?.toString('base64'),
-          tag: tag?.toString('base64'),
+          encryptedValue: encryptedValue.toString('base64'),
+          iv: iv.toString('base64'),
+          tag: tag.toString('base64'),
           encryptionMetadata,
         },
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      return encryptedData?.id;</span>
+<span class="cstat-no" title="statement not covered" >      return encryptedData.id;</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Failed to store encrypted data', { error, userId, dataType });</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Failed to store encrypted data', { error, userId, dataType });</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('Failed to store encrypted data');</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async r</span>etrieveEncryptedData&lt;T&gt;(id: string): Promise&lt;DecryptionResult&lt;T&gt;&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const encryptedData = <span class="cstat-no" title="statement not covered" >await this?.prisma.encryptedData?.findUnique({</span>
+      const encryptedData = <span class="cstat-no" title="statement not covered" >await this.prisma.encryptedData.findUnique({</span>
         where: { id },
       });
 &nbsp;
@@ -545,24 +545,24 @@ export class <span class="cstat-no" title="statement not covered" >EncryptedData
 <span class="cstat-no" title="statement not covered" >        throw new Error('Encrypted data not found');</span>
       }
 &nbsp;
-      const key = <span class="cstat-no" title="statement not covered" >await this?.keyManagementService.getKey(encryptedData?.encryptionMetadata.keyId);</span>
-      const iv = <span class="cstat-no" title="statement not covered" >Buffer?.from(encryptedData?.iv, 'base64');</span>
-      const tag = <span class="cstat-no" title="statement not covered" >Buffer?.from(encryptedData?.tag, 'base64');</span>
-      const encryptedValue = <span class="cstat-no" title="statement not covered" >Buffer?.from(encryptedData?.encryptedValue, 'base64');</span>
+      const key = <span class="cstat-no" title="statement not covered" >await this.keyManagementService.getKey(encryptedData.encryptionMetadata.keyId);</span>
+      const iv = <span class="cstat-no" title="statement not covered" >Buffer.from(encryptedData.iv, 'base64');</span>
+      const tag = <span class="cstat-no" title="statement not covered" >Buffer.from(encryptedData.tag, 'base64');</span>
+      const encryptedValue = <span class="cstat-no" title="statement not covered" >Buffer.from(encryptedData.encryptedValue, 'base64');</span>
 &nbsp;
-      const decipher = <span class="cstat-no" title="statement not covered" >crypto?.createDecipheriv(this?.algorithm, key, iv, {</span>
-        authTagLength: this?.tagLength,
+      const decipher = <span class="cstat-no" title="statement not covered" >crypto.createDecipheriv(this.algorithm, key, iv, {</span>
+        authTagLength: this.tagLength,
       });
-<span class="cstat-no" title="statement not covered" >      decipher?.setAuthTag(tag);</span>
+<span class="cstat-no" title="statement not covered" >      decipher.setAuthTag(tag);</span>
 &nbsp;
-      const decrypted = <span class="cstat-no" title="statement not covered" >Buffer?.concat([decipher?.update(encryptedValue), decipher?.final()]);</span>
+      const decrypted = <span class="cstat-no" title="statement not covered" >Buffer.concat([decipher.update(encryptedValue), decipher.final()]);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return {</span>
-        value: JSON?.parse(decrypted?.toString('utf8')),
-        metadata: encryptedData?.encryptionMetadata,
+        value: JSON.parse(decrypted.toString('utf8')),
+        metadata: encryptedData.encryptionMetadata,
       };
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Failed to retrieve encrypted data', { error, id });</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Failed to retrieve encrypted data', { error, id });</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('Failed to retrieve encrypted data');</span>
     }
   }
@@ -573,10 +573,10 @@ export class <span class="cstat-no" title="statement not covered" >EncryptedData
     value: any,
   ): Promise&lt;void&gt; {
     // Encrypt the value
-    const { encryptedData } = <span class="cstat-no" title="statement not covered" >await this?.encryptionService.encrypt(JSON?.stringify(value));</span>
+    const { encryptedData } = <span class="cstat-no" title="statement not covered" >await this.encryptionService.encrypt(JSON.stringify(value));</span>
 &nbsp;
     // Update the user table using Prisma
-<span class="cstat-no" title="statement not covered" >    await prisma?.user.update({</span>
+<span class="cstat-no" title="statement not covered" >    await prisma.user.update({</span>
       where: { id: userId },
       data: {
         [`encrypted_${field}`]: encryptedData,
@@ -585,14 +585,14 @@ export class <span class="cstat-no" title="statement not covered" >EncryptedData
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async g</span>etEncryptionKeyUsageStats(): Promise&lt;Array&lt;EncryptionKeyUsage&gt;&gt; {
-    const data = <span class="cstat-no" title="statement not covered" >await prisma?.encryptionKeyUsage.findMany();</span>
+    const data = <span class="cstat-no" title="statement not covered" >await prisma.encryptionKeyUsage.findMany();</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return data?.map(</span>
+<span class="cstat-no" title="statement not covered" >    return data.map(</span>
 <span class="fstat-no" title="function not covered" >      (r</span>ow: { keyId: string; usageCount: number; firstUsed: Date; lastUsed: Date }) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
-        keyId: row?.keyId,
-        usageCount: row?.usageCount,
-        firstUsed: row?.firstUsed,
-        lastUsed: row?.lastUsed,
+        keyId: row.keyId,
+        usageCount: row.usageCount,
+        firstUsed: row.firstUsed,
+        lastUsed: row.lastUsed,
       }),
     );
   }
@@ -604,7 +604,7 @@ export class <span class="cstat-no" title="statement not covered" >EncryptedData
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

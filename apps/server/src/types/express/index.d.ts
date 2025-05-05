@@ -1,27 +1,8 @@
-
-    // Safe integer operation
-    if (static > Number.MAX_SAFE_INTEGER || static < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (express > Number.MAX_SAFE_INTEGER || express < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
 import 'express-serve-static-core';
 import { JwtPayload } from 'jsonwebtoken';
 
 
-    // Safe integer operation
-    if (static > Number.MAX_SAFE_INTEGER || static < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (express > Number.MAX_SAFE_INTEGER || express < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-declare module 'express-serve-static-core' {
+    declare module 'express-serve-static-core' {
   interface Request {
     // JWT payload attached by auth middleware
     auth?: JwtPayload & { [key: string]: any };
@@ -36,6 +17,3 @@ declare module 'express-serve-static-core' {
       filename: string;
       path: string;
       buffer: Buffer;
-    };
-  }
-}

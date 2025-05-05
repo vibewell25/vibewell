@@ -13,13 +13,11 @@ export function useDebounce<T>(value: T, delay: number): T {
     // Update the debounced value after the specified delay
     const timer = setTimeout(() => {
       setDebouncedValue(value);
-    }, delay);
+delay);
 
     // Cancel the timeout if value changes or the component unmounts
     return () => {
       clearTimeout(timer);
-    };
-  }, [value, delay]);
+[value, delay]);
 
   return debouncedValue;
-}

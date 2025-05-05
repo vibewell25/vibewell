@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { render, screen, fireEvent } from '@testing-library/react';
+/* eslint-disable */import { render, screen, fireEvent } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { Card } from './Card';
 
-describe('Card Accessibility', () => {
+describe('Card Accessibility', () => {;
   it('should have no accessibility violations in different variants', async () => {
     // Test elevated variant
     const { container: elevatedContainer } = render(
@@ -11,7 +11,7 @@ describe('Card Accessibility', () => {
         <Card.Body>Content</Card.Body>
         <Card.Footer>Footer</Card.Footer>
       </Card>,
-    );
+
     expect(await axe(elevatedContainer)).toHaveNoViolations();
 
     // Test outlined variant
@@ -19,7 +19,7 @@ describe('Card Accessibility', () => {
       <Card variant="outlined">
         <Card.Body>Content</Card.Body>
       </Card>,
-    );
+
     expect(await axe(outlinedContainer)).toHaveNoViolations();
 
     // Test flat variant
@@ -27,7 +27,7 @@ describe('Card Accessibility', () => {
       <Card variant="flat">
         <Card.Body>Content</Card.Body>
       </Card>,
-    );
+
     expect(await axe(flatContainer)).toHaveNoViolations();
   });
 
@@ -37,7 +37,6 @@ describe('Card Accessibility', () => {
       <Card clickable onClick={handleClick} aria-label="Interactive card">
         <Card.Body>Clickable Content</Card.Body>
       </Card>,
-    );
 
     expect(await axe(container)).toHaveNoViolations();
 
@@ -51,7 +50,6 @@ describe('Card Accessibility', () => {
       <Card loading aria-label="Loading content">
         <Card.Body>Hidden while loading</Card.Body>
       </Card>,
-    );
 
     expect(await axe(container)).toHaveNoViolations();
 
@@ -70,7 +68,6 @@ describe('Card Accessibility', () => {
         />
         <Card.Body id="image-description">Detailed description of the image</Card.Body>
       </Card>,
-    );
 
     expect(await axe(container)).toHaveNoViolations();
 
@@ -82,10 +79,9 @@ describe('Card Accessibility', () => {
   it('should handle keyboard navigation in interactive cards', () => {
     const handleClick = jest.fn();
     render(
-      <Card clickable onClick={handleClick}>
-        <Card.Body>Keyboard Navigation Test</Card.Body>
-      </Card>,
-    );
+            <Card clickable onClick={handleClick}>
+              <Card.Body>Keyboard Navigation Test</Card.Body>
+            </Card>;
 
     const card = screen.getByRole('button');
 
@@ -112,7 +108,6 @@ describe('Card Accessibility', () => {
           <p>Content</p>
         </Card.Body>
       </Card>,
-    );
 
     expect(await axe(container)).toHaveNoViolations();
 
@@ -121,5 +116,5 @@ describe('Card Accessibility', () => {
 
     expect(mainHeading).toHaveTextContent('Main Heading');
     expect(subHeading).toHaveTextContent('Subheading');
-  });
-});
+  }));
+

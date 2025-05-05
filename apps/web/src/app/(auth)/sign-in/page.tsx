@@ -8,7 +8,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/Card';
+from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export {};
@@ -42,11 +42,9 @@ export default function SignInPage() {
                     onSuccess={() => {
                       // Handle successful authentication
                       console.log('WebAuthn authentication successful');
-                    }}
-                    onError={(error) => {
+onError={(error) => {
                       console.error('WebAuthn authentication failed:', error);
-                    }}
-                  />
+/>
                 </div>
               </CardContent>
             </TabsContent>
@@ -62,5 +60,3 @@ export default function SignInPage() {
         </Card>
       </div>
     </div>
-  );
-}

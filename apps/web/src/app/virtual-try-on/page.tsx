@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, Suspense } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/Button';
@@ -17,9 +15,6 @@ const DynamicARViewer = dynamic(
         <p className="text-gray-500">Loading AR Experience...</p>
       </div>
     ),
-  },
-);
-
 // Mock data for demonstration
 const mockModels = {
   makeup: [
@@ -27,27 +22,21 @@ const mockModels = {
       id: 'lipstick-red',
       name: 'Natural Glow',
       thumbnail: '/thumbnails/makeup/natural-glow.jpg',
-    },
-    {
+{
       id: 'foundation-medium',
       name: 'Evening Glam',
       thumbnail: '/thumbnails/makeup/evening-glam.jpg',
-    },
-  ],
+],
   hairstyle: [
     {
       id: 'blush-pink',
       name: 'Long Waves',
       thumbnail: '/thumbnails/hairstyle/long-waves.jpg',
-    },
-    {
+{
       id: 'eyeshadow-palette',
       name: 'Short Bob',
       thumbnail: '/thumbnails/hairstyle/short-bob.jpg',
-    },
-  ],
-};
-
+],
 function VirtualTryOnContent() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState<'makeup' | 'hairstyle'>('makeup');
@@ -57,13 +46,9 @@ function VirtualTryOnContent() {
   const handleTryOn = (modelId: string) => {
     setSelectedModel(modelId);
     setIsARActive(true);
-  };
-
-  const handleCloseAR = () => {
+const handleCloseAR = () => {
     setIsARActive(false);
-  };
-
-  return (
+return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="mb-4 text-3xl font-bold">Virtual Try-On</h1>
@@ -84,8 +69,7 @@ function VirtualTryOnContent() {
               onError={(error) => {
                 console.error('AR Error:', error);
                 setIsARActive(false);
-              }}
-            />
+/>
             <div className="mt-4 flex items-center justify-between">
               <h3 className="font-medium">
                 {mockModels.makeup.find((m) => m.id === selectedModel).name ||
@@ -160,17 +144,11 @@ function VirtualTryOnContent() {
         </>
       )}
     </div>
-  );
-}
-
 export default function VirtualTryOnPage() {
   return (
     <Suspense
       fallback={
         <div className="container mx-auto px-4 py-8">Loading virtual try-on experience...</div>
-      }
-    >
+>
       <VirtualTryOnContent />
     </Suspense>
-  );
-}

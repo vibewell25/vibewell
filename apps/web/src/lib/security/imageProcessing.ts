@@ -1,5 +1,3 @@
-
-
 import * as faceapi from 'face-api.js';
 import { createHash } from 'crypto';
 
@@ -12,10 +10,6 @@ interface ProcessedImage {
     resolution: {
       width: number;
       height: number;
-    };
-  };
-}
-
 /**
 
  * Securely processes and analyzes facial images
@@ -39,9 +33,7 @@ export const secureSkinAnalysis = async ( {
   
   if (!ctx) {
     throw new Error('Failed to get canvas context');
-  }
-
-  // Set canvas dimensions to match video
+// Set canvas dimensions to match video
   canvas.width = videoElement.videoWidth;
   canvas.height = videoElement.videoHeight;
 
@@ -55,9 +47,7 @@ export const secureSkinAnalysis = async ( {
     x: box.width * 0.2,
 
     y: box.height * 0.2
-  };
-
-  // Ensure we don't exceed image boundaries
+// Ensure we don't exceed image boundaries
   const extractRegion = {
 
     x: Math.max(0, box.x - padding.x),
@@ -71,17 +61,13 @@ export const secureSkinAnalysis = async ( {
 
 
     height: Math.min(canvas.height - box.y, box.height + padding.y * 2)
-  };
-
-  // Extract face region
+// Extract face region
   const faceImageData = ctx.getImageData(
     extractRegion.x,
     extractRegion.y,
     extractRegion.width,
     extractRegion.height
-  );
-
-  // Generate secure hash of image data
+// Generate secure hash of image data
   const hash = createHash('sha256')
     .update(new Uint8Array(faceImageData.data.buffer))
     .digest('hex');
@@ -93,20 +79,13 @@ export const secureSkinAnalysis = async ( {
     resolution: {
       width: extractRegion.width,
       height: extractRegion.height
-    }
-  };
-
-  // Validate processed image
+// Validate processed image
   if (!validateProcessedImage(faceImageData, metadata)) {
     throw new Error('Image validation failed');
-  }
-
-  // Clean up
+// Clean up
   canvas.remove();
 
   return faceImageData;
-};
-
 /**
  * Validates processed image data for security and quality
  */
@@ -117,22 +96,14 @@ const validateProcessedImage = (
   // Check image dimensions
   if (imageData.width < 64 || imageData.height < 64) {
     return false;
-  }
-
-  // Check processing time (shouldn't be too quick or too slow)
+// Check processing time (shouldn't be too quick or too slow)
   if (metadata.processingTime < 10 || metadata.processingTime > 5000) {
     return false;
-  }
-
-  // Check for empty or corrupt image data
+// Check for empty or corrupt image data
   const hasValidPixels = imageData.data.some(pixel => pixel !== 0);
   if (!hasValidPixels) {
     return false;
-  }
-
-  return true;
-};
-
+return true;
 /**
  * Sanitizes image metadata by removing sensitive EXIF data
  */
@@ -142,5 +113,3 @@ export const sanitizeImageMetadata = (imageData: ImageData): ImageData => {
     new Uint8ClampedArray(imageData.data),
     imageData.width,
     imageData.height
-  );
-}; 

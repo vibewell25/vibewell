@@ -3,8 +3,6 @@ export type WeatherCondition = {
   temperature: number;
   humidity: number;
   uvIndex: number;
-};
-
 export type Product = {
   id: string;
   name: string;
@@ -16,16 +14,12 @@ export type Product = {
   description: string;
   imageUrl: string;
   purchaseUrl: string;
-};
-
 export type RoutineAdjustment = {
   type: 'add' | 'remove' | 'replace' | 'modify';
   step: string;
   product?: Product;
   reason: string;
   timeOfDay: 'morning' | 'evening' | 'both';
-};
-
 export type RecommendationProgress = {
   id: string;
   recommendationId: string;
@@ -35,4 +29,3 @@ export type RecommendationProgress = {
   completionDate?: Date;
   notes?: string;
   effectiveness?: number; // 1-5 rating
-};

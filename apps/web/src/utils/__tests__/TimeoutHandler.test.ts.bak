@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import timeout-handler from '../timeout-handler.ts';
+
+describe('timeout-handler', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<timeout-handler />);
+    expect(container).toBeInTheDocument();
+  });
+});

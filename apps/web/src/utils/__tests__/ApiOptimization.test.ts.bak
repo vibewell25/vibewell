@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import api-optimization from '../api-optimization.ts';
+
+describe('api-optimization', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<api-optimization />);
+    expect(container).toBeInTheDocument();
+  });
+});

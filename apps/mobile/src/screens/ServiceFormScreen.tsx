@@ -20,19 +20,15 @@ const ServiceFormScreen: React.FC = () => {
       const durationNum = parseInt(duration, 10);
       if (existing) {
         await updateService(existing.id, { name, price: priceNum, duration: durationNum });
-      } else {
+else {
         // For now, set providerId to empty or handle accordingly
         await createService({ providerId: '', name, price: priceNum, duration: durationNum });
-      }
-      navigation.goBack();
-    } catch {
+navigation.goBack();
+catch {
       Alert.alert('Error', 'Failed to save service');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  return (
+return (
     <View style={{ flex: 1, padding: 16 }}>
       <Text style={{ marginBottom: 4 }}>Name</Text>
       <TextInput
@@ -60,7 +56,4 @@ const ServiceFormScreen: React.FC = () => {
         disabled={loading || !name.trim() || !price || !duration}
       />
     </View>
-  );
-};
-
 export default ServiceFormScreen;

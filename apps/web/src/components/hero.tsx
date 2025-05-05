@@ -9,5 +9,3 @@ export default function Hero() {
         and managing your beauty and wellness experience.
       </p>
     </section>
-  );
-} 

@@ -565,56 +565,56 @@ export class <span class="cstat-no" title="statement not covered" >ThirdPartyMan
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async i</span>nitializeServices(): Promise&lt;void&gt; {
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.analytics?.enabled) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.analytics.enabled) {</span>
 <span class="cstat-no" title="statement not covered" >      await this.initializeAnalytics();</span>
     }
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.payment?.enabled) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.payment.enabled) {</span>
 <span class="cstat-no" title="statement not covered" >      await this.initializePayment();</span>
     }
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.auth?.enabled) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.auth.enabled) {</span>
 <span class="cstat-no" title="statement not covered" >      await this.initializeAuth();</span>
     }
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.storage?.enabled) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.storage.enabled) {</span>
 <span class="cstat-no" title="statement not covered" >      await this.initializeStorage();</span>
     }
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.messaging?.enabled) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.messaging.enabled) {</span>
 <span class="cstat-no" title="statement not covered" >      await this.initializeMessaging();</span>
     }
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.search?.enabled) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.search.enabled) {</span>
 <span class="cstat-no" title="statement not covered" >      await this.initializeSearch();</span>
     }
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.logging?.enabled) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.logging.enabled) {</span>
 <span class="cstat-no" title="statement not covered" >      await this.initializeLogging();</span>
     }
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.ai?.enabled) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.config.ai.enabled) {</span>
 <span class="cstat-no" title="statement not covered" >      await this.initializeAI();</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async i</span>nitializeAnalytics(): Promise&lt;void&gt; {
     const config = <span class="cstat-no" title="statement not covered" >this.config.analytics!</span>;
-<span class="cstat-no" title="statement not covered" >    switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >    switch (config.service) {</span>
       case 'google-analytics':
         const ga = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>ga');</span></span>
 <span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('analytics', new ga.Analytics(config));</span>
 <span class="cstat-no" title="statement not covered" >        break;</span>
       case 'mixpanel':
         const mixpanel = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>mixpanel');</span></span>
-<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('analytics', mixpanel.init(config?.credentials.apiKey));</span>
+<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('analytics', mixpanel.init(config.credentials.apiKey));</span>
 <span class="cstat-no" title="statement not covered" >        break;</span>
       case 'segment':
         const segment = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>@segment/analytics-node');</span></span>
-<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('analytics', new segment.Analytics(config?.credentials));</span>
+<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('analytics', new segment.Analytics(config.credentials));</span>
 <span class="cstat-no" title="statement not covered" >        break;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async i</span>nitializePayment(): Promise&lt;void&gt; {
     const config = <span class="cstat-no" title="statement not covered" >this.config.payment!</span>;
-<span class="cstat-no" title="statement not covered" >    switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >    switch (config.service) {</span>
       case 'stripe':
         const stripe = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>stripe');</span></span>
-<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('payment', new stripe.default(config?.credentials.apiKey!));</span>
+<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('payment', new stripe.default(config.credentials.apiKey!));</span>
 <span class="cstat-no" title="statement not covered" >        break;</span>
       case 'paypal':
         const paypal = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>@paypal/checkout-server-sdk');</span></span>
@@ -622,17 +622,17 @@ export class <span class="cstat-no" title="statement not covered" >ThirdPartyMan
 <span class="cstat-no" title="statement not covered" >        break;</span>
       case 'square':
         const square = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>square');</span></span>
-<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('payment', new square.Client(config?.credentials));</span>
+<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('payment', new square.Client(config.credentials));</span>
 <span class="cstat-no" title="statement not covered" >        break;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async i</span>nitializeAuth(): Promise&lt;void&gt; {
     const config = <span class="cstat-no" title="statement not covered" >this.config.auth!</span>;
-<span class="cstat-no" title="statement not covered" >    switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >    switch (config.service) {</span>
       case 'auth0':
         const auth0 = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>auth0');</span></span>
-<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('auth', new auth0.AuthenticationClient(config?.credentials));</span>
+<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('auth', new auth0.AuthenticationClient(config.credentials));</span>
 <span class="cstat-no" title="statement not covered" >        break;</span>
       case 'firebase':
         const firebase = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>firebase/auth');</span></span>
@@ -640,27 +640,27 @@ export class <span class="cstat-no" title="statement not covered" >ThirdPartyMan
 <span class="cstat-no" title="statement not covered" >        break;</span>
       case 'okta':
         const okta = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>@okta/okta-auth-js');</span></span>
-<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('auth', new okta.OktaAuth(config?.credentials));</span>
+<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('auth', new okta.OktaAuth(config.credentials));</span>
 <span class="cstat-no" title="statement not covered" >        break;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async i</span>nitializeStorage(): Promise&lt;void&gt; {
     const config = <span class="cstat-no" title="statement not covered" >this.config.storage!</span>;
-<span class="cstat-no" title="statement not covered" >    switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >    switch (config.service) {</span>
       case 's3':
         const aws = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>aws-sdk');</span></span>
-<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('storage', new aws.S3(config?.credentials));</span>
+<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('storage', new aws.S3(config.credentials));</span>
 <span class="cstat-no" title="statement not covered" >        break;</span>
       case 'gcs':
         const { Storage } = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>@google-cloud/storage');</span></span>
-<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('storage', new Storage(config?.credentials));</span>
+<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('storage', new Storage(config.credentials));</span>
 <span class="cstat-no" title="statement not covered" >        break;</span>
       case 'azure-blob':
         const { BlobServiceClient } = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>@azure/storage-blob');</span></span>
 <span class="cstat-no" title="statement not covered" >        this.serviceInstances.set(</span>
           'storage',
-          BlobServiceClient?.fromConnectionString(config?.credentials.apiKey!),
+          BlobServiceClient.fromConnectionString(config.credentials.apiKey!),
         );
 <span class="cstat-no" title="statement not covered" >        break;</span>
     }
@@ -668,62 +668,62 @@ export class <span class="cstat-no" title="statement not covered" >ThirdPartyMan
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async i</span>nitializeMessaging(): Promise&lt;void&gt; {
     const config = <span class="cstat-no" title="statement not covered" >this.config.messaging!</span>;
-<span class="cstat-no" title="statement not covered" >    switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >    switch (config.service) {</span>
       case 'sendgrid':
         const sendgrid = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>@sendgrid/mail');</span></span>
-<span class="cstat-no" title="statement not covered" >        sendgrid?.setApiKey(config?.credentials.apiKey!);</span>
+<span class="cstat-no" title="statement not covered" >        sendgrid.setApiKey(config.credentials.apiKey!);</span>
 <span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('messaging', sendgrid);</span>
 <span class="cstat-no" title="statement not covered" >        break;</span>
       case 'twilio':
         const twilio = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>twilio');</span></span>
 <span class="cstat-no" title="statement not covered" >        this.serviceInstances.set(</span>
           'messaging',
-          twilio(config?.credentials.apiKey!, config?.credentials.apiSecret!),
+          twilio(config.credentials.apiKey!, config.credentials.apiSecret!),
         );
 <span class="cstat-no" title="statement not covered" >        break;</span>
       case 'firebase-fcm':
         const admin = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>firebase-admin');</span></span>
-<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('messaging', admin?.messaging());</span>
+<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('messaging', admin.messaging());</span>
 <span class="cstat-no" title="statement not covered" >        break;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async i</span>nitializeSearch(): Promise&lt;void&gt; {
     const config = <span class="cstat-no" title="statement not covered" >this.config.search!</span>;
-<span class="cstat-no" title="statement not covered" >    switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >    switch (config.service) {</span>
       case 'algolia':
         const algoliasearch = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>algoliasearch');</span></span>
 <span class="cstat-no" title="statement not covered" >        this.serviceInstances.set(</span>
           'search',
-          algoliasearch(config?.credentials.clientId!, config?.credentials.apiKey!),
+          algoliasearch(config.credentials.clientId!, config.credentials.apiKey!),
         );
 <span class="cstat-no" title="statement not covered" >        break;</span>
       case 'elasticsearch':
         const { Client } = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>@elastic/elasticsearch');</span></span>
-<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('search', new Client(config?.credentials));</span>
+<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('search', new Client(config.credentials));</span>
 <span class="cstat-no" title="statement not covered" >        break;</span>
       case 'meilisearch':
         const meilisearch = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>meilisearch');</span></span>
-<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('search', new meilisearch.MeiliSearch(config?.credentials));</span>
+<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('search', new meilisearch.MeiliSearch(config.credentials));</span>
 <span class="cstat-no" title="statement not covered" >        break;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async i</span>nitializeLogging(): Promise&lt;void&gt; {
     const config = <span class="cstat-no" title="statement not covered" >this.config.logging!</span>;
-<span class="cstat-no" title="statement not covered" >    switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >    switch (config.service) {</span>
       case 'sentry':
         const Sentry = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>@sentry/node');</span></span>
-<span class="cstat-no" title="statement not covered" >        Sentry?.init({</span>
-          dsn: config?.credentials.apiKey,
-          environment: config?.environment,
-          debug: config?.logLevel === 'debug',
+<span class="cstat-no" title="statement not covered" >        Sentry.init({</span>
+          dsn: config.credentials.apiKey,
+          environment: config.environment,
+          debug: config.logLevel === 'debug',
         });
 <span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('logging', Sentry);</span>
 <span class="cstat-no" title="statement not covered" >        break;</span>
       case 'datadog':
         const dd = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>dd-trace');</span></span>
-<span class="cstat-no" title="statement not covered" >        dd?.init(config?.credentials);</span>
+<span class="cstat-no" title="statement not covered" >        dd.init(config.credentials);</span>
 <span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('logging', dd);</span>
 <span class="cstat-no" title="statement not covered" >        break;</span>
       case 'newrelic':
@@ -735,34 +735,34 @@ export class <span class="cstat-no" title="statement not covered" >ThirdPartyMan
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async i</span>nitializeAI(): Promise&lt;void&gt; {
     const config = <span class="cstat-no" title="statement not covered" >this.config.ai!</span>;
-<span class="cstat-no" title="statement not covered" >    switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >    switch (config.service) {</span>
       case 'openai':
         const { Configuration, OpenAIApi } = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>openai');</span></span>
-        const configuration = <span class="cstat-no" title="statement not covered" >new Configuration(config?.credentials);</span>
+        const configuration = <span class="cstat-no" title="statement not covered" >new Configuration(config.credentials);</span>
 <span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('ai', new OpenAIApi(configuration));</span>
 <span class="cstat-no" title="statement not covered" >        break;</span>
       case 'cohere':
         const cohere = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>cohere-ai');</span></span>
-<span class="cstat-no" title="statement not covered" >        cohere?.init(config?.credentials.apiKey!);</span>
+<span class="cstat-no" title="statement not covered" >        cohere.init(config.credentials.apiKey!);</span>
 <span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('ai', cohere);</span>
 <span class="cstat-no" title="statement not covered" >        break;</span>
       case 'anthropic':
         const Anthropic = <span class="cstat-no" title="statement not covered" >await <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >import('</span>@anthropic-ai/sdk');</span></span>
-<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('ai', new Anthropic(config?.credentials.apiKey!));</span>
+<span class="cstat-no" title="statement not covered" >        this.serviceInstances.set('ai', new Anthropic(config.credentials.apiKey!));</span>
 <span class="cstat-no" title="statement not covered" >        break;</span>
     }
   }
 &nbsp;
   private <span class="fstat-no" title="function not covered" >createPayPalClient(c</span>onfig: ServiceConfig): any {
     const paypal = <span class="cstat-no" title="statement not covered" >require('@paypal/checkout-server-sdk');</span>
-    const environment = <span class="cstat-no" title="statement not covered" >config?.testMode</span>
+    const environment = <span class="cstat-no" title="statement not covered" >config.testMode</span>
       ? new paypal.core.SandboxEnvironment(
-          config?.credentials.clientId,
-          config?.credentials.clientSecret,
+          config.credentials.clientId,
+          config.credentials.clientSecret,
         )
       : new paypal.core.LiveEnvironment(
-          config?.credentials.clientId,
-          config?.credentials.clientSecret,
+          config.credentials.clientId,
+          config.credentials.clientSecret,
         );
 <span class="cstat-no" title="statement not covered" >    return new paypal.core.PayPalHttpClient(environment);</span>
   }
@@ -776,11 +776,11 @@ export class <span class="cstat-no" title="statement not covered" >ThirdPartyMan
   }
 &nbsp;
   public <span class="fstat-no" title="function not covered" >isServiceEnabled(s</span>erviceName: keyof ThirdPartyConfig): boolean {
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (serviceName &lt; 0 || serviceName &gt;= array?.length) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (serviceName &lt; 0 || serviceName &gt;= array.length) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('Array index out of bounds');</span>
     }
     const config = <span class="cstat-no" title="statement not covered" >this.config[serviceName];</span>
-<span class="cstat-no" title="statement not covered" >    return config?.enabled || false;</span>
+<span class="cstat-no" title="statement not covered" >    return config.enabled || false;</span>
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -790,7 +790,7 @@ export class <span class="cstat-no" title="statement not covered" >ThirdPartyMan
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { PaymentCheckout } from '@/components/payment/PaymentCheckout';
 import { Button } from '@/components/ui/Button';
@@ -13,13 +11,9 @@ export default function CheckoutPage() {
     console.log('Payment successful:', paymentIntentId);
     // In a real app, you would do something with this payment ID
     // like updating an order status in your database
-  };
-
-  const handlePaymentError = (error: any) => {
+const handlePaymentError = (error: any) => {
     console.error('Payment error:', error);
-  };
-
-  return (
+return (
     <div className="container mx-auto py-12">
       <h1 className="mb-8 text-center text-3xl font-bold">Checkout</h1>
 
@@ -39,8 +33,7 @@ export default function CheckoutPage() {
             itemName: 'Premium Membership',
             itemId: 'membership-premium-monthly',
             planType: 'monthly',
-          }}
-          onPaymentSuccess={handlePaymentSuccess}
+onPaymentSuccess={handlePaymentSuccess}
           onPaymentError={handlePaymentError}
           redirectUrl="/payment/confirmation"
           buttonText="Pay Now"
@@ -48,5 +41,3 @@ export default function CheckoutPage() {
         />
       )}
     </div>
-  );
-}

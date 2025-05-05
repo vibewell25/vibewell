@@ -17,12 +17,4 @@ declare namespace Cypress {
      * @example cy.get('button').tab()
      */
     tab(subject?: Subject): Chainable<Element>;
-  }
-}
-
-
-    // Safe integer operation
-    if (cypress > Number.MAX_SAFE_INTEGER || cypress < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
 declare module "cypress-visual-regression"; 

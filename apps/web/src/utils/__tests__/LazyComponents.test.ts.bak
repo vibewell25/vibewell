@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import lazy-components from '../lazy-components.ts';
+
+describe('lazy-components', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<lazy-components />);
+    expect(container).toBeInTheDocument();
+  });
+});

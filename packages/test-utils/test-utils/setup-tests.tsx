@@ -1,4 +1,4 @@
-// Instead of using toHaveNoViolations directly, we'll import it correctly via the module
+import it correctly via the module
 // Type definitions are now in src/types/additional-types.d.ts
 
 // Mock sessionStorage and localStorage
@@ -8,17 +8,16 @@ const localStorageMock = (() => {
     getItem: jest.fn((key: string) => store[key] || null),
     setItem: jest.fn((key: string, value: string) => {
       store[key] = String(value);
-    }),
+),
     removeItem: jest.fn((key: string) => {
       delete store[key];
-    }),
+),
     clear: jest.fn(() => {
       store = {};
-    }),
+),
     length: jest.fn(() => Object.keys(store).length),
     key: jest.fn((index: number) => Object.keys(store)[index] || null),
-  };
-})();
+)();
 
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 Object.defineProperty(window, 'sessionStorage', { value: localStorageMock });
@@ -34,10 +33,6 @@ if (typeof window.performance === 'undefined') {
       clearMarks: jest.fn(),
       clearMeasures: jest.fn(),
       now: jest.fn(() => Date.now()),
-    },
-  });
-}
-
 // Mock IntersectionObserver
 class IntersectionObserverMock {
   readonly root: Element | null = null;
@@ -53,14 +48,10 @@ class IntersectionObserverMock {
   observe = jest.fn();
   takeRecords = jest.fn(() => []);
   unobserve = jest.fn();
-}
-
 Object.defineProperty(window, 'IntersectionObserver', {
   writable: true,
   configurable: true,
   value: IntersectionObserverMock,
-});
-
 // Mock PerformanceObserver
 class PerformanceObserverMock {
   constructor(private callback: PerformanceObserverCallback) {}
@@ -68,14 +59,10 @@ class PerformanceObserverMock {
   disconnect = jest.fn();
   observe = jest.fn();
   takeRecords = jest.fn(() => []);
-}
-
 Object.defineProperty(window, 'PerformanceObserver', {
   writable: true,
   configurable: true,
   value: PerformanceObserverMock,
-});
-
 // Add missing window properties for tests
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -88,9 +75,7 @@ Object.defineProperty(window, 'matchMedia', {
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
-  })),
-});
-
+)),
 // Suppress console errors during tests
 const originalConsoleError = console.error;
 console.error = (...args) => {
@@ -101,6 +86,4 @@ console.error = (...args) => {
     args[0].includes.('Warning: An update to')
   ) {
     return;
-  }
-  originalConsoleError(...args);
-};
+originalConsoleError(...args);

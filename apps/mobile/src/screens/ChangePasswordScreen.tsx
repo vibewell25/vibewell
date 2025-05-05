@@ -9,7 +9,7 @@ import {
   Alert,
   Platform,
   KeyboardAvoidingView
-} from 'react-native';
+from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNavigation } from '@react-navigation/native';
@@ -21,8 +21,6 @@ interface PasswordForm {
   currentPassword: string;
   newPassword: string;
   confirmPassword: string;
-}
-
 const validationSchema = Yup.object().shape({
   currentPassword: Yup.string()
     .required('Current password is required'),
@@ -40,8 +38,6 @@ const validationSchema = Yup.object().shape({
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('newPassword')], 'Passwords must match')
     .required('Password confirmation is required'),
-});
-
 const ChangePasswordScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const navigation = useNavigation();
@@ -59,18 +55,13 @@ const ChangePasswordScreen: React.FC = () => {
         'Success',
         'Your password has been changed successfully',
         [{ text: 'OK', onPress: () => navigation.goBack() }]
-      );
-    } catch (error) {
+catch (error) {
       Alert.alert(
         'Error',
         'Failed to change password. Please try again.'
-      );
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  const renderPasswordInput = (
+const renderPasswordInput = (
     field: keyof PasswordForm,
     label: string,
     placeholder: string,
@@ -120,9 +111,7 @@ const ChangePasswordScreen: React.FC = () => {
         </Text>
       )}
     </View>
-  );
-
-  return (
+return (
     <SafeAreaView style={[
       styles.container,
       { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }
@@ -163,8 +152,7 @@ const ChangePasswordScreen: React.FC = () => {
               currentPassword: '',
               newPassword: '',
               confirmPassword: ''
-            }}
-            validationSchema={validationSchema}
+validationSchema={validationSchema}
             onSubmit={handleChangePassword}
           >
             {(formikProps) => (
@@ -253,92 +241,69 @@ const ChangePasswordScreen: React.FC = () => {
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
+header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
-  },
-  backButton: {
+backButton: {
     marginRight: 16,
-  },
-  title: {
+title: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  content: {
+content: {
     flex: 1,
     padding: 16,
-  },
-  description: {
+description: {
     fontSize: 16,
     marginBottom: 24,
-  },
-  form: {
+form: {
     marginBottom: 24,
-  },
-  inputGroup: {
+inputGroup: {
     marginBottom: 20,
-  },
-  label: {
+label: {
     fontSize: 16,
     marginBottom: 8,
     fontWeight: '500',
-  },
-  inputContainer: {
+inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 8,
     height: 48,
-  },
-  input: {
+input: {
     flex: 1,
     height: '100%',
     paddingHorizontal: 16,
     fontSize: 16,
-  },
-  visibilityToggle: {
+visibilityToggle: {
     padding: 12,
-  },
-  errorText: {
+errorText: {
     color: '#FF4444',
     fontSize: 14,
     marginTop: 4,
-  },
-  changeButton: {
+changeButton: {
     backgroundColor: '#4F46E5',
     height: 48,
     borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 24,
-  },
-  changeButtonText: {
+changeButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  requirements: {
+requirements: {
     padding: 16,
     borderRadius: 8,
-  },
-  requirementsTitle: {
+requirementsTitle: {
     fontSize: 16,
     fontWeight: '600',
     marginBottom: 12,
-  },
-  requirementItem: {
+requirementItem: {
     fontSize: 14,
     marginBottom: 8,
-  },
-});
-
 export default ChangePasswordScreen; 

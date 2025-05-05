@@ -6,16 +6,13 @@ const THREE = {
     position: { set: jest.fn() },
     rotation: { set: jest.fn() },
     scale: { set: jest.fn() },
-  })),
+)),
   Points: jest.fn(() => ({
     geometry: {
       attributes: {
         position: {
           needsUpdate: false,
-        },
-      },
-    },
-  })),
+)),
   BufferGeometry: jest.fn(),
   Float32BufferAttribute: jest.fn(),
   PointsMaterial: jest.fn(),
@@ -28,10 +25,8 @@ const THREE = {
     setSize: jest.fn(),
     render: jest.fn(),
     dispose: jest.fn(),
-  })),
+)),
   Clock: jest.fn(() => ({
     getElapsedTime: jest.fn(() => 0),
-  })),
-};
-
+)),
 module.exports = THREE;

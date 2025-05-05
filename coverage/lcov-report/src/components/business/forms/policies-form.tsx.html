@@ -710,10 +710,10 @@ const CANCELLATION_POLICIES = <span class="cstat-no" title="statement not covere
 &nbsp;
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >PoliciesForm({</span></span> form }: PoliciesFormProps) {
   const [cancellationPolicy, setCancellationPolicy] = <span class="cstat-no" title="statement not covered" >useState&lt;string&gt;(</span>
-    form?.getValues('cancellationPolicy') || 'flexible',
+    form.getValues('cancellationPolicy') || 'flexible',
   );
   const [hasLatePolicy, setHasLatePolicy] = <span class="cstat-no" title="statement not covered" >useState&lt;boolean&gt;(</span>
-    form?.getValues('hasLateArrivalPolicy') || false,
+    form.getValues('hasLateArrivalPolicy') || false,
   );
 &nbsp;
   // Handle cancellation policy selection
@@ -721,12 +721,12 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="cstat-no" title="statement not covered" >    setCancellationPolicy(value);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (value !== 'custom') {</span>
-      const selectedPolicy = <span class="cstat-no" title="statement not covered" >CANCELLATION_POLICIES?.find(<span class="fstat-no" title="function not covered" >(p</span>olicy) =&gt; <span class="cstat-no" title="statement not covered" >policy?.id === value);</span></span>
+      const selectedPolicy = <span class="cstat-no" title="statement not covered" >CANCELLATION_POLICIES.find(<span class="fstat-no" title="function not covered" >(p</span>olicy) =&gt; <span class="cstat-no" title="statement not covered" >policy.id === value);</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (selectedPolicy) {</span>
-<span class="cstat-no" title="statement not covered" >        form?.setValue(</span>
+<span class="cstat-no" title="statement not covered" >        form.setValue(</span>
           'cancellationPolicy',
-          selectedPolicy?.description + '. ' + selectedPolicy?.penalty,
+          selectedPolicy.description + '. ' + selectedPolicy.penalty,
           {
             shouldValidate: true,
             shouldDirty: true,
@@ -757,19 +757,19 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
               onValueChange={handleCancellationPolicyChange}
               className="space-y-4"
             &gt;
-              {CANCELLATION_POLICIES?.map(<span class="fstat-no" title="function not covered" >(p</span>olicy) =&gt; (
-<span class="cstat-no" title="statement not covered" >                &lt;div key={policy?.id} c</span>lassName="flex items-start space-x-2"&gt;
-                  &lt;RadioGroupItem value={policy?.id} id={`policy-${policy?.id}`} className="mt-1" /&gt;
-                  &lt;div className="grid gap-1?.5"&gt;
+              {CANCELLATION_POLICIES.map(<span class="fstat-no" title="function not covered" >(p</span>olicy) =&gt; (
+<span class="cstat-no" title="statement not covered" >                &lt;div key={policy.id} c</span>lassName="flex items-start space-x-2"&gt;
+                  &lt;RadioGroupItem value={policy.id} id={`policy-${policy.id}`} className="mt-1" /&gt;
+                  &lt;div className="grid gap-1.5"&gt;
                     &lt;label
-                      htmlFor={`policy-${policy?.id}`}
+                      htmlFor={`policy-${policy.id}`}
                       className="cursor-pointer text-sm font-medium leading-none"
                     &gt;
-                      {policy?.name}
+                      {policy.name}
                     &lt;/label&gt;
                     &lt;p className="text-xs text-muted-foreground"&gt;
-                      {policy?.description}
-                      {policy?.penalty ? `. ${policy?.penalty}.` : ''}
+                      {policy.description}
+                      {policy.penalty ? `. ${policy.penalty}.` : ''}
                     &lt;/p&gt;
                   &lt;/div&gt;
                 &lt;/div&gt;
@@ -779,7 +779,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
           {<span class="branch-0 cbranch-no" title="branch not covered" >cancellationPolicy === 'custom' &amp;&amp; (</span>
             &lt;FormField
-              control={form?.control}
+              control={form.control}
               name="cancellationPolicy"
               render={({ field }) =&gt; (
                 &lt;FormItem&gt;
@@ -815,11 +815,11 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
               checked={hasLatePolicy}
               onCheckedChange={<span class="fstat-no" title="function not covered" >(c</span>hecked) =&gt; {
 <span class="cstat-no" title="statement not covered" >                setHasLatePolicy(checked);</span>
-<span class="cstat-no" title="statement not covered" >                form?.setValue('hasLateArrivalPolicy', checked, { shouldValidate: true });</span>
+<span class="cstat-no" title="statement not covered" >                form.setValue('hasLateArrivalPolicy', checked, { shouldValidate: true });</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >                <span class="missing-if-branch" title="if path not taken" >I</span>if (!checked) {</span>
-<span class="cstat-no" title="statement not covered" >                  form?.setValue('lateArrivalPolicy', '', { shouldValidate: true });</span>
-<span class="cstat-no" title="statement not covered" >                  form?.setValue('lateArrivalGracePeriod', 0, { shouldValidate: true });</span>
+<span class="cstat-no" title="statement not covered" >                  form.setValue('lateArrivalPolicy', '', { shouldValidate: true });</span>
+<span class="cstat-no" title="statement not covered" >                  form.setValue('lateArrivalGracePeriod', 0, { shouldValidate: true });</span>
                 }
               }}
             /&gt;
@@ -829,7 +829,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         {<span class="branch-0 cbranch-no" title="branch not covered" >hasLatePolicy &amp;&amp; (</span>
           &lt;CardContent className="space-y-6"&gt;
             &lt;FormField
-              control={form?.control}
+              control={form.control}
               name="lateArrivalGracePeriod"
               render={({ field }) =&gt; (
                 &lt;FormItem&gt;
@@ -839,7 +839,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                       &lt;Input
                         type="number"
                         {...field}
-                        onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >field?.onChange(parseInt(e?.target.value || '0', 10))}</span>
+                        onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >field.onChange(parseInt(e.target.value || '0', 10))}</span>
                         min={0}
                         max={60}
                         className="w-20"
@@ -856,7 +856,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             /&gt;
 &nbsp;
             &lt;FormField
-              control={form?.control}
+              control={form.control}
               name="lateArrivalPolicy"
               render={({ field }) =&gt; (
                 &lt;FormItem&gt;
@@ -889,7 +889,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         &lt;/CardHeader&gt;
         &lt;CardContent&gt;
           &lt;FormField
-            control={form?.control}
+            control={form.control}
             name="additionalPolicies"
             render={({ field }) =&gt; (
               &lt;FormItem&gt;
@@ -929,9 +929,9 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
               &lt;/p&gt;
             &lt;/div&gt;
             &lt;Switch
-              checked={form?.watch('requirePolicyConfirmation') || false}
+              checked={form.watch('requirePolicyConfirmation') || false}
               onCheckedChange={<span class="fstat-no" title="function not covered" >(c</span>hecked) =&gt; {
-<span class="cstat-no" title="statement not covered" >                form?.setValue('requirePolicyConfirmation', checked, { shouldValidate: true });</span>
+<span class="cstat-no" title="statement not covered" >                form.setValue('requirePolicyConfirmation', checked, { shouldValidate: true });</span>
               }}
             /&gt;
           &lt;/div&gt;
@@ -946,9 +946,9 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
               &lt;/p&gt;
             &lt;/div&gt;
             &lt;Switch
-              checked={form?.watch('includePoliciesInEmails') || false}
+              checked={form.watch('includePoliciesInEmails') || false}
               onCheckedChange={<span class="fstat-no" title="function not covered" >(c</span>hecked) =&gt; {
-<span class="cstat-no" title="statement not covered" >                form?.setValue('includePoliciesInEmails', checked, { shouldValidate: true });</span>
+<span class="cstat-no" title="statement not covered" >                form.setValue('includePoliciesInEmails', checked, { shouldValidate: true });</span>
               }}
             /&gt;
           &lt;/div&gt;
@@ -958,7 +958,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
       {/* Help Text */}
       &lt;div className="rounded-md border border-blue-200 bg-blue-50 p-4 text-blue-700"&gt;
         &lt;div className="flex space-x-3"&gt;
-          &lt;InfoIcon className="mt-0?.5 h-5 w-5 text-blue-500" /&gt;
+          &lt;InfoIcon className="mt-0.5 h-5 w-5 text-blue-500" /&gt;
           &lt;div&gt;
             &lt;h4 className="mb-1 text-sm font-medium text-blue-800"&gt;Why policies matter&lt;/h4&gt;
             &lt;p className="text-sm"&gt;
@@ -979,7 +979,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

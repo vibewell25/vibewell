@@ -15,30 +15,20 @@ if (process.env.NODE_ENV === 'production') {
     redisClient = new Redis(redisUrl, {
       tls: {
         rejectUnauthorized: false
-      }
-    });
-  } else {
+else {
     // Standard connection
     redisClient = new Redis(redisUrl);
-  }
-} else {
+else {
   // Local development
   redisClient = new Redis({
     host: process.env['REDIS_HOST'] || 'localhost',
     port: parseInt(process.env['REDIS_PORT'] || '6379'),
     password: process.env['REDIS_PASSWORD'] || undefined
-  });
-}
-
 // Error handling
 redisClient.on('error', (error) => {
   console.error('Redis connection error:', error);
   // Implement proper logging here in production
-});
-
 // Successful connection
 redisClient.on('connect', () => {
   console.log('Connected to Redis successfully');
-});
-
 export default redisClient; 

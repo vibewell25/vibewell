@@ -187,62 +187,62 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Router } from <span class="cstat-no" title="statement not covered" >'express';</span>
 &nbsp;
-import { ServiceService } from <span class="cstat-no" title="statement not covered" >'../services/beauty-service?.service';</span>
+import { ServiceService } from <span class="cstat-no" title="statement not covered" >'../services/beauty-service.service';</span>
 &nbsp;
 import { validateRequest } from <span class="cstat-no" title="statement not covered" >'../middleware/validate-request';</span>
 &nbsp;
-import { createServiceSchema } from <span class="cstat-no" title="statement not covered" >'../schemas/service?.schema';</span>
+import { createServiceSchema } from <span class="cstat-no" title="statement not covered" >'../schemas/service.schema';</span>
 &nbsp;
 import { isAuthenticated } from <span class="cstat-no" title="statement not covered" >'../middleware/auth';</span>
 &nbsp;
 const router = <span class="cstat-no" title="statement not covered" >Router();</span>
 const serviceService = <span class="cstat-no" title="statement not covered" >new ServiceService();</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >router?.post('/', isAuthenticated, validateRequest(createServiceSchema), <span class="fstat-no" title="function not covered" >async (r</span>eq, res) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >router.post('/', isAuthenticated, validateRequest(createServiceSchema), <span class="fstat-no" title="function not covered" >async (r</span>eq, res) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-    const service = <span class="cstat-no" title="statement not covered" >await serviceService?.createService(req?.body);</span>
-<span class="cstat-no" title="statement not covered" >    res?.json(service);</span>
+    const service = <span class="cstat-no" title="statement not covered" >await serviceService.createService(req.body);</span>
+<span class="cstat-no" title="statement not covered" >    res.json(service);</span>
   } catch (error) {
-<span class="cstat-no" title="statement not covered" >    res?.status(500).json({ error: 'Failed to create service' });</span>
+<span class="cstat-no" title="statement not covered" >    res.status(500).json({ error: 'Failed to create service' });</span>
   }
 });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >router?.get('/:id', <span class="fstat-no" title="function not covered" >async (r</span>eq, res) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >router.get('/:id', <span class="fstat-no" title="function not covered" >async (r</span>eq, res) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-    const service = <span class="cstat-no" title="statement not covered" >await serviceService?.getServiceById(req?.params.id);</span>
+    const service = <span class="cstat-no" title="statement not covered" >await serviceService.getServiceById(req.params.id);</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!service) {</span>
-<span class="cstat-no" title="statement not covered" >      return res?.status(404).json({ error: 'Service not found' });</span>
+<span class="cstat-no" title="statement not covered" >      return res.status(404).json({ error: 'Service not found' });</span>
     }
-<span class="cstat-no" title="statement not covered" >    res?.json(service);</span>
+<span class="cstat-no" title="statement not covered" >    res.json(service);</span>
   } catch (error) {
-<span class="cstat-no" title="statement not covered" >    res?.status(500).json({ error: 'Failed to get service' });</span>
+<span class="cstat-no" title="statement not covered" >    res.status(500).json({ error: 'Failed to get service' });</span>
   }
 });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >router?.get('/business/:businessId', <span class="fstat-no" title="function not covered" >async (r</span>eq, res) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >router.get('/business/:businessId', <span class="fstat-no" title="function not covered" >async (r</span>eq, res) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-    const services = <span class="cstat-no" title="statement not covered" >await serviceService?.getServicesByBusiness(req?.params.businessId);</span>
-<span class="cstat-no" title="statement not covered" >    res?.json(services);</span>
+    const services = <span class="cstat-no" title="statement not covered" >await serviceService.getServicesByBusiness(req.params.businessId);</span>
+<span class="cstat-no" title="statement not covered" >    res.json(services);</span>
   } catch (error) {
-<span class="cstat-no" title="statement not covered" >    res?.status(500).json({ error: 'Failed to get services' });</span>
+<span class="cstat-no" title="statement not covered" >    res.status(500).json({ error: 'Failed to get services' });</span>
   }
 });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >router?.put('/:id', isAuthenticated, validateRequest(createServiceSchema), <span class="fstat-no" title="function not covered" >async (r</span>eq, res) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >router.put('/:id', isAuthenticated, validateRequest(createServiceSchema), <span class="fstat-no" title="function not covered" >async (r</span>eq, res) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-    const service = <span class="cstat-no" title="statement not covered" >await serviceService?.updateService(req?.params.id, req?.body);</span>
-<span class="cstat-no" title="statement not covered" >    res?.json(service);</span>
+    const service = <span class="cstat-no" title="statement not covered" >await serviceService.updateService(req.params.id, req.body);</span>
+<span class="cstat-no" title="statement not covered" >    res.json(service);</span>
   } catch (error) {
-<span class="cstat-no" title="statement not covered" >    res?.status(500).json({ error: 'Failed to update service' });</span>
+<span class="cstat-no" title="statement not covered" >    res.status(500).json({ error: 'Failed to update service' });</span>
   }
 });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >router?.delete('/:id', isAuthenticated, <span class="fstat-no" title="function not covered" >async (r</span>eq, res) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >router.delete('/:id', isAuthenticated, <span class="fstat-no" title="function not covered" >async (r</span>eq, res) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    await serviceService?.deleteService(req?.params.id);</span>
-<span class="cstat-no" title="statement not covered" >    res?.json({ message: 'Service deleted successfully' });</span>
+<span class="cstat-no" title="statement not covered" >    await serviceService.deleteService(req.params.id);</span>
+<span class="cstat-no" title="statement not covered" >    res.json({ message: 'Service deleted successfully' });</span>
   } catch (error) {
-<span class="cstat-no" title="statement not covered" >    res?.status(500).json({ error: 'Failed to delete service' });</span>
+<span class="cstat-no" title="statement not covered" >    res.status(500).json({ error: 'Failed to delete service' });</span>
   }
 });
 &nbsp;
@@ -253,7 +253,7 @@ const serviceService = <span class="cstat-no" title="statement not covered" >new
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -1,5 +1,3 @@
-'use client';
-
 import { useEngagement } from '@/hooks/use-engagement';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -12,13 +10,11 @@ interface RecommendationsProps {
   maxItems?: number;
   showTitle?: boolean;
   className?: string;
-}
-
 export function Recommendations({
   maxItems = 3,
   showTitle = true,
   className = '',
-}: RecommendationsProps) {
+: RecommendationsProps) {
   const { recommendations, isLoading } = useEngagement();
 
   // Limit the number of recommendations to display
@@ -38,14 +34,9 @@ export function Recommendations({
           ))}
         </div>
       </div>
-    );
-  }
-
-  if (displayRecommendations.length === 0) {
+if (displayRecommendations.length === 0) {
     return null;
-  }
-
-  return (
+return (
     <div className={className}>
       {showTitle && (
         <div className="mb-4 flex items-center gap-2">
@@ -107,5 +98,3 @@ export function Recommendations({
         </div>
       )}
     </div>
-  );
-}

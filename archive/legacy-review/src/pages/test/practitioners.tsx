@@ -14,7 +14,7 @@ import {
   AlertTitle,
   AlertDescription,
   useToast,
-} from '@chakra-ui/react';
+from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { PractitionerList } from '../../components/Practitioners/PractitionerList';
 import { PractitionerProfile } from '../../components/Practitioners/PractitionerProfile';
@@ -35,14 +35,11 @@ const PractitionersPage = () => {
       const nameMatch = practitioner.user.name.toLowerCase().includes(searchQuery.toLowerCase());
       const specializationMatch = practitioner.specialization.some((specialization: string) =>
         specialization.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-
-      const specializationFilterMatch =
+const specializationFilterMatch =
         !selectedSpecialization || practitioner.specialization.includes(selectedSpecialization);
 
       return (nameMatch || specializationMatch) && specializationFilterMatch;
-    });
-  }, [searchQuery, selectedSpecialization, mockPractitioners]);
+[searchQuery, selectedSpecialization, mockPractitioners]);
 
   const sortedPractitioners = useMemo(() => {
     return [...filteredPractitioners].sort((a, b) => {
@@ -55,9 +52,7 @@ const PractitionersPage = () => {
           return a.user.name.localeCompare(b.user.name);
         default:
           return 0;
-      }
-    });
-  }, [filteredPractitioners, sortBy]);
+[filteredPractitioners, sortBy]);
 
   const handleViewProfile = (id: string) => {
     try {
@@ -65,21 +60,16 @@ const PractitionersPage = () => {
       if (practitioner) {
         setSelectedPractitioner(practitioner);
         setShowList(false);
-      } else {
+else {
         throw new Error('Practitioner not found');
-      }
-    } catch (err) {
+catch (err) {
       toast({
         title: 'Error',
         description: 'Could not load practitioner profile',
         status: 'error',
         duration: 3000,
         isClosable: true,
-      });
-    }
-  };
-
-  const handleBookService = (id: string) => {
+const handleBookService = (id: string) => {
     try {
       // Simulate booking service
       toast({
@@ -88,19 +78,14 @@ const PractitionersPage = () => {
         status: 'success',
         duration: 3000,
         isClosable: true,
-      });
-    } catch (err) {
+catch (err) {
       toast({
         title: 'Booking Failed',
         description: 'Could not book the service. Please try again.',
         status: 'error',
         duration: 3000,
         isClosable: true,
-      });
-    }
-  };
-
-  return (
+return (
     <Container maxW="container.xl" py={8}>
       <VStack align="stretch" gap={6}>
         <Box>
@@ -127,14 +112,12 @@ const PractitionersPage = () => {
                   value={searchQuery}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setSearchQuery(e.target.value)
-                  }
-                />
+/>
                 <Select
                   value={selectedSpecialization}
                   onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                     setSelectedSpecialization(e.target.value)
-                  }
-                >
+>
                   <option value="">All Specializations</option>
                   {mockSpecializations.map((spec) => (
                     <option key={spec} value={spec}>
@@ -170,7 +153,4 @@ const PractitionersPage = () => {
         )}
       </VStack>
     </Container>
-  );
-};
-
 export default PractitionersPage;

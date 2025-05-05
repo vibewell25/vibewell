@@ -14,7 +14,7 @@ jest.mock('@/components/ar/social-share-buttons', () => ({
     productName, 
     shareUrl,
     onShare
-  }: any) => (
+: any) => (
     <div data-testid="social-share-buttons">
       <p>Image: {imageData}</p>
       <p>Type: {type}</p>
@@ -28,7 +28,7 @@ jest.mock('@/components/ar/social-share-buttons', () => ({
       </button>
     </div>
   )
-}));
+));
 
 // Mock global fetch
 global.fetch = jest.fn();
@@ -41,17 +41,11 @@ describe('ShareDialog', () => {
     type: 'makeup' as const,
     productName: 'Red Lipstick',
     userId: 'user123'
-  };
-  
-  const mockAnalyticsReturn = {
+const mockAnalyticsReturn = {
     trackEvent: jest.fn()
-  };
-  
-  const mockAnalyticsService = {
+const mockAnalyticsService = {
     trackShare: jest.fn().mockResolvedValue({})
-  };
-  
-  beforeEach(() => {
+beforeEach(() => {
     jest.clearAllMocks();
     
     // Setup mocks
@@ -62,10 +56,7 @@ describe('ShareDialog', () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,
       json: () => Promise.resolve({ shareUrl: 'https://vibewell.com/share/abc123' })
-    });
-  });
-  
-  it('renders correctly when open', () => {
+it('renders correctly when open', () => {
     // Act
     render(<ShareDialog {...mockProps} />);
     
@@ -76,17 +67,13 @@ describe('ShareDialog', () => {
     expect(screen.getByText('Social Media')).toBeInTheDocument();
     expect(screen.getByText('Email')).toBeInTheDocument();
     expect(screen.getByText('Download Image')).toBeInTheDocument();
-  });
-  
-  it('does not render when closed', () => {
+it('does not render when closed', () => {
     // Act
     render(<ShareDialog {...mockProps} isOpen={false} />);
     
     // Assert
     expect(screen.queryByText('Share Your Look')).not.toBeInTheDocument();
-  });
-  
-  it('handles email sharing correctly', async () => {
+it('handles email sharing correctly', async () => {
     // Arrange
     render(<ShareDialog {...mockProps} />);
     
@@ -105,45 +92,34 @@ describe('ShareDialog', () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+body: JSON.stringify({
         email: 'test@example.com',
         imageData: mockProps.imageData,
         type: mockProps.type,
         productName: mockProps.productName,
-      }),
-    });
-    
-    await waitFor(() => {
+),
+await waitFor(() => {
       // Check that analytics was called
       expect(mockAnalyticsReturn.trackEvent).toHaveBeenCalledWith(
         'share_attempt',
         expect.objectContaining({
           type: mockProps.type,
           method: 'email'
-        })
-      );
-      
-      expect(mockAnalyticsReturn.trackEvent).toHaveBeenCalledWith(
+)
+expect(mockAnalyticsReturn.trackEvent).toHaveBeenCalledWith(
         'share_success',
         expect.objectContaining({
           type: mockProps.type,
           method: 'email'
-        })
-      );
-      
-      // Check that analytics service was called
+)
+// Check that analytics service was called
       expect(mockAnalyticsService.trackShare).toHaveBeenCalledWith({
         sessionId: 'abc123',
         userId: mockProps.userId,
         platform: 'email',
         method: 'email',
         success: true
-      });
-    });
-  });
-  
-  it('handles email share errors correctly', async () => {
+it('handles email share errors correctly', async () => {
     // Arrange
     const mockError = new Error('Server error');
     (global.fetch as jest.Mock).mockRejectedValueOnce(mockError);
@@ -169,10 +145,8 @@ describe('ShareDialog', () => {
           type: mockProps.type,
           method: 'email',
           error: 'Server error'
-        })
-      );
-      
-      // Check that analytics service was called with error
+)
+// Check that analytics service was called with error
       expect(mockAnalyticsService.trackShare).toHaveBeenCalledWith({
         sessionId: 'unknown',
         userId: mockProps.userId,
@@ -180,29 +154,20 @@ describe('ShareDialog', () => {
         method: 'email',
         success: false,
         error: 'Server error'
-      });
-    });
-  });
-  
-  it('handles image downloading correctly', async () => {
+it('handles image downloading correctly', async () => {
     // Arrange
     // Mock link creation and click
     const mockLink = {
       href: '',
       download: '',
       click: jest.fn(),
-    };
-    
-    // Type-safe mocking of document.createElement
+// Type-safe mocking of document.createElement
     const originalCreateElement = document.createElement;
     document.createElement = jest.fn().mockImplementation((tag) => {
       if (tag === 'a') {
         return mockLink as unknown as HTMLElement;
-      }
-      return originalCreateElement.call(document, tag);
-    });
-    
-    const mockAppendChild = jest.fn();
+return originalCreateElement.call(document, tag);
+const mockAppendChild = jest.fn();
     const mockRemoveChild = jest.fn();
     document.body.appendChild = mockAppendChild;
     document.body.removeChild = mockRemoveChild;
@@ -225,22 +190,16 @@ describe('ShareDialog', () => {
       'image_downloaded',
       expect.objectContaining({
         type: mockProps.type
-      })
-    );
-    
-    expect(mockAnalyticsService.trackShare).toHaveBeenCalledWith({
+)
+expect(mockAnalyticsService.trackShare).toHaveBeenCalledWith({
       sessionId: 'download',
       userId: mockProps.userId,
       platform: 'local',
       method: 'download',
       success: true
-    });
-    
-    // Restore original document.createElement
+// Restore original document.createElement
     document.createElement = originalCreateElement;
-  });
-  
-  it('shows social share buttons after successful email share', async () => {
+it('shows social share buttons after successful email share', async () => {
     // Arrange
     render(<ShareDialog {...mockProps} />);
     
@@ -257,17 +216,13 @@ describe('ShareDialog', () => {
     // Wait for share to complete
     await waitFor(() => {
       expect(mockAnalyticsService.trackShare).toHaveBeenCalled();
-    });
-    
-    // Switch to social tab
+// Switch to social tab
     fireEvent.click(screen.getByText('Social Media'));
     
     // Assert
     expect(screen.getByTestId('social-share-buttons')).toBeInTheDocument();
     expect(screen.getByText(`URL: https://vibewell.com/share/abc123`)).toBeInTheDocument();
-  });
-  
-  it('tracks social sharing through social buttons', async () => {
+it('tracks social sharing through social buttons', async () => {
     // Arrange
     // First share via email to get a share URL
     render(<ShareDialog {...mockProps} />);
@@ -281,9 +236,7 @@ describe('ShareDialog', () => {
     // Wait for share to complete
     await waitFor(() => {
       expect(mockAnalyticsService.trackShare).toHaveBeenCalled();
-    });
-    
-    // Switch to social tab
+// Switch to social tab
     fireEvent.click(screen.getByText('Social Media'));
     
     // Act - Click on Facebook share
@@ -296,9 +249,7 @@ describe('ShareDialog', () => {
       platform: 'facebook',
       method: 'social',
       success: true
-    });
-    
-    // Act - Click on Twitter share
+// Act - Click on Twitter share
     fireEvent.click(screen.getByTestId('twitter-share'));
     
     // Assert
@@ -308,10 +259,7 @@ describe('ShareDialog', () => {
       platform: 'twitter',
       method: 'social',
       success: true
-    });
-  });
-  
-  it('calls onClose when dialog is closed', () => {
+it('calls onClose when dialog is closed', () => {
     // Arrange
     render(<ShareDialog {...mockProps} />);
     
@@ -320,5 +268,3 @@ describe('ShareDialog', () => {
     
     // Assert
     expect(mockProps.onClose).toHaveBeenCalled();
-  });
-}); 

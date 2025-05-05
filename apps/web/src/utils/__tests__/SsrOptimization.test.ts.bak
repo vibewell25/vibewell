@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import ssr-optimization from '../ssr-optimization.ts';
+
+describe('ssr-optimization', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<ssr-optimization />);
+    expect(container).toBeInTheDocument();
+  });
+});

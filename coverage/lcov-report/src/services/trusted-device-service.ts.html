@@ -516,24 +516,24 @@ export class <span class="cstat-no" title="statement not covered" >TrustedDevice
    * Generate a unique device ID based on device characteristics
    */
 <span class="fstat-no" title="function not covered" >  private generateDeviceId(</span>info: DeviceInfo): string {
-    const parser = <span class="cstat-no" title="statement not covered" >new UAParser(info?.userAgent);</span>
-    const ua = <span class="cstat-no" title="statement not covered" >parser?.getResult();</span>
+    const parser = <span class="cstat-no" title="statement not covered" >new UAParser(info.userAgent);</span>
+    const ua = <span class="cstat-no" title="statement not covered" >parser.getResult();</span>
 &nbsp;
     // Combine multiple factors to create a unique device fingerprint
     const factors = <span class="cstat-no" title="statement not covered" >[</span>
-      ua?.browser.name,
-      ua?.browser.version,
-      ua?.os.name,
-      ua?.os.version,
-      ua?.device.vendor,
-      ua?.device.model,
-      info?.ip,
+      ua.browser.name,
+      ua.browser.version,
+      ua.os.name,
+      ua.os.version,
+      ua.device.vendor,
+      ua.device.model,
+      info.ip,
       // Add any additional identifying data
-      ...Object?.values(info?.additionalData || {}),
+      ...Object.values(info.additionalData || {}),
     ].filter(Boolean);
 &nbsp;
     // Create a hash of the combined factors
-<span class="cstat-no" title="statement not covered" >    return createHash('sha256').update(factors?.join('|')).digest('hex');</span>
+<span class="cstat-no" title="statement not covered" >    return createHash('sha256').update(factors.join('|')).digest('hex');</span>
   }
 &nbsp;
   /**
@@ -541,26 +541,26 @@ export class <span class="cstat-no" title="statement not covered" >TrustedDevice
    */
 <span class="fstat-no" title="function not covered" >  async r</span>egisterDevice(userId: string, deviceInfo: DeviceInfo): Promise&lt;string&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const deviceId = <span class="cstat-no" title="statement not covered" >this?.generateDeviceId(deviceInfo);</span>
-      const parser = <span class="cstat-no" title="statement not covered" >new UAParser(deviceInfo?.userAgent);</span>
-      const ua = <span class="cstat-no" title="statement not covered" >parser?.getResult();</span>
+      const deviceId = <span class="cstat-no" title="statement not covered" >this.generateDeviceId(deviceInfo);</span>
+      const parser = <span class="cstat-no" title="statement not covered" >new UAParser(deviceInfo.userAgent);</span>
+      const ua = <span class="cstat-no" title="statement not covered" >parser.getResult();</span>
 &nbsp;
       const deviceName =
-<span class="cstat-no" title="statement not covered" >        [ua?.browser.name, ua?.os.name, ua?.device.vendor, ua?.device.model]</span>
+<span class="cstat-no" title="statement not covered" >        [ua.browser.name, ua.os.name, ua.device.vendor, ua.device.model]</span>
           .filter(Boolean)
           .join(' - ') || 'Unknown Device';
 &nbsp;
-      const expiresAt = <span class="cstat-no" title="statement not covered" >new Date(Date?.now() + this?.DEVICE_TRUST_DURATION);</span>
+      const expiresAt = <span class="cstat-no" title="statement not covered" >new Date(Date.now() + this.DEVICE_TRUST_DURATION);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      await prisma?.trustedDevice.upsert({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.trustedDevice.upsert({</span>
         where: { deviceId },
         create: {
           userId,
           deviceId,
           deviceName,
-          browserInfo: `${ua?.browser.name} ${ua?.browser.version}`,
-          osInfo: `${ua?.os.name} ${ua?.os.version}`,
-          ipAddress: deviceInfo?.ip,
+          browserInfo: `${ua.browser.name} ${ua.browser.version}`,
+          osInfo: `${ua.os.name} ${ua.os.version}`,
+          ipAddress: deviceInfo.ip,
           expiresAt,
         },
         update: {
@@ -571,7 +571,7 @@ export class <span class="cstat-no" title="statement not covered" >TrustedDevice
         },
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      logger?.info('Registered trusted device', 'security', {</span>
+<span class="cstat-no" title="statement not covered" >      logger.info('Registered trusted device', 'security', {</span>
         userId,
         deviceId,
         deviceName,
@@ -579,7 +579,7 @@ export class <span class="cstat-no" title="statement not covered" >TrustedDevice
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return deviceId;</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Failed to register trusted device', 'security', {</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Failed to register trusted device', 'security', {</span>
         error,
         userId,
       });
@@ -592,35 +592,35 @@ export class <span class="cstat-no" title="statement not covered" >TrustedDevice
    */
 <span class="fstat-no" title="function not covered" >  async v</span>erifyDevice(userId: string, deviceInfo: DeviceInfo): Promise&lt;boolean&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const deviceId = <span class="cstat-no" title="statement not covered" >this?.generateDeviceId(deviceInfo);</span>
+      const deviceId = <span class="cstat-no" title="statement not covered" >this.generateDeviceId(deviceInfo);</span>
 &nbsp;
-      const device = <span class="cstat-no" title="statement not covered" >await prisma?.trustedDevice.findUnique({</span>
+      const device = <span class="cstat-no" title="statement not covered" >await prisma.trustedDevice.findUnique({</span>
         where: { deviceId },
       });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!device) <span class="cstat-no" title="statement not covered" >return false;</span></span>
 &nbsp;
       // Check if device belongs to user
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (device?.userId !== userId) <span class="cstat-no" title="statement not covered" >return false;</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (device.userId !== userId) <span class="cstat-no" title="statement not covered" >return false;</span></span>
 &nbsp;
       // Check if device is revoked
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (device?.isRevoked) <span class="cstat-no" title="statement not covered" >return false;</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (device.isRevoked) <span class="cstat-no" title="statement not covered" >return false;</span></span>
 &nbsp;
       // Check if device trust has expired
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (device?.expiresAt &amp;&amp; device?.expiresAt &lt; new Date()) {</span>
-<span class="cstat-no" title="statement not covered" >        await this?.revokeDevice(deviceId);</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (device.expiresAt &amp;&amp; device.expiresAt &lt; new Date()) {</span>
+<span class="cstat-no" title="statement not covered" >        await this.revokeDevice(deviceId);</span>
 <span class="cstat-no" title="statement not covered" >        return false;</span>
       }
 &nbsp;
       // Update last used timestamp
-<span class="cstat-no" title="statement not covered" >      await prisma?.trustedDevice.update({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.trustedDevice.update({</span>
         where: { deviceId },
         data: { lastUsed: new Date() },
       });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return true;</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Failed to verify trusted device', 'security', {</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Failed to verify trusted device', 'security', {</span>
         error,
         userId,
       });
@@ -633,7 +633,7 @@ export class <span class="cstat-no" title="statement not covered" >TrustedDevice
    */
 <span class="fstat-no" title="function not covered" >  async r</span>evokeDevice(deviceId: string): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      await prisma?.trustedDevice.update({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.trustedDevice.update({</span>
         where: { deviceId },
         data: {
           isRevoked: true,
@@ -641,9 +641,9 @@ export class <span class="cstat-no" title="statement not covered" >TrustedDevice
         },
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      logger?.info('Revoked trusted device', 'security', { deviceId });</span>
+<span class="cstat-no" title="statement not covered" >      logger.info('Revoked trusted device', 'security', { deviceId });</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Failed to revoke trusted device', 'security', {</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Failed to revoke trusted device', 'security', {</span>
         error,
         deviceId,
       });
@@ -656,7 +656,7 @@ export class <span class="cstat-no" title="statement not covered" >TrustedDevice
    */
 <span class="fstat-no" title="function not covered" >  async g</span>etUserDevices(userId: string): Promise&lt;any[]&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const devices = <span class="cstat-no" title="statement not covered" >await prisma?.trustedDevice.findMany({</span>
+      const devices = <span class="cstat-no" title="statement not covered" >await prisma.trustedDevice.findMany({</span>
         where: {
           userId,
           isRevoked: false,
@@ -669,16 +669,16 @@ export class <span class="cstat-no" title="statement not covered" >TrustedDevice
         },
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      return devices?.map(<span class="fstat-no" title="function not covered" >(d</span>evice) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
-        id: device?.deviceId,
-        name: device?.deviceName,
-        browser: device?.browserInfo,
-        os: device?.osInfo,
-        lastUsed: device?.lastUsed,
-        createdAt: device?.createdAt,
+<span class="cstat-no" title="statement not covered" >      return devices.map(<span class="fstat-no" title="function not covered" >(d</span>evice) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+        id: device.deviceId,
+        name: device.deviceName,
+        browser: device.browserInfo,
+        os: device.osInfo,
+        lastUsed: device.lastUsed,
+        createdAt: device.createdAt,
       }));
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Failed to get user devices', 'security', {</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Failed to get user devices', 'security', {</span>
         error,
         userId,
       });
@@ -691,9 +691,9 @@ export class <span class="cstat-no" title="statement not covered" >TrustedDevice
    */
 <span class="fstat-no" title="function not covered" >  async c</span>leanupDevices(): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const thirtyDaysAgo = <span class="cstat-no" title="statement not covered" >new Date(Date?.now() - 30 * 24 * 60 * 60 * 1000);</span>
+      const thirtyDaysAgo = <span class="cstat-no" title="statement not covered" >new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      await prisma?.trustedDevice.deleteMany({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.trustedDevice.deleteMany({</span>
         where: {
           OR: [
             { expiresAt: { lt: new Date() } },
@@ -704,9 +704,9 @@ export class <span class="cstat-no" title="statement not covered" >TrustedDevice
         },
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      logger?.info('Cleaned up expired and revoked devices', 'security');</span>
+<span class="cstat-no" title="statement not covered" >      logger.info('Cleaned up expired and revoked devices', 'security');</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Failed to cleanup devices', 'security', { error });</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Failed to cleanup devices', 'security', { error });</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('Failed to cleanup devices');</span>
     }
   }
@@ -718,7 +718,7 @@ export class <span class="cstat-no" title="statement not covered" >TrustedDevice
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

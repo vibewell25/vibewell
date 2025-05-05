@@ -13,47 +13,35 @@ const meta = {
       table: {
         type: { summary: 'primary | secondary | outline' },
         defaultValue: { summary: 'primary' },
-      },
-    },
-    size: {
+size: {
       control: 'select',
       options: ['sm', 'md', 'lg'],
       description: 'The size of the button',
       table: {
         type: { summary: 'sm | md | lg' },
         defaultValue: { summary: 'md' },
-      },
-    },
-    loading: {
+loading: {
       control: 'boolean',
       description: 'Shows a loading spinner',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
-      },
-    },
-    disabled: {
+disabled: {
       control: 'boolean',
       description: 'Disables the button',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
-      },
-    },
-    fullWidth: {
+fullWidth: {
       control: 'boolean',
       description: 'Makes the button take full width',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
-      },
-    },
-    onClick: {
+onClick: {
       action: 'clicked',
       description: 'Function called when the button is clicked',
-    },
-  },
-  parameters: {
+parameters: {
     componentSubtitle: 'A versatile button component for triggering actions',
     docs: {
       description: {
@@ -99,24 +87,17 @@ It follows accessibility best practices and provides visual feedback for differe
 <Button fullWidth>Submit</Button>
 \`\`\`
         `,
-      },
-    },
-    a11y: {
+a11y: {
       config: {
         rules: [
           {
             id: 'button-name',
             enabled: true,
-          },
-          {
+{
             id: 'color-contrast',
             enabled: true,
-          },
-        ],
-      },
-    },
-  },
-} satisfies Meta<typeof Button>;
+],
+satisfies Meta<typeof Button>;
 
 export default meta;
 type Story = StoryObj<typeof Button>;
@@ -126,42 +107,25 @@ export const Primary: Story = {
     children: 'Primary Button',
     variant: 'primary',
     size: 'md',
-  },
-};
-
 export const Secondary: Story = {
   args: {
     children: 'Secondary Button',
     variant: 'secondary',
     size: 'md',
-  },
-};
-
 export const Outline: Story = {
   args: {
     children: 'Outline Button',
     variant: 'outline',
     size: 'md',
-  },
-};
-
 export const Loading: Story = {
   args: {
     children: 'Loading Button',
     loading: true,
-  },
-};
-
 export const Disabled: Story = {
   args: {
     children: 'Disabled Button',
     disabled: true,
-  },
-};
-
 export const FullWidth: Story = {
   args: {
     children: 'Full Width Button',
     fullWidth: true,
-  },
-};

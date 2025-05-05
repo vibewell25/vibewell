@@ -16,6 +16,4 @@ const SignIn: NextPage = () => (
       <Link href="/forgot-password"><a className="text-blue-500">Forgot Password?</a></Link>
     </p>
   </div>
-);
-
 export default SignIn;

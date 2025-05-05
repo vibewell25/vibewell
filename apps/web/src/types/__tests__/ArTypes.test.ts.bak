@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import ar-types from '../ar-types.ts';
+
+describe('ar-types', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<ar-types />);
+    expect(container).toBeInTheDocument();
+  });
+});

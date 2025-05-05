@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 import { getServerSession } from 'next-auth';
@@ -17,8 +16,6 @@ interface AppointmentData {
   status?: BookingStatus;
   notes?: string;
   customerId: string;
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); POST(request: Request) {
@@ -26,37 +23,25 @@ export async function {
     const session = await getServerSession(authOptions);
     if (!session.user) {
       return new NextResponse('Unauthorized', { status: 401 });
-    }
-
-    const appointment: AppointmentData = await request.json();
+const appointment: AppointmentData = await request.json();
 
     // Validate the appointment data
     if (!appointment.serviceId || !appointment.startTime || !appointment.endTime) {
       return new NextResponse('Invalid appointment data', { status: 400 });
-    }
-
-    // Get the user's business
+// Get the user's business
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
       include: {
         practitioner: {
           include: {
             business: true,
-          },
-        },
-      },
-    });
-
-    if (!user.practitioner.business) {
+if (!user.practitioner.business) {
       return new NextResponse('Business not found', { status: 404 });
-    }
-
-    // Create or update the appointment
+// Create or update the appointment
     const updatedAppointment = await prisma.booking.upsert({
       where: {
         id: appointment.id || 'temp_' + Date.now(), // Handle new appointments
-      },
-      create: {
+create: {
         service: { connect: { id: appointment.serviceId } },
         startTime: new Date(appointment.startTime),
         endTime: new Date(appointment.endTime),
@@ -65,18 +50,12 @@ export async function {
         business: { connect: { id: user.practitioner.business.id } },
         practitioner: { connect: { id: user.practitioner.id } },
         user: { connect: { id: appointment.customerId } },
-      },
-      update: {
+update: {
         startTime: new Date(appointment.startTime),
         endTime: new Date(appointment.endTime),
         status: appointment.status,
         notes: appointment.notes,
-      },
-    });
-
-    return NextResponse.json(updatedAppointment);
-  } catch (error) {
+return NextResponse.json(updatedAppointment);
+catch (error) {
     console.error('Error syncing appointment:', error);
     return new NextResponse('Internal Server Error', { status: 500 });
-  }
-}

@@ -418,11 +418,11 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             &lt;/Label&gt;
             &lt;Input
               id="businessName"
-              {...form?.register('businessName')}
+              {...form.register('businessName')}
               placeholder="Your Business Name"
             /&gt;
-            {<span class="branch-0 cbranch-no" title="branch not covered" >form?.formState.errors?.businessName &amp;&amp; (</span>
-              &lt;p className="text-sm text-red-500"&gt;{form?.formState.errors?.businessName.message}&lt;/p&gt;
+            {<span class="branch-0 cbranch-no" title="branch not covered" >form.formState.errors.businessName </span>&amp;&amp; (
+              &lt;p className="text-sm text-red-500"&gt;{form.formState.errors.businessName.message}&lt;/p&gt;
             )}
           &lt;/div&gt;
 &nbsp;
@@ -432,15 +432,15 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             &lt;/Label&gt;
             &lt;Textarea
               id="description"
-              {...form?.register('description')}
+              {...form.register('description')}
               placeholder="Describe your business and services..."
               rows={4}
             /&gt;
-            {<span class="branch-0 cbranch-no" title="branch not covered" >form?.formState.errors?.description &amp;&amp; (</span>
-              &lt;p className="text-sm text-red-500"&gt;{form?.formState.errors?.description.message}&lt;/p&gt;
+            {<span class="branch-0 cbranch-no" title="branch not covered" >form.formState.errors.description </span>&amp;&amp; (
+              &lt;p className="text-sm text-red-500"&gt;{form.formState.errors.description.message}&lt;/p&gt;
             )}
             &lt;p className="text-sm text-muted-foreground"&gt;
-              {form?.watch('description')?.length || 0}/500 characters
+              {form.watch('description').length || 0}/500 characters
             &lt;/p&gt;
           &lt;/div&gt;
 &nbsp;
@@ -449,24 +449,24 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
               Business Type &lt;span className="text-red-500"&gt;*&lt;/span&gt;
             &lt;/Label&gt;
             &lt;Select
-              value={form?.watch('businessType')}
+              value={form.watch('businessType')}
               onValueChange={<span class="fstat-no" title="function not covered" >(v</span>alue) =&gt;
-<span class="cstat-no" title="statement not covered" >                form?.setValue('businessType', value as any, { shouldValidate: true })</span>
+<span class="cstat-no" title="statement not covered" >                form.setValue('businessType', value as any, { shouldValidate: true })</span>
               }
             &gt;
               &lt;SelectTrigger id="businessType"&gt;
                 &lt;SelectValue placeholder="Select business type" /&gt;
               &lt;/SelectTrigger&gt;
               &lt;SelectContent&gt;
-                {businessTypes?.map(<span class="fstat-no" title="function not covered" >(t</span>ype) =&gt; (
-<span class="cstat-no" title="statement not covered" >                  &lt;SelectItem key={type?.value} v</span>alue={type?.value}&gt;
-                    {type?.label}
+                {businessTypes.map(<span class="fstat-no" title="function not covered" >(t</span>ype) =&gt; (
+<span class="cstat-no" title="statement not covered" >                  &lt;SelectItem key={type.value} v</span>alue={type.value}&gt;
+                    {type.label}
                   &lt;/SelectItem&gt;
                 ))}
               &lt;/SelectContent&gt;
             &lt;/Select&gt;
-            {<span class="branch-0 cbranch-no" title="branch not covered" >form?.formState.errors?.businessType &amp;&amp; (</span>
-              &lt;p className="text-sm text-red-500"&gt;{form?.formState.errors?.businessType.message}&lt;/p&gt;
+            {<span class="branch-0 cbranch-no" title="branch not covered" >form.formState.errors.businessType </span>&amp;&amp; (
+              &lt;p className="text-sm text-red-500"&gt;{form.formState.errors.businessType.message}&lt;/p&gt;
             )}
           &lt;/div&gt;
         &lt;/CardContent&gt;
@@ -485,11 +485,11 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             &lt;Input
               id="email"
               type="email"
-              {...form?.register('email')}
-              placeholder="business@example?.com"
+              {...form.register('email')}
+              placeholder="business@example.com"
             /&gt;
-            {<span class="branch-0 cbranch-no" title="branch not covered" >form?.formState.errors?.email &amp;&amp; (</span>
-              &lt;p className="text-sm text-red-500"&gt;{form?.formState.errors?.email.message}&lt;/p&gt;
+            {<span class="branch-0 cbranch-no" title="branch not covered" >form.formState.errors.email </span>&amp;&amp; (
+              &lt;p className="text-sm text-red-500"&gt;{form.formState.errors.email.message}&lt;/p&gt;
             )}
           &lt;/div&gt;
 &nbsp;
@@ -497,9 +497,9 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             &lt;Label htmlFor="phone"&gt;
               Business Phone &lt;span className="text-red-500"&gt;*&lt;/span&gt;
             &lt;/Label&gt;
-            &lt;Input id="phone" {...form?.register('phone')} placeholder="+1 (555) 123-4567" /&gt;
-            {<span class="branch-0 cbranch-no" title="branch not covered" >form?.formState.errors?.phone &amp;&amp; (</span>
-              &lt;p className="text-sm text-red-500"&gt;{form?.formState.errors?.phone.message}&lt;/p&gt;
+            &lt;Input id="phone" {...form.register('phone')} placeholder="+1 (555) 123-4567" /&gt;
+            {<span class="branch-0 cbranch-no" title="branch not covered" >form.formState.errors.phone </span>&amp;&amp; (
+              &lt;p className="text-sm text-red-500"&gt;{form.formState.errors.phone.message}&lt;/p&gt;
             )}
           &lt;/div&gt;
 &nbsp;
@@ -507,11 +507,11 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             &lt;Label htmlFor="website"&gt;Website&lt;/Label&gt;
             &lt;Input
               id="website"
-              {...form?.register('website')}
-              placeholder="https://yourbusiness?.com"
+              {...form.register('website')}
+              placeholder="https://yourbusiness.com"
             /&gt;
-            {<span class="branch-0 cbranch-no" title="branch not covered" >form?.formState.errors?.website &amp;&amp; (</span>
-              &lt;p className="text-sm text-red-500"&gt;{form?.formState.errors?.website.message}&lt;/p&gt;
+            {<span class="branch-0 cbranch-no" title="branch not covered" >form.formState.errors.website </span>&amp;&amp; (
+              &lt;p className="text-sm text-red-500"&gt;{form.formState.errors.website.message}&lt;/p&gt;
             )}
           &lt;/div&gt;
         &lt;/CardContent&gt;
@@ -526,7 +526,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

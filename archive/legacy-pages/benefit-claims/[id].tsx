@@ -21,8 +21,7 @@ const BenefitClaimDetail: NextPage = () => {
         setAmount(data.amount);
         setStatus(data.status);
         setProcessedAt(data.processedAt || '');
-      });
-  }, [id]);
+[id]);
 
   const handleUpdate = async (e: FormEvent) => {
     e.preventDefault();
@@ -32,16 +31,12 @@ const BenefitClaimDetail: NextPage = () => {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type, amount, status })
-      });
-      if (Date.now() - start > 30000) throw new Error('Timeout');
+if (Date.now() - start > 30000) throw new Error('Timeout');
       router.push('/benefit-claims');
-    } catch (error) {
+catch (error) {
       console.error('Failed to update benefit claim:', error);
       alert('Failed to update benefit claim.');
-    }
-  };
-
-  const handleDelete = async () => {
+const handleDelete = async () => {
     const start = Date.now();
     try {
       if (!confirm('Delete this claim?')) return;
@@ -50,13 +45,10 @@ const BenefitClaimDetail: NextPage = () => {
       
       if (Date.now() - start > 30000) throw new Error('Timeout');
       router.back();
-    } catch (error) {
+catch (error) {
       console.error('Failed to delete benefit claim:', error);
       alert('Failed to delete benefit claim.');
-    }
-  };
-
-  return (
+return (
     <div className="max-w-md mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Benefit Claim Details</h1>
       <form onSubmit={handleUpdate} className="space-y-2">
@@ -71,7 +63,4 @@ const BenefitClaimDetail: NextPage = () => {
         </div>
       </form>
     </div>
-  );
-};
-
 export default BenefitClaimDetail;

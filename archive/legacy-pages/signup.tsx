@@ -13,6 +13,4 @@ const SignUp: NextPage = () => (
       Already have an account? <Link href="/signin"><a className="text-blue-500">Sign In</a></Link>
     </p>
   </div>
-);
-
 export default SignUp;

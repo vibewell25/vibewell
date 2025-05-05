@@ -383,16 +383,16 @@ export class <span class="cstat-no" title="statement not covered" >EmailVerifica
 <span class="fstat-no" title="function not covered" >  static async s</span>endVerificationEmail(userId: string, email: string): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Delete any existing verification tokens for this user
-<span class="cstat-no" title="statement not covered" >      await prisma?.emailVerification.deleteMany({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.emailVerification.deleteMany({</span>
         where: { userId },
       });
 &nbsp;
       // Create new verification token
-      const token = <span class="cstat-no" title="statement not covered" >this?.generateToken();</span>
-      const expiresAt = <span class="cstat-no" title="statement not covered" >addHours(new Date(), this?.TOKEN_EXPIRY_HOURS);</span>
+      const token = <span class="cstat-no" title="statement not covered" >this.generateToken();</span>
+      const expiresAt = <span class="cstat-no" title="statement not covered" >addHours(new Date(), this.TOKEN_EXPIRY_HOURS);</span>
 &nbsp;
       // Save verification token
-<span class="cstat-no" title="statement not covered" >      await prisma?.emailVerification.create({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.emailVerification.create({</span>
         data: {
           token,
           userId,
@@ -403,10 +403,10 @@ export class <span class="cstat-no" title="statement not covered" >EmailVerifica
 &nbsp;
       // Generate verification URL
 &nbsp;
-      const verificationUrl = <span class="cstat-no" title="statement not covered" >`${process?.env.NEXT_PUBLIC_APP_URL}/verify-email?token=${token}`;</span>
+      const verificationUrl = <span class="cstat-no" title="statement not covered" >`${process.env.NEXT_PUBLIC_APP_URL}/verify-email?token=${token}`;</span>
 &nbsp;
       // Send verification email
-<span class="cstat-no" title="statement not covered" >      await EmailService?.send({</span>
+<span class="cstat-no" title="statement not covered" >      await EmailService.send({</span>
         to: email,
 &nbsp;
         subject: 'Verify Your Email - VibeWell',
@@ -421,7 +421,7 @@ export class <span class="cstat-no" title="statement not covered" >EmailVerifica
           &lt;a href="${verificationUrl}" style="display: inline-block; padding: 12px 24px; background-color: #4F46E5; color: white; text-decoration: none; border-radius: 6px; font-weight: bold;"&gt;Verify Email&lt;/a&gt;
           &lt;p&gt;Or copy and paste this URL into your browser:&lt;/p&gt;
           &lt;p&gt;${verificationUrl}&lt;/p&gt;
-          &lt;p&gt;This link will expire in ${this?.TOKEN_EXPIRY_HOURS} hours.&lt;/p&gt;
+          &lt;p&gt;This link will expire in ${this.TOKEN_EXPIRY_HOURS} hours.&lt;/p&gt;
           &lt;p&gt;If you didn't create an account with VibeWell, please ignore this email.&lt;/p&gt;
         `,
         text: `
@@ -430,13 +430,13 @@ export class <span class="cstat-no" title="statement not covered" >EmailVerifica
           Please verify your email address by visiting this URL:
           ${verificationUrl}
           
-          This link will expire in ${this?.TOKEN_EXPIRY_HOURS} hours.
+          This link will expire in ${this.TOKEN_EXPIRY_HOURS} hours.
           
           If you didn't create an account with VibeWell, please ignore this email.
         `,
       });
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Failed to send verification email:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to send verification email:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('Failed to send verification email');</span>
     }
   }
@@ -447,7 +447,7 @@ export class <span class="cstat-no" title="statement not covered" >EmailVerifica
 <span class="fstat-no" title="function not covered" >  static async v</span>erifyEmail(token: string): Promise&lt;{ success: boolean; error?: string }&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Find verification record
-      const verification = <span class="cstat-no" title="statement not covered" >await prisma?.emailVerification.findUnique({</span>
+      const verification = <span class="cstat-no" title="statement not covered" >await prisma.emailVerification.findUnique({</span>
         where: { token },
         include: { user: true },
       });
@@ -456,28 +456,28 @@ export class <span class="cstat-no" title="statement not covered" >EmailVerifica
 <span class="cstat-no" title="statement not covered" >        return { success: false, error: 'Invalid verification token' };</span>
       }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (verification?.expiresAt &lt; new Date()) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (verification.expiresAt &lt; new Date()) {</span>
         // Delete expired token
-<span class="cstat-no" title="statement not covered" >        await prisma?.emailVerification.delete({</span>
+<span class="cstat-no" title="statement not covered" >        await prisma.emailVerification.delete({</span>
           where: { token },
         });
 <span class="cstat-no" title="statement not covered" >        return { success: false, error: 'Verification token has expired' };</span>
       }
 &nbsp;
       // Update user's email verification status
-<span class="cstat-no" title="statement not covered" >      await prisma?.user.update({</span>
-        where: { id: verification?.userId },
+<span class="cstat-no" title="statement not covered" >      await prisma.user.update({</span>
+        where: { id: verification.userId },
         data: { emailVerified: true },
       });
 &nbsp;
       // Delete used token
-<span class="cstat-no" title="statement not covered" >      await prisma?.emailVerification.delete({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.emailVerification.delete({</span>
         where: { token },
       });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return { success: true };</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Error verifying email:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Error verifying email:', error);</span>
 <span class="cstat-no" title="statement not covered" >      return { success: false, error: 'Failed to verify email' };</span>
     }
   }
@@ -487,7 +487,7 @@ export class <span class="cstat-no" title="statement not covered" >EmailVerifica
    */
 <span class="fstat-no" title="function not covered" >  static async r</span>esendVerificationEmail(userId: string): Promise&lt;{ success: boolean; error?: string }&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const user = <span class="cstat-no" title="statement not covered" >await prisma?.user.findUnique({</span>
+      const user = <span class="cstat-no" title="statement not covered" >await prisma.user.findUnique({</span>
         where: { id: userId },
       });
 &nbsp;
@@ -495,14 +495,14 @@ export class <span class="cstat-no" title="statement not covered" >EmailVerifica
 <span class="cstat-no" title="statement not covered" >        return { success: false, error: 'User not found' };</span>
       }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (user?.emailVerified) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (user.emailVerified) {</span>
 <span class="cstat-no" title="statement not covered" >        return { success: false, error: 'Email is already verified' };</span>
       }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      await this?.sendVerificationEmail(user?.id, user?.email);</span>
+<span class="cstat-no" title="statement not covered" >      await this.sendVerificationEmail(user.id, user.email);</span>
 <span class="cstat-no" title="statement not covered" >      return { success: true };</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Error resending verification email:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Error resending verification email:', error);</span>
 <span class="cstat-no" title="statement not covered" >      return { success: false, error: 'Failed to resend verification email' };</span>
     }
   }
@@ -514,7 +514,7 @@ export class <span class="cstat-no" title="statement not covered" >EmailVerifica
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

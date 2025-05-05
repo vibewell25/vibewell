@@ -1,5 +1,3 @@
-'use client';
-
 import '../../src/styles/globals.css';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -7,9 +5,9 @@ import { useState } from 'react';
 
 export default function SpaLayout({
   children,
-}: {
+: {
   children: React.ReactNode;
-}) {
+) {
   const [activeTab, setActiveTab] = useState('home');
 
   return (
@@ -75,9 +73,6 @@ export default function SpaLayout({
         </div>
       </nav>
     </div>
-  );
-}
-
 type NavButtonProps = {
   icon: string;
   label: string;
@@ -85,8 +80,6 @@ type NavButtonProps = {
   onClick: () => void;
   href: string;
   notifications?: number;
-};
-
 function NavButton({ icon, label, active, onClick, href, notifications }: NavButtonProps) {
   return (
     <Link 
@@ -94,7 +87,7 @@ function NavButton({ icon, label, active, onClick, href, notifications }: NavBut
       onClick={onClick}
       className={`relative flex flex-col items-center justify-center px-2 py-1 rounded-lg transition-colors ${
         active ? 'text-primary-600' : 'text-muted-foreground'
-      }`}
+`}
     >
       <span className="text-xl">{icon}</span>
       {notifications && notifications > 0 && (
@@ -104,5 +97,3 @@ function NavButton({ icon, label, active, onClick, href, notifications }: NavBut
       )}
       <span className="text-xs mt-1">{label}</span>
     </Link>
-  );
-} 

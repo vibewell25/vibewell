@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
@@ -32,15 +30,11 @@ export default function LoginPage() {
       const { error } = await signIn(email, password);
       if (error) {
         setError(error.message);
-      }
-    } catch (err) {
+catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to sign in. Please try again.');
-    } finally {
+finally {
       setIsLoading(false);
-    }
-  };
-
-  return (
+return (
     <AuthForm
       type="login"
       title="Welcome back"
@@ -51,8 +45,7 @@ export default function LoginPage() {
       footerLink={{
         text: 'Sign up',
         href: ROUTES.AUTH.SIGNUP,
-      }}
-    >
+>
       <form onSubmit={handleSubmit} className="space-y-4">
         <AuthFormInput
           id="email"
@@ -81,8 +74,7 @@ export default function LoginPage() {
             >
               Forgot password?
             </Link>
-          }
-        />
+/>
 
         <AuthSubmitButton isLoading={isLoading} loadingText="Signing in..." text="Sign in" />
       </form>
@@ -120,5 +112,3 @@ export default function LoginPage() {
         </button>
       </div>
     </AuthForm>
-  );
-}

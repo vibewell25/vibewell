@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -16,10 +14,8 @@ export default function ProfilePage() {
       setIsLoading(false);
       alert('You have been logged out');
       window.location.href = '/';
-    }, 1000);
-  };
-
-  return (
+1000);
+return (
     <div className="app-container">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="app-heading">Profile</h1>
@@ -57,7 +53,7 @@ export default function ProfilePage() {
               activeTab === 'info'
                 ? 'border-b-2 border-primary-600 text-primary-600'
                 : 'text-muted-foreground'
-            }`}
+`}
           >
             Personal Info
           </button>
@@ -67,7 +63,7 @@ export default function ProfilePage() {
               activeTab === 'preferences'
                 ? 'border-b-2 border-primary-600 text-primary-600'
                 : 'text-muted-foreground'
-            }`}
+`}
           >
             Preferences
           </button>
@@ -77,7 +73,7 @@ export default function ProfilePage() {
               activeTab === 'payment'
                 ? 'border-b-2 border-primary-600 text-primary-600'
                 : 'text-muted-foreground'
-            }`}
+`}
           >
             Payment
           </button>
@@ -275,5 +271,3 @@ export default function ProfilePage() {
         </button>
       </div>
     </div>
-  );
-} 

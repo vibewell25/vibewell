@@ -1,4 +1,3 @@
-'use client';
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/Button';
@@ -20,19 +19,17 @@ import { Icons } from '@/components/icons';
   XCircleIcon,
   PencilIcon,
   TrashIcon
-} from '@heroicons/react/24/outline';
+from '@heroicons/react/24/outline';
 interface Review {
   id: string;
   user: {
     name: string;
     avatar: string;
-  };
-  provider: {
+provider: {
     name: string;
     id: string;
     avatar?: string;
-  };
-  service: string;
+service: string;
   rating: number;
   comment: string;
   date: string;
@@ -40,20 +37,16 @@ interface Review {
   response?: {
     text: string;
     date: string;
-  };
-}
 const reviews: Review[] = [
   {
     id: 'review1',
     user: {
       name: 'Emily Smith',
       avatar: '/users/emily.jpg'
-    },
-    provider: {
+provider: {
       name: 'Sarah Johnson',
       id: 'provider1'
-    },
-    service: 'Bridal Makeup',
+service: 'Bridal Makeup',
     rating: 5,
     comment: 'Sarah is amazing! She transformed my look for my wedding day. Highly recommend!',
     date: '2024-03-15',
@@ -61,8 +54,6 @@ const reviews: Review[] = [
     response: {
       text: 'Thank you for your kind words, Emily! It was a pleasure working with you on your special day.',
       date: '2024-03-16'
-    }
-  }
 ];
 const ratingStats = {
   average: 4.8,
@@ -73,8 +64,6 @@ const ratingStats = {
     3: 8,
     2: 3,
     1: 2
-  }
-};
 export default function ReviewsPage() {
   const [activeTab, setActiveTab] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -85,11 +74,9 @@ export default function ReviewsPage() {
     setIsSubmitting(true);
     // Handle review submission
     setTimeout(() => setIsSubmitting(false), 1000);
-  };
-  const handleModerateReview = (reviewId: string, action: 'approve' | 'reject') => {
+const handleModerateReview = (reviewId: string, action: 'approve' | 'reject') => {
     // Handle review moderation
-  };
-  return (
+return (
     <Layout>
       <div className="container-app py-12">
         <div className="mb-8">
@@ -116,7 +103,7 @@ export default function ReviewsPage() {
                           star <= Math.round(ratingStats.average)
                             ? 'text-yellow-500'
                             : 'text-muted'
-                        }`}
+`}
                       />
                     ))}
                   </div>
@@ -135,8 +122,7 @@ export default function ReviewsPage() {
                             className="h-full bg-primary"
                             style={{
                               width: `${(count / ratingStats.total) * 100}%`
-                            }}
-                          />
+/>
                         </div>
                         <span className="w-8 text-right">{count}</span>
                       </div>
@@ -297,5 +283,3 @@ export default function ReviewsPage() {
         </Card>
       </div>
     </Layout>
-  );
-} 

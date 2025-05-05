@@ -1,4 +1,3 @@
-'use client';;
 import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Layout } from '@/components/layout';
@@ -11,7 +10,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/Card';
+from '@/components/ui/Card';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { Spinner } from '@/components/ui/spinner';
@@ -39,51 +38,44 @@ function DeveloperContent() {
       .substring(0, 32); // Limit to 32 chars for readability
     setApiKey(key);
     setIsGeneratingKey(false);
-  };
-  const resources = [
+const resources = [
     {
       id: 'documentation',
       title: 'API Documentation',
       description: 'Comprehensive guides and reference materials for the Vibewell API',
       icon: <Icons.BookOpenIcon className="h-8 w-8 text-indigo-500" />,
       href: '/developer/docs',
-    },
-    {
+{
       id: 'sdk',
       title: 'SDKs & Libraries',
       description: 'Official client libraries for various programming languages',
       icon: <Icons.CodeBracketIcon className="h-8 w-8 text-violet-500" />,
       href: '/developer/sdk',
-    },
-    {
+{
       id: 'playground',
       title: 'API Playground',
       description: 'Interactive environment to test API endpoints and explore responses',
       icon: <Icons.BeakerIcon className="h-8 w-8 text-blue-500" />,
       href: '/developer/playground',
-    },
-    {
+{
       id: 'components',
       title: 'UI Components',
       description: 'Pre-built components to rapidly build Vibewell-compatible interfaces',
       icon: <Icons.SquaresPlusIcon className="h-8 w-8 text-teal-500" />,
       href: '/developer/docs/components',
-    },
-    {
+{
       id: 'webhooks',
       title: 'Webhooks',
       description: 'Configure event notifications for real-time updates',
       icon: <Icons.CursorArrowRaysIcon className="h-8 w-8 text-orange-500" />,
       href: '/developer/webhooks',
-    },
-    {
+{
       id: 'keys',
       title: 'API Keys',
       description: 'Manage your application credentials and access tokens',
       icon: <Icons.KeyIcon className="h-8 w-8 text-red-500" />,
       href: '/developer/api-keys',
-    },
-  ];
+];
   if (loading) {
     return (
       <Layout>
@@ -93,9 +85,7 @@ function DeveloperContent() {
           </div>
         </div>
       </Layout>
-    );
-  }
-  return (
+return (
     <Layout>
       <div className="container-app py-8 md:py-12">
         <div className="mb-8 flex flex-col items-start justify-between md:flex-row md:items-center">
@@ -370,7 +360,7 @@ function DeveloperContent() {
 {
   "email": "user@example.com",
   "password": "yourpassword"
-}`}</pre>
+`}</pre>
                 </div>
                 <Button asChild variant="outline">
                   <Link href="/developer/docs/authentication">Learn More About Authentication</Link>
@@ -391,13 +381,10 @@ async function {
     headers: {
       'Authorization': \`Bearer \${jwtToken}\`,
       'Content-Type': 'application/json'
-    }
-  });
-  if (!response.ok) {
+if (!response.ok) {
     throw new Error(\`API error: \${response.status}\`);
-  }
-  return await response.json();
-}`}</pre>
+return await response.json();
+`}</pre>
                 </div>
                 <div className="flex flex-wrap gap-3">
                   <Button asChild variant="outline">
@@ -454,15 +441,11 @@ async function {
         </div>
       </div>
     </Layout>
-  );
-}
 export default function DeveloperPage() {
   return (
     <Suspense fallback={<DeveloperSkeleton />}>
       <DeveloperContent />
     </Suspense>
-  );
-}
 // Add skeleton component for loading state
 function DeveloperSkeleton() {
   return (
@@ -479,5 +462,3 @@ function DeveloperSkeleton() {
         </div>
       </div>
     </Layout>
-  );
-}

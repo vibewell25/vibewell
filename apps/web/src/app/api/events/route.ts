@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 import { getEvents, getUpcomingEvents, getEventById } from '@/lib/api/events';
@@ -19,22 +18,14 @@ export async function {
 
       if (!event) {
         return NextResponse.json({ error: 'Event not found' }, { status: 404 });
-      }
-
-      return NextResponse.json(event);
-    }
-
-    // If upcoming is specified, return upcoming events
+return NextResponse.json(event);
+// If upcoming is specified, return upcoming events
     if (upcoming === 'true') {
       const events = await getUpcomingEvents(limit ? parseInt(limit) : undefined);
       return NextResponse.json(events);
-    }
-
-    // Default: return all events
+// Default: return all events
     const allEvents = await getEvents();
     return NextResponse.json(allEvents);
-  } catch (error) {
+catch (error) {
     console.error('Error in events API route:', error);
     return NextResponse.json({ error: 'Failed to retrieve events' }, { status: 500 });
-  }
-}

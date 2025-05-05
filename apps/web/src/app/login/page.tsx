@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -23,10 +21,8 @@ function LoginContent() {
     setTimeout(() => {
       setLoading(false);
       router.push('/dashboard');
-    }, 1000);
-  };
-
-  return (
+1000);
+return (
     <MobileLayout hideNavigation>
       <div className="flex h-screen flex-col px-6 py-12">
         <div className="flex flex-1 flex-col justify-center">
@@ -90,9 +86,6 @@ function LoginContent() {
         </div>
       </div>
     </MobileLayout>
-  );
-}
-
 export default function LoginPage() {
   return (
     <Suspense
@@ -100,5 +93,3 @@ export default function LoginPage() {
     >
       <LoginContent />
     </Suspense>
-  );
-}

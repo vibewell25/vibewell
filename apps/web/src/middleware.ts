@@ -15,8 +15,6 @@ const ratelimit = new Ratelimit({
     Number(process.env['RATE_LIMIT_MAX_REQUESTS']) || 100,
     `${Number(process.env['RATE_LIMIT_WINDOW']) || 60000}ms`
   ),
-});
-
 // Paths that don't require authentication
 const publicPaths = [
   '/',
@@ -54,9 +52,7 @@ export async function middleware(req: NextRequest) {
   // Skip middleware for public paths and static files
   if (publicPaths.some((p) => path.match(new RegExp(`^${p}$`)))) {
     return res;
-  }
-
-  try {
+try {
     const session = await getSession(req, res);
 
 
@@ -66,25 +62,19 @@ export async function middleware(req: NextRequest) {
       const loginUrl = new URL('/api/auth/login', req.url);
       loginUrl.searchParams.set('returnTo', path);
       return NextResponse.redirect(loginUrl);
-    }
-
-    // Apply rate limiting
+// Apply rate limiting
     const ip = req.headers.get('x-forwarded-for').split(',')[0] ?? '127.0.0.1';
     const { success } = await ratelimit.limit(ip);
     
     if (!success) {
       return new NextResponse('Too Many Requests', { status: 429 });
-    }
-
-    // Add user info to headers for API routes
+// Add user info to headers for API routes
     if (path.startsWith('/api/')) {
 
       res.headers.set('X-User-ID', session.user.sub);
 
       res.headers.set('X-User-Role', session.user.role || 'user');
-    }
-
-    // Add security headers
+// Add security headers
 
     res.headers.set('X-Frame-Options', 'DENY');
 
@@ -106,10 +96,8 @@ export async function middleware(req: NextRequest) {
 
 
       "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:;"
-    );
-
-    return res;
-  } catch (error) {
+return res;
+catch (error) {
     console.error('Auth middleware error:', error);
     
 
@@ -119,18 +107,12 @@ export async function middleware(req: NextRequest) {
       const loginUrl = new URL('/api/auth/login', req.url);
       loginUrl.searchParams.set('returnTo', path);
       return NextResponse.redirect(loginUrl);
-    }
-
-    // For API routes, return unauthorized
+// For API routes, return unauthorized
     return new NextResponse(
       JSON.stringify({ error: 'Unauthorized' }),
 
 
       { status: 401, headers: { 'Content-Type': 'application/json' } }
-    );
-  }
-}
-
 export const config = {
   matcher: [
     /*
@@ -146,4 +128,3 @@ export const config = {
 
     '/((?!_next/static|_next/image|favicon.ico|public).*)',
   ],
-};

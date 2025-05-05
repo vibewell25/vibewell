@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import event-organizer-dashboard from '../event-organizer-dashboard.tsx';
+
+describe('event-organizer-dashboard', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<event-organizer-dashboard />);
+    expect(container).toBeInTheDocument();
+  });
+});

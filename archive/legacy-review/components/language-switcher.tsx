@@ -1,5 +1,3 @@
-'use client';
-
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { supportedLanguages, changeLanguage } from '@/i18n';
@@ -22,9 +20,7 @@ export default function LanguageSwitcher() {
 
     // Refresh the page to ensure all components update correctly
     router.refresh();
-  };
-
-  return (
+return (
     <div className="relative inline-block text-left">
       <select
         value={i18n.language}
@@ -38,5 +34,3 @@ export default function LanguageSwitcher() {
         ))}
       </select>
     </div>
-  );
-}

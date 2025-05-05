@@ -7,18 +7,12 @@ import LoadingSpinner from '../components/LoadingSpinner';
 const Header = dynamic(() => import('../components/Header'), {
   loading: () => <Box h="64px" bg={useColorModeValue('white', 'gray.800')} borderBottomWidth="1px" />,
   ssr: true
-});
-
 const Sidebar = dynamic(() => import('../components/Sidebar'), {
   loading: () => <Box w={{ base: 0, md: '240px' }} />,
   ssr: true
-});
-
 const Footer = dynamic(() => import('../components/Footer'), {
   loading: () => <Box h="64px" />,
   ssr: true
-});
-
 // Lazy load non-critical components
 const Analytics = dynamic(() => import('../components/Analytics'), { ssr: false });
 const Notifications = dynamic(() => import('../components/Notifications'), { ssr: false });
@@ -53,7 +47,4 @@ const AppLayout = ({ children }) => {
       </Flex>
       <Footer />
     </Flex>
-  );
-};
-
 export default AppLayout; 

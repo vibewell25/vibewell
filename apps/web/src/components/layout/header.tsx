@@ -1,4 +1,3 @@
-'use client';;
 import Link from 'next/link';
 import { NotificationIndicator } from '@/components/notifications/NotificationIndicator';
 import { useAuth } from '@/hooks/useAuth';
@@ -7,8 +6,6 @@ import { UserMenu } from '@/components/user-menu';
 
 export interface HeaderProps {
   className?: string;
-}
-
 export function Header({ className = '' }: HeaderProps) {
   const { user, loading } = useAuth();
 
@@ -41,7 +38,4 @@ export function Header({ className = '' }: HeaderProps) {
         </div>
       </div>
     </header>
-  );
-}
-
 export default Header;

@@ -11,7 +11,7 @@ const SettingsScreen: React.FC = () => {
   // Initialize translations
   useEffect(() => {
     initializeI18n();
-  }, []);
+[]);
 
   // State for dark mode
   const [isDarkMode, setIsDarkMode] = React.useState(false);
@@ -27,39 +27,27 @@ const SettingsScreen: React.FC = () => {
     setIsDarkMode(value);
     await AsyncStorage.setItem('@vibewell/dark_mode', value ? 'true' : 'false');
     // TODO: Implement actual theme switch
-  };
-
-  // Toggle notifications
+// Toggle notifications
   const toggleNotifications = async (value: boolean) => {
     setNotificationsEnabled(value);
     await AsyncStorage.setItem('@vibewell/notifications_enabled', value ? 'true' : 'false');
     // TODO: Implement notification permission handling
-  };
-
-  // Toggle biometric login
+// Toggle biometric login
   const toggleBiometricLogin = async (value: boolean) => {
     setBiometricLoginEnabled(value);
     await AsyncStorage.setItem('@vibewell/biometric_login', value ? 'true' : 'false');
     // TODO: Implement biometric authentication setup
-  };
-
-  // Handle language change
+// Handle language change
   const handleLanguageChange = (locale: string) => {
     // Reload the component or update the UI as needed
     console.log(`Language changed to: ${locale}`);
-  };
-
-  // Handle language selector close
+// Handle language selector close
   const handleLanguageSelectorClose = () => {
     setIsLanguageSelectorVisible(false);
-  };
-
-  // Render a settings section header
+// Render a settings section header
   const renderSectionHeader = (title: string) => (
     <Text style={styles.sectionHeader}>{title}</Text>
-  );
-
-  // Render a settings item with toggle
+// Render a settings item with toggle
   const renderToggleItem = (
     title: string, 
     value: boolean, 
@@ -78,9 +66,7 @@ const SettingsScreen: React.FC = () => {
         thumbColor={value ? '#fff' : '#f4f3f4'}
       />
     </View>
-  );
-
-  // Render a settings item with chevron
+// Render a settings item with chevron
   const renderChevronItem = (
     title: string, 
     onPress: () => void,
@@ -93,9 +79,7 @@ const SettingsScreen: React.FC = () => {
       </View>
       <Ionicons name="chevron-forward" size={20} color="#888" />
     </TouchableOpacity>
-  );
-
-  return (
+return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <Text style={styles.title}>{i18n.t('settings.title')}</Text>
@@ -177,30 +161,24 @@ const SettingsScreen: React.FC = () => {
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f8f8',
-  },
-  title: {
+title: {
     fontSize: 28,
     fontWeight: 'bold',
     marginHorizontal: 16,
     marginTop: 16,
     marginBottom: 24,
-  },
-  sectionHeader: {
+sectionHeader: {
     fontSize: 16,
     fontWeight: '600',
     color: '#666',
     marginHorizontal: 16,
     marginTop: 24,
     marginBottom: 8,
-  },
-  settingsItem: {
+settingsItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -209,23 +187,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#e0e0e0',
-  },
-  itemLeft: {
+itemLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  itemIcon: {
+itemIcon: {
     marginRight: 12,
-  },
-  itemText: {
+itemText: {
     fontSize: 16,
     color: '#333',
-  },
-  versionText: {
+versionText: {
     fontSize: 16,
     color: '#888',
-  },
-  logoutButton: {
+logoutButton: {
     marginTop: 36,
     marginBottom: 24,
     marginHorizontal: 16,
@@ -233,17 +206,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 14,
     alignItems: 'center',
-  },
-  logoutText: {
+logoutText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
-  },
-  languageContainer: {
+languageContainer: {
     backgroundColor: '#fff',
     paddingHorizontal: 16,
     paddingVertical: 8,
-  },
-});
-
 export default SettingsScreen; 

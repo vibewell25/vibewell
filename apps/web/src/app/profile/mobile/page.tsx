@@ -1,5 +1,3 @@
-'use client';
-
 import { Suspense, useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { MobileLayout } from '@/components/layout/MobileLayout';
@@ -22,8 +20,7 @@ function ProfileMobileContent() {
   useEffect(() => {
     if (!loading && !user) {
       router.push('/auth/login');
-    }
-  }, [user, loading, router]);
+[user, loading, router]);
 
   // Handle tab changes
   const handleTabChange = (tab: string) => {
@@ -33,23 +30,16 @@ function ProfileMobileContent() {
     const newParams = new URLSearchParams(searchParams.toString());
     newParams.set('tab', tab);
     router.push(`/profile/mobile?${newParams.toString()}`);
-  };
-
-  if (loading) {
+if (loading) {
     return (
       <MobileLayout>
         <div className="flex min-h-screen items-center justify-center">
           <div className="border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent"></div>
         </div>
       </MobileLayout>
-    );
-  }
-
-  if (!user) {
+if (!user) {
     return null;
-  }
-
-  return (
+return (
     <MobileLayout>
       <div className="min-h-screen bg-background pb-16">
         {/* Profile Header */}
@@ -204,9 +194,6 @@ function ProfileMobileContent() {
         </Tabs>
       </div>
     </MobileLayout>
-  );
-}
-
 export default function ProfileMobilePage() {
   return (
     <Suspense
@@ -214,9 +201,6 @@ export default function ProfileMobilePage() {
         <MobileLayout>
           <div className="flex min-h-screen items-center justify-center">Loading profile...</div>
         </MobileLayout>
-      }
-    >
+>
       <ProfileMobileContent />
     </Suspense>
-  );
-}

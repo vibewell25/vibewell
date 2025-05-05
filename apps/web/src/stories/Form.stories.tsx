@@ -10,33 +10,26 @@ import {
   FormControl,
   FormDescription,
   FormMessage,
-} from '../components/ui/form';
+from '../components/ui/form';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 
 const formSchema = z.object({
   username: z.string().min(2, {
     message: 'Username must be at least 2 characters.',
-  }),
+),
   email: z.string().email({
     message: 'Please enter a valid email address.',
-  }),
-});
-
+),
 const FormDemo = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: '',
       email: '',
-    },
-  });
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
+function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
-  }
-
-  return (
+return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
@@ -70,9 +63,6 @@ const FormDemo = () => {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  );
-};
-
 const meta = {
   title: 'Components/Form',
   component: FormDemo,
@@ -121,28 +111,21 @@ import {
   FormControl,
   FormDescription,
   FormMessage,
-} from '@/components/ui/form';
+from '@/components/ui/form';
 import { Input } from '@/components/ui/Input';
 
 const formSchema = z.object({
   username: z.string().min(2),
   email: z.string().email(),
-});
-
 function MyForm() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
       email: "",
-    },
-  });
-
-  function onSubmit(values) {
+function onSubmit(values) {
     console.log(values);
-  }
-
-  return (
+return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
@@ -161,15 +144,10 @@ function MyForm() {
         {/* Add more form fields */}
       </form>
     </Form>
-  );
-}
 \`\`\`
 `,
-      },
-    },
-  },
-  tags: ['autodocs'],
-} satisfies Meta<typeof FormDemo>;
+tags: ['autodocs'],
+satisfies Meta<typeof FormDemo>;
 
 export default meta;
 type Story = StoryObj<typeof FormDemo>;
@@ -179,11 +157,6 @@ export const Default: Story = {
     docs: {
       description: {
         story: 'Default form with validation and error handling.',
-      },
-    },
-  },
-};
-
 export const WithErrors = {
   render: () => {
     const form = useForm<z.infer<typeof formSchema>>({
@@ -191,10 +164,7 @@ export const WithErrors = {
       defaultValues: {
         username: '',
         email: 'invalid-email',
-      },
-    });
-
-    return (
+return (
       <Form {...form}>
         <form className="space-y-8">
           <FormField
@@ -227,13 +197,7 @@ export const WithErrors = {
           />
         </form>
       </Form>
-    );
-  },
-  parameters: {
+parameters: {
     docs: {
       description: {
         story: 'Form with pre-filled invalid data to demonstrate error states.',
-      },
-    },
-  },
-};

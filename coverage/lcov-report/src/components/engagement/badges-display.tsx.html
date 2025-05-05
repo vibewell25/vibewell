@@ -444,15 +444,15 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   const [selectedBadge, setSelectedBadge] = <span class="cstat-no" title="statement not covered" >useState&lt;BadgeType | null&gt;(null);</span>
 &nbsp;
   // Get earned badge IDs
-  const earnedBadgeIds = <span class="cstat-no" title="statement not covered" >badges?.map(<span class="fstat-no" title="function not covered" >(b</span>adge) =&gt; <span class="cstat-no" title="statement not covered" >badge?.badgeId);</span></span>
+  const earnedBadgeIds = <span class="cstat-no" title="statement not covered" >badges.map(<span class="fstat-no" title="function not covered" >(b</span>adge) =&gt; <span class="cstat-no" title="statement not covered" >badge.badgeId)</span>;</span>
 &nbsp;
   // Filter badges to show
   const badgesToShow = <span class="cstat-no" title="statement not covered" >showUnlocked</span>
     ? BADGES // Show all badges
-    : BADGES?.filter(<span class="fstat-no" title="function not covered" >(b</span>adge) =&gt; <span class="cstat-no" title="statement not covered" >earnedBadgeIds?.includes(badge?.id)); /</span>/ Only earned badges
+    : BADGES.filter(<span class="fstat-no" title="function not covered" >(b</span>adge) =&gt; <span class="cstat-no" title="statement not covered" >earnedBadgeIds.includes(badge.id)); /</span>/ Only earned badges
 &nbsp;
   // Limit if maxDisplay is provided
-  const displayBadges = <span class="cstat-no" title="statement not covered" >maxDisplay ? badgesToShow?.slice(0, maxDisplay) : badgesToShow;</span>
+  const displayBadges = <span class="cstat-no" title="statement not covered" >maxDisplay ? badgesToShow.slice(0, maxDisplay) : badgesToShow;</span>
 &nbsp;
   const handleBadgeClick = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(b</span>adge: BadgeType) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setSelectedBadge(badge);</span>
@@ -471,11 +471,11 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   return (
     &lt;&gt;
       &lt;div className="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-5"&gt;
-        {displayBadges?.map(<span class="fstat-no" title="function not covered" >(b</span>adge) =&gt; {
-          const isEarned = <span class="cstat-no" title="statement not covered" >earnedBadgeIds?.includes(badge?.id);</span>
+        {displayBadges.map(<span class="fstat-no" title="function not covered" >(b</span>adge) =&gt; {
+          const isEarned = <span class="cstat-no" title="statement not covered" >earnedBadgeIds.includes(badge.id);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >          return (</span>
-            &lt;TooltipProvider key={badge?.id}&gt;
+            &lt;TooltipProvider key={badge.id}&gt;
               &lt;Tooltip&gt;
                 &lt;TooltipTrigger asChild&gt;
                   &lt;button
@@ -485,10 +485,10 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                     }`}
                   &gt;
                     &lt;div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-muted"&gt;
-                      {badge?.image ? (
+                      {badge.image ? (
 <span class="branch-0 cbranch-no" title="branch not covered" >                        &lt;Image</span>
-                          src={isEarned ? badge?.image : '/badges/locked?.svg'}
-                          alt={badge?.name}
+                          src={isEarned ? badge.image : '/badges/locked.svg'}
+                          alt={badge.name}
                           width={64}
                           height={64}
                           className={`object-cover ${!isEarned &amp;&amp; 'grayscale'}`}
@@ -504,12 +504,12 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                       )}
                     &lt;/div&gt;
                     &lt;span className="mt-2 max-w-full truncate text-xs font-medium"&gt;
-                      {badge?.name}
+                      {badge.name}
                     &lt;/span&gt;
                   &lt;/button&gt;
                 &lt;/TooltipTrigger&gt;
                 &lt;TooltipContent&gt;
-                  &lt;p&gt;{isEarned ? badge?.description : 'Badge locked'}&lt;/p&gt;
+                  &lt;p&gt;{isEarned ? badge.description : 'Badge locked'}&lt;/p&gt;
                 &lt;/TooltipContent&gt;
               &lt;/Tooltip&gt;
             &lt;/TooltipProvider&gt;
@@ -522,27 +522,27 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         &lt;Dialog open={!!selectedBadge} onOpenChange={<span class="fstat-no" title="function not covered" >(o</span>pen) =&gt; <span class="cstat-no" title="statement not covered" >!open &amp;&amp; setSelectedBadge(null)}&gt;</span>
           &lt;DialogContent&gt;
             &lt;DialogHeader&gt;
-              &lt;DialogTitle&gt;{selectedBadge?.name}&lt;/DialogTitle&gt;
-              &lt;DialogDescription&gt;{selectedBadge?.description}&lt;/DialogDescription&gt;
+              &lt;DialogTitle&gt;{selectedBadge.name}&lt;/DialogTitle&gt;
+              &lt;DialogDescription&gt;{selectedBadge.description}&lt;/DialogDescription&gt;
             &lt;/DialogHeader&gt;
 &nbsp;
             &lt;div className="flex flex-col items-center py-4"&gt;
               &lt;div className="relative mb-4 flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-muted"&gt;
-                {selectedBadge?.image ? (
+                {selectedBadge.image ? (
 <span class="branch-0 cbranch-no" title="branch not covered" >                  &lt;Image</span>
                     src={
-                      earnedBadgeIds?.includes(selectedBadge?.id)
-                        ? selectedBadge?.image
-                        : '/badges/locked?.svg'
+                      earnedBadgeIds.includes(selectedBadge.id)
+                        ? selectedBadge.image
+                        : '/badges/locked.svg'
                     }
-                    alt={selectedBadge?.name}
+                    alt={selectedBadge.name}
                     width={128}
                     height={128}
-                    className={`object-cover ${!earnedBadgeIds?.includes(selectedBadge?.id) &amp;&amp; 'grayscale'}`}
+                    className={`object-cover ${!earnedBadgeIds.includes(selectedBadge.id) &amp;&amp; 'grayscale'}`}
                   /&gt;
                 ) : (
                   &lt;div className="flex h-full w-full items-center justify-center"&gt;
-                    {earnedBadgeIds?.includes(selectedBadge?.id) ? (
+                    {earnedBadgeIds.includes(selectedBadge.id) ? (
 <span class="branch-0 cbranch-no" title="branch not covered" >                      &lt;Trophy className="text-primary h-16 w-16" /&gt;</span>
                     ) : (
                       &lt;Lock className="h-16 w-16 text-muted-foreground" /&gt;
@@ -553,7 +553,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
               &lt;div className="space-y-2 text-center"&gt;
                 &lt;div className="font-medium"&gt;
-                  {earnedBadgeIds?.includes(selectedBadge?.id) ? (
+                  {earnedBadgeIds.includes(selectedBadge.id) ? (
 <span class="branch-0 cbranch-no" title="branch not covered" >                    &lt;span className="text-green-600"&gt;Earned!&lt;/span&gt;</span>
                   ) : (
                     &lt;span className="text-gray-500"&gt;Not yet earned&lt;/span&gt;
@@ -561,19 +561,19 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                 &lt;/div&gt;
 &nbsp;
                 &lt;div className="text-sm text-muted-foreground"&gt;
-                  {earnedBadgeIds?.includes(selectedBadge?.id) ? (
-<span class="branch-0 cbranch-no" title="branch not covered" >                    &lt;span&gt;You've earned {selectedBadge?.points} points with this badge!&lt;/span&gt;</span>
+                  {earnedBadgeIds.includes(selectedBadge.id) ? (
+<span class="branch-0 cbranch-no" title="branch not covered" >                    &lt;span&gt;You've earned {selectedBadge.points} points with this badge!&lt;/span&gt;</span>
                   ) : (
                     &lt;span&gt;
                       How to earn:
-                      {selectedBadge?.criteria.type === 'sessions' &amp;&amp;
-                        ` Complete ${selectedBadge?.criteria.count} ${
-                          selectedBadge?.criteria.filter?.type || ''
+                      {selectedBadge.criteria.type === 'sessions' &amp;&amp;
+                        ` Complete ${selectedBadge.criteria.count} ${
+                          selectedBadge.criteria.filter.type || ''
                         } try-on sessions`}
-                      {selectedBadge?.criteria.type === 'shares' &amp;&amp;
-                        ` Share your try-ons ${selectedBadge?.criteria.count} times`}
-                      {selectedBadge?.criteria.type === 'streak' &amp;&amp;
-                        ` Use the try-on feature ${selectedBadge?.criteria.count} days in a row`}
+                      {selectedBadge.criteria.type === 'shares' &amp;&amp;
+                        ` Share your try-ons ${selectedBadge.criteria.count} times`}
+                      {selectedBadge.criteria.type === 'streak' &amp;&amp;
+                        ` Use the try-on feature ${selectedBadge.criteria.count} days in a row`}
                     &lt;/span&gt;
                   )}
                 &lt;/div&gt;
@@ -598,7 +598,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

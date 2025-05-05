@@ -19,9 +19,7 @@ const Equipment: NextPage = () => {
     const res = await fetchWithTimeout('/api/equipment');
     const data = await res.json();
     setItems(data.items || []);
-  };
-
-  useEffect(() => { fetchItems(); }, []);
+useEffect(() => { fetchItems(); }, []);
 
   const handleCreate = async (e: FormEvent) => {
     e.preventDefault();
@@ -29,20 +27,15 @@ const Equipment: NextPage = () => {
       method: 'POST', 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, serialNumber, description })
-    });
-    setName(''); 
+setName(''); 
     setSerialNumber(''); 
     setDescription('');
     fetchItems();
-  };
-
-  const handleDelete = async (id: string) => {
+const handleDelete = async (id: string) => {
     if (!confirm('Delete this equipment?')) return;
     await fetchWithTimeout(`/api/equipment/${id}`, { method: 'DELETE' });
     fetchItems();
-  };
-
-  return (
+return (
     <div className="max-w-2xl mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Equipment</h1>
       <form onSubmit={handleCreate} className="space-y-2 mb-6">
@@ -65,7 +58,4 @@ const Equipment: NextPage = () => {
       ))}
       {items.length === 0 && <p>No equipment items.</p>}
     </div>
-  );
-};
-
 export default Equipment;

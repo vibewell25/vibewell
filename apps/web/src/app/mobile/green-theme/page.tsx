@@ -1,4 +1,3 @@
-'use client';;
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -17,8 +16,7 @@ export default function GreenThemePage() {
       reviewCount: 24,
       price: '$25.30',
       image: 'https://placehold.co/400x300?text=Thai+Root',
-    },
-    {
+{
       id: 'herbal-therapy',
       name: 'Herbal Thal',
       provider: 'Nirvana',
@@ -26,8 +24,7 @@ export default function GreenThemePage() {
       reviewCount: 17,
       price: '$3.50',
       image: 'https://placehold.co/400x300?text=Herbal+Therapy',
-    },
-  ];
+];
   return (
     <div className="min-h-screen bg-[#F0F0E7]">
       {/* Header with cool gradient */}
@@ -289,5 +286,3 @@ export default function GreenThemePage() {
         </div>
       </div>
     </div>
-  );
-}

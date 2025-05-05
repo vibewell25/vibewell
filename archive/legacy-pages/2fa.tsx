@@ -23,21 +23,16 @@ const TwoFactorPage: NextPage = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token }),
-      });
-      const data = await res.json();
+const data = await res.json();
       if (res.ok && data.verified) {
         router.push('/');
-      } else {
+else {
         setError(data.error || 'Invalid code');
-      }
-    } catch (err) {
+catch (err) {
       setError((err as Error).message);
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  return (
+return (
     <div className="max-w-md mx-auto mt-16 p-6">
       <h1 className="text-2xl font-bold mb-4">Two-Factor Authentication</h1>
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
@@ -53,9 +48,6 @@ const TwoFactorPage: NextPage = () => {
         </Button>
       </form>
     </div>
-  );
-};
-
 export const getServerSideProps: GetServerSideProps = withPageAuthRequired();
 
 export default TwoFactorPage;

@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 
 import { applyRateLimit, adminRateLimiter } from '@/lib/rate-limiter';
@@ -11,13 +10,8 @@ export async function {
   const rateLimitResult = await applyRateLimit(req, adminRateLimiter);
   if (rateLimitResult) {
     return rateLimitResult;
-  }
-
-
-  // Simulate admin-only operation
+// Simulate admin-only operation
   return NextResponse.json({
     status: 'success',
     message: 'Admin operations API endpoint',
     timestamp: new Date().toISOString(),
-  });
-}

@@ -19,37 +19,31 @@ const InventoryDetailScreen: React.FC = () => {
       try {
         const data = await inventoryApi.getItemById(id);
         setItem(data);
-      } catch (err) {
+catch (err) {
         console.error(err);
         Alert.alert('Error', 'Failed to load item');
-      } finally {
+finally {
         setLoading(false);
-      }
-    })();
-  }, [id]);
+)();
+[id]);
 
   const confirmDelete = () => {
     Alert.alert('Confirm Delete', 'Are you sure you want to delete this item?', [
       { text: 'Cancel', style: 'cancel' },
       { text: 'Delete', style: 'destructive', onPress: handleDelete },
     ]);
-  };
-
-  const handleDelete = async () => {
+const handleDelete = async () => {
     setDeleting(true);
     try {
       await inventoryApi.deleteItem(id);
       Alert.alert('Success', 'Item deleted');
       navigation.goBack();
-    } catch (err) {
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to delete item');
-    } finally {
+finally {
       setDeleting(false);
-    }
-  };
-
-  if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
+if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
     <View style={styles.container}>
@@ -59,12 +53,7 @@ const InventoryDetailScreen: React.FC = () => {
       <Button title="Edit" onPress={() => navigation.navigate('InventoryForm', { item: item! })} />
       <Button title={deleting ? 'Deleting...' : 'Delete'} onPress={confirmDelete} color="red" disabled={deleting} />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   title: { fontSize: 20, fontWeight: 'bold', marginBottom: 8 },
-});
-
 export default InventoryDetailScreen;

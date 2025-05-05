@@ -5,8 +5,6 @@ import { useFrame } from '@react-three/fiber';
 interface ParticleSystemProps {
   count: number;
   color: string;
-}
-
 export function ParticleSystem({ count, color }: ParticleSystemProps) {
   const points = useRef<THREE.Points>(null);
 
@@ -28,10 +26,8 @@ export function ParticleSystem({ count, color }: ParticleSystemProps) {
       velocities[i * 3] = (Math.random() - 0.5) * 0.01;
       velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.01;
       velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.01;
-    }
-
-    return { positions, velocities };
-  }, [count]);
+return { positions, velocities };
+[count]);
 
   useFrame(() => {
     if (!points.current) return;
@@ -47,12 +43,8 @@ export function ParticleSystem({ count, color }: ParticleSystemProps) {
       if (Math.abs(positions[i]) > 10) particles.velocities[i] *= -1;
       if (Math.abs(positions[i + 1]) > 10) particles.velocities[i + 1] *= -1;
       if (Math.abs(positions[i + 2]) > 10) particles.velocities[i + 2] *= -1;
-    }
-
-    points.current.geometry.attributes.position.needsUpdate = true;
-  });
-
-  return (
+points.current.geometry.attributes.position.needsUpdate = true;
+return (
     <points ref={points}>
       <bufferGeometry>
         <bufferAttribute
@@ -71,5 +63,3 @@ export function ParticleSystem({ count, color }: ParticleSystemProps) {
         blending={THREE.AdditiveBlending}
       />
     </points>
-  );
-}

@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 
 
@@ -15,9 +14,7 @@ export async function {
 
       if (!amount || amount <= 0) {
         return NextResponse.json({ error: 'Invalid amount' }, { status: 400 });
-      }
-
-      // Find or create a Stripe customer
+// Find or create a Stripe customer
       let customerId: string | undefined;
 
       if (user.email) {
@@ -25,21 +22,15 @@ export async function {
 
         if (customer) {
           customerId = customer.id;
-        } else {
+else {
           // Create a new customer if one doesn't exist
           const newCustomer = await createCustomer({
             email: user.email,
             name: user.name,
             metadata: {
               userId: user.sub,
-            },
-          });
-
-          customerId = newCustomer.id;
-        }
-      }
-
-      // Create payment intent with the customer ID if available
+customerId = newCustomer.id;
+// Create payment intent with the customer ID if available
       const paymentIntent = await createPaymentIntent({
         amount,
         currency,
@@ -48,16 +39,9 @@ export async function {
           userId: user.sub,
           description,
           ...metadata,
-        },
-      });
-
-      return NextResponse.json({
+return NextResponse.json({
         clientSecret: paymentIntent.client_secret,
         id: paymentIntent.id,
-      });
-    } catch (error) {
+catch (error) {
       console.error('Error creating payment intent:', error);
       return NextResponse.json({ error: 'Failed to create payment' }, { status: 500 });
-    }
-  });
-}

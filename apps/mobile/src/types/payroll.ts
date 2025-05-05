@@ -1,4 +1,3 @@
-// PayrollRecord model interface
 export interface PayrollRecord {
   id: string;
   userId: string;
@@ -7,4 +6,3 @@ export interface PayrollRecord {
   periodEnd: string;
   createdAt: string;
   updatedAt: string;
-}

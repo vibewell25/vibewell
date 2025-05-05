@@ -8,7 +8,7 @@ import {
   ScrollView,
   Alert,
   Linking
-} from 'react-native';
+from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNavigation } from '@react-navigation/native';
@@ -24,8 +24,6 @@ interface PrivacyPreferences {
   marketing: boolean;
   thirdPartyIntegrations: boolean;
   biometricAuth: boolean;
-}
-
 const PrivacySettingsScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const navigation = useNavigation();
@@ -38,62 +36,45 @@ const PrivacySettingsScreen: React.FC = () => {
     marketing: false,
     thirdPartyIntegrations: false,
     biometricAuth: true
-  });
-  const [loading, setLoading] = useState(true);
+const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadPreferences();
-  }, []);
+[]);
 
   const loadPreferences = async () => {
     try {
       const saved = await AsyncStorage.getItem('@vibewell/privacy_preferences');
       if (saved) {
         setPreferences(JSON.parse(saved));
-      }
-    } catch (error) {
+catch (error) {
       console.error('Error loading privacy preferences:', error);
       Alert.alert('Error', 'Failed to load privacy preferences');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  const savePreferences = async (newPreferences: PrivacyPreferences) => {
+const savePreferences = async (newPreferences: PrivacyPreferences) => {
     try {
       await AsyncStorage.setItem(
         '@vibewell/privacy_preferences',
         JSON.stringify(newPreferences)
-      );
-      setPreferences(newPreferences);
-    } catch (error) {
+setPreferences(newPreferences);
+catch (error) {
       console.error('Error saving privacy preferences:', error);
       Alert.alert('Error', 'Failed to save privacy preferences');
-    }
-  };
-
-  const handleToggle = (key: keyof PrivacyPreferences) => {
+const handleToggle = (key: keyof PrivacyPreferences) => {
     const newPreferences = {
       ...preferences,
       [key]: !preferences[key]
-    };
-
-    // If data sharing is disabled, disable related features
+// If data sharing is disabled, disable related features
     if (key === 'dataSharing' && !newPreferences.dataSharing) {
       newPreferences.analytics = false;
       newPreferences.personalization = false;
       newPreferences.marketing = false;
       newPreferences.thirdPartyIntegrations = false;
-    }
-
-    savePreferences(newPreferences);
-  };
-
-  const handleViewPrivacyPolicy = () => {
+savePreferences(newPreferences);
+const handleViewPrivacyPolicy = () => {
     Linking.openURL('https://vibewell.com/privacy-policy');
-  };
-
-  const handleDeleteData = () => {
+const handleDeleteData = () => {
     Alert.alert(
       'Delete All Data',
       'Are you sure you want to delete all your data? This action cannot be undone.',
@@ -101,20 +82,14 @@ const PrivacySettingsScreen: React.FC = () => {
         {
           text: 'Cancel',
           style: 'cancel'
-        },
-        {
+{
           text: 'Delete',
           style: 'destructive',
           onPress: () => {
             // TODO: Implement data deletion
             Alert.alert('Success', 'Your data has been deleted');
-          }
-        }
-      ]
-    );
-  };
-
-  const renderSettingItem = (
+]
+const renderSettingItem = (
     key: keyof PrivacyPreferences,
     label: string,
     description?: string,
@@ -150,9 +125,7 @@ const PrivacySettingsScreen: React.FC = () => {
         thumbColor={preferences[key] ? '#FFFFFF' : '#F4F3F4'}
       />
     </View>
-  );
-
-  const renderActionButton = (
+const renderActionButton = (
     label: string,
     onPress: () => void,
     type: 'primary' | 'destructive' = 'primary'
@@ -164,15 +137,12 @@ const PrivacySettingsScreen: React.FC = () => {
         {
           backgroundColor: type === 'destructive' ? '#DC2626' : '#4F46E5',
           opacity: loading ? 0.5 : 1
-        }
-      ]}
+]}
       disabled={loading}
     >
       <Text style={styles.actionButtonText}>{label}</Text>
     </TouchableOpacity>
-  );
-
-  return (
+return (
     <SafeAreaView style={[
       styles.container,
       { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }
@@ -278,72 +248,53 @@ const PrivacySettingsScreen: React.FC = () => {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
+header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
-  },
-  backButton: {
+backButton: {
     marginRight: 16,
-  },
-  title: {
+title: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  content: {
+content: {
     flex: 1,
-  },
-  section: {
+section: {
     marginBottom: 24,
-  },
-  sectionTitle: {
+sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
     marginHorizontal: 16,
     marginVertical: 12,
-  },
-  settingItem: {
+settingItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
-  },
-  settingContent: {
+settingContent: {
     flex: 1,
     marginRight: 16,
-  },
-  settingLabel: {
+settingLabel: {
     fontSize: 16,
     marginBottom: 4,
-  },
-  settingDescription: {
+settingDescription: {
     fontSize: 14,
-  },
-  disabledText: {
+disabledText: {
     opacity: 0.5,
-  },
-  actionButton: {
+actionButton: {
     margin: 16,
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',
-  },
-  actionButtonText: {
+actionButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
-  },
-});
-
 export default PrivacySettingsScreen; 

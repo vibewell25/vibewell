@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import data-backup from '../data-backup.tsx';
+
+describe('data-backup', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<data-backup />);
+    expect(container).toBeInTheDocument();
+  });
+});

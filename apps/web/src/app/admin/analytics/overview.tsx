@@ -1,4 +1,3 @@
-'use client';;
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { StatCard } from './stat-card';
@@ -9,7 +8,7 @@ import {
   DollarSign,
   Activity,
   CreditCard,
-} from 'lucide-react';
+from 'lucide-react';
 
 interface AnalyticsCard {
   title: string;
@@ -17,8 +16,6 @@ interface AnalyticsCard {
   description: string;
   icon: React.ReactNode;
   change?: string;
-}
-
 export function AnalyticsOverview() {
   return (
     <div className="space-y-6">
@@ -78,9 +75,6 @@ export function AnalyticsOverview() {
         </Card>
       </div>
     </div>
-  );
-}
-
 export function Overview() {
   const analyticsCards: AnalyticsCard[] = [
     {
@@ -89,28 +83,24 @@ export function Overview() {
       description: '+20.1% from last month',
       icon: <DollarSign className="h-4 w-4 text-muted-foreground" />,
       change: 'increase',
-    },
-    {
+{
       title: 'Subscriptions',
       value: '2,350',
       description: '+180.1% from last month',
       icon: <Users className="h-4 w-4 text-muted-foreground" />,
       change: 'increase',
-    },
-    {
+{
       title: 'Sales',
       value: '+12,234',
       description: '+19% from last month',
       icon: <CreditCard className="h-4 w-4 text-muted-foreground" />,
       change: 'increase',
-    },
-    {
+{
       title: 'Active Now',
       value: '573',
       description: '+201 since last hour',
       icon: <Activity className="h-4 w-4 text-muted-foreground" />,
-    },
-  ];
+];
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -131,5 +121,3 @@ export function Overview() {
         </Card>
       ))}
     </div>
-  );
-}

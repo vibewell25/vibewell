@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -17,8 +15,6 @@ type Service = {
   image: string;
   rating: number;
   description: string;
-};
-
 export default function ServiceDetailPage() {
   const router = useRouter();
   const { id } = useParams() as { id: string };
@@ -44,16 +40,11 @@ export default function ServiceDetailPage() {
           </Link>
         </div>
       </div>
-    );
-  }
-
-  const handleBooking = () => {
+const handleBooking = () => {
     if (!selectedDate || !selectedTime) {
       alert('Please select a date and time');
       return;
-    }
-
-    setIsLoading(true);
+setIsLoading(true);
     
     // Simulate API call
     setTimeout(() => {
@@ -63,11 +54,9 @@ export default function ServiceDetailPage() {
       // Navigate after a slight delay to allow user to see the notification
       setTimeout(() => {
         router.push('/spa/bookings');
-      }, 2000);
-    }, 1500);
-  };
-
-  return (
+2000);
+1500);
+return (
     <div className="app-container">
       {/* Back button */}
       <div className="mb-6">
@@ -138,7 +127,7 @@ export default function ServiceDetailPage() {
                   selectedDate === date
                     ? 'bg-primary-600 text-white'
                     : 'bg-primary-50 text-foreground'
-                }`}
+`}
               >
                 {date}
               </button>
@@ -158,7 +147,7 @@ export default function ServiceDetailPage() {
                   selectedTime === time
                     ? 'bg-primary-600 text-white'
                     : 'bg-primary-50 text-foreground'
-                }`}
+`}
               >
                 {time}
               </button>
@@ -215,9 +204,6 @@ export default function ServiceDetailPage() {
         duration={2000}
       />
     </div>
-  );
-}
-
 // Sample data for services
 const services: Service[] = [
   {
@@ -230,8 +216,7 @@ const services: Service[] = [
     image: '/images/avatar-placeholder.jpg',
     rating: 5,
     description: 'A therapeutic massage that focuses on realigning deeper layers of muscles and connective tissue. This technique is useful for chronic aches and pain and contracted areas such as a stiff neck and upper back, low back pain, leg muscle tightness, and sore shoulders.',
-  },
-  {
+{
     id: 2,
     name: 'Hydrating Facial',
     provider: 'Michael Chen',
@@ -241,8 +226,7 @@ const services: Service[] = [
     image: '/images/avatar-placeholder.jpg',
     rating: 4,
     description: 'Replenish dry skin with this hydrating facial that restores moisture and radiance. This treatment includes deep cleansing, exfoliation, hydrating mask, and moisturizing to leave your skin feeling refreshed and revitalized.',
-  },
-  {
+{
     id: 3,
     name: 'Haircut & Style',
     provider: 'Emma Wilson',
@@ -252,8 +236,7 @@ const services: Service[] = [
     image: '/images/avatar-placeholder.jpg',
     rating: 5,
     description: 'Professional haircut and styling tailored to your preferences and face shape. Includes consultation, shampoo, condition, precision cut, and blow dry styling with professional products.',
-  },
-  {
+{
     id: 4,
     name: 'Manicure & Pedicure',
     provider: 'Jennifer Lee',
@@ -263,8 +246,7 @@ const services: Service[] = [
     image: '/images/avatar-placeholder.jpg',
     rating: 4,
     description: 'Complete nail care for hands and feet, including cuticle care, nail shaping, and polish. This service includes soaking, exfoliation, massage, and your choice of polish for a refreshed look.',
-  },
-  {
+{
     id: 5,
     name: 'Swedish Massage',
     provider: 'David Brown',
@@ -274,8 +256,7 @@ const services: Service[] = [
     image: '/images/avatar-placeholder.jpg',
     rating: 5,
     description: 'A gentle form of massage that uses long strokes, kneading, and circular movements to relax and energize you. This traditional massage helps improve circulation, ease muscle tension, and create a sense of well-being.',
-  },
-  {
+{
     id: 6,
     name: 'Anti-Aging Facial',
     provider: 'Michael Chen',
@@ -285,7 +266,6 @@ const services: Service[] = [
     image: '/images/avatar-placeholder.jpg',
     rating: 5,
     description: 'Combat signs of aging with this specialized facial that targets fine lines and wrinkles. Includes deep cleansing, exfoliation, anti-aging serum application, and specialized massage techniques to boost collagen production.',
-  }
 ];
 
 // Sample available dates

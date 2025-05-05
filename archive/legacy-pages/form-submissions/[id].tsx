@@ -21,18 +21,14 @@ const SubmissionDetail: NextPage = () => {
       const res = await fetchWithTimeout(`/api/formSubmissions/${id}`);
       const data = await res.json();
       setSub(data);
-    };
-    
-    fetchSubmission();
-  }, [id]);
+fetchSubmission();
+[id]);
 
   const handleDeleteDoc = async (docId: string) => {
     if (!confirm('Delete this document?')) return;
     await fetchWithTimeout(`/api/documents/${docId}`, { method: 'DELETE' });
     setSub(prev => prev ? { ...prev, documents: prev.documents.filter(d => d.id !== docId) } : prev);
-  };
-
-  return (
+return (
     <div className="max-w-2xl mx-auto py-6">
       {sub && (
         <>
@@ -50,7 +46,4 @@ const SubmissionDetail: NextPage = () => {
       )}
       <Button onClick={() => router.back()}>Back</Button>
     </div>
-  );
-};
-
 export default SubmissionDetail;

@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 
 import { auth } from '@/lib/auth';
@@ -6,12 +5,7 @@ import { auth } from '@/lib/auth';
 import { messagesStore } from '@/lib/api/messages';
 
 
-    // Safe array access
-    if (id < 0 || id >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-
-// GET /api/messages/[id] - Get a specific conversation
+    // GET /api/messages/[id] - Get a specific conversation
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); GET(req: NextRequest, { params }: { params: { id: string } }) {
@@ -20,9 +14,7 @@ export async function {
     const session = await auth();
     if (!session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const userId = session.user.id;
+const userId = session.user.id;
     const conversationId = params.id;
 
 
@@ -35,21 +27,10 @@ export async function {
 
     if (!conversation) {
       return NextResponse.json({ error: 'Conversation not found' }, { status: 404 });
-    }
-
-    return NextResponse.json({ conversation });
-  } catch (error) {
+return NextResponse.json({ conversation });
+catch (error) {
     console.error('Error fetching conversation:', error);
     return NextResponse.json({ error: 'Failed to fetch conversation' }, { status: 500 });
-  }
-}
-
-
-    // Safe array access
-    if (id < 0 || id >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-
 // PATCH /api/messages/[id] - Mark messages as read
 export async function {
   const start = Date.now();
@@ -59,9 +40,7 @@ export async function {
     const session = await auth();
     if (!session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const userId = session.user.id;
+const userId = session.user.id;
     const conversationId = params.id;
 
 
@@ -76,24 +55,12 @@ export async function {
       return NextResponse.json(
         { error: 'Conversation not found or no messages to mark as read' },
         { status: 404 },
-      );
-    }
-
-    const conversation = messagesStore.getConversation(conversationId, effectiveUserId);
+const conversation = messagesStore.getConversation(conversationId, effectiveUserId);
 
     return NextResponse.json({ success: true, conversation });
-  } catch (error) {
+catch (error) {
     console.error('Error updating conversation:', error);
     return NextResponse.json({ error: 'Failed to update conversation' }, { status: 500 });
-  }
-}
-
-
-    // Safe array access
-    if (id < 0 || id >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-
 // DELETE /api/messages/[id] - Delete a conversation
 export async function {
   const start = Date.now();
@@ -103,9 +70,7 @@ export async function {
     const session = await auth();
     if (!session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const userId = session.user.id;
+const userId = session.user.id;
     const conversationId = params.id;
 
 
@@ -118,11 +83,7 @@ export async function {
 
     if (!deleted) {
       return NextResponse.json({ error: 'Conversation not found' }, { status: 404 });
-    }
-
-    return NextResponse.json({ success: true });
-  } catch (error) {
+return NextResponse.json({ success: true });
+catch (error) {
     console.error('Error deleting conversation:', error);
     return NextResponse.json({ error: 'Failed to delete conversation' }, { status: 500 });
-  }
-}

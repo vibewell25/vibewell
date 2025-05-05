@@ -10,11 +10,7 @@ function customRender(ui: React.ReactElement, options?: Omit<RenderOptions, 'wra
       queries: {
         retry: false,
         cacheTime: 0,
-      },
-    },
-  });
-
-  return render(ui, {
+return render(ui, {
     wrapper: ({ children }) => (
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
@@ -23,9 +19,6 @@ function customRender(ui: React.ReactElement, options?: Omit<RenderOptions, 'wra
       </QueryClientProvider>
     ),
     ...options,
-  });
-}
-
 // Helper to wait for a specific timeout
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -37,24 +30,17 @@ const mockApiResponse = (status: number, data: any) => {
   return new Response(JSON.stringify(data), {
     status,
     headers: { 'Content-Type': 'application/json' },
-  });
-};
-
 // Helper to simulate user events with delay
 const simulateUserAction = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');action: () => void, delay = TEST_CONFIG.ANIMATION_TIMEOUT) => {
   action();
   await wait(delay);
-};
-
 // Helper to clear all mocks and localStorage
 const cleanupTest = () => {
   localStorage.clear();
   sessionStorage.clear();
   jest.clearAllMocks();
-};
-
 // Helper to mock window location
 const mockWindowLocation = (url: string) => {
   const originalLocation = window.location;
@@ -62,9 +48,6 @@ const mockWindowLocation = (url: string) => {
   window.location = new URL(url) as any;
   return () => {
     window.location = originalLocation;
-  };
-};
-
 // Helper to mock intersection observer
 const mockIntersectionObserver = () => {
   const observe = jest.fn();
@@ -76,12 +59,8 @@ const mockIntersectionObserver = () => {
       observe,
       unobserve,
       disconnect,
-    }));
-  });
-
-  return { observe, unobserve, disconnect };
-};
-
+));
+return { observe, unobserve, disconnect };
 // Helper to mock resize observer
 const mockResizeObserver = () => {
   const observe = jest.fn();
@@ -93,12 +72,8 @@ const mockResizeObserver = () => {
       observe,
       unobserve,
       disconnect,
-    }));
-  });
-
-  return { observe, unobserve, disconnect };
-};
-
+));
+return { observe, unobserve, disconnect };
 // Helper to create test IDs
 const createTestId = (component: string, element: string) => `${component}-${element}`;
 
@@ -113,4 +88,3 @@ export {
   mockIntersectionObserver,
   mockResizeObserver,
   createTestId,
-}; 

@@ -4,8 +4,6 @@ export interface ServiceCredentials {
   clientId?: string;
   clientSecret?: string;
   [key: string]: string | undefined;
-}
-
 export interface AuthConfig {
   provider: 'custom' | 'firebase' | 'auth0' | 'cognito';
   apiBaseUrl: string;
@@ -14,11 +12,7 @@ export interface AuthConfig {
     region?: string;
     userPoolId?: string;
     [key: string]: string | undefined;
-  };
-}
-
 export interface ServiceConfig {
   enabled: boolean;
   credentials: ServiceCredentials;
   options?: Record<string, any>;
-} 

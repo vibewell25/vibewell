@@ -374,66 +374,66 @@
 declare const self: ServiceWorkerGlobalScope;
 &nbsp;
 &nbsp;
-const CACHE_NAME = <span class="cstat-no" title="statement not covered" >process?.env['CACHE_NAME'];</span>
-const OFFLINE_PAGE = <span class="cstat-no" title="statement not covered" >process?.env['OFFLINE_PAGE'];</span>
+const CACHE_NAME = <span class="cstat-no" title="statement not covered" >process.env['CACHE_NAME'];</span>
+const OFFLINE_PAGE = <span class="cstat-no" title="statement not covered" >process.env['OFFLINE_PAGE'];</span>
 &nbsp;
 &nbsp;
 // Resources to pre-cache
 const PRECACHE_RESOURCES = <span class="cstat-no" title="statement not covered" >[</span>
   '/',
   '/offline',
-  '/manifest?.json',
-  '/favicon?.ico',
+  '/manifest.json',
+  '/favicon.ico',
 &nbsp;
-  '/images/fallback?.jpg',
+  '/images/fallback.jpg',
 ];
 &nbsp;
 &nbsp;
 // Install event - pre-cache critical resources
-<span class="cstat-no" title="statement not covered" >self?.addEventListener('install', <span class="fstat-no" title="function not covered" >(e</span>vent) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  event?.waitUntil(</span>
+<span class="cstat-no" title="statement not covered" >self.addEventListener('install', <span class="fstat-no" title="function not covered" >(e</span>vent) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  event.waitUntil(</span>
     caches
       .open(CACHE_NAME)
-      .then(<span class="fstat-no" title="function not covered" >(c</span>ache) =&gt; <span class="cstat-no" title="statement not covered" >cache?.addAll(PRECACHE_RESOURCES))</span>
-      .then(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>elf?.skipWaiting()),</span>
+      .then(<span class="fstat-no" title="function not covered" >(c</span>ache) =&gt; <span class="cstat-no" title="statement not covered" >cache.addAll(PRECACHE_RESOURCES))</span>
+      .then(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>elf.skipWaiting()),</span>
   );
 });
 &nbsp;
 &nbsp;
 // Activate event - clean up old caches
-<span class="cstat-no" title="statement not covered" >self?.addEventListener('activate', <span class="fstat-no" title="function not covered" >(e</span>vent) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  event?.waitUntil(</span>
+<span class="cstat-no" title="statement not covered" >self.addEventListener('activate', <span class="fstat-no" title="function not covered" >(e</span>vent) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  event.waitUntil(</span>
     caches
       .keys()
       .then(<span class="fstat-no" title="function not covered" >(c</span>acheNames) =&gt; {
-<span class="cstat-no" title="statement not covered" >        return Promise?.all(</span>
+<span class="cstat-no" title="statement not covered" >        return Promise.all(</span>
           cacheNames
             .filter(<span class="fstat-no" title="function not covered" >(c</span>acheName) =&gt; <span class="cstat-no" title="statement not covered" >cacheName !== CACHE_NAME)</span>
-            .map(<span class="fstat-no" title="function not covered" >(c</span>acheName) =&gt; <span class="cstat-no" title="statement not covered" >caches?.delete(cacheName)),</span>
+            .map(<span class="fstat-no" title="function not covered" >(c</span>acheName) =&gt; <span class="cstat-no" title="statement not covered" >caches.delete(cacheName)),</span>
         );
       })
-      .then(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>elf?.clients.claim()),</span>
+      .then(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>elf.clients.claim()),</span>
   );
 });
 &nbsp;
 &nbsp;
 // Fetch event - network-first strategy with offline fallback
-<span class="cstat-no" title="statement not covered" >self?.addEventListener('fetch', <span class="fstat-no" title="function not covered" >(e</span>vent) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >self.addEventListener('fetch', <span class="fstat-no" title="function not covered" >(e</span>vent) =&gt; {</span>
   // Only handle GET requests
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (event?.request.method !== 'GET') <span class="cstat-no" title="statement not covered" >return;</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (event.request.method !== 'GET') <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
   // Handle different types of requests
-  const url = <span class="cstat-no" title="statement not covered" >new URL(event?.request.url);</span>
+  const url = <span class="cstat-no" title="statement not covered" >new URL(event.request.url);</span>
 &nbsp;
 &nbsp;
   // API requests - network only
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (url?.pathname.startsWith('/api/')) {</span>
-<span class="cstat-no" title="statement not covered" >    event?.respondWith(</span>
-      fetch(event?.request).catch(<span class="fstat-no" title="function not covered" >() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (url.pathname.startsWith('/api/')) {</span>
+<span class="cstat-no" title="statement not covered" >    event.respondWith(</span>
+      fetch(event.request).catch(<span class="fstat-no" title="function not covered" >() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        return (</span>
 &nbsp;
-          caches?.match('/api-offline?.json') ||
-          new Response(JSON?.stringify({ error: 'You are offline' }), {
+          caches.match('/api-offline.json') ||
+          new Response(JSON.stringify({ error: 'You are offline' }), {
 &nbsp;
 &nbsp;
             headers: { 'Content-Type': 'application/json' },
@@ -446,19 +446,19 @@ const PRECACHE_RESOURCES = <span class="cstat-no" title="statement not covered" 
 &nbsp;
 &nbsp;
   // Image requests - cache first
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (event?.request.destination === 'image') {</span>
-<span class="cstat-no" title="statement not covered" >    event?.respondWith(</span>
-      caches?.match(event?.request).then(<span class="fstat-no" title="function not covered" >(r</span>esponse) =&gt; {
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (event.request.destination === 'image') {</span>
+<span class="cstat-no" title="statement not covered" >    event.respondWith(</span>
+      caches.match(event.request).then(<span class="fstat-no" title="function not covered" >(r</span>esponse) =&gt; {
 <span class="cstat-no" title="statement not covered" >        return (</span>
           response ||
-          fetch(event?.request)
+          fetch(event.request)
             .then(<span class="fstat-no" title="function not covered" >(r</span>esponse) =&gt; {
-              const responseClone = <span class="cstat-no" title="statement not covered" >response?.clone();</span>
-<span class="cstat-no" title="statement not covered" >              caches?.open(CACHE_NAME).then(<span class="fstat-no" title="function not covered" >(c</span>ache) =&gt; <span class="cstat-no" title="statement not covered" >cache?.put(event?.request, responseClone));</span></span>
+              const responseClone = <span class="cstat-no" title="statement not covered" >response.clone();</span>
+<span class="cstat-no" title="statement not covered" >              caches.open(CACHE_NAME).then(<span class="fstat-no" title="function not covered" >(c</span>ache) =&gt; <span class="cstat-no" title="statement not covered" >cache.put(event.request, responseClone));</span></span>
 <span class="cstat-no" title="statement not covered" >              return response;</span>
             })
 &nbsp;
-            .catch(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >c</span>aches?.match('/images/fallback?.jpg'))</span>
+            .catch(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >c</span>aches.match('/images/fallback.jpg'))</span>
         );
       }),
     );
@@ -467,16 +467,16 @@ const PRECACHE_RESOURCES = <span class="cstat-no" title="statement not covered" 
 &nbsp;
 &nbsp;
   // HTML requests - network first
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (event?.request.destination === 'document') {</span>
-<span class="cstat-no" title="statement not covered" >    event?.respondWith(</span>
-      fetch(event?.request)
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (event.request.destination === 'document') {</span>
+<span class="cstat-no" title="statement not covered" >    event.respondWith(</span>
+      fetch(event.request)
         .then(<span class="fstat-no" title="function not covered" >(r</span>esponse) =&gt; {
-          const responseClone = <span class="cstat-no" title="statement not covered" >response?.clone();</span>
-<span class="cstat-no" title="statement not covered" >          caches?.open(CACHE_NAME).then(<span class="fstat-no" title="function not covered" >(c</span>ache) =&gt; <span class="cstat-no" title="statement not covered" >cache?.put(event?.request, responseClone));</span></span>
+          const responseClone = <span class="cstat-no" title="statement not covered" >response.clone();</span>
+<span class="cstat-no" title="statement not covered" >          caches.open(CACHE_NAME).then(<span class="fstat-no" title="function not covered" >(c</span>ache) =&gt; <span class="cstat-no" title="statement not covered" >cache.put(event.request, responseClone));</span></span>
 <span class="cstat-no" title="statement not covered" >          return response;</span>
         })
         .catch(<span class="fstat-no" title="function not covered" >() =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >          return caches?.match(event?.request) || caches?.match(OFFLINE_PAGE);</span>
+<span class="cstat-no" title="statement not covered" >          return caches.match(event.request) || caches.match(OFFLINE_PAGE);</span>
         }),
     );
 <span class="cstat-no" title="statement not covered" >    return;</span>
@@ -485,11 +485,11 @@ const PRECACHE_RESOURCES = <span class="cstat-no" title="statement not covered" 
 &nbsp;
 &nbsp;
   // All other requests - stale-while-revalidate
-<span class="cstat-no" title="statement not covered" >  event?.respondWith(</span>
-    caches?.match(event?.request).then(<span class="fstat-no" title="function not covered" >(r</span>esponse) =&gt; {
-      const fetchPromise = <span class="cstat-no" title="statement not covered" >fetch(event?.request).then(<span class="fstat-no" title="function not covered" >(n</span>etworkResponse) =&gt; {</span>
-        const responseClone = <span class="cstat-no" title="statement not covered" >networkResponse?.clone();</span>
-<span class="cstat-no" title="statement not covered" >        caches?.open(CACHE_NAME).then(<span class="fstat-no" title="function not covered" >(c</span>ache) =&gt; <span class="cstat-no" title="statement not covered" >cache?.put(event?.request, responseClone));</span></span>
+<span class="cstat-no" title="statement not covered" >  event.respondWith(</span>
+    caches.match(event.request).then(<span class="fstat-no" title="function not covered" >(r</span>esponse) =&gt; {
+      const fetchPromise = <span class="cstat-no" title="statement not covered" >fetch(event.request).then(<span class="fstat-no" title="function not covered" >(n</span>etworkResponse) =&gt; {</span>
+        const responseClone = <span class="cstat-no" title="statement not covered" >networkResponse.clone();</span>
+<span class="cstat-no" title="statement not covered" >        caches.open(CACHE_NAME).then(<span class="fstat-no" title="function not covered" >(c</span>ache) =&gt; <span class="cstat-no" title="statement not covered" >cache.put(event.request, responseClone));</span></span>
 <span class="cstat-no" title="statement not covered" >        return networkResponse;</span>
       });
 <span class="cstat-no" title="statement not covered" >      return response || fetchPromise;</span>
@@ -498,29 +498,29 @@ const PRECACHE_RESOURCES = <span class="cstat-no" title="statement not covered" 
 });
 &nbsp;
 // Handle push notifications
-<span class="cstat-no" title="statement not covered" >self?.addEventListener('push', <span class="fstat-no" title="function not covered" >(e</span>vent) =&gt; {</span>
-  const data = <span class="cstat-no" title="statement not covered" >event?.data?.json() ?? {};</span>
+<span class="cstat-no" title="statement not covered" >self.addEventListener('push', <span class="fstat-no" title="function not covered" >(e</span>vent) =&gt; {</span>
+  const data = <span class="cstat-no" title="statement not covered" >event.data.json() ?? {};</span>
   const options = <span class="cstat-no" title="statement not covered" >{</span>
-    body: data?.body || 'New notification',
+    body: data.body || 'New notification',
 &nbsp;
-    icon: '/images/notification-icon?.png',
+    icon: '/images/notification-icon.png',
 &nbsp;
-    badge: '/images/notification-badge?.png',
+    badge: '/images/notification-badge.png',
     vibrate: [100, 50, 100],
     data: {
-      dateOfArrival: Date?.now(),
+      dateOfArrival: Date.now(),
       primaryKey: 1,
-      url: data?.url || '/',
+      url: data.url || '/',
     },
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  event?.waitUntil(self?.registration.showNotification(data?.title || 'VibeWell', options));</span>
+<span class="cstat-no" title="statement not covered" >  event.waitUntil(self.registration.showNotification(data.title || 'VibeWell', options));</span>
 });
 &nbsp;
 // Handle notification clicks
-<span class="cstat-no" title="statement not covered" >self?.addEventListener('notificationclick', <span class="fstat-no" title="function not covered" >(e</span>vent) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  event?.notification.close();</span>
-<span class="cstat-no" title="statement not covered" >  event?.waitUntil(clients?.openWindow(event?.notification.data?.url));</span>
+<span class="cstat-no" title="statement not covered" >self.addEventListener('notificationclick', <span class="fstat-no" title="function not covered" >(e</span>vent) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  event.notification.close();</span>
+<span class="cstat-no" title="statement not covered" >  event.waitUntil(clients.openWindow(event.notification.data.url));</span>
 });
 &nbsp;</pre></td></tr></table></pre>
 
@@ -529,7 +529,7 @@ const PRECACHE_RESOURCES = <span class="cstat-no" title="statement not covered" 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

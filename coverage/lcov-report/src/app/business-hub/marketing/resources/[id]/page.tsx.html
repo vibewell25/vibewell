@@ -431,7 +431,7 @@ const marketingResources: BaseResource[] = <span class="cstat-no" title="stateme
     date: '2023-09-10',
     readTime: '12 min',
     category: 'Social Media',
-    imageUrl: '/images/social-media-marketing?.jpg',
+    imageUrl: '/images/social-media-marketing.jpg',
     content: `
       &lt;h2&gt;Introduction to Social Media Marketing for Wellness&lt;/h2&gt;
       &lt;p&gt;Social media has become an essential marketing channel for wellness professionals. This guide will help you develop an effective social media strategy tailored to the wellness industry.&lt;/p&gt;
@@ -465,7 +465,7 @@ const marketingResources: BaseResource[] = <span class="cstat-no" title="stateme
     date: '2023-10-05',
     readTime: '15 min',
     category: 'Email Marketing',
-    imageUrl: '/images/email-marketing?.jpg',
+    imageUrl: '/images/email-marketing.jpg',
     content: `
       &lt;h2&gt;The Power of Email Marketing in the Wellness Industry&lt;/h2&gt;
       &lt;p&gt;Email remains one of the most effective marketing channels with the highest ROI. Learn why it's particularly valuable for wellness businesses.&lt;/p&gt;
@@ -500,7 +500,7 @@ const marketingResources: BaseResource[] = <span class="cstat-no" title="stateme
     date: '2023-11-12',
     readTime: '18 min',
     category: 'Content Marketing',
-    imageUrl: '/images/content-marketing?.jpg',
+    imageUrl: '/images/content-marketing.jpg',
     content: `
       &lt;h2&gt;The Value of Content Marketing for Wellness Brands&lt;/h2&gt;
       &lt;p&gt;Content marketing allows wellness professionals to demonstrate expertise and build trust before a client ever books a service.&lt;/p&gt;
@@ -530,13 +530,13 @@ const marketingResources: BaseResource[] = <span class="cstat-no" title="stateme
     relatedResources: ['1', '2'],
     type: 'resource',
     tags: ['content marketing', 'SEO', 'blogging'],
-    downloadUrl: '/downloads/content-strategy-template?.pdf',
+    downloadUrl: '/downloads/content-strategy-template.pdf',
   },
 ];
 &nbsp;
 // Fetch resource by ID
 const getResourceById = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(i</span>d: string): BaseResource | undefined =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  return marketingResources?.find(<span class="fstat-no" title="function not covered" >(r</span>esource) =&gt; <span class="cstat-no" title="statement not covered" >resource?.id === id);</span></span>
+<span class="cstat-no" title="statement not covered" >  return marketingResources.find(<span class="fstat-no" title="function not covered" >(r</span>esource) =&gt; <span class="cstat-no" title="statement not covered" >resource.id === id);</span></span>
 };
 &nbsp;
 export default function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >MarketingResourceDetailPage() {</span></span>
@@ -545,15 +545,15 @@ export default function <span class="cstat-no" title="statement not covered" ><s
   const [loading, setLoading] = <span class="cstat-no" title="statement not covered" >useState(true);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (params?.id) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (params.id) {</span>
       // In a real app, this would be an API call
-      const foundResource = <span class="cstat-no" title="statement not covered" >getResourceById(params?.id as string);</span>
+      const foundResource = <span class="cstat-no" title="statement not covered" >getResourceById(params.id as string);</span>
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (foundResource) {</span>
 <span class="cstat-no" title="statement not covered" >        setResource(foundResource);</span>
       }
 <span class="cstat-no" title="statement not covered" >      setLoading(false);</span>
     }
-  }, [params?.id]);
+  }, [params.id]);
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!loading &amp;&amp; !resource) {</span>
 <span class="cstat-no" title="statement not covered" >    notFound();</span>
@@ -573,15 +573,15 @@ export default function <span class="cstat-no" title="statement not covered" ><s
 &nbsp;
   // Handle download
   const handleDownload = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(r</span>esource: BaseResource) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    alert(`Downloading ${resource?.title}`);</span>
+<span class="cstat-no" title="statement not covered" >    alert(`Downloading ${resource.title}`);</span>
     // In a real app, this would trigger the actual download
-<span class="cstat-no" title="statement not covered" >    window?.open(resource?.downloadUrl, '_blank');</span>
+<span class="cstat-no" title="statement not covered" >    window.open(resource.downloadUrl, '_blank');</span>
   };
 &nbsp;
   return (
     &lt;ResourceDetailTemplate
       resource={resource}
-      resourceType={resource?.type}
+      resourceType={resource.type}
       sectionName="Marketing"
       sectionPath="/business-hub/marketing"
       relatedResources={marketingResources}
@@ -598,7 +598,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

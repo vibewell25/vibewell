@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import usePerformanceMonitor from '../usePerformanceMonitor.ts';
+
+describe('usePerformanceMonitor', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<usePerformanceMonitor />);
+    expect(container).toBeInTheDocument();
+  });
+});

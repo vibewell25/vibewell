@@ -1,4 +1,3 @@
-'use client';;
 import { useParams, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/Button';
@@ -11,7 +10,7 @@ import {
   removeBookmark,
   isBookmarked as checkIsBookmarked,
   trackRecentView,
-} from '@/lib/bookmarks';
+from '@/lib/bookmarks';
 import { getUserRating, saveRating, getAverageRating } from '@/lib/ratings';
 import { StarRating } from '@/components/star-rating';
 import { ResourceReview } from '@/components/resource-review';
@@ -53,8 +52,7 @@ const financialResources = [
       <p>The wellness industry often experiences seasonal fluctuations. Maintaining a 3-6 month cash reserve is recommended to navigate slower periods and unexpected expenses.</p>
     `,
     relatedResources: ['2', '5', '7'],
-  },
-  {
+{
     id: '2',
     title: 'Tax Strategies for Wellness Practitioners',
     author: 'Michael Chen, Tax Specialist',
@@ -82,8 +80,7 @@ const financialResources = [
       <p>Proper documentation is essential for maximizing deductions while staying compliant with tax regulations.</p>
     `,
     relatedResources: ['1', '3', '6'],
-  },
-  {
+{
     id: '3',
     title: 'Pricing Strategies for Wellness Services',
     author: 'Elena Rodriguez, Business Strategist',
@@ -104,8 +101,7 @@ const financialResources = [
       <p>Strategies for confidently addressing concerns about your pricing.</p>
     `,
     relatedResources: ['1', '4', '7'],
-  },
-  {
+{
     id: '4',
     title: 'Cash Flow Management for Wellness Businesses',
     author: 'Thomas Wright, Financial Advisor',
@@ -126,8 +122,7 @@ const financialResources = [
       <p>How modern payment systems, automated billing, and financial software can improve your cash flow management.</p>
     `,
     relatedResources: ['1', '5', '7'],
-  },
-  {
+{
     id: '5',
     title: 'Financial Metrics Dashboard for Wellness Providers',
     author: 'Sophia Garcia, Business Analyst',
@@ -148,8 +143,7 @@ const financialResources = [
       <p>How to calculate and track the true profitability of each service you offer.</p>
     `,
     relatedResources: ['1', '4', '6'],
-  },
-  {
+{
     id: '6',
     title: 'Budgeting Templates for Wellness Entrepreneurs',
     author: 'Daniel Smith, Accountant',
@@ -170,8 +164,7 @@ const financialResources = [
       <p>How to create a budget that supports your growth objectives while maintaining financial stability.</p>
     `,
     relatedResources: ['1', '2', '5'],
-  },
-  {
+{
     id: '7',
     title: 'Profit Maximization Strategies for Wellness Providers',
     author: 'Rebecca Johnson, Business Coach',
@@ -192,7 +185,6 @@ const financialResources = [
       <p>A practical guide to adapting the Profit First methodology for wellness businesses.</p>
     `,
     relatedResources: ['3', '4', '5'],
-  },
 ];
 // Analytics tracking function
 const trackResourceView = (resourceId: string, resourceName: string) => {
@@ -206,17 +198,13 @@ const trackResourceView = (resourceId: string, resourceName: string) => {
         name: resourceName,
         lastViewed: now,
         views: (viewData[resourceId].views || 0) + 1,
-      };
-      localStorage.setItem('resource_view_log', JSON.stringify(viewData));
+localStorage.setItem('resource_view_log', JSON.stringify(viewData));
       // Also update a "popular resources" counter
       const popularResources = JSON.parse(localStorage.getItem('popular_resources') || '{}');
       popularResources[resourceId] = (popularResources[resourceId] || 0) + 1;
       localStorage.setItem('popular_resources', JSON.stringify(popularResources));
-    } catch (e) {
+catch (e) {
       console.error('Failed to track resource view', e);
-    }
-  }
-};
 export default function ResourceDetailPage() {
   const params = useParams();
   const resourceId = params.id as string;
@@ -228,15 +216,13 @@ export default function ResourceDetailPage() {
   const [averageRating, setAverageRating] = useState<{ average: number; count: number }>({
     average: 0,
     count: 0,
-  });
-  // Check if the resource is bookmarked
+// Check if the resource is bookmarked
   useEffect(() => {
     if (typeof window !== 'undefined' && resourceId) {
       // Check if this resource is already bookmarked
       const bookmarked = checkIsBookmarked(resourceId, 'resource');
       setIsBookmarked(bookmarked);
-    }
-  }, [resourceId]);
+[resourceId]);
   // Check if the user has rated this resource
   useEffect(() => {
     if (typeof window !== 'undefined' && resourceId) {
@@ -246,8 +232,7 @@ export default function ResourceDetailPage() {
       // Get average rating for this resource
       const avgRating = getAverageRating(resourceId, 'resource');
       setAverageRating(avgRating);
-    }
-  }, [resourceId]);
+[resourceId]);
   useEffect(() => {
     // Fetch the resource by ID - in a real app, this would be an API call
     setLoading(true);
@@ -265,17 +250,14 @@ export default function ResourceDetailPage() {
           description: foundResource.content.substring(0, 100) + '...',
           url: `/business-hub/financial-management/resources/${resourceId}`,
           category: foundResource.category,
-        });
-      } else {
+else {
         setError('Resource not found');
-      }
-    } catch (err) {
+catch (err) {
       setError('Failed to load resource');
       console.error(err);
-    } finally {
+finally {
       setLoading(false);
-    }
-  }, [resourceId]);
+[resourceId]);
   // Toggle bookmark state
   const toggleBookmark = () => {
     if (!resource) return;
@@ -283,7 +265,7 @@ export default function ResourceDetailPage() {
       // Remove bookmark
       removeBookmark(resourceId, 'resource');
       setIsBookmarked(false);
-    } else {
+else {
       // Add bookmark
       addBookmark({
         id: resourceId,
@@ -292,11 +274,8 @@ export default function ResourceDetailPage() {
         description: resource.content.substring(0, 100) + '...',
         url: `/business-hub/financial-management/resources/${resourceId}`,
         category: resource.category,
-      });
-      setIsBookmarked(true);
-    }
-  };
-  // Loading state
+setIsBookmarked(true);
+// Loading state
   if (loading) {
     return (
       <Layout>
@@ -323,9 +302,7 @@ export default function ResourceDetailPage() {
           </div>
         </div>
       </Layout>
-    );
-  }
-  // Error state
+// Error state
   if (error || !resource) {
     return (
       <Layout>
@@ -349,9 +326,7 @@ export default function ResourceDetailPage() {
           </div>
         </div>
       </Layout>
-    );
-  }
-  // Find related resources
+// Find related resources
   const relatedResources = financialResources
     .filter((item) => resource.relatedResources.includes(item.id))
     .slice(0, 3);
@@ -452,5 +427,3 @@ export default function ResourceDetailPage() {
         )}
       </div>
     </Layout>
-  );
-}

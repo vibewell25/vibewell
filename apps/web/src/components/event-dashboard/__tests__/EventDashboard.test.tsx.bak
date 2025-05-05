@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import event-dashboard from '../event-dashboard.tsx';
+
+describe('event-dashboard', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<event-dashboard />);
+    expect(container).toBeInTheDocument();
+  });
+});

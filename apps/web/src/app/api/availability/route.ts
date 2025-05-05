@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 import { db } from '@/lib/db';
@@ -19,9 +18,7 @@ export async function {
 
     if (!providerId || !date) {
       return NextResponse.json({ error: 'Provider ID and date are required' }, { status: 400 });
-    }
-
-    const parsedDate = new Date(date);
+const parsedDate = new Date(date);
     const startOfDay = new Date(parsedDate);
     startOfDay.setHours(0, 0, 0, 0);
     const endOfDay = new Date(parsedDate);
@@ -36,9 +33,7 @@ export async function {
           gte(availability.date, startOfDay),
           lte(availability.date, endOfDay),
         ),
-      );
-
-    // Get provider's services
+// Get provider's services
     const providerServices = await db
       .select()
       .from(services)
@@ -52,13 +47,9 @@ export async function {
       date: format(parsedDate, 'yyyy-MM-dd'),
       slots: timeSlots,
       services: providerServices,
-    });
-  } catch (error) {
+catch (error) {
     console.error('Error fetching availability:', error);
     return NextResponse.json({ error: 'Failed to fetch availability' }, { status: 500 });
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); POST(request: Request) {
@@ -68,16 +59,12 @@ export async function {
 
     if (!providerId || !date || !time || !serviceId) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-    }
-
-    // Get service duration
+// Get service duration
     const service = await db.select().from(services).where(eq(services.id, serviceId)).limit(1);
 
     if (!service.length) {
       return NextResponse.json({ error: 'Service not found' }, { status: 404 });
-    }
-
-    const serviceDuration = service[0].duration;
+const serviceDuration = service[0].duration;
     const startTime = parse(time, 'HH:mm', new Date(date));
     const endTime = addMinutes(startTime, serviceDuration);
 
@@ -92,18 +79,10 @@ export async function {
           lte(availability.endTime, endTime),
           eq(availability.isAvailable, false),
         ),
-      );
-
-    if (existingSlots.length > 0) {
+if (existingSlots.length > 0) {
       return NextResponse.json({ error: 'Time slot is not available' }, { status: 409 });
-    }
+// Create appointment
 
-    // Create appointment
-
-    // Safe array access
-    if (appointment < 0 || appointment >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     const [appointment] = await db
       .insert(appointments)
       .values({
@@ -113,7 +92,7 @@ export async function {
         startTime,
         endTime,
         status: 'scheduled',
-      })
+)
       .returning();
 
     // Update availability
@@ -126,15 +105,10 @@ export async function {
           gte(availability.startTime, startTime),
           lte(availability.endTime, endTime),
         ),
-      );
-
-    return NextResponse.json({ success: true, appointment });
-  } catch (error) {
+return NextResponse.json({ success: true, appointment });
+catch (error) {
     console.error('Error creating appointment:', error);
     return NextResponse.json({ error: 'Failed to create appointment' }, { status: 500 });
-  }
-}
-
 function generateTimeSlots(date: Date, availability: any[]) {
   const slots = [];
   const startTime = parse('09:00', 'HH:mm', date);
@@ -145,16 +119,9 @@ function generateTimeSlots(date: Date, availability: any[]) {
     const slotTime = format(currentTime, 'HH:mm');
     const isAvailable = !availability.some(
       (slot) => format(slot.startTime, 'HH:mm') === slotTime && !slot.isAvailable,
-    );
-
-    slots.push({
+slots.push({
       id: format(currentTime, 'HHmm'),
       time: slotTime,
       available: isAvailable,
-    });
-
-    currentTime = addMinutes(currentTime, 30);
-  }
-
-  return slots;
-}
+currentTime = addMinutes(currentTime, 30);
+return slots;

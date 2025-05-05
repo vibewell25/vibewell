@@ -9,7 +9,7 @@ import {
   Alert,
   StatusBar,
   ActivityIndicator
-} from 'react-native';
+from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { Feather } from '@expo/vector-icons';
@@ -18,7 +18,7 @@ import {
   BeautyBookingNavigationProp,
   BeautyBookingRouteProp,
   BeautyServiceDetails
-} from '../types/navigation';
+from '../types/navigation';
 import { createBooking, BookingRequest } from '../services/beautyService';
 import { beautyApi } from '../services/api';
 import { addBookingToCalendar } from '../services/calendarService';
@@ -28,8 +28,6 @@ import { Calendar } from 'react-native-calendars';
 const getCurrentDate = (): string => {
   const date = new Date();
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-};
-
 // Available date type
 type AvailableDate = {
   id: string;
@@ -39,8 +37,6 @@ type AvailableDate = {
   dateNum: number;
   month: string;
   fullDate: string;
-};
-
 // Available dates (next 7 days)
 const getAvailableDates = (): AvailableDate[] => {
   const dates: AvailableDate[] = [];
@@ -58,12 +54,7 @@ const getAvailableDates = (): AvailableDate[] => {
       dateNum: date.getDate(),
       month: date.toLocaleDateString('en-US', { month: 'short' }),
       fullDate: date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
-    });
-  }
-  
-  return dates;
-};
-
+return dates;
 const BeautyBookingScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const { user, isLoggedIn } = useAuth();
@@ -87,22 +78,16 @@ const BeautyBookingScreen: React.FC = () => {
   // Get the selected date object
   const getSelectedDateObj = () => {
     return getAvailableDates().find(date => date.id === selectedDate);
-  };
-  
-  // Handle booking submission
+// Handle booking submission
   const handleBookingSubmit = async () => {
     // Validate form
     if (!selectedTimeSlot) {
       Alert.alert('Error', 'Please select a time slot');
       return;
-    }
-    
-    if (!isLoggedIn && (!name || !email || !phone)) {
+if (!isLoggedIn && (!name || !email || !phone)) {
       Alert.alert('Error', 'Please fill in all customer information fields');
       return;
-    }
-    
-    // Show loading indicator
+// Show loading indicator
     setIsSubmitting(true);
     
     try {
@@ -112,17 +97,13 @@ const BeautyBookingScreen: React.FC = () => {
         Alert.alert('Error', 'Selected time slot not available');
         setIsSubmitting(false);
         return;
-      }
-      
-      // Get the selected date in YYYY-MM-DD format
+// Get the selected date in YYYY-MM-DD format
       const selectedDateObj = getSelectedDateObj();
       if (!selectedDateObj) {
         Alert.alert('Error', 'Selected date not available');
         setIsSubmitting(false);
         return;
-      }
-      
-      // Build booking request
+// Build booking request
       const bookingRequest: BookingRequest = {
         serviceId: service.id,
         date: selectedDateObj.formattedDate,
@@ -131,8 +112,7 @@ const BeautyBookingScreen: React.FC = () => {
           ? { name: user.name || '', email: user.email || '', phone }
           : { name, email, phone },
         specialRequests,
-      };
-      // Execute booking
+// Execute booking
       const bookingResponse = await createBooking(bookingRequest);
       // Auto-add booking to device calendar
       try { await addBookingToCalendar(bookingResponse); } catch (err) { console.error('Calendar add failed', err); }
@@ -149,22 +129,16 @@ const BeautyBookingScreen: React.FC = () => {
         location: bookingResponse.location,
         providerName: bookingResponse.providerName,
         userInfo: bookingRequest.userInfo,
-      });
-    } catch (error) {
+catch (error) {
       console.error('Error creating booking:', error);
       Alert.alert('Error', 'Something went wrong. Please try again.');
-    } finally {
+finally {
       setIsSubmitting(false);
-    }
-  };
-  
-  // Get formatted price
+// Get formatted price
   const getFormattedPrice = (price: number) => {
     const strPrice = price.toString();
     return strPrice.includes('+') ? `From ${strPrice}` : strPrice;
-  };
-  
-  // Fetch real-time availability when date changes
+// Fetch real-time availability when date changes
   useEffect(() => {
     const fetchAvailability = async () => {
       setAvailabilityLoading(true);
@@ -173,17 +147,14 @@ const BeautyBookingScreen: React.FC = () => {
         if (formatted) {
           const slots = await beautyApi.checkAvailability(service.id, formatted);
           setTimeSlots(slots);
-        }
-      } catch (err) {
+catch (err) {
         console.error('Error fetching availability:', err);
-      } finally {
+finally {
         setAvailabilityLoading(false);
-      }
-    };
-    fetchAvailability();
+fetchAvailability();
     // Clear previous time selection when date changes
     setSelectedTimeSlot('');
-  }, [selectedDate]);
+[selectedDate]);
   
   // Build markedDates for calendar
   const availableDates = service.availability.dates || [];
@@ -192,9 +163,8 @@ const BeautyBookingScreen: React.FC = () => {
       disabled: false,
       selected: date === selectedDate,
       selectedColor: isDarkMode ? '#4F46E5' : '#4F46E5',
-    };
-    return acc;
-  }, {});
+return acc;
+{});
 
   return (
     <ScrollView
@@ -279,8 +249,7 @@ const BeautyBookingScreen: React.FC = () => {
             monthTextColor: isDarkMode ? '#FFFFFF' : '#000000',
             textDisabledColor: '#AAAAAA',
             selectedDayBackgroundColor: '#4F46E5',
-          }}
-        />
+/>
       </View>
       
       {/* Time Selection */}
@@ -310,8 +279,7 @@ const BeautyBookingScreen: React.FC = () => {
                       : selectedTimeSlot === slot.id
                         ? (isDarkMode ? '#4F46E5' : '#4F46E5')
                         : (isDarkMode ? '#1E1E1E' : '#FFFFFF')
-                  }
-                ]}
+]}
                 disabled={!slot.available}
                 onPress={() => setSelectedTimeSlot(slot.id)}
               >
@@ -323,8 +291,7 @@ const BeautyBookingScreen: React.FC = () => {
                       : selectedTimeSlot === slot.id
                         ? '#FFFFFF'
                         : (isDarkMode ? '#FFFFFF' : '#000000')
-                  }
-                ]}>
+]}>
                   {slot.time}
                 </Text>
               </TouchableOpacity>
@@ -356,8 +323,7 @@ const BeautyBookingScreen: React.FC = () => {
                   backgroundColor: isDarkMode ? '#2A2A2A' : '#FFFFFF',
                   color: isDarkMode ? '#FFFFFF' : '#000000',
                   borderColor: isDarkMode ? '#333333' : '#E0E0E0'
-                }
-              ]}
+]}
               value={name}
               onChangeText={setName}
               placeholder="Enter your full name"
@@ -378,8 +344,7 @@ const BeautyBookingScreen: React.FC = () => {
                   backgroundColor: isDarkMode ? '#2A2A2A' : '#FFFFFF',
                   color: isDarkMode ? '#FFFFFF' : '#000000',
                   borderColor: isDarkMode ? '#333333' : '#E0E0E0'
-                }
-              ]}
+]}
               value={email}
               onChangeText={setEmail}
               placeholder="Enter your email"
@@ -402,8 +367,7 @@ const BeautyBookingScreen: React.FC = () => {
                   backgroundColor: isDarkMode ? '#2A2A2A' : '#FFFFFF',
                   color: isDarkMode ? '#FFFFFF' : '#000000',
                   borderColor: isDarkMode ? '#333333' : '#E0E0E0'
-                }
-              ]}
+]}
               value={phone}
               onChangeText={setPhone}
               placeholder="Enter your phone number"
@@ -429,8 +393,7 @@ const BeautyBookingScreen: React.FC = () => {
               backgroundColor: isDarkMode ? '#2A2A2A' : '#FFFFFF',
               color: isDarkMode ? '#FFFFFF' : '#000000',
               borderColor: isDarkMode ? '#333333' : '#E0E0E0'
-            }
-          ]}
+]}
           value={specialRequests}
           onChangeText={setSpecialRequests}
           placeholder="Any special requests or notes for your appointment"
@@ -534,107 +497,84 @@ const BeautyBookingScreen: React.FC = () => {
         </Text>
       </Text>
     </ScrollView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingBottom: 30,
-  },
-  header: {
+header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingTop: 50,
     paddingBottom: 15,
-  },
-  backButton: {
+backButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  headerTitle: {
+headerTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-  },
-  serviceSummary: {
+serviceSummary: {
     margin: 15,
     padding: 15,
     borderRadius: 10,
-  },
-  serviceName: {
+serviceName: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
-  },
-  serviceDetails: {
+serviceDetails: {
     flexDirection: 'row',
     marginBottom: 6,
-  },
-  serviceDetail: {
+serviceDetail: {
     fontSize: 14,
     marginRight: 15,
-  },
-  providerRow: {
+providerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  serviceProvider: {
+serviceProvider: {
     fontSize: 14,
-  },
-  ratingContainer: {
+ratingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  ratingText: {
+ratingText: {
     fontSize: 12,
     marginLeft: 4,
-  },
-  section: {
+section: {
     marginHorizontal: 15,
     marginBottom: 20,
-  },
-  sectionTitle: {
+sectionTitle: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 15,
-  },
-  timeGrid: {
+timeGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-  },
-  timeSlot: {
+timeSlot: {
     width: '31%',
     height: 45,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
-  },
-  timeText: {
+timeText: {
     fontSize: 14,
-  },
-  formGroup: {
+formGroup: {
     marginBottom: 15,
-  },
-  label: {
+label: {
     fontSize: 14,
     marginBottom: 5,
-  },
-  input: {
+input: {
     height: 45,
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 12,
     fontSize: 15,
-  },
-  textarea: {
+textarea: {
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 12,
@@ -642,45 +582,35 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     fontSize: 15,
     minHeight: 100,
-  },
-  bookingSummary: {
+bookingSummary: {
     margin: 15,
     padding: 15,
     borderRadius: 10,
     marginTop: 0,
-  },
-  summaryRow: {
+summaryRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
-  },
-  summaryLabel: {
+summaryLabel: {
     fontSize: 14,
-  },
-  summaryValue: {
+summaryValue: {
     fontSize: 14,
     fontWeight: '500',
-  },
-  bookButton: {
+bookButton: {
     backgroundColor: '#4F46E5',
     marginHorizontal: 15,
     marginVertical: 20,
     paddingVertical: 15,
     borderRadius: 10,
     alignItems: 'center',
-  },
-  bookButtonText: {
+bookButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  termsText: {
+termsText: {
     fontSize: 12,
     textAlign: 'center',
     marginHorizontal: 20,
     marginBottom: 30,
     lineHeight: 18,
-  },
-});
-
 export default BeautyBookingScreen; 

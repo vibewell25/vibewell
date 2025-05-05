@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { EnhancedHeader } from '@/components/enhanced-header';
 import { ResponsiveContainer } from '@/components/ui/responsive-container';
@@ -24,10 +22,7 @@ export default function ResponsiveTestPage() {
       const updated = [gesture, ...prev];
       // Keep only the last 5 events
       return updated.slice(0, 5);
-    });
-  };
-
-  return (
+return (
     <>
       <EnhancedHeader />
 
@@ -82,17 +77,15 @@ export default function ResponsiveTestPage() {
               onGesture={(gesture) => {
                 if (gesture.type === 'swipe' && gesture.direction) {
                   handleGesture('Swipe', gesture.direction);
-                } else if (gesture.type === 'pinch' && gesture.scale) {
+else if (gesture.type === 'pinch' && gesture.scale) {
                   handleGesture('Pinch', `scale ${gesture.scale.toFixed(2)}`);
-                } else if (gesture.type === 'rotate' && gesture.rotation) {
+else if (gesture.type === 'rotate' && gesture.rotation) {
                   handleGesture('Rotate', `${gesture.rotation.toFixed(0)}°`);
-                } else if (gesture.type === 'tap') {
+else if (gesture.type === 'tap') {
                   handleGesture('Tap');
-                } else if (gesture.type === 'longpress') {
+else if (gesture.type === 'longpress') {
                   handleGesture('Long Press');
-                }
-              }}
-              className="flex h-64 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/30 bg-muted/50"
+className="flex h-64 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/30 bg-muted/50"
             >
               <div className="text-center">
                 <p className="mb-2 font-medium">Touch Interaction Area</p>
@@ -180,5 +173,3 @@ export default function ResponsiveTestPage() {
       {/* Responsive Tester Tool */}
       <ResponsiveTester position="bottom-right" />
     </>
-  );
-}

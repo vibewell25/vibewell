@@ -12,5 +12,3 @@ export default function Hero() {
         </p>
       </Card>
     </section>
-  );
-} 

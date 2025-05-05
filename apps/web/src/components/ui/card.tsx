@@ -1,14 +1,4 @@
-/**
- * Card Component
- * 
- * Description: A flexible card container component that can be used for content grouping.
- * 
- * @component
- * 
- * @typedef CardProps
- * @param {React.HTMLAttributes<HTMLDivElement>} props - Standard div HTML attributes
- * @param {React.ReactNode} children - Card content
- * @param {string} className - Additional CSS classes
+className - Additional CSS classes
  * @param {boolean} noPadding - Whether to remove default padding
  * @param {boolean} shadow - Whether to add a shadow effect
  * @param {boolean} hover - Whether to add hover effects
@@ -36,8 +26,6 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   noPadding?: boolean;
   shadow?: boolean;
   hover?: boolean;
-}
-
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(({
   children,
   className = '',
@@ -45,7 +33,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(({
   shadow = false,
   hover = false,
   ...props
-}, ref) => {
+ref) => {
   return (
     <div
       ref={ref}
@@ -60,9 +48,6 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(({
     >
       {children}
     </div>
-  );
-});
-
 Card.displayName = 'Card';
 
 // Sub-components for more complex card layouts
@@ -70,51 +55,41 @@ export const CardHeader = ({
   className = '',
   children,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
+: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn('mb-4 space-y-1.5', className)} {...props}>
     {children}
   </div>
-);
-
 export const CardTitle = ({
   className = '',
   children,
   as: Component = 'h3',
   ...props
-}: React.HTMLAttributes<HTMLHeadingElement> & { as?: React.ElementType }) => (
+: React.HTMLAttributes<HTMLHeadingElement> & { as?: React.ElementType }) => (
   <Component className={cn('text-lg font-semibold', className)} {...props}>
     {children}
   </Component>
-);
-
 export const CardDescription = ({
   className = '',
   children,
   ...props
-}: React.HTMLAttributes<HTMLParagraphElement>) => (
+: React.HTMLAttributes<HTMLParagraphElement>) => (
   <p className={cn('text-sm text-gray-500', className)} {...props}>
     {children}
   </p>
-);
-
 export const CardContent = ({
   className = '',
   children,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
+: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn('', className)} {...props}>
     {children}
   </div>
-);
-
 export const CardFooter = ({
   className = '',
   children,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
+: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn('mt-4 flex items-center', className)} {...props}>
     {children}
   </div>
-);
-
 export default Card;

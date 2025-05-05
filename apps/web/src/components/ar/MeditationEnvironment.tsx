@@ -29,9 +29,7 @@ export interface MeditationEnvironmentProps {
     theme?: 'forest' | 'beach' | 'mountain' | 'zen-garden';
     soundscape?: 'rain' | 'waves' | 'wind' | 'birds' | 'silence';
     lightingIntensity?: number;
-  }) => void;
-}
-
+) => void;
 /**
  * Settings for different meditation environment themes
  */
@@ -41,27 +39,21 @@ const THEME_SETTINGS = {
     ambientLight: '#4a5d23',
     particleColor: '#ffffff',
     particleCount: 1000,
-  },
-  beach: {
+beach: {
     environmentPreset: 'sunset',
     ambientLight: '#ffd700',
     particleColor: '#87CEEB',
     particleCount: 500,
-  },
-  mountain: {
+mountain: {
     environmentPreset: 'dawn',
     ambientLight: '#b8d8e8',
     particleColor: '#ffffff',
     particleCount: 2000,
-  },
-  'zen-garden': {
+'zen-garden': {
     environmentPreset: 'warehouse',
     ambientLight: '#e8d0a9',
     particleColor: '#FFC0CB',
     particleCount: 300,
-  },
-};
-
 /**
  * Audio file paths for different soundscapes
  */
@@ -70,8 +62,6 @@ const SOUND_EFFECTS = {
   waves: '/sounds/waves.mp3',
   wind: '/sounds/wind.mp3',
   birds: '/sounds/birds.mp3',
-};
-
 /**
  * MeditationEnvironment is a 3D environment for meditation experiences.
  * It provides an immersive space with customizable themes, lighting,
@@ -94,7 +84,7 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
   lightingIntensity = 1,
   particleEffects = true,
   onStateChange,
-}) => {
+) => {
   const { updateScene } = useWebGL();
   const [ambientSound, setAmbientSound] = useState<Howl | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -110,21 +100,16 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
           volume: 0.5,
           onloaderror: () => {
             setError(`Failed to load ${soundscape} sound effect`);
-          },
-        });
-        setAmbientSound(sound);
+setAmbientSound(sound);
 
         return () => {
           sound.stop();
           sound.unload();
-        };
-      } catch (err: unknown) {
+catch (err: unknown) {
         const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
         setError(`Error initializing ${soundscape} sound: ${errorMessage}`);
-      }
-    }
-    return undefined;
-  }, [soundscape]);
+return undefined;
+[soundscape]);
 
   // Add timer effect
   useEffect(() => {
@@ -133,15 +118,11 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
     if (isPlaying) {
       interval = setInterval(() => {
         setMeditationTimer((prev) => prev + 1);
-      }, 1000);
-    }
-
-    return () => {
+1000);
+return () => {
       if (interval) {
         clearInterval(interval);
-      }
-    };
-  }, [isPlaying]);
+[isPlaying]);
 
   const toggleMeditation = () => {
     try {
@@ -149,29 +130,23 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
         ambientSound.pause();
         setIsPlaying(false);
         setMeditationTimer(0);
-      } else {
+else {
         ambientSound.play();
         setIsPlaying(true);
-      }
-    } catch (err: unknown) {
+catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
       setError(`Error toggling meditation: ${errorMessage}`);
-    }
-  };
-
-  const ThemeComponent = {
+const ThemeComponent = {
     forest: Forest,
     beach: Beach,
     mountain: Mountain,
     'zen-garden': ZenGarden,
-  }[theme];
+[theme];
 
   if (!ThemeComponent) {
     setError(`Invalid theme: ${theme}`);
     return null;
-  }
-
-  // Define available soundscapes
+// Define available soundscapes
   const availableSoundscapes = [
     { name: 'Rain', url: '/audio/rain.mp3' },
     { name: 'Ocean Waves', url: '/audio/waves.mp3' },
@@ -256,9 +231,8 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
                 onChange={(e) =>
                   onStateChange.({
                     soundscape: e.target.value as MeditationEnvironmentProps['soundscape'],
-                  })
-                }
-              >
+)
+>
                 <option value="silence">Silence</option>
                 <option value="rain">Rain</option>
                 <option value="waves">Ocean Waves</option>
@@ -285,7 +259,4 @@ export const MeditationEnvironment: React.FC<MeditationEnvironmentProps> = ({
 
       <AudioControls soundscapes={availableSoundscapes} />
     </div>
-  );
-};
-
 export default MeditationEnvironment;

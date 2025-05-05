@@ -1,4 +1,3 @@
-'use client';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
@@ -18,8 +17,7 @@ export default function AccountManagementHelp() {
         { title: 'Resetting a forgotten password', path: '/help/account/reset-password' },
         { title: 'Password requirements', path: '/help/account/password-requirements' },
       ],
-    },
-    {
+{
       id: 'subscription',
       title: 'Subscription & Billing',
       icon: <Icons.CreditCardIcon className="h-6 w-6" />,
@@ -30,8 +28,7 @@ export default function AccountManagementHelp() {
         { title: 'Managing payment methods', path: '/help/account/payment-methods' },
         { title: 'Cancelling your subscription', path: '/help/account/cancel-subscription' },
       ],
-    },
-    {
+{
       id: 'security',
       title: 'Account Security',
       icon: <Icons.ShieldCheckIcon className="h-6 w-6" />,
@@ -43,8 +40,7 @@ export default function AccountManagementHelp() {
         { title: 'Security best practices', path: '/help/account/security-best-practices' },
         { title: 'Managing connected devices', path: '/help/account/connected-devices' },
       ],
-    },
-    {
+{
       id: 'profile',
       title: 'Profile Settings',
       icon: <Icons.UserCircleIcon className="h-6 w-6" />,
@@ -55,8 +51,7 @@ export default function AccountManagementHelp() {
         { title: 'Privacy settings', path: '/help/account/privacy-settings' },
         { title: 'Managing your data', path: '/help/account/data-management' },
       ],
-    },
-    {
+{
       id: 'notifications',
       title: 'Notifications & Alerts',
       icon: <Icons.BellIcon className="h-6 w-6" />,
@@ -66,12 +61,10 @@ export default function AccountManagementHelp() {
         {
           title: 'Setting notification preferences',
           path: '/help/account/notification-preferences',
-        },
-        { title: 'Email notification settings', path: '/help/account/email-notifications' },
+{ title: 'Email notification settings', path: '/help/account/email-notifications' },
         { title: 'Push notification troubleshooting', path: '/help/account/push-notifications' },
       ],
-    },
-    {
+{
       id: 'devices',
       title: 'Devices & Sessions',
       icon: <Icons.DevicePhoneMobileIcon className="h-6 w-6" />,
@@ -82,8 +75,7 @@ export default function AccountManagementHelp() {
         { title: 'Using Vibewell on multiple devices', path: '/help/account/multiple-devices' },
         { title: 'Logging out remotely', path: '/help/account/remote-logout' },
       ],
-    },
-  ];
+];
   // Frequently asked questions
   const accountFaqs = [
     {
@@ -91,26 +83,22 @@ export default function AccountManagementHelp() {
       answer:
         'To change your email address, go to Profile Settings, click on "Edit Profile", enter your new email address, and confirm by entering your password.',
       path: '/help/account/change-email',
-    },
-    {
+{
       question: 'What happens to my data if I cancel my subscription?',
       answer:
         'Your account data will be retained for 30 days after cancellation. You can reactivate your account during this period. After 30 days, your data may be permanently deleted according to our data retention policy.',
       path: '/help/account/data-after-cancellation',
-    },
-    {
+{
       question: 'How can I delete my account?',
       answer:
         'To delete your account, go to Profile Settings, scroll down to Account Management, click on "Delete Account", and follow the confirmation steps. This action is permanent and cannot be undone.',
       path: '/help/account/delete-account',
-    },
-    {
+{
       question: 'How do I update my payment information?',
       answer:
         'To update your payment details, go to Subscription & Billing, select "Payment Methods", click "Edit" next to your current payment method or "Add New Method" to add a new one.',
       path: '/help/account/update-payment',
-    },
-  ];
+];
   return (
     <Layout>
       <div className="container-app py-8">
@@ -222,5 +210,3 @@ export default function AccountManagementHelp() {
         </div>
       </div>
     </Layout>
-  );
-}

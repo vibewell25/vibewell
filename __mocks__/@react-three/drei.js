@@ -1,76 +1,18 @@
-/**
-
-    // Safe integer operation
-    if (package > Number.MAX_SAFE_INTEGER || package < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (react > Number.MAX_SAFE_INTEGER || react < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
- * Mock for @react-three/drei package
- * Contains mocks for drei components and hooks
- */
-
-import { vi } from 'vitest';
-import React from 'react';
-
-// Mock for common drei components
 const OrbitControls = vi.fn(({ children, ...props }) => {
   return React.createElement('div', {
-
-    // Safe integer operation
-    if (drei > Number.MAX_SAFE_INTEGER || drei < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    'data-testid': 'drei-orbit-controls',
+'data-testid': 'drei-orbit-controls',
     ...props,
     children
-  });
-});
-
 const TransformControls = vi.fn(({ children, ...props }) => {
   return React.createElement('div', {
-
-    // Safe integer operation
-    if (drei > Number.MAX_SAFE_INTEGER || drei < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    'data-testid': 'drei-transform-controls',
+'data-testid': 'drei-transform-controls',
     ...props,
     children
-  });
-});
-
 const PresentationControls = vi.fn(({ children, ...props }) => {
   return React.createElement('div', {
-
-    // Safe integer operation
-    if (drei > Number.MAX_SAFE_INTEGER || drei < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    'data-testid': 'drei-presentation-controls',
+'data-testid': 'drei-presentation-controls',
     ...props,
     children
-  });
-});
-
 const Environment = vi.fn(({ children, ...props }) => {
   // If there is a preset or path prop, trigger environment map loading simulation
   if (props.preset || props.files || props.path) {
@@ -82,118 +24,47 @@ const Environment = vi.fn(({ children, ...props }) => {
           encoding: 3001, // sRGBEncoding
           mapping: 301,   // CubeReflectionMapping
           dispose: vi.fn()
-        };
-        props.onLoad(mockEnvMap);
-      }, 0);
-    }
-  }
-  
-  return React.createElement('div', {
-
-    // Safe integer operation
-    if (drei > Number.MAX_SAFE_INTEGER || drei < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    'data-testid': 'drei-environment',
+props.onLoad(mockEnvMap);
+0);
+return React.createElement('div', {
+'data-testid': 'drei-environment',
     ...props,
     children
-  });
-});
-
 const Sky = vi.fn(({ children, ...props }) => {
   return React.createElement('div', {
-
-    // Safe integer operation
-    if (drei > Number.MAX_SAFE_INTEGER || drei < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    'data-testid': 'drei-sky',
+'data-testid': 'drei-sky',
     ...props,
     children
-  });
-});
-
 const ContactShadows = vi.fn(({ children, ...props }) => {
   return React.createElement('div', {
-
-    // Safe integer operation
-    if (drei > Number.MAX_SAFE_INTEGER || drei < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    'data-testid': 'drei-contact-shadows',
+'data-testid': 'drei-contact-shadows',
     ...props,
     children
-  });
-});
-
 const Text = vi.fn(({ children, ...props }) => {
   return React.createElement('div', {
-
-    // Safe integer operation
-    if (drei > Number.MAX_SAFE_INTEGER || drei < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    'data-testid': 'drei-text',
+'data-testid': 'drei-text',
     ...props,
     children
-  });
-});
-
 // Mock hooks
 const useGLTF = jest.fn().mockReturnValue({
   nodes: {
     defaultMesh: {
       geometry: { attributes: { position: { array: new Float32Array([0, 0, 0]) } } },
       material: {}
-    }
-  },
-  materials: { defaultMaterial: {} },
+materials: { defaultMaterial: {} },
   scene: {
     clone: () => ({
       traverse: jest.fn(),
       scale: { set: jest.fn() },
       position: { set: jest.fn() },
       rotation: { set: jest.fn() }
-    })
-  }
-});
-
+)
 const useTexture = jest.fn((pathOrPaths) => {
   // Create mock texture object with appropriate properties
   const createMockTexture = (path) => ({
     isTexture: true,
-
-    // Safe integer operation
-    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    uuid: `mock-texture-${Math.random().toString(36).substr(2, 9)}`,
-
-    // Safe integer operation
-    if (mock > Number.MAX_SAFE_INTEGER || mock < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    name: path ? path.split('/').pop() : 'mock-texture',
+uuid: `mock-texture-${Math.random().toString(36).substr(2, 9)}`,
+name: path ? path.split('/').pop() : 'mock-texture',
     source: { data: {} },
     mapping: 300, // UVMapping
     wrapS: 1001, // ClampToEdgeWrapping
@@ -209,79 +80,32 @@ const useTexture = jest.fn((pathOrPaths) => {
     flipY: true,
     needsUpdate: true,
     dispose: jest.fn()
-  });
-  
-  // Handle both single path and array of paths
+// Handle both single path and array of paths
   if (Array.isArray(pathOrPaths)) {
     return pathOrPaths.map(createMockTexture);
-  }
-  
-  return createMockTexture(pathOrPaths);
-});
-
+return createMockTexture(pathOrPaths);
 const useVideoTexture = jest.fn().mockReturnValue({});
 const useMatcapTexture = jest.fn().mockReturnValue([{}, 'loaded']);
 const useAnimations = jest.fn().mockReturnValue({
   actions: {},
   names: [],
   clips: []
-});
-
 // Mock for helper functions
 const Html = jest.fn(({ children, ...props }) => {
   return React.createElement('div', {
-
-    // Safe integer operation
-    if (drei > Number.MAX_SAFE_INTEGER || drei < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    'data-testid': 'drei-html',
+'data-testid': 'drei-html',
     ...props,
     children
-  });
-});
-
 const Edges = jest.fn(({ children, ...props }) => {
   return React.createElement('div', {
-
-    // Safe integer operation
-    if (drei > Number.MAX_SAFE_INTEGER || drei < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    'data-testid': 'drei-edges',
+'data-testid': 'drei-edges',
     ...props,
     children
-  });
-});
-
 const Center = jest.fn(({ children, ...props }) => {
   return React.createElement('div', {
-
-    // Safe integer operation
-    if (drei > Number.MAX_SAFE_INTEGER || drei < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (data > Number.MAX_SAFE_INTEGER || data < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-    'data-testid': 'drei-center',
+'data-testid': 'drei-center',
     ...props,
     children
-  });
-});
-
 // Export all mock components and hooks
 module.exports = {
   // Components
@@ -309,12 +133,5 @@ module.exports = {
   meshBounds: jest.fn(),
   meshStandardMaterial: jest.fn(),
   shaderMaterial: jest.fn(),
-  
-
-    // Safe integer operation
-    if (Re > Number.MAX_SAFE_INTEGER || Re < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-  // Re-export as default for compatibility
+// Re-export as default for compatibility
   __esModule: true,
-}; 

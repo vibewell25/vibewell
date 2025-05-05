@@ -9,26 +9,17 @@ const meta: Meta<typeof Input> = {
     variant: {
       control: 'select',
       options: ['default', 'error', 'success'],
-    },
-    size: {
+size: {
       control: 'select',
       options: ['default', 'sm', 'lg'],
-    },
-    disabled: {
+disabled: {
       control: 'boolean',
-    },
-    error: {
+error: {
       control: 'text',
-    },
-    success: {
+success: {
       control: 'text',
-    },
-    placeholder: {
+placeholder: {
       control: 'text',
-    },
-  },
-};
-
 export default meta;
 type Story = StoryObj<typeof Input>;
 

@@ -1,4 +1,3 @@
-'use client';;
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,7 +16,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/Card';
+from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Mail,
@@ -31,7 +30,7 @@ import {
   AlertCircle,
   Smartphone,
   MessageSquare,
-} from 'lucide-react';
+from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import {
   Dialog,
@@ -40,7 +39,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+from '@/components/ui/dialog';
 import { AvatarEditorDialog } from './avatar-editor';
 import { toast } from '@/components/ui/use-toast';
 
@@ -88,7 +87,7 @@ const profileFormSchema = z.object({
       showPhone: z.boolean().default(true),
       allowTagging: z.boolean().default(true),
       receiveNotifications: z.boolean().default(true),
-    })
+)
     .default({}),
   notifications: z
     .object({
@@ -96,7 +95,7 @@ const profileFormSchema = z.object({
       sms: z.boolean().default(false),
       push: z.boolean().default(true),
       marketing: z.boolean().default(false),
-    })
+)
     .default({}),
   accountSettings: z
     .object({
@@ -104,10 +103,8 @@ const profileFormSchema = z.object({
       loginNotifications: z.boolean().default(true),
       autoLogout: z.boolean().default(false),
       dataDownload: z.boolean().default(false),
-    })
+)
     .default({}),
-});
-
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 // Notification preferences schema
@@ -123,8 +120,6 @@ const notificationSchema = z.object({
   sms_security: z.boolean().default(true),
   sms_updates: z.boolean().default(false),
   sms_bookings: z.boolean().default(true),
-});
-
 type NotificationPreferences = z.infer<typeof notificationSchema>;
 
 type PrivacyField = keyof ProfileFormValues['privacy'];
@@ -140,8 +135,6 @@ interface ProfileFormProps {
   userId?: string;
   initialData?: Partial<ProfileFormValues>;
   onSuccess?: () => void;
-}
-
 export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -165,13 +158,11 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
     sms_security: true,
     sms_updates: false,
     sms_bookings: true,
-  });
-  const [passwordValues, setPasswordValues] = useState({
+const [passwordValues, setPasswordValues] = useState({
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
-  });
-  const [passwordError, setPasswordError] = useState<string | null>(null);
+const [passwordError, setPasswordError] = useState<string | null>(null);
   const [passwordSuccess, setPasswordSuccess] = useState<string | null>(null);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -195,17 +186,11 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
       emailVerified: initialData.emailVerified ?? false,
       privacy: {
         ...(initialData.privacy ?? {}),
-      },
-      notifications: {
+notifications: {
         ...(initialData.notifications ?? {}),
-      },
-      accountSettings: {
+accountSettings: {
         ...(initialData.accountSettings ?? {}),
-      },
-    },
-  });
-
-  // Fetch profile data
+// Fetch profile data
   useEffect(() => {
     async function {
   const start = Date.now();
@@ -222,9 +207,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
         if (error) {
           throw error;
-        }
-
-        if (data) {
+if (data) {
           // Update form values
           form.reset({
             username: data.username || '',
@@ -237,38 +220,25 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
             emailVerified: data.email_verified || false,
             privacy: {
               ...data.privacy,
-            },
-            notifications: {
+notifications: {
               ...data.notification_preferences,
-            },
-            accountSettings: {
+accountSettings: {
               ...data.account_settings,
-            },
-          });
-
-          // Set avatar URL
+// Set avatar URL
           if (data.avatar_url) {
             setAvatarUrl(data.avatar_url);
-          }
-
-          // Set notification preferences
+// Set notification preferences
           if (data.notification_preferences) {
             setNotifications({
               ...notifications,
               ...data.notification_preferences,
-            });
-          }
-        }
-      } catch (err) {
+catch (err) {
         console.error('Error fetching profile:', err);
         setError('Failed to load profile data');
-      } finally {
+finally {
         setLoading(false);
-      }
-    }
-
-    fetchProfile();
-  }, [userId, form, supabase]);
+fetchProfile();
+[userId, form, supabase]);
 
   const handleFileSelect = async ( {
   const start = Date.now();
@@ -277,10 +247,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
     if (file) {
       setSelectedImage(file);
       setShowAvatarEditor(true);
-    }
-  };
-
-  const handleAvatarSave = async ( {
+const handleAvatarSave = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');croppedImage: Blob) => {
     try {
@@ -289,9 +256,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
       if (!userId) {
         throw new Error('User ID is required');
-      }
-
-      // Upload the cropped image to Supabase storage
+// Upload the cropped image to Supabase storage
       const fileExt = selectedImage.name.split('.').pop();
       const fileName = `${userId}-${Date.now()}.${fileExt}`;
       const filePath = `avatars/${fileName}`;
@@ -301,14 +266,12 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
         .upload(filePath, croppedImage, {
           contentType: 'image/jpeg',
           upsert: true,
-        });
-
-      if (uploadError) throw uploadError;
+if (uploadError) throw uploadError;
 
       // Get the public URL
       const {
         data: { publicUrl },
-      } = supabase.storage.from('avatars').getPublicUrl(filePath);
+= supabase.storage.from('avatars').getPublicUrl(filePath);
 
       // Update the profile with the new avatar URL
       const { error: updateError } = await supabase
@@ -325,20 +288,15 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
       toast({
         title: 'Success',
         description: 'Profile picture updated successfully',
-      });
-    } catch (err) {
+catch (err) {
       console.error('Error saving avatar:', err);
       toast({
         title: 'Error',
         description: 'Failed to update profile picture',
         variant: 'destructive',
-      });
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  const handleEmailVerification = async ( {
+const handleEmailVerification = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
@@ -347,33 +305,26 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
       const {
         data: { user },
-      } = await supabase.auth.getUser();
+= await supabase.auth.getUser();
       if (!user.email) throw new Error('No user email found');
 
       const { error } = await supabase.auth.resend({
         type: 'signup',
         email: user.email,
-      });
-
-      if (error) throw error;
+if (error) throw error;
 
       toast({
         title: 'Verification Email Sent',
         description: 'Please check your inbox for the verification link',
-      });
-    } catch (err) {
+catch (err) {
       console.error('Error sending verification email:', err);
       toast({
         title: 'Error',
         description: 'Failed to send verification email',
         variant: 'destructive',
-      });
-    } finally {
+finally {
       setIsVerifyingEmail(false);
-    }
-  };
-
-  // Update the form submission handler
+// Update the form submission handler
   const onSubmit: SubmitHandler<ProfileFormValues> = async (values) => {
     try {
       setLoading(true);
@@ -381,9 +332,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
       if (!userId) {
         throw new Error('User ID is required');
-      }
-
-      const updateData = {
+const updateData = {
         id: userId,
         username: values.username,
         full_name: values.fullName,
@@ -397,9 +346,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
         privacy: values.privacy,
         account_settings: values.accountSettings,
         updated_at: new Date().toISOString(),
-      };
-
-      const { error: updateError } = await supabase
+const { error: updateError } = await supabase
         .from('profiles')
         .upsert(updateData, { onConflict: 'id' });
 
@@ -410,16 +357,12 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
       if (onSuccess) {
         onSuccess();
-      }
-    } catch (err) {
+catch (err) {
       console.error('Error updating profile:', err);
       setError('Failed to update profile');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  // Add this function to handle password updates
+// Add this function to handle password updates
   const handlePasswordUpdate = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');) => {
@@ -430,37 +373,26 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
       // Validate passwords
       if (passwordValues.newPassword.length < 8) {
         throw new Error('New password must be at least 8 characters');
-      }
-
-      if (passwordValues.newPassword !== passwordValues.confirmPassword) {
+if (passwordValues.newPassword !== passwordValues.confirmPassword) {
         throw new Error('New passwords do not match');
-      }
-
-      // Update password via Supabase Auth
+// Update password via Supabase Auth
       const { error } = await supabase.auth.updateUser({
         password: passwordValues.newPassword,
-      });
-
-      if (error) throw error;
+if (error) throw error;
 
       // Clear form and show success message
       setPasswordValues({
         currentPassword: '',
         newPassword: '',
         confirmPassword: '',
-      });
-
-      setPasswordSuccess('Password updated successfully');
+setPasswordSuccess('Password updated successfully');
       setTimeout(() => setPasswordSuccess(null), 3000);
-    } catch (err) {
+catch (err) {
       console.error('Error updating password:', err);
       setPasswordError(err instanceof Error ? err.message : 'Failed to update password');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  // Add this function to handle data export
+// Add this function to handle data export
   const handleDataExport = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');) => {
@@ -470,9 +402,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
       if (!userId) {
         throw new Error('User ID is required');
-      }
-
-      // Fetch user profile data
+// Fetch user profile data
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
         .select('*')
@@ -512,9 +442,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
         messages: messagesData,
         wellness: wellnessData,
         exported_at: new Date().toISOString(),
-      };
-
-      // Convert to JSON
+// Convert to JSON
       const dataStr = JSON.stringify(exportData, null, 2);
 
       // Create a download link
@@ -530,19 +458,16 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
       setTimeout(() => {
         URL.revokeObjectURL(url);
         document.body.removeChild(link);
-      }, 100);
+100);
 
       setSuccess('Your data has been exported successfully');
       setTimeout(() => setSuccess(null), 3000);
-    } catch (err) {
+catch (err) {
       console.error('Error exporting data:', err);
       setError('Failed to export data: ' + (err instanceof Error ? err.message : 'Unknown error'));
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  // Add this function to handle account deletion
+// Add this function to handle account deletion
   const handleAccountDeletion = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');) => {
@@ -552,9 +477,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
       if (!userId) {
         throw new Error('User ID is required');
-      }
-
-      // Delete user data from profiles table
+// Delete user data from profiles table
       const { error: profileError } = await supabase.from('profiles').delete().eq('id', userId);
 
       if (profileError) throw profileError;
@@ -569,17 +492,13 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
       // Redirect to home page
       router.push('/');
-    } catch (err) {
+catch (err) {
       console.error('Error deleting account:', err);
       setError(
         'Failed to delete account: ' + (err instanceof Error ? err.message : 'Unknown error'),
-      );
-      setLoading(false);
+setLoading(false);
       setShowDeleteConfirmation(false);
-    }
-  };
-
-  // Add this function to handle logout from all devices
+// Add this function to handle logout from all devices
   const handleLogoutAllDevices = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');) => {
@@ -596,18 +515,14 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
       // This is just a placeholder - in reality, you might want to redirect to login
       setSuccess('Successfully logged out from all devices except this one');
       setTimeout(() => setSuccess(null), 3000);
-    } catch (err) {
+catch (err) {
       console.error('Error logging out from all devices:', err);
       setError(
         'Failed to log out from all devices: ' +
           (err instanceof Error ? err.message : 'Unknown error'),
-      );
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  // Add this function to handle password recovery
+// Add this function to handle password recovery
   const handlePasswordRecovery = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');) => {
@@ -620,23 +535,17 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
       // Send password recovery email
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/reset-password`,
-      });
-
-      if (error) throw error;
+if (error) throw error;
 
       setSuccess('Password recovery email sent. Please check your inbox.');
       setTimeout(() => setSuccess(null), 3000);
-    } catch (err) {
+catch (err) {
       console.error('Error sending recovery email:', err);
       setError(
         'Failed to send recovery email: ' + (err instanceof Error ? err.message : 'Unknown error'),
-      );
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  // Update the form submission handler
+// Update the form submission handler
   const handleFormSubmit = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');
@@ -646,13 +555,10 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
     e.preventDefault();
     try {
       await form.handleSubmit(onSubmit)(e);
-    } catch (err) {
+catch (err) {
       console.error('Error submitting form:', err);
       setError('Failed to submit form');
-    }
-  };
-
-  // Update the switch handlers with proper type annotations
+// Update the switch handlers with proper type annotations
   const handleSwitchChange = (
     field:
       | keyof ProfileFormValues['privacy']
@@ -665,18 +571,13 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
 
     if (field in formValues.privacy) {
       form.setValue(`privacy.${field}`, checked, { shouldDirty: true });
-    } else if (field in formValues.notifications) {
+else if (field in formValues.notifications) {
       form.setValue(`notifications.${field}`, checked, { shouldDirty: true });
-    } else if (field in formValues.accountSettings) {
+else if (field in formValues.accountSettings) {
       form.setValue(`accountSettings.${field}`, checked, { shouldDirty: true });
-    }
-  };
-
-  const handleVisibilityChange = (value: 'public' | 'private' | 'contacts') => {
+const handleVisibilityChange = (value: 'public' | 'private' | 'contacts') => {
     form.setValue('visibility', value, { shouldDirty: true });
-  };
-
-  return (
+return (
     <div className="space-y-8">
       <Tabs defaultValue="details" className="w-full">
         <TabsList className="grid grid-cols-3">
@@ -774,8 +675,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                       isVerifyingEmail
                         ? 'border-green-200 bg-green-50 text-green-600 hover:bg-green-100'
                         : 'border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700'
-                    }
-                  >
+>
                     {isVerifyingEmail ? (
                       <div className="flex items-center">
                         <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
@@ -1023,8 +923,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     checked={form.watch('privacy.receiveNotifications')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('receiveNotifications', checked, form)
-                    }
-                    aria-label="Show activity status"
+aria-label="Show activity status"
                   />
                 </div>
               </div>
@@ -1118,8 +1017,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                       checked={form.watch('accountSettings.twoFactorAuth')}
                       onCheckedChange={(checked) =>
                         handleSwitchChange('twoFactorAuth', checked, form)
-                      }
-                      id="two-factor-auth"
+id="two-factor-auth"
                     />
                     {form.watch('accountSettings.twoFactorAuth') && (
                       <Button
@@ -1127,8 +1025,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                         size="sm"
                         onClick={() => {
                           /* Open 2FA setup dialog */
-                        }}
-                      >
+>
                         Configure
                       </Button>
                     )}
@@ -1146,8 +1043,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     checked={form.watch('accountSettings.loginNotifications')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('loginNotifications', checked, form)
-                    }
-                    id="login-notifications"
+id="login-notifications"
                   />
                 </div>
 
@@ -1177,8 +1073,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                       checked={form.watch('accountSettings.dataDownload')}
                       onCheckedChange={(checked) =>
                         handleSwitchChange('dataDownload', checked, form)
-                      }
-                      id="data-download"
+id="data-download"
                     />
                     {form.watch('accountSettings.dataDownload') && (
                       <Button
@@ -1338,8 +1233,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     checked={form.watch('privacy.receiveNotifications')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('receiveNotifications', checked, form)
-                    }
-                    aria-label="Show activity status"
+aria-label="Show activity status"
                   />
                 </div>
               </div>
@@ -1456,8 +1350,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     checked={form.watch('notifications.email_marketing')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('email_marketing', checked, form)
-                    }
-                    aria-label="Email marketing"
+aria-label="Email marketing"
                   />
                 </div>
 
@@ -1472,8 +1365,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     checked={form.watch('notifications.email_updates')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('email_updates', checked, form)
-                    }
-                    aria-label="Email updates"
+aria-label="Email updates"
                   />
                 </div>
 
@@ -1488,8 +1380,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     checked={form.watch('notifications.email_comments')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('email_comments', checked, form)
-                    }
-                    aria-label="Email comments"
+aria-label="Email comments"
                   />
                 </div>
 
@@ -1504,8 +1395,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     checked={form.watch('notifications.email_security')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('email_security', checked, form)
-                    }
-                    aria-label="Email security alerts"
+aria-label="Email security alerts"
                   />
                 </div>
               </div>
@@ -1533,8 +1423,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     checked={form.watch('notifications.push_new_features')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('push_new_features', checked, form)
-                    }
-                    aria-label="Push new features"
+aria-label="Push new features"
                   />
                 </div>
 
@@ -1549,8 +1438,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     checked={form.watch('notifications.push_mentions')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('push_mentions', checked, form)
-                    }
-                    aria-label="Push mentions"
+aria-label="Push mentions"
                   />
                 </div>
 
@@ -1565,8 +1453,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     checked={form.watch('notifications.push_comments')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('push_comments', checked, form)
-                    }
-                    aria-label="Push comments"
+aria-label="Push comments"
                   />
                 </div>
 
@@ -1581,8 +1468,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     checked={form.watch('notifications.push_bookings')}
                     onCheckedChange={(checked) =>
                       handleSwitchChange('push_bookings', checked, form)
-                    }
-                    aria-label="Push booking updates"
+aria-label="Push booking updates"
                   />
                 </div>
               </div>
@@ -1680,8 +1566,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                       value={passwordValues.currentPassword}
                       onChange={(e) =>
                         setPasswordValues({ ...passwordValues, currentPassword: e.target.value })
-                      }
-                      placeholder="Enter your current password"
+placeholder="Enter your current password"
                       data-cy="current-password-input"
                     />
                     <Button
@@ -1712,8 +1597,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                       value={passwordValues.newPassword}
                       onChange={(e) =>
                         setPasswordValues({ ...passwordValues, newPassword: e.target.value })
-                      }
-                      placeholder="Enter your new password"
+placeholder="Enter your new password"
                       data-cy="new-password-input"
                     />
                     <Button
@@ -1747,8 +1631,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                       value={passwordValues.confirmPassword}
                       onChange={(e) =>
                         setPasswordValues({ ...passwordValues, confirmPassword: e.target.value })
-                      }
-                      placeholder="Confirm your new password"
+placeholder="Confirm your new password"
                       data-cy="confirm-password-input"
                     />
                     <Button
@@ -1793,8 +1676,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                   !passwordValues.currentPassword ||
                   !passwordValues.newPassword ||
                   !passwordValues.confirmPassword
-                }
-                data-cy="update-password-button"
+data-cy="update-password-button"
               >
                 {loading ? 'Updating...' : 'Update Password'}
               </Button>
@@ -2015,8 +1897,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
                     variant="outline"
                     onClick={() =>
                       form.setValue('accountSettings.twoFactorAuth', true, { shouldDirty: true })
-                    }
-                    disabled={form.watch('accountSettings.twoFactorAuth')}
+disabled={form.watch('accountSettings.twoFactorAuth')}
                     className="justify-start"
                     data-cy="enable-2fa-button"
                   >
@@ -2037,8 +1918,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
           onCancel={() => {
             setShowAvatarEditor(false);
             setSelectedImage(null);
-          }}
-          isOpen={showAvatarEditor}
+isOpen={showAvatarEditor}
         />
       )}
 
@@ -2088,8 +1968,7 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
               onClick={() => {
                 setShowDeleteConfirmation(false);
                 setDeleteConfirmationText('');
-              }}
-            >
+>
               Cancel
             </Button>
             <Button
@@ -2112,5 +1991,3 @@ export function ProfileForm({ userId, initialData, onSuccess }: ProfileFormProps
         </DialogContent>
       </Dialog>
     </div>
-  );
-}

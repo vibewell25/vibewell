@@ -10,8 +10,6 @@ interface Language {
   dir: 'ltr' | 'rtl';
   country: string;
   flag: string;
-}
-
 export const SUPPORTED_LANGUAGES: Language[] = [
   { code: 'en', name: 'English', dir: 'ltr', country: 'US', flag: '🇺🇸' },
   { code: 'es', name: 'Español', dir: 'ltr', country: 'ES', flag: '🇪🇸' },
@@ -24,8 +22,6 @@ export const DEFAULT_LANGUAGE = SUPPORTED_LANGUAGES[0];
 
 export const RTL_LANGUAGES = SUPPORTED_LANGUAGES.filter((lang) => lang.dir === 'rtl').map(
   (lang) => lang.code,
-);
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); initializeI18n() {
@@ -40,31 +36,20 @@ export async function {
       defaultNS: 'common',
       backend: {
         loadPath: '/locales/{{lng}}/{{ns}}.json',
-      },
-      detection: {
+detection: {
         order: ['querystring', 'cookie', 'localStorage', 'navigator'],
         lookupQuerystring: 'lang',
         lookupCookie: 'i18next',
         lookupLocalStorage: 'i18nextLng',
         caches: ['localStorage', 'cookie'],
-      },
-      interpolation: {
+interpolation: {
         escapeValue: false,
-      },
-    });
-
-  return i18next;
-}
-
+return i18next;
 export function getLanguageDirection(languageCode: string): 'ltr' | 'rtl' {
   const language = SUPPORTED_LANGUAGES.find((lang) => lang.code === languageCode);
   return language.dir || 'ltr';
-}
-
 export function isRTL(languageCode: string): boolean {
   return RTL_LANGUAGES.includes(languageCode);
-}
-
 // Hook to manage document direction
 export function useDocumentDirection(languageCode: string) {
   useEffect(() => {
@@ -75,24 +60,15 @@ export function useDocumentDirection(languageCode: string) {
     return () => {
       document.documentElement.dir = DEFAULT_LANGUAGE.dir;
       document.documentElement.lang = DEFAULT_LANGUAGE.code;
-    };
-  }, [languageCode]);
-}
-
+[languageCode]);
 interface LanguageContextType {
   currentLanguage: Language;
   setLanguage: (code: string) => void;
-}
-
 const LanguageContext = React.createContext<LanguageContextType>({
   currentLanguage: SUPPORTED_LANGUAGES[0],
   setLanguage: () => {},
-});
-
 interface LanguageProviderProps {
   children: ReactNode;
-}
-
 export function LanguageProvider({ children }: LanguageProviderProps) {
   const [currentLanguage, setCurrentLanguage] = useState<Language>(SUPPORTED_LANGUAGES[0]);
 
@@ -101,26 +77,17 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
     if (language) {
       setCurrentLanguage(language);
       i18next.changeLanguage(code);
-    }
-  };
-
-  useDocumentDirection(currentLanguage.code);
+useDocumentDirection(currentLanguage.code);
 
   return (
     <LanguageContext.Provider value={{ currentLanguage, setLanguage }}>
       {children}
     </LanguageContext.Provider>
-  );
-}
-
 export function useLanguage() {
   const context = useContext(LanguageContext);
   if (!context) {
     throw new Error('useLanguage must be used within a LanguageProvider');
-  }
-  return context;
-}
-
+return context;
 // RTL style management
 export function createRTLStyles(styles: Record<string, any>): Record<string, any> {
   const rtlStyles: Record<string, any> = {};
@@ -128,7 +95,7 @@ export function createRTLStyles(styles: Record<string, any>): Record<string, any
   for (const [key, value] of Object.entries(styles)) {
     if (typeof value === 'object') {
       rtlStyles[key] = createRTLStyles(value);
-    } else {
+else {
       switch (key) {
         case 'left':
           rtlStyles.right = value;
@@ -156,13 +123,7 @@ export function createRTLStyles(styles: Record<string, any>): Record<string, any
           break;
         default:
           rtlStyles[key] = value;
-      }
-    }
-  }
-
-  return rtlStyles;
-}
-
+return rtlStyles;
 // Language selector component
 export function LanguageSelector() {
   const { currentLanguage, setLanguage } = useLanguage();
@@ -180,32 +141,19 @@ export function LanguageSelector() {
         </option>
       ))}
     </select>
-  );
-}
-
 i18next.use(initReactI18next).init({
   resources: {
     en: {
       translation: {
         // English translations
-      },
-    },
-    es: {
+es: {
       translation: {
         // Spanish translations
-      },
-    },
-    fr: {
+fr: {
       translation: {
         // French translations
-      },
-    },
-  },
-  lng: SUPPORTED_LANGUAGES[0].code,
+lng: SUPPORTED_LANGUAGES[0].code,
   fallbackLng: SUPPORTED_LANGUAGES[0].code,
   interpolation: {
     escapeValue: false,
-  },
-});
-
 export default i18next;

@@ -373,10 +373,10 @@ import { Redis } from <span class="cstat-no" title="statement not covered" >'@up
 &nbsp;
 // Create a new ratelimiter that allows 100 requests per minute
 const ratelimit = <span class="cstat-no" title="statement not covered" >new Ratelimit({</span>
-  redis: Redis?.fromEnv(),
-  limiter: Ratelimit?.slidingWindow(
-    Number(process?.env['RATE_LIMIT_MAX_REQUESTS']) || 100,
-    `${Number(process?.env['RATE_LIMIT_WINDOW']) || 60000}ms`
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(
+    Number(process.env['RATE_LIMIT_MAX_REQUESTS']) || 100,
+    `${Number(process.env['RATE_LIMIT_WINDOW']) || 60000}ms`
   ),
 });
 &nbsp;
@@ -406,16 +406,16 @@ const publicPaths = <span class="cstat-no" title="statement not covered" >[</spa
   '/api/health',
   '/_next/(.)*',
   '/static/(.)*',
-  '/favicon?.ico',
+  '/favicon.ico',
   '/public/(.)*',
 ];
 &nbsp;
 export async function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >middleware(</span></span>req: NextRequest) {
-  const res = <span class="cstat-no" title="statement not covered" >NextResponse?.next();</span>
-  const path = <span class="cstat-no" title="statement not covered" >req?.nextUrl.pathname;</span>
+  const res = <span class="cstat-no" title="statement not covered" >NextResponse.next();</span>
+  const path = <span class="cstat-no" title="statement not covered" >req.nextUrl.pathname;</span>
 &nbsp;
   // Skip middleware for public paths and static files
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (publicPaths?.some(<span class="fstat-no" title="function not covered" >(p</span>) =&gt; <span class="cstat-no" title="statement not covered" >path?.match(new RegExp(`^${p}$`)))) {</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (publicPaths.some(<span class="fstat-no" title="function not covered" >(p</span>) =&gt; <span class="cstat-no" title="statement not covered" >path.match(new RegExp(`^${p}$`)))) {</span></span>
 <span class="cstat-no" title="statement not covered" >    return res;</span>
   }
 &nbsp;
@@ -424,40 +424,40 @@ export async function <span class="cstat-no" title="statement not covered" ><spa
 &nbsp;
 &nbsp;
     // No session - redirect to login
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!session?.user) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!session.user) {</span>
 &nbsp;
-      const loginUrl = <span class="cstat-no" title="statement not covered" >new URL('/api/auth/login', req?.url);</span>
-<span class="cstat-no" title="statement not covered" >      loginUrl?.searchParams.set('returnTo', path);</span>
-<span class="cstat-no" title="statement not covered" >      return NextResponse?.redirect(loginUrl);</span>
+      const loginUrl = <span class="cstat-no" title="statement not covered" >new URL('/api/auth/login', req.url);</span>
+<span class="cstat-no" title="statement not covered" >      loginUrl.searchParams.set('returnTo', path);</span>
+<span class="cstat-no" title="statement not covered" >      return NextResponse.redirect(loginUrl);</span>
     }
 &nbsp;
     // Apply rate limiting
-    const ip = <span class="cstat-no" title="statement not covered" >req.headers.get('x-forwarded-for')?.split(',')[0] ?? '127.0.0.1';</span>
-    const { success } = <span class="cstat-no" title="statement not covered" >await ratelimit?.limit(ip);</span>
+    const ip = <span class="cstat-no" title="statement not covered" >req.headers.get('x-forwarded-for').split(',')[0] ?? '127.0.0.1';</span>
+    const { success } = <span class="cstat-no" title="statement not covered" >await ratelimit.limit(ip);</span>
     
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!success) {</span>
 <span class="cstat-no" title="statement not covered" >      return new NextResponse('Too Many Requests', { status: 429 });</span>
     }
 &nbsp;
     // Add user info to headers for API routes
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (path?.startsWith('/api/')) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (path.startsWith('/api/')) {</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      res?.headers.set('X-User-ID', session?.user.sub);</span>
+<span class="cstat-no" title="statement not covered" >      res.headers.set('X-User-ID', session.user.sub);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      res?.headers.set('X-User-Role', session?.user.role || 'user');</span>
+<span class="cstat-no" title="statement not covered" >      res.headers.set('X-User-Role', session.user.role || 'user');</span>
     }
 &nbsp;
     // Add security headers
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    res?.headers.set('X-Frame-Options', 'DENY');</span>
+<span class="cstat-no" title="statement not covered" >    res.headers.set('X-Frame-Options', 'DENY');</span>
 &nbsp;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    res?.headers.set('X-Content-Type-Options', 'nosniff');</span>
+<span class="cstat-no" title="statement not covered" >    res.headers.set('X-Content-Type-Options', 'nosniff');</span>
 &nbsp;
 &nbsp;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    res?.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');</span>
-<span class="cstat-no" title="statement not covered" >    res?.headers.set(</span>
+<span class="cstat-no" title="statement not covered" >    res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');</span>
+<span class="cstat-no" title="statement not covered" >    res.headers.set(</span>
 &nbsp;
       'Content-Security-Policy',
 &nbsp;
@@ -473,20 +473,20 @@ export async function <span class="cstat-no" title="statement not covered" ><spa
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return res;</span>
   } catch (error) {
-<span class="cstat-no" title="statement not covered" >    console?.error('Auth middleware error:', error);</span>
+<span class="cstat-no" title="statement not covered" >    console.error('Auth middleware error:', error);</span>
     
 &nbsp;
     // On error, redirect to login for non-API routes
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!path?.startsWith('/api/')) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!path.startsWith('/api/')) {</span>
 &nbsp;
-      const loginUrl = <span class="cstat-no" title="statement not covered" >new URL('/api/auth/login', req?.url);</span>
-<span class="cstat-no" title="statement not covered" >      loginUrl?.searchParams.set('returnTo', path);</span>
-<span class="cstat-no" title="statement not covered" >      return NextResponse?.redirect(loginUrl);</span>
+      const loginUrl = <span class="cstat-no" title="statement not covered" >new URL('/api/auth/login', req.url);</span>
+<span class="cstat-no" title="statement not covered" >      loginUrl.searchParams.set('returnTo', path);</span>
+<span class="cstat-no" title="statement not covered" >      return NextResponse.redirect(loginUrl);</span>
     }
 &nbsp;
     // For API routes, return unauthorized
 <span class="cstat-no" title="statement not covered" >    return new NextResponse(</span>
-      JSON?.stringify({ error: 'Unauthorized' }),
+      JSON.stringify({ error: 'Unauthorized' }),
 &nbsp;
 &nbsp;
       { status: 401, headers: { 'Content-Type': 'application/json' } }
@@ -502,12 +502,12 @@ export const <span class="cstat-no" title="statement not covered" >config </span
      * - _next/static (static files)
 &nbsp;
      * - _next/image (image optimization files)
-     * - favicon?.ico (favicon file)
+     * - favicon.ico (favicon file)
      * - public (public files)
      */
 &nbsp;
 &nbsp;
-    '/((?!_next/static|_next/image|favicon?.ico|public).*)',
+    '/((?!_next/static|_next/image|favicon.ico|public).*)',
   ],
 };
 &nbsp;</pre></td></tr></table></pre>
@@ -517,7 +517,7 @@ export const <span class="cstat-no" title="statement not covered" >config </span
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../prettify.js"></script>
         <script>

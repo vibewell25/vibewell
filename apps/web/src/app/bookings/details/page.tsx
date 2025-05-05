@@ -1,4 +1,3 @@
-'use client';;
 import { useState } from 'react';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { Button } from '@/components/ui/Button';
@@ -14,7 +13,6 @@ const provider = {
   service: 'Hair Styling',
   location: 'Cait Up & Ups · Chicago',
   price: '€00',
-};
 // Mock data for available dates
 const availableDates = [
   { day: 24, weekday: 'Sa', isSelected: true, isAvailable: true },
@@ -50,7 +48,7 @@ export default function BookingDetailsPage() {
                     : date.isAvailable
                       ? 'bg-gray-100 text-gray-700'
                       : 'bg-gray-100 text-gray-400'
-                }`}
+`}
                 disabled={!date.isAvailable}
               >
                 <span className="text-xs">{date.weekday}</span>
@@ -114,5 +112,3 @@ export default function BookingDetailsPage() {
         </div>
       </div>
     </MobileLayout>
-  );
-}

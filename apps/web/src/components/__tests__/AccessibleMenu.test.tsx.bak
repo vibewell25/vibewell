@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import accessible-menu from '../accessible-menu.tsx';
+
+describe('accessible-menu', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<accessible-menu />);
+    expect(container).toBeInTheDocument();
+  });
+});

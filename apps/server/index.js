@@ -20,20 +20,12 @@ const port = process.env.PORT || 3000;
 // Initialize Prisma client
 const prisma = new PrismaClient();
 
-// Safe integer operation moved after initialization
-if (prisma > Number.MAX_SAFE_INTEGER || prisma < Number.MIN_SAFE_INTEGER) {
-  console.warn('Unexpected prisma value');
-}
-
 // Initialize Redis client
 let redisClient;
 if (process.env.REDIS_URL) {
   redisClient = redis.createClient({
     url: process.env.REDIS_URL,
-  });
-  redisClient.connect().catch(console.error);
-}
-
+redisClient.connect().catch(console.error);
 app.prepare().then(() => {
   const server = express();
 
@@ -48,9 +40,7 @@ app.prepare().then(() => {
   // Health check endpoint
   server.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date() });
-  });
-
-  // API routes
+// API routes
   server.use('/api', require('./routes'));
   // Skin analysis endpoint
   server.use('/api/skin-analysis', require('./routes/skinAnalysis'));
@@ -65,23 +55,16 @@ app.prepare().then(() => {
       http_requests_total{method="get",code="200"} 100
       http_requests_total{method="post",code="200"} 50
     `);
-  });
-
-  // Let Next.js handle all other routes
+// Let Next.js handle all other routes
   server.all('*', (req, res) => {
     return handle(req, res);
-  });
-
-  // Start server
+// Start server
   server.listen(port, (err) => {
     if (err) throw err;
     console.log(`> Ready on http://localhost:${port}`);
-  });
-}).catch((ex) => {
+).catch((ex) => {
   console.error(ex.stack);
   process.exit(1);
-});
-
 // Graceful shutdown
 const gracefulShutdown = async () => {
   const start = Date.now();
@@ -94,11 +77,7 @@ const gracefulShutdown = async () => {
   // Close Redis connection if it exists
   if (redisClient) {
     await redisClient.quit();
-  }
-  
-  process.exit(0);
-};
-
+process.exit(0);
 // Listen for termination signals
 process.on('SIGTERM', gracefulShutdown);
 process.on('SIGINT', gracefulShutdown); 

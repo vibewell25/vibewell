@@ -14,35 +14,25 @@ describe('MessageInput Component', () => {
   
   beforeEach(() => {
     jest.clearAllMocks();
-  });
-  
-  it('renders the input and button correctly', () => {
+it('renders the input and button correctly', () => {
     render(
       <MessageInput
         newMessage=""
         onMessageChange={mockOnMessageChange}
         onSubmit={mockOnSubmit}
       />
-    );
-    
-    expect(screen.getByRole('textbox', { name: /message input/i })).toBeInTheDocument();
+expect(screen.getByRole('textbox', { name: /message input/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /send message/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /send message/i })).toBeDisabled();
-  });
-  
-  it('enables the button when the input has text', () => {
+it('enables the button when the input has text', () => {
     render(
       <MessageInput
         newMessage="Hello there"
         onMessageChange={mockOnMessageChange}
         onSubmit={mockOnSubmit}
       />
-    );
-    
-    expect(screen.getByRole('button', { name: /send message/i })).toBeEnabled();
-  });
-  
-  it('calls onMessageChange when input value changes', async () => {
+expect(screen.getByRole('button', { name: /send message/i })).toBeEnabled();
+it('calls onMessageChange when input value changes', async () => {
     const user = userEvent.setup();
     
     render(
@@ -51,9 +41,7 @@ describe('MessageInput Component', () => {
         onMessageChange={mockOnMessageChange}
         onSubmit={mockOnSubmit}
       />
-    );
-    
-    const input = screen.getByRole('textbox', { name: /message input/i });
+const input = screen.getByRole('textbox', { name: /message input/i });
     await user.type(input, 'Hello');
     
     expect(mockOnMessageChange).toHaveBeenCalledTimes(5); // Once for each character
@@ -62,24 +50,18 @@ describe('MessageInput Component', () => {
     expect(mockOnMessageChange).toHaveBeenCalledWith('l');
     expect(mockOnMessageChange).toHaveBeenCalledWith('l');
     expect(mockOnMessageChange).toHaveBeenCalledWith('o');
-  });
-  
-  it('calls onSubmit when the form is submitted', () => {
+it('calls onSubmit when the form is submitted', () => {
     render(
       <MessageInput
         newMessage="Hello there"
         onMessageChange={mockOnMessageChange}
         onSubmit={mockOnSubmit}
       />
-    );
-    
-    const form = screen.getByRole('button', { name: /send message/i }).closest('form');
+const form = screen.getByRole('button', { name: /send message/i }).closest('form');
     fireEvent.submit(form!);
     
     expect(mockOnSubmit).toHaveBeenCalledTimes(1);
-  });
-  
-  it('calls onSubmit when the button is clicked', async () => {
+it('calls onSubmit when the button is clicked', async () => {
     const user = userEvent.setup();
     
     render(
@@ -88,15 +70,11 @@ describe('MessageInput Component', () => {
         onMessageChange={mockOnMessageChange}
         onSubmit={mockOnSubmit}
       />
-    );
-    
-    const button = screen.getByRole('button', { name: /send message/i });
+const button = screen.getByRole('button', { name: /send message/i });
     await user.click(button);
     
     expect(mockOnSubmit).toHaveBeenCalledTimes(1);
-  });
-  
-  it('disables the input and button when disabled prop is true', () => {
+it('disables the input and button when disabled prop is true', () => {
     render(
       <MessageInput
         newMessage="Hello there"
@@ -104,48 +82,34 @@ describe('MessageInput Component', () => {
         onSubmit={mockOnSubmit}
         disabled={true}
       />
-    );
-    
-    expect(screen.getByRole('textbox', { name: /message input/i })).toBeDisabled();
+expect(screen.getByRole('textbox', { name: /message input/i })).toBeDisabled();
     expect(screen.getByRole('button', { name: /send message/i })).toBeDisabled();
-  });
-  
-  it('has no accessibility violations', async () => {
+it('has no accessibility violations', async () => {
     const { container } = render(
       <MessageInput
         newMessage="Hello there"
         onMessageChange={mockOnMessageChange}
         onSubmit={mockOnSubmit}
       />
-    );
-    
-    const results = await axe(container);
+const results = await axe(container);
     expect(results).toHaveNoViolations();
-  });
-  
-  it('prevents default form submission behavior', () => {
+it('prevents default form submission behavior', () => {
     const mockEvent = {
       preventDefault: jest.fn(),
-    };
-    
-    render(
+render(
       <MessageInput
         newMessage="Hello there"
         onMessageChange={mockOnMessageChange}
         onSubmit={(e: any) => {
           mockOnSubmit(e);
           e.preventDefault();
-        }}
+}
       />
-    );
-    
-    const form = screen.getByRole('button', { name: /send message/i }).closest('form');
+const form = screen.getByRole('button', { name: /send message/i }).closest('form');
     fireEvent.submit(form!, mockEvent);
     
     expect(mockOnSubmit).toHaveBeenCalled();
-  });
-  
-  it('applies proper focus states for accessibility', async () => {
+it('applies proper focus states for accessibility', async () => {
     const user = userEvent.setup();
     
     render(
@@ -154,14 +118,10 @@ describe('MessageInput Component', () => {
         onMessageChange={mockOnMessageChange}
         onSubmit={mockOnSubmit}
       />
-    );
-    
-    const input = screen.getByRole('textbox', { name: /message input/i });
+const input = screen.getByRole('textbox', { name: /message input/i });
     await user.tab();
     
     expect(input).toHaveFocus();
     
     await user.tab();
     expect(screen.getByRole('button', { name: /send message/i })).toHaveFocus();
-  });
-}); 

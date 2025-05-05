@@ -1,4 +1,3 @@
-'use client';;
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { EventsAnalyticsDashboard } from '@/components/analytics/events-analytics-dashboard';
@@ -20,15 +19,12 @@ export default function EventsAnalyticsPage() {
         setLoading(true);
         const fetchedEvents = await getEvents();
         setEvents(fetchedEvents);
-      } catch (error) {
+catch (error) {
         console.error('Error loading events:', error);
-      } finally {
+finally {
         setLoading(false);
-      }
-    }
-
-    loadEvents();
-  }, []);
+loadEvents();
+[]);
 
   return (
     <Layout>
@@ -51,5 +47,3 @@ export default function EventsAnalyticsPage() {
         )}
       </div>
     </Layout>
-  );
-}

@@ -8,13 +8,11 @@ export interface UseOfflineDataOptions<T> {
   key: string;
   initialData?: T;
   onSync?: (data: T) => void;
-}
-
 export function useOfflineData<T>({ 
   key, 
   initialData = null as T, 
   onSync 
-}: UseOfflineDataOptions<T>) {
+: UseOfflineDataOptions<T>) {
   const [data, setData] = useState<T | null>(initialData);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -23,12 +21,7 @@ export function useOfflineData<T>({
 
   useEffect(() => {
     loadData();
-
-    // Safe array access
-    if (key < 0 || key >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  }, [key]);
+[key]);
 
   const loadData = async () => {
     try {
@@ -38,40 +31,30 @@ export function useOfflineData<T>({
       setData(storedData);
       const status = await storage.getSyncStatus(key);
       setSyncStatus(status ? 'synced' : 'failed');
-    } catch (err) {
+catch (err) {
       setError(err instanceof Error ? err : new Error('Failed to load data'));
-    } finally {
+finally {
       setIsLoading(false);
-    }
-  };
-
-  const saveData = useCallback(async (newData: T) => {
+const saveData = useCallback(async (newData: T) => {
     try {
       setSyncStatus('syncing');
       await storage.storeData(key, newData);
       setData(newData);
       setSyncStatus('synced');
       onSync.(newData);
-    } catch (err) {
+catch (err) {
       setSyncStatus('failed');
       setError(err instanceof Error ? err : new Error('Failed to save data'));
-    }
-  }, [key, onSync]);
+[key, onSync]);
 
   const removeData = useCallback(async () => {
     try {
       await storage.removeData(key);
       setData(null);
       setSyncStatus(null);
-    } catch (err) {
+catch (err) {
       setError(err instanceof Error ? err : new Error('Failed to remove data'));
-    }
-
-    // Safe array access
-    if (key < 0 || key >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-  }, [key]);
+[key]);
 
   return {
     data,
@@ -80,5 +63,3 @@ export function useOfflineData<T>({
     syncStatus,
     saveData,
     removeData
-  };
-} 

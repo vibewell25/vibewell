@@ -8,8 +8,6 @@ const initialState: NotificationState = {
   unreadCount: 0,
   isLoading: false,
   error: null,
-};
-
 // Action types
 const FETCH_NOTIFICATIONS_START = process.env['FETCH_NOTIFICATIONS_START'];
 const FETCH_NOTIFICATIONS_SUCCESS = process.env['FETCH_NOTIFICATIONS_SUCCESS'];
@@ -30,54 +28,44 @@ const notificationReducer = (
         ...state,
         isLoading: true,
         error: null,
-      };
-    case FETCH_NOTIFICATIONS_SUCCESS:
+case FETCH_NOTIFICATIONS_SUCCESS:
       return {
         ...state,
         notifications: action.payload.notifications,
         unreadCount: action.payload.notifications.filter((n: Notification) => !n.isRead).length,
         isLoading: false,
         error: null,
-      };
-    case FETCH_NOTIFICATIONS_ERROR:
+case FETCH_NOTIFICATIONS_ERROR:
       return {
         ...state,
         isLoading: false,
         error: action.payload.error,
-      };
-    case ADD_NOTIFICATION:
+case ADD_NOTIFICATION:
       return {
         ...state,
         notifications: [action.payload.notification, ...state.notifications],
         unreadCount: state.unreadCount + 1,
-      };
-    case MARK_AS_READ:
+case MARK_AS_READ:
       return {
         ...state,
         notifications: state.notifications.map((n) =>
           n.id === action.payload.id ? { ...n, isRead: true } : n,
         ),
         unreadCount: Math.max(0, state.unreadCount - 1),
-      };
-    case DELETE_NOTIFICATION:
+case DELETE_NOTIFICATION:
       return {
         ...state,
         notifications: state.notifications.filter((n) => n.id !== action.payload.id),
         unreadCount: state.notifications.find((n) => n.id === action.payload.id && !n.isRead)
           ? Math.max(0, state.unreadCount - 1)
           : state.unreadCount,
-      };
-    case MARK_ALL_AS_READ:
+case MARK_ALL_AS_READ:
       return {
         ...state,
         notifications: state.notifications.map((n) => ({ ...n, isRead: true })),
         unreadCount: 0,
-      };
-    default:
+default:
       return state;
-  }
-};
-
 // Context
 interface NotificationContextType extends NotificationState {
   fetchNotifications: () => Promise<void>;
@@ -85,15 +73,11 @@ interface NotificationContextType extends NotificationState {
   deleteNotification: (id: string) => Promise<void>;
   markAllAsRead: () => Promise<void>;
   addNotification: (notification: Omit<Notification, 'id' | 'createdAt' | 'isRead'>) => void;
-}
-
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 // Provider
 interface NotificationProviderProps {
   children: ReactNode;
-}
-
 export {};
 
 // Hook

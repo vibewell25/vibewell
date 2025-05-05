@@ -15,13 +15,8 @@ interface Subscription {
     name: string;
     price: number;
     interval: 'month' | 'year';
-  };
-}
-
 interface SubscriptionManagementProps {
   className?: string;
-}
-
 export function SubscriptionManagement({ className = '' }: SubscriptionManagementProps) {
   const { user } = useAuth();
   const [subscription, setSubscription] = useState<Subscription | null>(null);
@@ -30,7 +25,7 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
 
   useEffect(() => {
     fetchSubscription();
-  }, []);
+[]);
 
   const fetchSubscription = async ( {
   const start = Date.now();
@@ -40,19 +35,15 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
       if (!response.ok) throw new Error('Failed to fetch subscription');
       const data = await response.json();
       setSubscription(data);
-    } catch (error) {
+catch (error) {
       console.error('Error fetching subscription:', error);
       toast({
         title: 'Error',
         description: 'Failed to load subscription details',
         variant: 'destructive',
-      });
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  const handleCancelSubscription = async ( {
+const handleCancelSubscription = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!subscription) return;
@@ -61,9 +52,7 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
       setCancelling(true);
       const response = await fetch('/api/subscriptions/me/cancel', {
         method: 'POST',
-      });
-
-      if (!response.ok) throw new Error('Failed to cancel subscription');
+if (!response.ok) throw new Error('Failed to cancel subscription');
 
       const data = await response.json();
       setSubscription(data);
@@ -71,20 +60,15 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
       toast({
         title: 'Subscription Cancelled',
         description: 'Your subscription will end at the current billing period',
-      });
-    } catch (error) {
+catch (error) {
       console.error('Error cancelling subscription:', error);
       toast({
         title: 'Error',
         description: 'Failed to cancel subscription',
         variant: 'destructive',
-      });
-    } finally {
+finally {
       setCancelling(false);
-    }
-  };
-
-  const handleReactivateSubscription = async ( {
+const handleReactivateSubscription = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     if (!subscription) return;
@@ -92,9 +76,7 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
     try {
       const response = await fetch('/api/subscriptions/me/reactivate', {
         method: 'POST',
-      });
-
-      if (!response.ok) throw new Error('Failed to reactivate subscription');
+if (!response.ok) throw new Error('Failed to reactivate subscription');
 
       const data = await response.json();
       setSubscription(data);
@@ -102,26 +84,18 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
       toast({
         title: 'Subscription Reactivated',
         description: 'Your subscription has been successfully reactivated',
-      });
-    } catch (error) {
+catch (error) {
       console.error('Error reactivating subscription:', error);
       toast({
         title: 'Error',
         description: 'Failed to reactivate subscription',
         variant: 'destructive',
-      });
-    }
-  };
-
-  if (loading) {
+if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
         <Icons.Spinner className="h-8 w-8 animate-spin" />
       </div>
-    );
-  }
-
-  if (!subscription) {
+if (!subscription) {
     return (
       <Card className={className}>
         <CardHeader>
@@ -134,10 +108,7 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
           <Button onClick={() => (window.location.href = '/pricing')}>View Plans</Button>
         </CardContent>
       </Card>
-    );
-  }
-
-  return (
+return (
     <Card className={className}>
       <CardHeader>
         <CardTitle>Your Subscription</CardTitle>
@@ -193,5 +164,3 @@ export function SubscriptionManagement({ className = '' }: SubscriptionManagemen
         </div>
       </CardContent>
     </Card>
-  );
-}

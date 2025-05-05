@@ -1,4 +1,3 @@
-'use client';;
 import React from 'react';
 import { cn } from '@/lib/utils';
 
@@ -7,8 +6,6 @@ export interface PaginationProps extends React.HTMLAttributes<HTMLDivElement> {
   totalPages?: number;
   onPageChange?: (page: number) => void;
   className?: string;
-}
-
 export function Pagination({
   currentPage,
   totalPages,
@@ -16,29 +13,22 @@ export function Pagination({
   className,
   children,
   ...props
-}: PaginationProps) {
+: PaginationProps) {
   return (
     <div className={cn('flex items-center gap-1', className)} {...props}>
       {children}
     </div>
-  );
-}
-
 export function PaginationContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return <div className={cn('flex flex-row items-center gap-1', className)} {...props} />;
-}
-
 export function PaginationItem({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return <div className={cn('', className)} {...props} />;
-}
-
 export function PaginationLink({
   className,
   isActive,
   ...props
-}: React.ComponentProps<'button'> & {
+: React.ComponentProps<'button'> & {
   isActive?: boolean;
-}) {
+) {
   return (
     <button
       className={cn(
@@ -50,9 +40,6 @@ export function PaginationLink({
       )}
       {...props}
     />
-  );
-}
-
 export function PaginationPrevious({ className, ...props }: React.ComponentProps<'button'>) {
   return (
     <button
@@ -78,9 +65,6 @@ export function PaginationPrevious({ className, ...props }: React.ComponentProps
         <path d="m15 18-6-6 6-6" />
       </svg>
     </button>
-  );
-}
-
 export function PaginationNext({ className, ...props }: React.ComponentProps<'button'>) {
   return (
     <button
@@ -106,9 +90,6 @@ export function PaginationNext({ className, ...props }: React.ComponentProps<'bu
         <path d="m9 18 6-6-6-6" />
       </svg>
     </button>
-  );
-}
-
 export function PaginationEllipsis({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
   return (
     <span className={cn('flex h-8 w-8 items-center justify-center', className)} {...props}>
@@ -130,5 +111,3 @@ export function PaginationEllipsis({ className, ...props }: React.HTMLAttributes
       </svg>
       <span className="sr-only">More pages</span>
     </span>
-  );
-}

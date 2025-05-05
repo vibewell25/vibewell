@@ -15,8 +15,6 @@ const DEFAULT_MEDIA_SOURCES = 'https://*.amazonaws.com';
 export type SecurityHeadersConfig = {
   isDevelopment: boolean;
   nonce?: string;
-};
-
 /**
  * Generate a cryptographically secure random nonce
  * @returns A base64 encoded nonce string
@@ -27,13 +25,10 @@ export function generateNonce(): string {
     const array = new Uint8Array(16);
     window.crypto.getRandomValues(array);
     return btoa(String.fromCharCode.apply(null, Array.from(array)));
-  } else {
+else {
     // Server-side
     const crypto = require('crypto');
     return crypto.randomBytes(16).toString('base64');
-  }
-}
-
 /**
  * Generate Content Security Policy header value
  * @param config Security headers configuration
@@ -88,8 +83,6 @@ export function getContentSecurityPolicy(config: SecurityHeadersConfig): string 
   ];
 
   return directives.join('; ');
-}
-
 /**
  * Generate Permissions Policy header value
  * @returns Permissions Policy header value string
@@ -128,8 +121,6 @@ export function getPermissionsPolicy(): string {
   ];
 
   return permissions.join(', ');
-}
-
 /**
  * Generate all security headers
  * @param config Security headers configuration
@@ -157,16 +148,10 @@ export function getSecurityHeaders(config: SecurityHeadersConfig): Record<string
     
     // Content Security Policy
     'Content-Security-Policy': getContentSecurityPolicy(config),
-  };
-
-  // HSTS header - only in production
+// HSTS header - only in production
   if (!config.isDevelopment) {
     headers['Strict-Transport-Security'] = 'max-age=63072000; includeSubDomains; preload';
-  }
-
-  return headers;
-}
-
+return headers;
 /**
  * Apply security headers to a response
  * @param headers Headers object to modify
@@ -182,16 +167,11 @@ export function applySecurityHeaders(
   Object.entries(securityHeaders).forEach(([key, value]) => {
     if (headers instanceof Headers) {
       headers.set(key, value);
-    } else {
+else {
       headers[key] = value;
-    }
-  });
-}
-
 export default {
   getSecurityHeaders,
   applySecurityHeaders,
   generateNonce,
   getContentSecurityPolicy,
   getPermissionsPolicy,
-}; 

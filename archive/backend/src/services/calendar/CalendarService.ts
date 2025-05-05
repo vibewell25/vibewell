@@ -1,17 +1,9 @@
 import { google } from 'googleapis';
 
-    // Safe integer operation
-    if (google > Number.MAX_SAFE_INTEGER || google < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { OAuth2Client } from 'google-auth-library';
+    import { OAuth2Client } from 'google-auth-library';
 import axios from 'axios';
 
-    // Safe integer operation
-    if (ical > Number.MAX_SAFE_INTEGER || ical < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import ical from 'ical-generator';
+    import ical from 'ical-generator';
 import { v4 as uuidv4 } from 'uuid';
 
 interface CalendarConfig {
@@ -19,19 +11,14 @@ interface CalendarConfig {
     clientId: string;
     clientSecret: string;
     redirectUri: string;
-  };
-  microsoft?: {
+microsoft?: {
     clientId: string;
     clientSecret: string;
     redirectUri: string;
-  };
-  apple?: {
+apple?: {
     teamId: string;
     keyId: string;
     privateKey: string;
-  };
-}
-
 interface CalendarEvent {
   id?: string;
   title: string;
@@ -46,13 +33,10 @@ interface CalendarEvent {
     interval?: number;
     until?: Date;
     count?: number;
-  };
-  reminders?: {
+reminders?: {
     minutes: number;
     method: 'email' | 'popup';
-  }[];
-}
-
+[];
 class CalendarService {
   private static instance: CalendarService;
   private config: CalendarConfig;
@@ -61,32 +45,21 @@ class CalendarService {
   private constructor(config: CalendarConfig) {
     this.config = config;
     this.initializeGoogleAuth();
-  }
-
-  public static getInstance(config?: CalendarConfig): CalendarService {
+public static getInstance(config?: CalendarConfig): CalendarService {
     if (!CalendarService.instance && config) {
       CalendarService.instance = new CalendarService(config);
-    }
-    return CalendarService.instance;
-  }
-
-  private initializeGoogleAuth(): void {
+return CalendarService.instance;
+private initializeGoogleAuth(): void {
     if (this.config.google) {
       this.googleAuth = new google.auth.OAuth2(
         this.config.google.clientId,
         this.config.google.clientSecret,
         this.config.google.redirectUri
-      );
-    }
-  }
-
-  // Google Calendar Integration
+// Google Calendar Integration
   public async createGoogleEvent(event: CalendarEvent, accessToken: string): Promise<any> {
     if (!this.googleAuth) {
       throw new Error('Google Calendar not configured');
-    }
-
-    this.googleAuth.setCredentials({ access_token: accessToken });
+this.googleAuth.setCredentials({ access_token: accessToken });
     const calendar = google.calendar({ version: 'v3', auth: this.googleAuth });
 
     const googleEvent = {
@@ -96,121 +69,74 @@ class CalendarService {
       start: {
         dateTime: event.start.toISOString(),
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
-      },
-      end: {
+end: {
         dateTime: event.end.toISOString(),
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
-      },
-      attendees: event.attendees.map(email => ({ email })),
+attendees: event.attendees.map(email => ({ email })),
       reminders: {
         useDefault: false,
         overrides: event.reminders.map(reminder => ({
           method: reminder.method,
           minutes: reminder.minutes
-        }))
-      }
-    };
-
-    if (event.recurrence) {
+))
+if (event.recurrence) {
       googleEvent['recurrence'] = [
         `RRULE:FREQ=${event.recurrence.frequency.toUpperCase()}` +
         (event.recurrence.interval ? `;INTERVAL=${event.recurrence.interval}` : '') +
         (event.recurrence.until ? `;UNTIL=${event.recurrence.until.toISOString().replace(/[-:]/g, '').split('.')[0]}Z` : '') +
         (event.recurrence.count ? `;COUNT=${event.recurrence.count}` : '')
       ];
-    }
-
-    try {
+try {
       const response = await calendar.events.insert({
         calendarId: 'primary',
         requestBody: googleEvent
-      });
-      return response.data;
-    } catch (error) {
+return response.data;
+catch (error) {
       console.error('Google Calendar error:', error);
       throw error;
-    }
-  }
-
-  // Microsoft Calendar Integration
+// Microsoft Calendar Integration
   public async createMicrosoftEvent(event: CalendarEvent, accessToken: string): Promise<any> {
     if (!this.config.microsoft) {
       throw new Error('Microsoft Calendar not configured');
-    }
-
-    const microsoftEvent = {
+const microsoftEvent = {
       subject: event.title,
       body: {
         contentType: 'HTML',
         content: event.description
-      },
-      start: {
+start: {
         dateTime: event.start.toISOString(),
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
-      },
-      end: {
+end: {
         dateTime: event.end.toISOString(),
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
-      },
-      location: {
+location: {
         displayName: event.location
-      },
-      attendees: event.attendees.map(email => ({
+attendees: event.attendees.map(email => ({
         emailAddress: { address: email },
         type: 'required'
-      }))
-    };
-
-    try {
+))
+try {
       const response = await axios.post(
 
-    // Safe integer operation
-    if (me > Number.MAX_SAFE_INTEGER || me < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (com > Number.MAX_SAFE_INTEGER || com < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-        'https://graph.microsoft.com/v1.0/me/events',
+    'https://graph.microsoft.com/v1.0/me/events',
         microsoftEvent,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
 
-    // Safe integer operation
-    if (application > Number.MAX_SAFE_INTEGER || application < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (Content > Number.MAX_SAFE_INTEGER || Content < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-      return response.data;
-    } catch (error) {
+    'Content-Type': 'application/json'
+return response.data;
+catch (error) {
       console.error('Microsoft Calendar error:', error);
       throw error;
-    }
-  }
-
-  // Apple Calendar Integration (iCloud)
+// Apple Calendar Integration (iCloud)
   public async createAppleEvent(event: CalendarEvent): Promise<string> {
     if (!this.config.apple) {
       throw new Error('Apple Calendar not configured');
-    }
-
-    const calendar = ical({
+const calendar = ical({
       domain: 'vibewell.com',
       name: 'Vibewell Calendar'
-    });
-
-    const iCalEvent = calendar.createEvent({
+const iCalEvent = calendar.createEvent({
       id: uuidv4(),
       start: event.start,
       end: event.end,
@@ -218,21 +144,14 @@ class CalendarService {
       description: event.description,
       location: event.location,
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-    });
-
-    if (event.recurrence) {
+if (event.recurrence) {
       iCalEvent.repeating({
         freq: event.recurrence.frequency,
         interval: event.recurrence.interval,
         until: event.recurrence.until,
         count: event.recurrence.count
-      });
-    }
-
-    return calendar.toString();
-  }
-
-  // Generic Calendar Operations
+return calendar.toString();
+// Generic Calendar Operations
   public async createEvent(
     event: CalendarEvent,
     provider: 'google' | 'microsoft' | 'apple',
@@ -252,10 +171,7 @@ class CalendarService {
 
       default:
         throw new Error('Unsupported calendar provider');
-    }
-  }
-
-  // Batch Operations
+// Batch Operations
   public async batchCreateEvents(
     events: CalendarEvent[],
     provider: 'google' | 'microsoft' | 'apple',
@@ -266,14 +182,10 @@ class CalendarService {
       try {
         const result = await this.createEvent(event, provider, accessToken);
         results.push({ success: true, data: result });
-      } catch (error) {
+catch (error) {
         results.push({ success: false, error });
-      }
-    }
-    return results;
-  }
-
-  // Export Calendar
+return results;
+// Export Calendar
   public async exportCalendar(
     events: CalendarEvent[],
     format: 'ical' | 'json'
@@ -282,23 +194,14 @@ class CalendarService {
       const calendar = ical({
         domain: 'vibewell.com',
         name: 'Vibewell Calendar'
-      });
-
-      events.forEach(event => {
+events.forEach(event => {
         calendar.createEvent({
           start: event.start,
           end: event.end,
           summary: event.title,
           description: event.description,
           location: event.location
-        });
-      });
-
-      return calendar.toString();
-    } else {
+return calendar.toString();
+else {
       return JSON.stringify(events);
-    }
-  }
-}
-
 export default CalendarService; 

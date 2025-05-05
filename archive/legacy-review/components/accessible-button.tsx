@@ -6,8 +6,6 @@ interface AccessibleButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEle
   isLoading?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-}
-
 export const AccessibleButton: React.FC<AccessibleButtonProps> = ({
   children,
   variant = 'primary',
@@ -18,7 +16,7 @@ export const AccessibleButton: React.FC<AccessibleButtonProps> = ({
   className = '',
   disabled,
   ...props
-}) => {
+) => {
   const baseStyles =
     'inline-flex items-center justify-center font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
 
@@ -28,15 +26,11 @@ export const AccessibleButton: React.FC<AccessibleButtonProps> = ({
     outline:
       'border border-input bg-background hover:bg-accent hover:text-accent-foreground focus:ring-primary',
     ghost: 'hover:bg-accent hover:text-accent-foreground focus:ring-primary',
-  };
-
-  const sizeStyles = {
+const sizeStyles = {
     sm: 'h-9 px-3 text-sm',
     md: 'h-10 px-4 py-2',
     lg: 'h-11 px-8 text-lg',
-  };
-
-  return (
+return (
     <button
       className={` ${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${isLoading || disabled ? 'cursor-not-allowed opacity-50' : ''} ${className} `}
       disabled={isLoading || disabled}
@@ -59,7 +53,4 @@ export const AccessibleButton: React.FC<AccessibleButtonProps> = ({
         </span>
       ) : null}
     </button>
-  );
-};
-
 export default AccessibleButton;

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import store from '../store.ts';
+
+describe('store', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<store />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -14,7 +14,6 @@ const reviewSchema = z.object({
     .min(10, 'Review text must be at least 10 characters')
     .max(1000, 'Review text must be at most 1000 characters'),
   rating: z.number().min(1, 'Please select a rating').max(5, 'Maximum rating is 5 stars'),
-});
 type ReviewFormInputs = z.infer<typeof reviewSchema>;
 interface ReviewFormProps {
   providerId: string;
@@ -23,11 +22,9 @@ interface ReviewFormProps {
     title: string;
     text: string;
     rating: number;
-  };
-  isEdit?: boolean;
+isEdit?: boolean;
   onSubmit: (data: ReviewFormInputs) => Promise<void>;
   onCancel?: () => void;
-}
 export default function ReviewForm({
   providerId,
   bookingId,
@@ -35,7 +32,7 @@ export default function ReviewForm({
   isEdit = false,
   onSubmit,
   onCancel,
-}: ReviewFormProps) {
+: ReviewFormProps) {
   const [hover, setHover] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const {
@@ -43,29 +40,24 @@ export default function ReviewForm({
     handleSubmit,
     setValue,
     watch
-  } = useForm<ReviewFormInputs>({
+= useForm<ReviewFormInputs>({
     resolver: zodResolver(reviewSchema),
     defaultValues: initialData || {
       title: '',
       text: '',
       rating: 0,
-    },
-  });
-  const currentRating = watch('rating');
+const currentRating = watch('rating');
   const handleRatingClick = (rating: number) => {
     setValue('rating', rating, { shouldValidate: true });
-  };
-  const submitHandler: SubmitHandler<ReviewFormInputs> = async (data) => {
+const submitHandler: SubmitHandler<ReviewFormInputs> = async (data) => {
     setSubmitting(true);
     try {
       await onSubmit(data);
-    } catch (error) {
+catch (error) {
       console.error('Error submitting review:', error);
-    } finally {
+finally {
       setSubmitting(false);
-    }
-  };
-  return (
+return (
     <form onSubmit={handleSubmit(submitHandler)} className="rounded-lg bg-white p-6 shadow">
       <h2 className="mb-4 text-xl font-semibold">
         {isEdit ? 'Edit Your Review' : 'Write a Review'}
@@ -165,5 +157,3 @@ export default function ReviewForm({
         </button>
       </div>
     </form>
-  );
-}

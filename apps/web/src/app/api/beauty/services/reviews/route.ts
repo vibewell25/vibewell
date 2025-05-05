@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 import { getServerSession } from 'next-auth';
@@ -16,40 +15,26 @@ export async function {
     const session = await getServerSession(authOptions);
     if (!session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { bookingId, rating, comment } = await request.json();
+const { bookingId, rating, comment } = await request.json();
 
     // Check if the booking exists and belongs to the user
     const booking = await prisma.serviceBooking.findUnique({
       where: { id: bookingId },
       include: { review: true },
-    });
-
-    if (!booking) {
+if (!booking) {
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
-    }
-
-    if (booking.userId !== session.user.id) {
+if (booking.userId !== session.user.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    // Check if booking is completed
+// Check if booking is completed
     if (booking.status !== BookingStatus.COMPLETED) {
       return NextResponse.json(
         { error: 'Cannot review a booking that is not completed' },
         { status: 400 },
-      );
-    }
-
-    if (booking.review) {
+if (booking.review) {
       return NextResponse.json(
         { error: 'Review already exists for this booking' },
         { status: 400 },
-      );
-    }
-
-    // Create the review with the correct schema fields
+// Create the review with the correct schema fields
     const review = await prisma.serviceReview.create({
       data: {
         rating,
@@ -57,25 +42,16 @@ export async function {
         userId: session.user.id,
         serviceId: booking.serviceId, // Get serviceId from the booking
         bookingId: booking.id, // Set the bookingId for the relation
-      },
-      include: {
+include: {
         user: {
           select: {
             id: true,
             name: true,
             image: true,
-          },
-        },
-      },
-    });
-
-    return NextResponse.json(review);
-  } catch (error) {
+return NextResponse.json(review);
+catch (error) {
     console.error('Error creating review:', error);
     return NextResponse.json({ error: 'Failed to create review' }, { status: 500 });
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); GET(request: Request) {
@@ -86,22 +62,15 @@ export async function {
 
     if (!serviceId && !providerId) {
       return NextResponse.json({ error: 'Service ID or provider ID is required' }, { status: 400 });
-    }
-
-    // Build the where clause
+// Build the where clause
     const whereClause: any = {};
 
     if (serviceId) {
       whereClause.serviceId = serviceId;
-    }
-
-    if (providerId) {
+if (providerId) {
       whereClause.booking = {
         providerId,
-      };
-    }
-
-    const reviews = await prisma.serviceReview.findMany({
+const reviews = await prisma.serviceReview.findMany({
       where: whereClause,
       include: {
         user: {
@@ -109,22 +78,12 @@ export async function {
             id: true,
             name: true,
             image: true,
-          },
-        },
-        booking: {
+booking: {
           include: {
             service: true,
-          },
-        },
-      },
-      orderBy: {
+orderBy: {
         createdAt: 'desc',
-      },
-    });
-
-    return NextResponse.json(reviews);
-  } catch (error) {
+return NextResponse.json(reviews);
+catch (error) {
     console.error('Error fetching reviews:', error);
     return NextResponse.json({ error: 'Failed to fetch reviews' }, { status: 500 });
-  }
-}

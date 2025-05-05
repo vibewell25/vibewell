@@ -1,8 +1,4 @@
-/**
- * Audit Services Index
- *
-
- * This file exports all audit-related services for the VibeWell platform.
+exports all audit-related services for the VibeWell platform.
  */
 
 
@@ -31,8 +27,7 @@ export type {
   PCIComplianceStatus,
   DataProtectionStatus,
   SocialMediaSecurityStatus,
-
-} from './security-audit';
+from './security-audit';
 
 export type {
   PerformanceMetric,
@@ -41,8 +36,7 @@ export type {
   DatabasePerformanceMetrics,
   FrontendPerformanceMetrics,
   PerformanceAuditConfig,
-
-} from './performance-audit';
+from './performance-audit';
 
 export type {
   UserFlowResult,
@@ -50,8 +44,7 @@ export type {
   BookingUXResult,
   ResponsivenessResult,
   UXAuditConfig,
-
-} from './ux-audit';
+from './ux-audit';
 
 export type {
   ComplianceRequirement,
@@ -61,22 +54,19 @@ export type {
   DataRetentionAudit,
   UserConsentAudit,
   ComplianceAuditConfig,
-
-} from './compliance-audit';
+from './compliance-audit';
 
 export type {
   BookingIntegrityResult,
   NotificationDeliveryResult,
   BookingPerformanceMetrics,
   BookingAuditConfig,
-
-} from './booking-audit';
+from './booking-audit';
 
 export type {
   ComprehensiveAuditReport,
   AuditScheduleConfig,
-
-} from '../../controllers/audit-controller';
+from '../../controllers/audit-controller';
 
 // Export services
 export {
@@ -87,7 +77,5 @@ export {
   complianceAuditService,
   bookingAuditService,
   auditController,
-};
-
 // Default export the main audit controller
 export default auditController;

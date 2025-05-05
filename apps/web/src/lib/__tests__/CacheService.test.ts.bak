@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import cache-service from '../cache-service.ts';
+
+describe('cache-service', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<cache-service />);
+    expect(container).toBeInTheDocument();
+  });
+});

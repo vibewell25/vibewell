@@ -12,10 +12,7 @@ const bufferEncode = (buf: ArrayBuffer) => {
   let str = '';
   for (let i = 0; i < bytes.byteLength; i++) {
     str += String.fromCharCode(bytes[i]);
-  }
-  return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-};
-
+return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 const Security: NextPage = () => {
   const [secret, setSecret] = useState<string>('');
   const [qr, setQr] = useState<string>('');
@@ -27,35 +24,26 @@ const Security: NextPage = () => {
     const data = await res.json();
     setSecret(data.base32);
     setQr(data.otpauthUrl);
-  };
-
-  const verifyTOTP = async (e: FormEvent) => {
+const verifyTOTP = async (e: FormEvent) => {
     e.preventDefault();
     const res = await fetchWithTimeout('/api/security/totp/verify', {
       method: 'POST', 
       headers: { 'Content-Type':'application/json' }, 
       body: JSON.stringify({ token })
-    });
-    const ok = (await res.json()).success;
+const ok = (await res.json()).success;
     setMsg(ok ? 'TOTP verified' : 'Invalid token');
-  };
-
-  /* WebAuthn Registration */
+/* WebAuthn Registration */
   const registerWebAuthn = async () => {
     const opts = await fetchWithTimeout('/api/security/webauthn/register').then(r => r.json());
     
     if (!navigator.credentials) {
       setMsg('WebAuthn not supported in this browser');
       return;
-    }
-    
-    const publicKey: any = {
+const publicKey: any = {
       ...opts,
       challenge: bufferDecode(opts.challenge),
       user: { ...opts.user, id: bufferDecode(opts.user.id) }
-    };
-    
-    try {
+try {
       const cred: any = await navigator.credentials.create({ publicKey });
       const att = cred as any;
       const response = {
@@ -65,30 +53,20 @@ const Security: NextPage = () => {
         response: {
           attestationObject: bufferEncode(att.response.attestationObject),
           clientDataJSON: bufferEncode(att.response.clientDataJSON)
-        }
-      };
-      
-      const r = await fetchWithTimeout('/api/security/webauthn/register', {
+const r = await fetchWithTimeout('/api/security/webauthn/register', {
         method: 'POST', 
         headers: {'Content-Type':'application/json'}, 
         body: JSON.stringify(response)
-      });
-      
-      setMsg((await r.json()).success ? 'WebAuthn registered' : 'Registration failed');
-    } catch (error) {
+setMsg((await r.json()).success ? 'WebAuthn registered' : 'Registration failed');
+catch (error) {
       setMsg('WebAuthn registration failed');
       console.error(error);
-    }
-  };
-
-  /* WebAuthn Authentication */
+/* WebAuthn Authentication */
   const authWebAuthn = async () => {
     if (!navigator.credentials) {
       setMsg('WebAuthn not supported in this browser');
       return;
-    }
-    
-    try {
+try {
       const opts = await fetchWithTimeout('/api/security/webauthn/authenticate').then(r => r.json());
       const publicKey: any = {
         ...opts,
@@ -96,10 +74,8 @@ const Security: NextPage = () => {
         allowCredentials: opts.allowCredentials.map((c:any) => ({
           ...c,
           id: bufferDecode(c.id)
-        }))
-      };
-      
-      const assertion: any = await navigator.credentials.get({ publicKey });
+))
+const assertion: any = await navigator.credentials.get({ publicKey });
       const resp = assertion as any;
       const data = {
         id: resp.id,
@@ -110,23 +86,15 @@ const Security: NextPage = () => {
           clientDataJSON: bufferEncode(resp.response.clientDataJSON),
           signature: bufferEncode(resp.response.signature),
           userHandle: resp.response.userHandle ? bufferEncode(resp.response.userHandle) : undefined
-        }
-      };
-      
-      const r = await fetchWithTimeout('/api/security/webauthn/authenticate', {
+const r = await fetchWithTimeout('/api/security/webauthn/authenticate', {
         method: 'POST', 
         headers: {'Content-Type':'application/json'}, 
         body: JSON.stringify(data)
-      });
-      
-      setMsg((await r.json()).success ? 'Authentication succeeded' : 'Authentication failed');
-    } catch (error) {
+setMsg((await r.json()).success ? 'Authentication succeeded' : 'Authentication failed');
+catch (error) {
       setMsg('WebAuthn authentication failed');
       console.error(error);
-    }
-  };
-
-  return (
+return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Security Settings</h1>
       <Card className="mb-4">
@@ -154,7 +122,4 @@ const Security: NextPage = () => {
       </Card>
       {msg && <p className="mt-4 text-green-600">{msg}</p>}
     </div>
-  );
-};
-
 export default Security;

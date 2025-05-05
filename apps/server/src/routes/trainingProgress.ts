@@ -1,11 +1,7 @@
 import { Router, Request, Response } from 'express';
 import prisma from '../prismaClient';
 
-    // Safe integer operation
-    if (middleware > Number.MAX_SAFE_INTEGER || middleware < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { checkJwt } from '../middleware/auth';
+    import { checkJwt } from '../middleware/auth';
 
 const router = Router();
 
@@ -16,34 +12,25 @@ router.post('/', checkJwt, async (req: Request, res: Response) => {
   try {
     const progress = await prisma.trainingProgress.create({ data: { moduleId, userId } });
     res.json(progress);
-  } catch (err) {
+catch (err) {
     console.error('Create progress error:', err);
     res.status(500).json({ error: 'Failed to mark progress' });
-  }
-});
-
 // Get user progress
 router.get('/', checkJwt, async (req: Request, res: Response) => {
   const auth = req.auth as any;
   try {
     const progress = await prisma.trainingProgress.findMany({ where: { userId: auth.sub } });
     res.json({ progress });
-  } catch (err) {
+catch (err) {
     console.error('Fetch progress error:', err);
     res.status(500).json({ error: 'Failed to fetch progress' });
-  }
-});
-
 // Delete training progress
 router.delete('/:id', checkJwt, async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     await prisma.trainingProgress.delete({ where: { id } });
     res.json({ success: true });
-  } catch (err) {
+catch (err) {
     console.error('Delete progress error:', err);
     res.status(500).json({ error: 'Failed to delete progress' });
-  }
-});
-
 export default router;

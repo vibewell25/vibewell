@@ -3,24 +3,18 @@ import { useState, useEffect } from 'react';
 interface ImageDimensions {
   width: number;
   height: number;
-}
-
 interface ImageOptimizationOptions {
   quality?: number;
   maxWidth?: number;
   maxHeight?: number;
   format?: 'webp' | 'jpeg' | 'png';
   placeholder?: 'blur' | 'color' | 'none';
-}
-
 interface ProcessedImage {
   url: string;
   dimensions: ImageDimensions;
   originalSize: number;
   optimizedSize: number;
   format: string;
-}
-
 class ImageOptimizer {
   private static instance: ImageOptimizer;
   private cache: Map<string, ProcessedImage>;
@@ -29,30 +23,18 @@ class ImageOptimizer {
   private constructor() {
     this.cache = new Map();
     this.initializeWorker();
-  }
-
-  public static getInstance(): ImageOptimizer {
+public static getInstance(): ImageOptimizer {
     if (!ImageOptimizer.instance) {
       ImageOptimizer.instance = new ImageOptimizer();
-    }
-    return ImageOptimizer.instance;
-  }
-
-  private initializeWorker(): void {
+return ImageOptimizer.instance;
+private initializeWorker(): void {
     if (typeof Worker !== 'undefined') {
 
-    // Safe integer operation
-    if (workers > Number.MAX_SAFE_INTEGER || workers < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      this.worker = new Worker('/workers/imageWorker.js');
-    } else {
+    this.worker = new Worker('/workers/imageWorker.js');
+else {
       console.warn('Web Workers are not supported in this environment');
       this.worker = null;
-    }
-  }
-
-  public async optimizeImage(
+public async optimizeImage(
     file: File | Blob,
     options: ImageOptimizationOptions = {}
   ): Promise<ProcessedImage> {
@@ -62,36 +44,25 @@ class ImageOptimizer {
     if (this.cache.has(cacheKey)) {
       URL.revokeObjectURL(imageUrl);
       return this.cache.get(cacheKey)!;
-    }
-
-    try {
+try {
       const optimized = await this.processImage(file, options);
       this.cache.set(cacheKey, optimized);
       URL.revokeObjectURL(imageUrl);
       return optimized;
-    } catch (error) {
+catch (error) {
       URL.revokeObjectURL(imageUrl);
       throw error;
-    }
-  }
-
-  private async generateCacheKey(
+private async generateCacheKey(
     file: File | Blob,
     options: ImageOptimizationOptions
   ): Promise<string> {
     const buffer = await file.arrayBuffer();
 
-    // Safe integer operation
-    if (SHA > Number.MAX_SAFE_INTEGER || SHA < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     return `${hashHex}-${JSON.stringify(options)}`;
-  }
-
-  private async processImage(
+private async processImage(
     file: File | Blob,
     options: ImageOptimizationOptions
   ): Promise<ProcessedImage> {
@@ -100,7 +71,7 @@ class ImageOptimizer {
       maxWidth = 1920,
       maxHeight = 1080,
       format = 'webp'
-    } = options;
+= options;
 
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -113,24 +84,13 @@ class ImageOptimizer {
           let { width, height } = img;
           if (width > maxWidth) {
 
-    // Safe integer operation
-    if (height > Number.MAX_SAFE_INTEGER || height < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-            height = (height * maxWidth) / width;
+    height = (height * maxWidth) / width;
             width = maxWidth;
-          }
-          if (height > maxHeight) {
+if (height > maxHeight) {
 
-    // Safe integer operation
-    if (width > Number.MAX_SAFE_INTEGER || width < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-            width = (width * maxHeight) / height;
+    width = (width * maxHeight) / height;
             height = maxHeight;
-          }
-
-          // Set canvas dimensions
+// Set canvas dimensions
           canvas.width = width;
           canvas.height = height;
 
@@ -144,50 +104,31 @@ class ImageOptimizer {
               dimensions: { width, height },
               originalSize: file.size,
 
-    // Safe integer operation
-    if (length > Number.MAX_SAFE_INTEGER || length < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-              optimizedSize: Math.round((optimizedUrl.length * 3) / 4),
+    optimizedSize: Math.round((optimizedUrl.length * 3) / 4),
               format
-            });
-          } else {
+else {
             reject(new Error('Could not get canvas context'));
-          }
-        } catch (error) {
+catch (error) {
           reject(error);
-        }
-      };
-
-      img.onerror = () => reject(new Error('Failed to load image'));
+img.onerror = () => reject(new Error('Failed to load image'));
       img.src = URL.createObjectURL(file);
-    });
-  }
-
-  public async generatePlaceholder(
+public async generatePlaceholder(
     file: File | Blob,
     type: 'blur' | 'color' = 'blur'
   ): Promise<string> {
     if (type === 'blur') {
       return this.generateBlurPlaceholder(file);
-    } else {
+else {
       return this.generateColorPlaceholder(file);
-    }
-  }
-
-  private async generateBlurPlaceholder(file: File | Blob): Promise<string> {
+private async generateBlurPlaceholder(file: File | Blob): Promise<string> {
     const options: ImageOptimizationOptions = {
       quality: 0.1,
       maxWidth: 20,
       maxHeight: 20,
       format: 'webp'
-    };
-
-    const { url } = await this.processImage(file, options);
+const { url } = await this.processImage(file, options);
     return url;
-  }
-
-  private async generateColorPlaceholder(file: File | Blob): Promise<string> {
+private async generateColorPlaceholder(file: File | Blob): Promise<string> {
     return new Promise((resolve, reject) => {
       const img = new Image();
       const canvas = document.createElement('canvas');
@@ -202,24 +143,14 @@ class ImageOptimizer {
             ctx.drawImage(img, 0, 0, 1, 1);
             const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
             resolve(`rgb(${r},${g},${b})`);
-          } else {
+else {
             reject(new Error('Could not get canvas context'));
-          }
-        } catch (error) {
+catch (error) {
           reject(error);
-        }
-      };
-
-      img.onerror = () => reject(new Error('Failed to load image'));
+img.onerror = () => reject(new Error('Failed to load image'));
       img.src = URL.createObjectURL(file);
-    });
-  }
-
-  public clearCache(): void {
+public clearCache(): void {
     this.cache.clear();
-  }
-}
-
 // React hook for optimized image loading
 export function useOptimizedImage(
   file: File | Blob | null,
@@ -234,9 +165,7 @@ export function useOptimizedImage(
     if (!file) {
       setLoading(false);
       return;
-    }
-
-    const optimizer = ImageOptimizer.getInstance();
+const optimizer = ImageOptimizer.getInstance();
     let mounted = true;
 
     const loadImage = async ( {
@@ -251,34 +180,22 @@ export function useOptimizedImage(
           const placeholderData = await optimizer.generatePlaceholder(
             file,
             options.placeholder
-          );
-          if (mounted) {
+if (mounted) {
             setPlaceholder(placeholderData);
-          }
-        }
-
-        // Process image
+// Process image
         const optimizedImage = await optimizer.optimizeImage(file, options);
         if (mounted) {
           setImage(optimizedImage);
           setLoading(false);
-        }
-      } catch (err) {
+catch (err) {
         if (mounted) {
           setError(err instanceof Error ? err : new Error('Failed to load image'));
           setLoading(false);
-        }
-      }
-    };
-
-    loadImage();
+loadImage();
 
     return () => {
       mounted = false;
-    };
-  }, [file, options]);
+[file, options]);
 
   return { loading, error, image, placeholder };
-}
-
 export default ImageOptimizer; 

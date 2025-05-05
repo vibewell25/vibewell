@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import useProductTransform from '../useProductTransform.ts';
+
+describe('useProductTransform', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<useProductTransform />);
+    expect(container).toBeInTheDocument();
+  });
+});

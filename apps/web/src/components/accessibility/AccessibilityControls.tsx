@@ -1,4 +1,3 @@
-'use client';;
 import { useAccessibilityContext } from '@/contexts/AccessibilityContext';
 import { Button } from '@/components/ui/Button';
 import { Switch } from '@/components/ui/switch';
@@ -9,7 +8,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+from '@/components/ui/select';
 
 export const AccessibilityControls = () => {
   const {
@@ -21,7 +20,7 @@ export const AccessibilityControls = () => {
     setKeyboardFocusVisible,
     setLanguage,
     resetPreferences,
-  } = useAccessibilityContext();
+= useAccessibilityContext();
 
   return (
     <div className="space-y-6 rounded-lg bg-card p-6 shadow-sm">
@@ -83,7 +82,4 @@ export const AccessibilityControls = () => {
         </Button>
       </div>
     </div>
-  );
-};
-
 export default AccessibilityControls;

@@ -13,6 +13,4 @@ const ForgotPassword: NextPage = () => (
       Remembered your password? <Link href="/signin"><a className="text-blue-500">Sign In</a></Link>
     </p>
   </div>
-);
-
 export default ForgotPassword;

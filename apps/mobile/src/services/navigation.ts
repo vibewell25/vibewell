@@ -18,12 +18,9 @@ function navigate(name: string, params?: Record<string, any>): void {
   if (navigationRef.current) {
     // @ts-ignore - We need to use the any type here because the navigation tree is dynamic
     navigationRef.current.navigate(name, params);
-  } else {
+else {
     // Save the navigation intent for when the navigator is ready
     navigationQueue.push({ type: 'navigate', name, params });
-  }
-}
-
 /**
  * Push a new route onto the navigation stack
  * @param name Route name
@@ -32,22 +29,16 @@ function navigate(name: string, params?: Record<string, any>): void {
 function push(name: string, params?: Record<string, any>): void {
   if (navigationRef.current) {
     navigationRef.current.dispatch(StackActions.push(name, params));
-  } else {
+else {
     navigationQueue.push({ type: 'push', name, params });
-  }
-}
-
 /**
  * Go back to the previous screen
  */
 function goBack(): void {
   if (navigationRef.current) {
     navigationRef.current.goBack();
-  } else {
+else {
     navigationQueue.push({ type: 'goBack' });
-  }
-}
-
 /**
  * Navigate to a nested navigator and reset its state
  * @param name Navigator name
@@ -58,12 +49,8 @@ function reset(name: string, params?: Record<string, any>): void {
     navigationRef.current.reset({
       index: 0,
       routes: [{ name, params }],
-    });
-  } else {
+else {
     navigationQueue.push({ type: 'reset', name, params });
-  }
-}
-
 // Queue for navigation actions when the navigator isn't mounted yet
 const navigationQueue: Array<any> = [];
 
@@ -91,10 +78,6 @@ function processNavigationQueue(): void {
       case 'reset':
         reset(action.name, action.params);
         break;
-    }
-  }
-}
-
 // Export the navigation service functions
 export const NavigationService = {
   navigate,
@@ -102,6 +85,4 @@ export const NavigationService = {
   goBack,
   reset,
   processNavigationQueue,
-};
-
 export default NavigationService; 

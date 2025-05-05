@@ -20,9 +20,7 @@ const Providers: NextPage = () => {
     const res = await fetchWithTimeout('/api/providers');
     const data = await res.json();
     setProviders(data.providers || []);
-  };
-
-  useEffect(() => { fetchProv(); }, []);
+useEffect(() => { fetchProv(); }, []);
 
   const handleCreate = async (e: FormEvent) => {
     e.preventDefault();
@@ -30,21 +28,15 @@ const Providers: NextPage = () => {
       method: 'POST', 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, description, businessName })
-    });
-    setName(''); 
+setName(''); 
     setDescription(''); 
     setBusinessName('');
     fetchProv();
-  };
-
-  const handleDelete = async (id: string) => {
+const handleDelete = async (id: string) => {
     if (confirm('Delete this provider?')) {
       await fetchWithTimeout(`/api/providers/${id}`, { method: 'DELETE' });
       fetchProv();
-    }
-  };
-
-  return (
+return (
     <div className="max-w-2xl mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Providers</h1>
       <form onSubmit={handleCreate} className="space-y-2 mb-6">
@@ -66,7 +58,4 @@ const Providers: NextPage = () => {
         </Card>
       ))}
     </div>
-  );
-};
-
 export default Providers;

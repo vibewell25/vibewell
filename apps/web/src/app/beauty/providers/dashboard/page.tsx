@@ -1,4 +1,3 @@
-'use client';;
 import { useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
@@ -11,101 +10,79 @@ import {
   UserGroupIcon,
   ClockIcon,
   UserIcon,
-} from '@heroicons/react/24/outline';
+from '@heroicons/react/24/outline';
 
 interface DashboardStats {
   revenue: {
     total: number;
     trend: number;
-  };
-  appointments: {
+appointments: {
     total: number;
     completed: number;
     upcoming: number;
-  };
-  clients: {
+clients: {
     total: number;
     new: number;
-  };
-  services: {
+services: {
     popular: Array<{
       name: string;
       bookings: number;
       revenue: number;
-    }>;
-  };
-}
-
+>;
 interface UpcomingAppointment {
   id: string;
   client: {
     name: string;
     avatar?: string;
-  };
-  service: string;
+service: string;
   time: string;
   duration: number;
   status: 'confirmed' | 'pending' | 'cancelled';
-}
-
 const mockStats: DashboardStats = {
   revenue: {
     total: 15780,
     trend: 12.5,
-  },
-  appointments: {
+appointments: {
     total: 245,
     completed: 220,
     upcoming: 25,
-  },
-  clients: {
+clients: {
     total: 150,
     new: 15,
-  },
-  services: {
+services: {
     popular: [
       {
         name: 'Haircut & Style',
         bookings: 45,
         revenue: 3375,
-      },
-      {
+{
         name: 'Color Treatment',
         bookings: 32,
         revenue: 4800,
-      },
-      {
+{
         name: 'Manicure',
         bookings: 28,
         revenue: 1400,
-      },
-    ],
-  },
-};
-
+],
 const mockAppointments: UpcomingAppointment[] = [
   {
     id: '1',
     client: {
       name: 'Emily Johnson',
       avatar: '/avatars/emily.jpg',
-    },
-    service: 'Haircut & Style',
+service: 'Haircut & Style',
     time: '10:00 AM',
     duration: 60,
     status: 'confirmed',
-  },
-  {
+{
     id: '2',
     client: {
       name: 'Sarah Wilson',
-    },
-    service: 'Color Treatment',
+service: 'Color Treatment',
     time: '11:30 AM',
     duration: 120,
     status: 'pending',
-  },
-  // Add more appointments as needed
+// Add more appointments as needed
 ];
 
 export default function DashboardPage() {
@@ -211,8 +188,7 @@ export default function DashboardPage() {
                             : appointment.status === 'pending'
                               ? 'warning'
                               : 'destructive'
-                        }
-                      >
+>
                         {appointment.status}
                       </Badge>
                     </div>
@@ -224,5 +200,3 @@ export default function DashboardPage() {
         </div>
       </div>
     </Layout>
-  );
-}

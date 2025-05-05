@@ -314,7 +314,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
               &lt;select
                 className="w-full rounded border-gray-300 p-2"
                 value={theme}
-                onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setTheme(e?.target.value as typeof theme)}</span>
+                onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setTheme(e.target.value as typeof theme)}</span>
               &gt;
                 &lt;option value="forest"&gt;Forest&lt;/option&gt;
                 &lt;option value="beach"&gt;Beach&lt;/option&gt;
@@ -328,7 +328,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
               &lt;select
                 className="w-full rounded border-gray-300 p-2"
                 value={soundscape}
-                onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setSoundscape(e?.target.value as typeof soundscape)}</span>
+                onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setSoundscape(e.target.value as typeof soundscape)}</span>
               &gt;
                 &lt;option value="silence"&gt;Silence&lt;/option&gt;
                 &lt;option value="rain"&gt;Rain&lt;/option&gt;
@@ -340,15 +340,15 @@ export default function <span class="cstat-no" title="statement not covered" ><s
 &nbsp;
             &lt;div&gt;
               &lt;label className="mb-2 block text-sm font-medium"&gt;
-                Lighting Intensity ({lightingIntensity?.toFixed(1)})
+                Lighting Intensity ({lightingIntensity.toFixed(1)})
               &lt;/label&gt;
               &lt;input
                 type="range"
                 min="0"
                 max="2"
-                step="0?.1"
+                step="0.1"
                 value={lightingIntensity}
-                onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setLightingIntensity(parseFloat(e?.target.value))}</span>
+                onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setLightingIntensity(parseFloat(e.target.value))}</span>
                 className="w-full"
               /&gt;
             &lt;/div&gt;
@@ -359,7 +359,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
                 &lt;input
                   type="checkbox"
                   checked={particleEffects}
-                  onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setParticleEffects(e?.target.checked)}</span>
+                  onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setParticleEffects(e.target.checked)}</span>
                   className="h-4 w-4 text-blue-600"
                 /&gt;
                 &lt;span className="ml-2"&gt;Enable particle effects&lt;/span&gt;
@@ -375,10 +375,10 @@ export default function <span class="cstat-no" title="statement not covered" ><s
             lightingIntensity={lightingIntensity}
             particleEffects={particleEffects}
             onStateChange={<span class="fstat-no" title="function not covered" >(s</span>tate) =&gt; {
-<span class="cstat-no" title="statement not covered" >              <span class="missing-if-branch" title="if path not taken" >I</span>if (state?.theme) <span class="cstat-no" title="statement not covered" >setTheme(state?.theme);</span></span>
-<span class="cstat-no" title="statement not covered" >              <span class="missing-if-branch" title="if path not taken" >I</span>if (state?.soundscape) <span class="cstat-no" title="statement not covered" >setSoundscape(state?.soundscape);</span></span>
-<span class="cstat-no" title="statement not covered" >              <span class="missing-if-branch" title="if path not taken" >I</span>if (state?.lightingIntensity !== undefined)</span>
-<span class="cstat-no" title="statement not covered" >                setLightingIntensity(state?.lightingIntensity);</span>
+<span class="cstat-no" title="statement not covered" >              <span class="missing-if-branch" title="if path not taken" >I</span>if (state.theme) <span class="cstat-no" title="statement not covered" >setTheme(state.theme);</span></span>
+<span class="cstat-no" title="statement not covered" >              <span class="missing-if-branch" title="if path not taken" >I</span>if (state.soundscape) <span class="cstat-no" title="statement not covered" >setSoundscape(state.soundscape);</span></span>
+<span class="cstat-no" title="statement not covered" >              <span class="missing-if-branch" title="if path not taken" >I</span>if (state.lightingIntensity !== undefined)</span>
+<span class="cstat-no" title="statement not covered" >                setLightingIntensity(state.lightingIntensity);</span>
             }}
           /&gt;
         &lt;/div&gt;
@@ -409,7 +409,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

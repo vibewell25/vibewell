@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import sentiment-analysis from '../sentiment-analysis.ts';
+
+describe('sentiment-analysis', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<sentiment-analysis />);
+    expect(container).toBeInTheDocument();
+  });
+});

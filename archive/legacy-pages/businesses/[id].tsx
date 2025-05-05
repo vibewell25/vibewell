@@ -26,14 +26,10 @@ const BusinessDetail: NextPage = () => {
           setAddress(data.business.address);
           setPhone(data.business.phone || '');
           setEmail(data.business.email || '');
-        }
-      } catch (error) {
+catch (error) {
         console.error('Error fetching business details:', error);
-      }
-    };
-    
-    fetchBusinessDetails();
-  }, [id]);
+fetchBusinessDetails();
+[id]);
 
   const handleUpdate = async (e: FormEvent) => {
     e.preventDefault();
@@ -42,30 +38,21 @@ const BusinessDetail: NextPage = () => {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, address, phone, email })
-      });
-      router.push('/businesses');
-    } catch (error) {
+router.push('/businesses');
+catch (error) {
       console.error('Error updating business:', error);
       alert('Failed to update business');
-    }
-  };
-
-  const handleDelete = async () => {
+const handleDelete = async () => {
     try {
       if (!confirm('Delete this business?')) return;
       
       await fetchWithTimeout(`/api/businesses/${id}`, {
         method: 'DELETE'
-      });
-      
-      router.push('/businesses');
-    } catch (error) {
+router.push('/businesses');
+catch (error) {
       console.error('Error deleting business:', error);
       alert('Failed to delete business');
-    }
-  };
-
-  return (
+return (
     <div className="max-w-md mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Edit Business</h1>
       <form onSubmit={handleUpdate} className="space-y-4">
@@ -109,7 +96,4 @@ const BusinessDetail: NextPage = () => {
         </div>
       </form>
     </div>
-  );
-};
-
 export default BusinessDetail;

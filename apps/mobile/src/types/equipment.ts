@@ -5,12 +5,9 @@ export interface EquipmentItem {
   serialNumber?: string;
   createdAt: string;
   updatedAt: string;
-}
-
 export interface EquipmentAssignment {
   id: string;
   equipmentId: string;
   assignedTo: string;
   assignedAt: string;
   returnedAt?: string;
-}

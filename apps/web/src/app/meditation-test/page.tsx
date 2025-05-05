@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { MeditationEnvironment } from '@/components/ar/MeditationEnvironment';
 
@@ -7,8 +5,7 @@ export default function MeditationTest() {
   const [theme, setTheme] = useState<'forest' | 'beach' | 'mountain' | 'zen-garden'>('forest');
   const [soundscape, setSoundscape] = useState<'rain' | 'waves' | 'wind' | 'birds' | 'silence'>(
     'silence',
-  );
-  const [lightingIntensity, setLightingIntensity] = useState(1);
+const [lightingIntensity, setLightingIntensity] = useState(1);
   const [particleEffects, setParticleEffects] = useState(true);
 
   return (
@@ -88,8 +85,7 @@ export default function MeditationTest() {
               if (state.soundscape) setSoundscape(state.soundscape);
               if (state.lightingIntensity !== undefined)
                 setLightingIntensity(state.lightingIntensity);
-            }}
-          />
+/>
         </div>
 
         <div className="mt-8 rounded-lg bg-white p-6 shadow-lg">
@@ -109,5 +105,3 @@ export default function MeditationTest() {
         </div>
       </div>
     </div>
-  );
-}

@@ -14,8 +14,7 @@ const mockServices = [
     rating: 4.9,
     category: 'yoga',
     description: 'Guided yoga session for all levels',
-  },
-  {
+{
     id: '2',
     name: 'Meditation Class',
     provider: 'Mindful Space',
@@ -24,8 +23,7 @@ const mockServices = [
     rating: 4.8,
     category: 'meditation',
     description: 'Guided meditation for stress relief',
-  },
-  {
+{
     id: '3',
     name: 'Massage Therapy',
     provider: 'Healing Hands',
@@ -34,8 +32,7 @@ const mockServices = [
     rating: 4.9,
     category: 'massage',
     description: 'Therapeutic massage for relaxation',
-  },
-  {
+{
     id: '4',
     name: 'Nutrition Consultation',
     provider: 'Healthy Living',
@@ -44,8 +41,7 @@ const mockServices = [
     rating: 4.7,
     category: 'nutrition',
     description: 'Personalized nutrition advice',
-  },
-  {
+{
     id: '5',
     name: 'Fitness Training',
     provider: 'Fit Life',
@@ -54,7 +50,6 @@ const mockServices = [
     rating: 4.8,
     category: 'fitness',
     description: 'Personal training session',
-  },
 ];
 
 interface ServiceItemProps {
@@ -67,10 +62,7 @@ interface ServiceItemProps {
     rating: number;
     category: string;
     description: string;
-  };
-  isDarkMode: boolean;
-}
-
+isDarkMode: boolean;
 const ServiceItem = ({ item, isDarkMode }: ServiceItemProps) => {
   return (
     <View style={[styles.serviceItem, { backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF' }]}>
@@ -95,9 +87,6 @@ const ServiceItem = ({ item, isDarkMode }: ServiceItemProps) => {
         </Text>
       </View>
     </View>
-  );
-};
-
 const WellnessServicesScreen: React.FC = () => {
   const navigation = useNavigation<WellnessScreenNavigationProp>();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -108,10 +97,9 @@ const WellnessServicesScreen: React.FC = () => {
   useEffect(() => {
     if (selectedCategory === 'all') {
       setFilteredServices(mockServices);
-    } else {
+else {
       setFilteredServices(mockServices.filter(service => service.category === selectedCategory));
-    }
-  }, [selectedCategory]);
+[selectedCategory]);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: isDarkMode ? '#121212' : '#F5F5F5' }]}>
@@ -137,41 +125,31 @@ const WellnessServicesScreen: React.FC = () => {
         showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  tabSwitcher: {
+tabSwitcher: {
     flexDirection: 'row',
     justifyContent: 'center',
     marginVertical: 8,
-  },
-  tabButton: {
+tabButton: {
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderBottomWidth: 2,
     borderBottomColor: 'transparent',
-  },
-  activeTabButton: {
+activeTabButton: {
     borderBottomColor: '#4F46E5',
-  },
-  tabText: {
+tabText: {
     fontSize: 16,
     fontWeight: '600',
-  },
-  header: {
+header: {
     fontSize: 24,
     fontWeight: 'bold',
     marginHorizontal: 16,
     marginTop: 16,
-  },
-  servicesList: {
+servicesList: {
     padding: 16,
-  },
-  serviceItem: {
+serviceItem: {
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
@@ -180,34 +158,24 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-  },
-  serviceName: {
+serviceName: {
     fontSize: 18,
     fontWeight: '600',
     marginBottom: 4,
-  },
-  serviceProvider: {
+serviceProvider: {
     fontSize: 14,
     marginBottom: 8,
-  },
-  serviceDescription: {
+serviceDescription: {
     fontSize: 14,
     marginBottom: 12,
-  },
-  serviceDetails: {
+serviceDetails: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  servicePrice: {
+servicePrice: {
     fontSize: 16,
     fontWeight: '600',
-  },
-  serviceDuration: {
+serviceDuration: {
     fontSize: 14,
-  },
-  serviceRating: {
+serviceRating: {
     fontSize: 14,
-  },
-});
-
 export default WellnessServicesScreen; 

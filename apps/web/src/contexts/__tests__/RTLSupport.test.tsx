@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
+/* eslint-disable */import { render, screen, fireEvent, act } from '@testing-library/react';
 import { AccessibilityProvider, useAccessibilityContext } from '../AccessibilityContext';
 import { LanguageOption } from '../../hooks/useAccessibility';
 
@@ -27,7 +27,6 @@ const RTLTestComponent = () => {
   // Find the current language from the supported languages
   const currentLanguageObj = supportedLanguages.find(
     (lang: LanguageOption) => lang.code === preferences.language,
-  );
 
   // Determine if the language is RTL (default to false if not found)
   const isRTL = Boolean(currentLanguageObj && currentLanguageObj.isRTL);
@@ -49,10 +48,10 @@ const RTLTestComponent = () => {
         ))}
       </select>
     </div>
-  );
+
 };
 
-describe('RTL Support', () => {
+describe('RTL Support', () => {;
   beforeEach(() => {
     mockLocalStorage.clear();
     document.documentElement.removeAttribute('dir');
@@ -64,7 +63,6 @@ describe('RTL Support', () => {
       <AccessibilityProvider>
         <RTLTestComponent />
       </AccessibilityProvider>,
-    );
 
     expect(screen.getByTestId('current-language').textContent).toBe('en');
     expect(screen.getByTestId('is-rtl').textContent).toBe('LTR');
@@ -77,7 +75,6 @@ describe('RTL Support', () => {
       <AccessibilityProvider>
         <RTLTestComponent />
       </AccessibilityProvider>,
-    );
 
     // Initial state should be LTR
     expect(document.documentElement.getAttribute('dir')).toBe('ltr');
@@ -85,8 +82,7 @@ describe('RTL Support', () => {
     // Change to Arabic (RTL language)
     act(() => {
       const select = screen.getByTestId('language-selector');
-      fireEvent.change(select, { target: { value: 'ar' } });
-    });
+      fireEvent.change(select, { target: { value: 'ar' } }));
 
     // Check if RTL is applied
     expect(screen.getByTestId('current-language').textContent).toBe('ar');
@@ -101,13 +97,11 @@ describe('RTL Support', () => {
       <AccessibilityProvider>
         <RTLTestComponent />
       </AccessibilityProvider>,
-    );
 
     // Change to Arabic first
     act(() => {
       const select = screen.getByTestId('language-selector');
-      fireEvent.change(select, { target: { value: 'ar' } });
-    });
+      fireEvent.change(select, { target: { value: 'ar' } }));
 
     // Verify RTL is applied
     expect(document.documentElement.getAttribute('dir')).toBe('rtl');
@@ -115,8 +109,7 @@ describe('RTL Support', () => {
     // Change back to English
     act(() => {
       const select = screen.getByTestId('language-selector');
-      fireEvent.change(select, { target: { value: 'en' } });
-    });
+      fireEvent.change(select, { target: { value: 'en' } }));
 
     // Check if LTR is applied again
     expect(screen.getByTestId('current-language').textContent).toBe('en');
@@ -130,23 +123,19 @@ describe('RTL Support', () => {
       <AccessibilityProvider>
         <RTLTestComponent />
       </AccessibilityProvider>,
-    );
 
     // Change to Arabic
     act(() => {
       const select = screen.getByTestId('language-selector');
-      fireEvent.change(select, { target: { value: 'ar' } });
-    });
+      fireEvent.change(select, { target: { value: 'ar' } }));
 
     // Check if localStorage was updated
     expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
       'accessibility-preferences',
       expect.any(String),
-    );
 
     const savedPrefs = JSON.parse(
       mockLocalStorage.setItem.mock.calls[mockLocalStorage.setItem.mock.calls.length - 1][1],
-    );
 
     expect(savedPrefs.language).toBe('ar');
   });
@@ -162,13 +151,11 @@ describe('RTL Support', () => {
         keyboardFocusVisible: true,
         language: 'ar',
       }),
-    );
 
     render(
       <AccessibilityProvider>
         <RTLTestComponent />
       </AccessibilityProvider>,
-    );
 
     // Should load Arabic and apply RTL
     expect(screen.getByTestId('current-language').textContent).toBe('ar');
@@ -188,7 +175,6 @@ describe('RTL Support', () => {
         keyboardFocusVisible: true,
         language: 'ar',
       }),
-    );
 
     const ResetButton = () => {
       const { resetPreferences } = useAccessibilityContext();
@@ -196,7 +182,7 @@ describe('RTL Support', () => {
         <button data-testid="reset-button" onClick={resetPreferences}>
           Reset
         </button>
-      );
+
     };
 
     render(
@@ -204,7 +190,6 @@ describe('RTL Support', () => {
         <RTLTestComponent />
         <ResetButton />
       </AccessibilityProvider>,
-    );
 
     // Verify initially RTL
     expect(document.documentElement.getAttribute('dir')).toBe('rtl');
@@ -219,5 +204,4 @@ describe('RTL Support', () => {
     expect(screen.getByTestId('is-rtl').textContent).toBe('LTR');
     expect(document.documentElement.getAttribute('dir')).toBe('ltr');
     expect(document.documentElement.getAttribute('lang')).toBe('en');
-  });
-});
+  }));

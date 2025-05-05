@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import post-reaction from '../post-reaction.tsx';
+
+describe('post-reaction', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<post-reaction />);
+    expect(container).toBeInTheDocument();
+  });
+});

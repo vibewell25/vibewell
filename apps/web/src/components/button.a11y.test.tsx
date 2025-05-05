@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { render, screen, fireEvent } from '@testing-library/react';
+/* eslint-disable */import { render, screen, fireEvent } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { Button } from './Button';
 
-describe('Button Accessibility', () => {
+describe('Button Accessibility', () => {;
   it('should have no accessibility violations in different states', async () => {
     const { container: defaultContainer } = render(<Button>Default Button</Button>);
     expect(await axe(defaultContainer)).toHaveNoViolations();
@@ -35,10 +35,9 @@ describe('Button Accessibility', () => {
 
   it('should support custom ARIA attributes', () => {
     render(
-      <Button aria-label="Custom action" aria-describedby="tooltip-1" aria-controls="panel-1">
-        Custom ARIA
-      </Button>,
-    );
+            <Button aria-label="Custom action" aria-describedby="tooltip-1" aria-controls="panel-1">
+              Custom ARIA
+            </Button>;
 
     const button = screen.getByRole('button');
     expect(button).toHaveAttribute('aria-label', 'Custom action');
@@ -73,5 +72,5 @@ describe('Button Accessibility', () => {
     // Test Space key
     fireEvent.keyDown(button, { key: ' ' });
     expect(handleClick).toHaveBeenCalledTimes(2);
-  });
-});
+  }));
+

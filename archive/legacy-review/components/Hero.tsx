@@ -6,5 +6,3 @@ export default function Hero() {
         Explore personalized wellness experiences tailored just for you.
       </p>
     </section>
-  );
-}

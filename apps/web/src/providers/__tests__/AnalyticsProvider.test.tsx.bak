@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import analytics-provider from '../analytics-provider.tsx';
+
+describe('analytics-provider', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<analytics-provider />);
+    expect(container).toBeInTheDocument();
+  });
+});

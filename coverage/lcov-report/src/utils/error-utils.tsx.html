@@ -491,7 +491,7 @@
  * Error Handling Utilities
  *
  * This file provides type-safe error handling functions that work alongside
- * the main error-handler?.ts system. These utilities help ensure proper type checking
+ * the main error-handler.ts system. These utilities help ensure proper type checking
  * and guard against undefined/null errors.
  */
 &nbsp;
@@ -505,7 +505,7 @@ import { ErrorCategory, ErrorSource, ErrorSeverity } from <span class="cstat-no"
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getErrorMessage(</span></span>error: unknown): string {
 <span class="cstat-no" title="statement not covered" >  if (isError(error)) {</span>
-<span class="cstat-no" title="statement not covered" >    return error?.message;</span>
+<span class="cstat-no" title="statement not covered" >    return error.message;</span>
   } else <span class="cstat-no" title="statement not covered" >if (isString(error)) {</span>
 <span class="cstat-no" title="statement not covered" >    return error;</span>
   } else <span class="cstat-no" title="statement not covered" >if (error === null) {</span>
@@ -528,7 +528,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getErrorName(</span></span>error: unknown): string {
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (isError(error)) {</span>
-<span class="cstat-no" title="statement not covered" >    return error?.name;</span>
+<span class="cstat-no" title="statement not covered" >    return error.name;</span>
   }
 <span class="cstat-no" title="statement not covered" >  return 'Error';</span>
 }
@@ -543,11 +543,11 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
   // Check for common network error patterns
 <span class="cstat-no" title="statement not covered" >  return (</span>
-    error?.name === 'TypeError' ||
-    error?.name === 'NetworkError' ||
-    error?.message.includes('network') ||
-    error?.message.includes('fetch') ||
-    error?.message.includes('connection')
+    error.name === 'TypeError' ||
+    error.name === 'NetworkError' ||
+    error.message.includes('network') ||
+    error.message.includes('fetch') ||
+    error.message.includes('connection')
   );
 }
 &nbsp;
@@ -560,9 +560,9 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isError(error)) <span class="cstat-no" title="statement not covered" >return false;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
-    error?.name === 'TimeoutError' ||
-    error?.message.includes('timeout') ||
-    error?.message.includes('timed out')
+    error.name === 'TimeoutError' ||
+    error.message.includes('timeout') ||
+    error.message.includes('timed out')
   );
 }
 &nbsp;
@@ -574,7 +574,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >isNotFoundError(</span></span>error: unknown): boolean {
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isError(error)) <span class="cstat-no" title="statement not covered" >return false;</span></span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return error?.message.includes('not found') || error?.message.includes('404');</span>
+<span class="cstat-no" title="statement not covered" >  return error.message.includes('not found') || error.message.includes('404');</span>
 }
 &nbsp;
 /**
@@ -586,9 +586,9 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isError(error)) <span class="cstat-no" title="statement not covered" >return false;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
-    error?.message.includes('server error') ||
-    error?.message.includes('500') ||
-    error?.message.includes('internal')
+    error.message.includes('server error') ||
+    error.message.includes('500') ||
+    error.message.includes('internal')
   );
 }
 &nbsp;
@@ -601,11 +601,11 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!isError(error)) <span class="cstat-no" title="statement not covered" >return false;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
-    error?.message.includes('authentication') ||
-    error?.message.includes('unauthenticated') ||
-    error?.message.includes('unauthorized') ||
-    error?.message.includes('401') ||
-    error?.message.includes('login')
+    error.message.includes('authentication') ||
+    error.message.includes('unauthenticated') ||
+    error.message.includes('unauthorized') ||
+    error.message.includes('401') ||
+    error.message.includes('login')
   );
 }
 &nbsp;
@@ -616,17 +616,17 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getErrorCategory(</span></span>error: unknown): ErrorCategory {
 <span class="cstat-no" title="statement not covered" >  if (isAuthenticationError(error)) {</span>
-<span class="cstat-no" title="statement not covered" >    return ErrorCategory?.AUTHENTICATION;</span>
+<span class="cstat-no" title="statement not covered" >    return ErrorCategory.AUTHENTICATION;</span>
   } else <span class="cstat-no" title="statement not covered" >if (isNotFoundError(error)) {</span>
-<span class="cstat-no" title="statement not covered" >    return ErrorCategory?.RESOURCE_NOT_FOUND;</span>
+<span class="cstat-no" title="statement not covered" >    return ErrorCategory.RESOURCE_NOT_FOUND;</span>
   } else <span class="cstat-no" title="statement not covered" >if (isTimeoutError(error)) {</span>
-<span class="cstat-no" title="statement not covered" >    return ErrorCategory?.TIMEOUT;</span>
+<span class="cstat-no" title="statement not covered" >    return ErrorCategory.TIMEOUT;</span>
   } else <span class="cstat-no" title="statement not covered" >if (isNetworkError(error)) {</span>
-<span class="cstat-no" title="statement not covered" >    return ErrorCategory?.API;</span>
+<span class="cstat-no" title="statement not covered" >    return ErrorCategory.API;</span>
   } else <span class="cstat-no" title="statement not covered" >if (isServerError(error)) {</span>
-<span class="cstat-no" title="statement not covered" >    return ErrorCategory?.SERVER;</span>
+<span class="cstat-no" title="statement not covered" >    return ErrorCategory.SERVER;</span>
   } else {
-<span class="cstat-no" title="statement not covered" >    return ErrorCategory?.UNKNOWN;</span>
+<span class="cstat-no" title="statement not covered" >    return ErrorCategory.UNKNOWN;</span>
   }
 }
 &nbsp;
@@ -637,11 +637,11 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getErrorSource(</span></span>error: unknown): ErrorSource {
 <span class="cstat-no" title="statement not covered" >  if (isNetworkError(error)) {</span>
-<span class="cstat-no" title="statement not covered" >    return ErrorSource?.NETWORK;</span>
+<span class="cstat-no" title="statement not covered" >    return ErrorSource.NETWORK;</span>
   } else <span class="cstat-no" title="statement not covered" >if (isServerError(error)) {</span>
-<span class="cstat-no" title="statement not covered" >    return ErrorSource?.SERVER;</span>
+<span class="cstat-no" title="statement not covered" >    return ErrorSource.SERVER;</span>
   } else {
-<span class="cstat-no" title="statement not covered" >    return ErrorSource?.CLIENT;</span>
+<span class="cstat-no" title="statement not covered" >    return ErrorSource.CLIENT;</span>
   }
 }
 &nbsp;
@@ -652,13 +652,13 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getErrorSeverity(</span></span>error: unknown): ErrorSeverity {
 <span class="cstat-no" title="statement not covered" >  if (isServerError(error) || isAuthenticationError(error)) {</span>
-<span class="cstat-no" title="statement not covered" >    return ErrorSeverity?.ERROR;</span>
+<span class="cstat-no" title="statement not covered" >    return ErrorSeverity.ERROR;</span>
   } else <span class="cstat-no" title="statement not covered" >if (isNetworkError(error) || isTimeoutError(error)) {</span>
-<span class="cstat-no" title="statement not covered" >    return ErrorSeverity?.WARNING;</span>
+<span class="cstat-no" title="statement not covered" >    return ErrorSeverity.WARNING;</span>
   } else <span class="cstat-no" title="statement not covered" >if (isNotFoundError(error)) {</span>
-<span class="cstat-no" title="statement not covered" >    return ErrorSeverity?.INFO;</span>
+<span class="cstat-no" title="statement not covered" >    return ErrorSeverity.INFO;</span>
   } else {
-<span class="cstat-no" title="statement not covered" >    return ErrorSeverity?.ERROR;</span>
+<span class="cstat-no" title="statement not covered" >    return ErrorSeverity.ERROR;</span>
   }
 }
 &nbsp;
@@ -692,11 +692,11 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="cstat-no" title="statement not covered" >  return {</span>
     errorMessage,
     originalError,
-    category: options?.category || getErrorCategory(error),
-    source: options?.source || getErrorSource(error),
-    severity: options?.severity || getErrorSeverity(error),
-    metadata: options?.metadata || {},
-    code: options?.code,
+    category: options.category || getErrorCategory(error),
+    source: options.source || getErrorSource(error),
+    severity: options.severity || getErrorSeverity(error),
+    metadata: options.metadata || {},
+    code: options.code,
   };
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -706,7 +706,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

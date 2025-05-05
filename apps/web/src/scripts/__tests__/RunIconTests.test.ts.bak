@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import run-icon-tests from '../run-icon-tests.ts';
+
+describe('run-icon-tests', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<run-icon-tests />);
+    expect(container).toBeInTheDocument();
+  });
+});

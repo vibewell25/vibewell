@@ -11,13 +11,9 @@ interface TodoItem {
   id: string;
   text: string;
   completed: boolean;
-}
-
 interface TodoProps {
   title?: string;
   className?: string;
-}
-
 export function Todo({ title = "Todo List", className }: TodoProps) {
   const [todos, setTodos] = useState<TodoItem[]>([]);
   const [newTodo, setNewTodo] = useState("");
@@ -30,31 +26,19 @@ export function Todo({ title = "Todo List", className }: TodoProps) {
       id: Math.random().toString(36).substring(2, 9),
       text: newTodo,
       completed: false
-    };
-    
-    setTodos([...todos, todo]);
+setTodos([...todos, todo]);
     setNewTodo("");
-  };
-
-  const toggleTodo = (id: string) => {
+const toggleTodo = (id: string) => {
     setTodos(
       todos.map(todo => 
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
       )
-    );
-  };
-
-  const deleteTodo = (id: string) => {
+const deleteTodo = (id: string) => {
     setTodos(todos.filter(todo => todo.id !== id));
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       addTodo();
-    }
-  };
-
-  // Apply font size to text based on accessibility context
+// Apply font size to text based on accessibility context
   const getFontSize = () => {
     switch (fontSize) {
       case 'small': return 'text-sm';
@@ -62,10 +46,7 @@ export function Todo({ title = "Todo List", className }: TodoProps) {
       case 'large': return 'text-lg';
       case 'xl': return 'text-xl';
       default: return 'text-base';
-    }
-  };
-
-  return (
+return (
     <Card className={cn(
       "w-full max-w-md mx-auto p-4", 
       highContrast ? "border-2 border-black dark:border-white" : "",
@@ -159,5 +140,3 @@ export function Todo({ title = "Todo List", className }: TodoProps) {
         )}
       </div>
     </Card>
-  );
-}

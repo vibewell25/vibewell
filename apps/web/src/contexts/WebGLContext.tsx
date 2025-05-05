@@ -5,14 +5,10 @@ interface WebGLContextType {
   canvas: HTMLCanvasElement | null;
   initWebGL: () => void;
   updateScene: (params: { lightingIntensity?: number; particleEffects?: boolean }) => void;
-}
-
 const WebGLContext = createContext<WebGLContextType | undefined>(undefined);
 
 export function useWebGL() {
   const context = useContext(WebGLContext);
   if (!context) {
     throw new Error('useWebGL must be used within a WebGLContext provider');
-  }
-  return context;
-}
+return context;

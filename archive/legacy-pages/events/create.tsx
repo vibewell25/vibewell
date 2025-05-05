@@ -19,13 +19,9 @@ const CreateEvent: NextPage<Props> = () => {
       method: 'POST', 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, description, date })
-    });
-    if (router) {
+if (router) {
       router.push('/events');
-    }
-  };
-
-  return (
+return (
     <div className="max-w-md mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Create Event</h1>
       <form onSubmit={handleCreate} className="space-y-4">
@@ -35,7 +31,4 @@ const CreateEvent: NextPage<Props> = () => {
         <Button type="submit">Create</Button>
       </form>
     </div>
-  );
-};
-
 export default CreateEvent;

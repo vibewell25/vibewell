@@ -14,9 +14,7 @@ describe('promotionService', () => {
 
         expect(global.fetch).toHaveBeenCalledWith(`${serverBaseUrl}/api/promotions`);
     expect(codes).toEqual(mockCodes);
-  });
-
-  it('creates a promotion code', async () => {
+it('creates a promotion code', async () => {
     const payload = { code: 'NEW', discount: 5 };
     const mockResp: PromotionCode = { id: '2', code: 'NEW', description: '', discount: 5, validFrom: '', validTo: '' };
     (global.fetch as jest.Mock).mockResolvedValueOnce({ json: () => Promise.resolve(mockResp) });
@@ -27,11 +25,8 @@ describe('promotionService', () => {
 
     
           expect.objectContaining({ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-    );
-    expect(result).toEqual(mockResp);
-  });
-
-  it('updates a promotion code', async () => {
+expect(result).toEqual(mockResp);
+it('updates a promotion code', async () => {
     const id = '1';
     const payload = { discount: 15 };
     const mockResp: PromotionCode = { id: '1', code: '', description: '', discount: 15, validFrom: '', validTo: '' };
@@ -43,11 +38,8 @@ describe('promotionService', () => {
 
     
           expect.objectContaining({ method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-    );
-    expect(result).toEqual(mockResp);
-  });
-
-  it('deletes a promotion code', async () => {
+expect(result).toEqual(mockResp);
+it('deletes a promotion code', async () => {
     const id = '1';
     (global.fetch as jest.Mock).mockResolvedValueOnce({});
     await deletePromotionCode(id);
@@ -55,6 +47,3 @@ describe('promotionService', () => {
 
           `${serverBaseUrl}/api/promotions/${id}`,
       { method: 'DELETE' }
-    );
-  });
-});

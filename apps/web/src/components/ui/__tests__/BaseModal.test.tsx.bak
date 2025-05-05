@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import base-modal from '../base-modal.tsx';
+
+describe('base-modal', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<base-modal />);
+    expect(container).toBeInTheDocument();
+  });
+});

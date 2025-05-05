@@ -25,26 +25,20 @@ const Loyalty: NextPage = () => {
     setTiers(tiers);
     setBalance(balance);
     setTxs(transactions);
-  };
-
-  useEffect(() => { fetchData(); }, []);
+useEffect(() => { fetchData(); }, []);
 
   const redeem = async (tierId: string) => {
     const res = await fetchWithTimeout('/api/loyalty/redeem', {
       method: 'POST', 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tierId })
-    });
-    const data = await res.json();
+const data = await res.json();
     if (res.ok) {
       setMessage(`Redeemed ${tierId}, new balance ${data.balance}`);
       fetchData();
-    } else {
+else {
       setMessage(data.error || 'Redeem failed');
-    }
-  };
-
-  return (
+return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Loyalty</h1>
       <p className="mb-4">Balance: {balance} points</p>
@@ -67,7 +61,4 @@ const Loyalty: NextPage = () => {
         <p>No transactions.</p>
       )}
     </div>
-  );
-};
-
 export default Loyalty;

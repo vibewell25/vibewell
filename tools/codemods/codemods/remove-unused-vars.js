@@ -1,5 +1,4 @@
-/**
- * JSCodeshift transform to remove unused imports and variable declarations in test files.
+imports and variable declarations in test files.
  */
 module.exports.parser = 'tsx';
 module.exports = function(fileInfo, api) {
@@ -18,18 +17,12 @@ module.exports = function(fileInfo, api) {
           parent.type === 'ImportSpecifier' ||
           parent.type === 'ImportDefaultSpecifier' ||
           parent.type === 'ImportNamespaceSpecifier'
-        );
-      });
-      return occurrences.size() > 0;
-    });
-    if (usedSpecs.length > 0) {
+return occurrences.size() > 0;
+if (usedSpecs.length > 0) {
       decl.specifiers = usedSpecs;
-    } else {
+else {
       j(path).remove();
-    }
-  });
-
-  // Remove unused variable declarations
+// Remove unused variable declarations
   root.find(j.VariableDeclarator).forEach(path => {
     const id = path.node.id;
     const parentDecl = path.parent.node;
@@ -40,30 +33,20 @@ module.exports = function(fileInfo, api) {
       if (occ.size() === 0) {
         if (parentDecl.declarations.length === 1) {
           j(path.parent).remove();
-        } else {
+else {
           j(path).remove();
-        }
-      }
-    }
-    // Object destructuring
+// Object destructuring
     else if (id.type === 'ObjectPattern') {
       const props = id.properties;
       const usedProps = props.filter(prop => {
         const key = prop.key.name;
         const occ = root.find(j.Identifier, { name: key }).filter(idPath => idPath.node !== prop.key);
         return occ.size() > 0;
-      });
-      if (usedProps.length > 0) {
+if (usedProps.length > 0) {
         id.properties = usedProps;
-      } else {
+else {
         if (parentDecl.declarations.length === 1) {
           j(path.parent).remove();
-        } else {
+else {
           j(path).remove();
-        }
-      }
-    }
-  });
-
-  return root.toSource({ quote: 'single' });
-};
+return root.toSource({ quote: 'single' });

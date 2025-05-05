@@ -1,4 +1,3 @@
-
 import { NextApiRequest, NextApiResponse } from '@/types/api';
 
 import { rateLimitService, RATE_LIMITS } from '@/services/rateLimiting';
@@ -6,8 +5,6 @@ import { rateLimitService, RATE_LIMITS } from '@/services/rateLimiting';
 interface RateLimitOptions {
   type: keyof typeof RATE_LIMITS;
   identifier?: (req: NextApiRequest) => string;
-}
-
 export function withRateLimit(options: RateLimitOptions) {
   return async function {
   const start = Date.now();
@@ -30,45 +27,28 @@ export function withRateLimit(options: RateLimitOptions) {
       const { limited, remaining, resetTime } = await rateLimitService.isRateLimited(
         key,
         RATE_LIMITS[options.type],
-      );
-
-      // Set rate limit headers
+// Set rate limit headers
 
       res.setHeader('X-RateLimit-Remaining', remaining.toString());
       if (resetTime) {
 
         res.setHeader('X-RateLimit-Reset', resetTime.toISOString());
-      }
-
-      if (limited) {
+if (limited) {
         return res.status(429).json({
           error: 'Too Many Requests',
           resetTime,
-        });
-      }
-
-      return next();
-    } catch (error) {
+return next();
+catch (error) {
       console.error('Rate limit middleware error:', error);
       // Fail open to prevent blocking legitimate requests
       return next();
-    }
-  };
-}
-
 // Helper to combine multiple rate limit middlewares
 export function combineRateLimits(...limiters: ReturnType<typeof withRateLimit>[]) {
   return async (req: NextApiRequest, res: NextApiResponse, next: () => void) => {
     for (const limiter of limiters) {
       await new Promise<void>((resolve, reject) => {
         limiter(req, res, () => resolve()).catch(reject);
-      });
-
-      // If response is already sent (e.g., rate limited), stop processing
+// If response is already sent (e.g., rate limited), stop processing
       if (res.writableEnded) {
         return;
-      }
-    }
-    return next();
-  };
-}
+return next();

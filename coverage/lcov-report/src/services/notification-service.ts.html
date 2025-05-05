@@ -1561,7 +1561,7 @@ import {
 const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
 &nbsp;
 // Initialize Twilio client
-const twilioClient = <span class="cstat-no" title="statement not covered" >twilio(process?.env.TWILIO_ACCOUNT_SID, process?.env.TWILIO_AUTH_TOKEN);</span>
+const twilioClient = <span class="cstat-no" title="statement not covered" >twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);</span>
 &nbsp;
 interface NotificationData {
   type: NotificationType;
@@ -1589,77 +1589,77 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
 <span class="fstat-no" title="function not covered" >  async n</span>otifyUser(userId: string, payload: NotificationPayload): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Create notification record
-      const notification = <span class="cstat-no" title="statement not covered" >await prisma?.notification.create({</span>
+      const notification = <span class="cstat-no" title="statement not covered" >await prisma.notification.create({</span>
         data: {
           userId,
-          type: payload?.type,
-          title: payload?.title,
-          message: payload?.message,
-          data: payload?.data,
-          status: NotificationStatus?.PENDING,
+          type: payload.type,
+          title: payload.title,
+          message: payload.message,
+          data: payload.data,
+          status: NotificationStatus.PENDING,
         },
       });
 &nbsp;
       // Get user's notification preferences
-      const preferences = <span class="cstat-no" title="statement not covered" >await prisma?.notificationPreferences.findUnique({</span>
+      const preferences = <span class="cstat-no" title="statement not covered" >await prisma.notificationPreferences.findUnique({</span>
         where: { userId },
       });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!preferences) {</span>
-<span class="cstat-no" title="statement not covered" >        logger?.warn('User has no notification preferences', 'NotificationService', { userId });</span>
+<span class="cstat-no" title="statement not covered" >        logger.warn('User has no notification preferences', 'NotificationService', { userId });</span>
 <span class="cstat-no" title="statement not covered" >        return;</span>
       }
 &nbsp;
       // Check if user has enabled this type of notification
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!this?.isNotificationEnabled(preferences, payload?.type)) {</span>
-<span class="cstat-no" title="statement not covered" >        logger?.info('Notification type disabled by user', 'NotificationService', {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.isNotificationEnabled(preferences, payload.type)) {</span>
+<span class="cstat-no" title="statement not covered" >        logger.info('Notification type disabled by user', 'NotificationService', {</span>
           userId,
-          type: payload?.type,
+          type: payload.type,
         });
 <span class="cstat-no" title="statement not covered" >        return;</span>
       }
 &nbsp;
       // Send push notification if enabled
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (preferences?.pushEnabled) {</span>
-<span class="cstat-no" title="statement not covered" >        await this?.sendPushNotification(userId, payload);</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (preferences.pushEnabled) {</span>
+<span class="cstat-no" title="statement not covered" >        await this.sendPushNotification(userId, payload);</span>
       }
 &nbsp;
       // Send email notification if enabled
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (preferences?.emailEnabled) {</span>
-<span class="cstat-no" title="statement not covered" >        await this?.sendEmailNotification(userId, payload);</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (preferences.emailEnabled) {</span>
+<span class="cstat-no" title="statement not covered" >        await this.sendEmailNotification(userId, payload);</span>
       }
 &nbsp;
       // Send SMS notification if enabled
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (preferences?.smsEnabled) {</span>
-<span class="cstat-no" title="statement not covered" >        await this?.sendSMSNotification(userId, payload);</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (preferences.smsEnabled) {</span>
+<span class="cstat-no" title="statement not covered" >        await this.sendSMSNotification(userId, payload);</span>
       }
 &nbsp;
       // Update notification status
-<span class="cstat-no" title="statement not covered" >      await prisma?.notification.update({</span>
-        where: { id: notification?.id },
-        data: { status: NotificationStatus?.DELIVERED },
+<span class="cstat-no" title="statement not covered" >      await prisma.notification.update({</span>
+        where: { id: notification.id },
+        data: { status: NotificationStatus.DELIVERED },
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      logger?.info('Notification sent successfully', 'NotificationService', {</span>
+<span class="cstat-no" title="statement not covered" >      logger.info('Notification sent successfully', 'NotificationService', {</span>
         userId,
-        notificationId: notification?.id,
+        notificationId: notification.id,
       });
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Failed to send notification', 'NotificationService', { error });</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Failed to send notification', 'NotificationService', { error });</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
   private <span class="fstat-no" title="function not covered" >isNotificationEnabled(p</span>references: any, type: NotificationType): boolean {
 <span class="cstat-no" title="statement not covered" >    switch (type) {</span>
-      case NotificationType?.SYSTEM:
-<span class="cstat-no" title="statement not covered" >        return preferences?.systemNotifications;</span>
-      case NotificationType?.BOOKING:
-<span class="cstat-no" title="statement not covered" >        return preferences?.bookingNotifications;</span>
-      case NotificationType?.LOYALTY:
-<span class="cstat-no" title="statement not covered" >        return preferences?.loyaltyNotifications;</span>
-      case NotificationType?.MARKETING:
-<span class="cstat-no" title="statement not covered" >        return preferences?.marketingNotifications;</span>
+      case NotificationType.SYSTEM:
+<span class="cstat-no" title="statement not covered" >        return preferences.systemNotifications;</span>
+      case NotificationType.BOOKING:
+<span class="cstat-no" title="statement not covered" >        return preferences.bookingNotifications;</span>
+      case NotificationType.LOYALTY:
+<span class="cstat-no" title="statement not covered" >        return preferences.loyaltyNotifications;</span>
+      case NotificationType.MARKETING:
+<span class="cstat-no" title="statement not covered" >        return preferences.marketingNotifications;</span>
       default:
 <span class="cstat-no" title="statement not covered" >        return true;</span>
     }
@@ -1668,12 +1668,12 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
 <span class="fstat-no" title="function not covered" >  private async s</span>endPushNotification(userId: string, payload: NotificationPayload): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Get user's push tokens
-      const user = <span class="cstat-no" title="statement not covered" >await prisma?.user.findUnique({</span>
+      const user = <span class="cstat-no" title="statement not covered" >await prisma.user.findUnique({</span>
         where: { id: userId },
         select: { pushTokens: true },
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!user?.pushTokens?.length) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!user.pushTokens.length) {</span>
 <span class="cstat-no" title="statement not covered" >        return;</span>
       }
 &nbsp;
@@ -1681,45 +1681,45 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
       const pushService = <span class="cstat-no" title="statement not covered" >new PushNotificationService();</span>
 &nbsp;
       // Send notifications to all user devices
-<span class="cstat-no" title="statement not covered" >      await Promise?.all(</span>
-        user?.pushTokens.map(<span class="fstat-no" title="function not covered" >(t</span>oken) =&gt;
-<span class="cstat-no" title="statement not covered" >          pushService?.sendNotification({</span>
+<span class="cstat-no" title="statement not covered" >      await Promise.all(</span>
+        user.pushTokens.map(<span class="fstat-no" title="function not covered" >(t</span>oken) =&gt;
+<span class="cstat-no" title="statement not covered" >          pushService.sendNotification({</span>
             token,
-            title: payload?.title,
-            body: payload?.message,
-            data: payload?.data || {},
-            type: payload?.type,
+            title: payload.title,
+            body: payload.message,
+            data: payload.data || {},
+            type: payload.type,
           }),
         ),
       );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      logger?.info('Push notification sent', 'NotificationService', {</span>
+<span class="cstat-no" title="statement not covered" >      logger.info('Push notification sent', 'NotificationService', {</span>
         userId,
-        tokenCount: user?.pushTokens.length,
+        tokenCount: user.pushTokens.length,
       });
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Failed to send push notification', 'NotificationService', { error });</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Failed to send push notification', 'NotificationService', { error });</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async s</span>endEmailNotification(userId: string, payload: NotificationPayload): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const user = <span class="cstat-no" title="statement not covered" >await prisma?.user.findUnique({</span>
+      const user = <span class="cstat-no" title="statement not covered" >await prisma.user.findUnique({</span>
         where: { id: userId },
         select: { email: true, name: true },
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!user?.email) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!user.email) {</span>
 <span class="cstat-no" title="statement not covered" >        return;</span>
       }
 &nbsp;
       const emailService = <span class="cstat-no" title="statement not covered" >new EmailService();</span>
 &nbsp;
       // Prepare email content based on notification type
-      const subject = <span class="cstat-no" title="statement not covered" >payload?.title;</span>
+      const subject = <span class="cstat-no" title="statement not covered" >payload.title;</span>
       let template = <span class="cstat-no" title="statement not covered" >'';</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      switch (payload?.type) {</span>
+<span class="cstat-no" title="statement not covered" >      switch (payload.type) {</span>
         case 'BOOKING':
 &nbsp;
 <span class="cstat-no" title="statement not covered" >          template = 'booking-notification';</span>
@@ -1740,107 +1740,107 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
       }
 &nbsp;
       // Send email through email service
-<span class="cstat-no" title="statement not covered" >      await emailService?.sendEmail({</span>
-        to: user?.email,
+<span class="cstat-no" title="statement not covered" >      await emailService.sendEmail({</span>
+        to: user.email,
         subject,
         template,
         data: {
-          userName: user?.name || 'Valued Customer',
-          message: payload?.message,
-          ...payload?.data,
+          userName: user.name || 'Valued Customer',
+          message: payload.message,
+          ...payload.data,
         },
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      logger?.info('Email notification sent', 'NotificationService', {</span>
+<span class="cstat-no" title="statement not covered" >      logger.info('Email notification sent', 'NotificationService', {</span>
         userId,
-        email: user?.email,
-        notificationType: payload?.type,
+        email: user.email,
+        notificationType: payload.type,
       });
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Failed to send email notification', 'NotificationService', { error });</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Failed to send email notification', 'NotificationService', { error });</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async s</span>endSMSNotification(userId: string, payload: NotificationPayload): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const user = <span class="cstat-no" title="statement not covered" >await prisma?.user.findUnique({</span>
+      const user = <span class="cstat-no" title="statement not covered" >await prisma.user.findUnique({</span>
         where: { id: userId },
         select: { phone: true },
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!user?.phone) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!user.phone) {</span>
 <span class="cstat-no" title="statement not covered" >        return;</span>
       }
 &nbsp;
-      // Format phone number to E?.164 format if needed
-      const formattedPhone = <span class="cstat-no" title="statement not covered" >user?.phone.startsWith('+') ? user?.phone : `+${user?.phone}`;</span>
+      // Format phone number to E.164 format if needed
+      const formattedPhone = <span class="cstat-no" title="statement not covered" >user.phone.startsWith('+') ? user.phone : `+${user.phone}`;</span>
 &nbsp;
       // Send SMS using Twilio
-<span class="cstat-no" title="statement not covered" >      await twilioClient?.messages.create({</span>
-        body: `${payload?.title}: ${payload?.message}`,
-        from: process?.env.TWILIO_PHONE_NUMBER || '',
+<span class="cstat-no" title="statement not covered" >      await twilioClient.messages.create({</span>
+        body: `${payload.title}: ${payload.message}`,
+        from: process.env.TWILIO_PHONE_NUMBER || '',
         to: formattedPhone,
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      logger?.info('SMS notification sent', 'NotificationService', {</span>
+<span class="cstat-no" title="statement not covered" >      logger.info('SMS notification sent', 'NotificationService', {</span>
         userId,
         phone: formattedPhone,
       });
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Failed to send SMS notification', 'NotificationService', { error });</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Failed to send SMS notification', 'NotificationService', { error });</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async s</span>endBulkNotifications(userIds: string[], notification: NotificationData) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const notifications = <span class="cstat-no" title="statement not covered" >await Promise?.all(</span>
-        userIds?.map(<span class="fstat-no" title="function not covered" >(u</span>serId) =&gt; <span class="cstat-no" title="statement not covered" >this?.notifyUser(userId, notification as NotificationPayload)),</span>
+      const notifications = <span class="cstat-no" title="statement not covered" >await Promise.all(</span>
+        userIds.map(<span class="fstat-no" title="function not covered" >(u</span>serId) =&gt; <span class="cstat-no" title="statement not covered" >this.notifyUser(userId, notification as NotificationPayload)),</span>
       );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      logger?.info(`Sent bulk notifications`, {</span>
-        userCount: userIds?.length,
-        type: notification?.type,
+<span class="cstat-no" title="statement not covered" >      logger.info(`Sent bulk notifications`, {</span>
+        userCount: userIds.length,
+        type: notification.type,
       });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return notifications;</span>
     } catch (error) {
-      const errorMessage = <span class="cstat-no" title="statement not covered" >error instanceof Error ? error?.message : 'Unknown error';</span>
-<span class="cstat-no" title="statement not covered" >      logger?.error(`Error sending bulk notifications: ${errorMessage}`);</span>
+      const errorMessage = <span class="cstat-no" title="statement not covered" >error instanceof Error ? error.message : 'Unknown error';</span>
+<span class="cstat-no" title="statement not covered" >      logger.error(`Error sending bulk notifications: ${errorMessage}`);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async s</span>cheduleNotification(userId: string, notification: NotificationData, scheduledFor: Date) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const scheduledNotification = <span class="cstat-no" title="statement not covered" >await prisma?.scheduledNotification.create({</span>
+      const scheduledNotification = <span class="cstat-no" title="statement not covered" >await prisma.scheduledNotification.create({</span>
         data: {
           userId,
-          type: notification?.type,
-          title: notification?.title,
-          message: notification?.message,
-          data: notification?.data || {},
+          type: notification.type,
+          title: notification.title,
+          message: notification.message,
+          data: notification.data || {},
           scheduledFor,
           status: 'SCHEDULED',
         },
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      logger?.info(`Scheduled notification`, {</span>
+<span class="cstat-no" title="statement not covered" >      logger.info(`Scheduled notification`, {</span>
         userId,
-        notificationId: scheduledNotification?.id,
+        notificationId: scheduledNotification.id,
         scheduledFor,
       });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return scheduledNotification;</span>
     } catch (error) {
-      const errorMessage = <span class="cstat-no" title="statement not covered" >error instanceof Error ? error?.message : 'Unknown error';</span>
-<span class="cstat-no" title="statement not covered" >      logger?.error(`Error scheduling notification: ${errorMessage}`);</span>
+      const errorMessage = <span class="cstat-no" title="statement not covered" >error instanceof Error ? error.message : 'Unknown error';</span>
+<span class="cstat-no" title="statement not covered" >      logger.error(`Error scheduling notification: ${errorMessage}`);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async g</span>etUserPreferences(userId: string): Promise&lt;NotificationPreference&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const preferences = <span class="cstat-no" title="statement not covered" >await prisma?.notificationPreferences.findUnique({</span>
+      const preferences = <span class="cstat-no" title="statement not covered" >await prisma.notificationPreferences.findUnique({</span>
         where: { userId },
       });
 &nbsp;
@@ -1857,15 +1857,15 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return preferences;</span>
     } catch (error) {
-      const errorMessage = <span class="cstat-no" title="statement not covered" >error instanceof Error ? error?.message : 'Unknown error';</span>
-<span class="cstat-no" title="statement not covered" >      logger?.error(`Error getting user preferences: ${errorMessage}`);</span>
+      const errorMessage = <span class="cstat-no" title="statement not covered" >error instanceof Error ? error.message : 'Unknown error';</span>
+<span class="cstat-no" title="statement not covered" >      logger.error(`Error getting user preferences: ${errorMessage}`);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async u</span>pdateUserPreferences(userId: string, preferences: Partial&lt;NotificationPreference&gt;) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const updatedPreferences = <span class="cstat-no" title="statement not covered" >await prisma?.notificationPreferences.upsert({</span>
+      const updatedPreferences = <span class="cstat-no" title="statement not covered" >await prisma.notificationPreferences.upsert({</span>
         where: { userId },
         create: {
           userId,
@@ -1874,15 +1874,15 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
         update: preferences,
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      logger?.info(`Updated notification preferences`, {</span>
+<span class="cstat-no" title="statement not covered" >      logger.info(`Updated notification preferences`, {</span>
         userId,
         preferences: updatedPreferences,
       });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return updatedPreferences;</span>
     } catch (error) {
-      const errorMessage = <span class="cstat-no" title="statement not covered" >error instanceof Error ? error?.message : 'Unknown error';</span>
-<span class="cstat-no" title="statement not covered" >      logger?.error(`Error updating user preferences: ${errorMessage}`);</span>
+      const errorMessage = <span class="cstat-no" title="statement not covered" >error instanceof Error ? error.message : 'Unknown error';</span>
+<span class="cstat-no" title="statement not covered" >      logger.error(`Error updating user preferences: ${errorMessage}`);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -1901,7 +1901,7 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { unreadOnly = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span> limit = <span class="branch-0 cbranch-no" title="branch not covered" >10,</span> offset = <span class="branch-0 cbranch-no" title="branch not covered" >0 </span>} = <span class="cstat-no" title="statement not covered" >options;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      return await prisma?.notification.findMany({</span>
+<span class="cstat-no" title="statement not covered" >      return await prisma.notification.findMany({</span>
         where: {
           userId,
           ...(unreadOnly &amp;&amp; { read: false }),
@@ -1913,7 +1913,7 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
         skip: offset,
       });
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Error getting user notifications', error);</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Error getting user notifications', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -1923,7 +1923,7 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
    */
 <span class="fstat-no" title="function not covered" >  async m</span>arkAsRead(notificationId: string) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      return await prisma?.notification.update({</span>
+<span class="cstat-no" title="statement not covered" >      return await prisma.notification.update({</span>
         where: { id: notificationId },
         data: {
           read: true,
@@ -1931,7 +1931,7 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
         },
       });
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Error marking notification as read', error);</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Error marking notification as read', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -1941,7 +1941,7 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
    */
 <span class="fstat-no" title="function not covered" >  async m</span>arkAllAsRead(userId: string) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      return await prisma?.notification.updateMany({</span>
+<span class="cstat-no" title="statement not covered" >      return await prisma.notification.updateMany({</span>
         where: {
           userId,
           read: false,
@@ -1952,7 +1952,7 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
         },
       });
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Error marking all notifications as read', error);</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Error marking all notifications as read', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -1962,11 +1962,11 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
    */
 <span class="fstat-no" title="function not covered" >  async d</span>eleteNotification(notificationId: string) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      return await prisma?.notification.delete({</span>
+<span class="cstat-no" title="statement not covered" >      return await prisma.notification.delete({</span>
         where: { id: notificationId },
       });
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Error deleting notification', error);</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Error deleting notification', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -1976,14 +1976,14 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
    */
 <span class="fstat-no" title="function not covered" >  async g</span>etUnreadCount(userId: string): Promise&lt;number&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      return await prisma?.notification.count({</span>
+<span class="cstat-no" title="statement not covered" >      return await prisma.notification.count({</span>
         where: {
           userId,
           read: false,
         },
       });
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Error getting unread notification count', error);</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Error getting unread notification count', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -1993,7 +1993,7 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
    */
 <span class="fstat-no" title="function not covered" >  async s</span>endBookingConfirmation(booking: ServiceBooking): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const user = <span class="cstat-no" title="statement not covered" >await this?.getUser(booking?.userId);</span>
+      const user = <span class="cstat-no" title="statement not covered" >await this.getUser(booking.userId);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!user) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error('User not found');</span>
@@ -2001,48 +2001,48 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
 &nbsp;
       const message = <span class="cstat-no" title="statement not covered" >{</span>
         title: 'Booking Confirmed',
-        body: `Your booking for ${booking?.services.length} service(s) on ${booking?.startTime.toLocaleDateString()} has been confirmed.`,
+        body: `Your booking for ${booking.services.length} service(s) on ${booking.startTime.toLocaleDateString()} has been confirmed.`,
         data: {
-          bookingId: booking?.id,
+          bookingId: booking.id,
           type: 'BOOKING_CONFIRMATION',
         },
       };
 &nbsp;
       // Send email notification
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (user?.preferences?.emailEnabled) {</span>
-<span class="cstat-no" title="statement not covered" >        await EmailService?.send({</span>
-          to: user?.email!,
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (user.preferences.emailEnabled) {</span>
+<span class="cstat-no" title="statement not covered" >        await EmailService.send({</span>
+          to: user.email!,
           subject: 'Booking Confirmation',
 &nbsp;
           template: 'booking-confirmation',
           data: {
-            userName: user?.name,
+            userName: user.name,
             bookingDetails: {
-              services: booking?.services,
-              date: booking?.startTime.toLocaleDateString(),
-              time: booking?.startTime.toLocaleTimeString(),
+              services: booking.services,
+              date: booking.startTime.toLocaleDateString(),
+              time: booking.startTime.toLocaleTimeString(),
             },
           },
         });
       }
 &nbsp;
       // Send push notification
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (user?.preferences?.pushEnabled) {</span>
-<span class="cstat-no" title="statement not covered" >        await this?.notifyUser(user?.id, message as NotificationPayload);</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (user.preferences.pushEnabled) {</span>
+<span class="cstat-no" title="statement not covered" >        await this.notifyUser(user.id, message as NotificationPayload);</span>
       }
 &nbsp;
       // Create notification record
-<span class="cstat-no" title="statement not covered" >      await prisma?.notification.create({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.notification.create({</span>
         data: {
-          userId: user?.id,
-          type: NotificationType?.BOOKING_CONFIRMATION,
-          title: message?.title,
-          body: message?.body,
-          data: message?.data,
+          userId: user.id,
+          type: NotificationType.BOOKING_CONFIRMATION,
+          title: message.title,
+          body: message.body,
+          data: message.data,
         },
       });
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Error sending booking confirmation:', error);</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Error sending booking confirmation:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -2052,9 +2052,9 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
    */
 <span class="fstat-no" title="function not covered" >  async s</span>endWaitlistConfirmation(userId: string, serviceId: string): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const [user, service] = <span class="cstat-no" title="statement not covered" >await Promise?.all([</span>
-        this?.getUser(userId),
-        prisma?.beautyService.findUnique({
+      const [user, service] = <span class="cstat-no" title="statement not covered" >await Promise.all([</span>
+        this.getUser(userId),
+        prisma.beautyService.findUnique({
           where: { id: serviceId },
         }),
       ]);
@@ -2065,7 +2065,7 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
 &nbsp;
       const message = <span class="cstat-no" title="statement not covered" >{</span>
         title: 'Added to Waitlist',
-        body: `You've been added to the waitlist for ${service?.name}. We'll notify you when a slot becomes available.`,
+        body: `You've been added to the waitlist for ${service.name}. We'll notify you when a slot becomes available.`,
         data: {
           serviceId,
           type: 'WAITLIST_CONFIRMATION',
@@ -2073,36 +2073,36 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
       };
 &nbsp;
       // Send email notification
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (user?.preferences?.emailEnabled) {</span>
-<span class="cstat-no" title="statement not covered" >        await EmailService?.send({</span>
-          to: user?.email!,
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (user.preferences.emailEnabled) {</span>
+<span class="cstat-no" title="statement not covered" >        await EmailService.send({</span>
+          to: user.email!,
           subject: 'Waitlist Confirmation',
 &nbsp;
           template: 'waitlist-confirmation',
           data: {
-            userName: user?.name,
-            serviceName: service?.name,
+            userName: user.name,
+            serviceName: service.name,
           },
         });
       }
 &nbsp;
       // Send push notification
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (user?.preferences?.pushEnabled) {</span>
-<span class="cstat-no" title="statement not covered" >        await this?.notifyUser(user?.id, message as NotificationPayload);</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (user.preferences.pushEnabled) {</span>
+<span class="cstat-no" title="statement not covered" >        await this.notifyUser(user.id, message as NotificationPayload);</span>
       }
 &nbsp;
       // Create notification record
-<span class="cstat-no" title="statement not covered" >      await prisma?.notification.create({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.notification.create({</span>
         data: {
-          userId: user?.id,
-          type: NotificationType?.WAITLIST_CONFIRMATION,
-          title: message?.title,
-          body: message?.body,
-          data: message?.data,
+          userId: user.id,
+          type: NotificationType.WAITLIST_CONFIRMATION,
+          title: message.title,
+          body: message.body,
+          data: message.data,
         },
       });
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Error sending waitlist confirmation:', error);</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Error sending waitlist confirmation:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -2116,9 +2116,9 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
     availableSlot: Date,
   ): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const [user, service] = <span class="cstat-no" title="statement not covered" >await Promise?.all([</span>
-        this?.getUser(userId),
-        prisma?.beautyService.findUnique({
+      const [user, service] = <span class="cstat-no" title="statement not covered" >await Promise.all([</span>
+        this.getUser(userId),
+        prisma.beautyService.findUnique({
           where: { id: serviceId },
         }),
       ]);
@@ -2129,65 +2129,65 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
 &nbsp;
       const message = <span class="cstat-no" title="statement not covered" >{</span>
         title: 'Slot Available',
-        body: `A slot is now available for ${service?.name} on ${availableSlot?.toLocaleDateString()} at ${availableSlot?.toLocaleTimeString()}. Book now!`,
+        body: `A slot is now available for ${service.name} on ${availableSlot.toLocaleDateString()} at ${availableSlot.toLocaleTimeString()}. Book now!`,
         data: {
           serviceId,
-          availableSlot: availableSlot?.toISOString(),
+          availableSlot: availableSlot.toISOString(),
           type: 'WAITLIST_SLOT_AVAILABLE',
         },
       };
 &nbsp;
       // Send email notification
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (user?.preferences?.emailEnabled) {</span>
-<span class="cstat-no" title="statement not covered" >        await EmailService?.send({</span>
-          to: user?.email!,
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (user.preferences.emailEnabled) {</span>
+<span class="cstat-no" title="statement not covered" >        await EmailService.send({</span>
+          to: user.email!,
           subject: 'Waitlist Slot Available',
 &nbsp;
           template: 'waitlist-slot-available',
           data: {
-            userName: user?.name,
-            serviceName: service?.name,
-            date: availableSlot?.toLocaleDateString(),
-            time: availableSlot?.toLocaleTimeString(),
+            userName: user.name,
+            serviceName: service.name,
+            date: availableSlot.toLocaleDateString(),
+            time: availableSlot.toLocaleTimeString(),
           },
         });
       }
 &nbsp;
       // Send push notification
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (user?.preferences?.pushEnabled) {</span>
-<span class="cstat-no" title="statement not covered" >        await this?.notifyUser(user?.id, message as NotificationPayload);</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (user.preferences.pushEnabled) {</span>
+<span class="cstat-no" title="statement not covered" >        await this.notifyUser(user.id, message as NotificationPayload);</span>
       }
 &nbsp;
       // Create notification record
-<span class="cstat-no" title="statement not covered" >      await prisma?.notification.create({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.notification.create({</span>
         data: {
-          userId: user?.id,
-          type: NotificationType?.WAITLIST_SLOT_AVAILABLE,
-          title: message?.title,
-          body: message?.body,
-          data: message?.data,
+          userId: user.id,
+          type: NotificationType.WAITLIST_SLOT_AVAILABLE,
+          title: message.title,
+          body: message.body,
+          data: message.data,
         },
       });
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error('Error sending waitlist notification:', error);</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Error sending waitlist notification:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async s</span>endPointsExpiringNotification(userId: string, points: number, daysUntilExpiry: number) {
-    const user = <span class="cstat-no" title="statement not covered" >await this?.getUser(userId);</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user || !user?.email) <span class="cstat-no" title="statement not covered" >return;</span></span>
+    const user = <span class="cstat-no" title="statement not covered" >await this.getUser(userId);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user || !user.email) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
     const emailContent = <span class="cstat-no" title="statement not covered" >pointsExpiringTemplate(points, daysUntilExpiry);</span>
-<span class="cstat-no" title="statement not covered" >    await this?.notifyUser(user?.id, {</span>
+<span class="cstat-no" title="statement not covered" >    await this.notifyUser(user.id, {</span>
       type: 'LOYALTY',
       title: 'Your Points Are About to Expire!',
       message: emailContent,
     } as NotificationPayload);
 &nbsp;
     // Send push notification if enabled
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (user?.preferences?.pushEnabled) {</span>
-<span class="cstat-no" title="statement not covered" >      await this?.notifyUser(user?.id, {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (user.preferences.pushEnabled) {</span>
+<span class="cstat-no" title="statement not covered" >      await this.notifyUser(user.id, {</span>
         type: 'LOYALTY',
         title: 'Points Expiring Soon',
         body: `${points} points will expire in ${daysUntilExpiry} days. Use them now!`,
@@ -2196,19 +2196,19 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async s</span>endPointMultiplierNotification(userId: string, multiplier: number, endDate: Date) {
-    const user = <span class="cstat-no" title="statement not covered" >await this?.getUser(userId);</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user || !user?.email) <span class="cstat-no" title="statement not covered" >return;</span></span>
+    const user = <span class="cstat-no" title="statement not covered" >await this.getUser(userId);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user || !user.email) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
-    const formattedDate = <span class="cstat-no" title="statement not covered" >endDate?.toLocaleDateString();</span>
+    const formattedDate = <span class="cstat-no" title="statement not covered" >endDate.toLocaleDateString();</span>
     const emailContent = <span class="cstat-no" title="statement not covered" >pointMultiplierTemplate(multiplier, formattedDate);</span>
-<span class="cstat-no" title="statement not covered" >    await this?.notifyUser(user?.id, {</span>
+<span class="cstat-no" title="statement not covered" >    await this.notifyUser(user.id, {</span>
       type: 'LOYALTY',
       title: `${multiplier}x Points Event!`,
       message: emailContent,
     } as NotificationPayload);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (user?.preferences?.pushEnabled) {</span>
-<span class="cstat-no" title="statement not covered" >      await this?.notifyUser(user?.id, {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (user.preferences.pushEnabled) {</span>
+<span class="cstat-no" title="statement not covered" >      await this.notifyUser(user.id, {</span>
         type: 'LOYALTY',
         title: 'Points Multiplier Event',
         body: `Earn ${multiplier}x points on all services until ${formattedDate}!`,
@@ -2217,18 +2217,18 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async s</span>endRewardUnlockedNotification(userId: string, rewardName: string, pointsCost: number) {
-    const user = <span class="cstat-no" title="statement not covered" >await this?.getUser(userId);</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user || !user?.email) <span class="cstat-no" title="statement not covered" >return;</span></span>
+    const user = <span class="cstat-no" title="statement not covered" >await this.getUser(userId);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user || !user.email) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
     const emailContent = <span class="cstat-no" title="statement not covered" >rewardUnlockedTemplate(rewardName, pointsCost);</span>
-<span class="cstat-no" title="statement not covered" >    await this?.notifyUser(user?.id, {</span>
+<span class="cstat-no" title="statement not covered" >    await this.notifyUser(user.id, {</span>
       type: 'LOYALTY',
       title: 'New Reward Unlocked! 🎉',
       message: emailContent,
     } as NotificationPayload);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (user?.preferences?.pushEnabled) {</span>
-<span class="cstat-no" title="statement not covered" >      await this?.notifyUser(user?.id, {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (user.preferences.pushEnabled) {</span>
+<span class="cstat-no" title="statement not covered" >      await this.notifyUser(user.id, {</span>
         type: 'LOYALTY',
         title: 'New Reward Unlocked!',
         body: `You've unlocked ${rewardName}! Redeem now for ${pointsCost} points.`,
@@ -2237,18 +2237,18 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async s</span>endSeasonalChallengeNotification(userId: string, challengeName: string, reward: string) {
-    const user = <span class="cstat-no" title="statement not covered" >await this?.getUser(userId);</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user || !user?.email) <span class="cstat-no" title="statement not covered" >return;</span></span>
+    const user = <span class="cstat-no" title="statement not covered" >await this.getUser(userId);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user || !user.email) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
     const emailContent = <span class="cstat-no" title="statement not covered" >seasonalChallengeTemplate(challengeName, reward);</span>
-<span class="cstat-no" title="statement not covered" >    await this?.notifyUser(user?.id, {</span>
+<span class="cstat-no" title="statement not covered" >    await this.notifyUser(user.id, {</span>
       type: 'LOYALTY',
       title: 'New Seasonal Challenge Available!',
       message: emailContent,
     } as NotificationPayload);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (user?.preferences?.pushEnabled) {</span>
-<span class="cstat-no" title="statement not covered" >      await this?.notifyUser(user?.id, {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (user.preferences.pushEnabled) {</span>
+<span class="cstat-no" title="statement not covered" >      await this.notifyUser(user.id, {</span>
         type: 'LOYALTY',
         title: 'New Seasonal Challenge',
         body: `Complete "${challengeName}" to earn ${reward}!`,
@@ -2257,7 +2257,7 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private async g</span>etUser(userId: string) {
-<span class="cstat-no" title="statement not covered" >    return prisma?.user.findUnique({</span>
+<span class="cstat-no" title="statement not covered" >    return prisma.user.findUnique({</span>
       where: { id: userId },
       include: {
         preferences: true, // Assuming we have a preferences relation
@@ -2275,7 +2275,7 @@ export class <span class="cstat-no" title="statement not covered" >NotificationS
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

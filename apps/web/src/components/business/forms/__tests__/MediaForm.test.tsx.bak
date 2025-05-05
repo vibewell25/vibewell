@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import media-form from '../media-form.tsx';
+
+describe('media-form', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<media-form />);
+    expect(container).toBeInTheDocument();
+  });
+});

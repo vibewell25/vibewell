@@ -3,4 +3,3 @@ module.exports = {
     'next/babel',
     '@babel/preset-typescript'
   ],
-}; 

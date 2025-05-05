@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
@@ -31,21 +29,16 @@ export default function ForgotPasswordPage() {
       const { error } = await resetPassword(email);
       if (error) {
         setError(error.message);
-      } else {
+else {
         setIsSuccessful(true);
-      }
-    } catch (err) {
+catch (err) {
       setError(
         err instanceof Error
           ? err.message
           : 'Failed to send password reset email. Please try again.',
-      );
-    } finally {
+finally {
       setIsLoading(false);
-    }
-  };
-
-  if (isSuccessful) {
+if (isSuccessful) {
     return (
       <div className="container mx-auto max-w-md px-4 py-8">
         <div className="mb-8 flex flex-col items-center">
@@ -63,10 +56,7 @@ export default function ForgotPasswordPage() {
           Back to login
         </Link>
       </div>
-    );
-  }
-
-  return (
+return (
     <div className="container mx-auto max-w-md px-4 py-8">
       <div className="mb-8 flex flex-col items-center">
         <Icons.logo className="text-primary mb-4 h-12 w-12" />
@@ -113,5 +103,3 @@ export default function ForgotPasswordPage() {
         </Link>
       </p>
     </div>
-  );
-}

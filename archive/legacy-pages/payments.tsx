@@ -10,8 +10,6 @@ type Subscription = {
   stripeSubscriptionId: string;
   priceId: string;
   status: string;
-};
-
 const Payments: NextPage = () => {
   const [subs, setSubs] = useState<Subscription[]>([]);
   const [newPriceId, setNewPriceId] = useState('');
@@ -21,9 +19,7 @@ const Payments: NextPage = () => {
     const res = await fetchWithTimeout('/api/stripe/subscriptions');
     const data = await res.json();
     setSubs(data.subscriptions || []);
-  };
-
-  useEffect(() => { fetchSubs(); }, []);
+useEffect(() => { fetchSubs(); }, []);
 
   const handleCancel = async (id: string) => {
     if (!confirm('Cancel this subscription?')) return;
@@ -31,11 +27,8 @@ const Payments: NextPage = () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ subscriptionId: id }),
-    });
-    fetchSubs();
-  };
-
-  const handleSubscribe = async (e: FormEvent) => {
+fetchSubs();
+const handleSubscribe = async (e: FormEvent) => {
     e.preventDefault();
     if (!newPriceId) return alert('Enter a price ID');
     setLoading(true);
@@ -49,23 +42,17 @@ const Payments: NextPage = () => {
           successUrl: window.location.href, 
           cancelUrl: window.location.href, 
           mode: 'subscription' 
-        }),
-      });
-      
-      const data = await res.json();
+),
+const data = await res.json();
       if (data.url && window) {
         window.location.href = data.url;
-      } else {
+else {
         alert('Error creating checkout session');
-      }
-    } catch (error) {
+catch (error) {
       alert('Error creating checkout session');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  return (
+return (
     <div>
       <h1>Payments</h1>
       <form onSubmit={handleSubscribe} className="flex mb-4">
@@ -90,7 +77,4 @@ const Payments: NextPage = () => {
         ))}
       </div>
     </div>
-  );
-};
-
 export default Payments;

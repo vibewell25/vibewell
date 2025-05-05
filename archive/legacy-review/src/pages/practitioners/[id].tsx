@@ -11,8 +11,7 @@ interface PractitionerPageProps {
       name: string;
       image: string;
       email: string;
-    };
-    specialization: string[];
+specialization: string[];
     experience: number;
     bio?: string;
     rating?: number;
@@ -25,7 +24,7 @@ interface PractitionerPageProps {
       description?: string;
       duration: number;
       price: number;
-    }>;
+>;
     portfolio: Array<{
       id: string;
       title: string;
@@ -35,24 +34,16 @@ interface PractitionerPageProps {
       afterImage?: string;
       category: string;
       tags: string[];
-    }>;
-  };
-}
-
+>;
 export default function PractitionerPage({ practitioner }: PractitionerPageProps) {
   const router = useRouter();
 
   const handleBookService = (serviceId: string) => {
     router.push(`/booking?practitionerId=${practitioner.id}&serviceId=${serviceId}`);
-  };
-
-  return (
+return (
     <Container maxW="container.xl" py={8}>
       <Box>
         <PractitionerProfile {...practitioner} onBookService={handleBookService} />
       </Box>
     </Container>
-  );
-}
-
 export {};

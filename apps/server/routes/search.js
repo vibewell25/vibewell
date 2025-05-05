@@ -16,13 +16,8 @@ router.get('/', auth, async (req, res) => {
           { name: { contains: q, mode: 'insensitive' } },
           { description: { contains: q, mode: 'insensitive' } }
         ]
-      }
-    });
-    res.json(businesses);
-  } catch (err) {
+res.json(businesses);
+catch (err) {
     console.error('Error searching businesses:', err);
     res.status(500).json({ error: 'Search failed' });
-  }
-});
-
 module.exports = router; 

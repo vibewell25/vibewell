@@ -10,7 +10,7 @@ import {
   StatusBar,
   Platform,
   ActivityIndicator,
-} from 'react-native';
+from 'react-native';
 import i18n, { getAvailableLocales, setLanguage, LanguageOption } from '../i18n';
 
 interface LanguageSelectorProps {
@@ -19,15 +19,13 @@ interface LanguageSelectorProps {
   showFlags?: boolean;
   showLocalNames?: boolean;
   onLanguageChange?: (locale: string) => void;
-}
-
 const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   isVisible,
   onClose,
   showFlags = true,
   showLocalNames = true,
   onLanguageChange,
-}) => {
+) => {
   const [languages, setLanguages] = useState<LanguageOption[]>([]);
   const [selectedLanguage, setSelectedLanguage] = useState<string>(i18n.getCurrentLocale());
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -35,14 +33,12 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   useEffect(() => {
     // Get available languages
     setLanguages(getAvailableLocales());
-  }, []);
+[]);
 
   const handleLanguageSelect = async (languageCode: string) => {
     if (languageCode === selectedLanguage) {
       return;
-    }
-
-    setIsLoading(true);
+setIsLoading(true);
     try {
       const success = await setLanguage(languageCode);
       if (success) {
@@ -52,17 +48,13 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         setTimeout(() => {
           setIsLoading(false);
           onClose();
-        }, 500);
-      } else {
+500);
+else {
         setIsLoading(false);
-      }
-    } catch (error) {
+catch (error) {
       console.error('Error changing language:', error);
       setIsLoading(false);
-    }
-  };
-
-  const renderLanguageItem = ({ item }: { item: LanguageOption }) => {
+const renderLanguageItem = ({ item }: { item: LanguageOption }) => {
     const isSelected = item.code === selectedLanguage;
 
     return (
@@ -88,10 +80,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
           </View>
         )}
       </TouchableOpacity>
-    );
-  };
-
-  return (
+return (
     <Modal
       visible={isVisible}
       animationType="slide"
@@ -125,88 +114,70 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         </View>
       </SafeAreaView>
     </Modal>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  content: {
+content: {
     marginTop: 'auto',
     backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     height: '60%',
     paddingBottom: Platform.OS === 'ios' ? 0 : 20,
-  },
-  header: {
+header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#F0F0F0',
-  },
-  title: {
+title: {
     fontSize: 18,
     fontWeight: 'bold',
-  },
-  subtitle: {
+subtitle: {
     fontSize: 14,
     color: '#666',
     marginHorizontal: 20,
     marginTop: 10,
-  },
-  closeButton: {
+closeButton: {
     width: 28,
     height: 28,
     borderRadius: 14,
     backgroundColor: '#F0F0F0',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  closeButtonText: {
+closeButtonText: {
     fontSize: 14,
     fontWeight: 'bold',
     color: '#333',
-  },
-  listContent: {
+listContent: {
     paddingHorizontal: 20,
     paddingVertical: 10,
-  },
-  languageItem: {
+languageItem: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#F0F0F0',
-  },
-  selectedLanguageItem: {
+selectedLanguageItem: {
     backgroundColor: 'rgba(0, 102, 204, 0.05)',
-  },
-  flag: {
+flag: {
     fontSize: 24,
     marginRight: 16,
-  },
-  languageTextContainer: {
+languageTextContainer: {
     flex: 1,
-  },
-  languageName: {
+languageName: {
     fontSize: 16,
     color: '#333',
-  },
-  localName: {
+localName: {
     fontSize: 14,
     color: '#666',
     marginTop: 2,
-  },
-  selectedText: {
+selectedText: {
     color: '#0066CC',
     fontWeight: 'bold',
-  },
-  checkmark: {
+checkmark: {
     width: 24,
     height: 24,
     borderRadius: 12,
@@ -214,21 +185,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 12,
-  },
-  checkmarkText: {
+checkmarkText: {
     color: 'white',
     fontWeight: 'bold',
-  },
-  loadingContainer: {
+loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  loadingText: {
+loadingText: {
     marginTop: 16,
     fontSize: 16,
     color: '#666',
-  },
-});
-
 export default LanguageSelector;

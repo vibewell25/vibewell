@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import mock-prisma from '../mock-prisma.ts';
+
+describe('mock-prisma', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<mock-prisma />);
+    expect(container).toBeInTheDocument();
+  });
+});

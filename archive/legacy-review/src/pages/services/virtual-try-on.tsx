@@ -10,7 +10,7 @@ import {
   CardBody,
   Image,
   Button,
-} from '@chakra-ui/react';
+from '@chakra-ui/react';
 import { VirtualTryOn } from '../../components/VirtualTryOn/VirtualTryOn';
 import { GetServerSideProps } from 'next';
 import { prisma } from '../../lib/prisma';
@@ -22,13 +22,9 @@ interface TryOnHistory {
   createdAt: string;
   service?: {
     name: string;
-  } | null;
-}
-
+| null;
 interface VirtualTryOnPageProps {
   history: TryOnHistory[];
-}
-
 export default function VirtualTryOnPage({ history }: VirtualTryOnPageProps) {
   const [tryOnHistory, setTryOnHistory] = useState<TryOnHistory[]>(history);
   const { isSignedIn } = useUser();
@@ -41,12 +37,9 @@ export default function VirtualTryOnPage({ history }: VirtualTryOnPageProps) {
         imageUrl: '',
         resultUrl,
         createdAt: new Date().toISOString(),
-      },
-      ...prev,
+...prev,
     ]);
-  };
-
-  return (
+return (
     <Container maxW="container.xl" py={8}>
       <VStack spacing={8} align="stretch">
         <Box>
@@ -87,8 +80,7 @@ export default function VirtualTryOnPage({ history }: VirtualTryOnPageProps) {
                           onClick={() => {
                             // Implement delete functionality
                             setTryOnHistory((prev) => prev.filter((h) => h.id !== item.id));
-                          }}
-                        >
+>
                           Delete
                         </Button>
                       </CardBody>
@@ -106,7 +98,4 @@ export default function VirtualTryOnPage({ history }: VirtualTryOnPageProps) {
         )}
       </VStack>
     </Container>
-  );
-}
-
 export {};

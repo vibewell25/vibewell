@@ -324,10 +324,10 @@ const columns = <span class="cstat-no" title="statement not covered" >[</span>
     id: 'actions',
     cell: ({ row }) =&gt; (
       &lt;div className="flex gap-2"&gt;
-        &lt;Button variant="outline" size="sm" onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleEdit(row?.original)}&gt;</span>
+        &lt;Button variant="outline" size="sm" onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleEdit(row.original)}&gt;</span>
           Edit
         &lt;/Button&gt;
-        &lt;Button variant="destructive" size="sm" onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleDelete(row?.original)}&gt;</span>
+        &lt;Button variant="destructive" size="sm" onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleDelete(row.original)}&gt;</span>
           Delete
         &lt;/Button&gt;
       &lt;/div&gt;
@@ -338,14 +338,14 @@ const columns = <span class="cstat-no" title="statement not covered" >[</span>
 export default function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >AdminDashboard() {</span></span>
   const { users, isLoading, error } = <span class="cstat-no" title="statement not covered" >useUsers();</span>
   const { user } = <span class="cstat-no" title="statement not covered" >useAuth();</span>
-  const [searchQuery, setSearchQuery] = <span class="cstat-no" title="statement not covered" >React?.useState('');</span>
+  const [searchQuery, setSearchQuery] = <span class="cstat-no" title="statement not covered" >React.useState('');</span>
 &nbsp;
   // Track page view
-<span class="cstat-no" title="statement not covered" >  React?.useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >  React.useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >    trackEvent('admin_dashboard_view');</span>
   }, []);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!user?.isAdmin) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!user.isAdmin) {</span>
     return &lt;div&gt;Access denied. Admin privileges required.&lt;/div&gt;;
   }
 &nbsp;
@@ -354,13 +354,13 @@ export default function <span class="cstat-no" title="statement not covered" ><s
   }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (error) {</span>
-    return &lt;div&gt;Error: {error?.message}&lt;/div&gt;;
+    return &lt;div&gt;Error: {error.message}&lt;/div&gt;;
   }
 &nbsp;
-  const filteredUsers = <span class="cstat-no" title="statement not covered" >users?.filter(</span>
+  const filteredUsers = <span class="cstat-no" title="statement not covered" >users.filter(</span>
 <span class="fstat-no" title="function not covered" >    (u</span>ser) =&gt;
-<span class="cstat-no" title="statement not covered" >      user?.name.toLowerCase().includes(searchQuery?.toLowerCase()) ||</span>
-      user?.email.toLowerCase().includes(searchQuery?.toLowerCase()),
+<span class="cstat-no" title="statement not covered" >      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||</span>
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 &nbsp;
   return (
@@ -380,7 +380,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
               &lt;Input
                 placeholder="Search users..."
                 value={searchQuery}
-                onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setSearchQuery(e?.target.value)}</span>
+                onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setSearchQuery(e.target.value)}</span>
                 className="max-w-sm"
               /&gt;
               &lt;Button onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleAddUser()}&gt;A</span>dd User&lt;/Button&gt;
@@ -410,12 +410,12 @@ export default function <span class="cstat-no" title="statement not covered" ><s
 &nbsp;
 // Handler functions
 const handleEdit = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(u</span>ser) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  trackEvent('admin_edit_user', { userId: user?.id });</span>
+<span class="cstat-no" title="statement not covered" >  trackEvent('admin_edit_user', { userId: user.id });</span>
   // Implement edit functionality
 };
 &nbsp;
 const handleDelete = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(u</span>ser) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  trackEvent('admin_delete_user', { userId: user?.id });</span>
+<span class="cstat-no" title="statement not covered" >  trackEvent('admin_delete_user', { userId: user.id });</span>
   // Implement delete functionality
 };
 &nbsp;
@@ -430,7 +430,7 @@ const handleAddUser = <span class="cstat-no" title="statement not covered" ><spa
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

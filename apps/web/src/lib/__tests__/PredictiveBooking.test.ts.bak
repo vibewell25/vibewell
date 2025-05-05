@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import predictive-booking from '../predictive-booking.ts';
+
+describe('predictive-booking', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<predictive-booking />);
+    expect(container).toBeInTheDocument();
+  });
+});

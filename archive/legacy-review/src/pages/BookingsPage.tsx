@@ -29,7 +29,4 @@ export const BookingsPage: React.FC = () => {
         </ul>
       </div>
     </div>
-  );
-};
-
 export default BookingsPage;

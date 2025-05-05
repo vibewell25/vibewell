@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import real-time-metrics from '../real-time-metrics.tsx';
+
+describe('real-time-metrics', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<real-time-metrics />);
+    expect(container).toBeInTheDocument();
+  });
+});

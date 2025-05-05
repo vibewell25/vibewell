@@ -8,7 +8,7 @@ import {
   ScrollView,
   Alert,
   Platform
-} from 'react-native';
+from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNavigation } from '@react-navigation/native';
@@ -25,8 +25,6 @@ interface NotificationPreferences {
   emailNotifications: boolean;
   pushNotifications: boolean;
   soundEnabled: boolean;
-}
-
 const NotificationSettingsScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const navigation = useNavigation();
@@ -39,42 +37,33 @@ const NotificationSettingsScreen: React.FC = () => {
     emailNotifications: true,
     pushNotifications: true,
     soundEnabled: true
-  });
-  const [loading, setLoading] = useState(true);
+const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadPreferences();
     checkNotificationPermissions();
-  }, []);
+[]);
 
   const loadPreferences = async () => {
     try {
       const saved = await AsyncStorage.getItem('@vibewell/notification_preferences');
       if (saved) {
         setPreferences(JSON.parse(saved));
-      }
-    } catch (error) {
+catch (error) {
       console.error('Error loading notification preferences:', error);
       Alert.alert('Error', 'Failed to load notification preferences');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  const savePreferences = async (newPreferences: NotificationPreferences) => {
+const savePreferences = async (newPreferences: NotificationPreferences) => {
     try {
       await AsyncStorage.setItem(
         '@vibewell/notification_preferences',
         JSON.stringify(newPreferences)
-      );
-      setPreferences(newPreferences);
-    } catch (error) {
+setPreferences(newPreferences);
+catch (error) {
       console.error('Error saving notification preferences:', error);
       Alert.alert('Error', 'Failed to save notification preferences');
-    }
-  };
-
-  const checkNotificationPermissions = async () => {
+const checkNotificationPermissions = async () => {
     if (Platform.OS === 'ios') {
       const { status: existingStatus } = await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
@@ -82,24 +71,16 @@ const NotificationSettingsScreen: React.FC = () => {
       if (existingStatus !== 'granted') {
         const { status } = await Notifications.requestPermissionsAsync();
         finalStatus = status;
-      }
-      
-      if (finalStatus !== 'granted') {
+if (finalStatus !== 'granted') {
         setPreferences(prev => ({
           ...prev,
           pushNotifications: false
-        }));
-      }
-    }
-  };
-
-  const handleToggle = (key: keyof NotificationPreferences) => {
+));
+const handleToggle = (key: keyof NotificationPreferences) => {
     const newPreferences = {
       ...preferences,
       [key]: !preferences[key]
-    };
-
-    // If push notifications are disabled, disable all push-related preferences
+// If push notifications are disabled, disable all push-related preferences
     if (key === 'pushNotifications' && !newPreferences.pushNotifications) {
       newPreferences.appointments = false;
       newPreferences.reminders = false;
@@ -107,12 +88,8 @@ const NotificationSettingsScreen: React.FC = () => {
       newPreferences.news = false;
       newPreferences.messages = false;
       newPreferences.soundEnabled = false;
-    }
-
-    savePreferences(newPreferences);
-  };
-
-  const renderSettingItem = (
+savePreferences(newPreferences);
+const renderSettingItem = (
     key: keyof NotificationPreferences,
     label: string,
     description?: string,
@@ -148,9 +125,7 @@ const NotificationSettingsScreen: React.FC = () => {
         thumbColor={preferences[key] ? '#FFFFFF' : '#F4F3F4'}
       />
     </View>
-  );
-
-  return (
+return (
     <SafeAreaView style={[
       styles.container,
       { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }
@@ -249,61 +224,44 @@ const NotificationSettingsScreen: React.FC = () => {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
+header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
-  },
-  backButton: {
+backButton: {
     marginRight: 16,
-  },
-  title: {
+title: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  content: {
+content: {
     flex: 1,
-  },
-  section: {
+section: {
     marginBottom: 24,
-  },
-  sectionTitle: {
+sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
     marginHorizontal: 16,
     marginVertical: 12,
-  },
-  settingItem: {
+settingItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
-  },
-  settingContent: {
+settingContent: {
     flex: 1,
     marginRight: 16,
-  },
-  settingLabel: {
+settingLabel: {
     fontSize: 16,
     marginBottom: 4,
-  },
-  settingDescription: {
+settingDescription: {
     fontSize: 14,
-  },
-  disabledText: {
+disabledText: {
     opacity: 0.5,
-  },
-});
-
 export default NotificationSettingsScreen; 

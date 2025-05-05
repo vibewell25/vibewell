@@ -25,14 +25,10 @@ const BusinessHourDetail: NextPage = () => {
           setOpenTime(data.hour.openTime);
           setCloseTime(data.hour.closeTime);
           setIsOpen(data.hour.isOpen);
-        }
-      } catch (error) {
+catch (error) {
         console.error('Error fetching business hour details:', error);
-      }
-    };
-    
-    fetchBusinessHour();
-  }, [id]);
+fetchBusinessHour();
+[id]);
 
   const handleUpdate = async (e: FormEvent) => {
     e.preventDefault();
@@ -41,30 +37,21 @@ const BusinessHourDetail: NextPage = () => {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ dayOfWeek, openTime, closeTime, isOpen })
-      });
-      router.push('/business-hours');
-    } catch (error) {
+router.push('/business-hours');
+catch (error) {
       console.error('Error updating business hours:', error);
       alert('Failed to update business hours.');
-    }
-  };
-
-  const handleDelete = async () => {
+const handleDelete = async () => {
     try {
       if (!confirm('Delete these business hours?')) return;
       
       await fetchWithTimeout(`/api/businessHours/${id}`, { 
         method: 'DELETE' 
-      });
-      
-      router.back();
-    } catch (error) {
+router.back();
+catch (error) {
       console.error('Error deleting business hours:', error);
       alert('Failed to delete business hours.');
-    }
-  };
-
-  return (
+return (
     <div className="max-w-md mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Edit Business Hours</h1>
       <form onSubmit={handleUpdate} className="space-y-4">
@@ -113,7 +100,4 @@ const BusinessHourDetail: NextPage = () => {
         </div>
       </form>
     </div>
-  );
-};
-
 export default BusinessHourDetail;

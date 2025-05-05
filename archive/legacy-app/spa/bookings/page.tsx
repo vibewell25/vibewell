@@ -59,9 +59,6 @@ export default function BookingsPage() {
         </div>
       )}
     </div>
-  );
-}
-
 type Booking = {
   id: number;
   service: string;
@@ -70,8 +67,6 @@ type Booking = {
   time: string;
   provider: string;
   status: 'Confirmed' | 'Pending' | 'Completed' | 'Cancelled';
-};
-
 function getStatusStyles(status: Booking['status']) {
   switch (status) {
     case 'Confirmed':
@@ -84,9 +79,6 @@ function getStatusStyles(status: Booking['status']) {
       return 'bg-red-100/80 text-red-800';
     default:
       return 'bg-muted/50 text-muted-foreground';
-  }
-}
-
 // Sample bookings data
 const bookings: Booking[] = [
   {
@@ -97,8 +89,7 @@ const bookings: Booking[] = [
     time: '10:00 AM',
     provider: 'Sarah Johnson',
     status: 'Confirmed',
-  },
-  {
+{
     id: 2,
     service: 'Manicure & Pedicure',
     price: 55,
@@ -106,8 +97,7 @@ const bookings: Booking[] = [
     time: '2:30 PM',
     provider: 'Jennifer Lee',
     status: 'Pending',
-  },
-  {
+{
     id: 3,
     service: 'Facial Treatment',
     price: 65,
@@ -115,8 +105,7 @@ const bookings: Booking[] = [
     time: '11:00 AM',
     provider: 'Michael Chen',
     status: 'Completed',
-  },
-  {
+{
     id: 4,
     service: 'Massage Therapy',
     price: 80,
@@ -124,5 +113,4 @@ const bookings: Booking[] = [
     time: '4:00 PM',
     provider: 'Robert Wilson',
     status: 'Cancelled',
-  },
 ]; 

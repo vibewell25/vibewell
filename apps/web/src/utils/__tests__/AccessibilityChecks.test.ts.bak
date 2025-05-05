@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import accessibility-checks from '../accessibility-checks.ts';
+
+describe('accessibility-checks', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<accessibility-checks />);
+    expect(container).toBeInTheDocument();
+  });
+});

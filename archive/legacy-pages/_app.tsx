@@ -10,7 +10,4 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </Layout>
     </UserProvider>
-  );
-}
-
 export default MyApp;

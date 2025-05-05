@@ -25,16 +25,10 @@ async function {
     await testNavigationElements(page);
     
     await browser.close();
-}
-
 async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); testInteractiveElements(page) {
 
-    // Safe array access
-    if (href < 0 || href >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     const interactiveElements = await page.$$('button, a[href], [role="button"]');
     const results = [];
     
@@ -48,23 +42,14 @@ async function {
                 tag: el.tagName,
                 text: el.textContent,
                 id: el.id
-            };
-        });
-        
-        results.push(size);
-    }
-    
-    console.log('Interactive elements:', results);
+results.push(size);
+console.log('Interactive elements:', results);
     
     // Generate report
     const report = `# Mobile Touch Target Test Results
 
 
-    // Safe integer operation
-    if (Environment > Number.MAX_SAFE_INTEGER || Environment < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-## Test Environment
+    ## Test Environment
 - Date: ${new Date().toISOString()}
 - Device: iPhone X (375x812)
 - Browser: Chrome (Puppeteer)
@@ -75,29 +60,13 @@ async function {
 ${results.map(el => `
 - ${el.tag}${el.id ? `#${el.id}` : ''}
 
-    // Safe integer operation
-    if (N > Number.MAX_SAFE_INTEGER || N < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-  - Text: ${el.text || 'N/A'}
+    - Text: ${el.text || 'N/A'}
 
-    // Safe integer operation
-    if (px > Number.MAX_SAFE_INTEGER || px < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-  - Width: ${el.width}px
+    - Width: ${el.width}px
 
-    // Safe integer operation
-    if (px > Number.MAX_SAFE_INTEGER || px < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-  - Height: ${el.height}px
+    - Height: ${el.height}px
 
-    // Safe integer operation
-    if (px > Number.MAX_SAFE_INTEGER || px < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-  - Minimum Size: ${el.minSize}px
+    - Minimum Size: ${el.minSize}px
   - Meets Minimum Size (44px): ${el.minSize >= 44 ? '✅' : '❌'}
 `).join('\n')}
 
@@ -107,23 +76,7 @@ ${results.some(el => !el.text) ? '- Add descriptive text to interactive elements
 `;
     
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (touch > Number.MAX_SAFE_INTEGER || touch < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (accessibility > Number.MAX_SAFE_INTEGER || accessibility < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     fs.writeFileSync('./accessibility/reports/touch-target-test-results.md', report);
-}
-
 async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); testFormElements(page) {
@@ -139,13 +92,8 @@ async function {
                 minSize: Math.min(rect.width, rect.height),
                 type: el.getAttribute('type') || el.tagName.toLowerCase(),
                 id: el.id
-            };
-        });
-        
-        results.push(size);
-    }
-    
-    console.log('Form elements:', results);
+results.push(size);
+console.log('Form elements:', results);
     
     // Append to report
     const formReport = `
@@ -154,23 +102,11 @@ async function {
 ${results.map(el => `
 - ${el.type}${el.id ? `#${el.id}` : ''}
 
-    // Safe integer operation
-    if (px > Number.MAX_SAFE_INTEGER || px < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-  - Width: ${el.width}px
+    - Width: ${el.width}px
 
-    // Safe integer operation
-    if (px > Number.MAX_SAFE_INTEGER || px < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-  - Height: ${el.height}px
+    - Height: ${el.height}px
 
-    // Safe integer operation
-    if (px > Number.MAX_SAFE_INTEGER || px < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-  - Minimum Size: ${el.minSize}px
+    - Minimum Size: ${el.minSize}px
   - Meets Minimum Size (44px): ${el.minSize >= 44 ? '✅' : '❌'}
 `).join('\n')}
 
@@ -179,23 +115,7 @@ ${results.some(el => el.minSize < 44) ? '- Increase touch target size for form e
 `;
     
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (touch > Number.MAX_SAFE_INTEGER || touch < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (accessibility > Number.MAX_SAFE_INTEGER || accessibility < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     fs.appendFileSync('./accessibility/reports/touch-target-test-results.md', formReport);
-}
-
 async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); testNavigationElements(page) {
@@ -212,13 +132,8 @@ async function {
                 tag: el.tagName,
                 text: el.textContent,
                 id: el.id
-            };
-        });
-        
-        results.push(size);
-    }
-    
-    console.log('Navigation elements:', results);
+results.push(size);
+console.log('Navigation elements:', results);
     
     // Append to report
     const navReport = `
@@ -227,29 +142,13 @@ async function {
 ${results.map(el => `
 - ${el.tag}${el.id ? `#${el.id}` : ''}
 
-    // Safe integer operation
-    if (N > Number.MAX_SAFE_INTEGER || N < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-  - Text: ${el.text || 'N/A'}
+    - Text: ${el.text || 'N/A'}
 
-    // Safe integer operation
-    if (px > Number.MAX_SAFE_INTEGER || px < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-  - Width: ${el.width}px
+    - Width: ${el.width}px
 
-    // Safe integer operation
-    if (px > Number.MAX_SAFE_INTEGER || px < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-  - Height: ${el.height}px
+    - Height: ${el.height}px
 
-    // Safe integer operation
-    if (px > Number.MAX_SAFE_INTEGER || px < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-  - Minimum Size: ${el.minSize}px
+    - Minimum Size: ${el.minSize}px
   - Meets Minimum Size (44px): ${el.minSize >= 44 ? '✅' : '❌'}
 `).join('\n')}
 
@@ -259,22 +158,6 @@ ${results.some(el => !el.text) ? '- Add descriptive text to navigation elements\
 `;
     
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (touch > Number.MAX_SAFE_INTEGER || touch < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (accessibility > Number.MAX_SAFE_INTEGER || accessibility < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     fs.appendFileSync('./accessibility/reports/touch-target-test-results.md', navReport);
-}
-
 // Run the tests
 testTouchTargets().catch(console.error); 

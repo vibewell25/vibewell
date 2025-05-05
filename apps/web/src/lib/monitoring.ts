@@ -1,4 +1,3 @@
-
 import type { Event } from '@sentry/types';
 
 
@@ -24,49 +23,28 @@ export function initializeMonitoring() {
       beforeSend(event: Event): Event | null {
         if (process.env['NEXT_PUBLIC_VERCEL_ENV'] === 'production') {
           return event;
-        }
-        return null;
-      },
-      
-      // Ignore specific errors
+return null;
+// Ignore specific errors
       ignoreErrors: [
         'ResizeObserver loop limit exceeded',
         'Network request failed',
       ],
-    });
-  }
-}
-
 export function captureException(error: Error, context?: Record<string, any>) {
   if (process.env['NEXT_PUBLIC_VERCEL_ENV'] !== 'development') {
     Sentry.captureException(error, {
       extra: context,
-    });
-  }
-  console.error('Error:', error, context);
-}
-
+console.error('Error:', error, context);
 export function setUserContext(user: { id: string; email?: string }) {
   if (process.env['NEXT_PUBLIC_VERCEL_ENV'] !== 'development') {
     Sentry.setUser({
       id: user.id,
       email: user.email,
-    });
-  }
-}
-
 export function clearUserContext() {
   if (process.env['NEXT_PUBLIC_VERCEL_ENV'] !== 'development') {
     Sentry.setUser(null);
-  }
-}
-
 export function startTransaction(name: string, op: string) {
   if (process.env['NEXT_PUBLIC_VERCEL_ENV'] !== 'development') {
     return Sentry.startTransaction({
       name,
       op,
-    });
-  }
-  return null;
-}
+return null;

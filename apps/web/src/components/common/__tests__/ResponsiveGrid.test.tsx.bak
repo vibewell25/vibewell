@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import responsive-grid from '../responsive-grid.tsx';
+
+describe('responsive-grid', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<responsive-grid />);
+    expect(container).toBeInTheDocument();
+  });
+});

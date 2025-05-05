@@ -1,16 +1,3 @@
-/**
- * Performance testing utilities
- *
- * This file provides utilities for measuring and testing performance
- * of components and API endpoints.
- */
-
-/**
- * Measure render time of a component
- * @param {Function} renderFn - Function that renders the component
- * @param {number} iterations - Number of iterations to measure
- * @returns {Object} - Render time measurements
- */
 export function measureRenderTime(renderFn, iterations = 5) {
   const times = [];
 
@@ -23,18 +10,13 @@ export function measureRenderTime(renderFn, iterations = 5) {
     renderFn();
     const end = performance.now();
     times.push(end - start);
-  }
-
-  // Calculate statistics
+// Calculate statistics
   return {
     times,
     min: Math.min(...times),
     max: Math.max(...times),
     average: times.reduce((sum, time) => sum + time, 0) / times.length,
     median: times.sort()[Math.floor(times.length / 2)],
-  };
-}
-
 /**
  * Measure component re-render time with state changes
  * @param {Function} renderFn - Function that renders the component
@@ -61,18 +43,13 @@ export function measureUpdateTime(renderFn, updateFn, iterations = 5) {
     const end = performance.now();
 
     times.push(end - start);
-  }
-
-  // Calculate statistics
+// Calculate statistics
   return {
     times,
     min: Math.min(...times),
     max: Math.max(...times),
     average: times.reduce((sum, time) => sum + time, 0) / times.length,
     median: times.sort()[Math.floor(times.length / 2)],
-  };
-}
-
 /**
  * Test that a component renders within a specified time budget
  * @param {Function} renderFn - Function that renders the component
@@ -86,11 +63,7 @@ export function testRenderPerformance(renderFn, timeBudget, iterations = 5) {
   expect(average).toBeLessThanOrEqual(
     timeBudget,
     `Component rendered in ${average.toFixed(2)}ms, which exceeds the time budget of ${timeBudget}ms`,
-  );
-
-  return average <= timeBudget;
-}
-
+return average <= timeBudget;
 /**
  * Measure the memory footprint of a component
  * @param {Function} renderFn - Function that renders the component
@@ -102,35 +75,24 @@ export function measureMemoryUsage(renderFn) {
     return {
       supported: false,
       message: 'Memory measurement not supported in this environment',
-    };
-  }
-
-  // Measure memory before rendering
+// Measure memory before rendering
   const before = {
     usedJSHeapSize: performance.memory.usedJSHeapSize,
     totalJSHeapSize: performance.memory.totalJSHeapSize,
-  };
-
-  // Render the component
+// Render the component
   renderFn();
 
   // Measure memory after rendering
   const after = {
     usedJSHeapSize: performance.memory.usedJSHeapSize,
     totalJSHeapSize: performance.memory.totalJSHeapSize,
-  };
-
-  return {
+return {
     supported: true,
     before,
     after,
     difference: {
       usedJSHeapSize: after.usedJSHeapSize - before.usedJSHeapSize,
       totalJSHeapSize: after.totalJSHeapSize - before.totalJSHeapSize,
-    },
-  };
-}
-
 /**
  * Measure API response time
  * @param {Function} apiFn - Function that makes the API call
@@ -151,18 +113,13 @@ export async function {
     await apiFn();
     const end = performance.now();
     times.push(end - start);
-  }
-
-  // Calculate statistics
+// Calculate statistics
   return {
     times,
     min: Math.min(...times),
     max: Math.max(...times),
     average: times.reduce((sum, time) => sum + time, 0) / times.length,
     median: times.sort()[Math.floor(times.length / 2)],
-  };
-}
-
 /**
  * Test that an API responds within a specified time budget
  * @param {Function} apiFn - Function that makes the API call
@@ -178,11 +135,7 @@ export async function {
   expect(average).toBeLessThanOrEqual(
     timeBudget,
     `API responded in ${average.toFixed(2)}ms, which exceeds the time budget of ${timeBudget}ms`,
-  );
-
-  return average <= timeBudget;
-}
-
+return average <= timeBudget;
 /**
  * Measure component frame rate during interactions
  * @param {Function} renderFn - Function that renders the component
@@ -211,7 +164,7 @@ export async function {
 
       if (currentTime - startTime < durationMs) {
         rafId = requestAnimationFrame(countFrame);
-      } else {
+else {
         // Calculate frame rate
         const elapsed = currentTime - startTime;
         const fps = (frames / elapsed) * 1000;
@@ -220,15 +173,9 @@ export async function {
           frames,
           durationMs: elapsed,
           fps,
-        });
-      }
-    };
-
-    // Start counting frames
+// Start counting frames
     rafId = requestAnimationFrame(countFrame);
-  });
-
-  // Perform interactions while measuring frame rate
+// Perform interactions while measuring frame rate
   await interactionFn();
 
   // Wait for the measurement to complete
@@ -238,8 +185,6 @@ export async function {
   cancelAnimationFrame(rafId);
 
   return result;
-}
-
 /**
  * Test that a component maintains a minimum frame rate during interactions
  * @param {Function} renderFn - Function that renders the component
@@ -256,11 +201,7 @@ export async function {
   expect(fps).toBeGreaterThanOrEqual(
     minFps,
     `Component ran at ${fps.toFixed(2)} FPS, which is below the minimum of ${minFps} FPS`,
-  );
-
-  return fps >= minFps;
-}
-
+return fps >= minFps;
 /**
  * Format performance measurement for reporting
  * @param {Object} measurement - Performance measurement
@@ -277,4 +218,3 @@ Performance measurement: ${name}
   Average: ${average.toFixed(2)}ms
   Median: ${median.toFixed(2)}ms
   `.trim();
-}

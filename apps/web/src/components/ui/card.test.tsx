@@ -1,14 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping *//**
- * @vitest-environment jsdom
- */
-import React from 'react';
+/* eslint-disable */import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { vi, describe, it, expect } from 'vitest';
 import { axe } from 'jest-axe';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './card';
 
-describe('Card Components', () => {
-  describe('Card', () => {
+describe('Card Components', () => {;
+  describe('Card', () => {;
     it('renders with default props', () => {
       render(<Card>Card Content</Card>);
       expect(screen.getByText('Card Content')).toBeInTheDocument();
@@ -38,8 +35,7 @@ describe('Card Components', () => {
       const classes = expectedClass.split(' ');
       classes.forEach((className) => {
         expect(card).toHaveClass(className);
-      });
-    });
+      }));
 
     // Test different padding options
     it.each([
@@ -52,7 +48,7 @@ describe('Card Components', () => {
       const card = screen.getByText('Card Content').parentElement;
       if (expectedClass) {
         expect(card).toHaveClass(expectedClass);
-      }
+
     });
 
     // Test different sizes
@@ -66,10 +62,9 @@ describe('Card Components', () => {
       render(<Card size={size as any}>Card Content</Card>);
       const card = screen.getByText('Card Content').parentElement;
       expect(card).toHaveClass(expectedClass);
-    });
-  });
+    }));
 
-  describe('CardHeader', () => {
+  describe('CardHeader', () => {;
     it('renders correctly', () => {
       render(<CardHeader>Header Content</CardHeader>);
       expect(screen.getByText('Header Content')).toBeInTheDocument();
@@ -79,10 +74,9 @@ describe('Card Components', () => {
       render(<CardHeader className="custom-header">Header Content</CardHeader>);
       const header = screen.getByText('Header Content').parentElement;
       expect(header).toHaveClass('custom-header');
-    });
-  });
+    }));
 
-  describe('CardTitle', () => {
+  describe('CardTitle', () => {;
     it('renders correctly', () => {
       render(<CardTitle>Card Title</CardTitle>);
       expect(screen.getByText('Card Title')).toBeInTheDocument();
@@ -92,10 +86,9 @@ describe('Card Components', () => {
       render(<CardTitle className="custom-title">Card Title</CardTitle>);
       const title = screen.getByText('Card Title');
       expect(title).toHaveClass('custom-title');
-    });
-  });
+    }));
 
-  describe('CardDescription', () => {
+  describe('CardDescription', () => {;
     it('renders correctly', () => {
       render(<CardDescription>Card Description</CardDescription>);
       expect(screen.getByText('Card Description')).toBeInTheDocument();
@@ -105,10 +98,9 @@ describe('Card Components', () => {
       render(<CardDescription className="custom-desc">Card Description</CardDescription>);
       const desc = screen.getByText('Card Description');
       expect(desc).toHaveClass('custom-desc');
-    });
-  });
+    }));
 
-  describe('CardContent', () => {
+  describe('CardContent', () => {;
     it('renders correctly', () => {
       render(<CardContent>Content</CardContent>);
       expect(screen.getByText('Content')).toBeInTheDocument();
@@ -118,10 +110,9 @@ describe('Card Components', () => {
       render(<CardContent className="custom-content">Content</CardContent>);
       const content = screen.getByText('Content').parentElement;
       expect(content).toHaveClass('custom-content');
-    });
-  });
+    }));
 
-  describe('CardFooter', () => {
+  describe('CardFooter', () => {;
     it('renders correctly', () => {
       render(<CardFooter>Footer Content</CardFooter>);
       expect(screen.getByText('Footer Content')).toBeInTheDocument();
@@ -131,10 +122,9 @@ describe('Card Components', () => {
       render(<CardFooter className="custom-footer">Footer Content</CardFooter>);
       const footer = screen.getByText('Footer Content').parentElement;
       expect(footer).toHaveClass('custom-footer');
-    });
-  });
+    }));
 
-  describe('Card Integration', () => {
+  describe('Card Integration', () => {;
     it('renders a complete card with all components', () => {
       render(
         <Card>
@@ -145,7 +135,6 @@ describe('Card Components', () => {
           <CardContent>Main Content</CardContent>
           <CardFooter>Footer Content</CardFooter>
         </Card>,
-      );
 
       expect(screen.getByText('Card Title')).toBeInTheDocument();
       expect(screen.getByText('Card Description')).toBeInTheDocument();
@@ -159,7 +148,6 @@ describe('Card Components', () => {
         <Card onClick={handleClick} isClickable>
           <CardContent>Clickable Content</CardContent>
         </Card>,
-      );
 
       const card = screen.getByText('Clickable Content').parentElement;
       expect(card).toHaveClass('cursor-pointer');
@@ -174,13 +162,11 @@ describe('Card Components', () => {
           <CardHeader>Collapsible Header</CardHeader>
           <CardContent>Collapsible Content</CardContent>
         </Card>,
-      );
 
       const collapseButton = screen.getByLabelText('Collapse');
       fireEvent.click(collapseButton);
       expect(handleCollapse).toHaveBeenCalledTimes(1);
-    });
-  });
+    }));
 
   it('renders full card with all subcomponents', () => {
     render(
@@ -192,7 +178,6 @@ describe('Card Components', () => {
         <CardContent>Test Content</CardContent>
         <CardFooter>Test Footer</CardFooter>
       </Card>,
-    );
 
     expect(screen.getByText('Test Title')).toBeInTheDocument();
     expect(screen.getByText('Test Description')).toBeInTheDocument();
@@ -207,7 +192,7 @@ describe('Card Components', () => {
           <CardTitle>Title</CardTitle>
         </CardHeader>
       </Card>,
-    );
+
     const header = screen.getByText('Title').closest('div');
     expect(header).toHaveClass('custom-header');
   });
@@ -217,7 +202,7 @@ describe('Card Components', () => {
       <Card>
         <CardContent className="custom-content">Content</CardContent>
       </Card>,
-    );
+
     const content = screen.getByText('Content').closest('div');
     expect(content).toHaveClass('custom-content');
   });
@@ -227,7 +212,7 @@ describe('Card Components', () => {
       <Card>
         <CardFooter className="custom-footer">Footer</CardFooter>
       </Card>,
-    );
+
     const footer = screen.getByText('Footer').closest('div');
     expect(footer).toHaveClass('custom-footer');
   });
@@ -246,7 +231,6 @@ describe('Card Components', () => {
         <CardContent ref={contentRef}>Content</CardContent>
         <CardFooter ref={footerRef}>Footer</CardFooter>
       </Card>,
-    );
 
     expect(cardRef).toHaveBeenCalled();
     expect(headerRef).toHaveBeenCalled();
@@ -269,7 +253,6 @@ describe('Card Components', () => {
           </div>
         </CardContent>
       </Card>,
-    );
 
     expect(screen.getByText('Nested')).toBeInTheDocument();
     expect(screen.getByText('Title')).toBeInTheDocument();
@@ -290,7 +273,7 @@ describe('Card Components', () => {
           <button>Action Button</button>
         </CardFooter>
       </Card>,
-    );
+
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
@@ -304,7 +287,6 @@ describe('Card Components', () => {
         </CardHeader>
         <CardContent>Content</CardContent>
       </Card>,
-    );
 
     const heading = screen.getByRole('heading', { level: 2, name: 'Card Title' });
     expect(heading).toBeInTheDocument();
@@ -319,7 +301,6 @@ describe('Card Components', () => {
         </CardHeader>
         <CardContent aria-describedby="card-desc">Main content</CardContent>
       </Card>,
-    );
 
     const article = screen.getByRole('article');
     expect(article).toHaveAttribute('aria-labelledby', 'card-title');
@@ -339,7 +320,6 @@ describe('Card Components', () => {
           <button>Second Button</button>
         </CardContent>
       </Card>,
-    );
 
     const card = screen.getByRole('generic');
     const buttons = screen.getAllByRole('button');
@@ -349,6 +329,5 @@ describe('Card Components', () => {
     buttons.forEach((button) => {
       expect(button).toBeVisible();
       expect(button).not.toBeDisabled();
-    });
-  });
+    }));
 });

@@ -26,9 +26,6 @@ function HomepageHeader() {
         </div>
       </div>
     </header>
-  );
-}
-
 export default function Home(): ReactNode {
   const {siteConfig} = useDocusaurusContext();
   return (
@@ -40,5 +37,3 @@ export default function Home(): ReactNode {
         <HomepageFeatures />
       </main>
     </Layout>
-  );
-}

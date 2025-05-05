@@ -1,4 +1,3 @@
-'use client';
 import { RedocStandalone } from 'redoc';
 import { spec } from '@/lib/swagger';
 
@@ -10,5 +9,3 @@ export default function ApiDocs() {
         <RedocStandalone spec={spec} />
       </div>
     </div>
-  );
-}

@@ -10,17 +10,11 @@ export default async function {
   const session = await auth();
   if (!session) {
     redirect('/login');
-  }
-
-  const business = await prisma.business.findFirst({
+const business = await prisma.business.findFirst({
     where: { id: session.user.businessId },
-  });
-
-  if (!business) {
+if (!business) {
     redirect('/');
-  }
-
-  return (
+return (
     <div className="container mx-auto py-8">
       <h1 className="mb-8 text-2xl font-bold">Business Settings</h1>
 
@@ -29,5 +23,3 @@ export default async function {
         <ConsultationForms businessId={business.id} />
       </div>
     </div>
-  );
-}

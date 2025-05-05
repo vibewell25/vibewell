@@ -18,14 +18,13 @@ const PayrollDetailScreen: React.FC = () => {
       try {
         const data = await payrollApi.getRecordById(id);
         setRecord(data);
-      } catch (err) {
+catch (err) {
         console.error(err);
         Alert.alert('Error', 'Failed to load payroll record');
-      } finally {
+finally {
         setLoading(false);
-      }
-    })();
-  }, [id]);
+)();
+[id]);
 
   const handleDelete = () => {
     Alert.alert('Confirm Delete', 'Are you sure?', [
@@ -34,16 +33,11 @@ const PayrollDetailScreen: React.FC = () => {
           try {
             await payrollApi.deleteRecord(id);
             navigation.goBack();
-          } catch (err) {
+catch (err) {
             console.error(err);
             Alert.alert('Error', 'Failed to delete record');
-          }
-        }
-      }
-    ]);
-  };
-
-  if (loading || !record) return <ActivityIndicator style={{ flex: 1 }} />;
+]);
+if (loading || !record) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
     <View style={styles.container}>
@@ -56,13 +50,8 @@ const PayrollDetailScreen: React.FC = () => {
         <Button title="Delete" onPress={handleDelete} color="red" />
       </View>
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   title: { fontSize: 18, fontWeight: 'bold', marginBottom: 8 },
   buttonRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 16 }
-});
-
 export default PayrollDetailScreen;

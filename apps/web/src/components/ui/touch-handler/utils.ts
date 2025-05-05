@@ -1,5 +1,4 @@
-/**
- * Utility functions and types for the TouchHandler component
+functions and types for the TouchHandler component
  */
 
 /**
@@ -8,8 +7,6 @@
 export interface TouchPosition {
   x: number;
   y: number;
-}
-
 /**
  * Represents a touch gesture with type and additional data
  */
@@ -19,8 +16,6 @@ export interface TouchGesture {
   scale?: number;
   rotation?: number;
   duration?: number;
-}
-
 /**
  * Calculate the distance between two points
  */

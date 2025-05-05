@@ -1,6 +1,4 @@
-
-    
-    import * as Notifications from 'expo-notifications';
+import * as Notifications from 'expo-notifications';
 
     import { Platform, Alert } from 'react-native';
 
@@ -14,9 +12,7 @@ Notifications.setNotificationHandler({
     shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: true,
-  }),
-});
-
+),
 /**
  * Requests permission for push notifications
  * @returns {Promise<boolean>} Whether permission was granted
@@ -31,24 +27,15 @@ export async function {
       if (existingStatus !== 'granted') {
         const { status } = await Notifications.requestPermissionsAsync();
         finalStatus = status;
-      }
-      
-      if (finalStatus !== 'granted') {
+if (finalStatus !== 'granted') {
         console.log('Failed to get push token for push notification!');
         return false;
-      }
-      
-      return true;
-    }
-    
-    console.log('Must use physical device for Push Notifications');
+return true;
+console.log('Must use physical device for Push Notifications');
     return false;
-  } catch (error) {
+catch (error) {
     console.error('Error requesting notification permissions:', error);
     return false;
-  }
-}
-
 /**
  * Schedules a booking reminder notification
 
@@ -73,9 +60,7 @@ export async function {
     
     if (!hasPermission) {
       return null;
-    }
-    
-    // Calculate trigger time (x minutes before appointment)
+// Calculate trigger time (x minutes before appointment)
 
         const triggerTime = new Date(bookingDate.getTime() - minutesBefore * 60 * 1000);
     
@@ -83,29 +68,20 @@ export async function {
     if (triggerTime.getTime() <= Date.now()) {
       console.log('Cannot schedule notification in the past');
       return null;
-    }
-    
-    // Schedule the notification with proper trigger format
+// Schedule the notification with proper trigger format
     const identifier = await Notifications.scheduleNotificationAsync({
       content: {
         title: 'Upcoming Appointment Reminder',
         body: `Your appointment for ${serviceTitle} is in ${minutesBefore} minutes`,
         data: { bookingId },
         sound: true,
-      },
-      trigger: {
+trigger: {
         date: triggerTime,
         type: SchedulableTriggerInputTypes.DATE
-      },
-    });
-    
-    return identifier;
-  } catch (error) {
+return identifier;
+catch (error) {
     console.error('Error scheduling booking reminder:', error);
     return null;
-  }
-}
-
 /**
  * Cancels a previously scheduled notification
 
@@ -117,12 +93,9 @@ export async function {
   try {
     await Notifications.cancelScheduledNotificationAsync(notificationId);
     return true;
-  } catch (error) {
+catch (error) {
     console.error('Error canceling notification:', error);
     return false;
-  }
-}
-
 /**
  * Gets all pending notification requests
  * @returns {Promise<Notifications.NotificationRequest[]>} Array of pending notification requests
@@ -131,12 +104,9 @@ export async function {
   getPendingNotifications(): Promise<Notifications.NotificationRequest[]> {
   try {
     return await Notifications.getAllScheduledNotificationsAsync();
-  } catch (error) {
+catch (error) {
     console.error('Error getting pending notifications:', error);
     return [];
-  }
-}
-
 /**
  * Schedule a local notification
  */
@@ -150,7 +120,4 @@ export const scheduleNotification = async (title: string,
       title,
       body,
       data: data || {},
-    },
-    trigger: trigger || null,
-  });
-}; 
+trigger: trigger || null,

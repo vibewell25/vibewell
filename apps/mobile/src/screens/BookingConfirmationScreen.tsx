@@ -11,14 +11,14 @@ import {
   Linking,
   Alert,
   ActivityIndicator
-} from 'react-native';
+from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import {
   BookingConfirmationNavigationProp,
   BookingConfirmationRouteProp
-} from '../types/navigation';
+from '../types/navigation';
 import { sendBookingConfirmation } from '../services/notificationService';
 import { addBookingToCalendar, getCalendarPermissions, requestCalendarPermissions } from '../services/calendarService';
 import { BookingResponse } from '../types/beauty';
@@ -32,12 +32,10 @@ const { width } = Dimensions.get('window');
 interface BookingConfirmationScreenProps {
   navigation: BookingConfirmationNavigationProp;
   route: BookingConfirmationRouteProp;
-}
-
 const BookingConfirmationScreen: React.FC<BookingConfirmationScreenProps> = ({
   navigation,
   route
-}) => {
+) => {
   const { isDarkMode } = useTheme();
   const { bookingId, serviceTitle, amount, date, time, status, serviceId, userInfo, duration, location, providerName } = route.params;
   
@@ -69,20 +67,14 @@ const BookingConfirmationScreen: React.FC<BookingConfirmationScreenProps> = ({
           userInfo,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
-        };
-        
-        const success = await sendBookingConfirmation(bookingData);
+const success = await sendBookingConfirmation(bookingData);
         if (success) {
           setNotificationSent(true);
           console.log('Booking confirmation notification sent');
-        }
-      } catch (error) {
+catch (error) {
         console.error('Error sending booking confirmation:', error);
-      }
-    };
-    
-    sendConfirmation();
-  }, [bookingId, serviceTitle, amount, date, time, serviceId, userInfo, notificationSent]);
+sendConfirmation();
+[bookingId, serviceTitle, amount, date, time, serviceId, userInfo, notificationSent]);
 
   // Share booking details
   const shareBooking = async () => {
@@ -91,14 +83,10 @@ const BookingConfirmationScreen: React.FC<BookingConfirmationScreenProps> = ({
       await Share.share({
         message,
         title: 'My VibeWell Booking',
-      });
-    } catch (error) {
+catch (error) {
       console.error('Error sharing booking:', error);
       Alert.alert('Error', 'Unable to share your booking details at this time.');
-    }
-  };
-  
-  // Add to calendar
+// Add to calendar
   const addToCalendar = async () => {
     setIsAddingToCalendar(true);
     try {
@@ -115,12 +103,8 @@ const BookingConfirmationScreen: React.FC<BookingConfirmationScreenProps> = ({
               { text: 'Cancel', style: 'cancel' },
               { text: 'Open Settings', onPress: () => Linking.openSettings() },
             ]
-          );
-          return;
-        }
-      }
-
-      // Build booking event details
+return;
+// Build booking event details
       const appointmentDateISO = new Date(`${date}T${time.replace(/\s/g, '')}`).toISOString();
       const bookingData: BookingResponse = {
         bookingId,
@@ -139,31 +123,22 @@ const BookingConfirmationScreen: React.FC<BookingConfirmationScreenProps> = ({
         userInfo,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-      };
-
-      // Create calendar event
+// Create calendar event
       const eventId = await addBookingToCalendar(bookingData);
       if (eventId) {
         setCalendarAdded(true);
         Alert.alert('Success', 'Your booking has been added to your calendar');
-      }
-    } catch (error: any) {
+catch (error: any) {
       console.error('Error adding to calendar:', error);
       Alert.alert('Error', error.message || 'Failed to add booking to calendar.');
-    } finally {
+finally {
       setIsAddingToCalendar(false);
-    }
-  };
-  
-  // Go back to home screen
+// Go back to home screen
   const goToHome = () => {
     navigation.reset({
       index: 0,
       routes: [{ name: 'Main' }],
-    });
-  };
-  
-  return (
+return (
     <ScrollView
       contentContainerStyle={styles.container}
       style={{ backgroundColor: isDarkMode ? '#121212' : '#F8F8F8' }}
@@ -404,22 +379,17 @@ const BookingConfirmationScreen: React.FC<BookingConfirmationScreenProps> = ({
         </TouchableOpacity>
       </View>
     </ScrollView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     paddingVertical: 40,
     paddingHorizontal: 20,
     alignItems: 'center',
-  },
-  content: {
+content: {
     width: '100%',
     maxWidth: 500,
     alignItems: 'center',
-  },
-  iconContainer: {
+iconContainer: {
     width: 140,
     height: 140,
     borderRadius: 70,
@@ -431,28 +401,24 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 3,
-  },
-  iconCircle: {
+iconCircle: {
     width: 100,
     height: 100,
     borderRadius: 50,
     backgroundColor: '#4F46E5',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  title: {
+title: {
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
-  },
-  subtitle: {
+subtitle: {
     fontSize: 16,
     marginBottom: 30,
     textAlign: 'center',
     paddingHorizontal: 20,
-  },
-  bookingDetails: {
+bookingDetails: {
     width: '100%',
     borderRadius: 12,
     padding: 20,
@@ -462,37 +428,30 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 2,
-  },
-  detailRow: {
+detailRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 15,
-  },
-  detailLabel: {
+detailLabel: {
     fontSize: 14,
-  },
-  detailValue: {
+detailValue: {
     fontSize: 15,
     fontWeight: '600',
-  },
-  statusContainer: {
+statusContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  statusDot: {
+statusDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
     backgroundColor: '#4CAF50',
     marginRight: 6,
-  },
-  statusText: {
+statusText: {
     color: '#4CAF50',
     fontWeight: '600',
     fontSize: 15,
-  },
-  nextSteps: {
+nextSteps: {
     width: '100%',
     borderRadius: 12,
     padding: 20,
@@ -502,18 +461,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3,
     elevation: 2,
-  },
-  nextStepsTitle: {
+nextStepsTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 15,
-  },
-  stepItem: {
+stepItem: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     marginBottom: 15,
-  },
-  stepNumber: {
+stepNumber: {
     width: 24,
     height: 24,
     borderRadius: 12,
@@ -521,20 +477,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 10,
     marginTop: 2,
-  },
-  stepNumberText: {
+stepNumberText: {
     fontSize: 12,
     fontWeight: 'bold',
-  },
-  stepText: {
+stepText: {
     flex: 1,
     fontSize: 14,
     lineHeight: 20,
-  },
-  actions: {
+actions: {
     width: '100%',
-  },
-  actionButton: {
+actionButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -543,31 +495,24 @@ const styles = StyleSheet.create({
     borderColor: '#4F46E5',
     borderRadius: 10,
     marginBottom: 12,
-  },
-  actionButtonText: {
+actionButtonText: {
     color: '#4F46E5',
     fontWeight: '600',
     marginLeft: 8,
-  },
-  bottomContainer: {
+bottomContainer: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
     padding: 20,
     backgroundColor: 'transparent',
-  },
-  doneButton: {
+doneButton: {
     backgroundColor: '#4F46E5',
     paddingVertical: 15,
     borderRadius: 10,
     alignItems: 'center',
-  },
-  doneButtonText: {
+doneButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-});
-
 export default BookingConfirmationScreen; 

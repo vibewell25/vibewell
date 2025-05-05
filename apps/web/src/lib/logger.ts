@@ -1,10 +1,3 @@
-/**
- * Logger Utility
- *
- * This module provides a configurable logger for the application, with special
- * support for rate limiting events and security-related logging.
- */
-
 import { createHash } from 'crypto';
 import type { Logger as WinstonLogger, LogEntry as WinstonLogEntry } from 'winston';
 import winston from 'winston';
@@ -18,8 +11,6 @@ interface LogEvent {
   module?: string;
   metadata?: Record<string, any>;
   timestamp: Date;
-}
-
 // Interface for rate limit events
 interface RateLimitEvent {
   ip: string;
@@ -29,8 +20,6 @@ interface RateLimitEvent {
   exceeded: boolean;
   remaining?: number;
   resetTime?: number;
-}
-
 // Alert thresholds for rate limiting
 const ALERT_THRESHOLDS = {
   CONSECUTIVE_FAILURES: 5, // Alert after 5 consecutive rate limit hits
@@ -38,8 +27,6 @@ const ALERT_THRESHOLDS = {
   IP_THRESHOLD: 10, // Alert if same IP hits rate limits 10 times in a minute
   PATH_THRESHOLD: 15, // Alert if same path hits rate limits 15 times in a minute
   USER_THRESHOLD: 7, // Alert if same user hits rate limits 7 times in a minute
-};
-
 // In-memory store for tracking rate limit events for alerting
 // In production, you would use Redis or another distributed store
 class RateLimitTracker {
@@ -57,10 +44,7 @@ class RateLimitTracker {
     for (let i = 0; i < this.logs.length; i++) {
       if (now - this.logs[i].timestamp < this.windowMs) {
         validIndices.push(i);
-      }
-    }
-    
-    // Keep only valid logs
+// Keep only valid logs
     const validLogs = validIndices.map(i => this.logs[i]);
     
     // Clear the array without reassigning
@@ -76,10 +60,6 @@ class RateLimitTracker {
     if (!this.warned && this.logs.length > this.threshold) {
       console.warn(`Rate limit warning: ${this.logs.length} logs in the last minute`);
       this.warned = true;
-    }
-  }
-}
-
 const rateLimiter = new RateLimitTracker();
 
 // Create a Winston logger instance
@@ -100,11 +80,7 @@ const logger = winston.createLogger({
         ] 
       : [])
   ],
-});
-
 // Track rate of logging
 const trackLogRate = (service: string) => {
   rateLimiter.track(service);
-};
-
 export { logger, trackLogRate };

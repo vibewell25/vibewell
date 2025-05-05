@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import visually-hidden from '../visually-hidden.tsx';
+
+describe('visually-hidden', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<visually-hidden />);
+    expect(container).toBeInTheDocument();
+  });
+});

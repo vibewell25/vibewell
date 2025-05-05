@@ -1,5 +1,4 @@
-
-    import { AuthConfig, ServiceConfig } from '../types/third-party';
+import { AuthConfig, ServiceConfig } from '../types/third-party';
 
 interface ThirdPartyConfig {
   auth: AuthConfig;
@@ -10,8 +9,6 @@ interface ThirdPartyConfig {
   search?: ServiceConfig;
   logging?: ServiceConfig;
   ai?: ServiceConfig;
-}
-
 export class ThirdPartyManager {
   private static instance: ThirdPartyManager;
   private config: ThirdPartyConfig;
@@ -25,37 +22,19 @@ export class ThirdPartyManager {
         credentials: {
           apiKey: process.env.AUTH_API_KEY,
           apiSecret: process.env.AUTH_API_SECRET
-        }
-      }
-    };
-  }
-
-  public static getInstance(): ThirdPartyManager {
+public static getInstance(): ThirdPartyManager {
     if (!ThirdPartyManager.instance) {
       ThirdPartyManager.instance = new ThirdPartyManager();
-    }
-    return ThirdPartyManager.instance;
-  }
-
-  public getConfig(): ThirdPartyConfig {
+return ThirdPartyManager.instance;
+public getConfig(): ThirdPartyConfig {
     return this.config;
-  }
-
-  public setConfig(config: Partial<ThirdPartyConfig>): void {
+public setConfig(config: Partial<ThirdPartyConfig>): void {
     this.config = {
       ...this.config,
       ...config
-    };
-  }
-
-  public setAuthConfig(authConfig: Partial<AuthConfig>): void {
+public setAuthConfig(authConfig: Partial<AuthConfig>): void {
     this.config.auth = {
       ...this.config.auth,
       ...authConfig
-    };
-  }
-
-  public getAuthConfig(): AuthConfig {
+public getAuthConfig(): AuthConfig {
     return this.config.auth;
-  }
-} 

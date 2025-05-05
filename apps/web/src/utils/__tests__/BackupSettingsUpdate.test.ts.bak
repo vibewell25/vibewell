@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import backup-settings-update from '../backup-settings-update.ts';
+
+describe('backup-settings-update', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<backup-settings-update />);
+    expect(container).toBeInTheDocument();
+  });
+});

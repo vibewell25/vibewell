@@ -14,14 +14,9 @@ export default function App({ Component, pageProps }: AppProps) {
         navigator.serviceWorker.register('/service-worker.js').then(
           (registration) => {
             console.log('Service Worker registered with scope:', registration.scope);
-          },
-          (err) => {
+(err) => {
             console.log('Service Worker registration failed:', err);
-          }
-        );
-      });
-    }
-  }, []);
+[]);
 
   return (
     <>
@@ -101,5 +96,3 @@ export default function App({ Component, pageProps }: AppProps) {
         <SpeedInsights />
       </ThemeProvider>
     </>
-  );
-}

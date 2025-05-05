@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import sentry-error-boundary from '../sentry-error-boundary.tsx';
+
+describe('sentry-error-boundary', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<sentry-error-boundary />);
+    expect(container).toBeInTheDocument();
+  });
+});

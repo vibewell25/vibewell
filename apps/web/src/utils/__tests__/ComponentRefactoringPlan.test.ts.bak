@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import component-refactoring-plan from '../component-refactoring-plan.ts';
+
+describe('component-refactoring-plan', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<component-refactoring-plan />);
+    expect(container).toBeInTheDocument();
+  });
+});

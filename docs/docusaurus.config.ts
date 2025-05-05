@@ -19,9 +19,7 @@ const config: Config = {
     nodeVersion: '18.x',
     apiVersion: 'latest',
     apiBaseUrl: 'https://api.vibewell.com/latest',
-  },
-
-  // GitHub pages deployment config.
+// GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'yourusername', // GitHub org/user name.
   projectName: 'vibewell', // Repo name for GitHub Pages
@@ -35,9 +33,7 @@ const config: Config = {
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
-  },
-
-  presets: [
+presets: [
     [
       'classic',
       {
@@ -47,14 +43,12 @@ const config: Config = {
           routeBasePath: 'docs',
           sidebarPath: require.resolve('./sidebars.ts'),
           editUrl: 'https://github.com/yourusername/vibewell/edit/main/docs/',
-        },
-        blog: {
+blog: {
           showReadingTime: true,
           feedOptions: {
             type: ['rss', 'atom'],
             xslt: true,
-          },
-          // Please change this to your repo.
+// Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
@@ -62,11 +56,9 @@ const config: Config = {
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
-        },
-        theme: {
+theme: {
           customCss: './src/css/custom.css',
-        },
-      } satisfies Preset.Options,
+satisfies Preset.Options,
     ],
   ],
 
@@ -78,28 +70,23 @@ const config: Config = {
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.svg',
-      },
-      items: [
+items: [
         {
           type: 'docSidebar',
           sidebarId: 'docs',
           position: 'left',
           label: 'Docs',
-        },
-        {
+{
           type: 'docsVersionDropdown',
           position: 'right',
           // disable active Class so dropdown can be used even when on docs page
           dropdownActiveClassDisabled: true,
-        },
-        {
+{
           href: 'https://github.com/yourusername/vibewell',
           label: 'GitHub',
           position: 'right',
-        },
-      ],
-    },
-    footer: {
+],
+footer: {
       style: 'dark',
       links: [
         {
@@ -108,47 +95,34 @@ const config: Config = {
             {
               label: 'Tutorial',
               to: '/docs/intro',
-            },
-          ],
-        },
-        {
+],
+{
           title: 'Community',
           items: [
             {
               label: 'Stack Overflow',
               href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
+{
               label: 'Discord',
               href: 'https://discordapp.com/invite/docusaurus',
-            },
-            {
+{
               label: 'X',
               href: 'https://x.com/docusaurus',
-            },
-          ],
-        },
-        {
+],
+{
           title: 'More',
           items: [
             {
               label: 'Blog',
               to: '/blog',
-            },
-            {
+{
               label: 'GitHub',
               href: 'https://github.com/facebook/docusaurus',
-            },
-          ],
-        },
-      ],
+],
+],
       copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
-    },
-    prism: {
+prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
-    },
-  } satisfies Preset.ThemeConfig,
-};
-
+satisfies Preset.ThemeConfig,
 export default config;

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import interceptors from '../interceptors.ts';
+
+describe('interceptors', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<interceptors />);
+    expect(container).toBeInTheDocument();
+  });
+});

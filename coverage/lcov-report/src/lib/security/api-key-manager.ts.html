@@ -241,8 +241,8 @@ export class <span class="cstat-no" title="statement not covered" >ApiKeyManager
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async g</span>enerateNewKey(userId: string): Promise&lt;string&gt; {
     const newKey = <span class="cstat-no" title="statement not covered" >randomBytes(32).toString('hex');</span>
-    const hash = <span class="cstat-no" title="statement not covered" >this?.hashKey(newKey);</span>
-    const expiresAt = <span class="cstat-no" title="statement not covered" >Date?.now() + this?.rotationInterval;</span>
+    const hash = <span class="cstat-no" title="statement not covered" >this.hashKey(newKey);</span>
+    const expiresAt = <span class="cstat-no" title="statement not covered" >Date.now() + this.rotationInterval;</span>
 &nbsp;
     const apiKey: ApiKey = <span class="cstat-no" title="statement not covered" >{</span>
       key: hash,
@@ -251,45 +251,45 @@ export class <span class="cstat-no" title="statement not covered" >ApiKeyManager
     };
 &nbsp;
     // Store new key
-<span class="cstat-no" title="statement not covered" >    await redisClient?.set(</span>
-      `${this?.keyPrefix}${userId}:${hash}`,
-      JSON?.stringify(apiKey),
+<span class="cstat-no" title="statement not covered" >    await redisClient.set(</span>
+      `${this.keyPrefix}${userId}:${hash}`,
+      JSON.stringify(apiKey),
       'EX',
 &nbsp;
-      Math?.ceil(this?.rotationInterval / 1000),
+      Math.ceil(this.rotationInterval / 1000),
     );
 &nbsp;
     // Keep track of active keys
-<span class="cstat-no" title="statement not covered" >    await redisClient?.sadd(`${this?.keyPrefix}${userId}:active`, hash);</span>
+<span class="cstat-no" title="statement not covered" >    await redisClient.sadd(`${this.keyPrefix}${userId}:active`, hash);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return newKey;</span>
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async v</span>alidateKey(userId: string, key: string): Promise&lt;boolean&gt; {
-    const hash = <span class="cstat-no" title="statement not covered" >this?.hashKey(key);</span>
-    const keyData = <span class="cstat-no" title="statement not covered" >await redisClient?.get(`${this?.keyPrefix}${userId}:${hash}`);</span>
+    const hash = <span class="cstat-no" title="statement not covered" >this.hashKey(key);</span>
+    const keyData = <span class="cstat-no" title="statement not covered" >await redisClient.get(`${this.keyPrefix}${userId}:${hash}`);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!keyData) <span class="cstat-no" title="statement not covered" >return false;</span></span>
 &nbsp;
-    const apiKey: ApiKey = <span class="cstat-no" title="statement not covered" >JSON?.parse(keyData);</span>
-<span class="cstat-no" title="statement not covered" >    return apiKey?.isActive &amp;&amp; apiKey?.expiresAt &gt; Date?.now();</span>
+    const apiKey: ApiKey = <span class="cstat-no" title="statement not covered" >JSON.parse(keyData);</span>
+<span class="cstat-no" title="statement not covered" >    return apiKey.isActive &amp;&amp; apiKey.expiresAt &gt; Date.now();</span>
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async r</span>otateKey(userId: string): Promise&lt;string&gt; {
     // Generate new key
-    const newKey = <span class="cstat-no" title="statement not covered" >await this?.generateNewKey(userId);</span>
+    const newKey = <span class="cstat-no" title="statement not covered" >await this.generateNewKey(userId);</span>
 &nbsp;
     // Deactivate old keys after a grace period (24 hours)
 <span class="cstat-no" title="statement not covered" >    setTimeout(</span>
 <span class="fstat-no" title="function not covered" >      async () =&gt; {</span>
-        const activeKeys = <span class="cstat-no" title="statement not covered" >await redisClient?.smembers(`${this?.keyPrefix}${userId}:active`);</span>
+        const activeKeys = <span class="cstat-no" title="statement not covered" >await redisClient.smembers(`${this.keyPrefix}${userId}:active`);</span>
 <span class="cstat-no" title="statement not covered" >        for (const hash of activeKeys) {</span>
-          const keyData = <span class="cstat-no" title="statement not covered" >await redisClient?.get(`${this?.keyPrefix}${userId}:${hash}`);</span>
+          const keyData = <span class="cstat-no" title="statement not covered" >await redisClient.get(`${this.keyPrefix}${userId}:${hash}`);</span>
 <span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (keyData) {</span>
-            const apiKey: ApiKey = <span class="cstat-no" title="statement not covered" >JSON?.parse(keyData);</span>
-<span class="cstat-no" title="statement not covered" >            <span class="missing-if-branch" title="if path not taken" >I</span>if (apiKey?.expiresAt &lt; Date?.now()) {</span>
-<span class="cstat-no" title="statement not covered" >              await redisClient?.srem(`${this?.keyPrefix}${userId}:active`, hash);</span>
-<span class="cstat-no" title="statement not covered" >              await redisClient?.del(`${this?.keyPrefix}${userId}:${hash}`);</span>
+            const apiKey: ApiKey = <span class="cstat-no" title="statement not covered" >JSON.parse(keyData);</span>
+<span class="cstat-no" title="statement not covered" >            <span class="missing-if-branch" title="if path not taken" >I</span>if (apiKey.expiresAt &lt; Date.now()) {</span>
+<span class="cstat-no" title="statement not covered" >              await redisClient.srem(`${this.keyPrefix}${userId}:active`, hash);</span>
+<span class="cstat-no" title="statement not covered" >              await redisClient.del(`${this.keyPrefix}${userId}:${hash}`);</span>
             }
           }
         }
@@ -313,7 +313,7 @@ export {};
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

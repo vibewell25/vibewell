@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import accessible-carousel from '../accessible-carousel.tsx';
+
+describe('accessible-carousel', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<accessible-carousel />);
+    expect(container).toBeInTheDocument();
+  });
+});

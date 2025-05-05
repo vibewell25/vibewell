@@ -1,4 +1,3 @@
-'use client';;
 import AccessibilityControls from '@/components/accessibility/AccessibilityControls';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 
@@ -67,5 +66,3 @@ export default function AccessibilitySettingsPage() {
         </Card>
       </div>
     </div>
-  );
-}

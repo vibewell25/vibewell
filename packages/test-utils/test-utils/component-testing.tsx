@@ -1,10 +1,3 @@
-// @ts-nocheck
-/**
- * Component testing utilities
- *
- * This file provides specialized utilities for testing UI components,
- * including accessibility testing and common UI testing patterns.
- */
 import React from 'react';
 import {
   render,
@@ -12,7 +5,7 @@ import {
   screen,
   waitFor,
   cleanup as testingCleanup,
-} from '@testing-library/react';
+from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 import { ThemeProvider } from '../components/theme-provider';
@@ -27,10 +20,7 @@ export function createWrapperWithProviders(providers = []) {
     return providers.reduceRight((acc, Provider) => {
       // @ts-expect-error - JSX in .ts file
       return <Provider>{acc}</Provider>;
-    }, children);
-  };
-}
-
+children);
 /**
  * Render a component with default providers
  * @param ui - Component to render
@@ -53,12 +43,7 @@ export function renderWithProviders(ui, options = {}) {
           children
         )}
       </ThemeProvider>
-    );
-  }
-
-  return render(ui, { wrapper: Wrapper, ...renderOptions });
-}
-
+return render(ui, { wrapper: Wrapper, ...renderOptions });
 /**
  * Render a component and test for accessibility violations
  * @param ui - Component to render
@@ -78,9 +63,6 @@ export async function {
   return {
     ...renderResult,
     axeResults,
-  };
-}
-
 /**
  * Test a form component
  * @param formComponent - Form component
@@ -97,7 +79,7 @@ export async function {
   expectedErrors = {},
   successMessage = null,
   renderOptions = {},
-}) {
+) {
   // Render the form
   const user = userEvent.setup();
   const result = renderWithProviders(formComponent, renderOptions);
@@ -113,23 +95,19 @@ export async function {
     if (input.type === 'checkbox') {
       if (value) {
         await user.click(input);
-      }
-      // @ts-expect-error - Ignore property access issues
-    } else if (input.type === 'select-one') {
+// @ts-expect-error - Ignore property access issues
+else if (input.type === 'select-one') {
       // @ts-expect-error - Ignore type compatibility issues
       await user.selectOptions(input, value);
       // @ts-expect-error - Ignore property access issues
-    } else if (input.type === 'radio') {
+else if (input.type === 'radio') {
       // @ts-expect-error - Ignore type compatibility issues
       const radioOption = screen.getByLabelText(value);
       await user.click(radioOption);
-    } else {
+else {
       // @ts-expect-error - Ignore type compatibility issues
       await user.type(input, value);
-    }
-  }
-
-  // Submit the form
+// Submit the form
   const submitButton = screen.getByRole('button', { name: submitButtonText });
   await user.click(submitButton);
 
@@ -139,21 +117,13 @@ export async function {
       // @ts-expect-error - Ignore type compatibility issues
       const errorElement = await screen.findByText(errorMessage);
       expect(errorElement).toBeInTheDocument();
-    }
-  }
-
-  // Check for success
+// Check for success
   if (successMessage) {
     const successElement = await screen.findByText(successMessage);
     expect(successElement).toBeInTheDocument();
-  }
-
-  return {
+return {
     ...result,
     user,
-  };
-}
-
 /**
  * Test a modal or dialog component
  * @param {React.ReactElement} triggerComponent - Component that triggers the modal
@@ -172,7 +142,7 @@ export async function {
   testContent = null,
   modalShouldClose = true,
   renderOptions = {},
-}) {
+) {
   // Render the component that contains the modal trigger
   const user = userEvent.setup();
   const result = renderWithProviders(triggerComponent, renderOptions);
@@ -189,9 +159,7 @@ export async function {
   if (testContent) {
     const contentElement = await screen.findByText(testContent);
     expect(contentElement).toBeInTheDocument();
-  }
-
-  // Close the modal if required
+// Close the modal if required
   if (modalShouldClose) {
     const closeButton = screen.getByText(closeButtonText);
     await user.click(closeButton);
@@ -199,15 +167,9 @@ export async function {
     // Check if modal is closed
     await waitFor(() => {
       expect(screen.queryByText(modalTitle)).not.toBeInTheDocument();
-    });
-  }
-
-  return {
+return {
     ...result,
     user,
-  };
-}
-
 /**
  * Test a component that uses async loading (like data fetching)
  * @param {React.ReactElement} component - Component to test
@@ -225,7 +187,7 @@ export async function {
   errorText = null,
   shouldError = false,
   renderOptions = {},
-}) {
+) {
   // Render the component
   const result = renderWithProviders(component, renderOptions);
 
@@ -237,16 +199,12 @@ export async function {
     // Wait for error state
     const errorElement = await screen.findByText(errorText);
     expect(errorElement).toBeInTheDocument();
-  } else {
+else {
     // Wait for loaded state
     const loadedElement = await screen.findByText(loadedText);
     expect(loadedElement).toBeInTheDocument();
     expect(screen.queryByText(loadingText)).not.toBeInTheDocument();
-  }
-
-  return result;
-}
-
+return result;
 /**
  * Test a component for dark mode support
  * @param component - Component to test
@@ -267,17 +225,12 @@ export function testThemeSupport(component, themeCheck) {
   return {
     lightResult,
     darkResult,
-  };
-}
-
 /**
  * Setup userEvent for component interactions
  * @returns {Object} - The userEvent object with setup
  */
 export function setupUserEvent() {
   return userEvent.setup();
-}
-
 /**
  * Test accessibility of a component
  * @param {React.ReactElement} ui - The component to test
@@ -291,8 +244,6 @@ export async function {
   const results = await axe(container);
   expect(results).toHaveNoViolations();
   return results;
-}
-
 /**
  * Test component interactions
  * @param {React.ReactElement} ui - The component to test
@@ -311,12 +262,6 @@ export async function {
   for (const { action, assert } of interactions) {
     if (action) {
       await action(result, user);
-    }
-
-    if (assert) {
+if (assert) {
       assert(result);
-    }
-  }
-
-  return result;
-}
+return result;

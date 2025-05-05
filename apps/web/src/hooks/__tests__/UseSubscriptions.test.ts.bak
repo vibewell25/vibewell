@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import use-subscriptions from '../use-subscriptions.ts';
+
+describe('use-subscriptions', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<use-subscriptions />);
+    expect(container).toBeInTheDocument();
+  });
+});

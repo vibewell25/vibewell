@@ -168,7 +168,4 @@ const SecurityPage: NextPage = () => {
         </div>
       </div>
     </AdminLayout>
-  );
-};
-
 export default SecurityPage; 

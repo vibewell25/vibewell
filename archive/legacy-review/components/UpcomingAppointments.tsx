@@ -9,10 +9,8 @@ interface Appointment {
   provider: string;
   date: string;
   time: string;
-}
 interface UpcomingAppointmentsProps {
   appointments: Appointment[];
-}
 export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps) {
   const router = useRouter();
   if (appointments.length === 0) {
@@ -21,9 +19,7 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
         <p className="mb-4 text-muted-foreground">No upcoming appointments</p>
         <Button onClick={() => router.push('/beauty/services')}>Book a Service</Button>
       </div>
-    );
-  }
-  return (
+return (
     <div className="space-y-4">
       {appointments.map((appointment) => (
         <div key={appointment.id} className="flex items-start gap-4 rounded-lg border p-4">
@@ -47,5 +43,3 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
         </div>
       ))}
     </div>
-  );
-}

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import recovery-code-manager from '../recovery-code-manager.tsx';
+
+describe('recovery-code-manager', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<recovery-code-manager />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -32,8 +32,7 @@ const AuditLogsPage: NextPage = () => {
       category: 'users',
       details: 'New user registration: john.doe@example.com',
       ip: '192.168.1.100',
-    },
-    {
+{
       id: 2,
       timestamp: '2024-03-20 10:15:00',
       user: 'system',
@@ -41,8 +40,7 @@ const AuditLogsPage: NextPage = () => {
       category: 'system',
       details: 'Daily backup completed successfully',
       ip: 'internal',
-    },
-    {
+{
       id: 3,
       timestamp: '2024-03-20 09:45:00',
       user: 'admin@vibewell.com',
@@ -50,8 +48,7 @@ const AuditLogsPage: NextPage = () => {
       category: 'services',
       details: 'Updated pricing for "Spa Package"',
       ip: '192.168.1.100',
-    },
-  ];
+];
 
   return (
     <AdminLayout>
@@ -205,7 +202,4 @@ const AuditLogsPage: NextPage = () => {
         </div>
       </div>
     </AdminLayout>
-  );
-};
-
 export default AuditLogsPage; 

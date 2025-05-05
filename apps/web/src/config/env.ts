@@ -22,13 +22,13 @@ const envSchema = z.object({
   // Stripe
   STRIPE_SECRET_KEY: z.string().refine(val => val.startsWith('sk_'), {
     message: 'STRIPE_SECRET_KEY must start with sk_'
-  }),
+),
   STRIPE_PUBLISHABLE_KEY: z.string().refine(val => val.startsWith('pk_'), {
     message: 'STRIPE_PUBLISHABLE_KEY must start with pk_'
-  }),
+),
   STRIPE_WEBHOOK_SECRET: z.string().refine(val => val.startsWith('whsec_'), {
     message: 'STRIPE_WEBHOOK_SECRET must start with whsec_'
-  }),
+),
   
   // Security
   CORS_ORIGINS: z.string(),
@@ -47,7 +47,7 @@ const envSchema = z.object({
   // OpenAI
   OPENAI_API_KEY: z.string().refine(val => val.startsWith('sk-'), {
     message: 'OPENAI_API_KEY must start with sk-'
-  }),
+),
   CHAT_MODEL: z.string().default('gpt-3.5-turbo'),
   
   // WebAuthn
@@ -64,8 +64,6 @@ const envSchema = z.object({
   CSP_IMG_SOURCES: z.string().optional(),
   CSP_CONNECT_SOURCES: z.string().optional(),
   CSP_MEDIA_SOURCES: z.string().optional(),
-});
-
 // Process environment variables
 function getValidatedEnv() {
   // In server components, we can use process.env directly
@@ -74,19 +72,12 @@ function getValidatedEnv() {
   try {
     if (typeof process === 'undefined') {
       throw new Error('process is not defined');
-    }
-    
-    return envSchema.parse(process.env);
-  } catch (error) {
+return envSchema.parse(process.env);
+catch (error) {
     if (error instanceof z.ZodError) {
       console.error('❌ Invalid environment variables:', JSON.stringify(error.format(), null, 2));
       throw new Error('Invalid environment variables');
-    }
-    
-    throw error;
-  }
-}
-
+throw error;
 export const env = getValidatedEnv();
 
 // Type export for TypeScript

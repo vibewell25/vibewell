@@ -1,4 +1,3 @@
-
 import { prisma } from '@/lib/database/client';
 
 export type SkinConditionLogInput = {
@@ -11,9 +10,7 @@ export type SkinConditionLogInput = {
   concerns: Array<{
     name: string;
     severity: number;
-  }>;
-};
-
+>;
 export type SkinConditionLogWithConcerns = {
   id: string;
   date: Date;
@@ -28,11 +25,9 @@ export type SkinConditionLogWithConcerns = {
     severity: number;
     createdAt: Date;
     updatedAt: Date;
-  }>;
+>;
   createdAt: Date;
   updatedAt: Date;
-};
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); createSkinConditionLog(
@@ -53,21 +48,13 @@ export async function {
           create: data.concerns.map((concern) => ({
             name: concern.name,
             severity: concern.severity,
-          })),
-        },
-      },
-      include: {
+)),
+include: {
         concerns: true,
-      },
-    });
-
-    return log;
-  } catch (error) {
+return log;
+catch (error) {
     console.error('Error creating skin condition log:', error);
     return null;
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); getSkinConditionLogs(
@@ -80,25 +67,16 @@ export async function {
       userId,
       ...(startDate && { date: { gte: startDate } }),
       ...(endDate && { date: { lte: endDate } }),
-    };
-
-    const logs = await prisma.skinConditionLog.findMany({
+const logs = await prisma.skinConditionLog.findMany({
       where,
       include: {
         concerns: true,
-      },
-      orderBy: {
+orderBy: {
         date: 'desc',
-      },
-    });
-
-    return logs;
-  } catch (error) {
+return logs;
+catch (error) {
     console.error('Error fetching skin condition logs:', error);
     return [];
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); updateSkinConditionLog(
@@ -112,14 +90,9 @@ export async function {
       where: {
         id: logId,
         userId,
-      },
-    });
-
-    if (!existingLog) {
+if (!existingLog) {
       return null;
-    }
-
-    // Update the log and its concerns
+// Update the log and its concerns
     const updatedLog = await prisma.skinConditionLog.update({
       where: { id: logId },
       data: {
@@ -135,22 +108,14 @@ export async function {
             create: data.concerns.map((concern) => ({
               name: concern.name,
               severity: concern.severity,
-            })),
-          },
-        }),
-      },
-      include: {
+)),
+),
+include: {
         concerns: true,
-      },
-    });
-
-    return updatedLog;
-  } catch (error) {
+return updatedLog;
+catch (error) {
     console.error('Error updating skin condition log:', error);
     return null;
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); deleteSkinConditionLog(userId: string, logId: string): Promise<boolean> {
@@ -160,25 +125,15 @@ export async function {
       where: {
         id: logId,
         userId,
-      },
-    });
-
-    if (!existingLog) {
+if (!existingLog) {
       return false;
-    }
-
-    // Delete the log (concerns will be automatically deleted due to cascade)
+// Delete the log (concerns will be automatically deleted due to cascade)
     await prisma.skinConditionLog.delete({
       where: { id: logId },
-    });
-
-    return true;
-  } catch (error) {
+return true;
+catch (error) {
     console.error('Error deleting skin condition log:', error);
     return false;
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); getSkinConditionAnalytics(
@@ -190,7 +145,7 @@ export async function {
   averageSleep: number;
   averageHydration: number;
   commonConcerns: Array<{ name: string; count: number; averageSeverity: number }>;
-}> {
+> {
   try {
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - days);
@@ -200,24 +155,16 @@ export async function {
         userId,
         date: {
           gte: startDate,
-        },
-      },
-      include: {
+include: {
         concerns: true,
-      },
-    });
-
-    if (logs.length === 0) {
+if (logs.length === 0) {
       return {
         averageMood: 0,
         averageStress: 0,
         averageSleep: 0,
         averageHydration: 0,
         commonConcerns: [],
-      };
-    }
-
-    // Calculate averages
+// Calculate averages
     const averages = logs.reduce(
       (acc, log) => ({
 
@@ -228,29 +175,23 @@ export async function {
         sleep: acc.sleep + log.sleepHours,
 
         hydration: acc.hydration + log.hydration,
-      }),
+),
       { mood: 0, stress: 0, sleep: 0, hydration: 0 },
-    );
-
-    // Analyze concerns
+// Analyze concerns
     const concernStats: Record<string, { count: number; totalSeverity: number }> = {};
     logs.forEach((log) => {
       log.concerns.forEach((concern) => {
         if (!concernStats[concern.name]) {
           concernStats[concern.name] = { count: 0, totalSeverity: 0 };
-        }
-        concernStats[concern.name].if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
+concernStats[concern.name].if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
         concernStats[concern.name].if (totalSeverity > Number.MAX_SAFE_INTEGER || totalSeverity < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); totalSeverity += concern.severity;
-      });
-    });
-
-    const commonConcerns = Object.entries(concernStats)
+const commonConcerns = Object.entries(concernStats)
       .map(([name, stats]) => ({
         name,
         count: stats.count,
 
         averageSeverity: stats.totalSeverity / stats.count,
-      }))
+))
 
       .sort((a, b) => b.count - a.count);
 
@@ -264,8 +205,7 @@ export async function {
 
       averageHydration: averages.hydration / logs.length,
       commonConcerns,
-    };
-  } catch (error) {
+catch (error) {
     console.error('Error calculating skin condition analytics:', error);
     return {
       averageMood: 0,
@@ -273,6 +213,3 @@ export async function {
       averageSleep: 0,
       averageHydration: 0,
       commonConcerns: [],
-    };
-  }
-}

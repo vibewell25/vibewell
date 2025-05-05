@@ -1,5 +1,3 @@
-// Types for wellness tracking
-
 export type GoalStatus = 'not_started' | 'in_progress' | 'completed' | 'failed';
 
 export type GoalType =
@@ -40,16 +38,12 @@ export interface Goal {
   color?: string;
   reminders?: boolean;
   reminderTime?: string;
-}
-
 export interface HabitLog {
   id: string;
   goalId: string;
   date: string;
   value: number;
   notes?: string;
-}
-
 export interface WellnessDay {
   date: string;
   meditation: number; // minutes
@@ -59,8 +53,6 @@ export interface WellnessDay {
   steps: number;
   mood: 1 | 2 | 3 | 4 | 5; // 1-5 scale
   notes?: string;
-}
-
 export interface ProgressSummary {
   activeGoals: number;
   completedGoals: number;
@@ -71,16 +63,12 @@ export interface ProgressSummary {
     water: number;
     sleep: number;
     steps: number;
-  };
-  improvement: {
+improvement: {
     meditation: number; // percentage compared to last week
     workout: number;
     water: number;
     sleep: number;
     steps: number;
-  };
-}
-
 export interface ContentProgress {
   contentId: string;
   contentType: 'video' | 'audio' | 'article' | 'program';
@@ -90,4 +78,3 @@ export interface ContentProgress {
   completedDate?: string;
   rating?: 1 | 2 | 3 | 4 | 5;
   notes?: string;
-}

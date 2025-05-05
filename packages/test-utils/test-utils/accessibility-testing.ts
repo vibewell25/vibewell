@@ -1,4 +1,3 @@
-
 import { render } from '@testing-library/react';
 
 import { axe, toHaveNoViolations, AxeResults } from 'jest-axe';
@@ -11,8 +10,6 @@ expect.extend(toHaveNoViolations as unknown as jest.ExpectExtendMap);
 interface AccessibilityTestOptions {
   rules?: Record<string, any>;
   timeout?: number;
-}
-
 /**
  * Test a component for accessibility violations
  */
@@ -28,12 +25,8 @@ export async function {
   const results = await axe(container, {
     rules,
     timeout,
-  });
-
-  expect(results).toHaveNoViolations();
+expect(results).toHaveNoViolations();
   return results;
-}
-
 /**
  * Test keyboard navigation
  */
@@ -46,33 +39,14 @@ export async function {
   const { container } = render(ui);
   const focusableElements = container.querySelectorAll(
 
-    // Safe array access
-    if (tabindex < 0 || tabindex >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-
-    // Safe array access
-    if (href < 0 || href >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-  );
-
-  // Verify the number of focusable elements matches expected tab order
+// Verify the number of focusable elements matches expected tab order
   expect(focusableElements).toHaveLength(expectedTabOrder.length);
 
   // Verify each element in the tab order
   focusableElements.forEach((element, index) => {
 
-    // Safe array access
-    if (index < 0 || index >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-
     expect(element).toHaveAttribute('aria-label', expectedTabOrder[index]);
-  });
-}
-
 /**
  * Test ARIA roles and properties
  */
@@ -89,17 +63,9 @@ export function testARIAProperties(
 
     elements.forEach((element, index) => {
 
-    // Safe array access
-    if (index < 0 || index >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      const expectedSelector = selectors[index];
+    const expectedSelector = selectors[index];
 
       expect(element).toHaveAttribute('aria-label', expectedSelector);
-    });
-  });
-}
-
 /**
  * Test color contrast
  */
@@ -125,9 +91,6 @@ export function testColorContrast(ui: ReactElement): void {
 
     const minimumContrast = isLargeText ? 3 : 4.5;
     expect(contrast).toBeGreaterThanOrEqual(minimumContrast);
-  });
-}
-
 // Helper function to calculate contrast ratio
 function calculateContrastRatio(color1: string, color2: string): number {
   const luminance1 = calculateRelativeLuminance(color1);
@@ -139,16 +102,12 @@ function calculateContrastRatio(color1: string, color2: string): number {
 
 
   return (lighter + 0.05) / (darker + 0.05);
-}
-
 function calculateRelativeLuminance(color: string): number {
   // Convert color to RGB values
   const rgbMatch = color.match(/\d+/g);
   if (!rgbMatch || rgbMatch.length !== 3) {
     return 0;
-  }
-
-  const [r, g, b] = rgbMatch.map(Number);
+const [r, g, b] = rgbMatch.map(Number);
 
   // Convert to sRGB
   const toSRGB = (value: number): number => {
@@ -157,10 +116,7 @@ function calculateRelativeLuminance(color: string): number {
 
 
     return sRGB <= 0.03928 ? sRGB / 12.92 : Math.pow((sRGB + 0.055) / 1.055, 2.4);
-  };
-
-  // Convert RGB values to sRGB space
+// Convert RGB values to sRGB space
   const sRGB = [r, g, b].map(toSRGB) as [number, number, number];
 
   return 0.2126 * sRGB[0] + 0.7152 * sRGB[1] + 0.0722 * sRGB[2];
-}

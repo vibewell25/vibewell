@@ -9,8 +9,6 @@ interface StackProps extends React.HTMLAttributes<HTMLDivElement> {
   justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
   wrap?: boolean;
   className?: string;
-}
-
 /**
  * Stack - A flexible layout component for vertical and horizontal stacking
  *
@@ -26,7 +24,7 @@ export function Stack({
   wrap = false,
   className,
   ...props
-}: StackProps) {
+: StackProps) {
   // Map spacing sizes to Tailwind classes
   const spacingClasses = {
     none: direction === 'row' ? 'space-x-0' : 'space-y-0',
@@ -35,18 +33,14 @@ export function Stack({
     md: direction === 'row' ? 'space-x-4' : 'space-y-4',
     lg: direction === 'row' ? 'space-x-6' : 'space-y-6',
     xl: direction === 'row' ? 'space-x-8' : 'space-y-8',
-  };
-
-  // Map alignment to Tailwind classes
+// Map alignment to Tailwind classes
   const alignClasses = {
     start: 'items-start',
     center: 'items-center',
     end: 'items-end',
     stretch: 'items-stretch',
     baseline: 'items-baseline',
-  };
-
-  // Map justification to Tailwind classes
+// Map justification to Tailwind classes
   const justifyClasses = {
     start: 'justify-start',
     center: 'justify-center',
@@ -54,9 +48,7 @@ export function Stack({
     between: 'justify-between',
     around: 'justify-around',
     evenly: 'justify-evenly',
-  };
-
-  // Combine classes
+// Combine classes
   const stackClasses = cn(
     'flex',
     direction === 'row' ? 'flex-row' : 'flex-col',
@@ -65,15 +57,10 @@ export function Stack({
     align ? alignClasses[align] : null,
     justify ? justifyClasses[justify] : null,
     className,
-  );
-
-  return (
+return (
     <div className={stackClasses} {...props}>
       {children}
     </div>
-  );
-}
-
 /**
  * VStack - Vertical Stack convenience component
  */
@@ -84,7 +71,7 @@ export function VStack({
   justify,
   className,
   ...props
-}: Omit<StackProps, 'direction'>) {
+: Omit<StackProps, 'direction'>) {
   return (
     <Stack
       direction="column"
@@ -96,9 +83,6 @@ export function VStack({
     >
       {children}
     </Stack>
-  );
-}
-
 /**
  * HStack - Horizontal Stack convenience component
  */
@@ -110,7 +94,7 @@ export function HStack({
   wrap,
   className,
   ...props
-}: Omit<StackProps, 'direction'>) {
+: Omit<StackProps, 'direction'>) {
   return (
     <Stack
       direction="row"
@@ -123,5 +107,3 @@ export function HStack({
     >
       {children}
     </Stack>
-  );
-}

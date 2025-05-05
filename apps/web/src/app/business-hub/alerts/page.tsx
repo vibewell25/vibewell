@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { AnalyticsAlertService } from '@/services/analytics-alert-service';
@@ -15,14 +13,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+from '@/components/ui/table';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/components/ui/use-toast';
@@ -40,8 +38,7 @@ export default function AlertsPage() {
   useEffect(() => {
     if (user.id) {
       loadAlerts();
-    }
-  }, [user]);
+[user]);
 
   const loadAlerts = async ( {
   const start = Date.now();
@@ -55,35 +52,24 @@ export default function AlertsPage() {
 
       if (response.error) {
         throw new Error(response.error.message);
-      }
-
-      if (response.data) {
+if (response.data) {
         setAlerts(response.data);
-      }
-    } catch (error) {
+catch (error) {
       console.error('Error loading alerts:', error);
       setError('Failed to load alerts. Please try again later.');
       toast({
         title: 'Error',
         description: 'Failed to load alerts',
         variant: 'destructive',
-      });
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  const handleCreateAlert = () => {
+const handleCreateAlert = () => {
     setSelectedAlert(undefined);
     setIsDialogOpen(true);
-  };
-
-  const handleEditAlert = (alert: Alert) => {
+const handleEditAlert = (alert: Alert) => {
     setSelectedAlert(alert);
     setIsDialogOpen(true);
-  };
-
-  const handleDeleteAlert = async ( {
+const handleDeleteAlert = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');alert: Alert) => {
     try {
@@ -92,27 +78,20 @@ export default function AlertsPage() {
 
       if (response.error) {
         throw new Error(response.error.message);
-      }
-
-      // Remove from state
+// Remove from state
       setAlerts(alerts.filter((a) => a.id !== alert.id));
 
       toast({
         title: 'Success',
         description: 'Alert deleted successfully',
         variant: 'default',
-      });
-    } catch (error) {
+catch (error) {
       console.error('Error deleting alert:', error);
       toast({
         title: 'Error',
         description: 'Failed to delete alert',
         variant: 'destructive',
-      });
-    }
-  };
-
-  const handleToggleAlert = async ( {
+const handleToggleAlert = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');alert: Alert) => {
     try {
@@ -123,9 +102,7 @@ export default function AlertsPage() {
 
       if (response.error) {
         throw new Error(response.error.message);
-      }
-
-      if (response.data) {
+if (response.data) {
         // Update in state
         setAlerts(alerts.map((a) => (a.id === alert.id ? response.data : a)));
 
@@ -133,43 +110,30 @@ export default function AlertsPage() {
           title: 'Success',
           description: `Alert ${alert.isActive ? 'disabled' : 'enabled'} successfully`,
           variant: 'default',
-        });
-      }
-    } catch (error) {
+catch (error) {
       console.error('Error toggling alert:', error);
       toast({
         title: 'Error',
         description: 'Failed to update alert status',
         variant: 'destructive',
-      });
-    }
-  };
-
-  const handleAlertSuccess = (alert: Alert) => {
+const handleAlertSuccess = (alert: Alert) => {
     const existingIndex = alerts.findIndex((a) => a.id === alert.id);
 
     if (existingIndex >= 0) {
       // Update existing alert
       setAlerts(alerts.map((a) => (a.id === alert.id ? alert : a)));
-    } else {
+else {
       // Add new alert
       setAlerts([...alerts, alert]);
-    }
-  };
-
-  const getMetricDisplayName = (metricType: string) => {
+const getMetricDisplayName = (metricType: string) => {
     const metricMap: Record<string, string> = {
       views: 'Product Views',
       uniqueVisitors: 'Unique Visitors',
       tryOns: 'Try-Ons',
       conversion: 'Conversion Rate',
       rating: 'Rating',
-    };
-
-    return metricMap[metricType] || metricType;
-  };
-
-  const getThresholdDisplay = (alert: Alert) => {
+return metricMap[metricType] || metricType;
+const getThresholdDisplay = (alert: Alert) => {
     const metric = getMetricDisplayName(alert.threshold.metricType);
     const condition = alert.threshold.condition === 'above' ? 'above' : 'below';
     let value = alert.threshold.value;
@@ -177,45 +141,32 @@ export default function AlertsPage() {
     // Add % for conversion rate
     if (alert.threshold.metricType === 'conversion') {
       value = `${value}%`;
-    }
-
-    return `${metric} ${condition} ${value}`;
-  };
-
-  const getTimeframeDisplay = (hours: number) => {
+return `${metric} ${condition} ${value}`;
+const getTimeframeDisplay = (hours: number) => {
     if (hours < 24) {
       return `${hours} hour${hours === 1 ? '' : 's'}`;
-    } else if (hours === 24) {
+else if (hours === 24) {
       return '1 day';
-    } else if (hours === 168) {
+else if (hours === 168) {
       return '1 week';
-    } else {
+else {
       return `${Math.floor(hours / 24)} days`;
-    }
-  };
-
-  const getProductSpecificText = (alert: Alert) => {
+const getProductSpecificText = (alert: Alert) => {
     return alert.productId ? 'Product specific' : 'All products';
-  };
-
-  const getNotificationMethodsDisplay = (alert: Alert) => {
+const getNotificationMethodsDisplay = (alert: Alert) => {
     const methods = alert.notificationMethods.filter((m) => m.enabled).map((m) => m.type);
 
     if (methods.length === 0) {
       return 'None';
-    }
-
-    return methods
+return methods
       .map((m) => {
         if (m === 'email') return 'Email';
         if (m === 'sms') return 'SMS';
         if (m === 'inApp') return 'In-App';
         return m;
-      })
+)
       .join(', ');
-  };
-
-  const filteredAlerts =
+const filteredAlerts =
     activeTab === 'all'
       ? alerts
       : activeTab === 'active'
@@ -230,10 +181,7 @@ export default function AlertsPage() {
           <AlertDescription>You must be logged in to view this page.</AlertDescription>
         </AlertUI>
       </div>
-    );
-  }
-
-  return (
+return (
     <div className="container mx-auto max-w-screen-xl py-10">
       <div className="mb-8 flex items-center justify-between">
         <div>
@@ -388,5 +336,3 @@ export default function AlertsPage() {
         alertToEdit={selectedAlert}
       />
     </div>
-  );
-}

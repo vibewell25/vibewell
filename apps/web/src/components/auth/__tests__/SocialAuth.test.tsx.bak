@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import social-auth from '../social-auth.tsx';
+
+describe('social-auth', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<social-auth />);
+    expect(container).toBeInTheDocument();
+  });
+});

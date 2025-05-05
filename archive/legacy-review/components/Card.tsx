@@ -11,6 +11,4 @@ interface CardProps {
   children: React.ReactNode;
   footer?: React.ReactNode;
   className?: string;
-}
-
 export {};

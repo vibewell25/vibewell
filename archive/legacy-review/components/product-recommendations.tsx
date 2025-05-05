@@ -23,12 +23,10 @@ export default function ProductRecommendations() {
     skinType: 'normal' as (typeof skinTypes)[number],
     concerns: [] as SkinConcern[],
     priceRange: 'all' as 'budget' | 'mid' | 'luxury' | 'all',
-  });
-
-  useEffect(() => {
+useEffect(() => {
     loadRecommendations();
     loadUserPreferences();
-  }, [filters]);
+[filters]);
 
   const loadRecommendations = async ( {
   const start = Date.now();
@@ -37,14 +35,11 @@ export default function ProductRecommendations() {
       setLoading(true);
       const products = await getProductRecommendations(filters);
       setRecommendations(products);
-    } catch (error) {
+catch (error) {
       console.error('Error loading recommendations:', error);
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  const loadUserPreferences = async ( {
+const loadUserPreferences = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');) => {
     try {
@@ -55,23 +50,17 @@ export default function ProductRecommendations() {
         setFilters((prev) => ({
           ...prev,
           concerns: recentConcerns,
-        }));
-      }
-    } catch (error) {
+));
+catch (error) {
       console.error('Error loading user preferences:', error);
-    }
-  };
-
-  const handleConcernToggle = (concern: SkinConcern) => {
+const handleConcernToggle = (concern: SkinConcern) => {
     setFilters((prev) => ({
       ...prev,
       concerns: prev.concerns.includes(concern)
         ? prev.concerns.filter((c) => c !== concern)
         : [...prev.concerns, concern],
-    }));
-  };
-
-  const getPriceRangeLabel = (range: string) => {
+));
+const getPriceRangeLabel = (range: string) => {
     switch (range) {
       case 'budget':
         return '$ Budget-Friendly';
@@ -81,10 +70,7 @@ export default function ProductRecommendations() {
         return '$$$ Luxury';
       default:
         return 'All Prices';
-    }
-  };
-
-  return (
+return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Product Recommendations</h2>
@@ -99,12 +85,11 @@ export default function ProductRecommendations() {
               setFilters((prev) => ({
                 ...prev,
                 skinType: e.target.value as (typeof skinTypes)[number],
-              }))
-            }
-            options={skinTypes.map((type) => ({
+))
+options={skinTypes.map((type) => ({
               value: type,
               label: type.charAt(0).toUpperCase() + type.slice(1),
-            }))}
+))}
           />
 
           <Select
@@ -114,9 +99,8 @@ export default function ProductRecommendations() {
               setFilters((prev) => ({
                 ...prev,
                 priceRange: e.target.value as typeof filters.priceRange,
-              }))
-            }
-            options={[
+))
+options={[
               { value: 'all', label: 'All Prices' },
               { value: 'budget', label: '$ Budget-Friendly' },
               { value: 'mid', label: '$$ Mid-Range' },
@@ -212,5 +196,3 @@ export default function ProductRecommendations() {
         </div>
       )}
     </div>
-  );
-}

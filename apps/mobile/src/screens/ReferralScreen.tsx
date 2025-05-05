@@ -15,41 +15,32 @@ const ReferralScreen: React.FC = () => {
       try {
         const res = await fetch(`${serverBaseUrl}/api/referrals/code`, {
           headers: { Authorization: `Bearer ${token}` }
-        });
-        const data = await res.json();
+const data = await res.json();
         setCode(data.referralCode);
-      } catch {
+catch {
         Alert.alert('Error', 'Failed to fetch referral code');
-      }
-    })();
-  }, []);
+)();
+[]);
 
   const handleCopy = () => {
     Clipboard.setString(code);
     Alert.alert('Copied', 'Referral code copied to clipboard');
-  };
-
-  const handleApply = async () => {
+const handleApply = async () => {
     try {
       if (!(await isOnline())) {
         await addToSyncQueue('/api/referrals/apply', 'POST', { code: input });
         Alert.alert('Offline', 'Referral applied when back online');
         return;
-      }
-      const res = await fetch(`${serverBaseUrl}/api/referrals/apply`, {
+const res = await fetch(`${serverBaseUrl}/api/referrals/apply`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ code: input })
-      });
-      if (!res.ok) throw new Error();
+if (!res.ok) throw new Error();
       const data = await res.json();
       Alert.alert('Success', `You earned ${data.rewardPoints} points`);
-    } catch {
+catch {
       Alert.alert('Error', 'Failed to apply referral');
-    }
-  };
-
-  return (
+return (
     <View style={styles.container}>
       <Text style={styles.label}>Your Referral Code:</Text>
       <View style={styles.row}>
@@ -67,15 +58,10 @@ const ReferralScreen: React.FC = () => {
         <Button title="Apply" onPress={handleApply} />
       </View>
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   label: { fontSize: 16, marginBottom: 8 },
   row: { flexDirection: 'row', alignItems: 'center' },
   code: { fontSize: 18, flex: 1, marginRight: 8 },
   input: { flex: 1, borderWidth: 1, borderColor: '#ccc', borderRadius: 4, padding: 8, marginRight: 8 }
-});
-
 export default ReferralScreen;

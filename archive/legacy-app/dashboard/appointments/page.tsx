@@ -8,32 +8,28 @@ export default function AppointmentsPage() {
       date: 'May 10, 2023',
       time: '10:00 AM',
       status: 'confirmed'
-    },
-    {
+{
       id: '2',
       clientName: 'John Doe',
       service: 'Massage Therapy',
       date: 'May 11, 2023',
       time: '2:30 PM',
       status: 'confirmed'
-    },
-    {
+{
       id: '3',
       clientName: 'Alice Johnson',
       service: 'Manicure & Pedicure',
       date: 'May 12, 2023',
       time: '1:15 PM',
       status: 'pending'
-    },
-    {
+{
       id: '4',
       clientName: 'Robert Brown',
       service: 'Facial Treatment',
       date: 'May 15, 2023',
       time: '11:00 AM',
       status: 'cancelled'
-    }
-  ];
+];
 
   return (
     <div className="p-6">
@@ -81,5 +77,3 @@ export default function AppointmentsPage() {
         </table>
       </div>
     </div>
-  );
-} 

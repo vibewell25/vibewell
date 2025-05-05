@@ -1,4 +1,3 @@
-'use client';;
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
@@ -10,7 +9,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/Card';
+from '@/components/ui/Card';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Icons } from '@/components/icons';
@@ -25,7 +24,6 @@ interface SchedulingStrategy {
   timeToImplement: string;
   impact: 'low' | 'medium' | 'high';
   steps: string[];
-}
 interface SchedulingTool {
   id: string;
   title: string;
@@ -34,7 +32,6 @@ interface SchedulingTool {
   category: 'efficiency' | 'no-shows' | 'capacity' | 'revenue';
   premium: boolean;
   url: string;
-}
 export default function SchedulingOptimizationPage() {
   const [activeTab, setActiveTab] = useState('strategies');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -58,8 +55,7 @@ export default function SchedulingOptimizationPage() {
         'Consider longer buffers after complex services',
         'Review and adjust buffer times monthly based on actual appointment durations',
       ],
-    },
-    {
+{
       id: 'batch-services',
       title: 'Service Batching',
       description:
@@ -77,8 +73,7 @@ export default function SchedulingOptimizationPage() {
         'Offer incentives for booking during preferred service time blocks',
         'Evaluate efficiency improvements after one month',
       ],
-    },
-    {
+{
       id: 'deposit-system',
       title: 'Appointment Deposit System',
       description:
@@ -96,8 +91,7 @@ export default function SchedulingOptimizationPage() {
         'Display deposit requirement prominently on booking page',
         'Track no-show rates before and after implementation',
       ],
-    },
-    {
+{
       id: 'reminder-sequence',
       title: 'Multi-Touch Reminder System',
       description:
@@ -115,8 +109,7 @@ export default function SchedulingOptimizationPage() {
         'Include rescheduling instructions in each reminder',
         'Track which reminder types have highest engagement',
       ],
-    },
-    {
+{
       id: 'prime-time-pricing',
       title: 'Peak Time Premium Pricing',
       description:
@@ -135,8 +128,7 @@ export default function SchedulingOptimizationPage() {
         'Review client feedback and booking patterns after implementation',
         'Adjust premium time blocks and pricing quarterly',
       ],
-    },
-    {
+{
       id: 'capacity-optimization',
       title: 'Capacity Utilization Analysis',
       description:
@@ -155,8 +147,7 @@ export default function SchedulingOptimizationPage() {
         'Train staff on capacity optimization priorities',
         'Review and adjust strategy monthly',
       ],
-    },
-    {
+{
       id: 'waitlist-system',
       title: 'Smart Waitlist Management',
       description:
@@ -174,8 +165,7 @@ export default function SchedulingOptimizationPage() {
         'Track waitlist conversion rate and adjust strategy accordingly',
         'Consider premium waitlist options for high-value clients',
       ],
-    },
-    {
+{
       id: 'cancellation-policy',
       title: 'Effective Cancellation Policy',
       description: 'Create and enforce a cancellation policy that protects your time and revenue.',
@@ -193,8 +183,7 @@ export default function SchedulingOptimizationPage() {
         'Implement system for tracking cancellation patterns by client',
         'Review and revise policy based on effectiveness',
       ],
-    },
-  ];
+];
   // Scheduling tools data
   const tools: SchedulingTool[] = [
     {
@@ -206,8 +195,7 @@ export default function SchedulingOptimizationPage() {
       category: 'efficiency',
       premium: false,
       url: '/business-hub/scheduling-optimization/efficiency-calculator',
-    },
-    {
+{
       id: '2',
       title: 'No-Show Rate Tracker',
       description:
@@ -216,8 +204,7 @@ export default function SchedulingOptimizationPage() {
       category: 'no-shows',
       premium: false,
       url: '/business-hub/scheduling-optimization/no-show-tracker',
-    },
-    {
+{
       id: '3',
       title: 'Dynamic Pricing Template',
       description:
@@ -226,8 +213,7 @@ export default function SchedulingOptimizationPage() {
       category: 'revenue',
       premium: true,
       url: '/business-hub/scheduling-optimization/dynamic-pricing',
-    },
-    {
+{
       id: '4',
       title: 'Capacity Utilization Dashboard',
       description:
@@ -236,8 +222,7 @@ export default function SchedulingOptimizationPage() {
       category: 'capacity',
       premium: true,
       url: '/business-hub/scheduling-optimization/capacity-dashboard',
-    },
-    {
+{
       id: '5',
       title: 'Client Communication Templates',
       description:
@@ -246,8 +231,7 @@ export default function SchedulingOptimizationPage() {
       category: 'no-shows',
       premium: false,
       url: '/business-hub/scheduling-optimization/communication-templates',
-    },
-    {
+{
       id: '6',
       title: 'Revenue Gap Analyzer',
       description:
@@ -256,20 +240,17 @@ export default function SchedulingOptimizationPage() {
       category: 'revenue',
       premium: true,
       url: '/business-hub/scheduling-optimization/revenue-analyzer',
-    },
-  ];
+];
   // Filter strategies based on selected category and difficulty
   const filteredStrategies = strategies.filter((strategy) => {
     const matchesCategory = selectedCategory === 'all' || strategy.category === selectedCategory;
     const matchesDifficulty =
       selectedDifficulty === 'all' || strategy.difficulty === selectedDifficulty;
     return matchesCategory && matchesDifficulty;
-  });
-  // Filter tools based on selected category
+// Filter tools based on selected category
   const filteredTools = tools.filter(
     (tool) => selectedCategory === 'all' || tool.category === selectedCategory,
-  );
-  // Categories for filtering
+// Categories for filtering
   const categories = [
     { id: 'all', name: 'All Categories' },
     { id: 'efficiency', name: 'Scheduling Efficiency' },
@@ -375,8 +356,7 @@ export default function SchedulingOptimizationPage() {
                   variant={selectedCategory === category.id ? 'default' : 'outline'}
                   className={
                     selectedCategory === category.id ? 'bg-indigo-600 hover:bg-indigo-700' : ''
-                  }
-                  onClick={() => setSelectedCategory(category.id)}
+onClick={() => setSelectedCategory(category.id)}
                   size="sm"
                 >
                   {category.name}
@@ -393,8 +373,7 @@ export default function SchedulingOptimizationPage() {
                   variant={selectedDifficulty === level.id ? 'default' : 'outline'}
                   className={
                     selectedDifficulty === level.id ? 'bg-indigo-600 hover:bg-indigo-700' : ''
-                  }
-                  onClick={() => setSelectedDifficulty(level.id)}
+onClick={() => setSelectedDifficulty(level.id)}
                   size="sm"
                 >
                   {level.name}
@@ -491,8 +470,7 @@ export default function SchedulingOptimizationPage() {
                 onClick={() => {
                   setSelectedCategory('all');
                   setSelectedDifficulty('all');
-                }}
-              >
+>
                 Reset Filters
               </Button>
             </div>
@@ -648,5 +626,3 @@ export default function SchedulingOptimizationPage() {
         </div>
       </div>
     </div>
-  );
-}

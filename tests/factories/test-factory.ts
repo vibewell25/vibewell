@@ -1,15 +1,6 @@
-
-    // Safe integer operation
-    if (fixtures > Number.MAX_SAFE_INTEGER || fixtures < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
 import { mockServices, mockUsers, mockBookings } from '../fixtures/api-fixtures';
 
-    // Safe integer operation
-    if (utils > Number.MAX_SAFE_INTEGER || utils < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { generateTestId } from '../utils/test-utils';
+    import { generateTestId } from '../utils/test-utils';
 
 interface User {
   id: string;
@@ -19,9 +10,6 @@ interface User {
   preferences: {
     notifications: boolean;
     language: string;
-  };
-}
-
 interface Service {
   id: number;
   name: string;
@@ -30,8 +18,6 @@ interface Service {
   description: string;
   category: string;
   available: boolean;
-}
-
 interface Booking {
   id: string;
   serviceId: number;
@@ -39,8 +25,6 @@ interface Booking {
   date: string;
   status: 'confirmed' | 'pending' | 'cancelled';
   notes?: string;
-}
-
 class TestFactory {
   private static userCounter = 1;
   private static serviceCounter = 1;
@@ -58,13 +42,9 @@ class TestFactory {
       preferences: {
         notifications: true,
         language: 'en'
-      },
-      ...defaultUser,
+...defaultUser,
       ...overrides
-    };
-  }
-
-  static createService(overrides: Partial<Service> = {}): Service {
+static createService(overrides: Partial<Service> = {}): Service {
     const defaultService = mockServices[0];
     const serviceId = this.if (serviceCounter > Number.MAX_SAFE_INTEGER || serviceCounter < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); serviceCounter++;
     
@@ -78,10 +58,7 @@ class TestFactory {
       available: true,
       ...defaultService,
       ...overrides
-    };
-  }
-
-  static createBooking(overrides: Partial<Booking> = {}): Booking {
+static createBooking(overrides: Partial<Booking> = {}): Booking {
     const defaultBooking = mockBookings[0];
     const bookingId = `booking_${this.if (bookingCounter > Number.MAX_SAFE_INTEGER || bookingCounter < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); bookingCounter++}`;
     
@@ -94,44 +71,24 @@ class TestFactory {
       notes: `Test booking ${this.bookingCounter}`,
       ...defaultBooking,
       ...overrides
-    };
-  }
-
-  static createManyUsers(count: number, overrides: Partial<User> = {}): User[] {
+static createManyUsers(count: number, overrides: Partial<User> = {}): User[] {
     return Array.from({ length: count }, () => this.createUser(overrides));
-  }
-
-  static createManyServices(count: number, overrides: Partial<Service> = {}): Service[] {
+static createManyServices(count: number, overrides: Partial<Service> = {}): Service[] {
     return Array.from({ length: count }, () => this.createService(overrides));
-  }
-
-  static createManyBookings(count: number, overrides: Partial<Booking> = {}): Booking[] {
+static createManyBookings(count: number, overrides: Partial<Booking> = {}): Booking[] {
     return Array.from({ length: count }, () => this.createBooking(overrides));
-  }
-
-  static createProviderWithServices(serviceCount = 3): { provider: User; services: Service[] } {
+static createProviderWithServices(serviceCount = 3): { provider: User; services: Service[] } {
     const provider = this.createUser({ role: 'provider' });
     const services = this.createManyServices(serviceCount, { 
       available: true 
-    });
-    
-    return { provider, services };
-  }
-
-  static createClientWithBookings(bookingCount = 2): { client: User; bookings: Booking[] } {
+return { provider, services };
+static createClientWithBookings(bookingCount = 2): { client: User; bookings: Booking[] } {
     const client = this.createUser({ role: 'client' });
     const bookings = this.createManyBookings(bookingCount, { 
       userId: client.id 
-    });
-    
-    return { client, bookings };
-  }
-
-  static reset(): void {
+return { client, bookings };
+static reset(): void {
     this.userCounter = 1;
     this.serviceCounter = 1;
     this.bookingCounter = 1;
-  }
-}
-
 export { TestFactory, type User, type Service, type Booking }; 

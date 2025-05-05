@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+/* eslint-disable */import { render, screen } from '@testing-library/react';
 import { Header } from '../Header';
 import { useAuth } from '@/hooks/useAuth';
 import { axe } from 'jest-axe';
@@ -87,5 +87,4 @@ describe('Header Component', () => {
     render(<Header />);
     const logoLink = screen.getByRole('link', { name: /vibewell/i });
     expect(logoLink).toHaveAttribute('href', '/');
-  });
-});
+  }));

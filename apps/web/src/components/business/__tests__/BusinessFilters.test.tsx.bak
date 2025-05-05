@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import business-filters from '../business-filters.tsx';
+
+describe('business-filters', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<business-filters />);
+    expect(container).toBeInTheDocument();
+  });
+});

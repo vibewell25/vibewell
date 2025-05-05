@@ -1,13 +1,3 @@
-
-    // Safe integer operation
-    if (sentry > Number.MAX_SAFE_INTEGER || sentry < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (import > Number.MAX_SAFE_INTEGER || import < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
 import * as Sentry from '@sentry/nextjs';
 
 Sentry.init({
@@ -20,6 +10,5 @@ Sentry.init({
     new Sentry.Replay({
       maskAllText: true,
       blockAllMedia: true,
-    }),
+),
   ],
-}); 

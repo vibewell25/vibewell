@@ -18,33 +18,24 @@ const SkinAnalysisScreen: React.FC = () => {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         quality: 1,
-      });
-      
-      if (!result.canceled && result.assets && result.assets[0]) {
+if (!result.canceled && result.assets && result.assets[0]) {
         setImageUri(result.assets[0].uri);
-      }
-    } catch (error) {
+catch (error) {
       console.error('Error picking image:', error);
       Alert.alert('Error', 'Failed to pick image');
-    }
-  };
-
-  const handleAnalyze = async () => {
+const handleAnalyze = async () => {
     if (!imageUri) return;
     
     setLoading(true);
     try {
       const results = await analyzeSkin(imageUri);
       navigation.navigate('SkinAnalysisResult', { results });
-    } catch (err) {
+catch (err) {
       console.error('Analysis error:', err);
       Alert.alert('Error', 'Analysis failed');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  return (
+return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }}>
       <Button title="Select Photo" onPress={pickImage} />
       {imageUri && (
@@ -56,7 +47,4 @@ const SkinAnalysisScreen: React.FC = () => {
         imageUri && <Button title="Analyze Skin" onPress={handleAnalyze} />
       )}
     </View>
-  );
-};
-
 export default SkinAnalysisScreen;

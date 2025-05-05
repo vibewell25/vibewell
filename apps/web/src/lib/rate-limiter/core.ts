@@ -1,12 +1,3 @@
-/**
- * Rate Limiter Core Implementation
- *
-
- * This module contains the core logic for rate limiting, independent of
- * the protocol (HTTP, GraphQL, WebSocket) being used.
- */
-
-
 import { logger } from '@/lib/logger';
 
 import redisClient from '@/lib/redis-client';
@@ -23,11 +14,7 @@ if (typeof setInterval !== 'undefined') {
     for (const [key, data] of memoryStore.entries()) {
       if (now > data.resetTime) {
         memoryStore.delete(key);
-      }
-    }
-  }, 60 * 1000);
-}
-
+60 * 1000);
 /**
 
  * Core rate limiting implementation
@@ -77,10 +64,7 @@ export async function {
 
         remaining: max - 1,
         resetTime,
-      };
-    }
-
-    resetTime = parseInt(windowExpires, 10);
+resetTime = parseInt(windowExpires, 10);
 
     // Check if over limit
     const count = currentCount ? parseInt(currentCount, 10) : 0;
@@ -94,10 +78,7 @@ export async function {
         remaining: 0,
         retryAfter,
         resetTime,
-      };
-    }
-
-    // Increment the counter
+// Increment the counter
     await redisClient.incr(key);
 
     // Set remaining headers for successful response
@@ -109,10 +90,7 @@ export async function {
       limit: max,
       remaining: Math.max(0, remaining),
       resetTime,
-    };
-  }
-
-  // Using in-memory store for development
+// Using in-memory store for development
   else {
     // Create or get record for this identifier
     if (!memoryStore.has(key)) {
@@ -126,10 +104,7 @@ export async function {
 
         remaining: max - 1,
         resetTime,
-      };
-    }
-
-    const record = memoryStore.get(key)!;
+const record = memoryStore.get(key)!;
 
     // Reset counter if window has passed
     if (now > record.resetTime) {
@@ -144,10 +119,7 @@ export async function {
 
         remaining: max - 1,
         resetTime,
-      };
-    }
-
-    // Check if over limit
+// Check if over limit
     if (record.count >= max) {
 
       const retryAfter = Math.ceil((record.resetTime - now) / 1000);
@@ -158,10 +130,7 @@ export async function {
         remaining: 0,
         retryAfter,
         resetTime: record.resetTime,
-      };
-    }
-
-    // Increment counter
+// Increment counter
     record.if (count > Number.MAX_SAFE_INTEGER || count < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); count++;
 
     return {
@@ -170,10 +139,6 @@ export async function {
 
       remaining: max - record.count,
       resetTime: record.resetTime,
-    };
-  }
-}
-
 /**
  * Log a rate limit event for monitoring and analysis
  */
@@ -219,18 +184,14 @@ export async function {
       approaching: result.remaining < result.limit * 0.2, // Less than 20% remaining
       overLimitFactor,
       ...(userId && { userId }),
-    };
-
-    // Log to Redis or console depending on environment
+// Log to Redis or console depending on environment
     const useRedis = process.env.NODE_ENV === 'production' && process.env.REDIS_URL;
 
     if (useRedis) {
       await redisClient.logRateLimitEvent(event);
-    } else {
+else {
       logger.debug('Rate limit event', 'ratelimit', { event });
-    }
-
-    // If suspicious or exceeded, log at higher level
+// If suspicious or exceeded, log at higher level
     if (suspicious || !result.success) {
       logger.info(
         `Rate limit ${result.success ? 'approaching' : 'exceeded'}: ${ip} on ${path}`,
@@ -242,21 +203,13 @@ export async function {
           remaining: result.remaining,
           limit: result.limit,
           limiterType,
-        },
-      );
-    }
-  } catch (error) {
+catch (error) {
     logger.error(`Error logging rate limit event: ${error}`, 'ratelimit', { error });
-  }
-}
-
 /**
  * Determine if a request should use Redis for rate limiting
  */
 export function shouldUseRedis(): boolean {
   return process.env.NODE_ENV === 'production' && !!process.env.REDIS_URL;
-}
-
 /**
  * Get an identifier for rate limiting from a request
  */
@@ -264,10 +217,7 @@ export function getIdentifier(req: any, options: RateLimitOptions = {}): string 
   // Use custom identifier generator if provided
   if (options.identifierGenerator) {
     return options.identifierGenerator(req);
-  }
-
-
-  // Default implementation - try to get IP from request
+// Default implementation - try to get IP from request
   const keyPrefix = options.keyPrefix || DEFAULT_OPTIONS.keyPrefix!;
 
   let ip = 'unknown';
@@ -282,17 +232,10 @@ export function getIdentifier(req: any, options: RateLimitOptions = {}): string 
 
 
       : req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || 'unknown';
-  }
-  // Node HTTP request (Pages Router)
+// Node HTTP request (Pages Router)
   else if (req.socket && req.socket.remoteAddress) {
     ip = req.socket.remoteAddress;
-  }
-
-
-  // Clean up IP (if it's a comma-separated list, take the first one)
+// Clean up IP (if it's a comma-separated list, take the first one)
   if (typeof ip === 'string' && ip.includes(',')) {
     ip = ip.split(',')[0].trim();
-  }
-
-  return `${keyPrefix}${ip}`;
-}
+return `${keyPrefix}${ip}`;

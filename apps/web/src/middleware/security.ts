@@ -1,9 +1,3 @@
-/**
-
- * Security middleware for the Vibewell application
- * Implements various security protections
- */
-
 import { NextApiRequest, NextApiResponse } from '@/types/api';
 import crypto from 'crypto';
 
@@ -15,7 +9,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import winston from 'winston';
 
-import { securityMonitoring } from '@/services/security-monitoring';
+import { securityMonitoring } from '@/services/SecurityMonitoring';
 import { Redis } from 'ioredis';
 import { nanoid } from 'nanoid';
 
@@ -32,24 +26,15 @@ interface CsrfConfig {
     sameSite: 'strict';
     path: string;
     maxAge: number;
-  };
-}
-
 interface SecurityHeaders {
   [key: string]: string;
-}
-
 interface RateLimitError {
   message: string;
   remainingPoints: number;
-}
-
 interface SecurityConfig {
   isDev: boolean;
   allowedHosts: string[];
   trustedOrigins: string[];
-}
-
 // Configure Winston logger
 const securityLogger = winston.createLogger({
   level: 'info',
@@ -59,17 +44,13 @@ const securityLogger = winston.createLogger({
     new winston.transports.File({ filename: 'logs/security.log' }),
     new winston.transports.Console({
       format: winston.format.simple(),
-    }),
+),
   ],
-});
-
 // Specific rate limiter for Swagger UI
 const swaggerRateLimiter = new RateLimiterMemory({
   points: 30, // Number of requests
   duration: 60, // Per minute
   blockDuration: 300, // Block for 5 minutes if exceeded
-});
-
 // CSRF configuration with secure defaults
 const csrfConfig: CsrfConfig = {
 
@@ -83,15 +64,9 @@ const csrfConfig: CsrfConfig = {
     sameSite: 'strict',
     path: '/',
     maxAge: 3600, // 1 hour
-  },
-};
-
 // Generate CSRF token with proper type safety
 function generateToken(secret: string): string {
   return crypto.createHmac('sha256', secret).update(crypto.randomBytes(32)).digest('hex');
-}
-
-
 // Type-safe security headers
 export const securityHeaders: SecurityHeaders = {
 
@@ -124,16 +99,10 @@ export const securityHeaders: SecurityHeaders = {
 
 
   'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
-};
-
 // Apply security headers with type safety
 export function applySecurityHeaders(res: NextApiResponse): void {
   Object.entries(securityHeaders).forEach(([name, value]) => {
     res.setHeader(name, value);
-  });
-}
-
-
 // Type-safe middleware wrapper for Next.js API routes
 export {};
 
@@ -151,9 +120,6 @@ export function logSecurityEvent(
     eventType,
     timestamp: new Date().toISOString(),
     ...details,
-  });
-}
-
 // Rate limiting function for Swagger UI
 async function {
   const start = Date.now();
@@ -164,18 +130,14 @@ async function {
   try {
     await swaggerRateLimiter.consume(ip);
     return true;
-  } catch (error) {
+catch (error) {
 
     logSecurityEvent('rate-limit', {
       ip,
       endpoint: req.nextUrl.pathname,
 
       userAgent: req.headers.get('user-agent'),
-    });
-    return false;
-  }
-}
-
+return false;
 const redis = new Redis(process.env.REDIS_URL || '');
 
 // Paths that don't need security monitoring
@@ -189,9 +151,7 @@ export async function {
   // Skip monitoring for exempt paths
   if (EXEMPT_PATHS.some((exempt) => path.startsWith(exempt))) {
     return NextResponse.next();
-  }
-
-  // Check if IP is blocked
+// Check if IP is blocked
   const clientIp =
 
 
@@ -199,9 +159,7 @@ export async function {
   const isBlocked = await redis.sismember('security:blocked_ips', clientIp);
   if (isBlocked) {
     return new NextResponse('Access Denied', { status: 403 });
-  }
-
-  // Get user information if available
+// Get user information if available
 
   const userId = req.headers.get('x-user-id');
 
@@ -217,14 +175,11 @@ export async function {
       method: req.method,
       sessionId,
       headers: Object.fromEntries(req.headers),
-    },
-    severity: 'low',
+severity: 'low',
     sourceIp: clientIp,
 
     userAgent: req.headers.get('user-agent') || 'unknown',
-  });
-
-  // Continue with the request
+// Continue with the request
   const response = NextResponse.next();
 
   // Add security headers
@@ -249,29 +204,19 @@ export async function {
 
 
     "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.auth0.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://*.auth0.com; frame-src 'self' https://*.auth0.com;",
-  );
-
-
-
-  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set(
 
     'Permissions-Policy',
 
     'camera=(), microphone=(), geolocation=(), interest-cohort=()',
-  );
-
-  return response;
-}
-
+return response;
 export {};
 
 const defaultConfig: SecurityConfig = {
   isDev: process.env.NODE_ENV !== 'production',
   allowedHosts: ['localhost', 'vibewell.com'], // Add your domains
   trustedOrigins: ['https://vibewell.com'], // Add your trusted origins
-};
-
 // CSP Directives
 const getCSPDirectives = (config: SecurityConfig, nonce: string): string => {
   const directives = {
@@ -316,16 +261,12 @@ const getCSPDirectives = (config: SecurityConfig, nonce: string): string => {
     'child-src': ["'self'", 'blob:'],
 
     'upgrade-insecure-requests': [],
-  };
-
-  return Object.entries(directives)
+return Object.entries(directives)
     .map(([key, values]) => {
       if (values.length === 0) return key;
       return `${key} ${values.join(' ')}`;
-    })
+)
     .join('; ');
-};
-
 // Permissions Policy Directives
 const getPermissionsPolicy = (): string => {
   const directives = {
@@ -362,16 +303,12 @@ const getPermissionsPolicy = (): string => {
     'web-share': ['self'],
 
     'xr-spatial-tracking': [],
-  };
-
-  return Object.entries(directives)
+return Object.entries(directives)
     .map(([key, values]) => {
       if (values.length === 0) return `${key}=()`;
       return `${key}=(${values.join(' ')})`;
-    })
+)
     .join(', ');
-};
-
 // Security Headers Configuration
 const getSecurityHeaders = (config: SecurityConfig): Record<string, string> => {
   const nonce = nanoid();
@@ -425,35 +362,18 @@ const getSecurityHeaders = (config: SecurityConfig): Record<string, string> => {
 
 
     'Cross-Origin-Resource-Policy': 'same-origin',
-  };
-
-  // Remove empty headers
+// Remove empty headers
   Object.keys(headers).forEach(key => {
 
-    // Safe array access
-    if (key < 0 || key >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
     if (!headers[key]) {
 
-    // Safe array access
-    if (key < 0 || key >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      delete headers[key];
-    }
-  });
-
-  return headers;
-};
-
+    delete headers[key];
+return headers;
 // Request Correlation ID Middleware
 const addCorrelationId = (req: NextRequest): string => {
 
   const correlationId = req.headers.get('x-correlation-id') || nanoid();
   return correlationId;
-};
-
 // API Key Validation
 const validateApiKey = (req: NextRequest): boolean => {
 
@@ -464,11 +384,7 @@ const validateApiKey = (req: NextRequest): boolean => {
   if (!validApiKey) {
     logger.error('API_KEY environment variable is not set');
     return false;
-  }
-
-  return apiKey === validApiKey;
-};
-
+return apiKey === validApiKey;
 // Main Security Middleware
 export async function {
   const start = Date.now();
@@ -483,43 +399,31 @@ export async function {
   if (req.nextUrl.pathname.startsWith('/_next/') || 
       req.nextUrl.pathname.startsWith('/public/')) {
     return null;
-  }
-
-  // Validate host header
+// Validate host header
   const host = req.headers.get('host');
   if (!host || !finalConfig.allowedHosts.includes(host.split(':')[0])) {
     logger.warn(`Invalid host header detected: ${host || 'none'} (${correlationId})`);
     return NextResponse.json(
       { error: 'Invalid host header' },
       { status: 400 }
-    );
-  }
-
-  // Validate API key for API routes
+// Validate API key for API routes
   if (req.nextUrl.pathname.startsWith('/api/') && !validateApiKey(req)) {
     logger.warn(`Invalid API key for path: ${req.nextUrl.pathname} (${correlationId})`);
     return NextResponse.json(
       { error: 'Invalid API key' },
       { status: 401 }
-    );
-  }
-
-  // Apply security headers
+// Apply security headers
   const headers = getSecurityHeaders(finalConfig);
   const response = NextResponse.next();
   
   // Add headers to response
   Object.entries(headers).forEach(([key, value]) => {
     response.headers.set(key, value);
-  });
-
-  // Add correlation ID to response headers
+// Add correlation ID to response headers
 
   response.headers.set('x-correlation-id', correlationId);
 
   return response;
-}
-
 // Export types and configurations
 export type { SecurityConfig };
 export { getSecurityHeaders, validateApiKey };

@@ -15,6 +15,4 @@ export const createServiceSchema = z.object({
   practitionerIds: z.array(z.string()).optional(),
   images: z.array(z.string().url('Invalid image URL')).optional(),
   virtualTryOn: z.boolean().optional(),
-});
-
 export type CreateServiceInput = z.infer<typeof createServiceSchema>; 

@@ -1,4 +1,3 @@
-'use client';
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/Button';
@@ -11,7 +10,6 @@ interface Provider {
   id: string;
   name: string;
   avatar_url?: string;
-}
 interface Review {
   id: string;
   title: string;
@@ -21,14 +19,12 @@ interface Review {
   provider_id: string;
   provider: Provider;
   booking_id: string;
-}
 interface Service {
   id: string;
   name: string;
   date: string;
   provider: Provider;
   price: number;
-}
 export default function MyReviewsPage() {
   const [activeTab, setActiveTab] = useState('my-reviews');
   const [userReviews, setUserReviews] = useState<Review[]>([]);
@@ -52,10 +48,8 @@ export default function MyReviewsPage() {
             id: 'p1',
             name: 'Sarah Johnson',
             avatar_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
-          },
-          booking_id: 'b1',
-        },
-        {
+booking_id: 'b1',
+{
           id: '2',
           title: 'Great massage',
           text: "Michael's deep tissue massage was just what I needed. Helped with my back pain immensely.",
@@ -66,10 +60,8 @@ export default function MyReviewsPage() {
             id: 'p2',
             name: 'Michael Chen',
             avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d',
-          },
-          booking_id: 'b2',
-        },
-      ];
+booking_id: 'b2',
+];
       const mockPendingReviews: Service[] = [
         {
           id: 's1',
@@ -79,10 +71,8 @@ export default function MyReviewsPage() {
             id: 'p3',
             name: 'Emily Rodriguez',
             avatar_url: 'https://images.unsplash.com/photo-1580489944761-15a19d654956',
-          },
-          price: 85,
-        },
-        {
+price: 85,
+{
           id: 's2',
           name: 'Manicure',
           date: '2023-11-10T13:30:00Z',
@@ -90,27 +80,22 @@ export default function MyReviewsPage() {
             id: 'p4',
             name: 'Lisa Park',
             avatar_url: 'https://images.unsplash.com/photo-1534751516642-a1af1ef26a56',
-          },
-          price: 45,
-        },
-      ];
+price: 45,
+];
       setUserReviews(mockReviews);
       setPendingReviews(mockPendingReviews);
       setIsLoading(false);
-    }, 1000);
-  }, []);
+1000);
+[]);
   // Handle review deletion
   const handleDeleteReview = (reviewId: string) => {
     if (window.confirm('Are you sure you want to delete this review?')) {
       // In a real app, we would call an API here
       setUserReviews((prevReviews) => prevReviews.filter((review) => review.id !== reviewId));
-    }
-  };
-  // Handle review edit
+// Handle review edit
   const handleEditReview = (review: Review) => {
     setEditingReview(review);
-  };
-  // Handle review update
+// Handle review update
   const handleUpdateReview = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');data: { title: string; text: string; rating: number }) => {
@@ -118,12 +103,9 @@ export default function MyReviewsPage() {
       // In a real app, we would call an API here
       const updatedReviews = userReviews.map((review) =>
         review.id === editingReview.id ? { ...review, ...data } : review,
-      );
-      setUserReviews(updatedReviews);
+setUserReviews(updatedReviews);
       setEditingReview(null);
-    }
-  };
-  // Handle new review submission
+// Handle new review submission
   const handleSubmitReview = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');
@@ -139,11 +121,9 @@ export default function MyReviewsPage() {
       provider_id: providerId,
       provider: pendingReviews.find((service) => service.provider.id === providerId).provider!,
       booking_id: serviceId,
-    };
-    setUserReviews((prev) => [newReview, ...prev]);
+setUserReviews((prev) => [newReview, ...prev]);
     setPendingReviews((prev) => prev.filter((service) => service.id !== serviceId));
-  };
-  return (
+return (
     <Layout>
       <div className="container mx-auto max-w-5xl px-4 py-8">
         <h1 className="mb-6 text-3xl font-bold">My Reviews</h1>
@@ -188,8 +168,7 @@ export default function MyReviewsPage() {
                         title: editingReview.title,
                         text: editingReview.text,
                         rating: editingReview.rating,
-                      }}
-                      isEdit={true}
+isEdit={true}
                       onSubmit={handleUpdateReview}
                       onCancel={() => setEditingReview(null)}
                     />
@@ -208,8 +187,7 @@ export default function MyReviewsPage() {
                           id: 'self',
                           name: 'You', // In a real app, we would use the user's name
                           avatar_url: undefined,
-                        }}
-                      />
+/>
                       <div className="flex items-center justify-between border-t border-gray-100 px-4 py-3">
                         <div className="text-sm text-gray-500">
                           For: <span className="font-medium">{review.provider.name}</span>
@@ -298,10 +276,8 @@ export default function MyReviewsPage() {
                           title: 'Great service!',
                           text: 'I really enjoyed my experience.',
                           rating: 5,
-                        };
-                        handleSubmitReview(dummyReview, service.provider.id, service.id);
-                      }}
-                    >
+handleSubmitReview(dummyReview, service.provider.id, service.id);
+>
                       Leave a Review
                     </Button>
                   </div>
@@ -312,5 +288,3 @@ export default function MyReviewsPage() {
         </Tabs>
       </div>
     </Layout>
-  );
-}

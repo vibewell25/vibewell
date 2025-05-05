@@ -25,10 +25,8 @@ const ProviderDetail: NextPage = () => {
       setName(p.name);
       setDescription(p.description);
       setBusinessName(p.businessName);
-    };
-    
-    fetchProvider();
-  }, [id]);
+fetchProvider();
+[id]);
 
   const handleUpdate = async (e: FormEvent) => {
     e.preventDefault();
@@ -36,13 +34,9 @@ const ProviderDetail: NextPage = () => {
       method: 'PUT', 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, description, businessName })
-    });
-    if (router) {
+if (router) {
       router.back();
-    }
-  };
-
-  return (
+return (
     <div className="max-w-md mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Edit Provider</h1>
       <form onSubmit={handleUpdate} className="space-y-2">
@@ -55,7 +49,4 @@ const ProviderDetail: NextPage = () => {
         </div>
       </form>
     </div>
-  );
-};
-
 export default ProviderDetail;

@@ -1,40 +1,26 @@
-/**
- * Analytics utility for the Vibewell platform
- * Provides standardized interfaces for tracking user behavior, performance metrics, and errors
- */
-
-// Types for analytics events
 export enum EventType {
   USER_ACTION = 'user_action',
   PAGE_VIEW = 'page_view',
   SYSTEM = 'system',
   ERROR = 'error',
   PERFORMANCE = 'performance',
-}
-
 // Base properties interface
 interface BaseProperties {
   timestamp?: number;
   sessionId?: string;
   userId?: string | null;
   [key: string]: unknown;
-}
-
 // Type for analytics event data
 export interface AnalyticsEvent {
   eventName: string;
   eventType: EventType;
   timestamp: number;
   properties: BaseProperties;
-}
-
 // Interface for analytics provider implementation
 export interface AnalyticsProvider {
   trackEvent: (event: AnalyticsEvent) => void;
   initialize: () => Promise<void>;
   setUser: (userId: string, userProperties?: UserProperties) => void;
-}
-
 // Additional types for analytics
 export interface UserProperties extends BaseProperties {
   userType?: string;
@@ -42,30 +28,22 @@ export interface UserProperties extends BaseProperties {
   role?: string;
   accountType?: string;
   subscriptionTier?: string;
-}
-
 export interface PageViewProperties extends BaseProperties {
   pagePath: string;
   pageTitle?: string;
   referrer?: string;
   loadTime?: number;
-}
-
 export interface ErrorProperties extends BaseProperties {
   errorName: string;
   errorMessage: string;
   stackTrace?: string;
   componentName?: string;
   source?: string;
-}
-
 export interface PerformanceProperties extends BaseProperties {
   metricName: string;
   duration: number;
   threshold?: number;
   resourceType?: string;
-}
-
 // Singleton analytics service
 class AnalyticsService {
   private providers: AnalyticsProvider[] = [];
@@ -83,10 +61,7 @@ class AnalyticsService {
     // Initialize in browser environments only
     if (typeof window !== 'undefined') {
       this.initializeFromConfig();
-    }
-  }
-
-  /**
+/**
    * Initialize the analytics service from configuration
    */
   private async initializeFromConfig(): Promise<void> {
@@ -104,50 +79,34 @@ class AnalyticsService {
           ).catch(() => {
             console.warn('Google Analytics provider not available, using console fallback');
             return { GoogleAnalyticsProvider: null };
-          });
-
-          if (GoogleAnalyticsProvider) {
+if (GoogleAnalyticsProvider) {
             this.registerProvider(new GoogleAnalyticsProvider());
-          }
-
-          // Attempt to load Segment if available
+// Attempt to load Segment if available
           const { SegmentProvider } = await import('./analytics-providers/segment').catch(() => {
             console.warn('Segment provider not available, using console fallback');
             return { SegmentProvider: null };
-          });
-
-          if (SegmentProvider) {
+if (SegmentProvider) {
             this.registerProvider(new SegmentProvider());
-          }
-        } catch (error) {
+catch (error) {
           console.warn(
             'Failed to load analytics providers:',
             error instanceof Error ? error.message : 'Unknown error',
-          );
-          // Ensure we have at least the console provider
+// Ensure we have at least the console provider
           if (this.providers.length === 0) {
             this.registerConsoleProvider();
-          }
-        }
-      } else {
+else {
         // In development, just use console logging
         this.registerConsoleProvider();
-      }
-
-      // Initialize the providers
+// Initialize the providers
       await this.initializeProviders();
 
       // Process any queued events
       this.processQueue();
-    } catch (error) {
+catch (error) {
       console.error(
         'Failed to initialize analytics:',
         error instanceof Error ? error.message : 'Unknown error',
-      );
-    }
-  }
-
-  /**
+/**
    * Register a console-based analytics provider for development/fallback
    */
   private registerConsoleProvider(): void {
@@ -157,23 +116,16 @@ class AnalyticsService {
         console.groupCollapsed(
           `%c Analytics: ${eventType} - ${eventName}`,
           'color: #3498db; font-weight: bold;',
-        );
-        console.log('Properties:', properties);
+console.log('Properties:', properties);
         console.log('Timestamp:', new Date(event.timestamp).toISOString());
         console.groupEnd();
-      },
-      initialize: () => Promise.resolve(),
+initialize: () => Promise.resolve(),
       setUser: (userId: string, props?: UserProperties) => {
         console.log(
           `%c Analytics: Set User ${userId}`,
           'color: #2ecc71; font-weight: bold;',
           props,
-        );
-      },
-    });
-  }
-
-  /**
+/**
    * Initialize providers with retry logic
    */
   private async initializeProviders(): Promise<void> {
@@ -181,37 +133,28 @@ class AnalyticsService {
       await Promise.all(this.providers.map((p) => p.initialize()));
       this.initialized = true;
       this.retryCount = 0;
-    } catch (error) {
+catch (error) {
       this.if (retryCount > Number.MAX_SAFE_INTEGER || retryCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); retryCount++;
       console.error(
         `Analytics initialization failed (attempt ${this.retryCount}/${this.MAX_RETRIES}):`,
         error instanceof Error ? error.message : 'Unknown error',
-      );
-
-      if (this.retryCount < this.MAX_RETRIES) {
+if (this.retryCount < this.MAX_RETRIES) {
         // Retry with exponential backoff
         const delay = this.RETRY_DELAY * Math.pow(2, this.retryCount - 1);
         await new Promise((resolve) => setTimeout(resolve, delay));
         return this.initializeProviders();
-      } else {
+else {
         // Max retries reached, set initialized to avoid infinite retries
         console.warn(
           'Max analytics initialization retries reached, some events may not be tracked',
-        );
-        this.initialized = true;
-      }
-    }
-  }
-
-  /**
+this.initialized = true;
+/**
    * Register an analytics provider
    * @param provider Analytics provider implementation
    */
   public registerProvider(provider: AnalyticsProvider): void {
     this.providers.push(provider);
-  }
-
-  /**
+/**
    * Enable or disable analytics tracking
    * @param enabled Whether tracking is enabled
    */
@@ -224,10 +167,7 @@ class AnalyticsService {
     // Process queue if enabling
     if (enabled && this.initialized && this.queue.length > 0) {
       this.processQueue();
-    }
-  }
-
-  /**
+/**
    * Set the current user ID and properties
    * @param userId User identifier
    * @param properties Additional user properties
@@ -240,19 +180,13 @@ class AnalyticsService {
     this.providers.forEach((provider) => {
       try {
         provider.setUser(userId, this.userProperties);
-      } catch (error) {
+catch (error) {
         console.error('Error setting user in analytics provider:', error);
-      }
-    });
-
-    // Track user identification event
+// Track user identification event
     this.trackEvent(EventType.SYSTEM, 'user_identified', {
       method: properties.userType || 'direct',
       isNewSession: true,
-    });
-  }
-
-  /**
+/**
    * Clear the current user (for logout)
    */
   public clearUser(): void {
@@ -260,10 +194,7 @@ class AnalyticsService {
     if (this.userId) {
       this.trackEvent(EventType.USER_ACTION, 'user_logged_out', {
         userId: this.userId,
-      });
-    }
-
-    this.userId = null;
+this.userId = null;
     this.userProperties = {};
     this.sessionId = this.generateSessionId();
 
@@ -271,13 +202,9 @@ class AnalyticsService {
     this.providers.forEach((provider) => {
       try {
         provider.setUser('anonymous');
-      } catch (error) {
+catch (error) {
         console.error('Error clearing user in analytics provider:', error);
-      }
-    });
-  }
-
-  /**
+/**
    * Track an analytics event
    */
   private trackEvent(
@@ -287,9 +214,7 @@ class AnalyticsService {
   ): void {
     if (this.disabled) {
       return;
-    }
-
-    const event: AnalyticsEvent = {
+const event: AnalyticsEvent = {
       eventName,
       eventType,
       timestamp: Date.now(),
@@ -298,27 +223,17 @@ class AnalyticsService {
         sessionId: this.sessionId,
         userId: this.userId,
         ...this.userProperties,
-      },
-    };
-
-    if (!this.initialized) {
+if (!this.initialized) {
       this.queue.push(event);
       return;
-    }
-
-    this.providers.forEach((provider) => {
+this.providers.forEach((provider) => {
       try {
         provider.trackEvent(event);
-      } catch (error) {
+catch (error) {
         console.error(
           'Error tracking event:',
           error instanceof Error ? error.message : 'Unknown error',
-        );
-      }
-    });
-  }
-
-  /**
+/**
    * Process queued events
    */
   private processQueue(): void {
@@ -328,46 +243,31 @@ class AnalyticsService {
         this.providers.forEach((provider) => {
           try {
             provider.trackEvent(event);
-          } catch (error) {
+catch (error) {
             console.error(
               'Error processing queued event:',
               error instanceof Error ? error.message : 'Unknown error',
-            );
-          }
-        });
-      }
-    }
-  }
-
-  /**
+/**
    * Generate a unique session ID
    */
   private generateSessionId(): string {
     return Math.random().toString(36).substring(2) + Date.now().toString(36);
-  }
-
-  /**
+/**
    * Get the current user type
    */
   private getUserType(): string {
     return this.userProperties.userType || 'anonymous';
-  }
-
-  /**
+/**
    * Log a generic event
    */
   public logEvent(eventName: string, properties: Partial<BaseProperties> = {}): void {
     this.trackEvent(EventType.SYSTEM, eventName, properties);
-  }
-
-  /**
+/**
    * Track a user action
    */
   public trackUserAction(actionName: string, properties: Partial<BaseProperties> = {}): void {
     this.trackEvent(EventType.USER_ACTION, actionName, properties);
-  }
-
-  /**
+/**
    * Track a page view
    */
   public trackPageView(
@@ -382,12 +282,8 @@ class AnalyticsService {
         window.performance.timing.domContentLoadedEventEnd -
         window.performance.timing.navigationStart,
       ...properties,
-    };
-
-    this.trackEvent(EventType.PAGE_VIEW, 'page_view', pageViewProps);
-  }
-
-  /**
+this.trackEvent(EventType.PAGE_VIEW, 'page_view', pageViewProps);
+/**
    * Track an error
    */
   public trackError(errorName: string, properties: Partial<ErrorProperties>): void {
@@ -395,12 +291,8 @@ class AnalyticsService {
       errorName,
       errorMessage: properties.errorMessage || 'Unknown error',
       ...properties,
-    };
-
-    this.trackEvent(EventType.ERROR, 'error', errorProps);
-  }
-
-  /**
+this.trackEvent(EventType.ERROR, 'error', errorProps);
+/**
    * Track a performance metric
    */
   public trackPerformance(metricName: string, properties: Partial<PerformanceProperties>): void {
@@ -408,12 +300,7 @@ class AnalyticsService {
       metricName,
       duration: properties.duration || 0,
       ...properties,
-    };
-
-    this.trackEvent(EventType.PERFORMANCE, 'performance', perfProps);
-  }
-}
-
+this.trackEvent(EventType.PERFORMANCE, 'performance', perfProps);
 // Create singleton instance
 const analyticsService = new AnalyticsService();
 

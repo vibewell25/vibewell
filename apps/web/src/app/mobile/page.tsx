@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
@@ -16,8 +14,7 @@ export default function MobilePage() {
     if (!isMobile) {
       // Redirect to desktop version if not a mobile device
       router.push('/');
-    }
-  }, [router]);
+[router]);
 
   return (
     <MobileLayout hideNavigation>
@@ -86,5 +83,3 @@ export default function MobilePage() {
         </div>
       </div>
     </MobileLayout>
-  );
-}

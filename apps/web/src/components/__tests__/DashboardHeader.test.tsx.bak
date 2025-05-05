@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import dashboard-header from '../dashboard-header.tsx';
+
+describe('dashboard-header', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<dashboard-header />);
+    expect(container).toBeInTheDocument();
+  });
+});

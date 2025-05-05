@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import useWebXR from '../useWebXR.ts';
+
+describe('useWebXR', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<useWebXR />);
+    expect(container).toBeInTheDocument();
+  });
+});

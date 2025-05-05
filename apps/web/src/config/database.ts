@@ -3,17 +3,12 @@ export interface DatabaseConfig {
     url: string;
     poolSize: number;
     connectionTimeout: number;
-  };
-  replicas: {
+replicas: {
     urls: string[];
     poolSize: number;
     connectionTimeout: number;
-  };
-  monitoring: {
+monitoring: {
     slowQueryThreshold: number;
     logQueries: boolean;
     logSlowQueries: boolean;
-  };
-}
-
 export {};

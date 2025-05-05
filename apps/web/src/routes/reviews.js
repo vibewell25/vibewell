@@ -5,21 +5,12 @@ import {
   addReview,
   updateReview,
   deleteReview,
-
-    // Safe integer operation
-    if (controllers > Number.MAX_SAFE_INTEGER || controllers < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-} from '../controllers/reviewController';
+from '../controllers/reviewController';
 
 const router = express.Router({ mergeParams: true });
 
 
-    // Safe integer operation
-    if (middleware > Number.MAX_SAFE_INTEGER || middleware < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { protect, authorize } from '../middleware/auth';
+    import { protect, authorize } from '../middleware/auth';
 
 router.route('/').get(getReviews).post(protect, authorize('customer'), addReview);
 

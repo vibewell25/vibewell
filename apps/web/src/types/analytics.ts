@@ -3,13 +3,9 @@ export enum Period {
   WEEKLY = 'WEEKLY',
   MONTHLY = 'MONTHLY',
   YEARLY = 'YEARLY'
-}
-
 export interface TrendData {
   period: string;
   value: number;
-}
-
 export interface BusinessAnalyticsData {
   totalBookings: number;
   totalRevenue: number;
@@ -17,7 +13,6 @@ export interface BusinessAnalyticsData {
   popularServices: Array<{
     serviceId: string;
     count: number;
-  }>;
+>;
   bookingTrends: TrendData[];
   revenueTrends: TrendData[];
-} 

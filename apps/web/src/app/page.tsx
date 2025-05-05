@@ -1,4 +1,3 @@
-'use client';
 import { Suspense } from 'react';
 import { MeditationEnvironmentProps } from '@/components/ar/MeditationEnvironment';
 import dynamic from 'next/dynamic';
@@ -9,40 +8,26 @@ import { Skeleton } from '@/components/ui/skeleton';
 // Import the optimized loading spinner
 const LoadingSpinner = dynamic(() => import('@/components/common/LoadingSpinner'), {
   ssr: true,
-});
-
 // Dynamically import components with optimized loading strategies
 const FeaturedEvents = dynamic(() => import('@/components/FeaturedEvents'), {
   loading: () => <EventsLoadingSkeleton />,
   ssr: true,
-});
-
 const WellnessCategories = dynamic(() => import('@/components/WellnessCategories'), {
   loading: () => <CategoriesLoadingSkeleton />,
   ssr: true,
-});
-
 // Lazy load heavy components with preloading for critical ones
 const Hero = dynamic(() => import('@/components/home/Hero'), {
   loading: () => <LoadingSpinner />,
   ssr: true,
-});
-
 const FeaturedServices = dynamic(() => import('@/components/home/FeaturedServices'), {
   loading: () => <LoadingSpinner />,
   ssr: true,
-});
-
 const Testimonials = dynamic(() => import('@/components/home/Testimonials'), {
   loading: () => <LoadingSpinner />,
   ssr: false, // Client-side only for interactive components
-});
-
 const BookingSection = dynamic(() => import('@/components/home/BookingSection'), {
   loading: () => <LoadingSpinner />,
   ssr: true,
-});
-
 // Placeholder loading components with proper aria labels
 function EventsLoadingSkeleton() {
   return (
@@ -61,9 +46,6 @@ function EventsLoadingSkeleton() {
           </Card>
         ))}
     </div>
-  );
-}
-
 function CategoriesLoadingSkeleton() {
   return (
     <div
@@ -80,9 +62,6 @@ function CategoriesLoadingSkeleton() {
           </Card>
         ))}
     </div>
-  );
-}
-
 function TestimonialsLoadingSkeleton() {
   return (
     <div
@@ -94,15 +73,10 @@ function TestimonialsLoadingSkeleton() {
       <Skeleton className="mx-auto mb-4 h-20 w-3/4" />
       <Skeleton className="mx-auto h-4 w-24" />
     </div>
-  );
-}
-
 type MeditationSettings = {
   theme: MeditationEnvironmentProps['theme'];
   soundscape: MeditationEnvironmentProps['soundscape'];
   lightingIntensity: number;
-};
-
 export default function Home() {
   return (
     <div className="container mx-auto px-4 py-8">
@@ -144,5 +118,3 @@ export default function Home() {
         </Suspense>
       </main>
     </div>
-  );
-}

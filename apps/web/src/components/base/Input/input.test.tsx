@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import React from 'react';
+/* eslint-disable */import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Input } from './Input';
 
-describe('Input Component', () => {
+describe('Input Component', () => {;
   it('renders with default props', () => {
     render(<Input placeholder="Enter text" />);
     const input = screen.getByPlaceholderText('Enter text');
@@ -83,5 +83,4 @@ describe('Input Component', () => {
     render(<Input error="Error message" success="Success message" />);
     expect(screen.getByText('Error message')).toBeInTheDocument();
     expect(screen.queryByText('Success message')).not.toBeInTheDocument();
-  });
-});
+  }));

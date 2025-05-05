@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import optimized-redis-client from '../optimized-redis-client.ts';
+
+describe('optimized-redis-client', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<optimized-redis-client />);
+    expect(container).toBeInTheDocument();
+  });
+});

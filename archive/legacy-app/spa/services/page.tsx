@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -26,7 +24,7 @@ export default function ServicesPage() {
               filter === 'all'
                 ? 'bg-primary-600 text-white'
                 : 'bg-primary-100 text-primary-800'
-            }`}
+`}
           >
             All
           </button>
@@ -36,7 +34,7 @@ export default function ServicesPage() {
               filter === 'massage'
                 ? 'bg-primary-600 text-white'
                 : 'bg-primary-100 text-primary-800'
-            }`}
+`}
           >
             Massage
           </button>
@@ -46,7 +44,7 @@ export default function ServicesPage() {
               filter === 'facial'
                 ? 'bg-primary-600 text-white'
                 : 'bg-primary-100 text-primary-800'
-            }`}
+`}
           >
             Facial
           </button>
@@ -56,7 +54,7 @@ export default function ServicesPage() {
               filter === 'hair'
                 ? 'bg-primary-600 text-white'
                 : 'bg-primary-100 text-primary-800'
-            }`}
+`}
           >
             Hair
           </button>
@@ -66,7 +64,7 @@ export default function ServicesPage() {
               filter === 'nails'
                 ? 'bg-primary-600 text-white'
                 : 'bg-primary-100 text-primary-800'
-            }`}
+`}
           >
             Nails
           </button>
@@ -82,9 +80,6 @@ export default function ServicesPage() {
           ))}
       </div>
     </div>
-  );
-}
-
 type Service = {
   id: number;
   name: string;
@@ -95,8 +90,6 @@ type Service = {
   image: string;
   rating: number;
   description: string;
-};
-
 function ServiceCard({ service }: { service: Service }) {
   return (
     <Link href={`/spa/services/${service.id}`} className="app-card block">
@@ -128,9 +121,6 @@ function ServiceCard({ service }: { service: Service }) {
         </span>
       </div>
     </Link>
-  );
-}
-
 // Sample data
 const services: Service[] = [
   {
@@ -143,8 +133,7 @@ const services: Service[] = [
     image: '/images/avatar-placeholder.jpg',
     rating: 5,
     description: 'A therapeutic massage that focuses on realigning deeper layers of muscles and connective tissue.',
-  },
-  {
+{
     id: 2,
     name: 'Hydrating Facial',
     provider: 'Michael Chen',
@@ -154,8 +143,7 @@ const services: Service[] = [
     image: '/images/avatar-placeholder.jpg',
     rating: 4,
     description: 'Replenish dry skin with this hydrating facial that restores moisture and radiance.',
-  },
-  {
+{
     id: 3,
     name: 'Haircut & Style',
     provider: 'Emma Wilson',
@@ -165,8 +153,7 @@ const services: Service[] = [
     image: '/images/avatar-placeholder.jpg',
     rating: 5,
     description: 'Professional haircut and styling tailored to your preferences and face shape.',
-  },
-  {
+{
     id: 4,
     name: 'Manicure & Pedicure',
     provider: 'Jennifer Lee',
@@ -176,8 +163,7 @@ const services: Service[] = [
     image: '/images/avatar-placeholder.jpg',
     rating: 4,
     description: 'Complete nail care for hands and feet, including cuticle care, nail shaping, and polish.',
-  },
-  {
+{
     id: 5,
     name: 'Swedish Massage',
     provider: 'David Brown',
@@ -187,8 +173,7 @@ const services: Service[] = [
     image: '/images/avatar-placeholder.jpg',
     rating: 5,
     description: 'A gentle form of massage that uses long strokes, kneading, and circular movements to relax and energize you.',
-  },
-  {
+{
     id: 6,
     name: 'Anti-Aging Facial',
     provider: 'Michael Chen',
@@ -198,5 +183,4 @@ const services: Service[] = [
     image: '/images/avatar-placeholder.jpg',
     rating: 5,
     description: 'Combat signs of aging with this specialized facial that targets fine lines and wrinkles.',
-  }
 ]; 

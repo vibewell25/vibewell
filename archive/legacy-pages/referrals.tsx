@@ -15,23 +15,18 @@ const Referrals: NextPage = () => {
       const res = await fetchWithTimeout('/api/referrals/code');
       const data = await res.json();
       setCode(data.referralCode);
-    };
-    
-    fetchReferralCode();
-  }, []);
+fetchReferralCode();
+[]);
 
   const apply = async () => {
     const res = await fetchWithTimeout('/api/referrals/apply', {
       method: 'POST', 
       headers: { 'Content-Type': 'application/json' }, 
       body: JSON.stringify({ code: input })
-    });
-    const data = await res.json();
+const data = await res.json();
     if (res.ok) setMsg(`Granted ${data.rewardPoints} points!`);
     else setMsg(data.error);
-  };
-
-  return (
+return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Referrals</h1>
       <Card className="mb-4">
@@ -43,7 +38,4 @@ const Referrals: NextPage = () => {
         {msg && <p className="mt-2 text-green-600">{msg}</p>}
       </Card>
     </div>
-  );
-};
-
 export default Referrals;

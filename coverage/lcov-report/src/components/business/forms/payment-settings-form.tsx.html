@@ -715,15 +715,15 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   const [acceptsDeposits, setAcceptsDeposits] = <span class="cstat-no" title="statement not covered" >useState&lt;boolean&gt;(false);</span>
 &nbsp;
   // Get existing payment methods from form or initialize an empty array
-  const paymentMethods = <span class="cstat-no" title="statement not covered" >form?.watch('paymentMethods') || [];</span>
+  const paymentMethods = <span class="cstat-no" title="statement not covered" >form.watch('paymentMethods') || [];</span>
 &nbsp;
   // Handle payment method selection
   const handlePaymentMethodChange = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(m</span>ethodId: string, checked: boolean) =&gt; {</span>
     const updatedMethods = <span class="cstat-no" title="statement not covered" >checked</span>
       ? [...paymentMethods, methodId]
-      : paymentMethods?.filter(<span class="fstat-no" title="function not covered" >(i</span>d) =&gt; <span class="cstat-no" title="statement not covered" >id !== methodId);</span>
+      : paymentMethods.filter(<span class="fstat-no" title="function not covered" >(i</span>d) =&gt; <span class="cstat-no" title="statement not covered" >id !== methodId);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    form?.setValue('paymentMethods', updatedMethods, {</span>
+<span class="cstat-no" title="statement not covered" >    form.setValue('paymentMethods', updatedMethods, {</span>
       shouldValidate: true,
       shouldDirty: true,
     });
@@ -735,8 +735,8 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!checked) {</span>
 <span class="cstat-no" title="statement not covered" >      setDepositType('none');</span>
-<span class="cstat-no" title="statement not covered" >      form?.setValue('depositAmount', undefined, { shouldValidate: true });</span>
-<span class="cstat-no" title="statement not covered" >      form?.setValue('depositPercentage', undefined, { shouldValidate: true });</span>
+<span class="cstat-no" title="statement not covered" >      form.setValue('depositAmount', undefined, { shouldValidate: true });</span>
+<span class="cstat-no" title="statement not covered" >      form.setValue('depositPercentage', undefined, { shouldValidate: true });</span>
     }
   };
 &nbsp;
@@ -755,28 +755,28 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         &lt;/CardHeader&gt;
         &lt;CardContent className="space-y-6"&gt;
           &lt;div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3"&gt;
-            {PAYMENT_METHODS?.map(<span class="fstat-no" title="function not covered" >(m</span>ethod) =&gt; (
-<span class="cstat-no" title="statement not covered" >              &lt;div key={method?.id} c</span>lassName="flex items-start space-x-2"&gt;
+            {PAYMENT_METHODS.map(<span class="fstat-no" title="function not covered" >(m</span>ethod) =&gt; (
+<span class="cstat-no" title="statement not covered" >              &lt;div key={method.id} c</span>lassName="flex items-start space-x-2"&gt;
                 &lt;Checkbox
-                  id={`payment-method-${method?.id}`}
-                  checked={paymentMethods?.includes(method?.id)}
+                  id={`payment-method-${method.id}`}
+                  checked={paymentMethods.includes(method.id)}
                   onCheckedChange={<span class="fstat-no" title="function not covered" >(c</span>hecked) =&gt;
-<span class="cstat-no" title="statement not covered" >                    handlePaymentMethodChange(method?.id, checked as boolean)</span>
+<span class="cstat-no" title="statement not covered" >                    handlePaymentMethodChange(method.id, checked as boolean)</span>
                   }
                 /&gt;
                 &lt;label
-                  htmlFor={`payment-method-${method?.id}`}
+                  htmlFor={`payment-method-${method.id}`}
                   className="cursor-pointer text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 &gt;
-                  {method?.label}
+                  {method.label}
                 &lt;/label&gt;
               &lt;/div&gt;
             ))}
           &lt;/div&gt;
 &nbsp;
-          {<span class="branch-0 cbranch-no" title="branch not covered" >paymentMethods?.length === 0 &amp;&amp; (</span>
+          {<span class="branch-0 cbranch-no" title="branch not covered" >paymentMethods.length === 0 &amp;&amp; (</span>
             &lt;div className="flex items-start space-x-3 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-amber-800"&gt;
-              &lt;AlertCircle className="mt-0?.5 h-5 w-5 text-amber-500" /&gt;
+              &lt;AlertCircle className="mt-0.5 h-5 w-5 text-amber-500" /&gt;
               &lt;div&gt;
                 &lt;p className="text-sm font-medium"&gt;Please select at least one payment method&lt;/p&gt;
                 &lt;p className="mt-1 text-xs"&gt;
@@ -796,7 +796,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         &lt;/CardHeader&gt;
         &lt;CardContent className="space-y-6"&gt;
           &lt;div className="flex items-center justify-between"&gt;
-            &lt;div className="space-y-0?.5"&gt;
+            &lt;div className="space-y-0.5"&gt;
               &lt;FormLabel className="text-base"&gt;Accept Booking Deposits&lt;/FormLabel&gt;
               &lt;FormDescription&gt;
                 Require customers to pay a deposit when booking services
@@ -808,7 +808,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
           {<span class="branch-0 cbranch-no" title="branch not covered" >acceptsDeposits &amp;&amp; (</span>
             &lt;div className="mt-4 space-y-4 border-t pt-4"&gt;
               &lt;FormField
-                control={form?.control}
+                control={form.control}
                 name="depositType"
                 render={({ field }) =&gt; (
                   &lt;FormItem&gt;
@@ -817,7 +817,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                       value={depositType}
                       onValueChange={<span class="fstat-no" title="function not covered" >(v</span>alue) =&gt; {
 <span class="cstat-no" title="statement not covered" >                        setDepositType(value);</span>
-<span class="cstat-no" title="statement not covered" >                        field?.onChange(value);</span>
+<span class="cstat-no" title="statement not covered" >                        field.onChange(value);</span>
                       }}
                     &gt;
                       &lt;FormControl&gt;
@@ -826,9 +826,9 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                         &lt;/SelectTrigger&gt;
                       &lt;/FormControl&gt;
                       &lt;SelectContent&gt;
-                        {DEPOSIT_OPTIONS?.map(<span class="fstat-no" title="function not covered" >(o</span>ption) =&gt; (
-<span class="cstat-no" title="statement not covered" >                          &lt;SelectItem key={option?.value} v</span>alue={option?.value}&gt;
-                            {option?.label}
+                        {DEPOSIT_OPTIONS.map(<span class="fstat-no" title="function not covered" >(o</span>ption) =&gt; (
+<span class="cstat-no" title="statement not covered" >                          &lt;SelectItem key={option.value} v</span>alue={option.value}&gt;
+                            {option.label}
                           &lt;/SelectItem&gt;
                         ))}
                       &lt;/SelectContent&gt;
@@ -840,20 +840,20 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
               {<span class="branch-0 cbranch-no" title="branch not covered" >depositType === 'fixed' &amp;&amp; (</span>
                 &lt;FormField
-                  control={form?.control}
+                  control={form.control}
                   name="depositAmount"
                   render={({ field }) =&gt; (
                     &lt;FormItem&gt;
                       &lt;FormLabel&gt;Deposit Amount&lt;/FormLabel&gt;
                       &lt;div className="relative"&gt;
-                        &lt;DollarSign className="absolute left-3 top-2?.5 h-5 w-5 text-muted-foreground" /&gt;
+                        &lt;DollarSign className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" /&gt;
                         &lt;FormControl&gt;
                           &lt;Input
                             {...field}
                             type="number"
                             min="0"
-                            step="0?.01"
-                            placeholder="0?.00"
+                            step="0.01"
+                            placeholder="0.00"
                             className="pl-10"
                           /&gt;
                         &lt;/FormControl&gt;
@@ -867,7 +867,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
               {<span class="branch-0 cbranch-no" title="branch not covered" >depositType === 'percentage' &amp;&amp; (</span>
                 &lt;FormField
-                  control={form?.control}
+                  control={form.control}
                   name="depositPercentage"
                   render={({ field }) =&gt; (
                     &lt;FormItem&gt;
@@ -883,7 +883,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                             className="pr-8"
                           /&gt;
                         &lt;/FormControl&gt;
-                        &lt;div className="absolute right-3 top-2?.5 text-muted-foreground"&gt;%&lt;/div&gt;
+                        &lt;div className="absolute right-3 top-2.5 text-muted-foreground"&gt;%&lt;/div&gt;
                       &lt;/div&gt;
                       &lt;FormDescription&gt;
                         Percentage of service cost to charge as deposit
@@ -895,7 +895,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
               )}
 &nbsp;
               &lt;FormField
-                control={form?.control}
+                control={form.control}
                 name="depositNotes"
                 render={({ field }) =&gt; (
                   &lt;FormItem&gt;
@@ -973,7 +973,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

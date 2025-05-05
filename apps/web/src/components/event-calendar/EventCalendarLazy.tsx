@@ -16,9 +16,6 @@ export function EventCalendarLazy(props: EventCalendarProps) {
     <Suspense fallback={<LoadingFallback />}>
       <EventCalendar {...props} />
     </Suspense>
-  );
-}
-
 // Loading fallback UI
 function LoadingFallback() {
   return (
@@ -29,5 +26,3 @@ function LoadingFallback() {
         <Skeleton className="h-8 w-1/2 rounded-md" />
       </div>
     </div>
-  );
-}

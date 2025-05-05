@@ -5,9 +5,7 @@ interface AudioControlsProps {
   soundscapes: {
     name: string;
     url: string;
-  }[];
-}
-
+[];
 const AudioControls: React.FC<AudioControlsProps> = ({ soundscapes }) => {
   const {
     isPlaying,
@@ -18,32 +16,24 @@ const AudioControls: React.FC<AudioControlsProps> = ({ soundscapes }) => {
     resumeAudio,
     stopAudio,
     setVolume,
-  } = useAudio();
+= useAudio();
 
   const handlePlayPause = () => {
     if (!currentSoundscape && soundscapes.length > 0) {
       // If nothing is playing, start with the first soundscape
       playAudio(soundscapes[0].url);
-    } else if (isPlaying) {
+else if (isPlaying) {
       pauseAudio();
-    } else {
+else {
       resumeAudio();
-    }
-  };
-
-  const handleSoundscapeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+const handleSoundscapeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedSoundscape = soundscapes.find((s) => s.url === event.target.value);
     if (selectedSoundscape) {
       playAudio(selectedSoundscape.url);
-    }
-  };
-
-  const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = parseFloat(event.target.value);
     setVolume(newVolume);
-  };
-
-  return (
+return (
     <div className="audio-controls">
       <button onClick={handlePlayPause} aria-label={isPlaying ? 'Pause' : 'Play'}>
         {isPlaying ? '⏸️' : '▶️'}
@@ -87,36 +77,24 @@ const AudioControls: React.FC<AudioControlsProps> = ({ soundscapes }) => {
           padding: 1rem;
           background: rgba(255, 255, 255, 0.1);
           border-radius: 8px;
-        }
-
-        button {
+button {
           padding: 0.5rem 1rem;
           border: none;
           background: transparent;
           cursor: pointer;
           font-size: 1.5rem;
-        }
-
-        select {
+select {
           padding: 0.5rem;
           border-radius: 4px;
           background: rgba(255, 255, 255, 0.1);
           color: inherit;
           border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .volume-control {
+.volume-control {
           display: flex;
           align-items: center;
           gap: 0.5rem;
-        }
-
-        input[type='range'] {
+input[type='range'] {
           width: 100px;
-        }
-      `}</style>
+`}</style>
     </div>
-  );
-};
-
 export default AudioControls;

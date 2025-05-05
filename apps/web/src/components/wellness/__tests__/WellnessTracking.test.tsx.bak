@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import wellness-tracking from '../wellness-tracking.tsx';
+
+describe('wellness-tracking', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<wellness-tracking />);
+    expect(container).toBeInTheDocument();
+  });
+});

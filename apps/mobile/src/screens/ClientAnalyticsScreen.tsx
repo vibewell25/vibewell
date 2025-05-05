@@ -26,20 +26,16 @@ const ClientAnalyticsScreen: React.FC = () => {
     try {
       const res = await fetch(`${serverBaseUrl}/api/analytics/metrics/clients${qs}`, { headers });
       setClients(await res.json());
-    } catch (e) { console.error(e); }
+catch (e) { console.error(e); }
     setLoading(false);
-  };
-
-  const exportCsv = async () => {
+const exportCsv = async () => {
     const qs = `?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
     const res = await fetch(`${serverBaseUrl}/api/analytics/metrics/clients/export${qs}`, { headers });
     const csv = await res.text();
     const fileUri = FileSystem.documentDirectory + 'clients.csv';
     await FileSystem.writeAsStringAsync(fileUri, csv, { encoding: FileSystem.EncodingType.UTF8 });
     await Sharing.shareAsync(fileUri, { mimeType: 'text/csv', dialogTitle: 'Share clients.csv' });
-  };
-
-  if (loading) return <ActivityIndicator style={styles.loader} size="large" />;
+if (loading) return <ActivityIndicator style={styles.loader} size="large" />;
   return (
     <ScrollView style={styles.container}>
       <View style={styles.filterRow}>
@@ -57,15 +53,10 @@ const ClientAnalyticsScreen: React.FC = () => {
         <Button title="Export CSV" onPress={exportCsv} />
       </View>
     </ScrollView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   loader: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   filterRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
   section: { marginBottom: 16 },
   sectionTitle: { fontSize: 16, fontWeight: 'bold' },
-});
-
 export default ClientAnalyticsScreen;

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import social-icons from '../social-icons.tsx';
+
+describe('social-icons', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<social-icons />);
+    expect(container).toBeInTheDocument();
+  });
+});

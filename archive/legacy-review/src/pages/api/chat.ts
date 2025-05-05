@@ -5,8 +5,6 @@ import { getSession } from '@auth0/nextjs-auth0';
 
 const openai = new OpenAI({
   apiKey: process.env['OPENAI_API_KEY'],
-});
-
 const systemPrompt = `You are VibeBot, the official AI assistant for VibeWell, a beauty and wellness platform. 
 
 Platform Features:
@@ -51,21 +49,17 @@ export default async function {
 ) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  try {
+try {
     const session = await getSession(req, res);
     const { messages } = req.body;
 
     if (!Array.isArray(messages)) {
       return res.status(400).json({ error: 'Messages array is required' });
-    }
-
-    // Add user context if available
+// Add user context if available
     const contextMessage = session.user ? {
       role: 'system' as const,
       content: `The user ${session.user.name} (${session.user.email}) is logged in. They have the following roles: ${session.user.roles.join(', ') || 'regular user'}.`
-    } : null;
+: null;
 
     const completion = await openai.chat.completions.create({
 
@@ -73,26 +67,17 @@ export default async function {
       messages: [
         { role: 'system', content: systemPrompt },
 
-    // Safe array access
-    if (contextMessage < 0 || contextMessage >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-        ...(contextMessage ? [contextMessage] : []),
+    ...(contextMessage ? [contextMessage] : []),
         ...messages
       ],
       max_tokens: 500,
       temperature: 0.7,
       presence_penalty: 0.6, // Encourage varied responses
       frequency_penalty: 0.3, // Reduce repetition
-    });
-
-    const reply = completion.choices[0].message.content || 'Sorry, I could not generate a response.';
+const reply = completion.choices[0].message.content || 'Sorry, I could not generate a response.';
     
     return res.status(200).json({ message: reply });
-  } catch (error) {
+catch (error) {
     console.error('Chat API error:', error);
     return res.status(500).json({ 
       error: 'Failed to process your request. Please try again or contact support.'
-    });
-  }
-} 

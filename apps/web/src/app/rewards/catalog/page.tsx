@@ -1,4 +1,3 @@
-'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getServerSession } from 'next-auth';
@@ -16,7 +15,6 @@ interface Reward {
   imageUrl: string;
   category: string;
   available: boolean;
-}
 export default function RewardsCatalogPage() {
   const router = useRouter();
   const [rewards, setRewards] = useState<Reward[]>([]);
@@ -29,9 +27,7 @@ export default function RewardsCatalogPage() {
       const session = await getServerSession(authOptions);
       if (!session) {
         router.push('/login');
-      }
-    };
-    checkAuth();
+checkAuth();
     const fetchData = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');) => {
@@ -42,47 +38,38 @@ export default function RewardsCatalogPage() {
         ]);
         if (!rewardsResponse.ok || !pointsResponse.ok) {
           throw new Error('Failed to fetch data');
-        }
-        const rewardsData = await rewardsResponse.json();
+const rewardsData = await rewardsResponse.json();
         const pointsData = await pointsResponse.json();
         setRewards(rewardsData);
         setUserPoints(pointsData.points);
-      } catch (error) {
+catch (error) {
         console.error('Error fetching data:', error);
         toast.error('Failed to load rewards catalog');
-      } finally {
+finally {
         setLoading(false);
-      }
-    };
-    fetchData();
-  }, [router]);
+fetchData();
+[router]);
   const handleRedeem = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');rewardId: string, points: number) => {
     if (userPoints < points) {
       toast.error('Not enough points to redeem this reward');
       return;
-    }
-    try {
+try {
       const response = await fetch(`/api/rewards/redeem`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ rewardId }),
-      });
-      if (!response.ok) {
+body: JSON.stringify({ rewardId }),
+if (!response.ok) {
         throw new Error('Failed to redeem reward');
-      }
-      const data = await response.json();
+const data = await response.json();
       setUserPoints(data.newPoints);
       toast.success('Reward redeemed successfully!');
-    } catch (error) {
+catch (error) {
       console.error('Error redeeming reward:', error);
       toast.error('Failed to redeem reward');
-    }
-  };
-  if (loading) {
+if (loading) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="mx-auto max-w-4xl space-y-8">
@@ -96,9 +83,7 @@ export default function RewardsCatalogPage() {
           </div>
         </div>
       </div>
-    );
-  }
-  return (
+return (
     <div className="container mx-auto px-4 py-8">
       <div className="mx-auto max-w-4xl space-y-8">
         <div className="flex items-center justify-between">
@@ -148,5 +133,3 @@ export default function RewardsCatalogPage() {
         </div>
       </div>
     </div>
-  );
-}

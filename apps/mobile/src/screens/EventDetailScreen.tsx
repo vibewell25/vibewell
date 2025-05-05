@@ -18,26 +18,22 @@ const EventDetailScreen: React.FC = () => {
       try {
         const data = await communityApi.getEventById(id);
         setEvent(data);
-      } catch (err) {
+catch (err) {
         console.error(err);
         Alert.alert('Error', 'Failed to load event');
-      } finally {
+finally {
         setLoading(false);
-      }
-    })();
-  }, [id]);
+)();
+[id]);
 
   const handleDelete = async () => {
     try {
       await communityApi.deleteEvent(id);
       navigation.goBack();
-    } catch (err) {
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to delete event');
-    }
-  };
-
-  if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
+if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
     <View style={styles.container}>
@@ -51,14 +47,9 @@ const EventDetailScreen: React.FC = () => {
         <Button title="Delete" onPress={handleDelete} color="red" />
       </View>
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   title: { fontSize: 20, fontWeight: 'bold', marginBottom: 8 },
   text: { fontSize: 14, marginBottom: 4 },
   buttonRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 16 }
-});
-
 export default EventDetailScreen;

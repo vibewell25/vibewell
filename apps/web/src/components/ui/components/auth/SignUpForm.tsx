@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -10,17 +8,14 @@ export default function SignUpForm() {
     email: '',
     password: '',
     confirmPassword: '',
-  });
-  const [error, setError] = useState('');
+const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async ( {
+const handleSubmit = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent) => {
     e.preventDefault();
@@ -31,9 +26,7 @@ export default function SignUpForm() {
       setError('Passwords do not match');
       setIsLoading(false);
       return;
-    }
-
-    try {
+try {
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -41,40 +34,27 @@ export default function SignUpForm() {
           name: formData.name,
           email: formData.email,
           password: formData.password,
-        }),
-      });
-
-      const data = await response.json();
+),
+const data = await response.json();
 
       if (!response.ok) {
         throw new Error(data.message || 'Something went wrong');
-      }
-
-      // Sign in the user after successful registration
+// Sign in the user after successful registration
       const result = await signIn('credentials', {
         email: formData.email,
         password: formData.password,
         redirect: false,
-      });
-
-      if (result.error) {
+if (result.error) {
         setError('Error signing in after registration');
         return;
-      }
-
-      router.push('/dashboard');
-    } catch (error) {
+router.push('/dashboard');
+catch (error) {
       setError(error instanceof Error ? error.message : 'An error occurred');
-    } finally {
+finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleGoogleSignUp = () => {
+const handleGoogleSignUp = () => {
     signIn('google', { callbackUrl: '/dashboard' });
-  };
-
-  return (
+return (
     <div className="mt-8">
       {error && (
         <div className="mb-4 p-4 text-sm text-red-700 bg-red-100 rounded-lg">
@@ -191,5 +171,3 @@ export default function SignUpForm() {
         </div>
       </div>
     </div>
-  );
-} 

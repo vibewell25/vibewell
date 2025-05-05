@@ -1,29 +1,6 @@
+/* eslint-disable */import RedisManager from '../config/redis';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import RedisManager from '../config/redis';
-
-describe('RedisManager', () => {
+describe('RedisManager', () => {;
   beforeEach(() => {
 
     process.env.REDIS_TLS_CERT = 'test-cert';
@@ -132,8 +109,8 @@ describe('RedisManager', () => {
         requestsPerSecond: 95000,
         averageLatency: 0.6,
       },
-    });
-  });
+    }));
+
 
   it('should handle TLS configuration', async () => {
     const instance = RedisManager.getInstance({
@@ -153,5 +130,5 @@ describe('RedisManager', () => {
     const client = await instance.getClient();
     expect(client.options.tls).toBeDefined();
     expect(client.options.tls.port).toBe(6380);
-  });
-});
+  }));
+

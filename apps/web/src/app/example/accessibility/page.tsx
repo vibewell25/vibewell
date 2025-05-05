@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
@@ -22,30 +20,22 @@ export default function AccessibilityExample() {
         medium: '16px',
         large: '18px',
         xlarge: '20px',
-      }[size] || '16px';
-  };
-
-  // Toggle high contrast mode
+[size] || '16px';
+// Toggle high contrast mode
   const toggleHighContrast = () => {
     setHighContrast(!highContrast);
     if (!highContrast) {
       document.documentElement.classList.add('high-contrast');
-    } else {
+else {
       document.documentElement.classList.remove('high-contrast');
-    }
-  };
-
-  // Toggle reduce motion
+// Toggle reduce motion
   const toggleReduceMotion = () => {
     setReduceMotion(!reduceMotion);
     if (!reduceMotion) {
       document.documentElement.classList.add('reduce-motion');
-    } else {
+else {
       document.documentElement.classList.remove('reduce-motion');
-    }
-  };
-
-  return (
+return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="mb-6 text-2xl font-bold" tabIndex={0}>
         {t('settings.accessibility.title')}
@@ -133,12 +123,12 @@ export default function AccessibilityExample() {
                   htmlFor="toggle-contrast"
                   className={`block h-6 cursor-pointer overflow-hidden rounded-full transition-colors ${
                     highContrast ? 'bg-indigo-500' : 'bg-gray-300'
-                  }`}
+`}
                 >
                   <span
                     className={`block h-6 w-6 transform rounded-full bg-white shadow transition-transform ${
                       highContrast ? 'translate-x-full' : 'translate-x-0'
-                    }`}
+`}
                   ></span>
                 </label>
               </div>
@@ -161,12 +151,12 @@ export default function AccessibilityExample() {
                   htmlFor="toggle-motion"
                   className={`block h-6 cursor-pointer overflow-hidden rounded-full transition-colors ${
                     reduceMotion ? 'bg-indigo-500' : 'bg-gray-300'
-                  }`}
+`}
                 >
                   <span
                     className={`block h-6 w-6 transform rounded-full bg-white shadow transition-transform ${
                       reduceMotion ? 'translate-x-full' : 'translate-x-0'
-                    }`}
+`}
                   ></span>
                 </label>
               </div>
@@ -277,5 +267,3 @@ export default function AccessibilityExample() {
         </div>
       </div>
     </div>
-  );
-}

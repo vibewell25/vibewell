@@ -15,13 +15,12 @@ const ThreadListScreen: React.FC = () => {
       try {
         const data = await communityApi.getThreads();
         setThreads(data);
-      } catch (err) {
+catch (err) {
         console.error(err);
-      } finally {
+finally {
         setLoading(false);
-      }
-    })();
-  }, []);
+)();
+[]);
 
   if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
@@ -42,14 +41,9 @@ const ThreadListScreen: React.FC = () => {
         )}
       />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   item: { marginBottom: 12, paddingBottom: 8, borderBottomWidth: 1, borderColor: '#ccc' },
   title: { fontSize: 16, fontWeight: 'bold' },
   subtitle: { fontSize: 12, color: 'gray' },
-});
-
 export default ThreadListScreen;

@@ -354,22 +354,22 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
           &lt;div className="space-y-2"&gt;
             &lt;div className="flex items-center justify-between"&gt;
               &lt;span className="text-sm font-medium"&gt;Total Events&lt;/span&gt;
-              &lt;span className="text-sm text-muted-foreground"&gt;{stats?.totalEvents}&lt;/span&gt;
+              &lt;span className="text-sm text-muted-foreground"&gt;{stats.totalEvents}&lt;/span&gt;
             &lt;/div&gt;
             &lt;div className="flex items-center justify-between"&gt;
               &lt;span className="text-sm font-medium"&gt;Last Activity&lt;/span&gt;
               &lt;span className="text-sm text-muted-foreground"&gt;
-                {formatDistanceToNow(new Date(stats?.lastActivity), { addSuffix: true })}
+                {formatDistanceToNow(new Date(stats.lastActivity), { addSuffix: true })}
               &lt;/span&gt;
             &lt;/div&gt;
             &lt;div className="flex items-center justify-between"&gt;
               &lt;span className="text-sm font-medium"&gt;Most Active Time&lt;/span&gt;
-              &lt;span className="text-sm text-muted-foreground"&gt;{stats?.mostActiveTime}&lt;/span&gt;
+              &lt;span className="text-sm text-muted-foreground"&gt;{stats.mostActiveTime}&lt;/span&gt;
             &lt;/div&gt;
             &lt;div className="flex items-center justify-between"&gt;
               &lt;span className="text-sm font-medium"&gt;Most Common Event&lt;/span&gt;
               &lt;span className="text-sm capitalize text-muted-foreground"&gt;
-                {stats?.mostCommonEvent}
+                {stats.mostCommonEvent}
               &lt;/span&gt;
             &lt;/div&gt;
           &lt;/div&gt;
@@ -382,15 +382,15 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                   &lt;span className="text-sm font-medium"&gt;Successful&lt;/span&gt;
                 &lt;/div&gt;
                 &lt;span className="text-sm text-muted-foreground"&gt;
-                  {stats?.successfulEvents} (
-                  {getPercentage(stats?.successfulEvents, stats?.totalEvents)}%)
+                  {stats.successfulEvents} (
+                  {getPercentage(stats.successfulEvents, stats.totalEvents)}%)
                 &lt;/span&gt;
               &lt;/div&gt;
               &lt;div className="h-2 w-full rounded-full bg-green-100"&gt;
                 &lt;div
                   className="h-2 rounded-full bg-green-500"
                   style={{
-                    width: `${getPercentage(stats?.successfulEvents, stats?.totalEvents)}%`,
+                    width: `${getPercentage(stats.successfulEvents, stats.totalEvents)}%`,
                   }}
                 /&gt;
               &lt;/div&gt;
@@ -403,14 +403,14 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                   &lt;span className="text-sm font-medium"&gt;Warnings&lt;/span&gt;
                 &lt;/div&gt;
                 &lt;span className="text-sm text-muted-foreground"&gt;
-                  {stats?.warningEvents} ({getPercentage(stats?.warningEvents, stats?.totalEvents)}%)
+                  {stats.warningEvents} ({getPercentage(stats.warningEvents, stats.totalEvents)}%)
                 &lt;/span&gt;
               &lt;/div&gt;
               &lt;div className="h-2 w-full rounded-full bg-yellow-100"&gt;
                 &lt;div
                   className="h-2 rounded-full bg-yellow-500"
                   style={{
-                    width: `${getPercentage(stats?.warningEvents, stats?.totalEvents)}%`,
+                    width: `${getPercentage(stats.warningEvents, stats.totalEvents)}%`,
                   }}
                 /&gt;
               &lt;/div&gt;
@@ -423,14 +423,14 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                   &lt;span className="text-sm font-medium"&gt;Errors&lt;/span&gt;
                 &lt;/div&gt;
                 &lt;span className="text-sm text-muted-foreground"&gt;
-                  {stats?.errorEvents} ({getPercentage(stats?.errorEvents, stats?.totalEvents)}%)
+                  {stats.errorEvents} ({getPercentage(stats.errorEvents, stats.totalEvents)}%)
                 &lt;/span&gt;
               &lt;/div&gt;
               &lt;div className="h-2 w-full rounded-full bg-red-100"&gt;
                 &lt;div
                   className="h-2 rounded-full bg-red-500"
                   style={{
-                    width: `${getPercentage(stats?.errorEvents, stats?.totalEvents)}%`,
+                    width: `${getPercentage(stats.errorEvents, stats.totalEvents)}%`,
                   }}
                 /&gt;
               &lt;/div&gt;
@@ -448,7 +448,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

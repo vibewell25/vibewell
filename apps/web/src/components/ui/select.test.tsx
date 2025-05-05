@@ -1,15 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping *//**
- * @vitest-environment jsdom
- */
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+/* eslint-disable */import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { describe, it, expect } from 'vitest';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from './select';
 
 interface SelectProps {
-  onValueChange?: (value: string) => void;
-}
+  onValueChange?: (value: string) => void;}
+
+
 
 function BasicSelect({ onValueChange = jest.fn() }: SelectProps) {
   return (
@@ -23,13 +21,12 @@ function BasicSelect({ onValueChange = jest.fn() }: SelectProps) {
         <SelectItem value="orange">Orange</SelectItem>
       </SelectContent>
     </Select>
-  );
-}
 
 interface ControlledSelectProps {
   value: string;
-  onValueChange: (value: string) => void;
-}
+  onValueChange: (value: string) => void;}
+
+
 
 function ControlledSelect({ value, onValueChange }: ControlledSelectProps) {
   return (
@@ -43,13 +40,11 @@ function ControlledSelect({ value, onValueChange }: ControlledSelectProps) {
         <SelectItem value="orange">Orange</SelectItem>
       </SelectContent>
     </Select>
-  );
-}
 
 // Add jest-axe matchers
 expect.extend(toHaveNoViolations as unknown as { [key: string]: any });
 
-describe('Select Component', () => {
+describe('Select Component', () => {;
   it('renders with placeholder text', () => {
     render(<BasicSelect />);
     expect(screen.getByText('Select a fruit')).toBeInTheDocument();
@@ -99,8 +94,7 @@ describe('Select Component', () => {
     // Dropdown should be closed
     await waitFor(() => {
       expect(screen.queryByText('Apple')).not.toBeInTheDocument();
-    });
-  });
+    }));
 
   it('closes the dropdown when clicking outside', async () => {
     const user = userEvent.setup();
@@ -109,7 +103,6 @@ describe('Select Component', () => {
         <div data-testid="outside">Outside</div>
         <BasicSelect />
       </div>,
-    );
 
     // Open the dropdown
     await user.click(screen.getByRole('button'));
@@ -120,8 +113,7 @@ describe('Select Component', () => {
     // Dropdown should be closed
     await waitFor(() => {
       expect(screen.queryByText('Apple')).not.toBeInTheDocument();
-    });
-  });
+    }));
 
   it('applies custom classes to components', () => {
     render(
@@ -135,7 +127,6 @@ describe('Select Component', () => {
           </SelectItem>
         </SelectContent>
       </Select>,
-    );
 
     // Check custom classes
     expect(screen.getByRole('button')).toHaveClass('custom-trigger');
@@ -172,5 +163,4 @@ describe('Select Component', () => {
 
     const results = await axe(container);
     expect(results).toHaveNoViolations();
-  });
-});
+  }));

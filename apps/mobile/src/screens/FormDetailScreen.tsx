@@ -25,48 +25,38 @@ const FormDetailScreen: React.FC = () => {
         const initData: Record<string, any> = {};
         def.fields.forEach(f => { initData[f.name] = ''; });
         setFormData(initData);
-      } catch (err) {
+catch (err) {
         console.error(err);
         Alert.alert('Error', 'Failed to load form');
-      } finally {
+finally {
         setLoading(false);
-      }
-    })();
-  }, [formId]);
+)();
+[formId]);
 
   const handleChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handlePick = async () => {
+const handlePick = async () => {
     const result = await DocumentPicker.getDocumentAsync({ type: '*/*' });
     if (result.type === 'success') {
       const file = { uri: result.uri, name: result.name, type: result.mimeType || 'application/octet-stream' };
       try {
         const { url } = await formsApi.uploadDocument(file);
         setAttachments(prev => [...prev, { url, type: result.name }]);
-      } catch (err) {
+catch (err) {
         console.error(err);
         Alert.alert('Error', 'Failed to upload document');
-      }
-    }
-  };
-
-  const handleSubmit = async () => {
+const handleSubmit = async () => {
     setSubmitting(true);
     try {
       await formsApi.submitForm(formId, formData, attachments);
       Alert.alert('Success', 'Form submitted');
       navigation.goBack();
-    } catch (err) {
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to submit');
-    } finally {
+finally {
       setSubmitting(false);
-    }
-  };
-
-  if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
+if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -93,9 +83,6 @@ const FormDetailScreen: React.FC = () => {
         disabled={submitting}
       />
     </ScrollView>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { padding: 16 },
   title: { fontSize: 20, fontWeight: 'bold', marginBottom: 16 },
@@ -103,6 +90,4 @@ const styles = StyleSheet.create({
   label: { marginBottom: 4 },
   input: { borderWidth: 1, borderColor: '#ccc', padding: 8, borderRadius: 4 },
   attachment: { marginVertical: 4, color: '#555' }
-});
-
 export default FormDetailScreen;

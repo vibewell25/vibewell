@@ -4,8 +4,6 @@ import SignUpForm from "@/components/auth/SignUpForm";
 export const metadata: Metadata = {
   title: "Sign Up | VibeWell",
   description: "Create your VibeWell account",
-};
-
 export default function SignUpPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -24,5 +22,3 @@ export default function SignUpPage() {
         <SignUpForm />
       </div>
     </div>
-  );
-} 

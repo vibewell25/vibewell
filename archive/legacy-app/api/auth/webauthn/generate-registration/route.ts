@@ -13,24 +13,19 @@ export async function POST(request: NextRequest) {
       rp: {
         name: "VibeWell App",
         id: request.headers.get('host') || "localhost"
-      },
-      user: {
+user: {
         id: 'user_' + Math.random().toString(36).substr(2, 9),
         name: body.email || 'user@example.com',
         displayName: body.name || 'User'
-      },
-      pubKeyCredParams: [
+pubKeyCredParams: [
         { type: "public-key", alg: -7 }, // ES256
         { type: "public-key", alg: -257 } // RS256
       ],
       timeout: 60000,
       attestation: "direct"
-    });
-  } catch (error) {
+catch (error) {
     console.error('WebAuthn registration error:', error);
     return NextResponse.json({ 
       success: false,
       message: 'Failed to generate WebAuthn registration options' 
-    }, { status: 400 });
-  }
-} 
+{ status: 400 });

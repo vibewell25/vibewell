@@ -1,4 +1,3 @@
-
 import { BookingStatus } from '@prisma/client';
 
 export interface Booking {
@@ -13,8 +12,6 @@ export interface Booking {
   notes?: string;
   createdAt: Date;
   updatedAt: Date;
-}
-
 export interface Service {
   id: string;
   name: string;
@@ -23,8 +20,6 @@ export interface Service {
   price: number;
   category: string;
   isActive: boolean;
-}
-
 export interface RecurringBooking {
   id: string;
   bookingId: string;
@@ -32,14 +27,10 @@ export interface RecurringBooking {
   endDate: Date;
   createdAt: Date;
   updatedAt: Date;
-}
-
 export enum RecurringFrequency {
   WEEKLY = 'WEEKLY',
   BIWEEKLY = 'BIWEEKLY',
   MONTHLY = 'MONTHLY',
-}
-
 export interface WaitlistEntry {
   id: string;
   userId: string;
@@ -49,15 +40,11 @@ export interface WaitlistEntry {
   status: WaitlistStatus;
   createdAt: Date;
   updatedAt: Date;
-}
-
 export enum WaitlistStatus {
   PENDING = 'PENDING',
   NOTIFIED = 'NOTIFIED',
   BOOKED = 'BOOKED',
   EXPIRED = 'EXPIRED',
-}
-
 export interface BookingAnalytics {
   totalBookings: number;
   completedBookings: number;
@@ -67,9 +54,6 @@ export interface BookingAnalytics {
   period: {
     start: Date;
     end: Date;
-  };
-}
-
 export interface CreateBookingDTO {
   userId: string;
   practitionerId: string;
@@ -77,11 +61,8 @@ export interface CreateBookingDTO {
   startTime: Date;
   endTime: Date;
   notes?: string;
-}
-
 export interface UpdateBookingDTO {
   status?: BookingStatus;
   notes?: string;
   startTime?: Date;
   endTime?: Date;
-}

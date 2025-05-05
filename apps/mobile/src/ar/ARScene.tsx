@@ -5,8 +5,6 @@ interface ARSceneProps {
   onLoadEnd: () => void;
   source: any;
   scale: [number, number, number];
-}
-
 const ARScene: React.FC<ARSceneProps> = ({ onLoadEnd, source, scale }) => (
   <ViroARScene>
     <ViroAmbientLight color="#FFFFFF" intensity={500} />
@@ -19,6 +17,4 @@ const ARScene: React.FC<ARSceneProps> = ({ onLoadEnd, source, scale }) => (
       onLoadEnd={onLoadEnd}
     />
   </ViroARScene>
-);
-
 export default ARScene;

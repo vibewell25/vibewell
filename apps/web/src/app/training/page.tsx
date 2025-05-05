@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui';
 import TrainingDashboard from '@/components/training/TrainingDashboard';
@@ -14,10 +12,7 @@ export default function TrainingPage() {
       <div className="flex min-h-screen items-center justify-center">
         <p>Please sign in to access training.</p>
       </div>
-    );
-  }
-
-  return (
+return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="mb-8 text-3xl font-bold">Staff Training Portal</h1>
 
@@ -36,5 +31,3 @@ export default function TrainingPage() {
         </TabsContent>
       </Tabs>
     </div>
-  );
-}

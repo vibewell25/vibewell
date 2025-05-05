@@ -10,7 +10,4 @@ export async function GET() {
         name: 'API',
         status: 'healthy',
         responseTime: Math.floor(Math.random() * 20 + 5),
-      }
-    ]
-  });
-} 
+]

@@ -26,27 +26,21 @@ export interface Product {
       width: number;
       height: number;
       depth: number;
-    };
-  };
-  ar: {
+ar: {
     placement: {
       position: {
         x: number;
         y: number;
         z: number;
-      };
-      rotation: {
+rotation: {
         x: number;
         y: number;
         z: number;
-      };
-      scale: {
+scale: {
         x: number;
         y: number;
         z: number;
-      };
-    };
-    tracking: {
+tracking: {
       points: string[];
       regions: string[];
       constraints: {
@@ -54,11 +48,7 @@ export interface Product {
         maxScale: number;
         minRotation: number;
         maxRotation: number;
-      };
-    };
-    materials: {
+materials: {
       type: string;
       properties: Record<string, any>;
-    }[];
-  };
-} 
+[];

@@ -23,15 +23,13 @@ export default {
       serverError: 'خطأ في الخادم. يرجى المحاولة مرة أخرى لاحقًا.',
       noData: 'لا توجد بيانات متاحة',
       unauthorized: 'غير مصرح به. يرجى تسجيل الدخول مرة أخرى.',
-    },
-    search: 'بحث...',
+search: 'بحث...',
     seeAll: 'عرض الكل',
     noResults: 'لم يتم العثور على نتائج',
     errorOccurred: 'حدث خطأ',
     tryAgain: 'يرجى المحاولة مرة أخرى',
     comingSoon: 'قريبًا',
-  },
-  auth: {
+auth: {
     login: 'تسجيل الدخول',
     signup: 'إنشاء حساب',
     email: 'البريد الإلكتروني',
@@ -50,8 +48,7 @@ export default {
       passwordRequired: 'كلمة المرور مطلوبة',
       passwordTooShort: 'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل',
       passwordsDontMatch: 'كلمتا المرور غير متطابقتين',
-    },
-    signIn: 'تسجيل الدخول',
+signIn: 'تسجيل الدخول',
     signUp: 'إنشاء حساب',
     emailAddress: 'عنوان البريد الإلكتروني',
     signInWithGoogle: 'تسجيل الدخول باستخدام Google',
@@ -68,8 +65,7 @@ export default {
     verifyEmailSent: 'لقد أرسلنا رابط التحقق إلى بريدك الإلكتروني.',
     resetPasswordSuccess: 'تمت إعادة تعيين كلمة المرور بنجاح',
     resetPasswordEmail: 'تم إرسال بريد إلكتروني لإعادة تعيين كلمة المرور',
-  },
-  profile: {
+profile: {
     title: 'ملفي الشخصي',
     personalInfo: 'المعلومات الشخصية',
     firstName: 'الاسم الأول',
@@ -100,8 +96,7 @@ export default {
     takePhoto: 'التقاط صورة',
     chooseFromLibrary: 'اختيار من المكتبة',
     removePhoto: 'إزالة الصورة',
-  },
-  booking: {
+booking: {
     title: 'الحجوزات',
     myBookings: 'حجوزاتي',
     upcoming: 'القادمة',
@@ -140,8 +135,7 @@ export default {
     confirmationSent: 'تم إرسال تفاصيل التأكيد إلى بريدك الإلكتروني',
     noAvailability: 'لا يوجد توفر للتاريخ المحدد',
     tryAnotherDate: 'جرب تاريخًا آخر',
-  },
-  dashboard: {
+dashboard: {
     title: 'لوحة التحكم',
     welcome: 'مرحبًا بعودتك',
     todayAppointments: 'مواعيد اليوم',
@@ -161,8 +155,7 @@ export default {
     noRecentServices: 'لا توجد خدمات حديثة',
     viewAll: 'عرض الكل',
     seeMore: 'رؤية المزيد',
-  },
-  services: {
+services: {
     title: 'الخدمات',
     categories: 'الفئات',
     featured: 'مميزة',
@@ -186,8 +179,7 @@ export default {
     sortByPrice: 'ترتيب حسب السعر',
     sortByPopularity: 'ترتيب حسب الشعبية',
     sortByRating: 'ترتيب حسب التقييم',
-  },
-  practitioners: {
+practitioners: {
     title: 'الممارسون',
     specialties: 'التخصصات',
     about: 'حول',
@@ -204,8 +196,7 @@ export default {
     clientsSatisfied: 'العملاء الراضون',
     servicesOffered: 'الخدمات المقدمة',
     contactPractitioner: 'التواصل مع الممارس',
-  },
-  payments: {
+payments: {
     title: 'المدفوعات',
     history: 'سجل المدفوعات',
     methods: 'طرق الدفع',
@@ -236,8 +227,7 @@ export default {
     paymentFailed: 'فشل الدفع',
     transactionHistory: 'سجل المعاملات',
     downloadReceipt: 'تنزيل الإيصال',
-  },
-  settings: {
+settings: {
     title: 'الإعدادات',
     account: 'الحساب',
     notifications: 'الإشعارات',
@@ -260,8 +250,7 @@ export default {
       ja: 'اليابانية',
       zh: 'الصينية (المبسطة)',
       ar: 'العربية'
-    },
-    selectLanguage: 'اختر اللغة',
+selectLanguage: 'اختر اللغة',
     darkMode: 'الوضع الداكن',
     soundEffects: 'المؤثرات الصوتية',
     hapticFeedback: 'التغذية الراجعة اللمسية',
@@ -272,8 +261,7 @@ export default {
     faq: 'الأسئلة الشائعة',
     termsOfService: 'شروط الخدمة',
     deleteAccount: 'حذف الحساب',
-  },
-  offline: {
+offline: {
     offlineMode: 'وضع عدم الاتصال',
     limitedFunctionality: 'وظائف محدودة في وضع عدم الاتصال',
     syncRequired: 'المزامنة مطلوبة',
@@ -283,8 +271,7 @@ export default {
     offlineData: 'البيانات دون اتصال',
     dataWillSync: 'ستتم مزامنة بياناتك عند العودة للاتصال',
     manageOfflineData: 'إدارة البيانات دون اتصال',
-  },
-  errors: {
+errors: {
     networkError: 'خطأ في الشبكة',
     serverError: 'خطأ في الخادم',
     unknownError: 'خطأ غير معروف',
@@ -294,5 +281,3 @@ export default {
     dataNotFound: 'لم يتم العثور على البيانات',
     pleaseCheckConnection: 'يرجى التحقق من اتصالك بالإنترنت',
     tryAgainLater: 'يرجى المحاولة مرة أخرى لاحقًا'
-  }
-}; 

@@ -1,12 +1,5 @@
-// Type declarations for custom test utilities
-
-
-declare module '@testing-library/react' {
-  export interface RenderResult {
+export interface RenderResult {
     renderTime?: number;
-  }
-}
-
 declare namespace jest {
   interface Matchers<R> {
     toHaveNoViolations(): R;
@@ -30,11 +23,6 @@ declare namespace jest {
     toBeChecked(): R;
     toBePartiallyChecked(): R;
     toHaveDescription(text?: string | RegExp): R;
-  }
-}
-
-
 declare module 'jest-axe' {
   export {};
   export const toHaveNoViolations: () => void;
-}

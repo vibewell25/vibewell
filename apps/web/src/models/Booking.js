@@ -6,49 +6,38 @@ const BookingSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'ProviderProfile',
       required: true,
-    },
-    customer: {
+customer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'CustomerProfile',
       required: true,
-    },
-    serviceType: {
+serviceType: {
       type: String,
       enum: ['service', 'bundle', 'training'],
       required: true,
-    },
-    service: {
+service: {
       type: mongoose.Schema.Types.ObjectId,
       refPath: 'serviceModel',
-    },
-    serviceModel: {
+serviceModel: {
       type: String,
       enum: ['Service', 'ServiceBundle', 'TrainingProgram'],
       required: function () {
         return this.service !== undefined;
-      },
-    },
-    serviceName: {
+serviceName: {
       type: String,
       required: true,
-    },
-    date: {
+date: {
       type: Date,
       required: true,
-    },
-    startTime: {
+startTime: {
       type: String, // HH:MM format
       required: true,
-    },
-    endTime: {
+endTime: {
       type: String, // HH:MM format
       required: true,
-    },
-    duration: {
+duration: {
       type: Number, // Duration in minutes
       required: true,
-    },
-    status: {
+status: {
       type: String,
       enum: [
         'pending',
@@ -60,130 +49,93 @@ const BookingSchema = new mongoose.Schema(
         'rescheduled',
       ],
       default: 'pending',
-    },
-    price: {
+price: {
       type: Number,
       required: true,
       min: [0, 'Price must be positive'],
-    },
-    paymentStatus: {
+paymentStatus: {
       type: String,
       enum: ['pending', 'paid', 'partial', 'refunded', 'failed'],
       default: 'pending',
-    },
-    paymentMethod: {
+paymentMethod: {
       type: String,
       enum: ['card', 'cash', 'paypal', 'applepay', 'googlepay', 'crypto', 'other'],
-    },
-    paymentId: String, // Reference to payment transaction
+paymentId: String, // Reference to payment transaction
     commission: {
       amount: {
         type: Number,
         default: 0,
-      },
-      percentage: {
+percentage: {
         type: Number,
         default: 15,
-      },
-      status: {
+status: {
         type: String,
         enum: ['pending', 'processed', 'paid'],
         default: 'pending',
-      },
-    },
-    participants: {
+participants: {
       type: Number,
       default: 1,
       min: [1, 'At least one participant is required'],
-    },
-    specialRequests: String,
+specialRequests: String,
     notes: {
       customerNotes: String,
       providerNotes: String,
       adminNotes: String,
-    },
-    cancellationReason: String,
+cancellationReason: String,
     cancellationDate: Date,
     refundAmount: Number,
     previousBookingId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Booking',
-    }, // For rescheduled bookings
+// For rescheduled bookings
     customerAttended: {
       type: Boolean,
       default: null,
-    },
-    remindersSent: [
+remindersSent: [
       {
         type: {
           type: String,
           enum: ['email', 'sms', 'push'],
-        },
-        sentAt: Date,
+sentAt: Date,
         status: String,
-      },
-    ],
+],
     location: {
       type: {
         type: String,
         enum: ['Point'],
         default: 'Point',
-      },
-      coordinates: {
+coordinates: {
 
-    // Safe array access
-    if (Number < 0 || Number >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-        type: [Number], // [longitude, latitude]
+    type: [Number], // [longitude, latitude]
         default: [0, 0],
-      },
-      address: {
+address: {
         street: String,
         city: String,
         state: String,
         zipCode: String,
         country: String,
-      },
-    },
-    isReviewed: {
+isReviewed: {
       type: Boolean,
       default: false,
-    },
-    createdAt: {
+createdAt: {
       type: Date,
       default: Date.now,
-    },
-    updatedAt: {
+updatedAt: {
       type: Date,
       default: Date.now,
-    },
-  },
-  {
+{
     timestamps: true,
-  },
-);
-
 // Update the updatedAt field on save
 BookingSchema.pre('save', function (next) {
   this.updatedAt = Date.now();
   next();
-});
-
 // Calculate commission when booking is confirmed
 BookingSchema.pre('save', function (next) {
   if (this.status === 'confirmed' && this.paymentStatus === 'paid') {
     // Calculate commission amount based on percentage
 
-    // Safe integer operation
-    if (price > Number.MAX_SAFE_INTEGER || price < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     this.commission.amount = (this.price * this.commission.percentage) / 100;
-  }
-  next();
-});
-
+next();
 // Create compound index for provider, date, startTime for availability checks
 BookingSchema.index({ provider: 1, date: 1, startTime: 1 });
 

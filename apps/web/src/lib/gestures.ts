@@ -4,8 +4,6 @@ interface GestureConfig {
   threshold?: number;
   timeout?: number;
   preventDefault?: boolean;
-}
-
 export {};
 
 export {};

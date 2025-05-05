@@ -15,14 +15,11 @@ const PromotionsScreen: React.FC = () => {
     try {
       const data = await getPromotionCodes();
       setCodes(data);
-    } catch (err) {
+catch (err) {
       console.error(err);
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  useEffect(() => { fetchCodes(); }, []);
+useEffect(() => { fetchCodes(); }, []);
 
   const handleAdd = async () => {
     if (!code || !discount) { Alert.alert('Error', 'Code and discount required'); return; }
@@ -31,21 +28,16 @@ const PromotionsScreen: React.FC = () => {
       await createPromotionCode({ code, description, discount: Number(discount) });
       setCode(''); setDescription(''); setDiscount('');
       fetchCodes();
-    } catch (err) {
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to create');
-    }
-  };
-
-  const handleDelete = async (id: string) => {
+const handleDelete = async (id: string) => {
     setLoading(true);
     try {
       await deletePromotionCode(id);
       fetchCodes();
-    } catch (err) { console.error(err); }
-  };
-
-  return (
+catch (err) { console.error(err); }
+return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
       <View style={styles.form}>
         <TextInput
@@ -80,15 +72,9 @@ const PromotionsScreen: React.FC = () => {
             </View>
           )}
         />
-      }
-    </SafeAreaView>
-  );
-};
-
+</SafeAreaView>
 const styles = StyleSheet.create({
   form: { padding: 16 },
   input: { borderWidth: 1, marginBottom: 8, padding: 8, borderRadius: 4 },
   item: { padding: 16, borderBottomWidth: 1, borderColor: '#ccc', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-});
-
 export default PromotionsScreen;

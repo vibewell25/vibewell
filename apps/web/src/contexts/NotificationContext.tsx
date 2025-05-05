@@ -1,5 +1,3 @@
-'use client';
-
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -14,12 +12,9 @@ export interface Notification {
     id: string;
     name: string;
     avatar?: string;
-  };
-  createdAt: string;
+createdAt: string;
   read: boolean;
   actionUrl?: string;
-}
-
 // Dummy notifications data for initial state
 const DUMMY_NOTIFICATIONS: Notification[] = [
   {
@@ -30,12 +25,10 @@ const DUMMY_NOTIFICATIONS: Notification[] = [
       id: 'user1',
       name: 'Emma Thompson',
       avatar: '/avatar1.png',
-    },
-    createdAt: '2023-07-15T09:30:00.000Z',
+createdAt: '2023-07-15T09:30:00.000Z',
     read: false,
     actionUrl: '/social',
-  },
-  {
+{
     id: 'notif2',
     type: 'comment',
     message: 'commented on your yoga routine post',
@@ -43,12 +36,10 @@ const DUMMY_NOTIFICATIONS: Notification[] = [
       id: 'user2',
       name: 'David Chen',
       avatar: '/avatar2.png',
-    },
-    createdAt: '2023-07-14T14:45:00.000Z',
+createdAt: '2023-07-14T14:45:00.000Z',
     read: false,
     actionUrl: '/social',
-  },
-  // More notifications from the notifications page...
+// More notifications from the notifications page...
 ];
 
 // Context type definition
@@ -60,8 +51,6 @@ interface NotificationContextType {
   markAllAsRead: () => void;
   deleteNotification: (id: string) => void;
   clearAllNotifications: () => void;
-}
-
 // Create context with default values
 const NotificationContext = createContext<NotificationContextType>({
   notifications: [],
@@ -71,8 +60,6 @@ const NotificationContext = createContext<NotificationContextType>({
   markAllAsRead: () => {},
   deleteNotification: () => {},
   clearAllNotifications: () => {},
-});
-
 // Custom hook for accessing the notification context
 export {};
 
@@ -87,11 +74,10 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       // In a real app, we would fetch this from an API
       // For now, just use the dummy data
       setNotifications(DUMMY_NOTIFICATIONS);
-    } else {
+else {
       // Clear notifications when user logs out
       setNotifications([]);
-    }
-  }, [user]);
+[user]);
 
   // Calculate unread count
   const unreadCount = notifications.filter((notif) => !notif.read).length;
@@ -103,36 +89,23 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       id: `notif${Date.now()}`,
       createdAt: new Date().toISOString(),
       read: false,
-    };
-
-    setNotifications((prev) => [newNotification, ...prev]);
-  };
-
-  // Mark notification as read
+setNotifications((prev) => [newNotification, ...prev]);
+// Mark notification as read
   const markAsRead = (id: string) => {
     setNotifications((prev) =>
       prev.map((notification) =>
         notification.id === id ? { ...notification, read: true } : notification,
       ),
-    );
-  };
-
-  // Mark all notifications as read
+// Mark all notifications as read
   const markAllAsRead = () => {
     setNotifications((prev) => prev.map((notification) => ({ ...notification, read: true })));
-  };
-
-  // Delete a notification
+// Delete a notification
   const deleteNotification = (id: string) => {
     setNotifications((prev) => prev.filter((notification) => notification.id !== id));
-  };
-
-  // Clear all notifications
+// Clear all notifications
   const clearAllNotifications = () => {
     setNotifications([]);
-  };
-
-  return (
+return (
     <NotificationContext.Provider
       value={{
         notifications,
@@ -142,9 +115,6 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
         markAllAsRead,
         deleteNotification,
         clearAllNotifications,
-      }}
-    >
+>
       {children}
     </NotificationContext.Provider>
-  );
-}

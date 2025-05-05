@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import dynamic-imports from '../dynamic-imports.ts';
+
+describe('dynamic-imports', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<dynamic-imports />);
+    expect(container).toBeInTheDocument();
+  });
+});

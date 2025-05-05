@@ -3,8 +3,7 @@ import {
   NotificationFilterParams,
   Notification,
   NotificationPreferences,
-
-} from '../notification-service';
+from '../notification-service';
 
 import { apiClient, ApiResponse } from '@/types/api';
 
@@ -16,11 +15,10 @@ jest.mock('../api-client', () => ({
     post: jest.fn(),
     put: jest.fn(),
     delete: jest.fn(),
-  },
-  // Preserve the ApiResponse interface
+// Preserve the ApiResponse interface
 
   ApiResponse: jest.requireActual('../api-client').ApiResponse,
-}));
+));
 
 describe('NotificationService', () => {
   // Mock data
@@ -34,9 +32,7 @@ describe('NotificationService', () => {
     message: 'You have a new booking',
     status: 'unread',
     createdAt: '2023-01-01T12:00:00Z',
-  };
-
-  const mockPreferences: NotificationPreferences = {
+const mockPreferences: NotificationPreferences = {
     email: {
       booking_created: true,
       booking_updated: true,
@@ -47,8 +43,7 @@ describe('NotificationService', () => {
       message_received: true,
       system_update: false,
       promotion: false,
-    },
-    push: {
+push: {
       booking_created: true,
       booking_updated: true,
       booking_cancelled: true,
@@ -58,8 +53,7 @@ describe('NotificationService', () => {
       message_received: true,
       system_update: true,
       promotion: false,
-    },
-    sms: {
+sms: {
       booking_created: true,
       booking_updated: false,
       booking_cancelled: true,
@@ -69,108 +63,61 @@ describe('NotificationService', () => {
       message_received: false,
       system_update: false,
       promotion: false,
-    },
-  };
-
-  const mockSuccessResponse = <T>(data: T): ApiResponse<T> => ({
+const mockSuccessResponse = <T>(data: T): ApiResponse<T> => ({
     data,
     status: 200,
     success: true,
-  });
-
-  const mockErrorResponse = <T>(error: string): ApiResponse<T> => ({
+const mockErrorResponse = <T>(error: string): ApiResponse<T> => ({
     error,
     status: 400,
     success: false,
-  });
-
-  beforeEach(() => {
+beforeEach(() => {
     jest.clearAllMocks();
-  });
-
-  describe('getNotifications', () => {
+describe('getNotifications', () => {
     it('should fetch notifications with no filters', async () => {
 
-    // Safe array access
-    if (mockNotification < 0 || mockNotification >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      (apiClient.get as jest.Mock).mockResolvedValue(mockSuccessResponse([mockNotification]));
+    (apiClient.get as jest.Mock).mockResolvedValue(mockSuccessResponse([mockNotification]));
 
       const result = await notificationService.getNotifications();
 
 
       expect(apiClient.get).toHaveBeenCalledWith('/api/notifications');
 
-    // Safe array access
-    if (mockNotification < 0 || mockNotification >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      expect(result.data).toEqual([mockNotification]);
+    expect(result.data).toEqual([mockNotification]);
       expect(result.success).toBe(true);
-    });
+it('should handle status filter correctly', async () => {
 
-    it('should handle status filter correctly', async () => {
-
-    // Safe array access
-    if (mockNotification < 0 || mockNotification >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      (apiClient.get as jest.Mock).mockResolvedValue(mockSuccessResponse([mockNotification]));
+    (apiClient.get as jest.Mock).mockResolvedValue(mockSuccessResponse([mockNotification]));
 
       const filters: NotificationFilterParams = {
         status: 'unread',
-      };
-
-      await notificationService.getNotifications(filters);
+await notificationService.getNotifications(filters);
 
 
       expect(apiClient.get).toHaveBeenCalledWith('/api/notifications?status=unread');
-    });
+it('should handle array of statuses correctly', async () => {
 
-    it('should handle array of statuses correctly', async () => {
-
-    // Safe array access
-    if (mockNotification < 0 || mockNotification >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      (apiClient.get as jest.Mock).mockResolvedValue(mockSuccessResponse([mockNotification]));
+    (apiClient.get as jest.Mock).mockResolvedValue(mockSuccessResponse([mockNotification]));
 
       const filters: NotificationFilterParams = {
         status: ['unread', 'read'],
-      };
-
-      await notificationService.getNotifications(filters);
+await notificationService.getNotifications(filters);
 
 
       expect(apiClient.get).toHaveBeenCalledWith('/api/notifications?status=unread&status=read');
-    });
+it('should handle type filter correctly', async () => {
 
-    it('should handle type filter correctly', async () => {
-
-    // Safe array access
-    if (mockNotification < 0 || mockNotification >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      (apiClient.get as jest.Mock).mockResolvedValue(mockSuccessResponse([mockNotification]));
+    (apiClient.get as jest.Mock).mockResolvedValue(mockSuccessResponse([mockNotification]));
 
       const filters: NotificationFilterParams = {
         type: 'booking_created',
-      };
-
-      await notificationService.getNotifications(filters);
+await notificationService.getNotifications(filters);
 
 
       expect(apiClient.get).toHaveBeenCalledWith('/api/notifications?type=booking_created');
-    });
+it('should handle multiple filter types correctly', async () => {
 
-    it('should handle multiple filter types correctly', async () => {
-
-    // Safe array access
-    if (mockNotification < 0 || mockNotification >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      (apiClient.get as jest.Mock).mockResolvedValue(mockSuccessResponse([mockNotification]));
+    (apiClient.get as jest.Mock).mockResolvedValue(mockSuccessResponse([mockNotification]));
 
       const filters: NotificationFilterParams = {
         status: 'unread',
@@ -179,29 +126,19 @@ describe('NotificationService', () => {
         toDate: '2023-01-31',
         page: 1,
         limit: 10,
-      };
-
-      await notificationService.getNotifications(filters);
+await notificationService.getNotifications(filters);
 
       expect(apiClient.get).toHaveBeenCalledWith(
 
         '/api/notifications?status=unread&type=booking_created&fromDate=2023-01-01&toDate=2023-01-31&page=1&limit=10',
-      );
-    });
-
-    it('should handle errors correctly', async () => {
+it('should handle errors correctly', async () => {
       (apiClient.get as jest.Mock).mockResolvedValue(
         mockErrorResponse('Failed to fetch notifications'),
-      );
-
-      const result = await notificationService.getNotifications();
+const result = await notificationService.getNotifications();
 
       expect(result.success).toBe(false);
       expect(result.error).toBe('Failed to fetch notifications');
-    });
-  });
-
-  describe('getUnreadCount', () => {
+describe('getUnreadCount', () => {
     it('should fetch unread notification count', async () => {
       (apiClient.get as jest.Mock).mockResolvedValue(mockSuccessResponse({ count: 5 }));
 
@@ -212,26 +149,20 @@ describe('NotificationService', () => {
       expect(apiClient.get).toHaveBeenCalledWith('/api/notifications/unread/count');
       expect(result.data).toEqual({ count: 5 });
       expect(result.success).toBe(true);
-    });
-
-    it('should handle errors correctly', async () => {
+it('should handle errors correctly', async () => {
       (apiClient.get as jest.Mock).mockResolvedValue(mockErrorResponse('Failed to fetch count'));
 
       const result = await notificationService.getUnreadCount();
 
       expect(result.success).toBe(false);
       expect(result.error).toBe('Failed to fetch count');
-    });
-  });
-
-  describe('markAsRead', () => {
+describe('markAsRead', () => {
     it('should mark a notification as read', async () => {
       const updatedNotification = {
         ...mockNotification,
         status: 'read',
         readAt: '2023-01-02T12:00:00Z',
-      };
-      (apiClient.put as jest.Mock).mockResolvedValue(mockSuccessResponse(updatedNotification));
+(apiClient.put as jest.Mock).mockResolvedValue(mockSuccessResponse(updatedNotification));
 
 
       const result = await notificationService.markAsRead('notification-1');
@@ -241,26 +172,18 @@ describe('NotificationService', () => {
       expect(apiClient.put).toHaveBeenCalledWith('/api/notifications/notification-1/read', {});
       expect(result.data).toEqual(updatedNotification);
       expect(result.success).toBe(true);
-    });
-  });
-
-  describe('markAllAsRead', () => {
+describe('markAllAsRead', () => {
     it('should mark all notifications as read', async () => {
       (apiClient.put as jest.Mock).mockResolvedValue(
         mockSuccessResponse({ success: true, count: 5 }),
-      );
-
-      const result = await notificationService.markAllAsRead();
+const result = await notificationService.markAllAsRead();
 
 
 
       expect(apiClient.put).toHaveBeenCalledWith('/api/notifications/read-all', {});
       expect(result.data).toEqual({ success: true, count: 5 });
       expect(result.success).toBe(true);
-    });
-  });
-
-  describe('archiveNotification', () => {
+describe('archiveNotification', () => {
     it('should archive a notification', async () => {
       const archivedNotification = { ...mockNotification, status: 'archived' };
       (apiClient.put as jest.Mock).mockResolvedValue(mockSuccessResponse(archivedNotification));
@@ -273,10 +196,7 @@ describe('NotificationService', () => {
       expect(apiClient.put).toHaveBeenCalledWith('/api/notifications/notification-1/archive', {});
       expect(result.data).toEqual(archivedNotification);
       expect(result.success).toBe(true);
-    });
-  });
-
-  describe('deleteNotification', () => {
+describe('deleteNotification', () => {
     it('should delete a notification', async () => {
       (apiClient.delete as jest.Mock).mockResolvedValue(mockSuccessResponse(undefined));
 
@@ -287,10 +207,7 @@ describe('NotificationService', () => {
 
       expect(apiClient.delete).toHaveBeenCalledWith('/api/notifications/notification-1');
       expect(result.success).toBe(true);
-    });
-  });
-
-  describe('getPreferences', () => {
+describe('getPreferences', () => {
     it('should fetch notification preferences', async () => {
       (apiClient.get as jest.Mock).mockResolvedValue(mockSuccessResponse(mockPreferences));
 
@@ -300,33 +217,22 @@ describe('NotificationService', () => {
       expect(apiClient.get).toHaveBeenCalledWith('/api/notifications/preferences');
       expect(result.data).toEqual(mockPreferences);
       expect(result.success).toBe(true);
-    });
-  });
-
-  describe('updatePreferences', () => {
+describe('updatePreferences', () => {
     it('should update notification preferences', async () => {
       const partialPreferences = {
         email: {
           promotion: true,
-        },
-        push: {
+push: {
           system_update: false,
-        },
-      };
-
-      const updatedPreferences = {
+const updatedPreferences = {
         ...mockPreferences,
         email: {
           ...mockPreferences.email,
           promotion: true,
-        },
-        push: {
+push: {
           ...mockPreferences.push,
           system_update: false,
-        },
-      };
-
-      (apiClient.put as jest.Mock).mockResolvedValue(mockSuccessResponse(updatedPreferences));
+(apiClient.put as jest.Mock).mockResolvedValue(mockSuccessResponse(updatedPreferences));
 
       const result = await notificationService.updatePreferences(partialPreferences);
 
@@ -334,18 +240,14 @@ describe('NotificationService', () => {
 
         '/api/notifications/preferences',
         partialPreferences,
-      );
-      expect(result.data).toEqual(updatedPreferences);
+expect(result.data).toEqual(updatedPreferences);
       expect(result.success).toBe(true);
-    });
-  });
-
-  describe('subscribeToPush', () => {
+describe('subscribeToPush', () => {
     it('should subscribe to push notifications', async () => {
       const mockSubscription = {
         endpoint: 'https://example.com',
         keys: { p256dh: 'key1', auth: 'key2' },
-      } as unknown as PushSubscription;
+as unknown as PushSubscription;
 
       (apiClient.post as jest.Mock).mockResolvedValue(mockSuccessResponse({ success: true }));
 
@@ -355,18 +257,14 @@ describe('NotificationService', () => {
 
       expect(apiClient.post).toHaveBeenCalledWith('/api/notifications/push/subscribe', {
         subscription: JSON.stringify(mockSubscription),
-      });
-      expect(result.data).toEqual({ success: true });
+expect(result.data).toEqual({ success: true });
       expect(result.success).toBe(true);
-    });
-  });
-
-  describe('unsubscribeFromPush', () => {
+describe('unsubscribeFromPush', () => {
     it('should unsubscribe from push notifications', async () => {
       const mockSubscription = {
         endpoint: 'https://example.com',
         keys: { p256dh: 'key1', auth: 'key2' },
-      } as unknown as PushSubscription;
+as unknown as PushSubscription;
 
       (apiClient.post as jest.Mock).mockResolvedValue(mockSuccessResponse({ success: true }));
 
@@ -376,9 +274,5 @@ describe('NotificationService', () => {
 
       expect(apiClient.post).toHaveBeenCalledWith('/api/notifications/push/unsubscribe', {
         subscription: JSON.stringify(mockSubscription),
-      });
-      expect(result.data).toEqual({ success: true });
+expect(result.data).toEqual({ success: true });
       expect(result.success).toBe(true);
-    });
-  });
-});

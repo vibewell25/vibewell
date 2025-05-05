@@ -1,4 +1,3 @@
-'use client';
 import { Layout } from '@/components/layout';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
@@ -20,8 +19,7 @@ export default function HelpCenter() {
         { title: 'Setting Up Your Profile', path: '/help/getting-started/profile-setup' },
         { title: 'Navigating the App', path: '/help/getting-started/navigation' },
       ],
-    },
-    {
+{
       id: 'account',
       title: 'Account Management',
       icon: <Icons.UserCircleIcon className="h-8 w-8" />,
@@ -32,8 +30,7 @@ export default function HelpCenter() {
         { title: 'Managing Subscriptions', path: '/help/account/subscription-management' },
         { title: 'Two-Factor Authentication', path: '/help/account/two-factor-auth' },
       ],
-    },
-    {
+{
       id: 'features',
       title: 'Features & Functionality',
       icon: <Icons.SparklesIcon className="h-8 w-8" />,
@@ -44,8 +41,7 @@ export default function HelpCenter() {
         { title: 'AR Meditation Experiences', path: '/help/features/ar-meditation' },
         { title: 'Community Engagement', path: '/help/features/community' },
       ],
-    },
-    {
+{
       id: 'troubleshooting',
       title: 'Troubleshooting',
       icon: <Icons.ArrowPathIcon className="h-8 w-8" />,
@@ -56,8 +52,7 @@ export default function HelpCenter() {
         { title: 'Login Problems', path: '/help/troubleshooting/login-issues' },
         { title: 'Payment Failures', path: '/help/troubleshooting/payment-issues' },
       ],
-    },
-  ];
+];
   // FAQs
   const faqs = [
     {
@@ -65,32 +60,27 @@ export default function HelpCenter() {
       answer:
         'You can reset your password by visiting the login page and clicking on "Forgot Password". Follow the instructions sent to your email.',
       path: '/help/account/reset-password',
-    },
-    {
+{
       question: 'Can I use Vibewell on multiple devices?',
       answer:
         'Yes, you can use your Vibewell account on multiple devices. Simply log in with your credentials on each device.',
       path: '/help/account/multiple-devices',
-    },
-    {
+{
       question: 'How do I cancel my subscription?',
       answer:
         'You can cancel your subscription from your account settings under "Subscriptions". Follow the cancellation instructions.',
       path: '/help/account/cancel-subscription',
-    },
-    {
+{
       question: 'Is my data secure?',
       answer:
         'Yes, Vibewell uses industry-standard encryption and security practices to protect your personal information and health data.',
       path: '/help/privacy/data-security',
-    },
-    {
+{
       question: 'How do I contact customer support?',
       answer:
         'You can contact our support team via email, live chat, or by submitting a support ticket through the app.',
       path: '/help/contact',
-    },
-  ];
+];
   return (
     <Layout>
       <div className="container-app py-8">
@@ -251,5 +241,3 @@ export default function HelpCenter() {
         </div>
       </div>
     </Layout>
-  );
-}

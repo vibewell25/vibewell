@@ -1,27 +1,4 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { describe, expect, test, beforeAll, afterAll, beforeEach, afterEach } from '@jest/globals';
+/* eslint-disable */import { describe, expect, test, beforeAll, afterAll, beforeEach, afterEach } from '@jest/globals';
 
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
@@ -48,8 +25,6 @@ const server = setupServer(
           error: 'Email and password are required',
         },
         { status: 400 },
-      );
-    }
 
     // Simulate authentication
     if (body.email === 'test@example.com' && body.password === 'Password123!') {
@@ -63,7 +38,6 @@ const server = setupServer(
           name: 'Test User',
         },
       });
-    }
 
     // Simulate authentication failure
     return HttpResponse.json(
@@ -71,9 +45,8 @@ const server = setupServer(
         error: 'Invalid email or password',
       },
       { status: 401 },
-    );
+
   }),
-);
 
 // Setup mock server
 beforeAll(() => server.listen());
@@ -100,7 +73,7 @@ const localStorageMock = (() => {
     // Safe array access
     if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
-    }
+
       return store[key] || null;
     },
     setItem(key: string, value: string) {
@@ -108,7 +81,7 @@ const localStorageMock = (() => {
     // Safe array access
     if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
-    }
+
       store[key] = value;
     },
     removeItem(key: string) {
@@ -116,7 +89,7 @@ const localStorageMock = (() => {
     // Safe array access
     if (key < 0 || key >= array.length) {
       throw new Error('Array index out of bounds');
-    }
+
       delete store[key];
     },
     clear() {
@@ -125,13 +98,13 @@ const localStorageMock = (() => {
   };
 })();
 
-Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+Object.defineProperty(window, 'localStorage', { value: localStorageMock }));
 
-describe('Login Page', () => {
+describe('Login Page', () => {;
   beforeEach(() => {
     localStorageMock.clear();
     jest.clearAllMocks();
-  });
+  }));
 
   test('renders login form', async () => {
     render(React.createElement(LoginPage));
@@ -161,8 +134,7 @@ describe('Login Page', () => {
       expect(screen.getByText(/email is required/i)).toBeInTheDocument();
 
       expect(screen.getByText(/password is required/i)).toBeInTheDocument();
-    });
-  });
+    }));
 
   test('shows error message for invalid credentials', async () => {
     render(React.createElement(LoginPage));
@@ -186,8 +158,7 @@ describe('Login Page', () => {
     await waitFor(() => {
 
       expect(screen.getByText(/invalid email or password/i)).toBeInTheDocument();
-    });
-  });
+    }));
 
   test('successfully logs in with valid credentials', async () => {
     render(React.createElement(LoginPage));
@@ -211,6 +182,5 @@ describe('Login Page', () => {
     await waitFor(() => {
 
       expect(localStorageMock.getItem('auth_token')).toBe('mock-jwt-token');
-    });
-  });
+    }));
 });

@@ -1,4 +1,3 @@
-
 import { prisma } from '@/lib/prisma';
 
 import { uploadToS3, getSignedUrl } from '@/lib/aws/s3';
@@ -12,8 +11,6 @@ interface BusinessProfileData {
   phone: string;
   logoFile?: File | null;
   bannerImageFile?: File | null;
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); fetchBusinessProfile(userId: string) {
@@ -21,36 +18,23 @@ export async function {
     const profile = await prisma.businessProfile.findUnique({
       where: {
         userId: userId,
-      },
-    });
-
-    if (!profile) {
+if (!profile) {
       return null;
-    }
-
-    // Generate signed URLs for images if they exist
+// Generate signed URLs for images if they exist
     let logoUrl = null;
     let bannerImageUrl = null;
 
     if (profile.logoPath) {
       logoUrl = await getSignedUrl(profile.logoPath);
-    }
-
-    if (profile.bannerImagePath) {
+if (profile.bannerImagePath) {
       bannerImageUrl = await getSignedUrl(profile.bannerImagePath);
-    }
-
-    return {
+return {
       ...profile,
       logoUrl,
       bannerImageUrl,
-    };
-  } catch (error) {
+catch (error) {
     console.error('Error fetching business profile:', error);
     throw new Error('Failed to fetch business profile');
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); updateBusinessProfile(userId: string, data: BusinessProfileData) {
@@ -64,30 +48,22 @@ export async function {
       const fileName = `business-profiles/${userId}/logo-${uuidv4()}`;
       await uploadToS3(data.logoFile, fileName);
       logoPath = fileName;
-    }
-
-    // Upload banner image if provided
+// Upload banner image if provided
     if (data.bannerImageFile) {
 
       const fileName = `business-profiles/${userId}/banner-${uuidv4()}`;
       await uploadToS3(data.bannerImageFile, fileName);
       bannerImagePath = fileName;
-    }
-
-    // Check if profile exists
+// Check if profile exists
     const existingProfile = await prisma.businessProfile.findUnique({
       where: {
         userId: userId,
-      },
-    });
-
-    if (existingProfile) {
+if (existingProfile) {
       // Update existing profile
       return await prisma.businessProfile.update({
         where: {
           userId: userId,
-        },
-        data: {
+data: {
           name: data.name,
           description: data.description,
           location: data.location,
@@ -96,9 +72,7 @@ export async function {
           ...(logoPath && { logoPath }),
           ...(bannerImagePath && { bannerImagePath }),
           updatedAt: new Date(),
-        },
-      });
-    } else {
+else {
       // Create new profile
       return await prisma.businessProfile.create({
         data: {
@@ -110,11 +84,6 @@ export async function {
           phone: data.phone,
           ...(logoPath && { logoPath }),
           ...(bannerImagePath && { bannerImagePath }),
-        },
-      });
-    }
-  } catch (error) {
+catch (error) {
     console.error('Error updating business profile:', error);
     throw new Error('Failed to update business profile');
-  }
-}

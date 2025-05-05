@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Animated,
   Keyboard
-} from 'react-native';
+from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from '../../contexts/ThemeContext';
 
@@ -17,15 +17,13 @@ interface BeautySearchProps {
   onClear: () => void;
   placeholder?: string;
   autoFocus?: boolean;
-}
-
 const BeautySearch: React.FC<BeautySearchProps> = ({
   searchTerm,
   onChangeText,
   onClear,
   placeholder = 'Search beauty services...',
   autoFocus = false
-}) => {
+) => {
   const { isDarkMode } = useTheme();
   const [isFocused, setIsFocused] = useState(autoFocus);
   const animatedWidth = new Animated.Value(isFocused ? 1 : 0);
@@ -35,19 +33,15 @@ const BeautySearch: React.FC<BeautySearchProps> = ({
       toValue: isFocused ? 1 : 0,
       duration: 200,
       useNativeDriver: false,
-    }).start();
-  }, [isFocused, animatedWidth]);
+).start();
+[isFocused, animatedWidth]);
 
   const handleSubmit = () => {
     Keyboard.dismiss();
-  };
-
-  const width = animatedWidth.interpolate({
+const width = animatedWidth.interpolate({
     inputRange: [0, 1],
     outputRange: ['100%', '85%'],
-  });
-
-  return (
+return (
     <View style={styles.container}>
       <Animated.View
         style={[
@@ -56,8 +50,7 @@ const BeautySearch: React.FC<BeautySearchProps> = ({
             backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF',
             borderColor: isDarkMode ? '#333333' : '#E0E0E0',
             width
-          },
-        ]}
+]}
       >
         <Feather
           name="search"
@@ -96,8 +89,7 @@ const BeautySearch: React.FC<BeautySearchProps> = ({
           onPress={() => {
             setIsFocused(false);
             Keyboard.dismiss();
-          }}
-        >
+>
           <Text
             style={[
               styles.cancelButtonText,
@@ -109,43 +101,31 @@ const BeautySearch: React.FC<BeautySearchProps> = ({
         </TouchableOpacity>
       )}
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 15,
-  },
-  searchContainer: {
+searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 12,
     height: 45,
-  },
-  searchIcon: {
+searchIcon: {
     marginRight: 8,
-  },
-  input: {
+input: {
     flex: 1,
     height: '100%',
     fontSize: 16,
     padding: 0,
-  },
-  clearButton: {
+clearButton: {
     padding: 5,
-  },
-  cancelButton: {
+cancelButton: {
     marginLeft: 10,
     paddingVertical: 5,
-  },
-  cancelButtonText: {
+cancelButtonText: {
     fontSize: 16,
     fontWeight: '500',
-  },
-});
-
 export default BeautySearch; 

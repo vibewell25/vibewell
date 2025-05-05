@@ -3,7 +3,7 @@ import {
   WorkoutFormCorrection,
   MeditationEnvironment,
   YogaPoseEstimation,
-} from '@/components/ar';
+from '@/components/ar';
 
 const ARWellnessPage = () => {
   return (
@@ -38,8 +38,7 @@ const ARWellnessPage = () => {
             onFormUpdate={(score, feedback) => {
               console.log('Form score:', score);
               console.log('Feedback:', feedback);
-            }}
-          />
+/>
         </div>
       </section>
 
@@ -74,8 +73,7 @@ const ARWellnessPage = () => {
             onPoseUpdate={(score, feedback) => {
               console.log('Pose score:', score);
               console.log('Feedback:', feedback);
-            }}
-          />
+/>
         </div>
       </section>
 
@@ -108,7 +106,4 @@ const ARWellnessPage = () => {
         </div>
       </section>
     </div>
-  );
-};
-
 export default ARWellnessPage;

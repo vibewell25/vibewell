@@ -17,13 +17,10 @@ const Social: NextPage = () => {
       const res = await fetchWithTimeout('/api/social-posts');
       const data = await res.json();
       setPosts(data.posts || []);
-    } catch (error) {
+catch (error) {
       console.error('Error fetching posts:', error);
       alert('Failed to load posts');
-    }
-  };
-
-  useEffect(() => { fetchPosts(); }, []);
+useEffect(() => { fetchPosts(); }, []);
 
   const createPost = async (e: FormEvent) => {
     e.preventDefault();
@@ -35,35 +32,26 @@ const Social: NextPage = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: newPost }),
-      });
-      
-      if (res.ok) {
+if (res.ok) {
         setNewPost('');
         fetchPosts();
-      } else {
+else {
         alert('Error creating post');
-      }
-    } catch (error) {
+catch (error) {
       console.error('Error creating post:', error);
       alert('Failed to create post');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  const deletePost = async (id: string) => {
+const deletePost = async (id: string) => {
     if (!confirm('Delete this post?')) return;
     
     try {
       await fetchWithTimeout(`/api/social-posts/${id}`, { method: 'DELETE' });
       fetchPosts();
-    } catch (error) {
+catch (error) {
       console.error('Error deleting post:', error);
       alert('Failed to delete post');
-    }
-  };
-
-  const addComment = async (postId: string) => {
+const addComment = async (postId: string) => {
     const content = commentInputs[postId] || '';
     if (!content) return;
     
@@ -72,33 +60,24 @@ const Social: NextPage = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ postId, content }),
-      });
-      
-      if (res.ok) {
+if (res.ok) {
         setCommentInputs(prev => ({ ...prev, [postId]: '' }));
         fetchPosts();
-      } else {
+else {
         alert('Error adding comment');
-      }
-    } catch (error) {
+catch (error) {
       console.error('Error adding comment:', error);
       alert('Failed to add comment');
-    }
-  };
-
-  const deleteComment = async (id: string) => {
+const deleteComment = async (id: string) => {
     if (!confirm('Delete this comment?')) return;
     
     try {
       await fetchWithTimeout(`/api/post-comments/${id}`, { method: 'DELETE' });
       fetchPosts();
-    } catch (error) {
+catch (error) {
       console.error('Error deleting comment:', error);
       alert('Failed to delete comment');
-    }
-  };
-
-  return (
+return (
     <div>
       <h1>Social Posts</h1>
       <form onSubmit={createPost} style={{ marginBottom: '1rem' }}>
@@ -135,7 +114,4 @@ const Social: NextPage = () => {
         </div>
       ))}
     </div>
-  );
-};
-
 export default Social;

@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/57</span>
+                <span class='fraction'>0/54</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/25</span>
+                <span class='fraction'>0/22</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/55</span>
+                <span class='fraction'>0/54</span>
             </div>
         
             
@@ -436,8 +436,7 @@
 <a name='L371'></a><a href='#L371'>371</a>
 <a name='L372'></a><a href='#L372'>372</a>
 <a name='L373'></a><a href='#L373'>373</a>
-<a name='L374'></a><a href='#L374'>374</a>
-<a name='L375'></a><a href='#L375'>375</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L374'></a><a href='#L374'>374</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -547,7 +546,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -886,7 +884,7 @@ const US_STATES = <span class="cstat-no" title="statement not covered" >[</span>
 &nbsp;
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >LocationForm({</span></span> form }: LocationFormProps) {
   const [virtualServices, setVirtualServices] = <span class="cstat-no" title="statement not covered" >useState(</span>
-    form?.getValues('offersVirtualServices') || false,
+    form.getValues('offersVirtualServices') || false,
   );
 &nbsp;
   const [detectLocation, setDetectLocation] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
@@ -895,23 +893,23 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   const handleDetectLocation = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >    setDetectLocation(true);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (navigator?.geolocation) {</span>
-<span class="cstat-no" title="statement not covered" >      navigator?.geolocation.getCurrentPosition(</span>
+<span class="cstat-no" title="statement not covered" >    if (navigator.geolocation) {</span>
+<span class="cstat-no" title="statement not covered" >      navigator.geolocation.getCurrentPosition(</span>
 <span class="fstat-no" title="function not covered" >        async (p</span>osition) =&gt; {
 <span class="cstat-no" title="statement not covered" >          try {</span>
             // Reverse geocoding to get address from coordinates
             const response = <span class="cstat-no" title="statement not covered" >await fetch(</span>
-              `https://maps?.googleapis.com/maps/api/geocode/json?latlng=${position?.coords.latitude},${position?.coords.longitude}&amp;key=${process?.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`,
+              `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&amp;key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`,
             );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >            <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
+<span class="cstat-no" title="statement not covered" >            <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >              throw new Error('Geocoding API request failed');</span>
             }
 &nbsp;
-            const data = <span class="cstat-no" title="statement not covered" >await response?.json();</span>
+            const data = <span class="cstat-no" title="statement not covered" >await response.json();</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >            <span class="missing-if-branch" title="if path not taken" >I</span>if (data?.status === 'OK' &amp;&amp; data?.results[0]) {</span>
-              const addressComponents = <span class="cstat-no" title="statement not covered" >data?.results[0].address_components;</span>
+<span class="cstat-no" title="statement not covered" >            <span class="missing-if-branch" title="if path not taken" >I</span>if (data.status === 'OK' &amp;&amp; data.results[0]) {</span>
+              const addressComponents = <span class="cstat-no" title="statement not covered" >data.results[0].address_components;</span>
               let street = <span class="cstat-no" title="statement not covered" >'';</span>
               let city = <span class="cstat-no" title="statement not covered" >'';</span>
               let state = <span class="cstat-no" title="statement not covered" >'';</span>
@@ -919,43 +917,42 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
               // Extract address components
 <span class="cstat-no" title="statement not covered" >              for (const component of addressComponents) {</span>
-                const types = <span class="cstat-no" title="statement not covered" >component?.types;</span>
+                const types = <span class="cstat-no" title="statement not covered" >component.types;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >                if (types?.includes('street_number')) {</span>
-<span class="cstat-no" title="statement not covered" >                  street = component?.long_name;</span>
-                } else <span class="cstat-no" title="statement not covered" >if (types?.includes('route')) {</span>
-<span class="cstat-no" title="statement not covered" >                  <span class="missing-if-branch" title="if path not taken" >I</span>if (street &gt; Number.MAX_SAFE_INTEGER || street &lt; Number.MIN_SAFE_INTEGER) <span class="cstat-no" title="statement not covered" >throw new Error('Integer overflow'); <span class="cstat-no" title="statement not covered" >s</span></span>treet += ' ' + component?.long_name;</span>
-                } else <span class="cstat-no" title="statement not covered" >if (types?.includes('locality')) {</span>
-<span class="cstat-no" title="statement not covered" >                  city = component?.long_name;</span>
-                } else <span class="cstat-no" title="statement not covered" >if (types?.includes('administrative_area_level_1')) {</span>
-<span class="cstat-no" title="statement not covered" >                  state = component?.short_name;</span>
-                } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (types?.includes('postal_code')) {</span>
-<span class="cstat-no" title="statement not covered" >                  zipCode = component?.long_name;</span>
+<span class="cstat-no" title="statement not covered" >                if (types.includes('street_number')) {</span>
+<span class="cstat-no" title="statement not covered" >                  street = component.long_name;</span>
+                } else <span class="cstat-no" title="statement not covered" >if (types.includes('route')) {</span>
+                } else <span class="cstat-no" title="statement not covered" >if (types.includes('locality')) {</span>
+<span class="cstat-no" title="statement not covered" >                  city = component.long_name;</span>
+                } else <span class="cstat-no" title="statement not covered" >if (types.includes('administrative_area_level_1')) {</span>
+<span class="cstat-no" title="statement not covered" >                  state = component.short_name;</span>
+                } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (types.includes('postal_code')) {</span>
+<span class="cstat-no" title="statement not covered" >                  zipCode = component.long_name;</span>
                 }
               }
 &nbsp;
               // Update form values
-<span class="cstat-no" title="statement not covered" >              form?.setValue('addressLine1', street?.trim(), { shouldValidate: true });</span>
-<span class="cstat-no" title="statement not covered" >              form?.setValue('city', city, { shouldValidate: true });</span>
-<span class="cstat-no" title="statement not covered" >              form?.setValue('state', state, { shouldValidate: true });</span>
-<span class="cstat-no" title="statement not covered" >              form?.setValue('zipCode', zipCode, { shouldValidate: true });</span>
+<span class="cstat-no" title="statement not covered" >              form.setValue('addressLine1', street.trim(), { shouldValidate: true });</span>
+<span class="cstat-no" title="statement not covered" >              form.setValue('city', city, { shouldValidate: true });</span>
+<span class="cstat-no" title="statement not covered" >              form.setValue('state', state, { shouldValidate: true });</span>
+<span class="cstat-no" title="statement not covered" >              form.setValue('zipCode', zipCode, { shouldValidate: true });</span>
 &nbsp;
               // Save coordinates
-<span class="cstat-no" title="statement not covered" >              form?.setValue('latitude', position?.coords.latitude?.toString(), {</span>
+<span class="cstat-no" title="statement not covered" >              form.setValue('latitude', position.coords.latitude.toString(), {</span>
                 shouldValidate: true,
               });
-<span class="cstat-no" title="statement not covered" >              form?.setValue('longitude', position?.coords.longitude?.toString(), {</span>
+<span class="cstat-no" title="statement not covered" >              form.setValue('longitude', position.coords.longitude.toString(), {</span>
                 shouldValidate: true,
               });
             }
           } catch (error) {
-<span class="cstat-no" title="statement not covered" >            console?.error('Error detecting location:', error);</span>
+<span class="cstat-no" title="statement not covered" >            console.error('Error detecting location:', error);</span>
           } finally {
 <span class="cstat-no" title="statement not covered" >            setDetectLocation(false);</span>
           }
         },
 <span class="fstat-no" title="function not covered" >        (e</span>rror) =&gt; {
-<span class="cstat-no" title="statement not covered" >          console?.error('Geolocation error:', error);</span>
+<span class="cstat-no" title="statement not covered" >          console.error('Geolocation error:', error);</span>
 <span class="cstat-no" title="statement not covered" >          setDetectLocation(false);</span>
         },
       );
@@ -993,7 +990,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
           &lt;/div&gt;
 &nbsp;
           &lt;FormField
-            control={form?.control}
+            control={form.control}
             name="addressLine1"
             render={({ field }) =&gt; (
               &lt;FormItem&gt;
@@ -1007,7 +1004,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
           /&gt;
 &nbsp;
           &lt;FormField
-            control={form?.control}
+            control={form.control}
             name="addressLine2"
             render={({ field }) =&gt; (
               &lt;FormItem&gt;
@@ -1022,7 +1019,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
           &lt;div className="grid grid-cols-1 gap-4 md:grid-cols-2"&gt;
             &lt;FormField
-              control={form?.control}
+              control={form.control}
               name="city"
               render={({ field }) =&gt; (
                 &lt;FormItem&gt;
@@ -1036,21 +1033,21 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             /&gt;
 &nbsp;
             &lt;FormField
-              control={form?.control}
+              control={form.control}
               name="state"
               render={({ field }) =&gt; (
                 &lt;FormItem&gt;
                   &lt;FormLabel&gt;State&lt;/FormLabel&gt;
-                  &lt;Select onValueChange={field?.onChange} defaultValue={field?.value}&gt;
+                  &lt;Select onValueChange={field.onChange} defaultValue={field.value}&gt;
                     &lt;FormControl&gt;
                       &lt;SelectTrigger&gt;
                         &lt;SelectValue placeholder="Select state" /&gt;
                       &lt;/SelectTrigger&gt;
                     &lt;/FormControl&gt;
                     &lt;SelectContent&gt;
-                      {US_STATES?.map(<span class="fstat-no" title="function not covered" >(s</span>tate) =&gt; (
-<span class="cstat-no" title="statement not covered" >                        &lt;SelectItem key={state?.value} v</span>alue={state?.value}&gt;
-                          {state?.label}
+                      {US_STATES.map(<span class="fstat-no" title="function not covered" >(s</span>tate) =&gt; (
+<span class="cstat-no" title="statement not covered" >                        &lt;SelectItem key={state.value} v</span>alue={state.value}&gt;
+                          {state.label}
                         &lt;/SelectItem&gt;
                       ))}
                     &lt;/SelectContent&gt;
@@ -1063,7 +1060,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
           &lt;div className="grid grid-cols-1 gap-4 md:grid-cols-2"&gt;
             &lt;FormField
-              control={form?.control}
+              control={form.control}
               name="zipCode"
               render={({ field }) =&gt; (
                 &lt;FormItem&gt;
@@ -1077,12 +1074,12 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             /&gt;
 &nbsp;
             &lt;FormField
-              control={form?.control}
+              control={form.control}
               name="country"
               render={({ field }) =&gt; (
                 &lt;FormItem&gt;
                   &lt;FormLabel&gt;Country&lt;/FormLabel&gt;
-                  &lt;Select onValueChange={field?.onChange} defaultValue={field?.value || 'US'}&gt;
+                  &lt;Select onValueChange={field.onChange} defaultValue={field.value || 'US'}&gt;
                     &lt;FormControl&gt;
                       &lt;SelectTrigger&gt;
                         &lt;SelectValue placeholder="Select country" /&gt;
@@ -1100,7 +1097,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
           &lt;/div&gt;
 &nbsp;
           &lt;FormField
-            control={form?.control}
+            control={form.control}
             name="businessHours"
             render={({ field }) =&gt; (
               &lt;FormItem&gt;
@@ -1125,13 +1122,13 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         &lt;/CardHeader&gt;
         &lt;CardContent className="space-y-6"&gt;
           &lt;FormField
-            control={form?.control}
+            control={form.control}
             name="serviceRadius"
             render={({ field }) =&gt; (
               &lt;FormItem&gt;
                 &lt;FormLabel&gt;Service Radius (miles)&lt;/FormLabel&gt;
                 &lt;FormControl&gt;
-                  &lt;Input type="number" placeholder="e?.g. 25" {...field} /&gt;
+                  &lt;Input type="number" placeholder="e.g. 25" {...field} /&gt;
                 &lt;/FormControl&gt;
                 &lt;FormMessage /&gt;
               &lt;/FormItem&gt;
@@ -1139,11 +1136,11 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
           /&gt;
 &nbsp;
           &lt;FormField
-            control={form?.control}
+            control={form.control}
             name="offersVirtualServices"
             render={({ field }) =&gt; (
               &lt;FormItem className="flex flex-row items-center justify-between rounded-lg border p-4"&gt;
-                &lt;div className="space-y-0?.5"&gt;
+                &lt;div className="space-y-0.5"&gt;
                   &lt;FormLabel className="text-base"&gt;Virtual Services&lt;/FormLabel&gt;
                   &lt;FormDescription&gt;
                     Offer services remotely via video call or online
@@ -1151,9 +1148,9 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                 &lt;/div&gt;
                 &lt;FormControl&gt;
                   &lt;Switch
-                    checked={field?.value}
+                    checked={field.value}
                     onCheckedChange={<span class="fstat-no" title="function not covered" >(c</span>hecked) =&gt; {
-<span class="cstat-no" title="statement not covered" >                      field?.onChange(checked);</span>
+<span class="cstat-no" title="statement not covered" >                      field.onChange(checked);</span>
 <span class="cstat-no" title="statement not covered" >                      setVirtualServices(checked);</span>
                     }}
                   /&gt;
@@ -1164,7 +1161,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
           {<span class="branch-0 cbranch-no" title="branch not covered" >virtualServices &amp;&amp; (</span>
             &lt;FormField
-              control={form?.control}
+              control={form.control}
               name="virtualServicesDescription"
               render={({ field }) =&gt; (
                 &lt;FormItem&gt;
@@ -1192,7 +1189,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

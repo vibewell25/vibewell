@@ -1,4 +1,3 @@
-
 import { ApiError } from '@/types/api';
 
 /**
@@ -15,9 +14,6 @@ export class ApiRequestError extends Error {
     this.code = error.code;
     this.details = error.details;
     this.status = status;
-  }
-}
-
 /**
  * Network error class
  */
@@ -28,9 +24,6 @@ export class NetworkError extends Error {
     super(message);
     this.name = 'NetworkError';
     this.status = status;
-  }
-}
-
 /**
  * Timeout error class
  */
@@ -38,9 +31,6 @@ export class TimeoutError extends Error {
   constructor(message: string = 'Request timed out') {
     super(message);
     this.name = 'TimeoutError';
-  }
-}
-
 /**
  * Parse error response from API
  */
@@ -50,31 +40,19 @@ export function parseApiError(error: any): ApiError {
       code: error.code,
       message: error.message,
       details: error.details,
-    };
-  }
-
-  if (error instanceof NetworkError) {
+if (error instanceof NetworkError) {
     return {
       code: 'NETWORK_ERROR',
       message: error.message,
-    };
-  }
-
-  if (error instanceof TimeoutError) {
+if (error instanceof TimeoutError) {
     return {
       code: 'TIMEOUT_ERROR',
       message: error.message,
-    };
-  }
-
-  // Handle unknown errors
+// Handle unknown errors
   return {
     code: 'UNKNOWN_ERROR',
     message: error.message || 'An unknown error occurred',
     details: error.details,
-  };
-}
-
 /**
  * Create an API error object
  */
@@ -87,9 +65,6 @@ export function createApiError(
     code,
     message,
     details,
-  };
-}
-
 /**
  * Check if an error is an API error
  */
@@ -101,9 +76,6 @@ export function isApiError(error: any): error is ApiError {
     'message' in error &&
     typeof error.code === 'string' &&
     typeof error.message === 'string'
-  );
-}
-
 /**
  * Error codes mapping
  */

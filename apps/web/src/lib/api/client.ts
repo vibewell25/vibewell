@@ -1,4 +1,3 @@
-
 import { ApiResponse } from '@/types/api';
 
 import { API_CONFIG } from '../../config/api';
@@ -17,8 +16,6 @@ export interface ApiClientOptions {
   cache?: boolean;
   retryAttempts?: number;
   retryDelay?: number;
-}
-
 /**
  * Request options
  */
@@ -27,8 +24,6 @@ export interface RequestOptions extends ApiClientOptions {
   body?: any;
   signal?: AbortSignal;
   cache?: boolean;
-}
-
 /**
  * API client class
  */
@@ -42,25 +37,18 @@ export class ApiClient {
       headers: {
         ...API_CONFIG.headers,
         ...options.headers,
-      },
-      timeout: options.timeout || API_CONFIG.timeout,
+timeout: options.timeout || API_CONFIG.timeout,
       retryAttempts: options.retryAttempts || API_CONFIG.retryAttempts,
       retryDelay: options.retryDelay || API_CONFIG.retryDelay,
       cache: options.cache ?? API_CONFIG.cache.enabled,
-    };
-  }
-
-  /**
+/**
    * Make a GET request
    */
   async get<T>(path: string, options: ApiClientOptions = {}): Promise<ApiResponse<T>> {
     return this.request<T>(path, {
       ...options,
       method: 'GET',
-    });
-  }
-
-  /**
+/**
    * Make a POST request
    */
   async post<T>(path: string, data?: any, options: ApiClientOptions = {}): Promise<ApiResponse<T>> {
@@ -68,10 +56,7 @@ export class ApiClient {
       ...options,
       method: 'POST',
       body: data,
-    });
-  }
-
-  /**
+/**
    * Make a PUT request
    */
   async put<T>(path: string, data?: any, options: ApiClientOptions = {}): Promise<ApiResponse<T>> {
@@ -79,20 +64,14 @@ export class ApiClient {
       ...options,
       method: 'PUT',
       body: data,
-    });
-  }
-
-  /**
+/**
    * Make a DELETE request
    */
   async delete<T>(path: string, options: ApiClientOptions = {}): Promise<ApiResponse<T>> {
     return this.request<T>(path, {
       ...options,
       method: 'DELETE',
-    });
-  }
-
-  /**
+/**
    * Make a PATCH request
    */
   async patch<T>(
@@ -104,10 +83,7 @@ export class ApiClient {
       ...options,
       method: 'PATCH',
       body: data,
-    });
-  }
-
-  /**
+/**
    * Make an HTTP request
    */
   private async request<T>(path: string, options: RequestOptions): Promise<ApiResponse<T>> {
@@ -124,17 +100,12 @@ export class ApiClient {
         const cached = apiCache.get<T>(url);
         if (cached) {
           return cached;
-        }
-      }
-
-      const request = new Request(url, {
+const request = new Request(url, {
         method: options.method,
         headers: mergedOptions.headers,
         body: options.body ? JSON.stringify(options.body) : undefined,
         signal: controller.signal,
-      });
-
-      // Apply request interceptor
+// Apply request interceptor
       const interceptedRequest = await requestInterceptor(request, mergedOptions);
 
       // Make the request with retry logic
@@ -142,42 +113,30 @@ export class ApiClient {
         () => fetch(interceptedRequest),
         mergedOptions.retryAttempts || 0,
         mergedOptions.retryDelay || 0,
-      );
-
-      // Apply response interceptor
+// Apply response interceptor
       const result = await responseInterceptor(response);
 
       // Cache successful GET responses
       if (options.method === 'GET' && mergedOptions.cache && result.success) {
         apiCache.set(url, result);
-      }
-
-      return result as ApiResponse<T>;
-    } catch (error) {
+return result as ApiResponse<T>;
+catch (error) {
       if (
         error instanceof ApiRequestError ||
         error instanceof NetworkError ||
         error instanceof TimeoutError
       ) {
         throw error;
-      }
-
-      throw new NetworkError(error instanceof Error ? error.message : 'Network request failed');
-    } finally {
+throw new NetworkError(error instanceof Error ? error.message : 'Network request failed');
+finally {
       if (timeoutId) {
         clearTimeout(timeoutId);
-      }
-    }
-  }
-
-  /**
+/**
    * Build full URL from path
    */
   private buildUrl(path: string): string {
     return `${this.baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
-  }
-
-  /**
+/**
    * Merge default options with request options
    */
   private mergeOptions(options: RequestOptions): RequestOptions {
@@ -187,11 +146,7 @@ export class ApiClient {
       headers: {
         ...this.defaultOptions.headers,
         ...options.headers,
-      },
-    };
-  }
-
-  /**
+/**
    * Execute a request with retry logic
    */
   private async executeWithRetry(
@@ -201,18 +156,12 @@ export class ApiClient {
   ): Promise<Response> {
     try {
       return await fn();
-    } catch (error) {
+catch (error) {
       if (retries === 0 || error instanceof TimeoutError) {
         throw error;
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, delay));
+await new Promise((resolve) => setTimeout(resolve, delay));
 
 
       return this.executeWithRetry(fn, retries - 1, delay);
-    }
-  }
-}
-
 // Export a default instance
 export {};

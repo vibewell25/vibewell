@@ -1,15 +1,4 @@
-/**
- * Input Component
- * 
- * Description: A standardized input component for text entry.
- * 
- * @component
- * 
- * @typedef InputProps
- * @param {React.InputHTMLAttributes<HTMLInputElement>} props - All standard input HTML attributes
- * @param {string} label - Optional label text
- * @param {string} error - Optional error message
- * @param {string} className - Additional CSS classes for the input
+className - Additional CSS classes for the input
  * @param {string} wrapperClassName - Additional CSS classes for the wrapper div
  * @param {string} labelClassName - Additional CSS classes for the label
  * @param {string} errorClassName - Additional CSS classes for the error message
@@ -41,8 +30,6 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   wrapperClassName?: string;
   labelClassName?: string;
   errorClassName?: string;
-}
-
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
   label,
   error,
@@ -52,7 +39,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
   errorClassName = '',
   id,
   ...props
-}, ref) => {
+ref) => {
   // Generate a unique ID if none provided
   const inputId = id || `input-${Math.random().toString(36).substring(2, 9)}`;
 
@@ -92,9 +79,6 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
         </p>
       )}
     </div>
-  );
-});
-
 Input.displayName = 'Input';
 
 export default Input;

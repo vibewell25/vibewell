@@ -1,4 +1,3 @@
-
 import { relations } from 'drizzle-orm';
 import {
   pgTable,
@@ -9,9 +8,7 @@ import {
   integer,
   varchar,
   primaryKey,
-
-
-} from 'drizzle-orm/pg-core';
+from 'drizzle-orm/pg-core';
 
 export const providers = pgTable('providers', {
   id: serial('id').primaryKey(),
@@ -22,8 +19,6 @@ export const providers = pgTable('providers', {
   businessHours: text('business_hours'),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
-});
-
 export const services = pgTable('services', {
   id: serial('id').primaryKey(),
   providerId: integer('provider_id').references(() => providers.id),
@@ -33,8 +28,6 @@ export const services = pgTable('services', {
   price: integer('price').notNull(), // in cents
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
-});
-
 export const appointments = pgTable('appointments', {
   id: serial('id').primaryKey(),
   providerId: integer('provider_id').references(() => providers.id),
@@ -46,8 +39,6 @@ export const appointments = pgTable('appointments', {
   notes: text('notes'),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
-});
-
 export const availability = pgTable('availability', {
   id: serial('id').primaryKey(),
   providerId: integer('provider_id').references(() => providers.id),
@@ -58,8 +49,6 @@ export const availability = pgTable('availability', {
   appointmentId: integer('appointment_id').references(() => appointments.id),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
-});
-
 // Relations
 export {};
 

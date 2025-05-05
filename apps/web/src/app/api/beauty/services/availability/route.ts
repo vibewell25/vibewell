@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 import { prisma } from '@/lib/prisma';
@@ -15,32 +14,22 @@ export async function {
 
     if (!serviceId || !date) {
       return NextResponse.json({ error: 'Service ID and date are required' }, { status: 400 });
-    }
-
-    // Get service details
+// Get service details
     const service = await prisma.beautyService.findUnique({
       where: { id: serviceId },
-    });
-
-    if (!service) {
+if (!service) {
       return NextResponse.json({ error: 'Service not found' }, { status: 404 });
-    }
-
-    // Get all bookings for the service on the specified date
+// Get all bookings for the service on the specified date
     const bookings = await prisma.serviceBooking.findMany({
       where: {
         serviceId,
         date: new Date(date),
         status: { not: BookingStatus.CANCELLED },
-      },
-      select: {
+select: {
         id: true,
         time: true,
         status: true,
-      },
-    });
-
-    // Generate available time slots (assuming 30-minute intervals)
+// Generate available time slots (assuming 30-minute intervals)
     const availableSlots: string[] = [];
     const startTime = 9; // 9 AM
     const endTime = 17; // 5 PM
@@ -55,18 +44,11 @@ export async function {
 
         if (!isBooked) {
           availableSlots.push(time);
-        }
-      }
-    }
-
-    return NextResponse.json({
+return NextResponse.json({
       service,
       availableSlots,
       serviceId,
       date,
-    });
-  } catch (error) {
+catch (error) {
     console.error('Error checking availability:', error);
     return NextResponse.json({ error: 'Failed to check availability' }, { status: 500 });
-  }
-}

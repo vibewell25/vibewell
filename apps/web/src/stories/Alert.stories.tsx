@@ -43,29 +43,20 @@ function MyComponent() {
         This is an important message for users.
       </AlertDescription>
     </Alert>
-  );
-}
 \`\`\`
 `,
-      },
-    },
-  },
-  argTypes: {
+argTypes: {
     variant: {
       control: 'select',
       options: ['default', 'destructive'],
       description: 'The visual style of the alert',
       table: {
         defaultValue: { summary: 'default' },
-      },
-    },
-    className: {
+className: {
       control: 'text',
       description: 'Additional CSS classes to apply',
-    },
-  },
-  tags: ['autodocs'],
-} satisfies Meta<typeof Alert>;
+tags: ['autodocs'],
+satisfies Meta<typeof Alert>;
 
 export default meta;
 type Story = StoryObj<typeof Alert>;
@@ -79,16 +70,10 @@ export const Default: Story = {
       </>
     ),
     variant: 'default',
-  },
-  parameters: {
+parameters: {
     docs: {
       description: {
         story: 'Default alert style for general messages.',
-      },
-    },
-  },
-};
-
 export const Destructive: Story = {
   args: {
     children: (
@@ -98,16 +83,10 @@ export const Destructive: Story = {
       </>
     ),
     variant: 'destructive',
-  },
-  parameters: {
+parameters: {
     docs: {
       description: {
         story: 'Destructive alert style for dangerous actions or critical warnings.',
-      },
-    },
-  },
-};
-
 export const WithIcon: Story = {
   args: {
     children: (
@@ -133,16 +112,10 @@ export const WithIcon: Story = {
       </>
     ),
     variant: 'default',
-  },
-  parameters: {
+parameters: {
     docs: {
       description: {
         story: 'Alert with a custom icon.',
-      },
-    },
-  },
-};
-
 export const WithActions: Story = {
   args: {
     children: (
@@ -162,12 +135,7 @@ export const WithActions: Story = {
       </>
     ),
     variant: 'destructive',
-  },
-  parameters: {
+parameters: {
     docs: {
       description: {
         story: 'Alert with action buttons.',
-      },
-    },
-  },
-};

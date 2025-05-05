@@ -1,4 +1,3 @@
-
 import { performanceTestSuite } from './performance-testing';
 
 interface AlertConfig {
@@ -8,17 +7,12 @@ interface AlertConfig {
   severity: 'info' | 'warning' | 'critical';
   cooldown: number; // minutes
   channels: AlertChannel[];
-}
-
 interface AlertChannel {
   type: 'email' | 'slack' | 'pagerduty';
   config: {
     webhook?: string;
     apiKey?: string;
     recipients?: string[];
-  };
-}
-
 interface Alert {
   id: string;
   config: AlertConfig;
@@ -27,8 +21,6 @@ interface Alert {
   acknowledged: boolean;
   acknowledgedBy?: string;
   acknowledgedAt?: number;
-}
-
 class AlertingSystem {
   private static instance: AlertingSystem;
   private alerts: Alert[] = [];
@@ -38,9 +30,7 @@ class AlertingSystem {
   private constructor() {
     this.initializeDefaultConfigs();
     this.startMonitoring();
-  }
-
-  private initializeDefaultConfigs() {
+private initializeDefaultConfigs() {
     this.configs = [
       {
         name: 'High CPU Usage',
@@ -53,11 +43,8 @@ class AlertingSystem {
             type: 'slack',
             config: {
               webhook: process.env.SLACK_WEBHOOK_URL,
-            },
-          },
-        ],
-      },
-      {
+],
+{
         name: 'Memory Leak Detection',
         metric: 'memoryUsage',
         threshold: 90,
@@ -68,11 +55,8 @@ class AlertingSystem {
             type: 'pagerduty',
             config: {
               apiKey: process.env.PAGERDUTY_API_KEY,
-            },
-          },
-        ],
-      },
-      {
+],
+{
         name: 'High Error Rate',
         metric: 'errorRate',
         threshold: 5,
@@ -83,31 +67,19 @@ class AlertingSystem {
             type: 'email',
             config: {
               recipients: ['oncall@vibewell.com'],
-            },
-          },
-          {
+{
             type: 'slack',
             config: {
               webhook: process.env.SLACK_WEBHOOK_URL,
-            },
-          },
-        ],
-      },
-    ];
-  }
-
-  public static getInstance(): AlertingSystem {
+],
+];
+public static getInstance(): AlertingSystem {
     if (!AlertingSystem.instance) {
       AlertingSystem.instance = new AlertingSystem();
-    }
-    return AlertingSystem.instance;
-  }
-
-  private startMonitoring() {
+return AlertingSystem.instance;
+private startMonitoring() {
     setInterval(() => this.checkMetrics(), 60000); // Check every minute
-  }
-
-  private async checkMetrics() {
+private async checkMetrics() {
     const testResults = await performanceTestSuite.runAllTests();
 
     for (const config of this.configs) {
@@ -120,28 +92,19 @@ class AlertingSystem {
 
         if (Date.now() - lastAlertTime > cooldownInMs) {
           await this.createAlert(config, metric.metrics[config.metric]);
-        }
-      }
-    }
-  }
-
-  private async createAlert(config: AlertConfig, value: number) {
+private async createAlert(config: AlertConfig, value: number) {
     const alert: Alert = {
       id: crypto.randomUUID(),
       config,
       value,
       timestamp: Date.now(),
       acknowledged: false,
-    };
-
-    this.alerts.push(alert);
+this.alerts.push(alert);
     this.lastAlerts.set(config.name, Date.now());
 
     await this.sendAlerts(alert);
     this.pruneOldAlerts();
-  }
-
-  private async sendAlerts(alert: Alert) {
+private async sendAlerts(alert: Alert) {
     for (const channel of alert.config.channels) {
       try {
         switch (channel.type) {
@@ -154,14 +117,9 @@ class AlertingSystem {
           case 'email':
             await this.sendEmailAlert(alert, channel.config);
             break;
-        }
-      } catch (error) {
+catch (error) {
         console.error(`Failed to send ${channel.type} alert:`, error);
-      }
-    }
-  }
-
-  private async sendSlackAlert(alert: Alert, config: AlertChannel['config']) {
+private async sendSlackAlert(alert: Alert, config: AlertChannel['config']) {
     if (!config.webhook) return;
 
     const color = this.getSeverityColor(alert.config.severity);
@@ -176,27 +134,19 @@ class AlertingSystem {
               title: 'Severity',
               value: alert.config.severity,
               short: true,
-            },
-            {
+{
               title: 'Time',
               value: new Date(alert.timestamp).toLocaleString(),
               short: true,
-            },
-          ],
-        },
-      ],
-    };
-
-    await fetch(config.webhook, {
+],
+],
+await fetch(config.webhook, {
       method: 'POST',
 
 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(message),
-    });
-  }
-
-  private async sendPagerDutyAlert(alert: Alert, config: AlertChannel['config']) {
+private async sendPagerDutyAlert(alert: Alert, config: AlertChannel['config']) {
     if (!config.apiKey) return;
 
     const payload = {
@@ -206,37 +156,25 @@ class AlertingSystem {
         service: {
           id: 'VIBEWELL_APP',
           type: 'service_reference',
-        },
-        urgency: alert.config.severity === 'critical' ? 'high' : 'low',
+urgency: alert.config.severity === 'critical' ? 'high' : 'low',
         body: {
           type: 'incident_body',
           details: `Metric ${alert.config.metric} exceeded threshold: ${alert.value} (threshold: ${alert.config.threshold})`,
-        },
-      },
-    };
-
-
-    await fetch('https://api.pagerduty.com/incidents', {
+await fetch('https://api.pagerduty.com/incidents', {
       method: 'POST',
       headers: {
 
 
         'Content-Type': 'application/json',
         Authorization: `Token token=${config.apiKey}`,
-      },
-      body: JSON.stringify(payload),
-    });
-  }
-
-  private async sendEmailAlert(alert: Alert, config: AlertChannel['config']) {
+body: JSON.stringify(payload),
+private async sendEmailAlert(alert: Alert, config: AlertChannel['config']) {
     if (!config.recipients.length) return;
 
     // Implement email sending logic here
     // This could use AWS SES, SendGrid, or other email service
     console.log('Sending email alert to:', config.recipients);
-  }
-
-  private getSeverityColor(severity: AlertConfig['severity']): string {
+private getSeverityColor(severity: AlertConfig['severity']): string {
     switch (severity) {
       case 'critical':
         return '#ff0000';
@@ -246,53 +184,30 @@ class AlertingSystem {
         return '#0000ff';
       default:
         return '#808080';
-    }
-  }
-
-  private pruneOldAlerts() {
+private pruneOldAlerts() {
     const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
     this.alerts = this.alerts.filter(
       (alert) => Date.now() - alert.timestamp < ONE_WEEK || !alert.acknowledged,
-    );
-  }
-
-  public acknowledgeAlert(alertId: string, userId: string): void {
+public acknowledgeAlert(alertId: string, userId: string): void {
     const alert = this.alerts.find((a) => a.id === alertId);
     if (alert) {
       alert.acknowledged = true;
       alert.acknowledgedBy = userId;
       alert.acknowledgedAt = Date.now();
-    }
-  }
-
-  public getActiveAlerts(): Alert[] {
+public getActiveAlerts(): Alert[] {
     return this.alerts.filter((alert) => !alert.acknowledged);
-  }
-
-  public getAlertHistory(days: number = 7): Alert[] {
+public getAlertHistory(days: number = 7): Alert[] {
 
     const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
     return this.alerts.filter((alert) => alert.timestamp >= cutoff);
-  }
-
-  public addAlertConfig(config: AlertConfig): void {
+public addAlertConfig(config: AlertConfig): void {
     this.configs.push(config);
-  }
-
-  public removeAlertConfig(name: string): void {
+public removeAlertConfig(name: string): void {
     this.configs = this.configs.filter((config) => config.name !== name);
-  }
-
-  public updateAlertConfig(name: string, updates: Partial<AlertConfig>): void {
+public updateAlertConfig(name: string, updates: Partial<AlertConfig>): void {
     const config = this.configs.find((c) => c.name === name);
     if (config) {
       Object.assign(config, updates);
-    }
-  }
-
-  public getAlertConfigs(): AlertConfig[] {
+public getAlertConfigs(): AlertConfig[] {
     return [...this.configs];
-  }
-}
-
 export {};

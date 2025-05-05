@@ -13,17 +13,14 @@ router.get('/services', async (req, res) => {
   const categoryKey = req.query.category;
   if (!categoryKey) {
     return res.status(400).json({ error: 'Missing category parameter' });
-  }
-  const categoryConfig = schema.categories.find(c => c.key === categoryKey);
+const categoryConfig = schema.categories.find(c => c.key === categoryKey);
   if (!categoryConfig) {
     return res.status(400).json({ error: `Invalid category: ${categoryKey}` });
-  }
-  try {
+try {
     const services = await prisma.service.findMany({
       where: { serviceCategory: { name: categoryKey } },
       include: { serviceCategory: true },
-    });
-    // Map each service to include category config
+// Map each service to include category config
     const result = services.map(s => ({
       id: s.id,
       name: s.name,
@@ -41,12 +38,9 @@ router.get('/services', async (req, res) => {
       createdAt: s.createdAt,
       updatedAt: s.updatedAt,
       category: categoryConfig,
-    }));
+));
     return res.json(result);
-  } catch (err) {
+catch (err) {
     console.error('Error in /api/v2/services', err);
     return res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
 module.exports = router; 

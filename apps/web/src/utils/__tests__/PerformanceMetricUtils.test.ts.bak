@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import performance-metric-utils from '../performance-metric-utils.ts';
+
+describe('performance-metric-utils', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<performance-metric-utils />);
+    expect(container).toBeInTheDocument();
+  });
+});

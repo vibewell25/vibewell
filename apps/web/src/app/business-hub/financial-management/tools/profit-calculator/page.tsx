@@ -1,4 +1,3 @@
-'use client';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -9,7 +8,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/Card';
+from '@/components/ui/Card';
 import Link from 'next/link';
 import { Calculator, ArrowDownToLine, Plus, Copy, Trash, RotateCw } from 'lucide-react';
 
@@ -18,8 +17,6 @@ interface ExpenseItem {
   name: string;
   cost: number;
   category: 'direct' | 'indirect';
-}
-
 interface ServiceCalculation {
   id: string;
   name: string;
@@ -27,8 +24,6 @@ interface ServiceCalculation {
   duration: number; // in minutes
   expenses: ExpenseItem[];
   timeCost: number;
-}
-
 export default function ProfitCalculatorPage() {
   const [services, setServices] = useState<ServiceCalculation[]>([
     {
@@ -41,8 +36,7 @@ export default function ProfitCalculatorPage() {
         { id: '2', name: 'Disposables', cost: 2, category: 'direct' },
       ],
       timeCost: 20, // hourly rate for staff or yourself
-    },
-  ]);
+]);
   const [activeServiceId, setActiveServiceId] = useState('1');
   const [hourlyCost, setHourlyCost] = useState(30);
   const [hourlyOverhead, setHourlyOverhead] = useState(15);
@@ -53,14 +47,12 @@ export default function ProfitCalculatorPage() {
     return service.expenses
       .filter((expense) => expense.category === 'direct')
       .reduce((total, expense) => total + expense.cost, 0);
-  };
-  // Calculate time-based costs (staff time + overhead)
+// Calculate time-based costs (staff time + overhead)
   const calculateTimeCosts = (service: ServiceCalculation) => {
     const staffCost = (service.duration / 60) * service.timeCost;
     const overheadCost = (service.duration / 60) * hourlyOverhead;
     return staffCost + overheadCost;
-  };
-  // Calculate profit and margins
+// Calculate profit and margins
   const calculateProfit = (service: ServiceCalculation) => {
     const directCosts = calculateDirectCosts(service);
     const timeCosts = calculateTimeCosts(service);
@@ -73,9 +65,7 @@ export default function ProfitCalculatorPage() {
       totalCost,
       profit,
       profitMargin,
-    };
-  };
-  // Add a new service
+// Add a new service
   const addService = () => {
     const newId = (Math.max(...services.map((s) => parseInt(s.id)), 0) + 1).toString();
     const newService: ServiceCalculation = {
@@ -88,11 +78,9 @@ export default function ProfitCalculatorPage() {
         { id: '2', name: 'Disposables', cost: 3, category: 'direct' },
       ],
       timeCost: hourlyCost,
-    };
-    setServices([...services, newService]);
+setServices([...services, newService]);
     setActiveServiceId(newId);
-  };
-  // Duplicate a service
+// Duplicate a service
   const duplicateService = (serviceId: string) => {
     const serviceToDuplicate = services.find((s) => s.id === serviceId);
     if (!serviceToDuplicate) return;
@@ -101,11 +89,9 @@ export default function ProfitCalculatorPage() {
       ...serviceToDuplicate,
       id: newId,
       name: `${serviceToDuplicate.name} (Copy)`,
-    };
-    setServices([...services, newService]);
+setServices([...services, newService]);
     setActiveServiceId(newId);
-  };
-  // Delete a service
+// Delete a service
   const deleteService = (serviceId: string) => {
     if (services.length < 1) return; // Don't allow deleting the last service
     const updatedServices = services.filter((s) => s.id !== serviceId);
@@ -113,20 +99,15 @@ export default function ProfitCalculatorPage() {
     // Set active service to first available if the active one was deleted
     if (serviceId === activeServiceId) {
       setActiveServiceId(updatedServices[0].id);
-    }
-  };
-  // Update service info
+// Update service info
   const updateServiceInfo = (field: keyof ServiceCalculation, value: any) => {
     setServices(
       services.map((service) => {
         if (service.id === activeServiceId) {
           return { ...service, [field]: value };
-        }
-        return service;
-      }),
-    );
-  };
-  // Add an expense to active service
+return service;
+),
+// Add an expense to active service
   const addExpense = (category: 'direct' | 'indirect') => {
     setServices(
       services.map((service) => {
@@ -143,15 +124,10 @@ export default function ProfitCalculatorPage() {
                 name: category === 'direct' ? 'Product/Supplies' : 'Other Expense',
                 cost: 0,
                 category,
-              },
-            ],
-          };
-        }
-        return service;
-      }),
-    );
-  };
-  // Update an expense
+],
+return service;
+),
+// Update an expense
   const updateExpense = (expenseId: string, field: keyof ExpenseItem, value: any) => {
     setServices(
       services.map((service) => {
@@ -161,16 +137,11 @@ export default function ProfitCalculatorPage() {
             expenses: service.expenses.map((expense: ExpenseItem) => {
               if (expense.id === expenseId) {
                 return { ...expense, [field]: value };
-              }
-              return expense;
-            }),
-          };
-        }
-        return service;
-      }),
-    );
-  };
-  // Delete an expense
+return expense;
+),
+return service;
+),
+// Delete an expense
   const deleteExpense = (expenseId: string) => {
     setServices(
       services.map((service) => {
@@ -178,13 +149,9 @@ export default function ProfitCalculatorPage() {
           return {
             ...service,
             expenses: service.expenses.filter((expense: ExpenseItem) => expense.id !== expenseId),
-          };
-        }
-        return service;
-      }),
-    );
-  };
-  // Calculate results for active service
+return service;
+),
+// Calculate results for active service
   const results = calculateProfit(activeService);
   // Save data to localStorage
   useEffect(() => {
@@ -195,10 +162,8 @@ export default function ProfitCalculatorPage() {
           services,
           hourlyCost,
           hourlyOverhead,
-        }),
-      );
-    }
-  }, [services, hourlyCost, hourlyOverhead]);
+),
+[services, hourlyCost, hourlyOverhead]);
   // Load data from localStorage on initial render
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -209,12 +174,9 @@ export default function ProfitCalculatorPage() {
           setServices(data.services);
           setHourlyCost(data.hourlyCost);
           setHourlyOverhead(data.hourlyOverhead);
-        } catch (e) {
+catch (e) {
           console.error('Failed to parse saved data');
-        }
-      }
-    }
-  }, []);
+[]);
   // Export to CSV
   const exportToCSV = () => {
     const headers =
@@ -223,7 +185,7 @@ export default function ProfitCalculatorPage() {
       .map((service) => {
         const result = calculateProfit(service);
         return `"${service.name}",${service.price},${service.duration},${result.directCosts.toFixed(2)},${result.timeCosts.toFixed(2)},${result.totalCost.toFixed(2)},${result.profit.toFixed(2)},${result.profitMargin.toFixed(2)}`;
-      })
+)
       .join('\n');
     const csvContent = `data:text/csv;charset=utf-8,${headers}${rows}`;
     const encodedUri = encodeURI(csvContent);
@@ -233,8 +195,7 @@ export default function ProfitCalculatorPage() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  };
-  return (
+return (
     <div className="container mx-auto max-w-6xl px-4 py-8">
       {/* Header */}
       <div className="mb-8">
@@ -279,7 +240,7 @@ export default function ProfitCalculatorPage() {
                       service.id === activeServiceId
                         ? 'border-green-500 bg-green-50'
                         : 'hover:bg-gray-50'
-                    }`}
+`}
                     onClick={() => setActiveServiceId(service.id)}
                   >
                     <div>
@@ -293,8 +254,7 @@ export default function ProfitCalculatorPage() {
                         onClick={(e) => {
                           e.stopPropagation();
                           duplicateService(service.id);
-                        }}
-                        className="p-1 text-gray-500 hover:text-gray-700"
+className="p-1 text-gray-500 hover:text-gray-700"
                         title="Duplicate"
                       >
                         <Copy className="h-4 w-4" />
@@ -304,8 +264,7 @@ export default function ProfitCalculatorPage() {
                           onClick={(e) => {
                             e.stopPropagation();
                             deleteService(service.id);
-                          }}
-                          className="p-1 text-gray-500 hover:text-red-600"
+className="p-1 text-gray-500 hover:text-red-600"
                           title="Delete"
                         >
                           <Trash className="h-4 w-4" />
@@ -453,8 +412,7 @@ export default function ProfitCalculatorPage() {
                               value={expense.cost}
                               onChange={(e) =>
                                 updateExpense(expense.id, 'cost', Number(e.target.value))
-                              }
-                              className="pl-6"
+className="pl-6"
                               min={0}
                               step={0.01}
                             />
@@ -558,8 +516,7 @@ export default function ProfitCalculatorPage() {
                           className={`h-full ${results.profit < 0 ? 'bg-red-500' : 'bg-green-500'}`}
                           style={{
                             width: `${Math.min((Math.abs(results.profit) / activeService.price) * 100, 100)}%`,
-                          }}
-                        ></div>
+></div>
                       </div>
                       <div className="mt-1 text-xs text-gray-600">
                         {results.profitMargin.toFixed(1)}% profit margin
@@ -653,5 +610,3 @@ export default function ProfitCalculatorPage() {
         </div>
       </div>
     </div>
-  );
-}

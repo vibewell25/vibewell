@@ -20,18 +20,14 @@ const StaffFormScreen: React.FC = () => {
       setLoading(true);
       if (staff) {
         await updateStaff(staff.id, { name, role, email, phone });
-      } else {
+else {
         await createStaff({ businessId: business.id, name, role, email, phone });
-      }
-      navigation.goBack();
-    } catch {
+navigation.goBack();
+catch {
       Alert.alert('Error', 'Failed to save staff');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  return (
+return (
     <View style={{ flex: 1, padding: 16 }}>
       <Text>Name</Text>
       <TextInput value={name} onChangeText={setName} style={{ borderWidth: 1, borderColor: '#ccc', marginBottom: 12, padding: 8 }} />
@@ -43,7 +39,4 @@ const StaffFormScreen: React.FC = () => {
       <TextInput value={phone} onChangeText={setPhone} keyboardType="phone-pad" style={{ borderWidth: 1, borderColor: '#ccc', marginBottom: 16, padding: 8 }} />
       <Button title={staff ? 'Update Staff' : 'Add Staff'} onPress={handleSubmit} disabled={loading || !name.trim() || !role.trim()} />
     </View>
-  );
-};
-
 export default StaffFormScreen;

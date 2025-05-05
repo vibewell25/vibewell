@@ -21,20 +21,16 @@ const EquipmentFormScreen: React.FC = () => {
       if (item) {
         await equipmentApi.updateItem(item.id, { name, description, serialNumber });
         Alert.alert('Success', 'Equipment updated');
-      } else {
+else {
         await equipmentApi.createItem({ name, description, serialNumber });
         Alert.alert('Success', 'Equipment created');
-      }
-      navigation.goBack();
-    } catch (err) {
+navigation.goBack();
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to save equipment');
-    } finally {
+finally {
       setSaving(false);
-    }
-  };
-
-  return (
+return (
     <View style={styles.container}>
       <Text style={styles.title}>{item ? 'Edit Equipment' : 'New Equipment'}</Text>
       <TextInput
@@ -61,13 +57,8 @@ const EquipmentFormScreen: React.FC = () => {
         disabled={saving}
       />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   title: { fontSize: 20, fontWeight: 'bold', marginBottom: 16 },
   input: { borderWidth: 1, borderColor: '#ccc', padding: 8, marginBottom: 12, borderRadius: 4 },
-});
-
 export default EquipmentFormScreen;

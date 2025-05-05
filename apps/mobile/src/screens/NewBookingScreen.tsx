@@ -23,7 +23,7 @@ const NewBookingScreen: React.FC = () => {
     beautyApi.getCategories()
       .then(setCategories)
       .catch(console.error);
-  }, []);
+[]);
 
   useEffect(() => {
     setLoading(true);
@@ -39,13 +39,11 @@ const NewBookingScreen: React.FC = () => {
       .then(setServices)
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, [searchTerm, selectedCategory, minPrice, maxPrice, minDuration, maxDuration, minRating, featuredOnly]);
+[searchTerm, selectedCategory, minPrice, maxPrice, minDuration, maxDuration, minRating, featuredOnly]);
 
   if (loading) {
     return <ActivityIndicator size="large" style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />;
-  }
-
-  return (
+return (
     <View style={styles.container}>
       <TextInput
         placeholder="Search services..."
@@ -124,8 +122,7 @@ const NewBookingScreen: React.FC = () => {
             onPress={async () => {
               const details = await beautyApi.getServiceDetails(item.id);
               navigation.navigate('BeautyBooking', { service: details });
-            }}
-          >
+>
             <Text style={styles.title}>{item.title}</Text>
             <Text>Price: {item.price}</Text>
             <Text>Duration: {item.duration} mins</Text>
@@ -133,9 +130,6 @@ const NewBookingScreen: React.FC = () => {
         )}
       />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   searchInput: { height: 40, borderColor: '#ccc', borderWidth: 1, borderRadius: 8, paddingHorizontal: 8, marginBottom: 8 },
@@ -150,6 +144,4 @@ const styles = StyleSheet.create({
   filterInput: { flex: 1, height: 40, borderColor: '#ccc', borderWidth: 1, borderRadius: 8, paddingHorizontal: 8, marginRight: 8 },
   filterInputSmall: { width: 100, height: 40, borderColor: '#ccc', borderWidth: 1, borderRadius: 8, paddingHorizontal: 8 },
   switchContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
-});
-
 export default NewBookingScreen;

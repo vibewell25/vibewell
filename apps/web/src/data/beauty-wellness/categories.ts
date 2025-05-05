@@ -7,7 +7,6 @@ import {
   SunIcon,
   BeakerIcon,
   UserGroupIcon,
-
-} from '@heroicons/react/24/outline';
+from '@heroicons/react/24/outline';
 
 export {};

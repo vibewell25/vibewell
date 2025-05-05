@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { MainNavigation } from '@/components/navigation/MainNavigation';
 import { InstallPrompt } from '@/components/pwa/InstallPrompt';
@@ -10,8 +8,6 @@ import { usePathname } from 'next/navigation';
 interface MobileLayoutProps {
   children: React.ReactNode;
   hideNavigation?: boolean;
-}
-
 export function MobileLayout({ children, hideNavigation = false }: MobileLayoutProps) {
   const pathname = usePathname();
   const [isOnline, setIsOnline] = useState(true);
@@ -36,8 +32,7 @@ export function MobileLayout({ children, hideNavigation = false }: MobileLayoutP
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
-    };
-  }, []);
+[]);
 
   return (
     <div className={`flex min-h-screen flex-col ${isIOS ? 'pb-safe-bottom pt-safe-top' : ''}`}>
@@ -64,5 +59,3 @@ export function MobileLayout({ children, hideNavigation = false }: MobileLayoutP
       {/* PWA Install Prompt */}
       <InstallPrompt />
     </div>
-  );
-} 

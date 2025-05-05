@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getSession } from '@auth0/nextjs-auth0';
@@ -19,15 +18,10 @@ export async function {
 
     if (!session.user) {
       return NextResponse.json({ error: 'Unauthorized. Please log in.' }, { status: 401 });
-    }
-
-    return handler(req, session.user);
-  } catch (error) {
+return handler(req, session.user);
+catch (error) {
     console.error('Auth middleware error:', error);
     return NextResponse.json({ error: 'Authentication error' }, { status: 500 });
-  }
-}
-
 /**
  * Middleware to check if a user has a specific role
  */
@@ -47,12 +41,7 @@ export async function {
 
     if (!hasRole) {
       return NextResponse.json({ error: 'Forbidden. Insufficient permissions.' }, { status: 403 });
-    }
-
-    return handler(req, user);
-  });
-}
-
+return handler(req, user);
 /**
 
  * Admin-only middleware
@@ -64,8 +53,6 @@ export async function {
   handler: (req: NextRequest, user: any) => Promise<NextResponse>,
 ): Promise<NextResponse> {
   return withRole(req, handler, ['admin']);
-}
-
 /**
 
  * Provider-only middleware
@@ -77,4 +64,3 @@ export async function {
   handler: (req: NextRequest, user: any) => Promise<NextResponse>,
 ): Promise<NextResponse> {
   return withRole(req, handler, ['provider', 'admin']);
-}

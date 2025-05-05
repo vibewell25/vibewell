@@ -22,9 +22,8 @@ const EquipmentDetail: NextPage = () => {
       setName(data.name);
       setSerialNumber(data.serialNumber);
       setDescription(data.description);
-    };
-    fetchEquipment();
-  }, [id]);
+fetchEquipment();
+[id]);
 
   const handleUpdate = async (e: FormEvent) => {
     e.preventDefault();
@@ -32,11 +31,8 @@ const EquipmentDetail: NextPage = () => {
       method: 'PUT', 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, serialNumber, description })
-    });
-    router.back();
-  };
-
-  return (
+router.back();
+return (
     <div className="max-w-md mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Edit Equipment</h1>
       <form onSubmit={handleUpdate} className="space-y-4">
@@ -49,7 +45,4 @@ const EquipmentDetail: NextPage = () => {
         </div>
       </form>
     </div>
-  );
-};
-
 export default EquipmentDetail;

@@ -3,8 +3,6 @@ export interface ServerTiming {
   DATABASE_QUERY: number;
   API_RESPONSE: number;
   REDIS_OPERATION: number;
-}
-
 export interface MetricThresholds {
   // Core Web Vitals
   LCP: number;
@@ -36,8 +34,6 @@ export interface MetricThresholds {
   IMAGE_SIZE_LIMIT: number;
   IMAGE_LOAD_TIME: number;
   IMAGE_OPTIMIZATION_RATE: number;
-}
-
 export interface MonitoringFeatures {
   webVitals: boolean;
   resourceTiming: boolean;
@@ -46,30 +42,22 @@ export interface MonitoringFeatures {
   bundleSize: boolean;
   memoryUsage: boolean;
   longTasks: boolean;
-}
-
 export interface AlertChannelConfig {
   email?: string[];
   slack?: string[];
   webhook?: string;
   customChannel?: string;
-}
-
 export interface AlertConfig {
   enabled: boolean;
   channels: AlertChannelConfig;
   throttleInterval: number;
   retryAttempts: number;
   criticalAlertThreshold: number;
-}
-
 export interface DebugConfig {
   enabled: boolean;
   verboseLogging: boolean;
   stackTraceLimit: number;
   consoleOutput: 'none' | 'errors' | 'warnings' | 'all';
-}
-
 export type ReportingFormat = 'json' | 'csv' | 'prometheus';
 
 export interface ReportingConfig {
@@ -78,15 +66,11 @@ export interface ReportingConfig {
   retentionPeriod: number;
   compressionEnabled: boolean;
   format: ReportingFormat;
-}
-
 export interface SamplingConfig {
   enabled: boolean;
   rate: number;
   userIdBased: boolean;
   excludePaths: string[];
-}
-
 export interface MonitoringConfig {
   enabled: boolean;
   reportingEndpoint: string;
@@ -95,15 +79,11 @@ export interface MonitoringConfig {
   debugging: DebugConfig;
   reporting: ReportingConfig;
   sampling: SamplingConfig;
-}
-
 export interface PerformanceMetric {
   name: string;
   value: number;
   timestamp: number;
   tags?: Record<string, string>;
-}
-
 export interface BundleMetrics {
   totalSize: number;
   jsSize: number;
@@ -112,9 +92,7 @@ export interface BundleMetrics {
     name: string;
     size: number;
     type: string;
-  }[];
-}
-
+[];
 export interface ResourceMetrics {
   url: string;
   initiatorType: string;
@@ -122,8 +100,6 @@ export interface ResourceMetrics {
   transferSize: number;
   encodedBodySize: number;
   decodedBodySize: number;
-}
-
 export interface WebVitalMetrics {
   lcp: number;
   fid: number;
@@ -131,16 +107,12 @@ export interface WebVitalMetrics {
   fcp: number;
   tti: number;
   tbt: number;
-}
-
 export interface CacheMetrics {
   hitRate: number;
   missRate: number;
   latency: number;
   size: number;
   evictions: number;
-}
-
 export interface ImageMetrics {
   url: string;
   originalSize: number;
@@ -150,9 +122,6 @@ export interface ImageMetrics {
   dimensions: {
     width: number;
     height: number;
-  };
-}
-
 export interface PerformanceReport {
   timestamp: number;
   webVitals: WebVitalMetrics;
@@ -164,41 +133,29 @@ export interface PerformanceReport {
     usage: number;
     heapSize: number;
     cpuUsage: number;
-  };
-  server: {
+server: {
     timing: ServerTiming;
     status: number;
     endpoint: string;
-  };
-}
-
 export interface ResourceMetric extends PerformanceMetric {
   resourceType: 'script' | 'style' | 'image' | 'font' | 'other';
   url: string;
   duration: number;
   size?: number;
   protocol?: string;
-}
-
 export interface WebVitalMetric extends PerformanceMetric {
   name: 'FCP' | 'LCP' | 'CLS' | 'FID' | 'TTFB';
 
   rating: 'good' | 'needs-improvement' | 'poor';
-}
-
 export interface ErrorMetric extends PerformanceMetric {
   message: string;
   stack?: string;
   type: string;
   count: number;
-}
-
 export interface CustomMetric extends PerformanceMetric {
   category: string;
   subCategory?: string;
   metadata?: Record<string, unknown>;
-}
-
 export type MetricType =
   | PerformanceMetric
   | ResourceMetric

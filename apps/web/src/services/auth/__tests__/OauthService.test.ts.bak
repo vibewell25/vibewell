@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import oauth-service from '../oauth-service.ts';
+
+describe('oauth-service', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<oauth-service />);
+    expect(container).toBeInTheDocument();
+  });
+});

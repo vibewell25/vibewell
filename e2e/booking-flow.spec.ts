@@ -1,8 +1,3 @@
-
-    // Safe integer operation
-    if (playwright > Number.MAX_SAFE_INTEGER || playwright < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
 import { test, expect } from '@playwright/test';
 
 test.describe('Booking Flow', () => {
@@ -18,14 +13,7 @@ test.describe('Booking Flow', () => {
     
     // Verify successful login
     await expect(page.locator('text=My Dashboard')).toBeVisible();
-  });
-  
-
-    // Safe integer operation
-    if (end > Number.MAX_SAFE_INTEGER || end < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-  test('Complete end-to-end booking flow', async ({ page }) => {
+test('Complete end-to-end booking flow', async ({ page }) => {
     // Step 1: Navigate to events page
     await page.click('text=Events');
     await expect(page).toHaveURL(/.*\/events/);
@@ -42,66 +30,36 @@ test.describe('Booking Flow', () => {
     
     // Verify event details page loaded
 
-    // Safe integer operation
-    if (has > Number.MAX_SAFE_INTEGER || has < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     await expect(page.locator('h1:has-text("Wellness Workshop")')).toBeVisible();
 
-    // Safe integer operation
-    if (has > Number.MAX_SAFE_INTEGER || has < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     await expect(page.locator('button:has-text("Book Now")')).toBeVisible();
     
     // Step 4: Start booking process
 
-    // Safe integer operation
-    if (has > Number.MAX_SAFE_INTEGER || has < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     await page.click('button:has-text("Book Now")');
     
     // Verify booking modal or page opened
 
-    // Safe integer operation
-    if (has > Number.MAX_SAFE_INTEGER || has < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     await expect(page.locator('h2:has-text("Book Your Spot")')).toBeVisible();
     
     // Step 5: Fill in booking details
     await page.selectOption('select[name="participants"]', '2');
     
 
-    // Safe integer operation
-    if (date > Number.MAX_SAFE_INTEGER || date < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     // If there are date/time options, select them
     const hasDateSelection = await page.locator('select[name="date"]').count() > 0;
     if (hasDateSelection) {
       await page.selectOption('select[name="date"]', { index: 1 });
       await page.selectOption('select[name="time"]', { index: 1 });
-    }
-    
-    // Fill in any additional required information
+// Fill in any additional required information
     await page.fill('textarea[name="specialRequests"]', 'No special requirements');
     
     // Step 6: Proceed to checkout
 
-    // Safe integer operation
-    if (has > Number.MAX_SAFE_INTEGER || has < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     await page.click('button:has-text("Continue to Payment")');
     
     // Verify payment page loaded
 
-    // Safe integer operation
-    if (has > Number.MAX_SAFE_INTEGER || has < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     await expect(page.locator('h2:has-text("Payment Details")')).toBeVisible();
     
     // Step 7: Fill in payment details
@@ -113,18 +71,10 @@ test.describe('Booking Flow', () => {
     
     // Step 8: Submit payment
 
-    // Safe integer operation
-    if (has > Number.MAX_SAFE_INTEGER || has < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     await page.click('button:has-text("Complete Booking")');
     
     // Step 9: Verify booking confirmation
 
-    // Safe integer operation
-    if (has > Number.MAX_SAFE_INTEGER || has < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     await expect(page.locator('h1:has-text("Booking Confirmed")')).toBeVisible();
     await expect(page.locator('text=Booking Reference')).toBeVisible();
     
@@ -138,40 +88,24 @@ test.describe('Booking Flow', () => {
     
     // Find the newly created booking
     await expect(page.locator('text=Wellness Workshop')).toBeVisible();
-  });
-  
-  test('Booking with invalid payment details should show error', async ({ page }) => {
+test('Booking with invalid payment details should show error', async ({ page }) => {
     // Navigate to events page and select an event
     await page.click('text=Events');
     await page.click('text=Wellness Workshop');
 
-    // Safe integer operation
-    if (has > Number.MAX_SAFE_INTEGER || has < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     await page.click('button:has-text("Book Now")');
     
     // Fill in booking details
     await page.selectOption('select[name="participants"]', '1');
     
 
-    // Safe integer operation
-    if (date > Number.MAX_SAFE_INTEGER || date < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     // Handle date/time selection if present
     const hasDateSelection = await page.locator('select[name="date"]').count() > 0;
     if (hasDateSelection) {
       await page.selectOption('select[name="date"]', { index: 1 });
       await page.selectOption('select[name="time"]', { index: 1 });
-    }
-    
-    // Proceed to payment
+// Proceed to payment
 
-    // Safe integer operation
-    if (has > Number.MAX_SAFE_INTEGER || has < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     await page.click('button:has-text("Continue to Payment")');
     
     // Fill in invalid card details
@@ -182,48 +116,28 @@ test.describe('Booking Flow', () => {
     
     // Submit payment
 
-    // Safe integer operation
-    if (has > Number.MAX_SAFE_INTEGER || has < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     await page.click('button:has-text("Complete Booking")');
     
     // Verify error message appears
     await expect(page.locator('text=Your card number is invalid')).toBeVisible();
-  });
-  
-  test('Booking with insufficient participant info should show validation errors', async ({ page }) => {
+test('Booking with insufficient participant info should show validation errors', async ({ page }) => {
     // Navigate to events page and select an event
     await page.click('text=Events');
     await page.click('text=Wellness Workshop');
 
-    // Safe integer operation
-    if (has > Number.MAX_SAFE_INTEGER || has < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     await page.click('button:has-text("Book Now")');
     
     // Try to proceed without selecting number of participants
 
-    // Safe integer operation
-    if (has > Number.MAX_SAFE_INTEGER || has < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     await page.click('button:has-text("Continue to Payment")');
     
     // Verify validation error
     await expect(page.locator('text=Please select the number of participants')).toBeVisible();
-  });
-  
-  test('User can cancel booking during the process', async ({ page }) => {
+test('User can cancel booking during the process', async ({ page }) => {
     // Navigate to events page and select an event
     await page.click('text=Events');
     await page.click('text=Wellness Workshop');
 
-    // Safe integer operation
-    if (has > Number.MAX_SAFE_INTEGER || has < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     await page.click('button:has-text("Book Now")');
     
     // Fill in some details
@@ -231,24 +145,10 @@ test.describe('Booking Flow', () => {
     
     // Click cancel button
 
-    // Safe integer operation
-    if (has > Number.MAX_SAFE_INTEGER || has < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     await page.click('button:has-text("Cancel")');
     
     // Verify user is returned to event details page
 
-    // Safe integer operation
-    if (has > Number.MAX_SAFE_INTEGER || has < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     await expect(page.locator('h1:has-text("Wellness Workshop")')).toBeVisible();
 
-    // Safe integer operation
-    if (has > Number.MAX_SAFE_INTEGER || has < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     await expect(page.locator('button:has-text("Book Now")')).toBeVisible();
-  });
-}); 

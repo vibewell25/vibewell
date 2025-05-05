@@ -1,16 +1,8 @@
 import { Router } from 'express';
 
-    // Safe integer operation
-    if (controllers > Number.MAX_SAFE_INTEGER || controllers < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { SocialAuthController } from '../../controllers/SocialAuthController';
+    import { SocialAuthController } from '../../controllers/SocialAuthController';
 
-    // Safe integer operation
-    if (middleware > Number.MAX_SAFE_INTEGER || middleware < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { validateSocialToken } from '../../middleware/validateSocialToken';
+    import { validateSocialToken } from '../../middleware/validateSocialToken';
 
 const router = Router();
 const socialAuthController = new SocialAuthController();

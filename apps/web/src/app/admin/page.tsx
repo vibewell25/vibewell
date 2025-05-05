@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/unified-auth-context';
 import { analytics } from '@/utils/analytics';
@@ -19,9 +17,6 @@ interface User {
     status: string;
     plan: string;
     validUntil: string;
-  };
-}
-
 export default function AdminDashboard() {
   const { user, isAdmin } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
@@ -33,11 +28,9 @@ export default function AdminDashboard() {
     if (!isAdmin()) {
       window.location.href = '/';
       return;
-    }
-
-    fetchUsers();
+fetchUsers();
     analytics.trackPageView('/admin');
-  }, []);
+[]);
 
   const fetchUsers = async ( {
   const start = Date.now();
@@ -46,41 +39,29 @@ export default function AdminDashboard() {
       const response = await fetch('/api/admin/users');
       const data = await response.json();
       setUsers(data);
-    } catch (error) {
+catch (error) {
       analytics.trackError(error as Error);
       console.error('Error fetching users:', error);
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  const handleUserAction = async ( {
+const handleUserAction = async ( {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout');userId: string, action: 'suspend' | 'activate' | 'delete') => {
     try {
       const response = await fetch(`/api/admin/users/${userId}/${action}`, {
         method: 'POST',
-      });
-
-      if (response.ok) {
+if (response.ok) {
         fetchUsers();
         analytics.trackEvent({
           name: `user_${action}d`,
           properties: { userId },
           category: 'user',
-        });
-      }
-    } catch (error) {
+catch (error) {
       analytics.trackError(error as Error);
       console.error(`Error ${action}ing user:`, error);
-    }
-  };
-
-  if (loading) {
+if (loading) {
     return <div>Loading...</div>;
-  }
-
-  return (
+return (
     <div className="container mx-auto p-6">
       <h1 className="mb-6 text-3xl font-bold">Admin Dashboard</h1>
 
@@ -136,9 +117,8 @@ export default function AdminDashboard() {
                     const created = new Date(u.createdAt);
                     const now = new Date();
                     return now.getTime() - created.getTime() < 24 * 60 * 60 * 1000;
-                  }).length
-                }
-              </p>
+).length
+</p>
             </div>
           </CardContent>
         </Card>
@@ -170,7 +150,7 @@ export default function AdminDashboard() {
                           user.subscription.status === 'active'
                             ? 'bg-green-100 text-green-800'
                             : 'bg-red-100 text-red-800'
-                        }`}
+`}
                       >
                         {user.subscription.plan} - {user.subscription.status}
                       </span>
@@ -188,8 +168,7 @@ export default function AdminDashboard() {
                             user.id,
                             user.subscription.status === 'active' ? 'suspend' : 'activate',
                           )
-                        }
-                      >
+>
                         {user.subscription.status === 'active' ? 'Suspend' : 'Activate'}
                       </Button>
                       <Button
@@ -208,5 +187,3 @@ export default function AdminDashboard() {
         </div>
       </div>
     </div>
-  );
-}

@@ -1,4 +1,3 @@
-
 import { prisma } from '@/lib/database/client';
 
 /**
@@ -13,15 +12,10 @@ export async function {
     const user = await prisma.user.update({
       where: { id: userId },
       data: { role: role.toUpperCase() },
-    });
-
-    return { success: true, user };
-  } catch (error) {
+return { success: true, user };
+catch (error) {
     console.error('Error setting user role:', error);
     return { success: false, error };
-  }
-}
-
 /**
  * Get a user's role from the profiles table
  * @param userId The user's UUID
@@ -34,17 +28,12 @@ export async function {
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: { role: true },
-    });
-
-    if (user.role === 'ADMIN') return 'admin';
+if (user.role === 'ADMIN') return 'admin';
     if (user.role === 'USER') return 'user';
     return null;
-  } catch (error) {
+catch (error) {
     console.error('Error getting user role:', error);
     return null;
-  }
-}
-
 /**
  * Check if a user has admin role
  * @param userId The user's UUID
@@ -57,15 +46,10 @@ export async function {
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: { role: true },
-    });
-
-    return user.role === 'ADMIN';
-  } catch (error) {
+return user.role === 'ADMIN';
+catch (error) {
     console.error('Error checking admin status:', error);
     return false;
-  }
-}
-
 /**
 
  * Create the first admin user
@@ -79,44 +63,29 @@ export async function {
     // Check if any admin exists
     const existingAdmin = await prisma.user.findFirst({
       where: { role: 'ADMIN' },
-    });
-
-    if (existingAdmin) {
+if (existingAdmin) {
       return { success: true, message: 'Admin already exists' };
-    }
-
-    // Set the user as admin
+// Set the user as admin
     const user = await prisma.user.update({
       where: { id: userId },
       data: { role: 'ADMIN' },
-    });
-
-    // Mark initial setup as completed
+// Mark initial setup as completed
     await prisma.systemConfig.upsert({
       where: { key: 'initial_setup_completed' },
       update: { value: 'true' },
       create: {
         key: 'initial_setup_completed',
         value: 'true',
-      },
-    });
-
-    return { success: true, firstAdmin: true, user };
-  } catch (error) {
+return { success: true, firstAdmin: true, user };
+catch (error) {
     console.error('Error creating first admin:', error);
     return { success: false, error };
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); getAdminCount(): Promise<number> {
   try {
     return await prisma.user.count({
       where: { role: 'ADMIN' },
-    });
-  } catch (error) {
+catch (error) {
     console.error('Error getting admin count:', error);
     return 0;
-  }
-}

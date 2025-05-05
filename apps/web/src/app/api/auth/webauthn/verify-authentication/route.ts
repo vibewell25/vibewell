@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 
@@ -18,25 +17,16 @@ export async function {
     const session = await getServerSession(authOptions);
     if (!session.user.id) {
       return new NextResponse('Unauthorized', { status: 401 });
-    }
-
-    const body = await request.json();
+const body = await request.json();
     const { assertionResponse } = body as { assertionResponse: AuthenticationResponseJSON };
 
     if (!assertionResponse) {
       return new NextResponse('Missing assertion response', { status: 400 });
-    }
-
-    const verification = await WebAuthnService.verifyAuthentication(
+const verification = await WebAuthnService.verifyAuthentication(
       session.user.id,
       assertionResponse,
-    );
-
-    return NextResponse.json({ verified: verification });
-  } catch (error) {
+return NextResponse.json({ verified: verification });
+catch (error) {
     console.error('WebAuthn authentication verification error:', error);
     return new NextResponse(error instanceof Error ? error.message : 'Internal server error', {
       status: 500,
-    });
-  }
-}

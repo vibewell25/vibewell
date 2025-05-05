@@ -8,5 +8,3 @@ export default function NewAppointmentButton() {
         New Appointment
       </button>
     </Link>
-  );
-}

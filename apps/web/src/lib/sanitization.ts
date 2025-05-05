@@ -21,12 +21,9 @@ export function sanitizeHtml(html: string | null | undefined): string {
     ],
     FORBID_CONTENTS: ['script', 'style', 'iframe', 'form', 'input', 'button'],
     ALLOW_UNKNOWN_PROTOCOLS: false,
-    ADD_ATTR: ['target="_blank"', 'rel="noopener noreferrer"'], // Safety for links
-  };
+    ADD_ATTR: ['target="_blank"', 'rel="noopener noreferrer"'], ;
   
   return DOMPurify.sanitize(html, config);
-}
-
 /**
  * Sanitizes a text string by removing HTML and potentially dangerous characters
  * @param text - The text to sanitize
@@ -40,8 +37,6 @@ export function sanitizeText(text: string | null | undefined): string {
   
   // Then escape any remaining special characters
   return validator.escape(noHtml);
-}
-
 /**
  * Sanitizes a URL to prevent javascript: and data: URLs
  * @param url - The URL to sanitize
@@ -57,20 +52,14 @@ export function sanitizeUrl(url: string | null | undefined): string {
     url.toLowerCase().startsWith('vbscript:')
   ) {
     return '';
-  }
-  
-  // Validate URL format
+// Validate URL format
   if (!validator.isURL(url, { 
     protocols: ['http', 'https'],
     require_protocol: true,
     require_valid_protocol: true,
-  })) {
+)) {
     return '';
-  }
-  
-  return url;
-}
-
+return url;
 /**
  * Sanitizes an email address
  * @param email - The email to sanitize
@@ -83,11 +72,7 @@ export function sanitizeEmail(email: string | null | undefined): string {
   
   if (!validator.isEmail(sanitized)) {
     return '';
-  }
-  
-  return sanitized;
-}
-
+return sanitized;
 /**
  * Object schema sanitization utility using Zod
  * Use to sanitize and validate user inputs for APIs
@@ -98,14 +83,10 @@ export function sanitizeEmail(email: string | null | undefined): string {
 export function sanitizeData<T>(schema: z.ZodType<T>, data: unknown): T {
   try {
     return schema.parse(data);
-  } catch (error) {
+catch (error) {
     if (error instanceof z.ZodError) {
       throw new Error(`Validation failed: ${error.errors.map(e => e.message).join(', ')}`);
-    }
-    throw error;
-  }
-}
-
+throw error;
 /**
  * Middleware for sanitizing request bodies
  * @param schema - Zod schema for the request body
@@ -116,15 +97,10 @@ export function validateRequestBody<T>(schema: z.ZodType<T>) {
       const sanitizedBody = sanitizeData(schema, req.body);
       req.body = sanitizedBody;
       next();
-    } catch (error) {
+catch (error) {
       res.status(400).json({ 
         error: 'Invalid request data',
         message: error instanceof Error ? error.message : 'Validation failed',
-      });
-    }
-  };
-}
-
 /**
  * Sanitize SQL input to prevent SQL injection
  * @param value - The value to sanitize for SQL queries
@@ -141,8 +117,6 @@ export function sanitizeSqlInput(value: string | null | undefined): string {
     .replace(/\n/g, '\\n') // Escape newlines
     .replace(/\r/g, '\\r') // Escape carriage returns
     .replace(/\x1a/g, '\\Z'); // Escape ctrl+Z
-}
-
 /**
  * Sanitizes a filename to ensure it's safe for filesystem operations
  * @param filename - The filename to sanitize
@@ -157,8 +131,6 @@ export function sanitizeFilename(filename: string | null | undefined): string {
     .replace(/^\.+/, '') // Remove leading dots
     .replace(/^\/+/, '') // Remove leading slashes
     .trim();
-}
-
 // Export a default object with all sanitization functions
 export default {
   html: sanitizeHtml,
@@ -169,4 +141,3 @@ export default {
   validateRequestBody,
   sqlInput: sanitizeSqlInput,
   filename: sanitizeFilename,
-}; 

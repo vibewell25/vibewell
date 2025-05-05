@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import api-response-utils from '../api-response-utils.tsx';
+
+describe('api-response-utils', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<api-response-utils />);
+    expect(container).toBeInTheDocument();
+  });
+});

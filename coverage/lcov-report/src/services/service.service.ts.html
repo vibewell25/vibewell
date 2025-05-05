@@ -406,7 +406,7 @@ import { PrismaClient, Service } from '@prisma/client';
 &nbsp;
 import { AppError, handleError } from <span class="cstat-no" title="statement not covered" >'../utils/error';</span>
 &nbsp;
-import { CreateServiceDTO, ServiceWithRelations, UpdateServiceDTO } from '../types/service?.types';
+import { CreateServiceDTO, ServiceWithRelations, UpdateServiceDTO } from '../types/service.types';
 &nbsp;
 export class <span class="cstat-no" title="statement not covered" >ServiceService {</span>
 <span class="fstat-no" title="function not covered" >  constructor(p</span>rivate <span class="cstat-no" title="statement not covered" >prisma: PrismaClient)</span> {}
@@ -415,11 +415,11 @@ export class <span class="cstat-no" title="statement not covered" >ServiceServic
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { practitionerIds, ...serviceData } = <span class="cstat-no" title="statement not covered" >data;</span>
       
-      const service = <span class="cstat-no" title="statement not covered" >await this?.prisma.service?.create({</span>
+      const service = <span class="cstat-no" title="statement not covered" >await this.prisma.service.create({</span>
         data: {
           ...serviceData,
           practitioners: practitionerIds ? {
-            connect: practitionerIds?.map(<span class="fstat-no" title="function not covered" >id =&gt; (<span class="cstat-no" title="statement not covered" >{</span> id }))</span>
+            connect: practitionerIds.map(<span class="fstat-no" title="function not covered" >id =&gt; (<span class="cstat-no" title="statement not covered" >{</span> id }))</span>
           } : undefined
         },
         include: {
@@ -437,7 +437,7 @@ export class <span class="cstat-no" title="statement not covered" >ServiceServic
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async g</span>etServiceById(id: string): Promise&lt;ServiceWithRelations&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const service = <span class="cstat-no" title="statement not covered" >await this?.prisma.service?.findUnique({</span>
+      const service = <span class="cstat-no" title="statement not covered" >await this.prisma.service.findUnique({</span>
         where: { id },
         include: {
           business: true,
@@ -460,12 +460,12 @@ export class <span class="cstat-no" title="statement not covered" >ServiceServic
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { practitionerIds, ...updateData } = <span class="cstat-no" title="statement not covered" >data;</span>
       
-      const service = <span class="cstat-no" title="statement not covered" >await this?.prisma.service?.update({</span>
+      const service = <span class="cstat-no" title="statement not covered" >await this.prisma.service.update({</span>
         where: { id },
         data: {
           ...updateData,
           practitioners: practitionerIds ? {
-            set: practitionerIds?.map(<span class="fstat-no" title="function not covered" >id =&gt; (<span class="cstat-no" title="statement not covered" >{</span> id }))</span>
+            set: practitionerIds.map(<span class="fstat-no" title="function not covered" >id =&gt; (<span class="cstat-no" title="statement not covered" >{</span> id }))</span>
           } : undefined
         },
         include: {
@@ -483,7 +483,7 @@ export class <span class="cstat-no" title="statement not covered" >ServiceServic
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async d</span>eleteService(id: string): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      await this?.prisma.service?.delete({</span>
+<span class="cstat-no" title="statement not covered" >      await this.prisma.service.delete({</span>
         where: { id }
       });
     } catch (error) {
@@ -493,7 +493,7 @@ export class <span class="cstat-no" title="statement not covered" >ServiceServic
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async g</span>etServicesByBusiness(businessId: string): Promise&lt;ServiceWithRelations[]&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const services = <span class="cstat-no" title="statement not covered" >await this?.prisma.service?.findMany({</span>
+      const services = <span class="cstat-no" title="statement not covered" >await this.prisma.service.findMany({</span>
         where: { businessId },
         include: {
           business: true,
@@ -510,7 +510,7 @@ export class <span class="cstat-no" title="statement not covered" >ServiceServic
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async g</span>etServicesByPractitioner(practitionerId: string): Promise&lt;ServiceWithRelations[]&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const services = <span class="cstat-no" title="statement not covered" >await this?.prisma.service?.findMany({</span>
+      const services = <span class="cstat-no" title="statement not covered" >await this.prisma.service.findMany({</span>
         where: {
           practitioners: {
             some: {
@@ -533,7 +533,7 @@ export class <span class="cstat-no" title="statement not covered" >ServiceServic
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async g</span>etActiveServices(businessId: string): Promise&lt;ServiceWithRelations[]&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const services = <span class="cstat-no" title="statement not covered" >await this?.prisma.service?.findMany({</span>
+      const services = <span class="cstat-no" title="statement not covered" >await this.prisma.service.findMany({</span>
         where: {
           businessId,
           isActive: true
@@ -553,7 +553,7 @@ export class <span class="cstat-no" title="statement not covered" >ServiceServic
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async g</span>etServicesByCategory(businessId: string, category: string): Promise&lt;ServiceWithRelations[]&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const services = <span class="cstat-no" title="statement not covered" >await this?.prisma.service?.findMany({</span>
+      const services = <span class="cstat-no" title="statement not covered" >await this.prisma.service.findMany({</span>
         where: {
           businessId,
           category
@@ -577,7 +577,7 @@ export class <span class="cstat-no" title="statement not covered" >ServiceServic
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

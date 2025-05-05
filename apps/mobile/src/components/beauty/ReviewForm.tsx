@@ -8,7 +8,7 @@ import {
   Modal,
   ActivityIndicator,
   Alert
-} from 'react-native';
+from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { addServiceReview, ReviewInput } from '../../services/beautyService';
 
@@ -18,15 +18,13 @@ interface ReviewFormProps {
   onClose: () => void;
   onReviewAdded: () => void;
   isDarkMode: boolean;
-}
-
 const ReviewForm: React.FC<ReviewFormProps> = ({
   serviceId,
   isVisible,
   onClose,
   onReviewAdded,
   isDarkMode
-}) => {
+) => {
   const [rating, setRating] = useState<number>(5);
   const [comment, setComment] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
@@ -38,8 +36,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
       setRating(5);
       setComment('');
       setUserName('');
-    }
-  }, [isVisible]);
+[isVisible]);
 
   // Handle star rating selection
   const renderStars = (): JSX.Element[] => {
@@ -58,49 +55,35 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             style={{ opacity: i <= rating ? 1 : 0.5 }}
           />
         </TouchableOpacity>
-      );
-    }
-    return stars;
-  };
-
-  // Handle review submission
+return stars;
+// Handle review submission
   const handleSubmit = async () => {
     if (!comment.trim()) {
       Alert.alert('Error', 'Please enter a review comment');
       return;
-    }
-
-    if (!userName.trim()) {
+if (!userName.trim()) {
       Alert.alert('Error', 'Please enter your name');
       return;
-    }
-
-    setIsSubmitting(true);
+setIsSubmitting(true);
     try {
       const reviewData: ReviewInput = {
         serviceId,
         rating,
         comment: comment.trim(),
         userName: userName.trim()
-      };
-      
-      const success = await addServiceReview(reviewData);
+const success = await addServiceReview(reviewData);
       
       if (success) {
         onReviewAdded();
         onClose();
-      } else {
+else {
         Alert.alert('Error', 'Failed to submit review. Please try again.');
-      }
-    } catch (error) {
+catch (error) {
       console.error('Error submitting review:', error);
       Alert.alert('Error', 'Something went wrong. Please try again.');
-    } finally {
+finally {
       setIsSubmitting(false);
-    }
-  };
-
-  return (
+return (
     <Modal
       visible={isVisible}
       transparent
@@ -159,8 +142,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
                 backgroundColor: isDarkMode ? '#2A2A2A' : '#F8F8F8',
                 color: isDarkMode ? '#FFFFFF' : '#000000',
                 borderColor: isDarkMode ? '#333333' : '#E0E0E0'
-              }
-            ]}
+]}
             value={userName}
             onChangeText={setUserName}
             placeholder="Enter your name"
@@ -183,8 +165,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
                 backgroundColor: isDarkMode ? '#2A2A2A' : '#F8F8F8',
                 color: isDarkMode ? '#FFFFFF' : '#000000',
                 borderColor: isDarkMode ? '#333333' : '#E0E0E0'
-              }
-            ]}
+]}
             value={comment}
             onChangeText={setComment}
             placeholder="What did you like or dislike? What should others know before booking?"
@@ -220,63 +201,49 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
         </View>
       </View>
     </Modal>
-  );
-};
-
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     justifyContent: 'flex-end',
     backgroundColor: 'rgba(0, 0, 0, 0.5)'
-  },
-  modalContent: {
+modalContent: {
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
     paddingBottom: 30
-  },
-  modalHeader: {
+modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20
-  },
-  modalTitle: {
+modalTitle: {
     fontSize: 18,
     fontWeight: 'bold'
-  },
-  closeButton: {
+closeButton: {
     padding: 5
-  },
-  ratingLabel: {
+ratingLabel: {
     fontSize: 16,
     marginBottom: 10
-  },
-  starsContainer: {
+starsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: 20
-  },
-  starButton: {
+starButton: {
     padding: 5
-  },
-  nameLabel: {
+nameLabel: {
     fontSize: 16,
     marginBottom: 10
-  },
-  textInput: {
+textInput: {
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 15,
     paddingVertical: 12,
     fontSize: 16,
     marginBottom: 20
-  },
-  commentLabel: {
+commentLabel: {
     fontSize: 16,
     marginBottom: 10
-  },
-  commentInput: {
+commentInput: {
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 15,
@@ -285,24 +252,18 @@ const styles = StyleSheet.create({
     minHeight: 120,
     fontSize: 16,
     marginBottom: 20
-  },
-  submitButton: {
+submitButton: {
     backgroundColor: '#4F46E5',
     paddingVertical: 15,
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 15
-  },
-  submitButtonText: {
+submitButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold'
-  },
-  infoText: {
+infoText: {
     fontSize: 12,
     textAlign: 'center',
     lineHeight: 18
-  }
-});
-
 export default ReviewForm; 

@@ -1,6 +1,5 @@
-// Mock GraphQL module
 class GraphQLError extends Error {
-  constructor(message, options = {}) {
+constructor(message, options = {}) {
     super(message);
     this.name = 'GraphQLError';
     this.message = message;
@@ -11,18 +10,11 @@ class GraphQLError extends Error {
     this.source = options.source || undefined;
     this.positions = options.positions || [];
     this.originalError = options.originalError;
-  }
-  
-  toJSON() {
+toJSON() {
     return {
       message: this.message,
       locations: this.locations,
       path: this.path,
       extensions: this.extensions,
-    };
-  }
-}
-
 module.exports = {
   GraphQLError,
-}; 

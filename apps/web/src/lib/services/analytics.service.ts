@@ -1,4 +1,3 @@
-
 import { prisma } from '@/lib/prisma';
 
 import { addDays, startOfDay, endOfDay, format } from 'date-fns';
@@ -6,8 +5,6 @@ import { addDays, startOfDay, endOfDay, format } from 'date-fns';
 export interface AnalyticsDateRange {
   from: Date;
   to: Date;
-}
-
 export class AnalyticsService {
   async getRevenueAnalytics(dateRange: AnalyticsDateRange) {
     const bookings = await prisma.booking.findMany({
@@ -15,15 +12,10 @@ export class AnalyticsService {
         createdAt: {
           gte: startOfDay(dateRange.from),
           lte: endOfDay(dateRange.to),
-        },
-        status: 'COMPLETED',
-      },
-      include: {
+status: 'COMPLETED',
+include: {
         service: true,
-      },
-    });
-
-    const total = bookings.reduce((sum, booking) => sum + (booking.service.price || 0), 0);
+const total = bookings.reduce((sum, booking) => sum + (booking.service.price || 0), 0);
     const history = this.groupByDate(bookings, (booking) => booking.service.price || 0);
 
     // Calculate trend percentage
@@ -33,40 +25,25 @@ export class AnalyticsService {
         createdAt: {
           gte: startOfDay(previousPeriodStart),
           lte: endOfDay(dateRange.from),
-        },
-        status: 'COMPLETED',
-      },
-      include: {
+status: 'COMPLETED',
+include: {
         service: true,
-      },
-    });
-
-    const previousTotal = previousPeriodBookings.reduce(
+const previousTotal = previousPeriodBookings.reduce(
       (sum, booking) => sum + (booking.service.price || 0),
       0,
-    );
-
-
-    const trend = previousTotal ? ((total - previousTotal) / previousTotal) * 100 : 0;
+const trend = previousTotal ? ((total - previousTotal) / previousTotal) * 100 : 0;
 
     return {
       total,
       trend,
       history,
-    };
-  }
-
-  async getAppointmentAnalytics(dateRange: AnalyticsDateRange) {
+async getAppointmentAnalytics(dateRange: AnalyticsDateRange) {
     const bookings = await prisma.booking.findMany({
       where: {
         createdAt: {
           gte: startOfDay(dateRange.from),
           lte: endOfDay(dateRange.to),
-        },
-      },
-    });
-
-    const total = bookings.length;
+const total = bookings.length;
     const completed = bookings.filter((b) => b.status === 'COMPLETED').length;
     const cancelled = bookings.filter((b) => b.status === 'CANCELLED').length;
     const noShow = bookings.filter((b) => b.status === 'NO_SHOW').length;
@@ -78,24 +55,16 @@ export class AnalyticsService {
       cancelled,
       noShow,
       history,
-    };
-  }
-
-  async getClientAnalytics(dateRange: AnalyticsDateRange) {
+async getClientAnalytics(dateRange: AnalyticsDateRange) {
     const clients = await prisma.user.findMany({
       where: {
         createdAt: {
           gte: startOfDay(dateRange.from),
           lte: endOfDay(dateRange.to),
-        },
-        role: 'CLIENT',
-      },
-      include: {
+role: 'CLIENT',
+include: {
         bookings: true,
-      },
-    });
-
-    const total = clients.length;
+const total = clients.length;
     const new_ = clients.filter((c) => !c.bookings.length).length;
 
     const returning = total - new_;
@@ -105,22 +74,14 @@ export class AnalyticsService {
       where: {
         createdAt: {
           lt: startOfDay(dateRange.from),
-        },
-        role: 'CLIENT',
-      },
-      include: {
+role: 'CLIENT',
+include: {
         bookings: {
           where: {
             createdAt: {
               gte: startOfDay(dateRange.from),
               lte: endOfDay(dateRange.to),
-            },
-          },
-        },
-      },
-    });
-
-    const inactiveClients = previousClients.filter((c) => !c.bookings.length).length;
+const inactiveClients = previousClients.filter((c) => !c.bookings.length).length;
 
     const churnRate = (inactiveClients / previousClients.length) * 100;
 
@@ -129,10 +90,7 @@ export class AnalyticsService {
       new: new_,
       returning,
       churnRate,
-    };
-  }
-
-  async getServiceAnalytics(dateRange: AnalyticsDateRange) {
+async getServiceAnalytics(dateRange: AnalyticsDateRange) {
     const services = await prisma.service.findMany({
       include: {
         bookings: {
@@ -140,18 +98,12 @@ export class AnalyticsService {
             createdAt: {
               gte: startOfDay(dateRange.from),
               lte: endOfDay(dateRange.to),
-            },
-            status: 'COMPLETED',
-          },
-        },
-      },
-    });
-
-    const popular = services
+status: 'COMPLETED',
+const popular = services
       .map((service) => ({
         name: service.name,
         bookings: service.bookings.length,
-      }))
+))
 
       .sort((a, b) => b.bookings - a.bookings);
 
@@ -160,52 +112,35 @@ export class AnalyticsService {
         name: service.name,
 
         revenue: service.bookings.length * service.price,
-      }))
+))
 
       .sort((a, b) => b.revenue - a.revenue);
 
     return {
       popular,
       revenue,
-    };
-  }
-
-  async getPeakHourAnalytics(dateRange: AnalyticsDateRange) {
+async getPeakHourAnalytics(dateRange: AnalyticsDateRange) {
     const bookings = await prisma.booking.findMany({
       where: {
         createdAt: {
           gte: startOfDay(dateRange.from),
           lte: endOfDay(dateRange.to),
-        },
-      },
-      select: {
+select: {
         startTime: true,
-      },
-    });
-
-    const hourCounts = new Array(24).fill(0);
+const hourCounts = new Array(24).fill(0);
     bookings.forEach((booking) => {
       const hour = new Date(booking.startTime).getHours();
 
-    // Safe array access
-    if (hour < 0 || hour >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      hourCounts[hour]++;
-    });
-
-    return hourCounts.map((count, hour) => ({
+    hourCounts[hour]++;
+return hourCounts.map((count, hour) => ({
       hour,
       bookings: count,
-    }));
-  }
-
-  async getStaffPerformance(dateRange: AnalyticsDateRange) {
+));
+async getStaffPerformance(dateRange: AnalyticsDateRange) {
     const providers = await prisma.user.findMany({
       where: {
         role: 'PROVIDER',
-      },
-      include: {
+include: {
         providerProfile: {
           include: {
             bookings: {
@@ -213,20 +148,11 @@ export class AnalyticsService {
                 createdAt: {
                   gte: startOfDay(dateRange.from),
                   lte: endOfDay(dateRange.to),
-                },
-                status: 'COMPLETED',
-              },
-              include: {
+status: 'COMPLETED',
+include: {
                 service: true,
                 review: true,
-              },
-            },
-          },
-        },
-      },
-    });
-
-    return providers.map((provider) => {
+return providers.map((provider) => {
       const bookings = provider.providerProfile.bookings || [];
       const revenue = bookings.reduce((sum, booking) => sum + (booking.service.price || 0), 0);
       const ratings = bookings
@@ -241,11 +167,7 @@ export class AnalyticsService {
         bookings: bookings.length,
         revenue,
         rating: averageRating,
-      };
-    });
-  }
-
-  async getPredictiveAnalytics(dateRange: AnalyticsDateRange) {
+async getPredictiveAnalytics(dateRange: AnalyticsDateRange) {
     const [revenueData, clientData, serviceData] = await Promise.all([
       this.getRevenueAnalytics(dateRange),
       this.getClientAnalytics(dateRange),
@@ -270,7 +192,7 @@ export class AnalyticsService {
           ((service.revenue / revenueData.total) * 100 + clientGrowthRate) * 1.2,
           100,
         ),
-      }))
+))
 
       .sort((a, b) => b.potential - a.potential)
       .slice(0, 3);
@@ -282,7 +204,7 @@ export class AnalyticsService {
         hour: hour.hour,
 
         predictedBookings: Math.round(hour.bookings * (1 + clientGrowthRate / 100)),
-      }))
+))
 
       .sort((a, b) => b.predictedBookings - a.predictedBookings)
       .slice(0, 3);
@@ -292,58 +214,36 @@ export class AnalyticsService {
       clientGrowthRate,
       recommendedServices,
       peakTimesPrediction,
-    };
-  }
-
-  async getMarketingMetrics(dateRange: AnalyticsDateRange) {
+async getMarketingMetrics(dateRange: AnalyticsDateRange) {
     // Calculate customer acquisition cost
     const marketingExpenses = await prisma.marketingExpense.findMany({
       where: {
         date: {
           gte: startOfDay(dateRange.from),
           lte: endOfDay(dateRange.to),
-        },
-      },
-    });
-
-
-    const totalExpenses = marketingExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+const totalExpenses = marketingExpenses.reduce((sum, expense) => sum + expense.amount, 0);
 
     const newClients = await prisma.user.count({
       where: {
         createdAt: {
           gte: startOfDay(dateRange.from),
           lte: endOfDay(dateRange.to),
-        },
-        role: 'CLIENT',
-      },
-    });
-
-
-    const acquisitionCost = newClients ? totalExpenses / newClients : 0;
+role: 'CLIENT',
+const acquisitionCost = newClients ? totalExpenses / newClients : 0;
 
     // Calculate customer lifetime value
     const allClients = await prisma.user.findMany({
       where: {
         role: 'CLIENT',
-      },
-      include: {
+include: {
         bookings: {
           where: {
             status: 'COMPLETED',
-          },
-          include: {
+include: {
             service: true,
-          },
-        },
-      },
-    });
-
-    const lifetimeValues = allClients.map((client) => {
+const lifetimeValues = allClients.map((client) => {
       return client.bookings.reduce((sum, booking) => sum + (booking.service.price || 0), 0);
-    });
-
-    const customerLifetimeValue =
+const customerLifetimeValue =
 
       lifetimeValues.reduce((sum, value) => sum + value, 0) / allClients.length;
 
@@ -356,8 +256,7 @@ export class AnalyticsService {
           (bookingSum, booking) => bookingSum + (booking.service.price || 0),
           0,
         )
-      );
-    }, 0);
+0);
 
 
     const marketingRoi = totalExpenses ? ((totalRevenue - totalExpenses) / totalExpenses) * 100 : 0;
@@ -372,38 +271,24 @@ export class AnalyticsService {
             createdAt: {
               gte: startOfDay(dateRange.from),
               lte: endOfDay(dateRange.to),
-            },
-          },
-        });
-
-        const leads = await prisma.marketingLead.count({
+const leads = await prisma.marketingLead.count({
           where: {
             source: channel,
             createdAt: {
               gte: startOfDay(dateRange.from),
               lte: endOfDay(dateRange.to),
-            },
-          },
-        });
-
-        return {
+return {
           channel,
           clients,
 
           conversion: leads ? (clients / leads) * 100 : 0,
-        };
-      }),
-    );
-
-    return {
+),
+return {
       acquisitionCost,
       customerLifetimeValue,
       marketingRoi,
       channelPerformance,
-    };
-  }
-
-  private groupByDate<T>(
+private groupByDate<T>(
     items: T[],
     getValue: (item: T) => number,
   ): Array<{ date: string; amount: number }> {
@@ -412,24 +297,10 @@ export class AnalyticsService {
 
         const date = format(new Date(item.createdAt), 'yyyy-MM');
 
-    // Safe array access
-    if (date < 0 || date >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-
-    // Safe array access
-    if (date < 0 || date >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-        acc[date] = (acc[date] || 0) + getValue(item);
+    acc[date] = (acc[date] || 0) + getValue(item);
         return acc;
-      },
-      {} as Record<string, number>,
-    );
-
-    return Object.entries(grouped).map(([date, amount]) => ({
+{} as Record<string, number>,
+return Object.entries(grouped).map(([date, amount]) => ({
       date,
       amount,
-    }));
-  }
-}
+));

@@ -22,15 +22,12 @@ const ThreadDetailScreen: React.FC = () => {
       setThread(data);
       const comms = await communityApi.getThreadPosts(id);
       setPosts(comms);
-    } catch (err) {
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to load thread');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  useEffect(() => { loadData(); }, [id]);
+useEffect(() => { loadData(); }, [id]);
 
   const handleAddPost = async () => {
     if (!newContent.trim()) return;
@@ -38,23 +35,17 @@ const ThreadDetailScreen: React.FC = () => {
       await communityApi.addThreadPost(id, newContent.trim());
       setNewContent('');
       loadData();
-    } catch (err) {
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to add post');
-    }
-  };
-
-  const handleDeleteThread = async () => {
+const handleDeleteThread = async () => {
     try {
       await communityApi.deleteThread(id);
       navigation.goBack();
-    } catch (err) {
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to delete thread');
-    }
-  };
-
-  if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
+if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
     <View style={styles.container}>
@@ -82,9 +73,6 @@ const ThreadDetailScreen: React.FC = () => {
       />
       <Button title="Post" onPress={handleAddPost} />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   title: { fontSize: 20, fontWeight: 'bold', marginBottom: 8 },
@@ -93,6 +81,4 @@ const styles = StyleSheet.create({
   post: { marginBottom: 12, paddingBottom: 8, borderBottomWidth: 1, borderColor: '#ccc' },
   postMeta: { fontSize: 10, color: 'gray' },
   input: { borderWidth: 1, borderColor: '#ccc', padding: 8, borderRadius: 4, marginBottom: 12 }
-});
-
 export default ThreadDetailScreen;

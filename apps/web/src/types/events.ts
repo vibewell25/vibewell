@@ -18,34 +18,25 @@ export interface EventLocation {
   country?: string;
   virtual: boolean;
   meetingUrl?: string;
-}
-
 export interface EventOrganizer {
   id: string;
   name: string;
   avatar?: string;
   isVerified?: boolean;
-}
-
 export interface EventParticipant {
   id: string;
   name: string;
   avatar?: string | undefined;
   registeredAt: string;
   status: 'registered' | 'attended' | 'cancelled';
-}
-
 export interface EventComment {
   id: string;
   user: {
     id: string;
     name: string;
     avatar?: string;
-  };
-  content: string;
+content: string;
   createdAt: string;
-}
-
 export interface Event {
   id: string;
   title: string;
@@ -63,14 +54,12 @@ export interface Event {
     country?: string;
     virtual: boolean;
     meetingUrl?: string;
-  };
-  organizer: {
+organizer: {
     id: string;
     name: string;
     avatar: string;
     isVerified: boolean;
-  };
-  capacity: number;
+capacity: number;
   participantsCount: number;
   isFeatured: boolean;
   tags: string[];
@@ -90,8 +79,7 @@ export interface Event {
     monthOfYear?: number; // For yearly recurrence
     endDate?: string; // Optional end date for recurrence
     occurrences?: number; // Optional number of occurrences
-  };
-  // New fields for waitlist
+// New fields for waitlist
   waitlistEnabled?: boolean;
   waitlistCapacity?: number;
   waitlistCount?: number;
@@ -101,7 +89,7 @@ export interface Event {
     avatar: string;
     joinedAt: string;
     status: 'pending' | 'notified' | 'confirmed';
-  }[];
+[];
   // New fields for event series
   seriesId?: string;
   seriesTitle?: string;
@@ -114,7 +102,7 @@ export interface Event {
     url: string;
     description?: string;
     createdAt: string;
-  }[];
+[];
   // New fields for event agenda
   agenda?: {
     id: string;
@@ -126,8 +114,7 @@ export interface Event {
       name: string;
       title?: string;
       avatar?: string;
-    };
-  }[];
+[];
   // New fields for event feedback
   feedbackEnabled?: boolean;
   averageRating?: number;
@@ -137,7 +124,7 @@ export interface Event {
     rating: number;
     comment: string;
     submittedAt: string;
-  }[];
+[];
 
   // New fields for event check-in
   checkInEnabled?: boolean;
@@ -147,7 +134,7 @@ export interface Event {
     name: string;
     avatar: string;
     checkedInAt: string;
-  }[];
+[];
   // New fields for event groups
   groupId?: string;
   groupName?: string;
@@ -163,17 +150,15 @@ export interface Event {
       userId: string;
       name: string;
       avatar: string;
-    };
-    uploadedAt: string;
+uploadedAt: string;
     caption?: string;
-  }[];
+[];
   // New fields for event networking
   networkingEnabled?: boolean;
   networkingPreferences?: {
     matchBy: ('interests' | 'skills' | 'location')[];
     maxMatches?: number;
-  };
-  // New fields for event badges
+// New fields for event badges
   badges?: {
     id: string;
     name: string;
@@ -181,7 +166,7 @@ export interface Event {
     image: string;
     criteria: string;
     awardedTo: string[];
-  }[];
+[];
   // New fields for event analytics
   analytics?: {
     views: number;
@@ -193,36 +178,29 @@ export interface Event {
     revenue?: number;
     averageRating?: number;
     feedbackCount?: number;
-  };
-  // New fields for event integrations
+// New fields for event integrations
   integrations?: {
     calendar?: {
       googleCalendarId?: string;
       outlookCalendarId?: string;
       appleCalendarId?: string;
-    };
-    video?: {
+video?: {
 
       provider: 'zoom' | 'teams' | 'google-meet';
       meetingId?: string;
       password?: string;
-    };
-    payment?: {
+payment?: {
       provider: 'stripe' | 'paypal';
       productId?: string;
       priceId?: string;
-    };
-    email?: {
+email?: {
       templateId?: string;
       campaignId?: string;
-    };
-    social?: {
+social?: {
       facebookEventId?: string;
       linkedinEventId?: string;
       twitterEventId?: string;
-    };
-  };
-  // New fields for event payment
+// New fields for event payment
   isPaid?: boolean;
   price?: number;
   currency?: string;
@@ -232,13 +210,11 @@ export interface Event {
     allowedUntil: string; // ISO date string
     percentageToRefund: number; // e.g., 100 for full refund, 50 for 50% refund
     description?: string;
-  };
-  paymentStatuses?: {
+paymentStatuses?: {
     userId: string;
     status: 'pending' | 'paid' | 'refunded' | 'failed';
     amount: number;
     paymentIntentId?: string;
     paymentDate?: string;
     refundDate?: string;
-  }[];
-}
+[];

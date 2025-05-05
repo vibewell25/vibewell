@@ -20,8 +20,7 @@ const BenefitFormScreen: React.FC = () => {
     if (!type.trim()) {
       Alert.alert('Error', 'Type is required.');
       return;
-    }
-    setLoading(true);
+setLoading(true);
     try {
       let result: BenefitClaim;
       if (isEdit && claim) {
@@ -29,24 +28,18 @@ const BenefitFormScreen: React.FC = () => {
           type,
           status,
           amount: amount ? parseFloat(amount) : undefined,
-        });
-      } else {
+else {
         result = await benefitsApi.createClaim({
           type,
           status,
           amount: amount ? parseFloat(amount) : undefined,
-        });
-      }
-      navigation.navigate('BenefitDetail', { id: result.id });
-    } catch (err) {
+navigation.navigate('BenefitDetail', { id: result.id });
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to save benefit claim');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
+if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
     <View style={styles.container}>
@@ -77,9 +70,6 @@ const BenefitFormScreen: React.FC = () => {
         onPress={handleSubmit}
       />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   label: { fontSize: 14, marginTop: 12 },
@@ -89,7 +79,4 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 4,
     marginTop: 4,
-  },
-});
-
 export default BenefitFormScreen;

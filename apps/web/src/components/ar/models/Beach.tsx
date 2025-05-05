@@ -9,13 +9,9 @@ export function Beach() {
   useFrame((state) => {
     if (waterRef.current) {
       waterRef.current.position.y = Math.sin(state.clock.elapsedTime) * 0.1;
-    }
-    if (groupRef.current) {
+if (groupRef.current) {
       groupRef.current.rotation.y += 0.001;
-    }
-  });
-
-  return (
+return (
     <group ref={groupRef}>
       {/* Sand */}
       <Box args={[20, 0.1, 20]} position={[0, -1, 0]} material-color="#f2d16b" />
@@ -55,8 +51,5 @@ export function Beach() {
               </group>
             ))}
           </group>
-        );
-      })}
+)}
     </group>
-  );
-}

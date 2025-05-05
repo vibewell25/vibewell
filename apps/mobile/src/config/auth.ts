@@ -1,6 +1,4 @@
-// Auth0 configuration
-
-    import { makeRedirectUri } from 'expo-auth-session';
+import { makeRedirectUri } from 'expo-auth-session';
 
     import Constants from 'expo-constants';
 
@@ -9,8 +7,6 @@ const { auth0Domain, auth0ClientId, auth0Audience } = (Constants.manifest.extra 
   auth0Domain: string;
   auth0ClientId: string;
   auth0Audience: string;
-});
-
 export const AUTH0_DOMAIN = auth0Domain;
 export const AUTH0_CLIENT_ID = auth0ClientId;
 export const AUTH0_AUDIENCE = auth0Audience;
@@ -25,4 +21,3 @@ export const DISCOVERY = {
       tokenEndpoint: `https://${AUTH0_DOMAIN}/oauth/token`,
 
       revocationEndpoint: `https://${AUTH0_DOMAIN}/oauth/revoke`,
-};

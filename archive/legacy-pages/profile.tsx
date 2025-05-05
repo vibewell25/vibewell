@@ -19,16 +19,12 @@ const Profile: NextPage = () => {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, avatar }),
-      });
-      if (res.ok) setMsg('Profile updated');
+if (res.ok) setMsg('Profile updated');
       else setMsg('Error updating profile');
-    } catch (error) {
+catch (error) {
       console.error('Error updating profile:', error);
       setMsg('Failed to update profile');
-    }
-  };
-
-  if (isLoading) return <p>Loading...</p>;
+if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   return (
@@ -56,7 +52,4 @@ const Profile: NextPage = () => {
         </Link>
       </div>
     </div>
-  );
-};
-
 export default Profile;

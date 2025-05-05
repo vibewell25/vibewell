@@ -6,7 +6,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+from '@/components/ui/table';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import {
@@ -17,48 +17,39 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   getFilteredRowModel,
-} from '@tanstack/react-table';
+from '@tanstack/react-table';
 import type { User, Subscription, Booking } from '@prisma/client';
 
 interface DataTableProps {
   data: (User & {
     subscriptions: Subscription[];
     bookings: Booking[];
-  })[];
-}
-
+)[];
 const columns: ColumnDef<User & { subscriptions: Subscription[]; bookings: Booking[] }>[] = [
   {
     accessorKey: 'name',
     header: 'Name',
-  },
-  {
+{
     accessorKey: 'email',
     header: 'Email',
-  },
-  {
+{
     accessorKey: 'role',
     header: 'Role',
-  },
-  {
+{
     accessorKey: 'subscriptions',
     header: 'Subscription Status',
     cell: ({ row }) => {
       const subscriptions = row.original.subscriptions;
       const activeSubscription = subscriptions.find((sub) => sub.status === 'active');
       return activeSubscription ? 'Active' : 'Inactive';
-    },
-  },
-  {
+{
     accessorKey: 'bookings',
     header: 'Total Bookings',
     cell: ({ row }) => row.original.bookings.length,
-  },
-  {
+{
     accessorKey: 'createdAt',
     header: 'Join Date',
     cell: ({ row }) => new Date(row.original.createdAt).toLocaleDateString(),
-  },
 ];
 
 export function DataTable({ data }: DataTableProps) {
@@ -75,12 +66,9 @@ export function DataTable({ data }: DataTableProps) {
     state: {
       sorting,
       globalFilter: filtering,
-    },
-    onSortingChange: setSorting,
+onSortingChange: setSorting,
     onGlobalFilterChange: setFiltering,
-  });
-
-  return (
+return (
     <div>
       <div className="flex items-center py-4">
         <Input
@@ -147,5 +135,3 @@ export function DataTable({ data }: DataTableProps) {
         </Button>
       </div>
     </div>
-  );
-}

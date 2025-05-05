@@ -10,8 +10,6 @@ export type AnalyticsStackParamList = {
   ClientAnalytics: undefined;
   ServiceUsage: undefined;
   ChurnAnalytics: undefined;
-};
-
 const Stack = createStackNavigator<AnalyticsStackParamList>();
 
 const AnalyticsStackNavigator: React.FC = () => (
@@ -21,6 +19,4 @@ const AnalyticsStackNavigator: React.FC = () => (
     <Stack.Screen name="ServiceUsage" component={ServiceUsageScreen} options={{ title: 'Service Usage' }} />
     <Stack.Screen name="ChurnAnalytics" component={ChurnAnalyticsScreen} options={{ title: 'Churn' }} />
   </Stack.Navigator>
-);
-
 export default AnalyticsStackNavigator;

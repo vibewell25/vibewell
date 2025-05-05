@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import skip-link from '../skip-link.tsx';
+
+describe('skip-link', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<skip-link />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import business-dashboard from '../business-dashboard.tsx';
+
+describe('business-dashboard', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<business-dashboard />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import overview from '../overview.tsx';
+
+describe('overview', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<overview />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -1,12 +1,3 @@
-/**
- * Messaging Types
- *
- * This file contains type definitions for the messaging system.
- */
-
-/**
- * Represents a participant in a conversation
- */
 export interface Participant {
   /**
    * Unique ID of the participant
@@ -32,8 +23,6 @@ export interface Participant {
    * Optional status of the participant (online, offline, away, etc.)
    */
   status?: 'online' | 'offline' | 'away' | 'busy';
-}
-
 /**
  * Represents a single message in a conversation
  */
@@ -72,8 +61,6 @@ export interface Message {
    * Optional type of the message
    */
   type?: 'text' | 'image' | 'file' | 'system' | 'audio';
-}
-
 /**
  * Represents an attachment in a message
  */
@@ -112,8 +99,6 @@ export interface MessageAttachment {
    * Preview URL for the attachment (e.g., thumbnail)
    */
   previewUrl?: string;
-}
-
 /**
  * Represents a conversation between participants
  */
@@ -152,4 +137,3 @@ export interface Conversation {
    * Whether the conversation is a group conversation
    */
   isGroup?: boolean;
-}

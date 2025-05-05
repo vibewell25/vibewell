@@ -10,12 +10,8 @@ import type { APIError } from 'openai';
 const messageSchema = z.object({
   role: z.enum(['user', 'assistant']),
   content: z.string().min(1),
-});
-
 const requestSchema = z.object({
   messages: z.array(messageSchema),
-});
-
 // Rate limiting configuration
 const RATE_LIMIT = 10; // messages per minute
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute in milliseconds
@@ -29,12 +25,8 @@ function isRateLimited(userId: string): boolean {
   const recentTimestamps = userTimestamps.filter(
 
     timestamp => now - timestamp < RATE_LIMIT_WINDOW
-  );
-  
-  messageTimestamps.set(userId, recentTimestamps);
+messageTimestamps.set(userId, recentTimestamps);
   return recentTimestamps.length >= RATE_LIMIT;
-}
-
 export default async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); handler(
@@ -43,19 +35,14 @@ export default async function {
 ) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  // Get user ID from session or IP for rate limiting
+// Get user ID from session or IP for rate limiting
 
   const userId = req.headers['x-forwarded-for'] as string || 'anonymous';
 
   if (isRateLimited(userId)) {
     return res.status(429).json({ 
       error: 'Too many requests. Please wait a moment before sending more messages.' 
-    });
-  }
-
-  try {
+try {
     // Validate request body
     const validatedData = requestSchema.parse(req.body);
 
@@ -77,28 +64,19 @@ export default async function {
       temperature: 0.7,
       presence_penalty: 0.6,
       frequency_penalty: 0.5,
-    });
-
-    const reply = completion.choices[0].message.content || 
+const reply = completion.choices[0].message.content || 
       'I apologize, but I was unable to generate a response. Please try again.';
 
     return res.status(200).json({ reply });
-  } catch (error) {
+catch (error) {
     console.error('AI Chat API Error:', error);
     
     if (error instanceof z.ZodError) {
       return res.status(400).json({ error: 'Invalid request format' });
-    }
-
-    // Handle OpenAI API errors
+// Handle OpenAI API errors
     if (error instanceof Error && 'status' in error) {
       const apiError = error as APIError;
       if (apiError.status === 429) {
         return res.status(429).json({ error: 'Rate limit exceeded. Please try again later.' });
-      }
-      return res.status(500).json({ error: 'AI service temporarily unavailable' });
-    }
-
-    return res.status(500).json({ error: 'Internal server error' });
-  }
-} 
+return res.status(500).json({ error: 'AI service temporarily unavailable' });
+return res.status(500).json({ error: 'Internal server error' });

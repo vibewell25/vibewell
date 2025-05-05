@@ -1,7 +1,4 @@
-/**
-
-
- * Re-export test runner functionality
+export test runner functionality
  * This file provides backward compatibility with existing imports
  */
 
@@ -15,8 +12,6 @@ expect.extend(toHaveNoViolations);
 export interface TestRunnerOptions extends RenderOptions {
   name: string;
   performanceThreshold?: number;
-}
-
 export {};
 
 

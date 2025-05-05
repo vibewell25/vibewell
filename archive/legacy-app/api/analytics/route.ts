@@ -4,34 +4,19 @@ import { NextRequest, NextResponse } from 'next/server';
 interface AnalyticsData {
   from: Date;
   to: Date;
-}
-
 class AnalyticsService {
   async getRevenueAnalytics(dateRange: AnalyticsData) {
     return { total: 0, byService: [], byDay: [] };
-  }
-  
-  async getAppointmentAnalytics(dateRange: AnalyticsData) {
+async getAppointmentAnalytics(dateRange: AnalyticsData) {
     return { total: 0, completed: 0, cancelled: 0, byService: [], byDay: [] };
-  }
-  
-  async getClientAnalytics(dateRange: AnalyticsData) {
+async getClientAnalytics(dateRange: AnalyticsData) {
     return { total: 0, new: 0, returning: 0, bySource: [] };
-  }
-  
-  async getServiceAnalytics(dateRange: AnalyticsData) {
+async getServiceAnalytics(dateRange: AnalyticsData) {
     return { popular: [], byBookingCount: [], byRevenue: [] };
-  }
-  
-  async getPeakHourAnalytics(dateRange: AnalyticsData) {
+async getPeakHourAnalytics(dateRange: AnalyticsData) {
     return { byHour: [], byDay: [] };
-  }
-  
-  async getStaffPerformance(dateRange: AnalyticsData) {
+async getStaffPerformance(dateRange: AnalyticsData) {
     return { byBookingCount: [], byRevenue: [], utilization: [] };
-  }
-}
-
 const analyticsService = new AnalyticsService();
 
 // Mock static data that can be used for development and static rendering
@@ -42,13 +27,9 @@ const MOCK_ANALYTICS_DATA = {
   services: { popular: [], byBookingCount: [], byRevenue: [] },
   peakHours: { byHour: [], byDay: [] },
   staffPerformance: { byBookingCount: [], byRevenue: [], utilization: [] },
-};
-
 export async function GET() {
   // Use static data for rendering
   return NextResponse.json(MOCK_ANALYTICS_DATA);
-}
-
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -60,12 +41,9 @@ export async function POST(request: NextRequest) {
       success: true,
       message: 'Analytics event recorded',
       eventId: 'evt_' + Math.random().toString(36).substr(2, 9)
-    });
-  } catch (error) {
+catch (error) {
     console.error('Analytics error:', error);
     return NextResponse.json({ 
       success: false,
       message: 'Failed to record analytics event' 
-    }, { status: 400 });
-  }
-} 
+{ status: 400 });

@@ -677,12 +677,12 @@ export class <span class="cstat-no" title="statement not covered" >WebAuthnServi
 <span class="fstat-no" title="function not covered" >  constructor(p</span>rivate <span class="cstat-no" title="statement not covered" >prisma: PrismaClient)</span> {}
 &nbsp;
   private <span class="cstat-no" title="statement not covered" >rpName = 'Vibewell';</span>
-  private <span class="cstat-no" title="statement not covered" >rpID = env?.WEBAUTHN_RP_ID;</span>
-  private <span class="cstat-no" title="statement not covered" >origin = env?.WEBAUTHN_ORIGIN;</span>
+  private <span class="cstat-no" title="statement not covered" >rpID = env.WEBAUTHN_RP_ID;</span>
+  private <span class="cstat-no" title="statement not covered" >origin = env.WEBAUTHN_ORIGIN;</span>
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async s</span>tartRegistration(userId: string) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const user = <span class="cstat-no" title="statement not covered" >await this?.prisma.user?.findUnique({</span>
+      const user = <span class="cstat-no" title="statement not covered" >await this.prisma.user.findUnique({</span>
         where: { id: userId },
         include: { webAuthnDevices: true },
       });
@@ -692,28 +692,28 @@ export class <span class="cstat-no" title="statement not covered" >WebAuthnServi
       }
 &nbsp;
       const options = <span class="cstat-no" title="statement not covered" >await generateRegistrationOptions({</span>
-        rpName: this?.rpName,
-        rpID: this?.rpID,
-        userID: user?.id,
-        userName: user?.email || user?.id,
+        rpName: this.rpName,
+        rpID: this.rpID,
+        userID: user.id,
+        userName: user.email || user.id,
         attestationType: 'none',
         authenticatorSelection: {
           residentKey: 'preferred',
           userVerification: 'preferred',
           authenticatorAttachment: 'platform',
         },
-        excludeCredentials: user?.webAuthnDevices.map(<span class="fstat-no" title="function not covered" >device =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
-          id: Buffer?.from(device?.credentialId, 'base64'),
+        excludeCredentials: user.webAuthnDevices.map(<span class="fstat-no" title="function not covered" >device =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+          id: Buffer.from(device.credentialId, 'base64'),
 &nbsp;
           type: 'public-key',
         })),
       });
 &nbsp;
       // Save challenge
-<span class="cstat-no" title="statement not covered" >      await this?.prisma.challenge?.create({</span>
+<span class="cstat-no" title="statement not covered" >      await this.prisma.challenge.create({</span>
         data: {
-          userId: user?.id,
-          challenge: options?.challenge,
+          userId: user.id,
+          challenge: options.challenge,
         },
       });
 &nbsp;
@@ -729,7 +729,7 @@ export class <span class="cstat-no" title="statement not covered" >WebAuthnServi
     deviceName?: string
   ) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const user = <span class="cstat-no" title="statement not covered" >await this?.prisma.user?.findUnique({</span>
+      const user = <span class="cstat-no" title="statement not covered" >await this.prisma.user.findUnique({</span>
         where: { id: userId },
         include: { challenges: true },
       });
@@ -738,41 +738,41 @@ export class <span class="cstat-no" title="statement not covered" >WebAuthnServi
 <span class="cstat-no" title="statement not covered" >        throw new AppError('User not found', 404);</span>
       }
 &nbsp;
-      const challenge = <span class="cstat-no" title="statement not covered" >user?.challenges[0];</span>
+      const challenge = <span class="cstat-no" title="statement not covered" >user.challenges[0];</span>
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!challenge) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new AppError('Challenge not found', 400);</span>
       }
 &nbsp;
       const verification = <span class="cstat-no" title="statement not covered" >await verifyRegistrationResponse({</span>
         response,
-        expectedChallenge: challenge?.challenge,
-        expectedOrigin: this?.origin,
-        expectedRPID: this?.rpID,
+        expectedChallenge: challenge.challenge,
+        expectedOrigin: this.origin,
+        expectedRPID: this.rpID,
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!verification?.verified || !verification?.registrationInfo) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!verification.verified || !verification.registrationInfo) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new AppError('Registration verification failed', 400);</span>
       }
 &nbsp;
-      const { credentialID, credentialPublicKey, counter } = <span class="cstat-no" title="statement not covered" >verification?.registrationInfo;</span>
+      const { credentialID, credentialPublicKey, counter } = <span class="cstat-no" title="statement not covered" >verification.registrationInfo;</span>
 &nbsp;
       // Create WebAuthn device
-<span class="cstat-no" title="statement not covered" >      await this?.prisma.webAuthnDevice?.create({</span>
+<span class="cstat-no" title="statement not covered" >      await this.prisma.webAuthnDevice.create({</span>
         data: {
-          userId: user?.id,
-          credentialId: Buffer?.from(credentialID).toString('base64'),
-          publicKey: Buffer?.from(credentialPublicKey).toString('base64'),
+          userId: user.id,
+          credentialId: Buffer.from(credentialID).toString('base64'),
+          publicKey: Buffer.from(credentialPublicKey).toString('base64'),
           counter,
           lastUsedAt: new Date(),
         },
       });
 &nbsp;
       // Log the registration
-<span class="cstat-no" title="statement not covered" >      await this?.prisma.webAuthnAuditLog?.create({</span>
+<span class="cstat-no" title="statement not covered" >      await this.prisma.webAuthnAuditLog.create({</span>
         data: {
-          userId: user?.id,
+          userId: user.id,
           action: 'REGISTER',
-          deviceId: Buffer?.from(credentialID).toString('base64'),
+          deviceId: Buffer.from(credentialID).toString('base64'),
           success: true,
           ipAddress: '', // Should be passed from the request
           userAgent: '', // Should be passed from the request
@@ -780,8 +780,8 @@ export class <span class="cstat-no" title="statement not covered" >WebAuthnServi
       });
 &nbsp;
       // Clean up challenge
-<span class="cstat-no" title="statement not covered" >      await this?.prisma.challenge?.deleteMany({</span>
-        where: { userId: user?.id },
+<span class="cstat-no" title="statement not covered" >      await this.prisma.challenge.deleteMany({</span>
+        where: { userId: user.id },
       });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return { verified: true };</span>
@@ -792,7 +792,7 @@ export class <span class="cstat-no" title="statement not covered" >WebAuthnServi
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async s</span>tartAuthentication(userId: string) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const user = <span class="cstat-no" title="statement not covered" >await this?.prisma.user?.findUnique({</span>
+      const user = <span class="cstat-no" title="statement not covered" >await this.prisma.user.findUnique({</span>
         where: { id: userId },
         include: { webAuthnDevices: true },
       });
@@ -802,9 +802,9 @@ export class <span class="cstat-no" title="statement not covered" >WebAuthnServi
       }
 &nbsp;
       const options = <span class="cstat-no" title="statement not covered" >await generateAuthenticationOptions({</span>
-        rpID: this?.rpID,
-        allowCredentials: user?.webAuthnDevices.map(<span class="fstat-no" title="function not covered" >device =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
-          id: Buffer?.from(device?.credentialId, 'base64'),
+        rpID: this.rpID,
+        allowCredentials: user.webAuthnDevices.map(<span class="fstat-no" title="function not covered" >device =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+          id: Buffer.from(device.credentialId, 'base64'),
 &nbsp;
           type: 'public-key',
         })),
@@ -812,10 +812,10 @@ export class <span class="cstat-no" title="statement not covered" >WebAuthnServi
       });
 &nbsp;
       // Save challenge
-<span class="cstat-no" title="statement not covered" >      await this?.prisma.challenge?.create({</span>
+<span class="cstat-no" title="statement not covered" >      await this.prisma.challenge.create({</span>
         data: {
-          userId: user?.id,
-          challenge: options?.challenge,
+          userId: user.id,
+          challenge: options.challenge,
         },
       });
 &nbsp;
@@ -830,7 +830,7 @@ export class <span class="cstat-no" title="statement not covered" >WebAuthnServi
     response: AuthenticationResponseJSON,
   ) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const user = <span class="cstat-no" title="statement not covered" >await this?.prisma.user?.findUnique({</span>
+      const user = <span class="cstat-no" title="statement not covered" >await this.prisma.user.findUnique({</span>
         where: { id: userId },
         include: { 
           webAuthnDevices: true,
@@ -842,17 +842,17 @@ export class <span class="cstat-no" title="statement not covered" >WebAuthnServi
 <span class="cstat-no" title="statement not covered" >        throw new AppError('User not found', 404);</span>
       }
 &nbsp;
-      const challenge = <span class="cstat-no" title="statement not covered" >user?.challenges[0];</span>
+      const challenge = <span class="cstat-no" title="statement not covered" >user.challenges[0];</span>
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!challenge) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new AppError('Challenge not found', 400);</span>
       }
 &nbsp;
-      const credentialId = <span class="cstat-no" title="statement not covered" >Buffer?.from(</span>
-        response?.id, 'base64'
+      const credentialId = <span class="cstat-no" title="statement not covered" >Buffer.from(</span>
+        response.id, 'base64'
       ).toString('base64');
 &nbsp;
-      const device = <span class="cstat-no" title="statement not covered" >user?.webAuthnDevices.find(</span>
-<span class="fstat-no" title="function not covered" >        d =&gt; <span class="cstat-no" title="statement not covered" >d</span>?.credentialId === credentialId</span>
+      const device = <span class="cstat-no" title="statement not covered" >user.webAuthnDevices.find(</span>
+<span class="fstat-no" title="function not covered" >        d =&gt; <span class="cstat-no" title="statement not covered" >d</span>.credentialId === credentialId</span>
       );
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!device) {</span>
@@ -861,35 +861,35 @@ export class <span class="cstat-no" title="statement not covered" >WebAuthnServi
 &nbsp;
       const verification = <span class="cstat-no" title="statement not covered" >await verifyAuthenticationResponse({</span>
         response,
-        expectedChallenge: challenge?.challenge,
-        expectedOrigin: this?.origin,
-        expectedRPID: this?.rpID,
+        expectedChallenge: challenge.challenge,
+        expectedOrigin: this.origin,
+        expectedRPID: this.rpID,
         authenticator: {
-          credentialID: Buffer?.from(device?.credentialId, 'base64'),
-          credentialPublicKey: Buffer?.from(device?.publicKey, 'base64'),
-          counter: device?.counter,
+          credentialID: Buffer.from(device.credentialId, 'base64'),
+          credentialPublicKey: Buffer.from(device.publicKey, 'base64'),
+          counter: device.counter,
         },
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!verification?.verified) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!verification.verified) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new AppError('Authentication verification failed', 400);</span>
       }
 &nbsp;
       // Update device counter
-<span class="cstat-no" title="statement not covered" >      await this?.prisma.webAuthnDevice?.update({</span>
-        where: { id: device?.id },
+<span class="cstat-no" title="statement not covered" >      await this.prisma.webAuthnDevice.update({</span>
+        where: { id: device.id },
         data: {
-          counter: verification?.authenticationInfo.newCounter,
+          counter: verification.authenticationInfo.newCounter,
           lastUsedAt: new Date(),
         },
       });
 &nbsp;
       // Log the authentication
-<span class="cstat-no" title="statement not covered" >      await this?.prisma.webAuthnAuditLog?.create({</span>
+<span class="cstat-no" title="statement not covered" >      await this.prisma.webAuthnAuditLog.create({</span>
         data: {
-          userId: user?.id,
+          userId: user.id,
           action: 'AUTHENTICATE',
-          deviceId: device?.credentialId,
+          deviceId: device.credentialId,
           success: true,
           ipAddress: '', // Should be passed from the request
           userAgent: '', // Should be passed from the request
@@ -897,8 +897,8 @@ export class <span class="cstat-no" title="statement not covered" >WebAuthnServi
       });
 &nbsp;
       // Clean up challenge
-<span class="cstat-no" title="statement not covered" >      await this?.prisma.challenge?.deleteMany({</span>
-        where: { userId: user?.id },
+<span class="cstat-no" title="statement not covered" >      await this.prisma.challenge.deleteMany({</span>
+        where: { userId: user.id },
       });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return { verified: true };</span>
@@ -909,7 +909,7 @@ export class <span class="cstat-no" title="statement not covered" >WebAuthnServi
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async l</span>istDevices(userId: string) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const devices = <span class="cstat-no" title="statement not covered" >await this?.prisma.webAuthnDevice?.findMany({</span>
+      const devices = <span class="cstat-no" title="statement not covered" >await this.prisma.webAuthnDevice.findMany({</span>
         where: { userId },
         orderBy: { lastUsedAt: 'desc' },
       });
@@ -922,7 +922,7 @@ export class <span class="cstat-no" title="statement not covered" >WebAuthnServi
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async r</span>emoveDevice(userId: string, credentialId: string) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const device = <span class="cstat-no" title="statement not covered" >await this?.prisma.webAuthnDevice?.findFirst({</span>
+      const device = <span class="cstat-no" title="statement not covered" >await this.prisma.webAuthnDevice.findFirst({</span>
         where: {
           userId,
           credentialId,
@@ -933,12 +933,12 @@ export class <span class="cstat-no" title="statement not covered" >WebAuthnServi
 <span class="cstat-no" title="statement not covered" >        throw new AppError('Device not found', 404);</span>
       }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      await this?.prisma.webAuthnDevice?.delete({</span>
-        where: { id: device?.id },
+<span class="cstat-no" title="statement not covered" >      await this.prisma.webAuthnDevice.delete({</span>
+        where: { id: device.id },
       });
 &nbsp;
       // Log the removal
-<span class="cstat-no" title="statement not covered" >      await this?.prisma.webAuthnAuditLog?.create({</span>
+<span class="cstat-no" title="statement not covered" >      await this.prisma.webAuthnAuditLog.create({</span>
         data: {
           userId,
           action: 'REMOVE',
@@ -961,7 +961,7 @@ export class <span class="cstat-no" title="statement not covered" >WebAuthnServi
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

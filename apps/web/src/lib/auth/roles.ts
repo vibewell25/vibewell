@@ -17,8 +17,6 @@ export type Permission =
 
 interface RolePermissions {
   [key: string]: Permission[];
-}
-
 export const rolePermissions: RolePermissions = {
   admin: [
     'manage_users',
@@ -40,8 +38,6 @@ export const rolePermissions: RolePermissions = {
     'manage_loyalty',
   ],
   user: ['view_content', 'book_services', 'write_reviews', 'earn_points'],
-};
-
 export {};
 
 export {};

@@ -9,21 +9,16 @@ export default {
       control: 'select',
       options: ['elevated', 'outlined', 'flat'],
       description: 'The visual style variant of the card',
-    },
-    clickable: {
+clickable: {
       control: 'boolean',
       description: 'Whether the card is interactive',
-    },
-    loading: {
+loading: {
       control: 'boolean',
       description: 'Shows a loading skeleton state',
-    },
-    responsive: {
+responsive: {
       control: 'boolean',
       description: 'Enables responsive width behavior',
-    },
-  },
-  parameters: {
+parameters: {
     componentSubtitle: 'A versatile container component for grouping related content',
     docs: {
       description: {
@@ -46,10 +41,7 @@ It supports various visual styles, interactive states, and responsive behaviors.
 - Use appropriate variant for context
 - Consider mobile viewports
         `,
-      },
-    },
-  },
-} as Meta<typeof Card>;
+as Meta<typeof Card>;
 
 const Template: StoryFn<CardProps> = (args: CardProps) => <Card {...args} />;
 
@@ -62,8 +54,6 @@ Default.args = {
       <Card.Footer>Card Footer</Card.Footer>
     </>
   ),
-};
-
 export const WithImage = Template.bind({});
 WithImage.args = {
   children: (
@@ -75,8 +65,6 @@ WithImage.args = {
       </Card.Body>
     </>
   ),
-};
-
 export const Interactive = Template.bind({});
 Interactive.args = {
   clickable: true,
@@ -87,8 +75,6 @@ Interactive.args = {
       <p>Click me to trigger an action!</p>
     </Card.Body>
   ),
-};
-
 export const Loading = Template.bind({});
 Loading.args = {
   loading: true,
@@ -98,8 +84,6 @@ Loading.args = {
       <Card.Body>Loading state shows a skeleton instead</Card.Body>
     </>
   ),
-};
-
 export {};
 
 export const ComplexContent = Template.bind({});
@@ -138,4 +122,3 @@ ComplexContent.args = {
       </Card.Footer>
     </>
   ),
-};

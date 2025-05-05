@@ -1,6 +1,4 @@
-
-    
-    import * as Notifications from 'expo-notifications';
+import * as Notifications from 'expo-notifications';
 
     
     import * as Device from 'expo-device';
@@ -22,12 +20,8 @@ export const requestNotificationsPermissions = async () => ({
       shouldShowAlert: true,
       shouldPlaySound: true,
       shouldSetBadge: true,
-    }),
-  });
-
-  return finalStatus === 'granted';
-};
-
+),
+return finalStatus === 'granted';
 /**
  * Register for push notifications and return the token
  */
@@ -37,11 +31,7 @@ export const registerForPushNotifications = async () => {
       title,
       body,
       data: data || {},
-    },
-    trigger: trigger || null,
-  });
-};
-
+trigger: trigger || null,
 /**
  * Schedule a booking reminder notification
  */
@@ -71,22 +61,14 @@ export const scheduleBookingReminder = async () => {
     {
       date: dayBeforeReminder,
       type: SchedulableTriggerInputTypes.DATE
-    }
-  );
-  
-  await scheduleNotification(
+await scheduleNotification(
     'Appointment Soon',
     `Your ${serviceTitle} appointment is in 1 hour`,
     { bookingId },
     {
       date: hourBeforeReminder,
       type: SchedulableTriggerInputTypes.DATE
-    }
-  );
-  
-  return { dayBeforeReminder, hourBeforeReminder };
-};
-
+return { dayBeforeReminder, hourBeforeReminder };
 /**
  * Listen for notification events
  */
@@ -95,8 +77,6 @@ export const addNotificationListener = (
 ) => {
   const subscription = Notifications.addNotificationReceivedListener(callback);
   return subscription;
-};
-
 /**
  * Listen for notification response events (when user taps on notification)
  */
@@ -105,11 +85,8 @@ export const addNotificationResponseListener = (
 ) => {
   const subscription = Notifications.addNotificationResponseReceivedListener(callback);
   return subscription;
-};
-
 /**
  * Remove notification listeners
  */
 export const removeSubscription = (subscription: Notifications.Subscription) => {
   subscription.remove();
-}; 

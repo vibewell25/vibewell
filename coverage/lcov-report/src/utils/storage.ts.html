@@ -656,197 +656,197 @@ export interface StorageItem {
 }
 &nbsp;
 export class <span class="cstat-no" title="statement not covered" >StorageUtils {</span>
-  private static <span class="cstat-no" title="statement not covered" >manager = ThirdPartyManager?.getInstance();</span>
+  private static <span class="cstat-no" title="statement not covered" >manager = ThirdPartyManager.getInstance();</span>
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async u</span>ploadFile(options: UploadOptions): Promise&lt;string&gt; {
-    const storage = <span class="cstat-no" title="statement not covered" >this?.manager.getService('storage');</span>
+    const storage = <span class="cstat-no" title="statement not covered" >this.manager.getService('storage');</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!storage) <span class="cstat-no" title="statement not covered" >throw new Error('Storage service not initialized');</span></span>
 &nbsp;
-    const config = <span class="cstat-no" title="statement not covered" >this?.manager.getServiceConfig('storage') as ThirdPartyConfig['storage'];</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.manager.getServiceConfig('storage') as ThirdPartyConfig['storage'];</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >      switch (config.service) {</span>
         case 's3': {
           const params = <span class="cstat-no" title="statement not covered" >{</span>
-            Bucket: config?.bucket!,
-            Key: options?.path,
-            Body: options?.content,
-            ContentType: options?.contentType,
-            Metadata: options?.metadata,
-            ACL: options?.public ? 'public-read' : 'private',
+            Bucket: config.bucket!,
+            Key: options.path,
+            Body: options.content,
+            ContentType: options.contentType,
+            Metadata: options.metadata,
+            ACL: options.public ? 'public-read' : 'private',
           };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          await storage?.upload(params).promise();</span>
-<span class="cstat-no" title="statement not covered" >          return options?.public</span>
-            ? `https://${config?.bucket}.s3.${config?.region}.amazonaws?.com/${options?.path}`
-            : options?.path;
+<span class="cstat-no" title="statement not covered" >          await storage.upload(params).promise();</span>
+<span class="cstat-no" title="statement not covered" >          return options.public</span>
+            ? `https://${config.bucket}.s3.${config.region}.amazonaws.com/${options.path}`
+            : options.path;
         }
 &nbsp;
         case 'gcs': {
-          const bucket = <span class="cstat-no" title="statement not covered" >storage?.bucket(config?.bucket!);</span>
-          const file = <span class="cstat-no" title="statement not covered" >bucket?.file(options?.path);</span>
+          const bucket = <span class="cstat-no" title="statement not covered" >storage.bucket(config.bucket!);</span>
+          const file = <span class="cstat-no" title="statement not covered" >bucket.file(options.path);</span>
 &nbsp;
           const uploadOptions = <span class="cstat-no" title="statement not covered" >{</span>
             metadata: {
-              contentType: options?.contentType,
-              metadata: options?.metadata,
+              contentType: options.contentType,
+              metadata: options.metadata,
             },
           };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          await file?.save(options?.content, uploadOptions);</span>
+<span class="cstat-no" title="statement not covered" >          await file.save(options.content, uploadOptions);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (options?.public) {</span>
-<span class="cstat-no" title="statement not covered" >            await file?.makePublic();</span>
-<span class="cstat-no" title="statement not covered" >            return file?.publicUrl();</span>
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (options.public) {</span>
+<span class="cstat-no" title="statement not covered" >            await file.makePublic();</span>
+<span class="cstat-no" title="statement not covered" >            return file.publicUrl();</span>
           }
-<span class="cstat-no" title="statement not covered" >          return options?.path;</span>
+<span class="cstat-no" title="statement not covered" >          return options.path;</span>
         }
 &nbsp;
         case 'azure-blob': {
-          const containerClient = <span class="cstat-no" title="statement not covered" >storage?.getContainerClient(config?.bucket!);</span>
-          const blockBlobClient = <span class="cstat-no" title="statement not covered" >containerClient?.getBlockBlobClient(options?.path);</span>
+          const containerClient = <span class="cstat-no" title="statement not covered" >storage.getContainerClient(config.bucket!);</span>
+          const blockBlobClient = <span class="cstat-no" title="statement not covered" >containerClient.getBlockBlobClient(options.path);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          await blockBlobClient?.upload(</span>
-            options?.content,
-            Buffer?.byteLength(options?.content as string),
+<span class="cstat-no" title="statement not covered" >          await blockBlobClient.upload(</span>
+            options.content,
+            Buffer.byteLength(options.content as string),
             {
               blobHTTPHeaders: {
-                blobContentType: options?.contentType,
+                blobContentType: options.contentType,
               },
-              metadata: options?.metadata,
+              metadata: options.metadata,
             },
           );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (options?.public) {</span>
-            const sasToken = <span class="cstat-no" title="statement not covered" >await blockBlobClient?.generateSasToken({</span>
-              permissions: storage?.BlobSASPermissions.parse('r'),
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (options.public) {</span>
+            const sasToken = <span class="cstat-no" title="statement not covered" >await blockBlobClient.generateSasToken({</span>
+              permissions: storage.BlobSASPermissions.parse('r'),
               expiresOn: new Date(new Date().valueOf() + 365 * 24 * 60 * 60 * 1000),
             });
-<span class="cstat-no" title="statement not covered" >            return `${blockBlobClient?.url}?${sasToken}`;</span>
+<span class="cstat-no" title="statement not covered" >            return `${blockBlobClient.url}?${sasToken}`;</span>
           }
-<span class="cstat-no" title="statement not covered" >          return options?.path;</span>
+<span class="cstat-no" title="statement not covered" >          return options.path;</span>
         }
 &nbsp;
         default:
-<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported storage service: ${config?.service}`);</span>
+<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported storage service: ${config.service}`);</span>
       }
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Failed to upload file:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to upload file:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async d</span>ownloadFile(options: DownloadOptions): Promise&lt;Buffer | string&gt; {
-    const storage = <span class="cstat-no" title="statement not covered" >this?.manager.getService('storage');</span>
+    const storage = <span class="cstat-no" title="statement not covered" >this.manager.getService('storage');</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!storage) <span class="cstat-no" title="statement not covered" >throw new Error('Storage service not initialized');</span></span>
 &nbsp;
-    const config = <span class="cstat-no" title="statement not covered" >this?.manager.getServiceConfig('storage') as ThirdPartyConfig['storage'];</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.manager.getServiceConfig('storage') as ThirdPartyConfig['storage'];</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >      switch (config.service) {</span>
         case 's3': {
           const params = <span class="cstat-no" title="statement not covered" >{</span>
-            Bucket: config?.bucket!,
-            Key: options?.path,
+            Bucket: config.bucket!,
+            Key: options.path,
           };
 &nbsp;
-          const data = <span class="cstat-no" title="statement not covered" >await storage?.getObject(params).promise();</span>
-<span class="cstat-no" title="statement not covered" >          return options?.encoding ? data?.Body!.toString(options?.encoding) : (data?.Body as Buffer);</span>
+          const data = <span class="cstat-no" title="statement not covered" >await storage.getObject(params).promise();</span>
+<span class="cstat-no" title="statement not covered" >          return options.encoding ? data.Body!.toString(options.encoding) : (data.Body as Buffer);</span>
         }
 &nbsp;
         case 'gcs': {
-          const bucket = <span class="cstat-no" title="statement not covered" >storage?.bucket(config?.bucket!);</span>
-          const file = <span class="cstat-no" title="statement not covered" >bucket?.file(options?.path);</span>
+          const bucket = <span class="cstat-no" title="statement not covered" >storage.bucket(config.bucket!);</span>
+          const file = <span class="cstat-no" title="statement not covered" >bucket.file(options.path);</span>
 &nbsp;
-          const [content] = <span class="cstat-no" title="statement not covered" >await file?.download();</span>
-<span class="cstat-no" title="statement not covered" >          return options?.encoding ? content?.toString(options?.encoding) : content;</span>
+          const [content] = <span class="cstat-no" title="statement not covered" >await file.download();</span>
+<span class="cstat-no" title="statement not covered" >          return options.encoding ? content.toString(options.encoding) : content;</span>
         }
 &nbsp;
         case 'azure-blob': {
-          const containerClient = <span class="cstat-no" title="statement not covered" >storage?.getContainerClient(config?.bucket!);</span>
-          const blockBlobClient = <span class="cstat-no" title="statement not covered" >containerClient?.getBlockBlobClient(options?.path);</span>
+          const containerClient = <span class="cstat-no" title="statement not covered" >storage.getContainerClient(config.bucket!);</span>
+          const blockBlobClient = <span class="cstat-no" title="statement not covered" >containerClient.getBlockBlobClient(options.path);</span>
 &nbsp;
-          const downloadResponse = <span class="cstat-no" title="statement not covered" >await blockBlobClient?.download();</span>
+          const downloadResponse = <span class="cstat-no" title="statement not covered" >await blockBlobClient.download();</span>
           const chunks: Buffer[] = <span class="cstat-no" title="statement not covered" >[];</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          for await (const chunk of downloadResponse?.readableStreamBody!) {</span>
-<span class="cstat-no" title="statement not covered" >            chunks?.push(Buffer?.from(chunk));</span>
+<span class="cstat-no" title="statement not covered" >          for await (const chunk of downloadResponse.readableStreamBody!) {</span>
+<span class="cstat-no" title="statement not covered" >            chunks.push(Buffer.from(chunk));</span>
           }
 &nbsp;
-          const content = <span class="cstat-no" title="statement not covered" >Buffer?.concat(chunks);</span>
-<span class="cstat-no" title="statement not covered" >          return options?.encoding ? content?.toString(options?.encoding) : content;</span>
+          const content = <span class="cstat-no" title="statement not covered" >Buffer.concat(chunks);</span>
+<span class="cstat-no" title="statement not covered" >          return options.encoding ? content.toString(options.encoding) : content;</span>
         }
 &nbsp;
         default:
-<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported storage service: ${config?.service}`);</span>
+<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported storage service: ${config.service}`);</span>
       }
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Failed to download file:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to download file:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async l</span>istFiles(options: ListOptions = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span>: Promise&lt;StorageItem[]&gt; {
-    const storage = <span class="cstat-no" title="statement not covered" >this?.manager.getService('storage');</span>
+    const storage = <span class="cstat-no" title="statement not covered" >this.manager.getService('storage');</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!storage) <span class="cstat-no" title="statement not covered" >throw new Error('Storage service not initialized');</span></span>
 &nbsp;
-    const config = <span class="cstat-no" title="statement not covered" >this?.manager.getServiceConfig('storage') as ThirdPartyConfig['storage'];</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.manager.getServiceConfig('storage') as ThirdPartyConfig['storage'];</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >      switch (config.service) {</span>
         case 's3': {
           const params = <span class="cstat-no" title="statement not covered" >{</span>
-            Bucket: config?.bucket!,
-            Prefix: options?.prefix,
-            MaxKeys: options?.maxResults,
-            Delimiter: options?.delimiter,
+            Bucket: config.bucket!,
+            Prefix: options.prefix,
+            MaxKeys: options.maxResults,
+            Delimiter: options.delimiter,
           };
 &nbsp;
-          const data = <span class="cstat-no" title="statement not covered" >await storage?.listObjects(params).promise();</span>
-<span class="cstat-no" title="statement not covered" >          return data?.Contents!.map(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
-            name: item?.Key!,
-            size: item?.Size!,
-            contentType: item?.ContentType || 'application/octet-stream',
-            lastModified: item?.LastModified!,
-            url: `https://${config?.bucket}.s3.${config?.region}.amazonaws?.com/${item?.Key}`,
+          const data = <span class="cstat-no" title="statement not covered" >await storage.listObjects(params).promise();</span>
+<span class="cstat-no" title="statement not covered" >          return data.Contents!.map(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+            name: item.Key!,
+            size: item.Size!,
+            contentType: item.ContentType || 'application/octet-stream',
+            lastModified: item.LastModified!,
+            url: `https://${config.bucket}.s3.${config.region}.amazonaws.com/${item.Key}`,
           }));
         }
 &nbsp;
         case 'gcs': {
-          const bucket = <span class="cstat-no" title="statement not covered" >storage?.bucket(config?.bucket!);</span>
+          const bucket = <span class="cstat-no" title="statement not covered" >storage.bucket(config.bucket!);</span>
 &nbsp;
-          const [files] = <span class="cstat-no" title="statement not covered" >await bucket?.getFiles({</span>
-            prefix: options?.prefix,
-            maxResults: options?.maxResults,
-            delimiter: options?.delimiter,
+          const [files] = <span class="cstat-no" title="statement not covered" >await bucket.getFiles({</span>
+            prefix: options.prefix,
+            maxResults: options.maxResults,
+            delimiter: options.delimiter,
           });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          return files?.map(<span class="fstat-no" title="function not covered" >(f</span>ile) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
-            name: file?.name,
-            size: parseInt(file?.metadata.size),
-            contentType: file?.metadata.contentType,
-            lastModified: new Date(file?.metadata.updated),
-            metadata: file?.metadata,
-            url: file?.publicUrl(),
+<span class="cstat-no" title="statement not covered" >          return files.map(<span class="fstat-no" title="function not covered" >(f</span>ile) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+            name: file.name,
+            size: parseInt(file.metadata.size),
+            contentType: file.metadata.contentType,
+            lastModified: new Date(file.metadata.updated),
+            metadata: file.metadata,
+            url: file.publicUrl(),
           }));
         }
 &nbsp;
         case 'azure-blob': {
-          const containerClient = <span class="cstat-no" title="statement not covered" >storage?.getContainerClient(config?.bucket!);</span>
+          const containerClient = <span class="cstat-no" title="statement not covered" >storage.getContainerClient(config.bucket!);</span>
           const items: StorageItem[] = <span class="cstat-no" title="statement not covered" >[];</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          for await (const blob of containerClient?.listBlobsFlat({</span>
-            prefix: options?.prefix,
-            maxPageSize: options?.maxResults,
+<span class="cstat-no" title="statement not covered" >          for await (const blob of containerClient.listBlobsFlat({</span>
+            prefix: options.prefix,
+            maxPageSize: options.maxResults,
           })) {
-            const properties = <span class="cstat-no" title="statement not covered" >await containerClient?.getBlobClient(blob?.name).getProperties();</span>
+            const properties = <span class="cstat-no" title="statement not covered" >await containerClient.getBlobClient(blob.name).getProperties();</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >            items?.push({</span>
-              name: blob?.name,
-              size: properties?.contentLength!,
-              contentType: properties?.contentType!,
-              lastModified: properties?.lastModified!,
-              metadata: properties?.metadata,
+<span class="cstat-no" title="statement not covered" >            items.push({</span>
+              name: blob.name,
+              size: properties.contentLength!,
+              contentType: properties.contentType!,
+              lastModified: properties.lastModified!,
+              metadata: properties.metadata,
             });
           }
 &nbsp;
@@ -854,51 +854,51 @@ export class <span class="cstat-no" title="statement not covered" >StorageUtils 
         }
 &nbsp;
         default:
-<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported storage service: ${config?.service}`);</span>
+<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported storage service: ${config.service}`);</span>
       }
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Failed to list files:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to list files:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async d</span>eleteFile(path: string): Promise&lt;void&gt; {
-    const storage = <span class="cstat-no" title="statement not covered" >this?.manager.getService('storage');</span>
+    const storage = <span class="cstat-no" title="statement not covered" >this.manager.getService('storage');</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!storage) <span class="cstat-no" title="statement not covered" >throw new Error('Storage service not initialized');</span></span>
 &nbsp;
-    const config = <span class="cstat-no" title="statement not covered" >this?.manager.getServiceConfig('storage') as ThirdPartyConfig['storage'];</span>
+    const config = <span class="cstat-no" title="statement not covered" >this.manager.getServiceConfig('storage') as ThirdPartyConfig['storage'];</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      switch (config?.service) {</span>
+<span class="cstat-no" title="statement not covered" >      switch (config.service) {</span>
         case 's3': {
           const params = <span class="cstat-no" title="statement not covered" >{</span>
-            Bucket: config?.bucket!,
+            Bucket: config.bucket!,
             Key: path,
           };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          await storage?.deleteObject(params).promise();</span>
+<span class="cstat-no" title="statement not covered" >          await storage.deleteObject(params).promise();</span>
 <span class="cstat-no" title="statement not covered" >          break;</span>
         }
 &nbsp;
         case 'gcs': {
-          const bucket = <span class="cstat-no" title="statement not covered" >storage?.bucket(config?.bucket!);</span>
-          const file = <span class="cstat-no" title="statement not covered" >bucket?.file(path);</span>
-<span class="cstat-no" title="statement not covered" >          await file?.delete();</span>
+          const bucket = <span class="cstat-no" title="statement not covered" >storage.bucket(config.bucket!);</span>
+          const file = <span class="cstat-no" title="statement not covered" >bucket.file(path);</span>
+<span class="cstat-no" title="statement not covered" >          await file.delete();</span>
 <span class="cstat-no" title="statement not covered" >          break;</span>
         }
 &nbsp;
         case 'azure-blob': {
-          const containerClient = <span class="cstat-no" title="statement not covered" >storage?.getContainerClient(config?.bucket!);</span>
-          const blockBlobClient = <span class="cstat-no" title="statement not covered" >containerClient?.getBlockBlobClient(path);</span>
-<span class="cstat-no" title="statement not covered" >          await blockBlobClient?.delete();</span>
+          const containerClient = <span class="cstat-no" title="statement not covered" >storage.getContainerClient(config.bucket!);</span>
+          const blockBlobClient = <span class="cstat-no" title="statement not covered" >containerClient.getBlockBlobClient(path);</span>
+<span class="cstat-no" title="statement not covered" >          await blockBlobClient.delete();</span>
 <span class="cstat-no" title="statement not covered" >          break;</span>
         }
 &nbsp;
         default:
-<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported storage service: ${config?.service}`);</span>
+<span class="cstat-no" title="statement not covered" >          throw new Error(`Unsupported storage service: ${config.service}`);</span>
       }
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console?.error('Failed to delete file:', error);</span>
+<span class="cstat-no" title="statement not covered" >      console.error('Failed to delete file:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -910,7 +910,7 @@ export class <span class="cstat-no" title="statement not covered" >StorageUtils 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

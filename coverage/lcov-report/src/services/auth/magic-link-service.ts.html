@@ -468,19 +468,19 @@ export class <span class="cstat-no" title="statement not covered" >MagicLinkServ
   private static <span class="cstat-no" title="statement not covered" >tokens = new Map&lt;string, MagicLinkToken&gt;();</span>
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async g</span>enerateToken(email: string, options: MagicLinkOptions = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span>: Promise&lt;string&gt; {
-    const { expiresIn = <span class="branch-0 cbranch-no" title="branch not covered" >this?.DEFAULT_EXPIRES_IN,</span> tokenLength = <span class="branch-0 cbranch-no" title="branch not covered" >this?.DEFAULT_TOKEN_LENGTH </span>} =
+    const { expiresIn = <span class="branch-0 cbranch-no" title="branch not covered" >this.DEFAULT_EXPIRES_IN,</span> tokenLength = <span class="branch-0 cbranch-no" title="branch not covered" >this.DEFAULT_TOKEN_LENGTH </span>} =
 <span class="cstat-no" title="statement not covered" >      options;</span>
 &nbsp;
     // Generate a secure random token
     const token = <span class="cstat-no" title="statement not covered" >randomBytes(tokenLength).toString('hex');</span>
-    const hashedToken = <span class="cstat-no" title="statement not covered" >this?.hashToken(token);</span>
+    const hashedToken = <span class="cstat-no" title="statement not covered" >this.hashToken(token);</span>
 &nbsp;
     // Store the token with expiration
-<span class="cstat-no" title="statement not covered" >    this?.tokens.set(hashedToken, {</span>
+<span class="cstat-no" title="statement not covered" >    this.tokens.set(hashedToken, {</span>
       token: hashedToken,
       email,
 &nbsp;
-      expiresAt: new Date(Date?.now() + expiresIn * 1000),
+      expiresAt: new Date(Date.now() + expiresIn * 1000),
     });
 &nbsp;
     // Return the original token (not hashed) to be sent via email
@@ -488,54 +488,54 @@ export class <span class="cstat-no" title="statement not covered" >MagicLinkServ
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async v</span>erifyToken(token: string, email: string): Promise&lt;boolean&gt; {
-    const hashedToken = <span class="cstat-no" title="statement not covered" >this?.hashToken(token);</span>
-    const storedToken = <span class="cstat-no" title="statement not covered" >this?.tokens.get(hashedToken);</span>
+    const hashedToken = <span class="cstat-no" title="statement not covered" >this.hashToken(token);</span>
+    const storedToken = <span class="cstat-no" title="statement not covered" >this.tokens.get(hashedToken);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!storedToken) {</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
 &nbsp;
     // Check if token is expired or email doesn't match
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (storedToken?.expiresAt &lt; new Date() || storedToken?.email !== email) {</span>
-<span class="cstat-no" title="statement not covered" >      this?.tokens.delete(hashedToken);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (storedToken.expiresAt &lt; new Date() || storedToken.email !== email) {</span>
+<span class="cstat-no" title="statement not covered" >      this.tokens.delete(hashedToken);</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
 &nbsp;
 &nbsp;
     // Token is valid - remove it so it can't be used again
-<span class="cstat-no" title="statement not covered" >    this?.tokens.delete(hashedToken);</span>
+<span class="cstat-no" title="statement not covered" >    this.tokens.delete(hashedToken);</span>
 <span class="cstat-no" title="statement not covered" >    return true;</span>
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  static async s</span>endMagicLink(email: string): Promise&lt;void&gt; {
-    const token = <span class="cstat-no" title="statement not covered" >await this?.generateToken(email);</span>
-    const magicLink = <span class="cstat-no" title="statement not covered" >this?.createMagicLink(token, email);</span>
+    const token = <span class="cstat-no" title="statement not covered" >await this.generateToken(email);</span>
+    const magicLink = <span class="cstat-no" title="statement not covered" >this.createMagicLink(token, email);</span>
 &nbsp;
     // In development, log the link for easy testing
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (process?.env['NODE_ENV'] !== 'production') {</span>
-<span class="cstat-no" title="statement not covered" >      console?.log(`Magic link for ${email}:`, magicLink);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (process.env['NODE_ENV'] !== 'production') {</span>
+<span class="cstat-no" title="statement not covered" >      console.log(`Magic link for ${email}:`, magicLink);</span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Send the magic link via email
-<span class="cstat-no" title="statement not covered" >      await EmailService?.send({</span>
+<span class="cstat-no" title="statement not covered" >      await EmailService.send({</span>
         to: email,
         subject: 'VibeWell: Your Login Link',
-        html: this?.generateEmailHtml(email, magicLink),
-        text: this?.generateEmailText(email, magicLink),
+        html: this.generateEmailHtml(email, magicLink),
+        text: this.generateEmailText(email, magicLink),
       });
-<span class="cstat-no" title="statement not covered" >      logger?.info(`Magic link sent to ${email}`);</span>
+<span class="cstat-no" title="statement not covered" >      logger.info(`Magic link sent to ${email}`);</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger?.error(</span>
+<span class="cstat-no" title="statement not covered" >      logger.error(</span>
         `Failed to send magic link to ${email}:`,
-        error instanceof Error ? error?.message : String(error),
+        error instanceof Error ? error.message : String(error),
       );
 <span class="cstat-no" title="statement not covered" >      throw new Error('Failed to send magic link email');</span>
     }
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  private static c</span>reateMagicLink(token: string, email: string): string {
-    const baseUrl = <span class="cstat-no" title="statement not covered" >process?.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000';</span>
+    const baseUrl = <span class="cstat-no" title="statement not covered" >process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000';</span>
     const params = <span class="cstat-no" title="statement not covered" >new URLSearchParams({</span>
       token,
       email,
@@ -558,7 +558,7 @@ export class <span class="cstat-no" title="statement not covered" >MagicLinkServ
 &nbsp;
 &nbsp;
 &nbsp;
-            body { font-family: Arial, sans-serif; line-height: 1?.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
 &nbsp;
             .container { border: 1px solid #eee; border-radius: 10px; padding: 20px; }
 &nbsp;
@@ -621,9 +621,9 @@ VibeWell - Your well-being journey starts here
   // Clean up expired tokens periodically
 <span class="fstat-no" title="function not covered" >  static c</span>leanupExpiredTokens(): void {
     const now = <span class="cstat-no" title="statement not covered" >new Date();</span>
-<span class="cstat-no" title="statement not covered" >    for (const [key, value] of this?.tokens.entries()) {</span>
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (value?.expiresAt &lt; now) {</span>
-<span class="cstat-no" title="statement not covered" >        this?.tokens.delete(key);</span>
+<span class="cstat-no" title="statement not covered" >    for (const [key, value] of this.tokens.entries()) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (value.expiresAt &lt; now) {</span>
+<span class="cstat-no" title="statement not covered" >        this.tokens.delete(key);</span>
       }
     }
   }
@@ -632,7 +632,7 @@ VibeWell - Your well-being journey starts here
 // Set up periodic cleanup of expired tokens
 <span class="cstat-no" title="statement not covered" >setInterval(</span>
 <span class="fstat-no" title="function not covered" >  () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    MagicLinkService?.cleanupExpiredTokens();</span>
+<span class="cstat-no" title="statement not covered" >    MagicLinkService.cleanupExpiredTokens();</span>
   },
   60 * 60 * 1000,
 ); // Run every hour
@@ -643,7 +643,7 @@ VibeWell - Your well-being journey starts here
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

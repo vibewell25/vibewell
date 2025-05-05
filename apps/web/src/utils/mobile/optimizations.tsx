@@ -1,5 +1,4 @@
-/**
- * Mobile optimization implementation functions
+functions
  */
 import { DevicePerformanceProfile } from './types';
 
@@ -27,9 +26,7 @@ export function applyLazyLoading(
     // For low-end devices, we'll also set decoding to async
     if (deviceProfile.type !== 'high') {
       imgElement.setAttribute('decoding', 'async');
-    }
-
-    // If the image has a src attribute, check if it needs resizing
+// If the image has a src attribute, check if it needs resizing
     if (imgElement.src && !imgElement.src.includes('data:')) {
       // Don't optimize SVGs and already optimized images
       if (!imgElement.src.includes('.svg') && !imgElement.src.includes('?w=')) {
@@ -37,14 +34,9 @@ export function applyLazyLoading(
           const originalUrl = new URL(imgElement.src);
           const optimizedUrl = generateOptimizedImageUrl(originalUrl.toString(), maxImageWidth);
           imgElement.src = optimizedUrl;
-        } catch (e) {
+catch (e) {
           // Invalid URL, skip optimization
-        }
-      }
-    }
-  });
-
-  // Pre-connect to image CDNs if used in the page
+// Pre-connect to image CDNs if used in the page
   const imageDomains = [
     'images.unsplash.com',
     'res.cloudinary.com',
@@ -64,10 +56,6 @@ export function applyLazyLoading(
       link.href = `https://${domain}`;
       link.crossOrigin = 'anonymous';
       document.head.appendChild(link);
-    }
-  });
-}
-
 /**
  * Create a throttled function that limits execution
  * @param func - Function to throttle
@@ -90,22 +78,15 @@ export function throttle<T extends (...args: any[]) => any>(
 
       setTimeout(() => {
         inThrottle = false;
-      }, limit);
-    } else {
+limit);
+else {
       clearTimeout(lastFunc);
       lastFunc = setTimeout(
         () => {
           if (Date.now() - lastRan >= limit) {
             func.apply(this, args);
             lastRan = Date.now();
-          }
-        },
-        limit - (Date.now() - lastRan),
-      );
-    }
-  };
-}
-
+limit - (Date.now() - lastRan),
 /**
  * Apply event throttling to improve performance on mobile devices
  * @param deviceProfile - Device performance profile
@@ -134,19 +115,13 @@ export function applyEventThrottling(deviceProfile: DevicePerformanceProfile): v
 
       if (typeof listener === 'function') {
         throttledListener = throttle(listener, throttleTime);
-      } else {
+else {
         const originalHandleEvent = listener.handleEvent;
         listener.handleEvent = throttle(originalHandleEvent, throttleTime);
         throttledListener = listener;
-      }
-
-      originalAddEventListener.call(this, type, throttledListener, options);
-    } else {
+originalAddEventListener.call(this, type, throttledListener, options);
+else {
       originalAddEventListener.call(this, type, listener, options);
-    }
-  };
-}
-
 /**
  * Generate an optimized image URL with proper width parameters
  * @param originalUrl - The original image URL
@@ -163,7 +138,7 @@ export function generateOptimizedImageUrl(originalUrl: string, maxWidth: number)
       url.searchParams.set('w', maxWidth.toString());
       url.searchParams.set('q', '75');
       url.searchParams.set('auto', 'format');
-    } else if (url.hostname === 'res.cloudinary.com') {
+else if (url.hostname === 'res.cloudinary.com') {
       // Handle Cloudinary URLs
       const parts = url.pathname.split('/');
       const uploadIndex = parts.findIndex((p) => p === 'upload');
@@ -171,12 +146,7 @@ export function generateOptimizedImageUrl(originalUrl: string, maxWidth: number)
       if (uploadIndex !== -1) {
         parts.splice(uploadIndex + 1, 0, `w_${maxWidth},q_auto:eco`);
         url.pathname = parts.join('/');
-      }
-    }
-
-    return url.toString();
-  } catch (e) {
+return url.toString();
+catch (e) {
     // If URL parsing fails, return the original
     return originalUrl;
-  }
-}

@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-require-imports */
+imports */
 // Import type definitions for custom matchers
 
 /**
@@ -28,27 +27,18 @@ export interface AxeOptions {
   rules?: {
     [key: string]: {
       enabled: boolean;
-    };
-  };
-  runOnly?: {
+runOnly?: {
     type: 'tag' | 'rule';
     values: string[];
-  };
-}
-
 export interface RenderOptions {
   container?: HTMLElement;
   baseElement?: HTMLElement;
   hydrate?: boolean;
   wrapper?: React.ComponentType<any>;
   queries?: any;
-}
-
 export interface TestAccessibilityOptions {
   axeOptions?: AxeOptions;
   renderOptions?: RenderOptions;
-}
-
 export interface KeyboardNavigationOptions {
   startElement?: HTMLElement;
   tabSequence?: HTMLElement[];
@@ -56,54 +46,36 @@ export interface KeyboardNavigationOptions {
     key: string;
     selector: string;
     expectedAction: () => boolean;
-  }>;
-}
-
+>;
 export interface ScreenReaderOptions {
   announcements?: string[];
   ariaLive?: 'polite' | 'assertive';
   waitForAnnouncement?: boolean;
-}
-
 export interface ColorContrastOptions {
   foregroundSelector?: string;
   backgroundSelector?: string;
   minRatio?: number;
-}
-
 export interface AriaRoleOptions {
   roles?: AriaRoleTest[];
-}
-
 export interface TestElement {
   selector: string;
   expectedRole?: string;
   name?: string;
   description?: string;
-}
-
 export interface AriaRoleTest {
   role: string;
   elements: TestElement[];
-}
-
 export interface FocusTrapOptions {
   containerSelector: string;
   triggerSelector: string;
   expectedTrappedElements: string[];
-}
-
 export interface TouchTargetOptions {
   elements: string[];
   minSize?: number; // px
-}
-
 export interface LandmarkTest {
   role: string;
   count: number;
   selector?: string;
-}
-
 // Default axe configuration
 export const axeConfig: AxeOptions = {
   rules: {
@@ -114,9 +86,6 @@ export const axeConfig: AxeOptions = {
     'aria-required-children': { enabled: true },
     'aria-valid-attr-value': { enabled: true },
     'aria-hidden-focus': { enabled: true },
-  },
-};
-
 /**
  * Tests a component for accessibility issues using axe
  *
@@ -136,8 +105,6 @@ export async function {
   const results = await axe(container, axeOptions);
   expect(results).toHaveNoViolations();
   return results;
-}
-
 /**
  * Tests keyboard navigation through a component
  *
@@ -154,9 +121,7 @@ export async function {
   // Set focus on starting element if provided
   if (startElement) {
     startElement.focus();
-  }
-
-  // Test tab sequence if provided
+// Test tab sequence if provided
   if (tabSequence && tabSequence.length > 0) {
     let currentElement = document.activeElement;
 
@@ -166,24 +131,16 @@ export async function {
 
       expect(document.activeElement).toBe(expectedElement);
       currentElement = document.activeElement;
-    }
-  }
-
-  // Test custom key interactions
+// Test custom key interactions
   for (const { key, selector, expectedAction } of customKeys) {
     const element = document.querySelector(selector) as HTMLElement;
     if (!element) {
       throw new Error(`Element not found for selector: ${selector}`);
-    }
-
-    element.focus();
+element.focus();
     fireEvent.keyDown(element, { key });
     fireEvent.keyUp(element, { key });
 
     expect(expectedAction()).toBe(true);
-  }
-}
-
 /**
  * Tests if screen reader announcements work correctly
  *
@@ -215,19 +172,13 @@ export async function {
       if (waitForAnnouncement) {
         // Wait for announcement to be processed
         await new Promise((resolve) => setTimeout(resolve, 50));
-      }
-
-      // Check that the announcement is in the DOM and potentially visible to screen readers
+// Check that the announcement is in the DOM and potentially visible to screen readers
       expect(screen.getByText(announcement)).toBeInTheDocument();
 
       rerender(ui);
-    }
-  } finally {
+finally {
     // Clean up
     document.body.removeChild(liveRegion);
-  }
-}
-
 /**
  * Parses an RGB color string into an object
  *
@@ -238,15 +189,10 @@ function parseRgb(rgb: string): { r: number; g: number; b: number } {
   const match = rgb.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/);
   if (!match) {
     throw new Error(`Invalid RGB format: ${rgb}`);
-  }
-
-  return {
+return {
     r: parseInt(match[1], 10),
     g: parseInt(match[2], 10),
     b: parseInt(match[3], 10),
-  };
-}
-
 /**
  * Converts an sRGB color component to linear RGB
  *
@@ -259,8 +205,6 @@ function srgbToLinear(color: number): number {
 
   // Convert sRGB to linear RGB
   return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-}
-
 /**
  * Calculates the relative luminance of a color
  *
@@ -274,8 +218,6 @@ function getLuminance(rgb: { r: number; g: number; b: number }): number {
 
   // Calculate luminance per WCAG formula
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-}
-
 /**
  * Calculates contrast ratio between two colors
  *
@@ -296,8 +238,6 @@ function calculateContrastRatio(
 
   // Calculate contrast ratio
   return (lighter + 0.05) / (darker + 0.05);
-}
-
 /**
  * Tests color contrast between elements
  *
@@ -311,16 +251,14 @@ export async function {
     foregroundSelector = 'body',
     backgroundSelector = 'body',
     minRatio = 4.5, // WCAG AA standard
-  } = options;
+= options;
 
   const foreground = document.querySelector(foregroundSelector) as HTMLElement;
   const background = document.querySelector(backgroundSelector) as HTMLElement;
 
   if (!foreground || !background) {
     throw new Error('Elements not found for contrast testing');
-  }
-
-  const foregroundColor = getComputedStyle(foreground).color;
+const foregroundColor = getComputedStyle(foreground).color;
   const backgroundColor = getComputedStyle(background).backgroundColor;
 
   const rgbForeground = parseRgb(foregroundColor);
@@ -330,8 +268,6 @@ export async function {
 
   expect(ratio).toBeGreaterThanOrEqual(minRatio);
   return ratio;
-}
-
 /**
  * Tests if ARIA roles are correctly applied
  *
@@ -352,9 +288,7 @@ export async function {
       const domElement = document.querySelector(selector) as HTMLElement;
       if (!domElement) {
         throw new Error(`Element not found for selector: ${selector}`);
-      }
-
-      // Test role
+// Test role
       expect(domElement).toHaveAttribute('role', expectedRole);
 
       // Test aria-label or aria-labelledby if name provided
@@ -362,16 +296,9 @@ export async function {
         expect(
           domElement.hasAttribute('aria-label') || domElement.hasAttribute('aria-labelledby'),
         ).toBe(true);
-      }
-
-      // Test aria-describedby if description provided
+// Test aria-describedby if description provided
       if (description) {
         expect(domElement).toHaveAttribute('aria-describedby');
-      }
-    }
-  }
-}
-
 /**
  * Tests if focus is properly trapped in a modal or dialog
  *
@@ -386,23 +313,17 @@ export async function {
   const trigger = document.querySelector(triggerSelector) as HTMLElement;
   if (!trigger) {
     throw new Error(`Trigger element not found: ${triggerSelector}`);
-  }
-
-  // Open the modal/dialog
+// Open the modal/dialog
   trigger.click();
 
   // Get the container after opening
   const container = document.querySelector(containerSelector) as HTMLElement;
   if (!container) {
     throw new Error(`Container element not found after trigger: ${containerSelector}`);
-  }
-
-  // Find all focusable elements
+// Find all focusable elements
   const focusableElements = container.querySelectorAll(
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-  );
-
-  // Check that expected elements match actual focusable elements
+// Check that expected elements match actual focusable elements
   expect(focusableElements.length).toBe(expectedTrappedElements.length);
 
   // Test tab navigation within the trap
@@ -418,8 +339,6 @@ export async function {
   firstElement.focus();
   fireEvent.keyDown(firstElement, { key: 'Tab', shiftKey: true });
   expect(document.activeElement).toBe(lastElement);
-}
-
 /**
  * Tests if touch targets meet minimum size requirements
  *
@@ -435,17 +354,12 @@ export async function {
     const element = document.querySelector(selector) as HTMLElement;
     if (!element) {
       throw new Error(`Element not found for selector: ${selector}`);
-    }
-
-    const rect = element.getBoundingClientRect();
+const rect = element.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
 
     expect(width).toBeGreaterThanOrEqual(minSize);
     expect(height).toBeGreaterThanOrEqual(minSize);
-  }
-}
-
 /**
  * Tests if landmarks are properly defined
  *
@@ -460,9 +374,6 @@ export async function {
     const elements = document.querySelectorAll(query);
 
     expect(elements.length).toBe(count);
-  }
-}
-
 /**
  * Tests heading hierarchy (no skipped levels)
  *
@@ -480,9 +391,6 @@ export async function {
     // Heading level should not jump by more than one
     expect(level - prevLevel).toBeLessThanOrEqual(1);
     prevLevel = level;
-  }
-}
-
 /**
  * Tests for image accessibility
  *
@@ -500,10 +408,6 @@ export async function {
     // Decorative images should have empty alt text
     if (img.getAttribute('role') === 'presentation') {
       expect(img.getAttribute('alt')).toBe('');
-    }
-  }
-}
-
 // Export all testing functions
 const accessibilityTesting = {
   testAccessibility,
@@ -516,6 +420,4 @@ const accessibilityTesting = {
   testLandmarks,
   testHeadingHierarchy,
   testImageAccessibility,
-};
-
 export default accessibilityTesting;

@@ -9,8 +9,6 @@ export interface CertificationRequirement {
   minimumHours?: number;
   validityPeriod?: number; // in months
   isRequired: boolean;
-}
-
 export interface CertificationProgress {
   requirementId: string;
   status: 'not_started' | 'in_progress' | 'completed' | 'expired';
@@ -21,8 +19,6 @@ export interface CertificationProgress {
   verificationDocument?: string;
   verifiedBy?: string;
   notes?: string;
-}
-
 export interface Certification extends Document {
   name: string;
   provider: string;
@@ -33,8 +29,6 @@ export interface Certification extends Document {
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
-}
-
 export interface PractitionerCertification extends Document {
   practitionerId: Types.ObjectId;
   certificationId: Types.ObjectId;
@@ -46,8 +40,6 @@ export interface PractitionerCertification extends Document {
   verificationUrl?: string;
   createdAt: Date;
   updatedAt: Date;
-}
-
 const certificationSchema = new Schema<Certification>({
   name: { type: String, required: true },
   provider: { type: String, required: true },
@@ -57,8 +49,7 @@ const certificationSchema = new Schema<Certification>({
     type: String,
     enum: ['beginner', 'intermediate', 'advanced', 'expert'],
     required: true,
-  },
-  requirements: [
+requirements: [
     {
       id: { type: String, required: true },
       name: { type: String, required: true },
@@ -67,18 +58,14 @@ const certificationSchema = new Schema<Certification>({
         type: String,
         enum: ['training', 'exam', 'experience', 'document'],
         required: true,
-      },
-      minimumScore: Number,
+minimumScore: Number,
       minimumHours: Number,
       validityPeriod: Number,
       isRequired: { type: Boolean, default: true },
-    },
-  ],
+],
   isActive: { type: Boolean, default: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
-});
-
 const practitionerCertificationSchema = new Schema<PractitionerCertification>({
   practitionerId: { type: Schema.Types.ObjectId, ref: 'Practitioner', required: true },
   certificationId: { type: Schema.Types.ObjectId, ref: 'Certification', required: true },
@@ -86,32 +73,27 @@ const practitionerCertificationSchema = new Schema<PractitionerCertification>({
     type: String,
     enum: ['pending', 'in_progress', 'completed', 'expired'],
     default: 'pending',
-  },
-  progress: [
+progress: [
     {
       requirementId: { type: String, required: true },
       status: {
         type: String,
         enum: ['not_started', 'in_progress', 'completed', 'expired'],
         default: 'not_started',
-      },
-      completionDate: Date,
+completionDate: Date,
       expiryDate: Date,
       score: Number,
       hoursCompleted: Number,
       verificationDocument: String,
       verifiedBy: String,
       notes: String,
-    },
-  ],
+],
   issueDate: Date,
   expiryDate: Date,
   certificateNumber: String,
   verificationUrl: String,
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
-});
-
 // Add indexes for better query performance
 certificationSchema.index({ name: 1, provider: 1 }, { unique: true });
 certificationSchema.index({ category: 1 });
@@ -126,12 +108,8 @@ practitionerCertificationSchema.index({ expiryDate: 1 });
 certificationSchema.pre('save', function (next) {
   this.updatedAt = new Date();
   next();
-});
-
 practitionerCertificationSchema.pre('save', function (next) {
   this.updatedAt = new Date();
   next();
-});
-
 export {};
 export {};

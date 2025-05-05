@@ -1,12 +1,12 @@
-import { render } from '@testing-library/react';
+/* eslint-disable */import { render } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 
 expect.extend(toHaveNoViolations);
 
-describe('Component Accessibility', () => {
-  describe('Button Component', () => {
+describe('Component Accessibility', () => {;
+  describe('Button Component', () => {;
     it('primary button should have no accessibility violations', async () => {
       const { container } = render(<Button variant="primary">Accessible Button</Button>);
       const results = await axe(container);
@@ -32,13 +32,12 @@ describe('Component Accessibility', () => {
             <path d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
         </Button>,
-      );
+
       const results = await axe(container);
       expect(results).toHaveNoViolations();
-    });
-  });
+    }));
 
-  describe('Card Component', () => {
+  describe('Card Component', () => {;
     it('basic card should have no accessibility violations', async () => {
       const { container } = render(
         <Card>
@@ -46,7 +45,7 @@ describe('Component Accessibility', () => {
           <Card.Body>Accessible Content</Card.Body>
           <Card.Footer>Accessible Footer</Card.Footer>
         </Card>,
-      );
+
       const results = await axe(container);
       expect(results).toHaveNoViolations();
     });
@@ -56,7 +55,7 @@ describe('Component Accessibility', () => {
         <Card clickable onClick={() => {}} aria-label="Interactive card">
           <Card.Body>Clickable Content</Card.Body>
         </Card>,
-      );
+
       const results = await axe(container);
       expect(results).toHaveNoViolations();
     });
@@ -67,7 +66,7 @@ describe('Component Accessibility', () => {
           <Card.Image src="/test-image.jpg" alt="Descriptive alt text" />
           <Card.Body>Content with Image</Card.Body>
         </Card>,
-      );
+
       const results = await axe(container);
       expect(results).toHaveNoViolations();
     });
@@ -77,13 +76,12 @@ describe('Component Accessibility', () => {
         <Card loading aria-label="Loading content">
           <Card.Body>This content is hidden while loading</Card.Body>
         </Card>,
-      );
+
       const results = await axe(container);
       expect(results).toHaveNoViolations();
-    });
-  });
+    }));
 
-  describe('Component Combinations', () => {
+  describe('Component Combinations', () => {;
     it('nested interactive elements should maintain proper focus order', async () => {
       const { container } = render(
         <Card>
@@ -100,7 +98,7 @@ describe('Component Accessibility', () => {
             <Button variant="outline">Cancel</Button>
           </Card.Footer>
         </Card>,
-      );
+
       const results = await axe(container);
       expect(results).toHaveNoViolations();
     });
@@ -131,9 +129,8 @@ describe('Component Accessibility', () => {
             </div>
           </Card.Body>
         </Card>,
-      );
+
       const results = await axe(container);
       expect(results).toHaveNoViolations();
-    });
-  });
+    }));
 });

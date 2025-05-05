@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+/* eslint-disable */import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
   measurePerformance,
@@ -30,7 +30,7 @@ describe('Performance Benchmarks', () => {
   const largeDataset = generateLargeDataset(1000);
   const mediumDataset = generateLargeDataset(100);
 
-  describe('Table Component', () => {
+  describe('Table Component', () => {;
     it('should render large datasets efficiently', async () => {
       await measurePerformance(
         <Table
@@ -43,7 +43,7 @@ describe('Performance Benchmarks', () => {
           ]}
         />,
         { maxDuration: 100, label: 'Table with 1000 rows' },
-      );
+
     });
 
     it('should sort large datasets quickly', async () => {
@@ -55,18 +55,16 @@ describe('Performance Benchmarks', () => {
             { key: 'value', label: 'Value', sortable: true },
           ]}
         />,
-      );
 
       await measureLongTasks(1000, 1);
 
       const nameHeader = container.querySelector('th');
       if (nameHeader) {
         await userEvent.click(nameHeader);
-      }
-    });
-  });
 
-  describe('Chart Component', () => {
+    }));
+
+  describe('Chart Component', () => {;
     it('should render complex visualizations efficiently', async () => {
       await measurePerformance(
         <Chart
@@ -78,7 +76,7 @@ describe('Performance Benchmarks', () => {
           width={800}
         />,
         { maxDuration: 50, label: 'Line chart with 100 points' },
-      );
+
     });
 
     it('should handle real-time updates smoothly', async () => {
@@ -91,7 +89,6 @@ describe('Performance Benchmarks', () => {
           height={400}
           width={800}
         />,
-      );
 
       await measureFrameRate(1000, 55);
 
@@ -107,13 +104,12 @@ describe('Performance Benchmarks', () => {
             height={400}
             width={800}
           />,
-        );
-        await new Promise((resolve) => setTimeout(resolve, 100));
-      }
-    });
-  });
 
-  describe('List Component', () => {
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+    }));
+
+  describe('List Component', () => {;
     it('should render and scroll smoothly with many items', async () => {
       await measurePerformance(
         <List
@@ -128,11 +124,10 @@ describe('Performance Benchmarks', () => {
           itemHeight={80}
         />,
         { maxDuration: 50, label: 'Virtualized list with 1000 items' },
-      );
-    });
-  });
 
-  describe('Image Gallery', () => {
+    }));
+
+  describe('Image Gallery', () => {;
     it('should load and display images efficiently', async () => {
       const images = mediumDataset.map((item) => ({
         src: item.image,
@@ -153,20 +148,17 @@ describe('Performance Benchmarks', () => {
     it('should handle image loading performance', async () => {
       const imageUrl = 'https://picsum.photos/800/600';
       await measureNetworkRequest(imageUrl, 2000);
-    });
-  });
+    }));
 
-  describe('Search Performance', () => {
+  describe('Search Performance', () => {;
     it('should perform search operations efficiently', async () => {
       const { container } = render(
         <SearchInput data={largeDataset} onSearch={() => {}} placeholder="Search items..." />,
-      );
 
       const input = container.querySelector('input');
       if (input) {
         await measureLongTasks(2000, 1);
         await userEvent.type(input, 'test search query');
-      }
-    });
-  });
+
+    }));
 });

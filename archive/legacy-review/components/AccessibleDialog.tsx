@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -9,15 +7,13 @@ interface AccessibleDialogProps {
   title: string;
   children: React.ReactNode;
   className?: string;
-}
-
 export const AccessibleDialog: React.FC<AccessibleDialogProps> = ({
   isOpen,
   onClose,
   title,
   children,
   className = '',
-}) => {
+) => {
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,27 +26,19 @@ export const AccessibleDialog: React.FC<AccessibleDialogProps> = ({
         if (e.key === 'Tab') {
           const focusableElements = dialogRef.current.querySelectorAll(
             'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-          );
-
-          if (focusableElements) {
+if (focusableElements) {
             const firstElement = focusableElements[0] as HTMLElement;
             const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
             if (e.shiftKey && document.activeElement === firstElement) {
               lastElement.focus();
               e.preventDefault();
-            } else if (!e.shiftKey && document.activeElement === lastElement) {
+else if (!e.shiftKey && document.activeElement === lastElement) {
               firstElement.focus();
               e.preventDefault();
-            }
-          }
-        }
-      };
-
-      document.addEventListener('keydown', handleTabKey);
+document.addEventListener('keydown', handleTabKey);
       return () => document.removeEventListener('keydown', handleTabKey);
-    }
-  }, [isOpen]);
+[isOpen]);
 
   if (!isOpen) return null;
 
@@ -80,7 +68,4 @@ export const AccessibleDialog: React.FC<AccessibleDialogProps> = ({
       </div>
     </div>,
     document.body,
-  );
-};
-
 export default AccessibleDialog;

@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { ProductService, ProductFilter } from '@/services/product-service';
@@ -14,7 +12,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AlertCircle, Search } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -36,9 +34,6 @@ function ProductsLoadingSkeleton() {
           ))}
       </div>
     </div>
-  );
-}
-
 // Content component that uses useSearchParams
 function ProductsContent() {
   const searchParams = useSearchParams();
@@ -93,9 +88,7 @@ function ProductsContent() {
       if (sortParam) {
         const [field, direction] = sortParam.split('-') as [any, any];
         setSort({ field, direction });
-      }
-    }
-  }, [searchParams]);
+[searchParams]);
 
   // Fetch filter options on component mount
   useEffect(() => {
@@ -115,13 +108,10 @@ function ProductsContent() {
         // Fetch tags
         const tags = await productService.getProductTags();
         setTags(tags);
-      } catch (error) {
+catch (error) {
         console.error('Error fetching filter options:', error);
-      }
-    }
-
-    fetchFilterOptions();
-  }, []);
+fetchFilterOptions();
+[]);
 
   // Fetch products based on filters, sort and pagination
   useEffect(() => {
@@ -141,20 +131,15 @@ function ProductsContent() {
           sort,
           currentPage,
           limit,
-        );
-
-        setProducts(products);
+setProducts(products);
         setTotalProducts(total);
-      } catch (error) {
+catch (error) {
         console.error('Error fetching products:', error);
         setError('Failed to load products. Please try again later.');
-      } finally {
+finally {
         setLoading(false);
-      }
-    }
-
-    fetchProducts();
-  }, [filter, sort, currentPage, limit, searchTerm]);
+fetchProducts();
+[filter, sort, currentPage, limit, searchTerm]);
 
   // Handle search form submission
   const handleSearch = (e: React.FormEvent) => {
@@ -166,14 +151,11 @@ function ProductsContent() {
     const params = new URLSearchParams(searchParams.toString());
     if (searchTerm) {
       params.set('q', searchTerm);
-    } else {
+else {
       params.delete('q');
-    }
-    params.set('page', '1');
+params.set('page', '1');
     router.push(`/products?${params.toString()}`);
-  };
-
-  // Handle filter changes
+// Handle filter changes
   const handleFilterChange = (newFilter: ProductFilter) => {
     setFilter(newFilter);
     setCurrentPage(1); // Reset to first page when filter changes
@@ -185,32 +167,22 @@ function ProductsContent() {
     // Add filter params to URL
     if (newFilter.categories && newFilter.categories.length > 0) {
       params.set('category', newFilter.categories[0]);
-    } else {
+else {
       params.delete('category');
-    }
-
-    if (newFilter.brands && newFilter.brands.length > 0) {
+if (newFilter.brands && newFilter.brands.length > 0) {
       params.set('brand', newFilter.brands[0]);
-    } else {
+else {
       params.delete('brand');
-    }
-
-    if (newFilter.minPrice) {
+if (newFilter.minPrice) {
       params.set('minPrice', newFilter.minPrice.toString());
-    } else {
+else {
       params.delete('minPrice');
-    }
-
-    if (newFilter.maxPrice) {
+if (newFilter.maxPrice) {
       params.set('maxPrice', newFilter.maxPrice.toString());
-    } else {
+else {
       params.delete('maxPrice');
-    }
-
-    router.push(`/products?${params.toString()}`);
-  };
-
-  // Handle sort changes
+router.push(`/products?${params.toString()}`);
+// Handle sort changes
   const handleSortChange = (value: string) => {
     const [field, direction] = value.split('-') as [any, any];
     setSort({ field, direction });
@@ -219,9 +191,7 @@ function ProductsContent() {
     const params = new URLSearchParams(searchParams.toString());
     params.set('sort', value);
     router.push(`/products?${params.toString()}`);
-  };
-
-  // Handle pagination
+// Handle pagination
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
 
@@ -231,9 +201,7 @@ function ProductsContent() {
     router.push(`/products?${params.toString()}`);
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  return (
+return (
     (<div className="container mx-auto py-8">
       <h1 className="mb-6 text-3xl font-bold">Browse Products</h1>
       {/* Search and Sort */}
@@ -337,9 +305,6 @@ function ProductsContent() {
         </div>
       </div>
     </div>)
-  );
-}
-
 // Main page component with Suspense
 export default function ProductsPage() {
   return (
@@ -348,9 +313,6 @@ export default function ProductsPage() {
         <ProductsContent />
       </Suspense>
     </Layout>
-  );
-}
-
 // Add skeleton component for loading state
 function ProductsPageSkeleton() {
   return (
@@ -364,5 +326,3 @@ function ProductsPageSkeleton() {
         </div>
       </div>
     </div>
-  );
-}

@@ -10,8 +10,6 @@ type Subscription = {
   status: string;
   currentPeriodStart: string;
   currentPeriodEnd: string;
-};
-
 const SubscriptionsScreen: React.FC = () => {
   const { token } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -23,33 +21,25 @@ const SubscriptionsScreen: React.FC = () => {
     try {
       const res = await fetch(`${serverBaseUrl}/api/stripe/subscriptions`, {
         headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
+const data = await res.json();
       setSubs(data.subscriptions);
-    } catch {
+catch {
       Alert.alert('Error', 'Failed to fetch subscriptions');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  const cancelSub = async (id: string) => {
+const cancelSub = async (id: string) => {
     try {
       const res = await fetch(`${serverBaseUrl}/api/stripe/subscriptions/cancel`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ subscriptionId: id }),
-      });
-      if (!res.ok) throw new Error();
+if (!res.ok) throw new Error();
       Alert.alert('Canceled', 'Subscription canceled');
       await trackEvent('SubscriptionCanceled', { subscriptionId: id });
       fetchSubs();
-    } catch {
+catch {
       Alert.alert('Error', 'Failed to cancel subscription');
-    }
-  };
-
-  useEffect(() => { fetchSubs(); }, []);
+useEffect(() => { fetchSubs(); }, []);
 
   if (loading) return <ActivityIndicator size="large" style={{ flex: 1 }} />;
 
@@ -69,12 +59,7 @@ const SubscriptionsScreen: React.FC = () => {
       )}
       contentContainerStyle={styles.container}
     />
-  );
-};
-
 const styles = StyleSheet.create({
   container: { padding: 16 },
   item: { marginBottom: 16, padding: 16, backgroundColor: '#fff', borderRadius: 8, elevation: 2 },
-});
-
 export default SubscriptionsScreen;

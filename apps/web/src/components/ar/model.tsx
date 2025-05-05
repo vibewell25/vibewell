@@ -24,8 +24,6 @@ const optimizationConfig = {
   geometryPrecompute: true,
   textureAnisotropy: 4,
   adaptiveRendering: true,
-};
-
 /**
  * Model component for rendering 3D models in ThreeARViewer
  *
@@ -45,12 +43,12 @@ export const Model = React.memo(
     type,
     onLoad,
     intensity = 5,
-  }: {
+: {
     blobUrl: string;
     type: string;
     onLoad?: () => void;
     intensity?: number;
-  }) {
+) {
     const modelRef = useRef<THREE.Group>(null);
     const { scene, camera, gl } = useThree();
 
@@ -70,23 +68,14 @@ export const Model = React.memo(
             // Optimize buffer attributes if not already
             if (object.geometry.index && !object.geometry.attributes.normal) {
               object.geometry.computeVertexNormals();
-            }
-          }
-
-          // Optimize materials
+// Optimize materials
           if (object.material) {
             if (Array.isArray(object.material)) {
               object.material.forEach((material) => {
                 optimizeMaterial(material);
-              });
-            } else {
+else {
               optimizeMaterial(object.material);
-            }
-          }
-        }
-      });
-
-      // Optimize camera settings
+// Optimize camera settings
       camera.near = 0.1;
       camera.far = 1000;
       camera.updateProjectionMatrix();
@@ -95,13 +84,9 @@ export const Model = React.memo(
       if (optimizationConfig.adaptiveRendering) {
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
           navigator.userAgent,
-        );
-
-        if (isMobile) {
+if (isMobile) {
           gl.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-        }
-      }
-    }, [scene, camera, gl]);
+[scene, camera, gl]);
 
     // Optimize material function
     const optimizeMaterial = useCallback((material: THREE.Material) => {
@@ -124,10 +109,7 @@ export const Model = React.memo(
             material.map.minFilter = THREE.LinearMipmapLinearFilter;
             material.map.magFilter = THREE.LinearFilter;
             material.map.anisotropy = optimizationConfig.textureAnisotropy;
-          }
-        }
-      }
-    }, []);
+[]);
 
     // Process textures for optimization
     const applyTextureOptimizations = useCallback((material: THREE.Material) => {
@@ -147,9 +129,7 @@ export const Model = React.memo(
 
         // Track texture for cleanup
         globalTexturesRef.push(texture);
-      };
-
-      // Apply to all possible texture slots in standard materials
+// Apply to all possible texture slots in standard materials
       if (material instanceof THREE.MeshStandardMaterial) {
         processTexture(material.map);
         processTexture(material.normalMap);
@@ -157,8 +137,7 @@ export const Model = React.memo(
         processTexture(material.metalnessMap);
         processTexture(material.aoMap);
         processTexture(material.emissiveMap);
-      }
-    }, []);
+[]);
 
     // Apply any stored transforms from localStorage
     const applyStoredTransforms = useCallback(() => {
@@ -171,11 +150,9 @@ export const Model = React.memo(
           modelRef.current.position.fromArray(position);
           modelRef.current.rotation.fromArray(rotation);
           modelRef.current.scale.fromArray(scale);
-        } catch (e) {
+catch (e) {
           console.warn('Error applying stored transforms:', e);
-        }
-      }
-    }, [type]);
+[type]);
 
     // Optimize loaded model
     const optimizeLoadedModel = useCallback(
@@ -195,31 +172,19 @@ export const Model = React.memo(
               // Compute bounding data if not already done
               if (!object.geometry.boundingBox) {
                 object.geometry.computeBoundingBox();
-              }
-              if (!object.geometry.boundingSphere) {
+if (!object.geometry.boundingSphere) {
                 object.geometry.computeBoundingSphere();
-              }
-            }
-
-            // Optimize materials
+// Optimize materials
             if (object.material) {
               if (Array.isArray(object.material)) {
                 object.material.forEach((material) => {
                   optimizeMaterial(material);
                   applyTextureOptimizations(material);
-                });
-              } else {
+else {
                 optimizeMaterial(object.material);
                 applyTextureOptimizations(object.material);
-              }
-            }
-          }
-        });
-      },
-      [optimizeMaterial, applyTextureOptimizations],
-    );
-
-    // Optimized model loading
+[optimizeMaterial, applyTextureOptimizations],
+// Optimized model loading
     useEffect(() => {
       // Check cache first
       if (modelCache.has(blobUrl)) {
@@ -229,21 +194,15 @@ export const Model = React.memo(
           // Clear previous model
           while (modelRef.current.children.length > 0) {
             modelRef.current.remove(modelRef.current.children[0]);
-          }
-
-          // Add cached model
+// Add cached model
           modelRef.current.add(cachedModel);
 
           // Restore saved position if exists
           applyStoredTransforms();
-        }
-
-        // Call onLoad
+// Call onLoad
         onLoad.();
         return;
-      }
-
-      // Progressive loading with optimized loader
+// Progressive loading with optimized loader
       const loader = new GLTFLoader();
 
       // Use Draco compression loader for better performance
@@ -264,9 +223,7 @@ export const Model = React.memo(
             // Clear previous model
             while (modelRef.current.children.length > 0) {
               modelRef.current.remove(modelRef.current.children[0]);
-            }
-
-            // Add new model
+// Add new model
             modelRef.current.add(gltf.scene);
 
             // Apply stored transforms
@@ -284,36 +241,22 @@ export const Model = React.memo(
               const firstKey = modelCache.keys().next().value;
               if (firstKey) {
                 modelCache.delete(firstKey);
-              }
-            }
-          }
-
-          onLoad.();
-        },
-        undefined,
+onLoad.();
+undefined,
         (error) => {
           console.error('Error loading model:', error);
-        },
-      );
-
-      return () => {
+return () => {
         URL.revokeObjectURL(blobUrl);
-      };
-    }, [blobUrl, type, onLoad, applyStoredTransforms, optimizeLoadedModel]);
+[blobUrl, type, onLoad, applyStoredTransforms, optimizeLoadedModel]);
 
     return (
       <group ref={modelRef}>
         {/* Model content will be added by the loader */}
         <ModelControls modelRef={modelRef} type={type} intensity={intensity} />
       </group>
-    );
-  },
-  (prevProps, nextProps) => {
+(prevProps, nextProps) => {
     // Custom comparison for memoization
     return (
       prevProps.blobUrl === nextProps.blobUrl &&
       prevProps.type === nextProps.type &&
       prevProps.intensity === nextProps.intensity
-    );
-  },
-);

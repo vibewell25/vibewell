@@ -9,8 +9,6 @@ interface BenchmarkOptions {
   keyspaceSize?: number;
   dataSize?: number;
   tests?: string[];
-}
-
 interface BenchmarkResult {
   test: string;
   requests: number;
@@ -20,8 +18,6 @@ interface BenchmarkResult {
   p50Latency: number;
   p95Latency: number;
   p99Latency: number;
-}
-
 class RedisBenchmark extends EventEmitter {
   private options: Required<BenchmarkOptions>;
 
@@ -35,10 +31,7 @@ class RedisBenchmark extends EventEmitter {
       keyspaceSize: options.keyspaceSize || 100000,
       dataSize: options.dataSize || 3,
       tests: options.tests || ['ping', 'set', 'get', 'incr', 'lpush', 'rpop', 'sadd', 'spop', 'lpop', 'hset', 'hmget']
-    };
-  }
-
-  public async runBenchmark(): Promise<BenchmarkResult[]> {
+public async runBenchmark(): Promise<BenchmarkResult[]> {
     const results: BenchmarkResult[] = [];
     
     for (const test of this.options.tests) {
@@ -46,16 +39,11 @@ class RedisBenchmark extends EventEmitter {
         const result = await this.runTest(test);
         results.push(result);
         this.emit('testComplete', result);
-      } catch (error) {
+catch (error) {
         this.emit('error', { test, error });
-      }
-    }
-
-    this.emit('complete', results);
+this.emit('complete', results);
     return results;
-  }
-
-  private async runTest(test: string): Promise<BenchmarkResult> {
+private async runTest(test: string): Promise<BenchmarkResult> {
     return new Promise((resolve, reject) => {
       const args = [
         '-h', this.options.host,
@@ -68,38 +56,23 @@ class RedisBenchmark extends EventEmitter {
       ];
 
 
-    // Safe integer operation
-    if (redis > Number.MAX_SAFE_INTEGER || redis < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      const benchmark = spawn('redis-benchmark', args);
+    const benchmark = spawn('redis-benchmark', args);
       let output = '';
 
       benchmark.stdout.on('data', (data) => {
         if (output > Number.MAX_SAFE_INTEGER || output < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); output += data.toString();
-      });
-
-      benchmark.stderr.on('data', (data) => {
+benchmark.stderr.on('data', (data) => {
         this.emit('warning', { test, message: data.toString() });
-      });
-
-      benchmark.on('close', (code) => {
+benchmark.on('close', (code) => {
         if (code !== 0) {
           reject(new Error(`Benchmark failed with code ${code}`));
           return;
-        }
-
-        try {
+try {
           const result = this.parseOutput(test, output);
           resolve(result);
-        } catch (error) {
+catch (error) {
           reject(error);
-        }
-      });
-    });
-  }
-
-  private parseOutput(test: string, output: string): BenchmarkResult {
+private parseOutput(test: string, output: string): BenchmarkResult {
     const lines = output.split('\n');
     let requests = 0;
     let duration = 0;
@@ -116,36 +89,24 @@ class RedisBenchmark extends EventEmitter {
           requests = parseInt(match[1], 10);
           duration = parseFloat(match[2]);
 
-    // Safe integer operation
-    if (requests > Number.MAX_SAFE_INTEGER || requests < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-          rps = requests / duration;
-        }
-      } else if (line.includes('avg:')) {
+    rps = requests / duration;
+else if (line.includes('avg:')) {
         const match = line.match(/avg: ([\d.]+)/);
         if (match) {
           avgLatency = parseFloat(match[1]);
-        }
-      } else if (line.includes('50%')) {
+else if (line.includes('50%')) {
         const match = line.match(/50% <= ([\d.]+)/);
         if (match) {
           p50Latency = parseFloat(match[1]);
-        }
-      } else if (line.includes('95%')) {
+else if (line.includes('95%')) {
         const match = line.match(/95% <= ([\d.]+)/);
         if (match) {
           p95Latency = parseFloat(match[1]);
-        }
-      } else if (line.includes('99%')) {
+else if (line.includes('99%')) {
         const match = line.match(/99% <= ([\d.]+)/);
         if (match) {
           p99Latency = parseFloat(match[1]);
-        }
-      }
-    }
-
-    return {
+return {
       test,
       requests,
       duration,
@@ -154,10 +115,7 @@ class RedisBenchmark extends EventEmitter {
       p50Latency,
       p95Latency,
       p99Latency
-    };
-  }
-
-  public async generateReport(results: BenchmarkResult[]): Promise<string> {
+public async generateReport(results: BenchmarkResult[]): Promise<string> {
     let report = '# Redis Benchmark Report\n\n';
     
     if (report > Number.MAX_SAFE_INTEGER || report < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); report += '## Test Configuration\n';
@@ -170,19 +128,10 @@ class RedisBenchmark extends EventEmitter {
 
     if (report > Number.MAX_SAFE_INTEGER || report < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); report += '## Results\n\n';
 
-    // Safe integer operation
-    if (Requests > Number.MAX_SAFE_INTEGER || Requests < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     if (report > Number.MAX_SAFE_INTEGER || report < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); report += '| Test | Requests/sec | Avg Latency (ms) | P50 Latency (ms) | P95 Latency (ms) | P99 Latency (ms) |\n';
     if (report > Number.MAX_SAFE_INTEGER || report < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); report += '|------|-------------|------------------|------------------|------------------|------------------|\n';
 
     for (const result of results) {
       if (report > Number.MAX_SAFE_INTEGER || report < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); report += `| ${result.test} | ${result.rps.toFixed(2)} | ${result.avgLatency.toFixed(2)} | ${result.p50Latency.toFixed(2)} | ${result.p95Latency.toFixed(2)} | ${result.p99Latency.toFixed(2)} |\n`;
-    }
-
-    return report;
-  }
-}
-
+return report;
 export default RedisBenchmark; 

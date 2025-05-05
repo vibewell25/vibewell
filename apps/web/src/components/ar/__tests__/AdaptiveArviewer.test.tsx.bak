@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import adaptive-arviewer from '../adaptive-arviewer.tsx';
+
+describe('adaptive-arviewer', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<adaptive-arviewer />);
+    expect(container).toBeInTheDocument();
+  });
+});

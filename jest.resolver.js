@@ -7,8 +7,4 @@ module.exports = (path, options) => {
       // Redirect module field to main
       if (pkg.module) {
         delete pkg.module;
-      }
-      return pkg;
-    },
-  });
-}; 
+return pkg;

@@ -14,14 +14,12 @@ interface Endpoint {
     type: string;
     required: boolean;
     description: string;
-  }[];
+[];
   responses: {
     code: number;
     description: string;
     example?: object;
-  }[];
-}
-
+[];
 const endpoints: Endpoint[] = [
   {
     method: 'GET',
@@ -34,14 +32,12 @@ const endpoints: Endpoint[] = [
         type: 'number',
         required: false,
         description: 'Page number for pagination',
-      },
-      {
+{
         name: 'limit',
         type: 'number',
         required: false,
         description: 'Number of items per page',
-      },
-    ],
+],
     responses: [
       {
         code: 200,
@@ -52,16 +48,12 @@ const endpoints: Endpoint[] = [
               id: 'user_123',
               name: 'John Doe',
               email: 'john@example.com',
-            },
-          ],
+],
           total: 100,
           page: 1,
           limit: 10,
-        },
-      },
-    ],
-  },
-  {
+],
+{
     method: 'POST',
     path: '/api/bookings',
     description: 'Create a new booking',
@@ -72,25 +64,20 @@ const endpoints: Endpoint[] = [
         type: 'string',
         required: true,
         description: 'ID of the service to book',
-      },
-      {
+{
         name: 'date',
         type: 'string',
         required: true,
         description: 'Booking date and time (ISO 8601)',
-      },
-    ],
+],
     responses: [
       {
         code: 201,
         description: 'Booking created successfully',
-      },
-      {
+{
         code: 400,
         description: 'Invalid request parameters',
-      },
-    ],
-  },
+],
 ];
 
 export default function ApiDocumentation() {
@@ -122,7 +109,7 @@ export default function ApiDocumentation() {
                           : endpoint.method === 'PUT'
                             ? 'bg-yellow-100 text-yellow-800'
                             : 'bg-red-100 text-red-800'
-                    }`}
+`}
                   >
                     {endpoint.method}
                   </span>
@@ -188,7 +175,7 @@ export default function ApiDocumentation() {
                                 : response.code >= 400
                                   ? 'bg-red-100 text-red-800'
                                   : 'bg-gray-100 text-gray-800'
-                            }`}
+`}
                           >
                             {response.code}
                           </span>
@@ -209,5 +196,3 @@ export default function ApiDocumentation() {
         </div>
       </main>
     </div>
-  );
-}

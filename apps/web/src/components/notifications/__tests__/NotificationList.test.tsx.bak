@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import notification-list from '../notification-list.tsx';
+
+describe('notification-list', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<notification-list />);
+    expect(container).toBeInTheDocument();
+  });
+});

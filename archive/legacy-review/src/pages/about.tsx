@@ -42,7 +42,4 @@ const AboutPage: NextPage = () => {
         </div>
       </main>
     </MarketingLayout>
-  );
-};
-
 export default AboutPage; 

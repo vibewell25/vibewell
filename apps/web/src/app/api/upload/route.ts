@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getPresignedUploadUrl } from '@/lib/s3';
@@ -36,30 +35,20 @@ export async function {
     const session = await auth();
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { filename, contentType } = await req.json();
+const { filename, contentType } = await req.json();
 
     if (!filename || !contentType) {
       return NextResponse.json(
         { error: 'Filename and content type are required' },
         { status: 400 },
-      );
-    }
-
-    if (!ALLOWED_TYPES.includes(contentType)) {
+if (!ALLOWED_TYPES.includes(contentType)) {
       return NextResponse.json({ error: 'File type not allowed' }, { status: 400 });
-    }
-
-    const uploadUrl = await fileUploadService.getPresignedUploadUrl(filename, contentType);
+const uploadUrl = await fileUploadService.getPresignedUploadUrl(filename, contentType);
 
     return NextResponse.json({ uploadUrl });
-  } catch (error) {
+catch (error) {
     console.error('Error generating upload URL:', error);
     return NextResponse.json({ error: 'Error generating upload URL' }, { status: 500 });
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); GET(req: Request) {
@@ -67,23 +56,16 @@ export async function {
     const session = await auth();
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { searchParams } = new URL(req.url);
+const { searchParams } = new URL(req.url);
     const key = searchParams.get('key');
 
     if (!key) {
       return NextResponse.json({ error: 'File key is required' }, { status: 400 });
-    }
-
-    const url = fileUploadService.getPublicUrl(key);
+const url = fileUploadService.getPublicUrl(key);
     return NextResponse.json({ url });
-  } catch (error) {
+catch (error) {
     console.error('Error getting file URL:', error);
     return NextResponse.json({ error: 'Error getting file URL' }, { status: 500 });
-  }
-}
-
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); DELETE(req: NextRequest) {
@@ -93,27 +75,19 @@ export async function {
 
       if (!key) {
         return NextResponse.json({ error: 'Missing file key' }, { status: 400 });
-      }
-
-      // Check if the user has permission to delete this file
+// Check if the user has permission to delete this file
       // For example, ensure that the file key contains the user ID
 
       if (!key.includes(user.sub) && !user['vibewell/roles'].includes('admin')) {
         return NextResponse.json(
           { error: 'Permission denied to delete this file' },
           { status: 403 },
-        );
-      }
-
-      // Importing inside the function to avoid circular dependencies
+// Importing inside the function to avoid circular dependencies
 
       const { deleteFile } = await import('@/lib/s3');
       await deleteFile(key);
 
       return NextResponse.json({ success: true });
-    } catch (error) {
+catch (error) {
       console.error('Error deleting file:', error);
       return NextResponse.json({ error: 'Failed to delete file' }, { status: 500 });
-    }
-  });
-}

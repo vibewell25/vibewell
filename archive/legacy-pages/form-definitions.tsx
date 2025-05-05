@@ -18,9 +18,7 @@ const FormDefinitions: NextPage = () => {
     const res = await fetchWithTimeout('/api/formDefinitions');
     const json = await res.json();
     setDefinitions(json.definitions || []);
-  };
-
-  useEffect(() => { fetchDefs(); }, []);
+useEffect(() => { fetchDefs(); }, []);
 
   const handleCreate = async (e: FormEvent) => {
     e.preventDefault();
@@ -28,19 +26,14 @@ const FormDefinitions: NextPage = () => {
       method: 'POST', 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, fields })
-    });
-    setName(''); 
+setName(''); 
     setFields('');
     fetchDefs();
-  };
-
-  const handleDelete = async (id: string) => {
+const handleDelete = async (id: string) => {
     if (!confirm('Delete this definition?')) return;
     await fetchWithTimeout(`/api/formDefinitions/${id}`, { method: 'DELETE' });
     fetchDefs();
-  };
-
-  return (
+return (
     <div className="max-w-2xl mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Form Definitions</h1>
       <form onSubmit={handleCreate} className="space-y-2 mb-6">
@@ -62,7 +55,4 @@ const FormDefinitions: NextPage = () => {
       ))}
       {definitions.length === 0 && <p>No definitions yet.</p>}
     </div>
-  );
-};
-
 export default FormDefinitions;

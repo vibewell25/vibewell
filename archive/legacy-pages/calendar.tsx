@@ -25,46 +25,31 @@ const Calendar: NextPage = () => {
     const { url } = await res.json();
     if (window && window.location) {
       window.location.href = url;
-    }
-  };
-
-  const fetchEvents = async (provider: 'google' | 'outlook') => {
+const fetchEvents = async (provider: 'google' | 'outlook') => {
     const res = await fetchWithTimeout(`/api/calendar/${provider}/events`);
     const data = await res.json();
     if (provider === 'google') setGoogleEvents(data);
     else setOutlookEvents(data);
-  };
-
-  const fetchBookings = async () => {
+const fetchBookings = async () => {
     const res = await fetchWithTimeout('/api/bookings');
     const data = await res.json();
     setBookings(data.bookings || []);
-  };
-
-  const handleAddEvent = async (bookingId: string) => {
+const handleAddEvent = async (bookingId: string) => {
     const res = await fetchWithTimeout('/api/calendar/events', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ bookingId }),
-    });
-    if (res.ok) {
+if (res.ok) {
       alert('Event added to calendars');
       fetchEvents('google');
       fetchEvents('outlook');
-    } else {
+else {
       alert('Error adding event');
-    }
-  };
-
-  const toggleGoogleDetails = (id: string) => {
+const toggleGoogleDetails = (id: string) => {
     setExpandedGoogle(prev => ({ ...prev, [id]: !prev[id] }));
-  };
-
-  const toggleOutlookDetails = (id: string) => {
+const toggleOutlookDetails = (id: string) => {
     setExpandedOutlook(prev => ({ ...prev, [id]: !prev[id] }));
-  };
-
-  const handleRemoveEvent = async (provider: 'google' | 'outlook', id: string) => {
+const handleRemoveEvent = async (provider: 'google' | 'outlook', id: string) => {
     if (!confirm('Remove this event?')) return;
     const body: any = {};
     if (provider === 'google') body.googleEventId = id;
@@ -73,21 +58,14 @@ const Calendar: NextPage = () => {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-    });
-    if (res.ok) {
+if (res.ok) {
       fetchEvents(provider);
-    } else {
+else {
       alert('Error removing event');
-    }
-  };
-
-  const handleICSFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+const handleICSFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target && e.target.files) {
       setIcsFile(e.target.files[0] || null);
-    }
-  };
-
-  const handleICSImport = async () => {
+const handleICSImport = async () => {
     if (!icsFile) return alert('Please select an ICS file');
     setImporting(true);
     try {
@@ -96,16 +74,12 @@ const Calendar: NextPage = () => {
       const res = await fetchWithTimeout('/api/calendar/ics/import', { 
         method: 'POST', 
         body: formData 
-      });
-      if (!res.ok) return alert('ICS import failed');
+if (!res.ok) return alert('ICS import failed');
       const data = await res.json();
       setIcsEvents(data.events || []);
-    } finally {
+finally {
       setImporting(false);
-    }
-  };
-
-  const handleICSExport = async () => {
+const handleICSExport = async () => {
     setExporting(true);
     try {
       const res = await fetchWithTimeout('/api/calendar/ics/export');
@@ -125,20 +99,15 @@ const Calendar: NextPage = () => {
           a.click();
           a.remove();
           URL.revokeObjectURL(url);
-        }
-      }
-    } catch (e: any) {
+catch (e: any) {
       alert(e.message || 'ICS export failed');
-    } finally {
+finally {
       setExporting(false);
-    }
-  };
-
-  useEffect(() => {
+useEffect(() => {
     fetchEvents('google');
     fetchEvents('outlook');
     fetchBookings();
-  }, []);
+[]);
 
   return (
     <div>
@@ -262,7 +231,4 @@ const Calendar: NextPage = () => {
         <p>No bookings available.</p>
       )}
     </div>
-  );
-};
-
 export default Calendar;

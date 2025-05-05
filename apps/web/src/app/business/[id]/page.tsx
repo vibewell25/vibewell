@@ -1,4 +1,3 @@
-'use client';;
 import { useEffect, useState } from 'react';
 import { Layout } from '@/components/layout';
 import { Card, CardContent } from '@/components/ui/Card';
@@ -21,21 +20,18 @@ interface Business {
   hours: string;
   services: Service[];
   reviews: Review[];
-}
 interface Service {
   id: string;
   name: string;
   description: string;
   price: number;
   duration: number;
-}
 interface Review {
   id: string;
   rating: number;
   comment: string;
   userName: string;
   date: string;
-}
 export default function BusinessPage({ params }: { params: { businessId: string } }) {
   const { businessId } = params;
   const [business, setBusiness] = useState<Business | null>(null);
@@ -50,20 +46,16 @@ export default function BusinessPage({ params }: { params: { businessId: string 
         const response = await fetch(`/api/business/${businessId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch business details');
-        }
-        const data = await response.json();
+const data = await response.json();
         setBusiness(data.business);
-      } catch (error) {
+catch (error) {
         console.error('Error fetching business:', error);
         toast.error('Failed to load business details');
-      } finally {
+finally {
         setLoading(false);
-      }
-    };
-    if (businessId) {
+if (businessId) {
       fetchBusiness();
-    }
-  }, [businessId]);
+[businessId]);
   if (loading) {
     return (
       <Layout>
@@ -82,9 +74,7 @@ export default function BusinessPage({ params }: { params: { businessId: string 
           </div>
         </div>
       </Layout>
-    );
-  }
-  if (!business) {
+if (!business) {
     return (
       <Layout>
         <div className="container-app py-12">
@@ -99,9 +89,7 @@ export default function BusinessPage({ params }: { params: { businessId: string 
           </div>
         </div>
       </Layout>
-    );
-  }
-  return (
+return (
     <Layout>
       <div className="container-app py-12">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
@@ -163,8 +151,7 @@ export default function BusinessPage({ params }: { params: { businessId: string 
                       onClick={() => {
                         setSelectedService(service);
                         setShowBookingModal(true);
-                      }}
-                    >
+>
                       Book Now
                     </Button>
                   </div>
@@ -207,5 +194,3 @@ export default function BusinessPage({ params }: { params: { businessId: string 
         )}
       </div>
     </Layout>
-  );
-}

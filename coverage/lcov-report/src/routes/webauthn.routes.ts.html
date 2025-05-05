@@ -282,7 +282,7 @@
 <span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Router } from <span class="cstat-no" title="statement not covered" >'express';</span>
 import { z } from <span class="cstat-no" title="statement not covered" >'zod';</span>
 &nbsp;
-import { WebAuthnService } from <span class="cstat-no" title="statement not covered" >'../services/webauthn?.service';</span>
+import { WebAuthnService } from <span class="cstat-no" title="statement not covered" >'../services/webauthn.service';</span>
 &nbsp;
 import { validateRequest } from <span class="cstat-no" title="statement not covered" >'../middleware/validate-request';</span>
 &nbsp;
@@ -294,40 +294,40 @@ const router = <span class="cstat-no" title="statement not covered" >Router();</
 const webAuthnService = <span class="cstat-no" title="statement not covered" >new WebAuthnService(prisma);</span>
 &nbsp;
 // Request validation schemas
-const finishRegistrationSchema = <span class="cstat-no" title="statement not covered" >z?.object({</span>
-  response: z?.object({}).passthrough(), // Allow any WebAuthn registration response
-  deviceName: z?.string().optional(),
+const finishRegistrationSchema = <span class="cstat-no" title="statement not covered" >z.object({</span>
+  response: z.object({}).passthrough(), // Allow any WebAuthn registration response
+  deviceName: z.string().optional(),
 });
 &nbsp;
-const finishAuthenticationSchema = <span class="cstat-no" title="statement not covered" >z?.object({</span>
-  response: z?.object({}).passthrough(), // Allow any WebAuthn authentication response
+const finishAuthenticationSchema = <span class="cstat-no" title="statement not covered" >z.object({</span>
+  response: z.object({}).passthrough(), // Allow any WebAuthn authentication response
 });
 &nbsp;
 // Start registration
 &nbsp;
-<span class="cstat-no" title="statement not covered" >router?.post('/register/start', isAuthenticated, <span class="fstat-no" title="function not covered" >async (r</span>eq, res, next) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >router.post('/register/start', isAuthenticated, <span class="fstat-no" title="function not covered" >async (r</span>eq, res, next) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-    const options = <span class="cstat-no" title="statement not covered" >await webAuthnService?.startRegistration(req?.user.id);</span>
-<span class="cstat-no" title="statement not covered" >    res?.json(options);</span>
+    const options = <span class="cstat-no" title="statement not covered" >await webAuthnService.startRegistration(req.user.id);</span>
+<span class="cstat-no" title="statement not covered" >    res.json(options);</span>
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    next(error);</span>
   }
 });
 &nbsp;
 // Finish registration
-<span class="cstat-no" title="statement not covered" >router?.post(</span>
+<span class="cstat-no" title="statement not covered" >router.post(</span>
 &nbsp;
   '/register/finish',
   isAuthenticated,
   validateRequest(finishRegistrationSchema),
 <span class="fstat-no" title="function not covered" >  async (r</span>eq, res, next) =&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const result = <span class="cstat-no" title="statement not covered" >await webAuthnService?.finishRegistration(</span>
-        req?.user.id,
-        req?.body.response,
-        req?.body.deviceName
+      const result = <span class="cstat-no" title="statement not covered" >await webAuthnService.finishRegistration(</span>
+        req.user.id,
+        req.body.response,
+        req.body.deviceName
       );
-<span class="cstat-no" title="statement not covered" >      res?.json(result);</span>
+<span class="cstat-no" title="statement not covered" >      res.json(result);</span>
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      next(error);</span>
     }
@@ -336,28 +336,28 @@ const finishAuthenticationSchema = <span class="cstat-no" title="statement not c
 &nbsp;
 // Start authentication
 &nbsp;
-<span class="cstat-no" title="statement not covered" >router?.post('/auth/start', isAuthenticated, <span class="fstat-no" title="function not covered" >async (r</span>eq, res, next) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >router.post('/auth/start', isAuthenticated, <span class="fstat-no" title="function not covered" >async (r</span>eq, res, next) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-    const options = <span class="cstat-no" title="statement not covered" >await webAuthnService?.startAuthentication(req?.user.id);</span>
-<span class="cstat-no" title="statement not covered" >    res?.json(options);</span>
+    const options = <span class="cstat-no" title="statement not covered" >await webAuthnService.startAuthentication(req.user.id);</span>
+<span class="cstat-no" title="statement not covered" >    res.json(options);</span>
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    next(error);</span>
   }
 });
 &nbsp;
 // Finish authentication
-<span class="cstat-no" title="statement not covered" >router?.post(</span>
+<span class="cstat-no" title="statement not covered" >router.post(</span>
 &nbsp;
   '/auth/finish',
   isAuthenticated,
   validateRequest(finishAuthenticationSchema),
 <span class="fstat-no" title="function not covered" >  async (r</span>eq, res, next) =&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const result = <span class="cstat-no" title="statement not covered" >await webAuthnService?.finishAuthentication(</span>
-        req?.user.id,
-        req?.body.response
+      const result = <span class="cstat-no" title="statement not covered" >await webAuthnService.finishAuthentication(</span>
+        req.user.id,
+        req.body.response
       );
-<span class="cstat-no" title="statement not covered" >      res?.json(result);</span>
+<span class="cstat-no" title="statement not covered" >      res.json(result);</span>
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      next(error);</span>
     }
@@ -365,23 +365,23 @@ const finishAuthenticationSchema = <span class="cstat-no" title="statement not c
 );
 &nbsp;
 // List devices
-<span class="cstat-no" title="statement not covered" >router?.get('/devices', isAuthenticated, <span class="fstat-no" title="function not covered" >async (r</span>eq, res, next) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >router.get('/devices', isAuthenticated, <span class="fstat-no" title="function not covered" >async (r</span>eq, res, next) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-    const devices = <span class="cstat-no" title="statement not covered" >await webAuthnService?.listDevices(req?.user.id);</span>
-<span class="cstat-no" title="statement not covered" >    res?.json(devices);</span>
+    const devices = <span class="cstat-no" title="statement not covered" >await webAuthnService.listDevices(req.user.id);</span>
+<span class="cstat-no" title="statement not covered" >    res.json(devices);</span>
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    next(error);</span>
   }
 });
 &nbsp;
 // Remove device
-<span class="cstat-no" title="statement not covered" >router?.delete('/devices/:credentialId', isAuthenticated, <span class="fstat-no" title="function not covered" >async (r</span>eq, res, next) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >router.delete('/devices/:credentialId', isAuthenticated, <span class="fstat-no" title="function not covered" >async (r</span>eq, res, next) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-    const result = <span class="cstat-no" title="statement not covered" >await webAuthnService?.removeDevice(</span>
-      req?.user.id,
-      req?.params.credentialId
+    const result = <span class="cstat-no" title="statement not covered" >await webAuthnService.removeDevice(</span>
+      req.user.id,
+      req.params.credentialId
     );
-<span class="cstat-no" title="statement not covered" >    res?.json(result);</span>
+<span class="cstat-no" title="statement not covered" >    res.json(result);</span>
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    next(error);</span>
   }
@@ -394,7 +394,7 @@ const finishAuthenticationSchema = <span class="cstat-no" title="statement not c
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

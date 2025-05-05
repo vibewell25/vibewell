@@ -5,8 +5,6 @@ import { SecurityMonitoringService } from '@/services/SecurityMonitoring';
 
 type HoneypotPayload = {
   [key: string]: string | number | boolean | null | undefined;
-};
-
 interface HoneypotEvent {
   timestamp: Date;
   ip: string;
@@ -15,8 +13,6 @@ interface HoneypotEvent {
   method: string;
   payload: HoneypotPayload | undefined;
   headers: Record<string, string>;
-}
-
 interface HoneypotConfig {
   paths: {
     path: string;
@@ -24,12 +20,9 @@ interface HoneypotConfig {
     response: {
       status: number;
       body: HoneypotPayload;
-    };
-  }[];
+[];
   delayResponse?: boolean;
   trackHeaders?: string[];
-}
-
 class HoneypotError extends Error {
   constructor(
     message: string,
@@ -37,9 +30,6 @@ class HoneypotError extends Error {
   ) {
     super(message);
     this.name = 'HoneypotError';
-  }
-}
-
 export class HoneypotService {
   private redis: Redis;
   private securityMonitoring: SecurityMonitoringService;
@@ -50,16 +40,12 @@ export class HoneypotService {
     this.redis = new Redis(process.env['REDIS_URL'] || '');
     this.securityMonitoring = new SecurityMonitoringService();
     this.config = config;
-  }
-
-  /**
+/**
    * Check if a request path is a honeypot
    */
   isHoneypotPath(path: string, method: string): boolean {
     return this.config.paths.some((p) => p.path === path && p.method === method);
-  }
-
-  /**
+/**
    * Handle honeypot request
    */
   async handleRequest(
@@ -70,8 +56,7 @@ export class HoneypotService {
       userAgent: string;
       headers: Record<string, string>;
       payload?: Record<string, any>;
-    },
-  ): Promise<{ status: number; body: Record<string, any> }> {
+): Promise<{ status: number; body: Record<string, any> }> {
     try {
       // Record the event
       const event: HoneypotEvent = {
@@ -82,30 +67,21 @@ export class HoneypotService {
         method,
         payload: requestData.payload,
         headers: this.filterHeaders(requestData.headers),
-      };
-
-      await this.recordEvent(event);
+await this.recordEvent(event);
 
       // Get configured response
       const honeypotConfig = this.config.paths.find((p) => p.path === path && p.method === method);
 
       if (!honeypotConfig) {
         throw new Error('Invalid honeypot path');
-      }
-
-      // Optional delay to make the honeypot more convincing
+// Optional delay to make the honeypot more convincing
       if (this.config.delayResponse) {
         await new Promise((resolve) => setTimeout(resolve, Math.random() * 1000));
-      }
-
-      return honeypotConfig.response;
-    } catch (error) {
+return honeypotConfig.response;
+catch (error) {
       logger.error('Honeypot request handling failed', 'honeypot', { error });
       throw error;
-    }
-  }
-
-  /**
+/**
    * Record honeypot event
    */
   private async recordEvent(event: HoneypotEvent): Promise<void> {
@@ -130,15 +106,10 @@ export class HoneypotService {
           path: event.path,
           method: event.method,
           payload: event.payload,
-        },
-      });
-    } catch (error) {
+catch (error) {
       logger.error('Failed to record honeypot event', 'honeypot', { error });
       throw error;
-    }
-  }
-
-  /**
+/**
    * Analyze events for suspicious patterns
    */
   private async analyzeEvents(ip: string): Promise<void> {
@@ -150,9 +121,7 @@ export class HoneypotService {
       // Check frequency
       const recentEvents = parsedEvents.filter(
         (e) => new Date().getTime() - new Date(e.timestamp).getTime() < 3600000,
-      );
-
-      if (recentEvents.length > 10) {
+if (recentEvents.length > 10) {
         await this.securityMonitoring.logEvent({
           type: 'honeypot_abuse',
           severity: 'critical',
@@ -160,11 +129,7 @@ export class HoneypotService {
           details: {
             eventCount: recentEvents.length,
             timeWindow: '1 hour',
-          },
-        });
-      }
-
-      // Check for pattern matching (e.g., hitting multiple honeypots)
+// Check for pattern matching (e.g., hitting multiple honeypots)
       const uniquePaths = new Set(recentEvents.map((e) => e.path));
       if (uniquePaths.size > 3) {
         await this.securityMonitoring.logEvent({
@@ -174,19 +139,12 @@ export class HoneypotService {
           details: {
             uniquePaths: Array.from(uniquePaths),
             timeWindow: '1 hour',
-          },
-        });
-      }
-    } catch (error) {
+catch (error) {
       if (error instanceof HoneypotError) {
         throw error;
-      }
-      logger.error('Failed to analyze honeypot events', 'honeypot', { error });
+logger.error('Failed to analyze honeypot events', 'honeypot', { error });
       throw new HoneypotError('Event analysis failed', 'ANALYSIS_FAILED');
-    }
-  }
-
-  /**
+/**
    * Filter headers based on configuration
    */
   private filterHeaders(headers: Record<string, string>): Record<string, string> {
@@ -196,15 +154,10 @@ export class HoneypotService {
       Object.entries(headers).filter(([key]) =>
         this.config.trackHeaders?.includes(key.toLowerCase()),
       ),
-    );
-  }
-
-  private validateEvent(data: unknown): HoneypotEvent {
+private validateEvent(data: unknown): HoneypotEvent {
     if (!data || typeof data !== 'object') {
       throw new HoneypotError('Invalid event data structure', 'VALIDATION_ERROR');
-    }
-
-    const event = data as Partial<HoneypotEvent>;
+const event = data as Partial<HoneypotEvent>;
     const requiredFields: Array<keyof HoneypotEvent> = [
       'timestamp',
       'ip',
@@ -216,15 +169,10 @@ export class HoneypotService {
     for (const field of requiredFields) {
       if (!event[field]) {
         throw new HoneypotError(`Missing required field: ${field}`, 'VALIDATION_ERROR');
-      }
-    }
-
-    const timestamp = new Date(event.timestamp as string | number | Date);
+const timestamp = new Date(event.timestamp as string | number | Date);
     if (isNaN(timestamp.getTime())) {
       throw new HoneypotError('Invalid timestamp format', 'VALIDATION_ERROR');
-    }
-
-    return {
+return {
       timestamp,
       ip: event.ip as string,
       path: event.path as string,
@@ -232,10 +180,7 @@ export class HoneypotService {
       userAgent: event.userAgent as string,
       headers: event.headers || {},
       payload: event.payload,
-    };
-  }
-
-  /**
+/**
    * Get honeypot events for an IP
    * @throws {HoneypotError} When validation or parsing fails
    */
@@ -248,20 +193,13 @@ export class HoneypotService {
           try {
             const parsed = JSON.parse(e);
             return this.validateEvent(parsed);
-          } catch (parseError) {
+catch (parseError) {
             throw new HoneypotError(
               `Failed to parse event data: ${(parseError as Error).message}`,
               'PARSE_ERROR',
-            );
-          }
-        }),
-      );
-    } catch (error) {
+),
+catch (error) {
       if (error instanceof HoneypotError) {
         throw error;
-      }
-      logger.error(`Failed to get honeypot events for IP ${ip}: ${error}`);
+logger.error(`Failed to get honeypot events for IP ${ip}: ${error}`);
       return [];
-    }
-  }
-}

@@ -1,10 +1,3 @@
-/**
- * Types for mobile optimization utilities
- */
-
-/**
- * Configuration options for mobile optimizations
- */
 export interface MobileOptimizationOptions {
   /**
    * Whether to apply lazy loading to images
@@ -51,8 +44,6 @@ export interface MobileOptimizationOptions {
    * Enable offline support enhancements
    */
   enhanceOfflineSupport?: boolean;
-}
-
 /**
  * Device performance profile
  */
@@ -88,5 +79,3 @@ export interface DevicePerformanceProfile {
   batteryStatus?: {
     level: number;
     charging: boolean;
-  };
-}

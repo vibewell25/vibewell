@@ -8,8 +8,6 @@ interface CRMContact {
   phone?: string;
   tags?: string[];
   customFields?: Record<string, any>;
-}
-
 interface CRMDeal {
   id?: string;
   contactId: string;
@@ -19,8 +17,6 @@ interface CRMDeal {
   title: string;
   description?: string;
   customFields?: Record<string, any>;
-}
-
 interface CRMActivity {
   id?: string;
   contactId: string;
@@ -28,8 +24,6 @@ interface CRMActivity {
   description: string;
   timestamp: Date;
   metadata?: Record<string, any>;
-}
-
 class CRMService {
   private static instance: CRMService;
   private baseUrl: string;
@@ -38,124 +32,84 @@ class CRMService {
   private constructor() {
     this.baseUrl = process.env.CRM_API_URL || '';
     this.apiKey = process.env.CRM_API_KEY || '';
-  }
-
-  public static getInstance(): CRMService {
+public static getInstance(): CRMService {
     if (!CRMService.instance) {
       CRMService.instance = new CRMService();
-    }
-    return CRMService.instance;
-  }
-
-  private getHeaders() {
+return CRMService.instance;
+private getHeaders() {
     return {
       Authorization: `Bearer ${this.apiKey}`,
 
 
       'Content-Type': 'application/json',
-    };
-  }
-
-  // Contact Management
+// Contact Management
   public async createContact(contact: CRMContact): Promise<CRMContact> {
     try {
       const response = await axios.post(`${this.baseUrl}/contacts`, contact, {
         headers: this.getHeaders(),
-      });
-      return response.data;
-    } catch (error) {
+return response.data;
+catch (error) {
       console.error('Failed to create contact:', error);
       throw error;
-    }
-  }
-
-  public async updateContact(id: string, contact: Partial<CRMContact>): Promise<CRMContact> {
+public async updateContact(id: string, contact: Partial<CRMContact>): Promise<CRMContact> {
     try {
       const response = await axios.put(`${this.baseUrl}/contacts/${id}`, contact, {
         headers: this.getHeaders(),
-      });
-      return response.data;
-    } catch (error) {
+return response.data;
+catch (error) {
       console.error('Failed to update contact:', error);
       throw error;
-    }
-  }
-
-  public async getContact(id: string): Promise<CRMContact> {
+public async getContact(id: string): Promise<CRMContact> {
     try {
       const response = await axios.get(`${this.baseUrl}/contacts/${id}`, {
         headers: this.getHeaders(),
-      });
-      return response.data;
-    } catch (error) {
+return response.data;
+catch (error) {
       console.error('Failed to get contact:', error);
       throw error;
-    }
-  }
-
-  // Deal Management
+// Deal Management
   public async createDeal(deal: CRMDeal): Promise<CRMDeal> {
     try {
       const response = await axios.post(`${this.baseUrl}/deals`, deal, {
         headers: this.getHeaders(),
-      });
-      return response.data;
-    } catch (error) {
+return response.data;
+catch (error) {
       console.error('Failed to create deal:', error);
       throw error;
-    }
-  }
-
-  public async updateDeal(id: string, deal: Partial<CRMDeal>): Promise<CRMDeal> {
+public async updateDeal(id: string, deal: Partial<CRMDeal>): Promise<CRMDeal> {
     try {
       const response = await axios.put(`${this.baseUrl}/deals/${id}`, deal, {
         headers: this.getHeaders(),
-      });
-      return response.data;
-    } catch (error) {
+return response.data;
+catch (error) {
       console.error('Failed to update deal:', error);
       throw error;
-    }
-  }
-
-  public async getDeal(id: string): Promise<CRMDeal> {
+public async getDeal(id: string): Promise<CRMDeal> {
     try {
       const response = await axios.get(`${this.baseUrl}/deals/${id}`, {
         headers: this.getHeaders(),
-      });
-      return response.data;
-    } catch (error) {
+return response.data;
+catch (error) {
       console.error('Failed to get deal:', error);
       throw error;
-    }
-  }
-
-  // Activity Tracking
+// Activity Tracking
   public async logActivity(activity: CRMActivity): Promise<CRMActivity> {
     try {
       const response = await axios.post(`${this.baseUrl}/activities`, activity, {
         headers: this.getHeaders(),
-      });
-      return response.data;
-    } catch (error) {
+return response.data;
+catch (error) {
       console.error('Failed to log activity:', error);
       throw error;
-    }
-  }
-
-  public async getActivities(contactId: string): Promise<CRMActivity[]> {
+public async getActivities(contactId: string): Promise<CRMActivity[]> {
     try {
       const response = await axios.get(`${this.baseUrl}/activities?contactId=${contactId}`, {
         headers: this.getHeaders(),
-      });
-      return response.data;
-    } catch (error) {
+return response.data;
+catch (error) {
       console.error('Failed to get activities:', error);
       throw error;
-    }
-  }
-
-  // Bulk Operations
+// Bulk Operations
   public async bulkCreateContacts(contacts: CRMContact[]): Promise<CRMContact[]> {
     try {
       const response = await axios.post(
@@ -163,15 +117,11 @@ class CRMService {
         `${this.baseUrl}/contacts/bulk`,
         { contacts },
         { headers: this.getHeaders() },
-      );
-      return response.data;
-    } catch (error) {
+return response.data;
+catch (error) {
       console.error('Failed to bulk create contacts:', error);
       throw error;
-    }
-  }
-
-  public async bulkUpdateContacts(
+public async bulkUpdateContacts(
     updates: Array<{ id: string; contact: Partial<CRMContact> }>,
   ): Promise<CRMContact[]> {
     try {
@@ -180,40 +130,27 @@ class CRMService {
         `${this.baseUrl}/contacts/bulk`,
         { updates },
         { headers: this.getHeaders() },
-      );
-      return response.data;
-    } catch (error) {
+return response.data;
+catch (error) {
       console.error('Failed to bulk update contacts:', error);
       throw error;
-    }
-  }
-
-  // Utility Methods
+// Utility Methods
   public async searchContacts(query: string): Promise<CRMContact[]> {
     try {
       const response = await axios.get(
 
         `${this.baseUrl}/contacts/search?q=${encodeURIComponent(query)}`,
         { headers: this.getHeaders() },
-      );
-      return response.data;
-    } catch (error) {
+return response.data;
+catch (error) {
       console.error('Failed to search contacts:', error);
       throw error;
-    }
-  }
-
-  public async getDealsByContact(contactId: string): Promise<CRMDeal[]> {
+public async getDealsByContact(contactId: string): Promise<CRMDeal[]> {
     try {
       const response = await axios.get(`${this.baseUrl}/deals?contactId=${contactId}`, {
         headers: this.getHeaders(),
-      });
-      return response.data;
-    } catch (error) {
+return response.data;
+catch (error) {
       console.error('Failed to get deals by contact:', error);
       throw error;
-    }
-  }
-}
-
 export {};

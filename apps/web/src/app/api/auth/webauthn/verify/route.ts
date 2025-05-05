@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getServerSession } from 'next-auth';
@@ -20,29 +19,19 @@ export async function {
     const session = await getServerSession();
     if (!session.user.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const body = await req.json();
+const body = await req.json();
     const { response, options = {} } = body;
 
     if (!response) {
       return NextResponse.json({ error: 'Missing registration response' }, { status: 400 });
-    }
-
-    const verification = await webAuthnService.verifyRegistration(
+const verification = await webAuthnService.verifyRegistration(
       session.user.id,
       response as RegistrationResponseJSON,
       options,
-    );
-
-    return NextResponse.json({ verified: verification.verified });
-  } catch (error) {
+return NextResponse.json({ verified: verification.verified });
+catch (error) {
     if (error instanceof WebAuthnError) {
       return NextResponse.json(
         { error: error.message, code: error.code, details: error.details },
         { status: 400 },
-      );
-    }
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}
+return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

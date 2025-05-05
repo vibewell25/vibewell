@@ -1,4 +1,3 @@
-
 import { generateRegistrationOptions } from '@simplewebauthn/server';
 
 import { NextResponse } from 'next/server';
@@ -16,9 +15,7 @@ export async function {
 
     if (!userId || !username) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-    }
-
-    const options = await generateRegistrationOptions({
+const options = await generateRegistrationOptions({
       rpName,
       rpID,
       userID: userId,
@@ -28,15 +25,10 @@ export async function {
         residentKey: 'preferred',
         userVerification: 'preferred',
         authenticatorAttachment: 'platform',
-      },
-    });
-
-    // In a real application, you would store these options in a database
+// In a real application, you would store these options in a database
     // associated with the user's session
 
     return NextResponse.json(options);
-  } catch (error) {
+catch (error) {
     console.error('Error generating registration options:', error);
     return NextResponse.json({ error: 'Failed to generate registration options' }, { status: 500 });
-  }
-}

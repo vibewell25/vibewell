@@ -1,16 +1,8 @@
 import axios from 'axios';
 
-    // Safe integer operation
-    if (crm > Number.MAX_SAFE_INTEGER || crm < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import CRMService from '../crm/CRMService';
+    import CRMService from '../crm/CRMService';
 
-    // Safe integer operation
-    if (models > Number.MAX_SAFE_INTEGER || models < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { User } from '../../models/User';
+    import { User } from '../../models/User';
 
 // Mock dependencies
 jest.mock('axios');
@@ -20,55 +12,24 @@ describe('CRMService', () => {
   const mockConfig = {
     salesforce: {
 
-    // Safe integer operation
-    if (salesforce > Number.MAX_SAFE_INTEGER || salesforce < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      clientId: 'salesforce-client-id',
+    clientId: 'salesforce-client-id',
 
-    // Safe integer operation
-    if (salesforce > Number.MAX_SAFE_INTEGER || salesforce < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      clientSecret: 'salesforce-client-secret',
+    clientSecret: 'salesforce-client-secret',
       instanceUrl: 'https://test.salesforce.com',
 
-    // Safe integer operation
-    if (salesforce > Number.MAX_SAFE_INTEGER || salesforce < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      accessToken: 'salesforce-access-token'
-    },
-    hubspot: {
+    accessToken: 'salesforce-access-token'
+hubspot: {
 
-    // Safe integer operation
-    if (hubspot > Number.MAX_SAFE_INTEGER || hubspot < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      apiKey: 'hubspot-api-key',
+    apiKey: 'hubspot-api-key',
 
-    // Safe integer operation
-    if (hubspot > Number.MAX_SAFE_INTEGER || hubspot < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      portalId: 'hubspot-portal-id'
-    },
-    zendesk: {
+    portalId: 'hubspot-portal-id'
+zendesk: {
 
-    // Safe integer operation
-    if (test > Number.MAX_SAFE_INTEGER || test < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      subdomain: 'test-company',
+    subdomain: 'test-company',
 
-    // Safe integer operation
-    if (zendesk > Number.MAX_SAFE_INTEGER || zendesk < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      apiToken: 'zendesk-api-token',
+    apiToken: 'zendesk-api-token',
       email: 'admin@test.com'
-    }
-  };
+};
 
   const mockContactData = {
     email: 'test@example.com',
@@ -79,15 +40,10 @@ describe('CRMService', () => {
     customFields: {
       role: 'Developer',
       department: 'Engineering'
-    }
-  };
+};
 
   const mockDealData = {
 
-    // Safe integer operation
-    if (contact > Number.MAX_SAFE_INTEGER || contact < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     contactId: 'contact-123',
     amount: 1000,
     stage: 'Proposal',
@@ -96,15 +52,10 @@ describe('CRMService', () => {
     customFields: {
       dealType: 'New Business',
       priority: 'High'
-    }
-  };
+};
 
   const mockTicketData = {
 
-    // Safe integer operation
-    if (contact > Number.MAX_SAFE_INTEGER || contact < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     contactId: 'contact-123',
     subject: 'Test Ticket',
     description: 'Test Description',
@@ -113,15 +64,10 @@ describe('CRMService', () => {
     customFields: {
       category: 'Technical',
       source: 'Email'
-    }
-  };
+};
 
   const mockUser: User = {
 
-    // Safe integer operation
-    if (user > Number.MAX_SAFE_INTEGER || user < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     id: 'user-123',
     email: 'test@example.com',
     name: 'Test User',
@@ -132,265 +78,133 @@ describe('CRMService', () => {
     twoFactorEnabled: false,
     createdAt: '2024-01-01T00:00:00Z',
     updatedAt: '2024-01-01T00:00:00Z'
-  };
-
-  beforeEach(() => {
+beforeEach(() => {
     jest.clearAllMocks();
     crmService = CRMService.getInstance(mockConfig);
-  });
-
-  describe('getInstance', () => {
+describe('getInstance', () => {
     it('should create a new instance with config', () => {
       const instance = CRMService.getInstance(mockConfig);
       expect(instance).toBeDefined();
-    });
-
-    it('should return existing instance without config', () => {
+it('should return existing instance without config', () => {
       const instance1 = CRMService.getInstance(mockConfig);
       const instance2 = CRMService.getInstance();
       expect(instance1).toBe(instance2);
-    });
-  });
-
-  describe('Salesforce Integration', () => {
+describe('Salesforce Integration', () => {
     const mockSalesforceResponse = {
 
-    // Safe integer operation
-    if (sf > Number.MAX_SAFE_INTEGER || sf < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      data: { id: 'sf-123', success: true }
-    };
-
-    beforeEach(() => {
+    data: { id: 'sf-123', success: true }
+beforeEach(() => {
       (axios as jest.Mocked<typeof axios>).mockResolvedValue(mockSalesforceResponse);
-    });
-
-    it('should create a contact in Salesforce', async () => {
+it('should create a contact in Salesforce', async () => {
       const result = await crmService.createContact(mockContactData, 'salesforce');
       expect(result).toEqual(mockSalesforceResponse.data);
       expect(axios).toHaveBeenCalledWith({
         method: 'POST',
 
-    // Safe integer operation
-    if (sobjects > Number.MAX_SAFE_INTEGER || sobjects < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (services > Number.MAX_SAFE_INTEGER || services < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-        url: expect.stringContaining('/services/data/v52.0/sobjects/Contact'),
+    url: expect.stringContaining('/services/data/v52.0/sobjects/Contact'),
         headers: expect.any(Object),
         data: expect.any(Object)
-      });
-    });
-
-    it('should create a deal in Salesforce', async () => {
+it('should create a deal in Salesforce', async () => {
       const result = await crmService.createDeal(mockDealData, 'salesforce');
       expect(result).toEqual(mockSalesforceResponse.data);
       expect(axios).toHaveBeenCalledWith({
         method: 'POST',
 
-    // Safe integer operation
-    if (sobjects > Number.MAX_SAFE_INTEGER || sobjects < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (services > Number.MAX_SAFE_INTEGER || services < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-        url: expect.stringContaining('/services/data/v52.0/sobjects/Opportunity'),
+    url: expect.stringContaining('/services/data/v52.0/sobjects/Opportunity'),
         headers: expect.any(Object),
         data: expect.any(Object)
-      });
-    });
-
-    it('should handle Salesforce API errors', async () => {
+it('should handle Salesforce API errors', async () => {
       const error = new Error('Salesforce API Error');
       (axios as jest.Mocked<typeof axios>).mockRejectedValue(error);
 
       await expect(
         crmService.createContact(mockContactData, 'salesforce')
       ).rejects.toThrow('Salesforce API Error');
-    });
-  });
-
-  describe('HubSpot Integration', () => {
+describe('HubSpot Integration', () => {
     const mockHubSpotResponse = {
 
-    // Safe integer operation
-    if (hs > Number.MAX_SAFE_INTEGER || hs < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      data: { id: 'hs-123', properties: {} }
-    };
-
-    beforeEach(() => {
+    data: { id: 'hs-123', properties: {} }
+beforeEach(() => {
       (axios as jest.Mocked<typeof axios>).mockResolvedValue(mockHubSpotResponse);
-    });
-
-    it('should create a contact in HubSpot', async () => {
+it('should create a contact in HubSpot', async () => {
       const result = await crmService.createContact(mockContactData, 'hubspot');
       expect(result).toEqual(mockHubSpotResponse.data);
       expect(axios).toHaveBeenCalledWith({
         method: 'POST',
 
-    // Safe integer operation
-    if (objects > Number.MAX_SAFE_INTEGER || objects < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (crm > Number.MAX_SAFE_INTEGER || crm < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-        url: expect.stringContaining('/crm/v3/objects/contacts'),
+    url: expect.stringContaining('/crm/v3/objects/contacts'),
         headers: expect.any(Object),
         data: expect.any(Object)
-      });
-    });
-
-    it('should create a deal in HubSpot', async () => {
+it('should create a deal in HubSpot', async () => {
       const result = await crmService.createDeal(mockDealData, 'hubspot');
       expect(result).toEqual(mockHubSpotResponse.data);
       expect(axios).toHaveBeenCalledWith({
         method: 'POST',
 
-    // Safe integer operation
-    if (objects > Number.MAX_SAFE_INTEGER || objects < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (crm > Number.MAX_SAFE_INTEGER || crm < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-        url: expect.stringContaining('/crm/v3/objects/deals'),
+    url: expect.stringContaining('/crm/v3/objects/deals'),
         headers: expect.any(Object),
         data: expect.any(Object)
-      });
-    });
-
-    it('should handle HubSpot API errors', async () => {
+it('should handle HubSpot API errors', async () => {
       const error = new Error('HubSpot API Error');
       (axios as jest.Mocked<typeof axios>).mockRejectedValue(error);
 
       await expect(
         crmService.createContact(mockContactData, 'hubspot')
       ).rejects.toThrow('HubSpot API Error');
-    });
-  });
-
-  describe('Zendesk Integration', () => {
+describe('Zendesk Integration', () => {
     const mockZendeskResponse = {
 
-    // Safe integer operation
-    if (zd > Number.MAX_SAFE_INTEGER || zd < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-      data: { user: { id: 'zd-123' } }
-    };
-
-    beforeEach(() => {
+    data: { user: { id: 'zd-123' } }
+beforeEach(() => {
       (axios as jest.Mocked<typeof axios>).mockResolvedValue(mockZendeskResponse);
-    });
-
-    it('should create a contact in Zendesk', async () => {
+it('should create a contact in Zendesk', async () => {
       const result = await crmService.createContact(mockContactData, 'zendesk');
       expect(result).toEqual(mockZendeskResponse.data);
       expect(axios).toHaveBeenCalledWith({
         method: 'POST',
 
-    // Safe integer operation
-    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-        url: expect.stringContaining('/api/v2/users'),
+    url: expect.stringContaining('/api/v2/users'),
         headers: expect.any(Object),
         data: expect.any(Object)
-      });
-    });
-
-    it('should create a ticket in Zendesk', async () => {
+it('should create a ticket in Zendesk', async () => {
       const result = await crmService.createTicket(mockTicketData, 'zendesk');
       expect(result).toEqual(mockZendeskResponse.data);
       expect(axios).toHaveBeenCalledWith({
         method: 'POST',
 
-    // Safe integer operation
-    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-        url: expect.stringContaining('/api/v2/tickets'),
+    url: expect.stringContaining('/api/v2/tickets'),
         headers: expect.any(Object),
         data: expect.any(Object)
-      });
-    });
-
-    it('should handle Zendesk API errors', async () => {
+it('should handle Zendesk API errors', async () => {
       const error = new Error('Zendesk API Error');
       (axios as jest.Mocked<typeof axios>).mockRejectedValue(error);
 
       await expect(
         crmService.createContact(mockContactData, 'zendesk')
       ).rejects.toThrow('Zendesk API Error');
-    });
-  });
-
-  describe('User Sync Operations', () => {
+describe('User Sync Operations', () => {
     it('should sync a user to Salesforce', async () => {
       await crmService.syncUserToCRM(mockUser, 'salesforce');
       expect(axios).toHaveBeenCalledWith(expect.objectContaining({
         method: 'POST',
 
-    // Safe integer operation
-    if (sobjects > Number.MAX_SAFE_INTEGER || sobjects < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (services > Number.MAX_SAFE_INTEGER || services < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-        url: expect.stringContaining('/services/data/v52.0/sobjects/Contact')
-      }));
-    });
-
-    it('should sync a user to HubSpot', async () => {
+    url: expect.stringContaining('/services/data/v52.0/sobjects/Contact')
+));
+it('should sync a user to HubSpot', async () => {
       await crmService.syncUserToCRM(mockUser, 'hubspot');
       expect(axios).toHaveBeenCalledWith(expect.objectContaining({
         method: 'POST',
 
-    // Safe integer operation
-    if (objects > Number.MAX_SAFE_INTEGER || objects < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (crm > Number.MAX_SAFE_INTEGER || crm < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-        url: expect.stringContaining('/crm/v3/objects/contacts')
-      }));
-    });
-
-    it('should sync a user to Zendesk', async () => {
+    url: expect.stringContaining('/crm/v3/objects/contacts')
+));
+it('should sync a user to Zendesk', async () => {
       await crmService.syncUserToCRM(mockUser, 'zendesk');
       expect(axios).toHaveBeenCalledWith(expect.objectContaining({
         method: 'POST',
 
-    // Safe integer operation
-    if (api > Number.MAX_SAFE_INTEGER || api < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-        url: expect.stringContaining('/api/v2/users')
-      }));
-    });
-
-    it('should handle sync errors gracefully', async () => {
+    url: expect.stringContaining('/api/v2/users')
+));
+it('should handle sync errors gracefully', async () => {
       const error = new Error('Sync failed');
       (axios as jest.Mocked<typeof axios>).mockRejectedValue(error);
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
@@ -400,23 +214,14 @@ describe('CRMService', () => {
       ).rejects.toThrow('Sync failed');
       expect(consoleSpy).toHaveBeenCalledWith('Failed to sync user to salesforce:', error);
       consoleSpy.mockRestore();
-    });
-  });
+describe('Batch Operations', () => {
 
-  describe('Batch Operations', () => {
-
-    // Safe integer operation
-    if (user > Number.MAX_SAFE_INTEGER || user < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
     const mockUsers = [mockUser, { ...mockUser, id: 'user-456' }];
 
     it('should batch sync users successfully', async () => {
       await crmService.batchSyncUsers(mockUsers, 'salesforce');
       expect(axios).toHaveBeenCalledTimes(2);
-    });
-
-    it('should handle batch sync errors gracefully', async () => {
+it('should handle batch sync errors gracefully', async () => {
       const error = new Error('Batch sync failed');
       (axios as jest.Mocked<typeof axios>).mockRejectedValue(error);
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
@@ -426,17 +231,12 @@ describe('CRMService', () => {
       ).rejects.toThrow('Batch sync failed');
       expect(consoleSpy).toHaveBeenCalled();
       consoleSpy.mockRestore();
-    });
-  });
-
-  describe('Error Handling', () => {
+describe('Error Handling', () => {
     it('should throw error for unsupported CRM provider', async () => {
       await expect(
         crmService.createContact(mockContactData, 'invalid' as any)
       ).rejects.toThrow('Unsupported CRM provider');
-    });
-
-    it('should throw error for missing configuration', async () => {
+it('should throw error for missing configuration', async () => {
       const invalidConfig = { ...mockConfig };
       delete invalidConfig.salesforce;
       const service = CRMService.getInstance(invalidConfig);
@@ -444,6 +244,3 @@ describe('CRMService', () => {
       await expect(
         service.createContact(mockContactData, 'salesforce')
       ).rejects.toThrow('Salesforce configuration not found');
-    });
-  });
-}); 

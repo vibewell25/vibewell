@@ -1,4 +1,4 @@
-// Test credentials and constants for Cypress tests
+constants for Cypress tests
 // These are only used for testing and not connected to any real accounts
 
 export const TEST_CREDENTIALS = {
@@ -9,15 +9,10 @@ export const TEST_CREDENTIALS = {
   CUSTOMER: {
     EMAIL: 'test.customer@example.com',
     NAME: 'Test Customer'
-  },
-  PROVIDER: {
+PROVIDER: {
     EMAIL: 'test.provider@example.com',
     NAME: 'Test Provider'
-  },
-  ADMIN: {
+ADMIN: {
     EMAIL: 'test.admin@example.com',
     NAME: 'Test Admin'
-  }
-};
-
 export default TEST_CREDENTIALS; 

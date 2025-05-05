@@ -1,4 +1,3 @@
-'use client';;
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -23,8 +22,7 @@ const resources = [
       'Learn effective social media strategies tailored specifically for wellness businesses and practitioners.',
     tags: ['social media', 'digital marketing', 'content strategy'],
     type: 'resource',
-  },
-  {
+{
     id: '2',
     title: 'Email Marketing Automation for Wellness Businesses',
     author: 'Michael Zhang, Email Marketing Consultant',
@@ -37,8 +35,7 @@ const resources = [
     tags: ['email marketing', 'automation', 'client nurturing'],
     premium: true,
     type: 'resource',
-  },
-  {
+{
     id: '3',
     title: 'Content Marketing Strategy for Wellness Practitioners',
     author: 'Sophia Martinez, Content Strategist',
@@ -51,7 +48,6 @@ const resources = [
     tags: ['content marketing', 'SEO', 'blogging'],
     downloadUrl: '/downloads/content-strategy-template.pdf',
     type: 'resource',
-  },
 ];
 export default function MarketingResourcesPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -67,8 +63,7 @@ export default function MarketingResourcesPage() {
       resource.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesCategory = selectedCategory === null || resource.category === selectedCategory;
     return matchesSearch && matchesCategory;
-  });
-  return (
+return (
     <Layout>
       <div className="flex min-h-screen flex-col bg-gray-50">
         <div className="container mx-auto px-4 py-8">
@@ -141,8 +136,7 @@ export default function MarketingResourcesPage() {
                         onClick={() => {
                           setSearchTerm('');
                           setSelectedCategory(null);
-                        }}
-                      >
+>
                         Clear filters
                       </Button>
                     </div>
@@ -240,5 +234,3 @@ export default function MarketingResourcesPage() {
         </div>
       </div>
     </Layout>
-  );
-}

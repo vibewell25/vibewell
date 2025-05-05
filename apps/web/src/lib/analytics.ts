@@ -1,8 +1,4 @@
-/**
- * Analytics Data Fetching Module
- *
-
- * This module provides functions to fetch and process analytics data
+functions to fetch and process analytics data
  * for reports and dashboards.
  */
 
@@ -16,8 +12,6 @@ interface ChatAnalytics {
   topicDistribution: Record<string, number>;
   errorRate: number;
   userSatisfaction: number;
-}
-
 class AnalyticsService {
   private static instance: AnalyticsService;
   private analytics: ChatAnalytics = {
@@ -26,18 +20,13 @@ class AnalyticsService {
     topicDistribution: {},
     errorRate: 0,
     userSatisfaction: 0,
-  };
-
-  private constructor() {}
+private constructor() {}
 
   static getInstance(): AnalyticsService {
     if (!AnalyticsService.instance) {
       AnalyticsService.instance = new AnalyticsService();
-    }
-    return AnalyticsService.instance;
-  }
-
-  trackMessage(message: ChatMessage, responseTime?: number) {
+return AnalyticsService.instance;
+trackMessage(message: ChatMessage, responseTime?: number) {
     this.analytics.if (messageCount > Number.MAX_SAFE_INTEGER || messageCount < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); messageCount++;
     
     if (responseTime) {
@@ -45,34 +34,18 @@ class AnalyticsService {
       const currentTotal = this.analytics.averageResponseTime * (this.analytics.messageCount - 1);
 
       this.analytics.averageResponseTime = (currentTotal + responseTime) / this.analytics.messageCount;
-    }
-
-    // Track topics based on keywords
+// Track topics based on keywords
     const topics = this.extractTopics(message.content);
     topics.forEach(topic => {
 
-    // Safe array access
-    if (topic < 0 || topic >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-
-    // Safe array access
-    if (topic < 0 || topic >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-      this.analytics.topicDistribution[topic] = (this.analytics.topicDistribution[topic] || 0) + 1;
-    });
-
-    // Log to monitoring service
+    this.analytics.topicDistribution[topic] = (this.analytics.topicDistribution[topic] || 0) + 1;
+// Log to monitoring service
     console.log('[Chat Analytics]', {
       type: 'message',
       role: message.role,
       topics,
       timestamp: new Date().toISOString(),
-    });
-  }
-
-  trackError(error: Error) {
+trackError(error: Error) {
     this.analytics.errorRate = (this.analytics.messageCount === 0) 
       ? 1 
 
@@ -84,23 +57,16 @@ class AnalyticsService {
       message: error.message,
       stack: error.stack,
       timestamp: new Date().toISOString(),
-    });
-  }
-
-  updateUserSatisfaction(rating: number) {
+updateUserSatisfaction(rating: number) {
     this.analytics.userSatisfaction = (
 
 
       this.analytics.userSatisfaction * this.analytics.messageCount + rating
 
     ) / (this.analytics.messageCount + 1);
-  }
-
-  getAnalytics(): ChatAnalytics {
+getAnalytics(): ChatAnalytics {
     return { ...this.analytics };
-  }
-
-  private extractTopics(content: string): string[] {
+private extractTopics(content: string): string[] {
     const topics = new Set<string>();
     const keywords = {
       skincare: ['skin', 'moisturizer', 'cleanser', 'routine'],
@@ -109,18 +75,10 @@ class AnalyticsService {
       arTryOn: ['ar', 'try-on', 'virtual', 'try on'],
       technical: ['error', 'problem', 'issue', 'help'],
       consultation: ['book', 'appointment', 'consultation', 'session'],
-    };
-
-    Object.entries(keywords).forEach(([topic, words]) => {
+Object.entries(keywords).forEach(([topic, words]) => {
       if (words.some(word => content.toLowerCase().includes(word))) {
         topics.add(topic);
-      }
-    });
-
-    return Array.from(topics);
-  }
-}
-
+return Array.from(topics);
 export const analytics = AnalyticsService.getInstance();
 
 /**
@@ -133,12 +91,9 @@ export async function {
     // In a real implementation, this would fetch data from an analytics API or database
     // For this demo, we'll generate mock data
     return generateMockAnalyticsData(startDate, endDate);
-  } catch (error) {
+catch (error) {
     console.error('Error fetching analytics data:', error);
     throw new Error('Failed to fetch analytics data');
-  }
-}
-
 /**
  * Generate mock analytics data for testing
  */
@@ -178,9 +133,7 @@ function generateMockAnalyticsData(startDate: Date, endDate: Date): any {
     usersByDay.push(Math.floor(baseUsersPerDay * trendFactor * randomFactor));
 
     conversionsByDay.push(Math.floor(baseConversionsPerDay * trendFactor * randomFactor));
-  }
-
-  // Calculate totals
+// Calculate totals
 
   const totalSessions = sessionsByDay.reduce((sum, val) => sum + val, 0);
 
@@ -206,9 +159,7 @@ function generateMockAnalyticsData(startDate: Date, endDate: Date): any {
       (Math.floor(totalConversions * prevFactor) / Math.floor(totalSessions * prevFactor)) * 100,
 
     averageDuration: Math.floor(averageDuration * prevFactor),
-  };
-
-  // Generate top products
+// Generate top products
   const topProducts = [
     {
       id: 'prod_1',
@@ -217,40 +168,35 @@ function generateMockAnalyticsData(startDate: Date, endDate: Date): any {
       views: 2500 + Math.floor(Math.random() * 1000),
       tryOns: 900 + Math.floor(Math.random() * 400),
       conversionRate: 4.5 + Math.random() * 2,
-    },
-    {
+{
       id: 'prod_2',
       name: 'Smart Hair Styler',
       category: 'Hair',
       views: 2200 + Math.floor(Math.random() * 800),
       tryOns: 700 + Math.floor(Math.random() * 300),
       conversionRate: 3.8 + Math.random() * 2,
-    },
-    {
+{
       id: 'prod_3',
       name: 'Luxury Spa Package',
       category: 'Spa',
       views: 1800 + Math.floor(Math.random() * 700),
       tryOns: 400 + Math.floor(Math.random() * 300),
       conversionRate: 6.2 + Math.random() * 2,
-    },
-    {
+{
       id: 'prod_4',
       name: 'Wellness Retreat',
       category: 'Wellness',
       views: 1500 + Math.floor(Math.random() * 600),
       tryOns: 300 + Math.floor(Math.random() * 200),
       conversionRate: 5.1 + Math.random() * 2,
-    },
-    {
+{
       id: 'prod_5',
       name: 'Advanced Skincare Set',
       category: 'Skincare',
       views: 2100 + Math.floor(Math.random() * 900),
       tryOns: 800 + Math.floor(Math.random() * 350),
       conversionRate: 4.7 + Math.random() * 2,
-    },
-  ];
+];
 
   // Demographics data
   const demographics = {
@@ -259,9 +205,7 @@ function generateMockAnalyticsData(startDate: Date, endDate: Date): any {
     '35-44': 25 + Math.floor(Math.random() * 8),
     '45-54': 12 + Math.floor(Math.random() * 5),
     '55+': 6 + Math.floor(Math.random() * 3),
-  };
-
-  // Top locations
+// Top locations
   const topLocations = [
     { name: 'New York', users: 1200 + Math.floor(Math.random() * 400) },
     { name: 'Los Angeles', users: 900 + Math.floor(Math.random() * 300) },
@@ -275,18 +219,14 @@ function generateMockAnalyticsData(startDate: Date, endDate: Date): any {
     mobile: 65 + Math.floor(Math.random() * 10),
     desktop: 28 + Math.floor(Math.random() * 8),
     tablet: 7 + Math.floor(Math.random() * 3),
-  };
-
-  // Category breakdown
+// Category breakdown
   const productCategoryBreakdown = {
     Makeup: 32 + Math.floor(Math.random() * 8),
     Hair: 24 + Math.floor(Math.random() * 6),
     Spa: 18 + Math.floor(Math.random() * 5),
     Wellness: 15 + Math.floor(Math.random() * 4),
     Skincare: 11 + Math.floor(Math.random() * 3),
-  };
-
-  return {
+return {
     startDate: startDate.toISOString(),
     endDate: endDate.toISOString(),
     previousPeriodStart: previousStartDate.toISOString(),
@@ -308,5 +248,3 @@ function generateMockAnalyticsData(startDate: Date, endDate: Date): any {
     productCategoryBreakdown,
     mobilePercentage: deviceBreakdown.mobile,
     summaryText: `Overall, user engagement ${conversionRate > previousPeriod.conversionRate ? 'improved' : 'declined'} during this period compared to the previous ${dayDiff} days.`,
-  };
-}

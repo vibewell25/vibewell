@@ -1,4 +1,3 @@
-'use client';
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { Button } from '@/components/ui/Button';
@@ -10,12 +9,10 @@ interface User {
   name: string;
   email: string;
   avatar_url?: string;
-}
 interface Provider {
   id: string;
   name: string;
   avatar_url?: string;
-}
 interface Review {
   id: string;
   title: string;
@@ -29,7 +26,6 @@ interface Review {
   isReported?: boolean;
   reportReason?: string;
   reportedBy?: User;
-}
 export default function AdminReviewsPage() {
   const [activeTab, setActiveTab] = useState('pending');
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -55,14 +51,11 @@ export default function AdminReviewsPage() {
             name: 'John Doe',
             email: 'john@example.com',
             avatar_url: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36',
-          },
-          provider: {
+provider: {
             id: 'p1',
             name: 'Sarah Johnson',
             avatar_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
-          },
-        },
-        {
+{
           id: '2',
           title: 'Great massage',
           text: "Michael's deep tissue massage was just what I needed. Helped with my back pain immensely.",
@@ -74,14 +67,11 @@ export default function AdminReviewsPage() {
             name: 'Jane Smith',
             email: 'jane@example.com',
             avatar_url: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12',
-          },
-          provider: {
+provider: {
             id: 'p2',
             name: 'Michael Chen',
             avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d',
-          },
-        },
-        {
+{
           id: '3',
           title: 'Terrible experience',
           text: 'The stylist was an hour late and then rushed through my appointment. My hair looks nothing like what I asked for.',
@@ -93,21 +83,17 @@ export default function AdminReviewsPage() {
             name: 'Amy Wilson',
             email: 'amy@example.com',
             avatar_url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2',
-          },
-          provider: {
+provider: {
             id: 'p3',
             name: 'Jennifer Adams',
             avatar_url: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04',
-          },
-          isReported: true,
+isReported: true,
           reportReason: 'Provider disputes the facts of this review',
           reportedBy: {
             id: 'p3',
             name: 'Jennifer Adams',
             email: 'jennifer@example.com',
-          },
-        },
-        {
+{
           id: '4',
           title: 'Rude and unprofessional',
           text: 'This person should be fired. Extremely rude and dismissive the entire time.',
@@ -119,20 +105,17 @@ export default function AdminReviewsPage() {
             name: 'Tom Brown',
             email: 'tom@example.com',
             avatar_url: 'https://images.unsplash.com/photo-1500048993953-d23a436266cf',
-          },
-          provider: {
+provider: {
             id: 'p4',
             name: 'David Lee',
             avatar_url: 'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c',
-          },
-          moderationNotes:
+moderationNotes:
             'Review violates our community guidelines by using inflammatory language.',
-        },
-      ];
+];
       setReviews(mockReviews);
       setIsLoading(false);
-    }, 1000);
-  }, []);
+1000);
+[]);
   // Filter reviews by status and search term
   const filteredReviews = reviews.filter((review) => {
     const matchesStatus = review.status === activeTab || activeTab === 'all';
@@ -140,22 +123,18 @@ export default function AdminReviewsPage() {
       `${review.title} ${review.text} ${review.customer.name} ${review.provider.name}`.toLowerCase();
     const matchesSearch = searchTerm === '' || searchContent.includes(searchTerm.toLowerCase());
     return matchesStatus && matchesSearch;
-  });
-  // Approve a review
+// Approve a review
   const handleApproveReview = (reviewId: string) => {
     setReviews((prevReviews) =>
       prevReviews.map((review) =>
         review.id === reviewId ? { ...review, status: 'approved' } : review,
       ),
-    );
-  };
-  // Reject a review
+// Reject a review
   const handleRejectReview = (reviewId: string) => {
     if (selectedReview.id === reviewId && !moderationNote) {
       alert('Please provide a reason for rejection');
       return;
-    }
-    setReviews((prevReviews) =>
+setReviews((prevReviews) =>
       prevReviews.map((review) =>
         review.id === reviewId
           ? {
@@ -163,20 +142,16 @@ export default function AdminReviewsPage() {
               status: 'rejected',
               moderationNotes:
                 selectedReview.id === reviewId ? moderationNote : review.moderationNotes,
-            }
-          : review,
+: review,
       ),
-    );
-    setSelectedReview(null);
+setSelectedReview(null);
     setModerationNote('');
-  };
-  // Resolve a flagged review
+// Resolve a flagged review
   const handleResolveFlagged = (reviewId: string) => {
     if (selectedReview.id === reviewId && !moderationNote) {
       alert('Please provide resolution notes');
       return;
-    }
-    setReviews((prevReviews) =>
+setReviews((prevReviews) =>
       prevReviews.map((review) =>
         review.id === reviewId
           ? {
@@ -187,14 +162,11 @@ export default function AdminReviewsPage() {
                 selectedReview.id === reviewId
                   ? `${review.moderationNotes || ''}\n${new Date().toISOString()}: Flag resolved - ${moderationNote}`
                   : review.moderationNotes,
-            }
-          : review,
+: review,
       ),
-    );
-    setSelectedReview(null);
+setSelectedReview(null);
     setModerationNote('');
-  };
-  const getStatusIcon = (status: string) => {
+const getStatusIcon = (status: string) => {
     switch (status) {
       case 'pending':
         return <Icons.ExclamationTriangleIcon className="h-5 w-5 text-yellow-500" />;
@@ -206,9 +178,7 @@ export default function AdminReviewsPage() {
         return <Icons.FlagIcon className="h-5 w-5 text-orange-500" />;
       default:
         return null;
-    }
-  };
-  return (
+return (
     <Layout>
       <div className="container mx-auto max-w-6xl px-4 py-8">
         <div className="mb-6 flex items-center justify-between">
@@ -291,8 +261,7 @@ export default function AdminReviewsPage() {
                           id: review.customer.id,
                           name: review.customer.name,
                           avatar_url: review.customer.avatar_url,
-                        }}
-                      />
+/>
                     </div>
                     <div className="flex flex-col border-t border-gray-100 p-4">
                       <div className="mb-3 flex items-center justify-between">
@@ -330,8 +299,7 @@ export default function AdminReviewsPage() {
                               review.status === 'flagged'
                                 ? 'Enter resolution notes'
                                 : 'Enter reason for rejection'
-                            }
-                            className="w-full rounded-md border border-gray-300 p-2 focus:border-indigo-500 focus:ring-indigo-500"
+className="w-full rounded-md border border-gray-300 p-2 focus:border-indigo-500 focus:ring-indigo-500"
                             rows={3}
                           />
                         </div>
@@ -345,8 +313,7 @@ export default function AdminReviewsPage() {
                               onClick={() => {
                                 setSelectedReview(review);
                                 setModerationNote('');
-                              }}
-                            >
+>
                               <Icons.XCircleIcon className="mr-1 h-4 w-4" />
                               Reject
                             </Button>
@@ -364,8 +331,7 @@ export default function AdminReviewsPage() {
                               onClick={() => {
                                 setSelectedReview(review);
                                 setModerationNote('');
-                              }}
-                            >
+>
                               <Icons.XCircleIcon className="mr-1 h-4 w-4" />
                               Reject
                             </Button>
@@ -373,8 +339,7 @@ export default function AdminReviewsPage() {
                               onClick={() => {
                                 setSelectedReview(review);
                                 setModerationNote('');
-                              }}
-                            >
+>
                               <Icons.CheckCircleIcon className="mr-1 h-4 w-4" />
                               Resolve & Approve
                             </Button>
@@ -387,8 +352,7 @@ export default function AdminReviewsPage() {
                               onClick={() => {
                                 setSelectedReview(null);
                                 setModerationNote('');
-                              }}
-                            >
+>
                               Cancel
                             </Button>
                             <Button
@@ -396,8 +360,7 @@ export default function AdminReviewsPage() {
                                 review.status === 'flagged'
                                   ? handleResolveFlagged(review.id)
                                   : handleRejectReview(review.id)
-                              }
-                            >
+>
                               Submit
                             </Button>
                           </>
@@ -412,5 +375,3 @@ export default function AdminReviewsPage() {
         </Tabs>
       </div>
     </Layout>
-  );
-}

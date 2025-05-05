@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import skincare from '../skincare.ts';
+
+describe('skincare', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<skincare />);
+    expect(container).toBeInTheDocument();
+  });
+});

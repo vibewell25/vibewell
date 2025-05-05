@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import system-metrics-chart from '../system-metrics-chart.tsx';
+
+describe('system-metrics-chart', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<system-metrics-chart />);
+    expect(container).toBeInTheDocument();
+  });
+});

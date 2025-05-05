@@ -3,23 +3,17 @@ export interface Participant {
   name: string;
   avatar?: string;
   lastSeen?: string;
-}
-
 export interface Message {
   id: string;
   senderId: string;
   content: string;
   timestamp: string;
   read: boolean;
-}
-
 export interface Conversation {
   id: string;
   participants: Participant[];
   messages: Message[];
   unreadCount: number;
-}
-
 export interface MessagingProps {
   conversations: Conversation[];
   currentUserId: string;
@@ -30,4 +24,3 @@ export interface MessagingProps {
   height?: string;
   defaultSelectedConversation?: string;
   loading?: boolean;
-}

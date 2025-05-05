@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import social-linking from '../social-linking.tsx';
+
+describe('social-linking', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<social-linking />);
+    expect(container).toBeInTheDocument();
+  });
+});

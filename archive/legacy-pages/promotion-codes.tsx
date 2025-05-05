@@ -22,9 +22,7 @@ const PromotionCodes: NextPage = () => {
     const res = await fetchWithTimeout('/api/promotionCodes');
     const json = await res.json();
     setCodes(json.codes || []);
-  };
-
-  useEffect(() => { fetchCodes(); }, []);
+useEffect(() => { fetchCodes(); }, []);
 
   const handleCreate = async (e: FormEvent) => {
     e.preventDefault();
@@ -32,22 +30,17 @@ const PromotionCodes: NextPage = () => {
       method: 'POST', 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ code, description, discount, validFrom, validTo })
-    });
-    setCode(''); 
+setCode(''); 
     setDescription(''); 
     setDiscount(0); 
     setValidFrom(''); 
     setValidTo('');
     fetchCodes();
-  };
-
-  const handleDelete = async (id: string) => {
+const handleDelete = async (id: string) => {
     if (!confirm('Delete this code?')) return;
     await fetchWithTimeout(`/api/promotionCodes/${id}`, { method: 'DELETE' });
     fetchCodes();
-  };
-
-  return (
+return (
     <div className="max-w-2xl mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Promotion Codes</h1>
       <form onSubmit={handleCreate} className="space-y-2 mb-6">
@@ -73,7 +66,4 @@ const PromotionCodes: NextPage = () => {
       ))}
       {codes.length === 0 && <p>No codes.</p>}
     </div>
-  );
-};
-
 export default PromotionCodes;

@@ -4,8 +4,6 @@ import { serviceCategories } from '@vibewell/services-types';
 
 interface ServicesLayoutProps {
   children: ReactNode;
-}
-
 export default function ServicesLayout({ children }: ServicesLayoutProps) {
   return (
     <div className="services-layout px-4 py-8">
@@ -27,5 +25,3 @@ export default function ServicesLayout({ children }: ServicesLayoutProps) {
         {children}
       </section>
     </div>
-  );
-} 

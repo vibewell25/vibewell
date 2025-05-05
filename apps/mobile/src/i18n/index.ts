@@ -1,5 +1,4 @@
-
-    import { I18n } from 'i18n-js';
+import { I18n } from 'i18n-js';
 
     
     import * as Localization from 'expo-localization';
@@ -20,8 +19,7 @@ import {
   ja as localeJa,
   zhCN as localeZhCN,
   ar as localeAr,
-
-    } from 'date-fns/locale';
+from 'date-fns/locale';
 
 // Import translations
 
@@ -47,8 +45,6 @@ const STORAGE_KEYS = {
       LANGUAGE: '@vibewell/language',
 
       LANGUAGE_SELECTION_SHOWN: '@vibewell/language_selection_shown',
-};
-
 // Define language options
 export interface LanguageOption {
   code: string;
@@ -56,8 +52,6 @@ export interface LanguageOption {
   localName: string;
   flag: string;
   isRTL: boolean;
-}
-
 // Available languages with metadata
 export const LANGUAGES: LanguageOption[] = [
   { code: 'en', name: 'English', localName: 'English', flag: '🇺🇸', isRTL: false },
@@ -82,8 +76,6 @@ const DATE_FNS_LOCALES: { [key: string]: Locale } = {
 
       'zh-CN': localeZhCN,
   ar: localeAr,
-};
-
 // Create i18n instance
 const i18n = new I18n({
   en: enTranslations,
@@ -95,8 +87,6 @@ const i18n = new I18n({
 
       'zh-CN': zhCNTranslations,
   ar: arTranslations,
-});
-
 // Default to device locale or fall back to en
 i18n.defaultLocale = 'en';
 i18n.locale = Localization.locale.split('-')[0] || 'en';
@@ -115,9 +105,7 @@ export async function {
     if (savedLanguage && Object.keys(i18n.translations).includes(savedLanguage)) {
       await setLanguage(savedLanguage, false); // Don't save again, just apply
       return savedLanguage;
-    }
-    
-    // No saved preference, use device locale if available
+// No saved preference, use device locale if available
     const deviceLocale = Localization.locale;
     const languageCode = deviceLocale.split('-')[0];
     
@@ -125,49 +113,34 @@ export async function {
     if (Object.keys(i18n.translations).includes(languageCode)) {
       await setLanguage(languageCode, true); // Save this preference
       return languageCode;
-    }
-    
-
-        // For zh-CN or other hyphenated codes, check full locale
+// For zh-CN or other hyphenated codes, check full locale
     if (Object.keys(i18n.translations).includes(deviceLocale)) {
       await setLanguage(deviceLocale, true); // Save this preference
       return deviceLocale;
-    }
-    
-    // Fall back to English
+// Fall back to English
     await setLanguage('en', true);
     return 'en';
-  } catch (error) {
+catch (error) {
     console.error('Error initializing i18n:', error);
     // Default to English on error
     i18n.locale = 'en';
     return 'en';
-  }
-}
-
 /**
  * Get the current locale
  */
 export function getCurrentLocale(): string {
   return i18n.locale;
-}
-
 /**
  * Get available locales
  */
 export function getAvailableLocales(): LanguageOption[] {
   return LANGUAGES.filter(lang => 
     Object.keys(i18n.translations).includes(lang.code)
-  );
-}
-
 /**
  * Get language information by code
  */
 export function getLanguageByCode(code: string): LanguageOption | undefined {
   return LANGUAGES.find(lang => lang.code === code);
-}
-
 /**
  * Check if user has made a language selection
  */
@@ -175,11 +148,8 @@ export async function {
   hasUserSelectedLanguage(): Promise<boolean> {
   try {
     return await AsyncStorage.getItem(STORAGE_KEYS.LANGUAGE_SELECTION_SHOWN) === 'true';
-  } catch {
+catch {
     return false;
-  }
-}
-
 /**
  * Format a date according to the current locale
  */
@@ -187,24 +157,18 @@ export function formatDate(date: Date, formatString: string = 'PPP'): string {
   try {
     const locale = DATE_FNS_LOCALES[i18n.locale] || DATE_FNS_LOCALES.en;
     return format(date, formatString, { locale });
-  } catch (error) {
+catch (error) {
     console.error('Error formatting date:', error);
     return format(date, formatString); // Fall back to default locale
-  }
-}
-
 /**
  * Format a number according to the current locale
  */
 export function formatNumber(num: number, options?: Intl.NumberFormatOptions): string {
   try {
     return new Intl.NumberFormat(i18n.locale, options).format(num);
-  } catch (error) {
+catch (error) {
     console.error('Error formatting number:', error);
     return num.toString(); // Fall back to simple conversion
-  }
-}
-
 /**
  * Format currency according to the current locale
  */
@@ -213,13 +177,10 @@ export function formatCurrency(amount: number, currencyCode: string = 'USD'): st
     return new Intl.NumberFormat(i18n.locale, {
       style: 'currency',
       currency: currencyCode,
-    }).format(amount);
-  } catch (error) {
+).format(amount);
+catch (error) {
     console.error('Error formatting currency:', error);
     return `${currencyCode} ${amount}`; // Fall back to simple conversion
-  }
-}
-
 /**
  * Set app language
  * @param locale The language code to set
@@ -231,9 +192,7 @@ export async function {
     if (!Object.keys(i18n.translations).includes(locale)) {
       console.error(`Locale ${locale} is not supported`);
       return false;
-    }
-    
-    // Get language info
+// Get language info
     const langInfo = getLanguageByCode(locale);
     
     // Handle RTL languages
@@ -243,25 +202,17 @@ export async function {
         I18nManager.allowRTL(isRTL);
         I18nManager.forceRTL(isRTL);
         // Note: In a real app, we might need to reload the app here
-      }
-    }
-    
-    // Set the locale
+// Set the locale
     i18n.locale = locale;
     
     // Save preferences if requested
     if (savePreference) {
       await AsyncStorage.setItem(STORAGE_KEYS.LANGUAGE, locale);
       await AsyncStorage.setItem(STORAGE_KEYS.LANGUAGE_SELECTION_SHOWN, 'true');
-    }
-    
-    return true;
-  } catch (error) {
+return true;
+catch (error) {
     console.error('Error setting language:', error);
     return false;
-  }
-}
-
 /**
  * Translate with parameters
  * @param key Translation key
@@ -269,8 +220,6 @@ export async function {
  */
 export function t(key: string, params?: Record<string, any>): string {
   return i18n.t(key, params);
-}
-
 // Export the i18n instance and helper functions
 export default {
   t,
@@ -284,4 +233,3 @@ export default {
   formatNumber,
   formatCurrency,
   LANGUAGES,
-}; 

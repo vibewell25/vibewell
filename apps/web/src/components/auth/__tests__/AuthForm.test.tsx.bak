@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import auth-form from '../auth-form.tsx';
+
+describe('auth-form', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<auth-form />);
+    expect(container).toBeInTheDocument();
+  });
+});

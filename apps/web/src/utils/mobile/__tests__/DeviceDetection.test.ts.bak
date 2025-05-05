@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import device-detection from '../device-detection.ts';
+
+describe('device-detection', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<device-detection />);
+    expect(container).toBeInTheDocument();
+  });
+});

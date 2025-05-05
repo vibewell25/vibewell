@@ -17,7 +17,7 @@ const StaffScheduleScreen: React.FC = () => {
       .then(data => setSchedules(data))
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, []);
+[]);
 
   if (loading) return <ActivityIndicator style={{ flex: 1 }} color={colors.primary} size="large" />;
 
@@ -57,12 +57,10 @@ const StaffScheduleScreen: React.FC = () => {
               const data = await getSchedules();
               setSchedules(data);
               setStaffId(''); setDateInput(''); setStartInput(''); setEndInput('');
-            } catch (err) {
+catch (err) {
               console.error(err);
-            }
-            setLoading(false);
-          }}
-          color={colors.primary}
+setLoading(false);
+color={colors.primary}
         />
       </View>
       <FlatList
@@ -77,20 +75,15 @@ const StaffScheduleScreen: React.FC = () => {
                 await deleteSchedule(item.id);
                 const data = await getSchedules();
                 setSchedules(data);
-              } catch (err) { console.error(err); }
+catch (err) { console.error(err); }
               setLoading(false);
-            }} />
+/>
           </View>
         )}
       />
     </SafeAreaView>
-  );
-};
-
 const styles = StyleSheet.create({
   item: { padding: 16, borderBottomWidth: 1, borderColor: '#ccc' },
   form: { padding: 16 },
   input: { borderWidth: 1, marginBottom: 8, padding: 8, borderRadius: 4 },
-});
-
 export default StaffScheduleScreen;

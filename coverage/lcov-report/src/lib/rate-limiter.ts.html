@@ -2090,25 +2090,25 @@ async function <span class="fstat-no" title="function not covered" >logRateLimit
 // #region HTTP API Rate Limiter
 &nbsp;
 /**
- * Create a rate limiter for Next?.js API routes (both App Router and Pages Router)
+ * Create a rate limiter for Next.js API routes (both App Router and Pages Router)
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >createRateLimiter(</span></span>options: RateLimitOptions = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> {
   const mergedOptions = <span class="cstat-no" title="statement not covered" >{ ...DEFAULT_OPTIONS, ...options };</span>
 &nbsp;
   // Default identifier generator uses IP
   const identifierGenerator =
-<span class="cstat-no" title="statement not covered" >    options?.identifierGenerator ||</span>
+<span class="cstat-no" title="statement not covered" >    options.identifierGenerator ||</span>
     (<span class="fstat-no" title="function not covered" >(r</span>eq: NextRequest | any) =&gt; {
       // Handle different request types
-<span class="cstat-no" title="statement not covered" >      if (req?.headers.get) {</span>
+<span class="cstat-no" title="statement not covered" >      if (req.headers.get) {</span>
         // NextRequest (App Router)
-<span class="cstat-no" title="statement not covered" >        return req?.headers.get('x-forwarded-for') || req?.headers.get('x-real-ip') || 'unknown';</span>
-      } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (req?.headers) {</span>
+<span class="cstat-no" title="statement not covered" >        return req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';</span>
+      } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (req.headers) {</span>
         // NextApiRequest (Pages Router)
 <span class="cstat-no" title="statement not covered" >        return String(</span>
-          req?.headers['x-forwarded-for'] ||
-          req?.headers['x-real-ip'] ||
-          req?.socket?.remoteAddress ||
+          req.headers['x-forwarded-for'] ||
+          req.headers['x-real-ip'] ||
+          req.socket.remoteAddress ||
           'unknown',
         );
       }
@@ -2117,7 +2117,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
     });
 &nbsp;
   // Skip function
-  const skipFn = <span class="cstat-no" title="statement not covered" >options?.skip || (<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse</span>);</span>
+  const skipFn = <span class="cstat-no" title="statement not covered" >options.skip || (<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>alse</span>);</span>
 &nbsp;
   // For App Router
   const appRouterHandler = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async (r</span>eq: NextRequest): Promise&lt;NextResponse | null&gt; =&gt; {</span>
@@ -2128,10 +2128,10 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
       }
 &nbsp;
       const identifier = <span class="cstat-no" title="statement not covered" >identifierGenerator(req);</span>
-      const path = <span class="cstat-no" title="statement not covered" >req?.nextUrl.pathname;</span>
-      const method = <span class="cstat-no" title="statement not covered" >req?.method;</span>
+      const path = <span class="cstat-no" title="statement not covered" >req.nextUrl.pathname;</span>
+      const method = <span class="cstat-no" title="statement not covered" >req.method;</span>
 &nbsp;
-      const userId = <span class="cstat-no" title="statement not covered" >req?.headers.get('x-user-id');</span>
+      const userId = <span class="cstat-no" title="statement not covered" >req.headers.get('x-user-id');</span>
 &nbsp;
       // Check if rate limited
       const result = <span class="cstat-no" title="statement not covered" >await checkRateLimit(identifier, mergedOptions);</span>
@@ -2141,15 +2141,15 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         identifier,
         path,
         method,
-        options?.keyPrefix || 'api',
+        options.keyPrefix || 'api',
         result,
         userId || undefined,
       );
 &nbsp;
       // If rate limited, return error response
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!result.success) {</span>
-<span class="cstat-no" title="statement not covered" >        return NextResponse?.json(mergedOptions?.message, {</span>
-          status: mergedOptions?.statusCode,
+<span class="cstat-no" title="statement not covered" >        return NextResponse.json(mergedOptions.message, {</span>
+          status: mergedOptions.statusCode,
           headers: {
             'Retry-After': String(result.retryAfter),
             'X-RateLimit-Limit': String(result.limit),
@@ -2177,10 +2177,10 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
       }
 &nbsp;
       const identifier = <span class="cstat-no" title="statement not covered" >identifierGenerator(req);</span>
-      const path = <span class="cstat-no" title="statement not covered" >req?.url;</span>
-      const method = <span class="cstat-no" title="statement not covered" >req?.method;</span>
+      const path = <span class="cstat-no" title="statement not covered" >req.url;</span>
+      const method = <span class="cstat-no" title="statement not covered" >req.method;</span>
 &nbsp;
-      const userId = <span class="cstat-no" title="statement not covered" >req?.headers['x-user-id'];</span>
+      const userId = <span class="cstat-no" title="statement not covered" >req.headers['x-user-id'];</span>
 &nbsp;
       // Check if rate limited
       const result = <span class="cstat-no" title="statement not covered" >await checkRateLimit(identifier, mergedOptions);</span>
@@ -2190,20 +2190,20 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         identifier,
         path,
         method,
-        options?.keyPrefix || 'api',
+        options.keyPrefix || 'api',
         result,
         userId || undefined,
       );
 &nbsp;
       // Set rate limit headers
-<span class="cstat-no" title="statement not covered" >      res?.setHeader('X-RateLimit-Limit', String(result.limit));</span>
-<span class="cstat-no" title="statement not covered" >      res?.setHeader('X-RateLimit-Remaining', String(result.remaining));</span>
-<span class="cstat-no" title="statement not covered" >      res?.setHeader('X-RateLimit-Reset', String(Math.ceil(result.resetTime / 1000)));</span>
+<span class="cstat-no" title="statement not covered" >      res.setHeader('X-RateLimit-Limit', String(result.limit));</span>
+<span class="cstat-no" title="statement not covered" >      res.setHeader('X-RateLimit-Remaining', String(result.remaining));</span>
+<span class="cstat-no" title="statement not covered" >      res.setHeader('X-RateLimit-Reset', String(Math.ceil(result.resetTime / 1000)));</span>
 &nbsp;
       // If rate limited, return error response
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!result.success) {</span>
-<span class="cstat-no" title="statement not covered" >        res?.setHeader('Retry-After', String(result.retryAfter));</span>
-<span class="cstat-no" title="statement not covered" >        res?.status(mergedOptions?.statusCode!).json(mergedOptions?.message);</span>
+<span class="cstat-no" title="statement not covered" >        res.setHeader('Retry-After', String(result.retryAfter));</span>
+<span class="cstat-no" title="statement not covered" >        res.status(mergedOptions.statusCode!).json(mergedOptions.message);</span>
 <span class="cstat-no" title="statement not covered" >        return;</span>
       }
 &nbsp;
@@ -2245,7 +2245,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   const mergedOptions = <span class="cstat-no" title="statement not covered" >{</span>
     ...DEFAULT_OPTIONS,
     ...options,
-    keyPrefix: options?.keyPrefix || 'graphql:',
+    keyPrefix: options.keyPrefix || 'graphql:',
   };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return async function <span class="fstat-no" title="function not covered" >graphqlRateLimiter(</span></span>
@@ -2254,8 +2254,8 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   ): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Generate identifier from context
-      const identifier = <span class="cstat-no" title="statement not covered" >context?.userId || context?.ip;</span>
-      const key = <span class="cstat-no" title="statement not covered" >`${mergedOptions?.keyPrefix}${fieldName}:${identifier}`;</span>
+      const identifier = <span class="cstat-no" title="statement not covered" >context.userId || context.ip;</span>
+      const key = <span class="cstat-no" title="statement not covered" >`${mergedOptions.keyPrefix}${fieldName}:${identifier}`;</span>
 &nbsp;
       // Check if rate limited
       const result = <span class="cstat-no" title="statement not covered" >await checkRateLimit(</span>
@@ -2268,9 +2268,9 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         identifier,
         fieldName,
         'GRAPHQL',
-        options?.keyPrefix || 'graphql',
+        options.keyPrefix || 'graphql',
         result,
-        context?.userId || undefined,
+        context.userId || undefined,
       );
 &nbsp;
       // If rate limited, throw GraphQL error
@@ -2306,17 +2306,17 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
     query: createGraphQLRateLimiter({
       ...options,
       keyPrefix: 'graphql:query:',
-      max: options?.max || 100, // 100 queries per minute by default
+      max: options.max || 100, // 100 queries per minute by default
     }),
     mutation: createGraphQLRateLimiter({
       ...options,
       keyPrefix: 'graphql:mutation:',
-      max: options?.max || 30, // 30 mutations per minute by default
+      max: options.max || 30, // 30 mutations per minute by default
     }),
     subscription: createGraphQLRateLimiter({
       ...options,
       keyPrefix: 'graphql:subscription:',
-      max: options?.max || 5, // 5 subscriptions per minute by default
+      max: options.max || 5, // 5 subscriptions per minute by default
     }),
   };
 &nbsp;
@@ -2326,7 +2326,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="fstat-no" title="function not covered" >        async d</span>idResolveOperation({ context, operationName, operation }: any) {
 <span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (!operation) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
-          const operationType = <span class="cstat-no" title="statement not covered" >operation?.operation.toLowerCase();</span>
+          const operationType = <span class="cstat-no" title="statement not covered" >operation.operation.toLowerCase();</span>
           const rateLimiter = <span class="cstat-no" title="statement not covered" >operationLimits[operationType as keyof typeof operationLimits];</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (rateLimiter) {</span>
@@ -2388,19 +2388,19 @@ export class <span class="cstat-no" title="statement not covered" >WebSocketRate
 <span class="fstat-no" title="function not covered" >  constructor(o</span>ptions: WebSocketRateLimitOptions = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> {
 <span class="cstat-no" title="statement not covered" >    this.options = {</span>
       // Connection limits
-      maxConnectionsPerIP: options?.maxConnectionsPerIP || 10,
-      connectionWindowMs: options?.connectionWindowMs || 60 * 1000,
+      maxConnectionsPerIP: options.maxConnectionsPerIP || 10,
+      connectionWindowMs: options.connectionWindowMs || 60 * 1000,
 &nbsp;
       // Message limits
-      maxMessagesPerMinute: options?.maxMessagesPerMinute || 120,
-      maxMessageSizeBytes: options?.maxMessageSizeBytes || 8192,
+      maxMessagesPerMinute: options.maxMessagesPerMinute || 120,
+      maxMessageSizeBytes: options.maxMessageSizeBytes || 8192,
 &nbsp;
       // Burst handling
-      burstFactor: options?.burstFactor || 2,
-      burstDurationMs: options?.burstDurationMs || 5000,
+      burstFactor: options.burstFactor || 2,
+      burstDurationMs: options.burstDurationMs || 5000,
 &nbsp;
       // Key prefixes
-      keyPrefix: options?.keyPrefix || 'ws:',
+      keyPrefix: options.keyPrefix || 'ws:',
 &nbsp;
       ...options,
     };
@@ -2617,14 +2617,14 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="cstat-no" title="statement not covered" >      return handler(req, res);</span>
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      logger.error('Rate limiter error', 'rate-limit', { error });</span>
-<span class="cstat-no" title="statement not covered" >      return res?.status(500).json({ error: 'Internal server error' });</span>
+<span class="cstat-no" title="statement not covered" >      return res.status(500).json({ error: 'Internal server error' });</span>
     }
   };
 }
 &nbsp;
 // #endregion
 &nbsp;
-// For backward compatibility with redis-rate-limiter?.ts
+// For backward compatibility with redis-rate-limiter.ts
 export {};
 export {};
 export {};
@@ -2638,7 +2638,7 @@ export class <span class="cstat-no" title="statement not covered" >RateLimiter <
   private redis: Redis;
 &nbsp;
 <span class="fstat-no" title="function not covered" >  constructor() {</span>
-<span class="cstat-no" title="statement not covered" >    this.redis = new Redis(env?.REDIS_URL);</span>
+<span class="cstat-no" title="statement not covered" >    this.redis = new Redis(env.REDIS_URL);</span>
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async c</span>heckLimit(key: string, limit: number, windowInSeconds: number): Promise&lt;void&gt; {
@@ -2665,7 +2665,7 @@ export class <span class="cstat-no" title="statement not covered" >RateLimiter <
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

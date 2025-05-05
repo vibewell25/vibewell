@@ -5,8 +5,6 @@ interface UseErrorBoundaryOptions {
   fallback?: ReactNode;
   onError?: (error: Error, errorInfo: React.ErrorInfo) => void;
   onReset?: () => void;
-}
-
 /**
  * A hook that provides a wrapper component with error boundary protection.
  *
@@ -29,11 +27,7 @@ export function useErrorBoundary(options: UseErrorBoundaryOptions = {}) {
     <ErrorBoundary fallback={fallback} onError={onError}>
       {children}
     </ErrorBoundary>
-  );
-
-  return ErrorBoundaryWrapper;
-}
-
+return ErrorBoundaryWrapper;
 /**
  * A higher-order component that wraps a component with an error boundary.
  *
@@ -62,36 +56,23 @@ export function withErrorBoundary<P extends object>(
             newProps[key] = (...args: any[]) => {
               try {
                 prop(...args);
-              } catch (error) {
+catch (error) {
                 // Handle runtime error in event handler
                 if (onError && error instanceof Error) {
                   onError(error, { componentStack: '' });
-                }
-              }
-            };
-          }
-        });
-        // Recursively wrap children
+// Recursively wrap children
         const wrappedChildren = wrapEventHandlers(childProps.children);
         return React.cloneElement(child, newProps, wrappedChildren);
-      }
-      return child;
-    });
-  };
-
-  const WrappedComponent = (props: P) => {
+return child;
+const WrappedComponent = (props: P) => {
     const element = <Component {...props} />;
     const content = wrapEventHandlers(element);
     return (
       <ErrorBoundary fallback={fallback} onError={onError} onReset={onReset}>
         {content}
       </ErrorBoundary>
-    );
-  };
-
-  // Set display name for better debugging
+// Set display name for better debugging
   const displayName = Component.displayName || Component.name || 'Component';
   WrappedComponent.displayName = `withErrorBoundary(${displayName})`;
 
   return WrappedComponent;
-}

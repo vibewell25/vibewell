@@ -8,7 +8,7 @@ import {
   UserGroupIcon, 
   SparklesIcon,
   ChartBarIcon
-} from "@heroicons/react/24/outline";
+from "@heroicons/react/24/outline";
 import OverviewCard from '../../components/dashboard/OverviewCard';
 import AnalyticsChart from '../../components/dashboard/AnalyticsChart';
 import AppointmentsList from '../../components/dashboard/AppointmentsList';
@@ -16,8 +16,6 @@ import AppointmentsList from '../../components/dashboard/AppointmentsList';
 export const metadata: Metadata = {
   title: "Dashboard | VibeWell",
   description: "View your business performance and manage your services",
-};
-
 export default async function DashboardPage() {
   // In a real app, you would fetch real data here
   const stats = {
@@ -25,47 +23,38 @@ export default async function DashboardPage() {
       value: 24350,
       change: 12.5,
       trend: 'up',
-    },
-    appointments: {
+appointments: {
       value: 156,
       change: 8.2,
       trend: 'up',
-    },
-    clients: {
+clients: {
       value: 78,
       change: 15.3,
       trend: 'up',
-    },
-    cancellations: {
+cancellations: {
       value: 12,
       change: -2.5,
       trend: 'down',
-    },
-  };
-
-  const upcomingAppointments = [
+const upcomingAppointments = [
     {
       id: '1',
       client: 'Jane Smith',
       service: 'Haircut',
       date: new Date(Date.now() + 1000 * 60 * 60 * 24),
       status: 'confirmed',
-    },
-    {
+{
       id: '2',
       client: 'John Doe',
       service: 'Massage',
       date: new Date(Date.now() + 1000 * 60 * 60 * 48),
       status: 'confirmed',
-    },
-    {
+{
       id: '3',
       client: 'Alice Johnson',
       service: 'Facial',
       date: new Date(Date.now() + 1000 * 60 * 60 * 72),
       status: 'pending',
-    },
-  ];
+];
 
   return (
     <div className="space-y-6 p-6">
@@ -110,5 +99,3 @@ export default async function DashboardPage() {
         </div>
       </div>
     </div>
-  );
-}

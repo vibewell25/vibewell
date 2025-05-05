@@ -23,15 +23,13 @@ export default {
       serverError: 'Erreur serveur. Veuillez réessayer plus tard.',
       noData: 'Aucune donnée disponible',
       unauthorized: 'Non autorisé. Veuillez vous reconnecter.',
-    },
-    search: 'Rechercher...',
+search: 'Rechercher...',
     seeAll: 'Voir tout',
     noResults: 'Aucun résultat trouvé',
     errorOccurred: 'Une erreur est survenue',
     tryAgain: 'Veuillez réessayer',
     comingSoon: 'Bientôt disponible',
-  },
-  auth: {
+auth: {
     login: 'Connexion',
     signup: 'Inscription',
     email: 'Email',
@@ -50,8 +48,7 @@ export default {
       passwordRequired: 'Le mot de passe est obligatoire',
       passwordTooShort: 'Le mot de passe doit comporter au moins 8 caractères',
       passwordsDontMatch: 'Les mots de passe ne correspondent pas',
-    },
-    signIn: 'Se connecter',
+signIn: 'Se connecter',
     signUp: "S'inscrire",
     emailAddress: 'Adresse email',
     signInWithGoogle: 'Se connecter avec Google',
@@ -68,8 +65,7 @@ export default {
     verifyEmailSent: 'Nous avons envoyé un lien de vérification à votre adresse email.',
     resetPasswordSuccess: 'Mot de passe réinitialisé avec succès',
     resetPasswordEmail: 'Email de réinitialisation du mot de passe envoyé',
-  },
-  profile: {
+profile: {
     title: 'Mon profil',
     personalInfo: 'Informations personnelles',
     firstName: 'Prénom',
@@ -100,8 +96,7 @@ export default {
     takePhoto: 'Prendre une photo',
     chooseFromLibrary: 'Choisir dans la galerie',
     removePhoto: 'Supprimer la photo',
-  },
-  booking: {
+booking: {
     title: 'Réservations',
     myBookings: 'Mes réservations',
     upcoming: 'À venir',
@@ -140,8 +135,7 @@ export default {
     confirmationSent: 'Les détails de confirmation ont été envoyés à votre email',
     noAvailability: 'Aucune disponibilité pour la date sélectionnée',
     tryAnotherDate: 'Essayez une autre date',
-  },
-  dashboard: {
+dashboard: {
     title: 'Tableau de bord',
     welcome: 'Bon retour',
 
@@ -165,8 +159,7 @@ export default {
     noRecentServices: 'Aucun service récent',
     viewAll: 'Voir tout',
     seeMore: 'Voir plus',
-  },
-  services: {
+services: {
     title: 'Services',
     categories: 'Catégories',
     featured: 'En vedette',
@@ -190,8 +183,7 @@ export default {
     sortByPrice: 'Trier par prix',
     sortByPopularity: 'Trier par popularité',
     sortByRating: 'Trier par note',
-  },
-  practitioners: {
+practitioners: {
     title: 'Praticiens',
     specialties: 'Spécialités',
     about: 'À propos',
@@ -208,8 +200,7 @@ export default {
     clientsSatisfied: 'Clients satisfaits',
     servicesOffered: 'Services proposés',
     contactPractitioner: 'Contacter le praticien',
-  },
-  payments: {
+payments: {
     title: 'Paiements',
     history: 'Historique des paiements',
     methods: 'Méthodes de paiement',
@@ -241,8 +232,7 @@ export default {
     paymentFailed: 'Échec du paiement',
     transactionHistory: 'Historique des transactions',
     downloadReceipt: 'Télécharger le reçu',
-  },
-  settings: {
+settings: {
     title: 'Paramètres',
     account: 'Compte',
     notifications: 'Notifications',
@@ -266,8 +256,7 @@ export default {
       ja: 'Japonais',
       zh: 'Chinois (simplifié)',
       ar: 'Arabe'
-    },
-    selectLanguage: 'Sélectionner la langue',
+selectLanguage: 'Sélectionner la langue',
     darkMode: 'Mode sombre',
     soundEffects: 'Effets sonores',
     hapticFeedback: 'Retour haptique',
@@ -278,8 +267,7 @@ export default {
     faq: 'FAQ',
     termsOfService: "Conditions d'utilisation",
     deleteAccount: 'Supprimer le compte',
-  },
-  offline: {
+offline: {
     offlineMode: 'Mode hors ligne',
     limitedFunctionality: 'Fonctionnalité limitée en mode hors ligne',
     syncRequired: 'Synchronisation requise',
@@ -289,8 +277,7 @@ export default {
     offlineData: 'Données hors ligne',
     dataWillSync: 'Vos données seront synchronisées lorsque vous serez de nouveau en ligne',
     manageOfflineData: 'Gérer les données hors ligne',
-  },
-  errors: {
+errors: {
     networkError: 'Erreur réseau',
     serverError: 'Erreur serveur',
     unknownError: 'Erreur inconnue',
@@ -300,5 +287,3 @@ export default {
     dataNotFound: 'Données non trouvées',
     pleaseCheckConnection: 'Veuillez vérifier votre connexion internet',
     tryAgainLater: 'Veuillez réessayer plus tard'
-  }
-}; 

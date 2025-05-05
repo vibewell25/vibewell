@@ -445,10 +445,10 @@ export default function <span class="cstat-no" title="statement not covered" ><s
 &nbsp;
   // Get events for a specific date
   const getEventsForDay = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(d</span>ay: Date) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    return events?.filter(<span class="fstat-no" title="function not covered" >(e</span>vent) =&gt;</span>
+<span class="cstat-no" title="statement not covered" >    return events.filter(<span class="fstat-no" title="function not covered" >(e</span>vent) =&gt;</span>
 <span class="cstat-no" title="statement not covered" >      isEqual(</span>
-        new Date(event?.date.getFullYear(), event?.date.getMonth(), event?.date.getDate()),
-        new Date(day?.getFullYear(), day?.getMonth(), day?.getDate()),
+        new Date(event.date.getFullYear(), event.date.getMonth(), event.date.getDate()),
+        new Date(day.getFullYear(), day.getMonth(), day.getDate()),
       ),
     );
   };
@@ -489,34 +489,34 @@ export default function <span class="cstat-no" title="statement not covered" ><s
           &lt;/div&gt;
         ))}
 &nbsp;
-        {monthDays?.map(<span class="fstat-no" title="function not covered" >(d</span>ay) =&gt; {
+        {monthDays.map(<span class="fstat-no" title="function not covered" >(d</span>ay) =&gt; {
           const dayEvents = <span class="cstat-no" title="statement not covered" >getEventsForDay(day);</span>
           const isCurrentMonth = <span class="cstat-no" title="statement not covered" >isSameMonth(day, currentMonth);</span>
           const isSelected = <span class="cstat-no" title="statement not covered" >isEqual(day, selectedDate);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >          return (</span>
             &lt;div
-              key={day?.toISOString()}
+              key={day.toISOString()}
               className={`min-h-[80px] cursor-pointer rounded-md border p-2 transition-colors ${isCurrentMonth ? 'bg-white' : 'bg-gray-50 text-gray-400'} ${isToday(day) ? 'border-blue-500' : 'border-gray-200'} ${isSelected ? 'border-blue-500 bg-blue-50' : ''} hover:bg-blue-50`}
               onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleDateClick(day)}</span>
             &gt;
               &lt;div className="mb-1 text-right"&gt;{format(day, 'd')}&lt;/div&gt;
               &lt;div className="space-y-1"&gt;
-                {dayEvents?.slice(0, 2).map(<span class="fstat-no" title="function not covered" >(e</span>vent) =&gt; (
+                {dayEvents.slice(0, 2).map(<span class="fstat-no" title="function not covered" >(e</span>vent) =&gt; (
 <span class="cstat-no" title="statement not covered" >                  &lt;div</span>
-                    key={event?.id}
-                    className={`truncate rounded px-1 py-0?.5 text-xs ${event?.type === 'appointment' ? 'bg-pink-100 text-pink-800' : ''} ${event?.type === 'class' ? 'bg-green-100 text-green-800' : ''} ${event?.type === 'meeting' ? 'bg-blue-100 text-blue-800' : ''} ${event?.type === 'personal' ? 'bg-purple-100 text-purple-800' : ''} `}
+                    key={event.id}
+                    className={`truncate rounded px-1 py-0.5 text-xs ${event.type === 'appointment' ? 'bg-pink-100 text-pink-800' : ''} ${event.type === 'class' ? 'bg-green-100 text-green-800' : ''} ${event.type === 'meeting' ? 'bg-blue-100 text-blue-800' : ''} ${event.type === 'personal' ? 'bg-purple-100 text-purple-800' : ''} `}
                     onClick={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; {
-<span class="cstat-no" title="statement not covered" >                      e?.stopPropagation();</span>
+<span class="cstat-no" title="statement not covered" >                      e.stopPropagation();</span>
 <span class="cstat-no" title="statement not covered" >                      onEventClick &amp;&amp; onEventClick(event);</span>
                     }}
                   &gt;
-                    {event?.time &amp;&amp; `${event?.time} · `}
-                    {event?.title}
+                    {event.time &amp;&amp; `${event.time} · `}
+                    {event.title}
                   &lt;/div&gt;
                 ))}
-                {<span class="branch-0 cbranch-no" title="branch not covered" >dayEvents?.length &gt; 2 &amp;&amp; (</span>
-                  &lt;div className="pl-1 text-xs text-gray-500"&gt;+{dayEvents?.length - 2} more&lt;/div&gt;
+                {<span class="branch-0 cbranch-no" title="branch not covered" >dayEvents.length &gt; 2 &amp;&amp; (</span>
+                  &lt;div className="pl-1 text-xs text-gray-500"&gt;+{dayEvents.length - 2} more&lt;/div&gt;
                 )}
               &lt;/div&gt;
             &lt;/div&gt;
@@ -525,30 +525,30 @@ export default function <span class="cstat-no" title="statement not covered" ><s
       &lt;/div&gt;
 &nbsp;
       {/* Selected Date Events */}
-      {<span class="branch-0 cbranch-no" title="branch not covered" >selectedDateEvents?.length &gt; 0 &amp;&amp; (</span>
+      {<span class="branch-0 cbranch-no" title="branch not covered" >selectedDateEvents.length &gt; 0 &amp;&amp; (</span>
         &lt;div className="border-t pt-4"&gt;
           &lt;h3 className="mb-3 flex items-center font-medium"&gt;
             &lt;CalendarIcon className="mr-2 h-4 w-4" /&gt;
             Events for {format(selectedDate, 'MMMM d, yyyy')}
           &lt;/h3&gt;
           &lt;div className="space-y-2"&gt;
-            {selectedDateEvents?.map(<span class="fstat-no" title="function not covered" >(e</span>vent) =&gt; (
+            {selectedDateEvents.map(<span class="fstat-no" title="function not covered" >(e</span>vent) =&gt; (
 <span class="cstat-no" title="statement not covered" >              &lt;div</span>
-                key={event?.id}
+                key={event.id}
                 className="cursor-pointer rounded-md border p-3 hover:bg-gray-50"
                 onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >o</span>nEventClick &amp;&amp; onEventClick(event)}</span>
               &gt;
                 &lt;div className="flex justify-between"&gt;
-                  &lt;span className="font-medium"&gt;{event?.title}&lt;/span&gt;
-                  {<span class="branch-0 cbranch-no" title="branch not covered" >event?.time &amp;&amp; &lt;</span>span className="text-gray-500"&gt;{event?.time}&lt;/span&gt;}
+                  &lt;span className="font-medium"&gt;{event.title}&lt;/span&gt;
+                  {<span class="branch-0 cbranch-no" title="branch not covered" >event.time </span>&amp;&amp; &lt;span className="text-gray-500"&gt;{event.time}&lt;/span&gt;}
                 &lt;/div&gt;
-                {<span class="branch-0 cbranch-no" title="branch not covered" >event?.description &amp;&amp; (</span>
-                  &lt;p className="mt-1 text-sm text-gray-600"&gt;{event?.description}&lt;/p&gt;
+                {<span class="branch-0 cbranch-no" title="branch not covered" >event.description </span>&amp;&amp; (
+                  &lt;p className="mt-1 text-sm text-gray-600"&gt;{event.description}&lt;/p&gt;
                 )}
                 &lt;div
-                  className={`mt-2 inline-block rounded px-2 py-0?.5 text-xs ${event?.type === 'appointment' ? 'bg-pink-100 text-pink-800' : ''} ${event?.type === 'class' ? 'bg-green-100 text-green-800' : ''} ${event?.type === 'meeting' ? 'bg-blue-100 text-blue-800' : ''} ${event?.type === 'personal' ? 'bg-purple-100 text-purple-800' : ''} `}
+                  className={`mt-2 inline-block rounded px-2 py-0.5 text-xs ${event.type === 'appointment' ? 'bg-pink-100 text-pink-800' : ''} ${event.type === 'class' ? 'bg-green-100 text-green-800' : ''} ${event.type === 'meeting' ? 'bg-blue-100 text-blue-800' : ''} ${event.type === 'personal' ? 'bg-purple-100 text-purple-800' : ''} `}
                 &gt;
-                  {event?.type.charAt(0).toUpperCase() + event?.type.slice(1)}
+                  {event.type.charAt(0).toUpperCase() + event.type.slice(1)}
                 &lt;/div&gt;
               &lt;/div&gt;
             ))}
@@ -565,7 +565,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

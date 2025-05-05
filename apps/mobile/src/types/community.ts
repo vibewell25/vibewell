@@ -1,4 +1,3 @@
-// Types for Community & Social features
 export interface Comment {
   id: string;
   postId: string;
@@ -7,11 +6,8 @@ export interface Comment {
     id: string;
     name?: string;
     email?: string;
-  };
-  content: string;
+content: string;
   createdAt: string;
-}
-
 export interface Post {
   id: string;
   authorId: string;
@@ -19,12 +15,9 @@ export interface Post {
     id: string;
     name?: string;
     email?: string;
-  };
-  content: string;
+content: string;
   createdAt: string;
   comments: Comment[];
-}
-
 export interface CommunityEvent {
   id: string;
   title: string;
@@ -33,8 +26,6 @@ export interface CommunityEvent {
   endAt?: string;
   location?: string;
   createdAt: string;
-}
-
 export interface Thread {
   id: string;
   title: string;
@@ -43,11 +34,8 @@ export interface Thread {
     id: string;
     name?: string;
     email?: string;
-  };
-  createdAt: string;
+createdAt: string;
   posts?: ThreadPost[];
-}
-
 export interface ThreadPost {
   id: string;
   threadId: string;
@@ -56,7 +44,5 @@ export interface ThreadPost {
     id: string;
     name?: string;
     email?: string;
-  };
-  content: string;
+content: string;
   createdAt: string;
-}

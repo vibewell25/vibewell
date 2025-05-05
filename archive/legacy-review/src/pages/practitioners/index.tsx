@@ -10,7 +10,7 @@ import {
   VStack,
   Button,
   useToast,
-} from '@chakra-ui/react';
+from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { PractitionerList } from '../../components/Practitioners/PractitionerList';
@@ -22,22 +22,17 @@ interface Practitioner {
     name: string;
     image: string;
     email: string;
-  };
-  specialization: string[];
+specialization: string[];
   experience: number;
   rating?: number;
   servicesCount: number;
-}
-
 interface PractitionersPageProps {
   practitioners: Practitioner[];
   specializations: string[];
-}
-
 export default function PractitionersPage({
   practitioners: initialPractitioners,
   specializations,
-}: PractitionersPageProps) {
+: PractitionersPageProps) {
   const [practitioners, setPractitioners] = useState(initialPractitioners);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSpecialization, setSelectedSpecialization] = useState('');
@@ -48,17 +43,11 @@ export default function PractitionersPage({
     const matchesSpecialization =
       !selectedSpecialization || practitioner.specialization.includes(selectedSpecialization);
     return matchesSearch && matchesSpecialization;
-  });
-
-  const handleViewProfile = (id: string) => {
+const handleViewProfile = (id: string) => {
     router.push(`/practitioners/${id}`);
-  };
-
-  const handleBookService = (id: string) => {
+const handleBookService = (id: string) => {
     router.push(`/booking?practitionerId=${id}`);
-  };
-
-  return (
+return (
     <Container maxW="container.xl" py={8}>
       <VStack spacing={8} align="stretch">
         <Box>
@@ -108,15 +97,11 @@ export default function PractitionersPage({
               onClick={() => {
                 setSearchTerm('');
                 setSelectedSpecialization('');
-              }}
-            >
+>
               Clear Filters
             </Button>
           </Box>
         )}
       </VStack>
     </Container>
-  );
-}
-
 export {};

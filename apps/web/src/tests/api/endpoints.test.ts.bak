@@ -1,0 +1,283 @@
+/* eslint-disable *//* eslint-disable */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type, @typescript-eslint/no-namespace, @typescript-eslint/no-require-imports, react/no-unescaped-entities, import/no-anonymous-default-export, no-unused-vars, security/detect-object-injection, unicorn/no-null, unicorn/consistent-function-scoping */import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
+import { app } from '@/app';
+
+import { PrismaClient } from '@prisma/client';
+import { hash } from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import supertest from 'supertest';
+
+const prisma = new PrismaClient();
+const request = supertest(app);
+
+describe('API Endpoints', () => {
+  let authToken: string;
+  let userId: string;
+
+  beforeAll(async () => {
+    // Create test user
+    const hashedPassword = await hash('TestPass123!', 12);
+    const user = await prisma.user.create({
+      data: {
+        email: 'test@example.com',
+        password: hashedPassword,
+        name: 'Test User',
+      },
+    });
+    userId = user.id;
+    authToken = jwt.sign({ userId }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+  });
+
+  afterAll(async () => {
+    // Cleanup test data
+    await prisma.user.delete({ where: { id: userId } });
+    await prisma.$disconnect();
+  });
+
+  describe('Authentication Endpoints', () => {
+
+
+    it('POST /api/auth/login - should authenticate valid credentials', async () => {
+
+      const response = await request.post('/api/auth/login').send({
+        email: 'test@example.com',
+        password: 'TestPass123!',
+      });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('token');
+      expect(response.body.user.email).toBe('test@example.com');
+    });
+
+
+
+    it('POST /api/auth/login - should reject invalid credentials', async () => {
+
+      const response = await request.post('/api/auth/login').send({
+        email: 'test@example.com',
+        password: 'WrongPassword',
+      });
+
+      expect(response.status).toBe(401);
+      expect(response.body).toHaveProperty('error');
+    });
+
+
+
+    it('POST /api/auth/register - should create new user', async () => {
+
+      const response = await request.post('/api/auth/register').send({
+        email: 'newuser@example.com',
+        password: 'NewPass123!',
+        name: 'New User',
+      });
+
+      expect(response.status).toBe(201);
+      expect(response.body.user.email).toBe('newuser@example.com');
+
+      // Cleanup
+      await prisma.user.delete({ where: { email: 'newuser@example.com' } });
+    });
+  });
+
+  describe('User Endpoints', () => {
+
+
+    it('GET /api/users/me - should return authenticated user', async () => {
+      const response = await request
+
+        .get('/api/users/me')
+        .set('Authorization', `Bearer ${authToken}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.email).toBe('test@example.com');
+    });
+
+
+
+    it('PUT /api/users/me - should update user profile', async () => {
+      const response = await request
+
+        .put('/api/users/me')
+        .set('Authorization', `Bearer ${authToken}`)
+        .send({
+          name: 'Updated Name',
+          preferences: {
+            theme: 'dark',
+            notifications: true,
+          },
+        });
+
+      expect(response.status).toBe(200);
+      expect(response.body.name).toBe('Updated Name');
+    });
+  });
+
+  describe('Health & Wellness Endpoints', () => {
+    let metricId: string;
+
+    beforeEach(async () => {
+      // Create test metric
+      const metric = await prisma.healthMetric.create({
+        data: {
+          userId,
+          type: 'weight',
+          value: 70.5,
+          unit: 'kg',
+          timestamp: new Date(),
+        },
+      });
+      metricId = metric.id;
+    });
+
+
+
+    it('POST /api/metrics - should create health metric', async () => {
+      const response = await request
+
+        .post('/api/metrics')
+        .set('Authorization', `Bearer ${authToken}`)
+        .send({
+          type: 'heart_rate',
+          value: 75,
+          unit: 'bpm',
+        });
+
+      expect(response.status).toBe(201);
+      expect(response.body.type).toBe('heart_rate');
+      expect(response.body.value).toBe(75);
+    });
+
+
+
+    it('GET /api/metrics - should list user metrics', async () => {
+      const response = await request
+
+        .get('/api/metrics')
+        .set('Authorization', `Bearer ${authToken}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeGreaterThan(0);
+    });
+
+
+
+    it('GET /api/metrics/:id - should get specific metric', async () => {
+      const response = await request
+
+        .get(`/api/metrics/${metricId}`)
+        .set('Authorization', `Bearer ${authToken}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.id).toBe(metricId);
+      expect(response.body.value).toBe(70.5);
+    });
+  });
+
+  describe('Booking & Scheduling Endpoints', () => {
+    let bookingId: string;
+
+    beforeEach(async () => {
+      // Create test booking
+      const booking = await prisma.booking.create({
+        data: {
+          userId,
+          type: 'yoga_class',
+          startTime: new Date(),
+          endTime: new Date(Date.now() + 3600000),
+          status: 'confirmed',
+        },
+      });
+      bookingId = booking.id;
+    });
+
+
+
+    it('POST /api/bookings - should create booking', async () => {
+      const startTime = new Date();
+      const endTime = new Date(startTime.getTime() + 3600000);
+
+      const response = await request
+
+        .post('/api/bookings')
+        .set('Authorization', `Bearer ${authToken}`)
+        .send({
+          type: 'meditation_session',
+          startTime: startTime.toISOString(),
+          endTime: endTime.toISOString(),
+        });
+
+      expect(response.status).toBe(201);
+      expect(response.body.type).toBe('meditation_session');
+      expect(response.body.status).toBe('confirmed');
+    });
+
+
+
+    it('GET /api/bookings - should list user bookings', async () => {
+      const response = await request
+
+        .get('/api/bookings')
+        .set('Authorization', `Bearer ${authToken}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeGreaterThan(0);
+    });
+
+
+
+    it('PUT /api/bookings/:id - should update booking', async () => {
+      const response = await request
+
+        .put(`/api/bookings/${bookingId}`)
+        .set('Authorization', `Bearer ${authToken}`)
+        .send({
+          status: 'cancelled',
+        });
+
+      expect(response.status).toBe(200);
+      expect(response.body.id).toBe(bookingId);
+      expect(response.body.status).toBe('cancelled');
+    });
+
+
+
+    it('DELETE /api/bookings/:id - should delete booking', async () => {
+      const response = await request
+
+        .delete(`/api/bookings/${bookingId}`)
+        .set('Authorization', `Bearer ${authToken}`);
+
+      expect(response.status).toBe(204);
+
+      // Verify deletion
+      const booking = await prisma.booking.findUnique({
+        where: { id: bookingId },
+      });
+      expect(booking).toBeNull();
+    });
+  });
+});

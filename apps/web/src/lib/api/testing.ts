@@ -1,4 +1,3 @@
-
 import { ApiResponse, ApiError } from '@/types/api';
 import { ApiClient, ApiClientOptions } from './client';
 
@@ -19,10 +18,6 @@ export function createMockApiResponse<T>(
     meta: {
       version: API_CONFIG.version,
       timestamp: new Date().toISOString(),
-    },
-  };
-}
-
 /**
  * Create a mock API client
  */
@@ -33,32 +28,18 @@ export function createMockApiClient(options: ApiClientOptions = {}) {
     put: jest.fn(),
     delete: jest.fn(),
     patch: jest.fn(),
-  };
-
-  // Setup default successful responses
+// Setup default successful responses
   mockClient.get.mockImplementation((path: string) =>
     Promise.resolve(createMockApiResponse({ path, method: 'GET' })),
-  );
-
-  mockClient.post.mockImplementation((path: string, data: any) =>
+mockClient.post.mockImplementation((path: string, data: any) =>
     Promise.resolve(createMockApiResponse({ path, method: 'POST', data })),
-  );
-
-  mockClient.put.mockImplementation((path: string, data: any) =>
+mockClient.put.mockImplementation((path: string, data: any) =>
     Promise.resolve(createMockApiResponse({ path, method: 'PUT', data })),
-  );
-
-  mockClient.delete.mockImplementation((path: string) =>
+mockClient.delete.mockImplementation((path: string) =>
     Promise.resolve(createMockApiResponse({ path, method: 'DELETE' })),
-  );
-
-  mockClient.patch.mockImplementation((path: string, data: any) =>
+mockClient.patch.mockImplementation((path: string, data: any) =>
     Promise.resolve(createMockApiResponse({ path, method: 'PATCH', data })),
-  );
-
-  return mockClient;
-}
-
+return mockClient;
 /**
  * Create a mock API error response
  */
@@ -71,23 +52,16 @@ export function createMockApiError(
     code,
     message,
     details,
-  });
-}
-
 /**
  * Mock API response with network error
  */
 export function createMockNetworkError(): ApiResponse {
   return createMockApiError('NETWORK_ERROR', 'Network request failed');
-}
-
 /**
  * Mock API response with timeout error
  */
 export function createMockTimeoutError(): ApiResponse {
   return createMockApiError('TIMEOUT_ERROR', 'Request timed out');
-}
-
 /**
  * Create a test wrapper for API services
  */
@@ -106,34 +80,24 @@ export function createServiceTestWrapper<T extends { apiClient: ApiClient }>(
       case 'GET':
         mockClient.get.mockImplementation((p: string) =>
           p === actualPath ? Promise.resolve(response) : Promise.reject(),
-        );
-        break;
+break;
       case 'POST':
         mockClient.post.mockImplementation((p: string) =>
           p === actualPath ? Promise.resolve(response) : Promise.reject(),
-        );
-        break;
+break;
       case 'PUT':
         mockClient.put.mockImplementation((p: string) =>
           p === actualPath ? Promise.resolve(response) : Promise.reject(),
-        );
-        break;
+break;
       case 'DELETE':
         mockClient.delete.mockImplementation((p: string) =>
           p === actualPath ? Promise.resolve(response) : Promise.reject(),
-        );
-        break;
+break;
       case 'PATCH':
         mockClient.patch.mockImplementation((p: string) =>
           p === actualPath ? Promise.resolve(response) : Promise.reject(),
-        );
-        break;
-    }
-  });
-
-  return new Service(mockClient as unknown as ApiClient);
-}
-
+break;
+return new Service(mockClient as unknown as ApiClient);
 /**
  * Wait for all pending API requests to complete
  */
@@ -141,4 +105,3 @@ export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); waitForApiRequests(): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, 0));
-}

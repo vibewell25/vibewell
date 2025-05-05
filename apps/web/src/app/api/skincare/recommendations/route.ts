@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 import { getServerSession } from 'next-auth';
@@ -10,9 +9,7 @@ import {
   getWeatherCondition,
   getRecommendedProducts,
   trackRecommendationProgress,
-
-
-} from '@/lib/api/skincare/services';
+from '@/lib/api/skincare/services';
 
 export async function {
   const start = Date.now();
@@ -21,9 +18,7 @@ export async function {
     const session = await getServerSession(authOptions);
     if (!session.user.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const userId = session.user.id;
+const userId = session.user.id;
     const url = new URL(request.url);
     const latitude = parseFloat(url.searchParams.get('lat') || '0');
     const longitude = parseFloat(url.searchParams.get('lng') || '0');
@@ -36,11 +31,8 @@ export async function {
       where: {
         userId,
         date: { gte: thirtyDaysAgo },
-      },
-      include: { concerns: true },
-    });
-
-    // Get current weather conditions
+include: { concerns: true },
+// Get current weather conditions
     const weather = await getWeatherCondition(latitude, longitude);
 
     // Analyze logs for patterns
@@ -60,20 +52,14 @@ export async function {
       where: { userId },
       orderBy: { startDate: 'desc' },
       take: 10,
-    });
-
-    return NextResponse.json({
+return NextResponse.json({
       recommendations,
       progress,
       weather,
       analysis,
-    });
-  } catch (error) {
+catch (error) {
     console.error('Error generating recommendations:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}
-
 function analyzeLogs(logs: any[]) {
   const analysis = {
     averageSleep: 0,
@@ -83,9 +69,7 @@ function analyzeLogs(logs: any[]) {
     sleepPattern: 'regular',
     hydrationTrend: 'stable',
     stressTrend: 'stable',
-  };
-
-  if (logs.length === 0) return analysis;
+if (logs.length === 0) return analysis;
 
   // Calculate averages
 
@@ -106,34 +90,24 @@ function analyzeLogs(logs: any[]) {
 
       const totalSeverity = (concernSeverities.get(concern.name) || 0) + concern.severity;
       concernSeverities.set(concern.name, totalSeverity);
-    });
-  });
-
-  concernCounts.forEach((count, name) => {
+concernCounts.forEach((count, name) => {
     analysis.concerns.push({
       name,
 
       frequency: count / logs.length,
       averageSeverity: concernSeverities.get(name) / count,
-    });
-  });
-
-  // Sort concerns by frequency
+// Sort concerns by frequency
 
   analysis.concerns.sort((a, b) => b.frequency - a.frequency);
 
   return analysis;
-}
-
 function generateRecommendations(analysis: any, weather: any, products: any[]) {
   const recommendations = {
     lifestyle: [] as any[],
     products: [] as any[],
     routineAdjustments: [] as any[],
     professional: [] as any[],
-  };
-
-  // Lifestyle recommendations based on analysis
+// Lifestyle recommendations based on analysis
   if (analysis.averageSleep < 7) {
     recommendations.lifestyle.push({
       id: 'sleep_improvement',
@@ -142,11 +116,7 @@ function generateRecommendations(analysis: any, weather: any, products: any[]) {
       description: 'Aim for 7-9 hours of sleep per night to support skin repair and regeneration.',
       priority: 'high',
       reason: 'Your average sleep duration is below recommended levels.',
-    });
-  }
-
-
-  // Weather-based recommendations
+// Weather-based recommendations
   if (weather.season === 'winter') {
     recommendations.routineAdjustments.push({
       id: 'winter_hydration',
@@ -156,10 +126,7 @@ function generateRecommendations(analysis: any, weather: any, products: any[]) {
       priority: 'high',
       reason: 'Cold weather can lead to increased skin dryness.',
       timeOfDay: 'both',
-    });
-  }
-
-  // Product recommendations
+// Product recommendations
   products.forEach((product) => {
     recommendations.products.push({
       id: `product_${product.id}`,
@@ -169,10 +136,7 @@ function generateRecommendations(analysis: any, weather: any, products: any[]) {
       priority: 'medium',
       reason: `Contains ingredients beneficial for your skin concerns.`,
       product,
-    });
-  });
-
-  // Professional recommendations for severe concerns
+// Professional recommendations for severe concerns
   const severeConcerns = analysis.concerns.filter((c: any) => c.averageSeverity > 7);
   if (severeConcerns.length > 0) {
     recommendations.professional.push({
@@ -182,12 +146,7 @@ function generateRecommendations(analysis: any, weather: any, products: any[]) {
       description: 'Consider consulting a dermatologist for personalized treatment.',
       priority: 'high',
       reason: `You have persistent ${severeConcerns.map((c: any) => c.name).join(', ')} concerns.`,
-    });
-  }
-
-  return recommendations;
-}
-
+return recommendations;
 export async function {
   const start = Date.now();
   if (Date.now() - start > 30000) throw new Error('Timeout'); POST(request: Request) {
@@ -195,20 +154,14 @@ export async function {
     const session = await getServerSession(authOptions);
     if (!session.user.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { recommendationId, status, effectiveness } = await request.json();
+const { recommendationId, status, effectiveness } = await request.json();
 
     const progress = await trackRecommendationProgress(
       session.user.id,
       recommendationId,
       status,
       effectiveness,
-    );
-
-    return NextResponse.json(progress);
-  } catch (error) {
+return NextResponse.json(progress);
+catch (error) {
     console.error('Error tracking recommendation progress:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}

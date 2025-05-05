@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 
 
@@ -10,13 +9,7 @@ import { logger } from '@/utils/logger';
 
 /**
 
-    // Safe array access
-    if (id < 0 || id >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-
-
- * PUT /api/notifications/[id]/read
+    * PUT /api/notifications/[id]/read
  * Marks a specific notification as read for the authenticated user
  */
 export async function {
@@ -28,64 +21,42 @@ export async function {
     // Check if the user is authenticated
     if (!(await isAuthenticated())) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    // Get user ID from auth state
+// Get user ID from auth state
     const { user } = await getAuthState();
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
-
-    // Find the notification
+// Find the notification
     const notification = await prisma.notification.findUnique({
       where: { id },
-    });
-
-    // Check if notification exists
+// Check if notification exists
     if (!notification) {
       return NextResponse.json({ error: 'Notification not found' }, { status: 404 });
-    }
-
-    // Check if the notification belongs to the authenticated user
+// Check if the notification belongs to the authenticated user
     if (notification.userId !== user.id) {
       logger.warn(
         `User ${user.id} attempted to mark notification ${id} as read belonging to user ${notification.userId}`,
-      );
-      return NextResponse.json(
+return NextResponse.json(
         { error: 'Unauthorized to update this notification' },
         { status: 403 },
-      );
-    }
-
-    // If notification is already read, no need to update
+// If notification is already read, no need to update
     if (notification.read) {
       return NextResponse.json({
         success: true,
         message: 'Notification already marked as read',
         updated: false,
-      });
-    }
-
-    // Update the notification
+// Update the notification
     await prisma.notification.update({
       where: { id },
       data: { read: true },
-    });
-
-    logger.info(`Notification ${id} marked as read by user ${user.id}`);
+logger.info(`Notification ${id} marked as read by user ${user.id}`);
 
     // Return success response
     return NextResponse.json({
       success: true,
       message: 'Notification marked as read',
       updated: true,
-    });
-  } catch (error) {
+catch (error) {
     logger.error(
       'Error marking notification as read',
       error instanceof Error ? error.message : String(error),
-    );
-
-    return NextResponse.json({ error: 'Failed to mark notification as read' }, { status: 500 });
-  }
-}
+return NextResponse.json({ error: 'Failed to mark notification as read' }, { status: 500 });

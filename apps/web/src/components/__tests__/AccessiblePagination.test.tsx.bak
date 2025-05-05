@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import accessible-pagination from '../accessible-pagination.tsx';
+
+describe('accessible-pagination', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<accessible-pagination />);
+    expect(container).toBeInTheDocument();
+  });
+});

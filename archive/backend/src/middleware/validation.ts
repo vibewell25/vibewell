@@ -1,10 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-    // Safe integer operation
-    if (express > Number.MAX_SAFE_INTEGER || express < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import { body, validationResult } from 'express-validator';
+    import { body, validationResult } from 'express-validator';
 
 export const validate = (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
@@ -13,11 +9,7 @@ export const validate = (req: Request, res: Response, next: NextFunction) => {
       success: false,
       message: 'Validation error',
       errors: errors.array()
-    });
-  }
-  next();
-};
-
+next();
 export const twoFactorValidation = {
   verifyCode: [
     body('code')
@@ -27,4 +19,3 @@ export const twoFactorValidation = {
       .withMessage('Code must be exactly 6 digits'),
     validate
   ]
-}; 

@@ -15,6 +15,4 @@ const ChangePassword: NextPage = () => (
       Back to <Link href="/profile"><a className="text-blue-500">Profile</a></Link>
     </p>
   </div>
-);
-
 export default ChangePassword;

@@ -10,7 +10,7 @@ import {
   HStack,
   Button,
   useToast,
-} from '@chakra-ui/react';
+from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { ServiceCard } from '../../components/BeautyServices/ServiceCard';
@@ -18,8 +18,6 @@ import { BeautyServiceService } from '../../services/beautyService.service';
 interface Category {
   id: string;
   name: string;
-}
-
 interface Service {
   id: string;
   name: string;
@@ -31,24 +29,18 @@ interface Service {
   category: {
     id: string;
     name: string;
-  };
-  practitioners: Array<{
+practitioners: Array<{
     id: string;
     user: {
       name: string;
       image: string;
-    };
-    specialization: string[];
+specialization: string[];
     experience: number;
     rating: number;
-  }>;
-}
-
+>;
 interface ServicesPageProps {
   services: Service[];
   categories: Category[];
-}
-
 export default function ServicesPage({ services: initialServices, categories }: ServicesPageProps) {
   const [services, setServices] = useState(initialServices);
   const [searchTerm, setSearchTerm] = useState('');
@@ -63,9 +55,7 @@ export default function ServicesPage({ services: initialServices, categories }: 
       service.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = !selectedCategory || service.category.id === selectedCategory;
     return matchesSearch && matchesCategory;
-  });
-
-  const handleBookNow = (serviceId: string) => {
+const handleBookNow = (serviceId: string) => {
     if (!isSignedIn) {
       toast({
         title: 'Sign in required',
@@ -73,14 +63,9 @@ export default function ServicesPage({ services: initialServices, categories }: 
         status: 'warning',
         duration: 5000,
         isClosable: true,
-      });
-      return;
-    }
-
-    router.push(`/booking/${serviceId}`);
-  };
-
-  return (
+return;
+router.push(`/booking/${serviceId}`);
+return (
     <Container maxW="container.xl" py={8}>
       <Box mb={8}>
         <Heading size="xl" mb={2}>
@@ -129,14 +114,10 @@ export default function ServicesPage({ services: initialServices, categories }: 
             onClick={() => {
               setSearchTerm('');
               setSelectedCategory('');
-            }}
-          >
+>
             Clear Filters
           </Button>
         </Box>
       )}
     </Container>
-  );
-}
-
 export {};

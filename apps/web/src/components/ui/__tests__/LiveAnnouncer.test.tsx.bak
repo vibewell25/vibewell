@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import live-announcer from '../live-announcer.tsx';
+
+describe('live-announcer', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<live-announcer />);
+    expect(container).toBeInTheDocument();
+  });
+});

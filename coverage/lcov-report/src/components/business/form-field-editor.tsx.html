@@ -439,7 +439,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 &nbsp;
   const addField = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
     const newField: FormField = <span class="cstat-no" title="statement not covered" >{</span>
-      id: `field-${Date?.now()}`,
+      id: `field-${Date.now()}`,
       label: '',
       type: 'text',
       required: false,
@@ -454,30 +454,30 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   };
 &nbsp;
   const removeField = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(i</span>ndex: number) =&gt; {</span>
-    const newFields = <span class="cstat-no" title="statement not covered" >fields?.filter(<span class="fstat-no" title="function not covered" >(_</span>, i) =&gt; <span class="cstat-no" title="statement not covered" >i !== index);</span></span>
+    const newFields = <span class="cstat-no" title="statement not covered" >fields.filter(<span class="fstat-no" title="function not covered" >(_</span>, i) =&gt; <span class="cstat-no" title="statement not covered" >i !== index);</span></span>
 <span class="cstat-no" title="statement not covered" >    onChange(newFields);</span>
   };
 &nbsp;
   const addOption = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(f</span>ieldIndex: number) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!newOption?.trim()) <span class="cstat-no" title="statement not covered" >return;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!newOption.trim()) <span class="cstat-no" title="statement not covered" >return;</span></span>
     const field = <span class="cstat-no" title="statement not covered" >fields[fieldIndex];</span>
-    const options = <span class="cstat-no" title="statement not covered" >[...(field?.options || []), newOption?.trim()];</span>
+    const options = <span class="cstat-no" title="statement not covered" >[...(field.options || []), newOption.trim()];</span>
 <span class="cstat-no" title="statement not covered" >    updateField(fieldIndex, { options });</span>
 <span class="cstat-no" title="statement not covered" >    setNewOption('');</span>
   };
 &nbsp;
   const removeOption = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(f</span>ieldIndex: number, optionIndex: number) =&gt; {</span>
     const field = <span class="cstat-no" title="statement not covered" >fields[fieldIndex];</span>
-    const options = <span class="cstat-no" title="statement not covered" >field?.options?.filter(<span class="fstat-no" title="function not covered" >(_</span>, i) =&gt; <span class="cstat-no" title="statement not covered" >i !== optionIndex);</span></span>
+    const options = <span class="cstat-no" title="statement not covered" >field.options.filter(<span class="fstat-no" title="function not covered" >(_</span>, i) =&gt; <span class="cstat-no" title="statement not covered" >i !== optionIndex);</span></span>
 <span class="cstat-no" title="statement not covered" >    updateField(fieldIndex, { options });</span>
   };
 &nbsp;
   const onDragEnd = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(r</span>esult: any) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!result?.destination) <span class="cstat-no" title="statement not covered" >return;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!result.destination) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
-    const items = <span class="cstat-no" title="statement not covered" >Array?.from(fields);</span>
-    const [reorderedItem] = <span class="cstat-no" title="statement not covered" >items?.splice(result?.source.index, 1);</span>
-<span class="cstat-no" title="statement not covered" >    items?.splice(result?.destination.index, 0, reorderedItem);</span>
+    const items = <span class="cstat-no" title="statement not covered" >Array.from(fields);</span>
+    const [reorderedItem] = <span class="cstat-no" title="statement not covered" >items.splice(result.source.index, 1);</span>
+<span class="cstat-no" title="statement not covered" >    items.splice(result.destination.index, 0, reorderedItem);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    onChange(items);</span>
   };
@@ -491,13 +491,13 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
       &lt;DragDropContext onDragEnd={onDragEnd}&gt;
         &lt;Droppable droppableId="fields"&gt;
           {(provided) =&gt; (
-            &lt;div {...provided?.droppableProps} ref={provided?.innerRef}&gt;
-              {fields?.map(<span class="fstat-no" title="function not covered" >(f</span>ield, index) =&gt; (
-<span class="cstat-no" title="statement not covered" >                &lt;Draggable key={field?.id} d</span>raggableId={field?.id} index={index}&gt;
+            &lt;div {...provided.droppableProps} ref={provided.innerRef}&gt;
+              {fields.map(<span class="fstat-no" title="function not covered" >(f</span>ield, index) =&gt; (
+<span class="cstat-no" title="statement not covered" >                &lt;Draggable key={field.id} d</span>raggableId={field.id} index={index}&gt;
                   {(provided) =&gt; (
-                    &lt;Card className="mb-4 p-4" ref={provided?.innerRef} {...provided?.draggableProps}&gt;
+                    &lt;Card className="mb-4 p-4" ref={provided.innerRef} {...provided.draggableProps}&gt;
                       &lt;div className="flex items-start space-x-4"&gt;
-                        &lt;div {...provided?.dragHandleProps} className="mt-2 cursor-move"&gt;
+                        &lt;div {...provided.dragHandleProps} className="mt-2 cursor-move"&gt;
                           &lt;GripVertical size={20} /&gt;
                         &lt;/div&gt;
                         &lt;div className="flex-grow space-y-4"&gt;
@@ -505,15 +505,15 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                             &lt;div className="flex-grow"&gt;
                               &lt;Label&gt;Field Label&lt;/Label&gt;
                               &lt;Input
-                                value={field?.label}
-                                onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >updateField(index, { label: e?.target.value })}</span>
+                                value={field.label}
+                                onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >updateField(index, { label: e.target.value })}</span>
                                 placeholder="Enter field label"
                               /&gt;
                             &lt;/div&gt;
                             &lt;div className="w-40"&gt;
                               &lt;Label&gt;Field Type&lt;/Label&gt;
                               &lt;Select
-                                value={field?.type}
+                                value={field.type}
                                 onValueChange={<span class="fstat-no" title="function not covered" >(v</span>alue: any) =&gt; <span class="cstat-no" title="statement not covered" >updateField(index, { type: value })}</span>
                               &gt;
                                 &lt;option value="text"&gt;Text&lt;/option&gt;
@@ -525,7 +525,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                             &lt;/div&gt;
                             &lt;div className="mt-6 flex items-center space-x-2"&gt;
                               &lt;Switch
-                                checked={field?.required}
+                                checked={field.required}
                                 onCheckedChange={<span class="fstat-no" title="function not covered" >(c</span>hecked) =&gt;
 <span class="cstat-no" title="statement not covered" >                                  updateField(index, { required: checked })</span>
                                 }
@@ -542,13 +542,13 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                             &lt;/Button&gt;
                           &lt;/div&gt;
 &nbsp;
-                          {<span class="branch-0 cbranch-no" title="branch not covered" >field?.type === 'select' &amp;&amp; (</span>
+                          {<span class="branch-0 cbranch-no" title="branch not covered" >field.type === 'select' &amp;&amp; (</span>
                             &lt;div className="space-y-2"&gt;
                               &lt;Label&gt;Options&lt;/Label&gt;
                               &lt;div className="flex space-x-2"&gt;
                                 &lt;Input
                                   value={newOption}
-                                  onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setNewOption(e?.target.value)}</span>
+                                  onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setNewOption(e.target.value)}</span>
                                   placeholder="Add new option"
                                 /&gt;
                                 &lt;Button type="button" onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >a</span>ddOption(index)}&gt;</span>
@@ -556,7 +556,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                                 &lt;/Button&gt;
                               &lt;/div&gt;
                               &lt;div className="space-y-2"&gt;
-                                {field?.options?.map(<span class="fstat-no" title="function not covered" >(o</span>ption, optionIndex) =&gt; (
+                                {field.options.map(<span class="fstat-no" title="function not covered" >(o</span>ption, optionIndex) =&gt; (
 <span class="cstat-no" title="statement not covered" >                                  &lt;div key={optionIndex} c</span>lassName="flex items-center space-x-2"&gt;
                                     &lt;span&gt;{option}&lt;/span&gt;
                                     &lt;Button
@@ -577,7 +577,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
                   )}
                 &lt;/Draggable&gt;
               ))}
-              {provided?.placeholder}
+              {provided.placeholder}
             &lt;/div&gt;
           )}
         &lt;/Droppable&gt;
@@ -592,7 +592,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

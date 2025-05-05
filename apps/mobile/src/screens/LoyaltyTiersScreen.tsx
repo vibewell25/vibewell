@@ -10,8 +10,6 @@ interface Tier {
   name: string;
   requiredPoints: number;
   discount: number;
-}
-
 const LoyaltyTiersScreen: React.FC = () => {
   const { isDarkMode } = useTheme();
   const { token } = useAuth();
@@ -30,36 +28,30 @@ const LoyaltyTiersScreen: React.FC = () => {
         setBalance(balanceData.balance ?? 0);
         const tiersData = await tiersRes.json();
         setTiers(tiersData.tiers || []);
-      } catch (err) {
+catch (err) {
         Alert.alert('Error', 'Failed to load loyalty data');
-      } finally {
+finally {
         setLoading(false);
-      }
-    })();
-  }, []);
+)();
+[]);
 
   const redeemTier = async (tierId: string, points: number) => {
     if (!(await isOnline())) {
       await addToSyncQueue('/api/loyalty/redeem', 'POST', { tierId });
       Alert.alert('Offline', 'Redemption queued and will complete when online');
       return;
-    }
-    try {
+try {
       const res = await fetch(`${serverBaseUrl}/api/loyalty/redeem`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ tierId }),
-      });
-      if (!res.ok) throw new Error();
+if (!res.ok) throw new Error();
       const data = await res.json();
       setBalance(data.balance);
       Alert.alert('Success', `Redeemed ${points} pts`);
-    } catch {
+catch {
       Alert.alert('Error', 'Redemption failed');
-    }
-  };
-
-  if (loading) return <ActivityIndicator size="large" />;
+if (loading) return <ActivityIndicator size="large" />;
 
   return (
     <View style={{ flex: 1, backgroundColor: isDarkMode ? '#121212' : '#FFFFFF', padding: 16 }}>
@@ -86,7 +78,4 @@ const LoyaltyTiersScreen: React.FC = () => {
         )}
       />
     </View>
-  );
-};
-
 export default LoyaltyTiersScreen;

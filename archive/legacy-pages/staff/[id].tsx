@@ -30,14 +30,11 @@ const StaffDetail: NextPage = () => {
         setRole(s.role);
         setEmail(s.email);
         setPhone(s.phone);
-      } catch (error) {
+catch (error) {
         console.error('Error fetching staff member:', error);
         alert('Failed to load staff member details');
-      }
-    };
-    
-    fetchStaffMember();
-  }, [id]);
+fetchStaffMember();
+[id]);
 
   const handleUpdate = async (e: FormEvent) => {
     e.preventDefault();
@@ -46,15 +43,11 @@ const StaffDetail: NextPage = () => {
         method: 'PUT', 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ businessId, name, role, email, phone })
-      });
-      router.back();
-    } catch (error) {
+router.back();
+catch (error) {
       console.error('Error updating staff member:', error);
       alert('Failed to update staff member');
-    }
-  };
-
-  return (
+return (
     <div className="max-w-md mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Edit Staff Member</h1>
       <form onSubmit={handleUpdate} className="space-y-2">
@@ -69,7 +62,4 @@ const StaffDetail: NextPage = () => {
         </div>
       </form>
     </div>
-  );
-};
-
 export default StaffDetail;

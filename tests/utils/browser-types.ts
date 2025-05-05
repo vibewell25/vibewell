@@ -5,4 +5,3 @@ export enum BrowserType {
   EDGE = 'EDGE',
   MOBILE_CHROME = 'MOBILE_CHROME',
   MOBILE_SAFARI = 'MOBILE_SAFARI'
-} 

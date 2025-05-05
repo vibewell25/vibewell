@@ -1,11 +1,3 @@
-/**
- * GraphQL API endpoint for the Next.js App Router
- *
- * This implements a GraphQL API using Apollo Server integrated with Next.js.
- * It provides query and mutation capabilities for the VibeWell application.
- */
-
-
 import { createYoga } from 'graphql-yoga';
 
 import { schema } from '@/lib/graphql/schema';
@@ -20,8 +12,6 @@ const { handleRequest } = createYoga({
 
   graphqlEndpoint: '/api/graphql',
   fetchAPI: { Response },
-});
-
 // Helper function to get client IP
 function getClientIp(req: NextRequest): string {
 
@@ -31,15 +21,9 @@ function getClientIp(req: NextRequest): string {
 
   if (forwarded) {
     return forwarded.split(',')[0].trim();
-  }
-
-  if (realIp) {
+if (realIp) {
     return realIp;
-  }
-
-  return 'unknown';
-}
-
+return 'unknown';
 // Export the API route handlers
 export { handleRequest as GET, handleRequest as POST };
 

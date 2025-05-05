@@ -1,4 +1,3 @@
-'use client';
 import { useRouter } from 'next/navigation';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { Icons } from '@/components/icons';
@@ -11,22 +10,19 @@ export default function SelectRolePage() {
       description: '(Customer)',
       icon: <Icons.UserIcon className="text-primary h-6 w-6" />,
       onClick: () => router.push('/feed'),
-    },
-    {
+{
       id: 'provider',
       title: 'Service Provider',
       description: '(Beautician/Practitioner)',
       icon: <Icons.UserIcon className="text-primary h-6 w-6" />,
       onClick: () => router.push('/provider/dashboard'),
-    },
-    {
+{
       id: 'admin',
       title: 'Admin',
       description: '(Web-Based Panel)',
       icon: <Icons.UserIcon className="text-primary h-6 w-6" />,
       onClick: () => router.push('/admin/dashboard'),
-    },
-  ];
+];
   return (
     <MobileLayout hideNavigation>
       <div className="flex h-full flex-col px-6 py-12">
@@ -63,5 +59,3 @@ export default function SelectRolePage() {
         </div>
       </div>
     </MobileLayout>
-  );
-}

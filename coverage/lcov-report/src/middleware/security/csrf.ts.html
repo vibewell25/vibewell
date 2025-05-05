@@ -383,13 +383,13 @@ import { cookies } from <span class="cstat-no" title="statement not covered" >'n
 import { createHmac } from <span class="cstat-no" title="statement not covered" >'crypto';</span>
 &nbsp;
 &nbsp;
-const CSRF_COOKIE_NAME = <span class="cstat-no" title="statement not covered" >process?.env['CSRF_COOKIE_NAME'];</span>
+const CSRF_COOKIE_NAME = <span class="cstat-no" title="statement not covered" >process.env['CSRF_COOKIE_NAME'];</span>
 &nbsp;
-const CSRF_HEADER_NAME = <span class="cstat-no" title="statement not covered" >process?.env['CSRF_HEADER_NAME'];</span>
+const CSRF_HEADER_NAME = <span class="cstat-no" title="statement not covered" >process.env['CSRF_HEADER_NAME'];</span>
 &nbsp;
 &nbsp;
 &nbsp;
-const CSRF_SECRET = <span class="cstat-no" title="statement not covered" >process?.env.CSRF_SECRET || 'csrf-secret-key-change-in-production';</span>
+const CSRF_SECRET = <span class="cstat-no" title="statement not covered" >process.env.CSRF_SECRET || 'csrf-secret-key-change-in-production';</span>
 const SAFE_METHODS = <span class="cstat-no" title="statement not covered" >['GET', 'HEAD', 'OPTIONS'];</span>
 &nbsp;
 /**
@@ -398,14 +398,14 @@ const SAFE_METHODS = <span class="cstat-no" title="statement not covered" >['GET
  * @returns {string} The generated CSRF token
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >generateCsrfToken(</span></span>): string {
-  const timestamp = <span class="cstat-no" title="statement not covered" >Date?.now().toString();</span>
+  const timestamp = <span class="cstat-no" title="statement not covered" >Date.now().toString();</span>
   const nonce = <span class="cstat-no" title="statement not covered" >nanoid(16);</span>
   const rawToken = <span class="cstat-no" title="statement not covered" >`${timestamp}.${nonce}`;</span>
 &nbsp;
   // Sign the token with HMAC
   const hmac = <span class="cstat-no" title="statement not covered" >createHmac('sha256', CSRF_SECRET);</span>
-<span class="cstat-no" title="statement not covered" >  hmac?.update(rawToken);</span>
-  const signature = <span class="cstat-no" title="statement not covered" >hmac?.digest('hex');</span>
+<span class="cstat-no" title="statement not covered" >  hmac.update(rawToken);</span>
+  const signature = <span class="cstat-no" title="statement not covered" >hmac.digest('hex');</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return `${rawToken}.${signature}`;</span>
 }
@@ -420,22 +420,22 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >verifyCsrfToken(</span></span>token: string): boolean {
 <span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!token) <span class="cstat-no" title="statement not covered" >return false;</span></span>
 &nbsp;
-  const parts = <span class="cstat-no" title="statement not covered" >token?.split('.');</span>
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (parts?.length !== 3) <span class="cstat-no" title="statement not covered" >return false;</span></span>
+  const parts = <span class="cstat-no" title="statement not covered" >token.split('.');</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (parts.length !== 3) <span class="cstat-no" title="statement not covered" >return false;</span></span>
 &nbsp;
   const [timestamp, nonce, signature] = <span class="cstat-no" title="statement not covered" >parts;</span>
 &nbsp;
   // Recreate the signature for comparison
   const hmac = <span class="cstat-no" title="statement not covered" >createHmac('sha256', CSRF_SECRET);</span>
-<span class="cstat-no" title="statement not covered" >  hmac?.update(`${timestamp}.${nonce}`);</span>
-  const expectedSignature = <span class="cstat-no" title="statement not covered" >hmac?.digest('hex');</span>
+<span class="cstat-no" title="statement not covered" >  hmac.update(`${timestamp}.${nonce}`);</span>
+  const expectedSignature = <span class="cstat-no" title="statement not covered" >hmac.digest('hex');</span>
 &nbsp;
 &nbsp;
   // Constant-time comparison to prevent timing attacks
   const valid = <span class="cstat-no" title="statement not covered" >signature === expectedSignature;</span>
 &nbsp;
   // Check token age (24 hours)
-  const age = <span class="cstat-no" title="statement not covered" >Date?.now() - parseInt(timestamp, 10);</span>
+  const age = <span class="cstat-no" title="statement not covered" >Date.now() - parseInt(timestamp, 10);</span>
   const notExpired = <span class="cstat-no" title="statement not covered" >age &lt; 24 * 60 * 60 * 1000;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return valid &amp;&amp; notExpired;</span>
@@ -454,20 +454,20 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
  * @returns {NextResponse} The response with CSRF cookie or 403 if validation fails
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >csrfMiddleware(</span></span>req: NextRequest): NextResponse {
-  const method = <span class="cstat-no" title="statement not covered" >req?.method.toUpperCase();</span>
+  const method = <span class="cstat-no" title="statement not covered" >req.method.toUpperCase();</span>
 &nbsp;
   // For safe methods, set the CSRF cookie
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (SAFE_METHODS?.includes(method)) {</span>
-    const response = <span class="cstat-no" title="statement not covered" >NextResponse?.next();</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (SAFE_METHODS.includes(method)) {</span>
+    const response = <span class="cstat-no" title="statement not covered" >NextResponse.next();</span>
 &nbsp;
     // Set CSRF cookie if not already present
-    const csrfCookie = <span class="cstat-no" title="statement not covered" >req?.cookies.get(CSRF_COOKIE_NAME);</span>
+    const csrfCookie = <span class="cstat-no" title="statement not covered" >req.cookies.get(CSRF_COOKIE_NAME);</span>
 <span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!csrfCookie) {</span>
       const token = <span class="cstat-no" title="statement not covered" >generateCsrfToken();</span>
-<span class="cstat-no" title="statement not covered" >      response?.cookies.set(CSRF_COOKIE_NAME, token, {</span>
+<span class="cstat-no" title="statement not covered" >      response.cookies.set(CSRF_COOKIE_NAME, token, {</span>
         path: '/',
         httpOnly: true,
-        secure: process?.env.NODE_ENV === 'production',
+        secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
       });
     }
@@ -476,12 +476,12 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   }
 &nbsp;
   // For unsafe methods (POST, PUT, DELETE, etc.), validate CSRF token
-  const csrfCookie = <span class="cstat-no" title="statement not covered" >req?.cookies.get(CSRF_COOKIE_NAME);</span>
-  const csrfHeader = <span class="cstat-no" title="statement not covered" >req?.headers.get(CSRF_HEADER_NAME);</span>
+  const csrfCookie = <span class="cstat-no" title="statement not covered" >req.cookies.get(CSRF_COOKIE_NAME);</span>
+  const csrfHeader = <span class="cstat-no" title="statement not covered" >req.headers.get(CSRF_HEADER_NAME);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!csrfCookie || !csrfHeader || csrfCookie?.value !== csrfHeader) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!csrfCookie || !csrfHeader || csrfCookie.value !== csrfHeader) {</span>
 <span class="cstat-no" title="statement not covered" >    return new NextResponse(</span>
-      JSON?.stringify({
+      JSON.stringify({
         error: 'CSRF validation failed',
         message: 'Invalid or missing CSRF token',
       }),
@@ -495,9 +495,9 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   }
 &nbsp;
   // Verify the token itself
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!verifyCsrfToken(csrfCookie?.value)) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!verifyCsrfToken(csrfCookie.value)) {</span>
 <span class="cstat-no" title="statement not covered" >    return new NextResponse(</span>
-      JSON?.stringify({
+      JSON.stringify({
         error: 'CSRF validation failed',
         message: 'Invalid CSRF token',
       }),
@@ -510,7 +510,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
     );
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return NextResponse?.next();</span>
+<span class="cstat-no" title="statement not covered" >  return NextResponse.next();</span>
 }
 &nbsp;
 /**
@@ -523,8 +523,8 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
  */
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getCsrfToken(</span></span>): string | null {
   const cookieStore = <span class="cstat-no" title="statement not covered" >cookies();</span>
-  const csrfCookie = <span class="cstat-no" title="statement not covered" >cookieStore?.get(CSRF_COOKIE_NAME);</span>
-<span class="cstat-no" title="statement not covered" >  return csrfCookie?.value || null;</span>
+  const csrfCookie = <span class="cstat-no" title="statement not covered" >cookieStore.get(CSRF_COOKIE_NAME);</span>
+<span class="cstat-no" title="statement not covered" >  return csrfCookie.value || null;</span>
 }
 &nbsp;
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >createCsrfFormField(</span></span>): string {
@@ -538,7 +538,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

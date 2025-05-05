@@ -9,8 +9,6 @@ interface SliderProps {
   value?: number[];
   onValueChange?: (value: number[]) => void;
   className?: string;
-}
-
 export function Slider({
   defaultValue = [0, 100],
   min = 0,
@@ -20,7 +18,7 @@ export function Slider({
   onValueChange,
   className,
   ...props
-}: SliderProps) {
+: SliderProps) {
   // Use controlled or uncontrolled state
   const [internalValues, setInternalValues] = useState<number[]>(defaultValue);
   const currentValues = value !== undefined ? value : internalValues;
@@ -34,36 +32,26 @@ export function Slider({
     // Ensure min doesn't exceed max
     if (newValues[0] > newValues[1]) {
       return;
-    }
-
-    const clampedValues = newValues.map((v) => Math.max(min, Math.min(max, v)));
+const clampedValues = newValues.map((v) => Math.max(min, Math.min(max, v)));
 
     setInternalValues(clampedValues);
     onValueChange.(clampedValues);
-  };
-
-  // Convert value to percentage of track width
+// Convert value to percentage of track width
   const valueToPercent = (val: number) => {
     return ((val - min) / (max - min)) * 100;
-  };
-
-  // Convert percentage to value
+// Convert percentage to value
   const percentToValue = (percent: number) => {
     const rawValue = (percent / 100) * (max - min) + min;
     const steppedValue = Math.round(rawValue / step) * step;
     return steppedValue;
-  };
-
-  // Handle mouse/touch events
+// Handle mouse/touch events
   const handlePointerDown = (e: React.PointerEvent, index: number) => {
     e.preventDefault();
     isDragging.current[index] = true;
     startPositions.current[index] = e.clientX;
     document.addEventListener('pointermove', handlePointerMove);
     document.addEventListener('pointerup', handlePointerUp);
-  };
-
-  const handlePointerMove = (e: PointerEvent) => {
+const handlePointerMove = (e: PointerEvent) => {
     if (!trackRef.current || (!isDragging.current[0] && !isDragging.current[1])) return;
 
     const trackRect = trackRef.current.getBoundingClientRect();
@@ -78,36 +66,24 @@ export function Slider({
         const pointerPercent = Math.max(
           0,
           Math.min(100, ((pointerPos - trackRect.left) / trackWidth) * 100),
-        );
-        newValues[i] = percentToValue(pointerPercent);
-      }
-    }
-
-    // Ensure values are in ascending order
+newValues[i] = percentToValue(pointerPercent);
+// Ensure values are in ascending order
     if (newValues[0] > newValues[1]) {
       if (isDragging.current[0]) {
         newValues[0] = newValues[1];
-      } else {
+else {
         newValues[1] = newValues[0];
-      }
-    }
-
-    handleValueChange(newValues);
-  };
-
-  const handlePointerUp = () => {
+handleValueChange(newValues);
+const handlePointerUp = () => {
     isDragging.current = [false, false];
     document.removeEventListener('pointermove', handlePointerMove);
     document.removeEventListener('pointerup', handlePointerUp);
-  };
-
-  // Clean up event listeners
+// Clean up event listeners
   useEffect(() => {
     return () => {
       document.removeEventListener('pointermove', handlePointerMove);
       document.removeEventListener('pointerup', handlePointerUp);
-    };
-  }, []);
+[]);
 
   return (
     <div className={cn('relative w-full touch-none py-2', className)} {...props}>
@@ -118,8 +94,7 @@ export function Slider({
           style={{
             left: `${valueToPercent(currentValues[0])}%`,
             width: `${valueToPercent(currentValues[1]) - valueToPercent(currentValues[0])}%`,
-          }}
-        />
+/>
 
         {/* Thumbs */}
         {currentValues.map((val, index) => (
@@ -137,5 +112,3 @@ export function Slider({
         ))}
       </div>
     </div>
-  );
-}

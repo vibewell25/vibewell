@@ -1,4 +1,3 @@
-'use client';
 import { Layout } from '@/components/layout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BreadcrumbExample } from '@/components/examples/BreadcrumbExample';
@@ -12,8 +11,7 @@ function BreadcrumbDocumentationContent() {
     navigator.clipboard.writeText(code);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-  // Code examples
+// Code examples
   const basicUsageCode = `import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@/components/ui/breadcrumb';
 import { Icons } from '@/components/icons';
 export function MyBreadcrumb() {
@@ -29,8 +27,7 @@ export function MyBreadcrumb() {
         <span className="text-sm font-medium">Product Details</span>
       </BreadcrumbItem>
     </Breadcrumb>
-  );
-}`;
+`;
   const customStylingCode = `<Breadcrumb className="bg-muted p-2 rounded-md">
   <BreadcrumbItem isFirstItem>
     <BreadcrumbLink 
@@ -407,8 +404,6 @@ export function MyBreadcrumb() {
         </Tabs>
       </div>
     </Layout>
-  );
-}
 export default function BreadcrumbDocumentation() {
   return (
     <Suspense
@@ -416,5 +411,3 @@ export default function BreadcrumbDocumentation() {
     >
       <BreadcrumbDocumentationContent />
     </Suspense>
-  );
-}

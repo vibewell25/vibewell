@@ -276,20 +276,20 @@ const initialState: NotificationState = <span class="cstat-no" title="statement 
 };
 &nbsp;
 // Action types
-const FETCH_NOTIFICATIONS_START = <span class="cstat-no" title="statement not covered" >process?.env['FETCH_NOTIFICATIONS_START'];</span>
-const FETCH_NOTIFICATIONS_SUCCESS = <span class="cstat-no" title="statement not covered" >process?.env['FETCH_NOTIFICATIONS_SUCCESS'];</span>
-const FETCH_NOTIFICATIONS_ERROR = <span class="cstat-no" title="statement not covered" >process?.env['FETCH_NOTIFICATIONS_ERROR'];</span>
-const ADD_NOTIFICATION = <span class="cstat-no" title="statement not covered" >process?.env['ADD_NOTIFICATION'];</span>
-const MARK_AS_READ = <span class="cstat-no" title="statement not covered" >process?.env['MARK_AS_READ'];</span>
-const DELETE_NOTIFICATION = <span class="cstat-no" title="statement not covered" >process?.env['DELETE_NOTIFICATION'];</span>
-const MARK_ALL_AS_READ = <span class="cstat-no" title="statement not covered" >process?.env['MARK_ALL_AS_READ'];</span>
+const FETCH_NOTIFICATIONS_START = <span class="cstat-no" title="statement not covered" >process.env['FETCH_NOTIFICATIONS_START'];</span>
+const FETCH_NOTIFICATIONS_SUCCESS = <span class="cstat-no" title="statement not covered" >process.env['FETCH_NOTIFICATIONS_SUCCESS'];</span>
+const FETCH_NOTIFICATIONS_ERROR = <span class="cstat-no" title="statement not covered" >process.env['FETCH_NOTIFICATIONS_ERROR'];</span>
+const ADD_NOTIFICATION = <span class="cstat-no" title="statement not covered" >process.env['ADD_NOTIFICATION'];</span>
+const MARK_AS_READ = <span class="cstat-no" title="statement not covered" >process.env['MARK_AS_READ'];</span>
+const DELETE_NOTIFICATION = <span class="cstat-no" title="statement not covered" >process.env['DELETE_NOTIFICATION'];</span>
+const MARK_ALL_AS_READ = <span class="cstat-no" title="statement not covered" >process.env['MARK_ALL_AS_READ'];</span>
 &nbsp;
 // Reducer
 const notificationReducer = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span></span>
   state: NotificationState,
   action: NotificationAction,
 ): NotificationState =&gt; {
-<span class="cstat-no" title="statement not covered" >  switch (action?.type) {</span>
+<span class="cstat-no" title="statement not covered" >  switch (action.type) {</span>
     case FETCH_NOTIFICATIONS_START:
 <span class="cstat-no" title="statement not covered" >      return {</span>
         ...state,
@@ -299,8 +299,8 @@ const notificationReducer = <span class="cstat-no" title="statement not covered"
     case FETCH_NOTIFICATIONS_SUCCESS:
 <span class="cstat-no" title="statement not covered" >      return {</span>
         ...state,
-        notifications: action?.payload.notifications,
-        unreadCount: action?.payload.notifications?.filter(<span class="fstat-no" title="function not covered" >(n</span>: Notification) =&gt; <span class="cstat-no" title="statement not covered" >!n?.isRead).l</span>ength,
+        notifications: action.payload.notifications,
+        unreadCount: action.payload.notifications.filter(<span class="fstat-no" title="function not covered" >(n</span>: Notification) =&gt; <span class="cstat-no" title="statement not covered" >!n.isRead)</span>.length,
         isLoading: false,
         error: null,
       };
@@ -308,34 +308,34 @@ const notificationReducer = <span class="cstat-no" title="statement not covered"
 <span class="cstat-no" title="statement not covered" >      return {</span>
         ...state,
         isLoading: false,
-        error: action?.payload.error,
+        error: action.payload.error,
       };
     case ADD_NOTIFICATION:
 <span class="cstat-no" title="statement not covered" >      return {</span>
         ...state,
-        notifications: [action?.payload.notification, ...state?.notifications],
-        unreadCount: state?.unreadCount + 1,
+        notifications: [action.payload.notification, ...state.notifications],
+        unreadCount: state.unreadCount + 1,
       };
     case MARK_AS_READ:
 <span class="cstat-no" title="statement not covered" >      return {</span>
         ...state,
-        notifications: state?.notifications.map(<span class="fstat-no" title="function not covered" >(n</span>) =&gt;
-<span class="cstat-no" title="statement not covered" >          n?.id === action?.payload.id ? { ...n, isRead: true } : n,</span>
+        notifications: state.notifications.map(<span class="fstat-no" title="function not covered" >(n</span>) =&gt;
+<span class="cstat-no" title="statement not covered" >          n.id === action.payload.id ? { ...n, isRead: true } : n,</span>
         ),
-        unreadCount: Math?.max(0, state?.unreadCount - 1),
+        unreadCount: Math.max(0, state.unreadCount - 1),
       };
     case DELETE_NOTIFICATION:
 <span class="cstat-no" title="statement not covered" >      return {</span>
         ...state,
-        notifications: state?.notifications.filter(<span class="fstat-no" title="function not covered" >(n</span>) =&gt; <span class="cstat-no" title="statement not covered" >n?.id !== action?.payload.id),</span>
-        unreadCount: state?.notifications.find(<span class="fstat-no" title="function not covered" >(n</span>) =&gt; <span class="cstat-no" title="statement not covered" >n?.id === action?.payload.id &amp;&amp; !n?.isRead)</span>
-          ? Math?.max(0, state?.unreadCount - 1)
-          : state?.unreadCount,
+        notifications: state.notifications.filter(<span class="fstat-no" title="function not covered" >(n</span>) =&gt; <span class="cstat-no" title="statement not covered" >n.id !== action.payload.id)</span>,
+        unreadCount: state.notifications.find(<span class="fstat-no" title="function not covered" >(n</span>) =&gt; <span class="cstat-no" title="statement not covered" >n.id === action.payload.id &amp;&amp; !n.isRead)</span>
+          ? Math.max(0, state.unreadCount - 1)
+          : state.unreadCount,
       };
     case MARK_ALL_AS_READ:
 <span class="cstat-no" title="statement not covered" >      return {</span>
         ...state,
-        notifications: state?.notifications.map(<span class="fstat-no" title="function not covered" >(n</span>) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...n, isRead: true })),</span>
+        notifications: state.notifications.map(<span class="fstat-no" title="function not covered" >(n</span>) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...n, isRead: true })),</span>
         unreadCount: 0,
       };
     default:
@@ -370,7 +370,7 @@ export {};
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

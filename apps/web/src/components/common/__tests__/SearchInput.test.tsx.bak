@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import search-input from '../search-input.tsx';
+
+describe('search-input', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<search-input />);
+    expect(container).toBeInTheDocument();
+  });
+});

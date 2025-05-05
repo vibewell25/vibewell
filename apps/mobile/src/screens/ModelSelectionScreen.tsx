@@ -15,9 +15,7 @@ const ModelSelectionScreen: React.FC = () => {
     <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('TryOn', { source: item.source, scale: item.scale })}>
       <Text style={styles.label}>{item.label}</Text>
     </TouchableOpacity>
-  );
-
-  return (
+return (
     <View style={styles.container}>
       <Text style={styles.title}>Choose your look:</Text>
       <FlatList
@@ -28,9 +26,6 @@ const ModelSelectionScreen: React.FC = () => {
         contentContainerStyle={styles.list}
       />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   title: { fontSize: 20, fontWeight: 'bold', marginBottom: 16 },
@@ -42,8 +37,5 @@ const styles = StyleSheet.create({
     margin: 8,
     width: '40%',
     alignItems: 'center',
-  },
-  label: { fontSize: 16 },
-});
-
+label: { fontSize: 16 },
 export default ModelSelectionScreen;

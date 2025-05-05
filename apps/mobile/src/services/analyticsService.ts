@@ -11,8 +11,5 @@ export const trackEvent = async (event: string,
     
           headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ event, properties }),
-    });
-  } catch (err) {
+catch (err) {
     console.error('Analytics track error:', err);
-  }
-};

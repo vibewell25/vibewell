@@ -1,4 +1,3 @@
-'use client';;
 import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
@@ -12,7 +11,6 @@ interface Strategy {
   timeToImplement: string;
   expectedResults: string;
   steps: string[];
-}
 function ClientAcquisitionContent() {
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [activeDifficulty, setActiveDifficulty] = useState<string>('all');
@@ -34,8 +32,7 @@ function ClientAcquisitionContent() {
         'Add an expiration date to create urgency (valid for 30 days)',
         'Track redemptions and conversion to regular services',
       ],
-    },
-    {
+{
       id: '2',
       title: 'Client Referral Program',
       description:
@@ -51,8 +48,7 @@ function ClientAcquisitionContent() {
         'Thank both the referrer and new client when a referral occurs',
         'Track referral sources to identify your best ambassadors',
       ],
-    },
-    {
+{
       id: '5',
       title: 'Reactivation Email Campaign',
       description:
@@ -69,16 +65,14 @@ function ClientAcquisitionContent() {
         'Follow up with a phone call for high-value previous clients',
         'Track return rates and adapt messaging based on results',
       ],
-    },
-  ];
+];
   // Filter strategies based on selected category and difficulty
   const filteredStrategies = strategies.filter((strategy) => {
     const matchesCategory = activeCategory === 'all' || strategy.category === activeCategory;
     const matchesDifficulty =
       activeDifficulty === 'all' || strategy.difficulty === activeDifficulty;
     return matchesCategory && matchesDifficulty;
-  });
-  return (
+return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
         {/* Hero Section */}
@@ -123,8 +117,6 @@ function ClientAcquisitionContent() {
         </div>
       </div>
     </Layout>
-  );
-}
 export default function ClientAcquisitionPage() {
   return (
     <Suspense
@@ -132,9 +124,6 @@ export default function ClientAcquisitionPage() {
         <div className="flex min-h-screen items-center justify-center">
           Loading client acquisition strategies...
         </div>
-      }
-    >
+>
       <ClientAcquisitionContent />
     </Suspense>
-  );
-}

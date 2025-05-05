@@ -1,4 +1,3 @@
-'use client';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import Link from 'next/link';
 import { useTheme } from '@/components/theme-provider';
@@ -13,44 +12,38 @@ export default function SettingsPage() {
       icon: PaintBrushIcon,
       href: '/profile/settings/theme',
       indicator: theme === 'dark' ? 'Dark' : theme === 'light' ? 'Light' : 'System',
-    },
-    {
+{
       id: 'notifications',
       name: 'Notifications',
       description: 'Manage your alerts',
       icon: BellIcon,
       href: '/profile/settings/notifications',
-    },
-    {
+{
       id: 'privacy',
       name: 'Privacy & Security',
       description: 'Control your data and account',
       icon: ShieldCheckIcon,
       href: '/profile/settings/privacy',
-    },
-    {
+{
       id: 'language',
       name: 'Language & Region',
       description: 'Set your preferences',
       icon: LanguageIcon,
       href: '/profile/settings/language',
       indicator: 'English',
-    },
-    {
+{
       id: 'account',
       name: 'Account',
       description: 'Manage your account details',
       icon: UserIcon,
       href: '/profile/settings/account',
-    },
-    {
+{
       id: 'accessibility',
       name: 'Accessibility',
       description: 'Configure accessibility features',
       icon: DevicePhoneMobileIcon,
       href: '/profile/settings/accessibility',
-    },
-  ];
+];
   return (
     <MobileLayout>
       <div className="min-h-screen bg-background pb-16">
@@ -96,5 +89,3 @@ export default function SettingsPage() {
         </div>
       </div>
     </MobileLayout>
-  );
-}

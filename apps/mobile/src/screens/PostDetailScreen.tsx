@@ -22,15 +22,12 @@ const PostDetailScreen: React.FC = () => {
       setPost(data);
       const comms = await communityApi.getComments(id);
       setComments(comms);
-    } catch (err) {
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to load post');
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  useEffect(() => { loadData(); }, [id]);
+useEffect(() => { loadData(); }, [id]);
 
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
@@ -38,23 +35,17 @@ const PostDetailScreen: React.FC = () => {
       await communityApi.addComment(id, newComment.trim());
       setNewComment('');
       loadData();
-    } catch (err) {
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to add comment');
-    }
-  };
-
-  const handleDelete = async () => {
+const handleDelete = async () => {
     try {
       await communityApi.deletePost(id);
       navigation.goBack();
-    } catch (err) {
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to delete post');
-    }
-  };
-
-  if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
+if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
     <View style={styles.container}>
@@ -83,9 +74,6 @@ const PostDetailScreen: React.FC = () => {
       />
       <Button title="Post Comment" onPress={handleAddComment} />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   title: { fontSize: 20, fontWeight: 'bold', marginBottom: 8 },
@@ -95,6 +83,4 @@ const styles = StyleSheet.create({
   comment: { marginBottom: 12, paddingBottom: 8, borderBottomWidth: 1, borderColor: '#ccc' },
   commentMeta: { fontSize: 10, color: 'gray' },
   input: { borderWidth: 1, borderColor: '#ccc', padding: 8, borderRadius: 4, marginBottom: 12 }
-});
-
 export default PostDetailScreen;

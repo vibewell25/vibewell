@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { PaymentFormWrapper } from '@/components/payment/payment-form';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -11,7 +9,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/Card';
+from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CreditCard, PaypalIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -33,9 +31,6 @@ function PaypalIcon(props: React.SVGProps<SVGSVGElement>) {
         fill="#001C64"
       />
     </svg>
-  );
-}
-
 export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'paypal'>('card');
   const [orderSummary, setOrderSummary] = useState({
@@ -43,17 +38,14 @@ export default function CheckoutPage() {
     tax: 3.2,
     shipping: 6.8,
     total: 49.99,
-  });
-
-  // Simulated order details
+// Simulated order details
   const orderItems = [
     {
       id: '1',
       name: 'Premium Makeup Bundle',
       price: 39.99,
       quantity: 1,
-    },
-  ];
+];
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -177,5 +169,3 @@ export default function CheckoutPage() {
         </div>
       </div>
     </div>
-  );
-}

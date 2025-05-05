@@ -13,12 +13,9 @@ const ServiceDetailScreen: React.FC = () => {
     try {
       await deleteService(service.id);
       navigation.navigate('ServiceList');
-    } catch (e) {
+catch (e) {
       Alert.alert('Error', 'Failed to delete service');
-    }
-  };
-
-  return (
+return (
     <View style={{ flex: 1, padding: 16 }}>
       <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{service.name}</Text>
       <Text style={{ marginVertical: 8 }}>Price: ${service.price.toFixed(2)}</Text>
@@ -28,7 +25,4 @@ const ServiceDetailScreen: React.FC = () => {
         <Button title="Delete" onPress={handleDelete} color="#E63946" />
       </View>
     </View>
-  );
-};
-
 export default ServiceDetailScreen;

@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import Image from 'next/image';
 import LoadingSpinner from '../../../src/components/common/LoadingSpinner';
@@ -25,7 +23,7 @@ export default function SocialPage() {
             activeTab === 'feed'
               ? 'bg-card text-foreground shadow-sm'
               : 'text-muted-foreground hover:text-foreground'
-          }`}
+`}
         >
           For You
         </button>
@@ -35,7 +33,7 @@ export default function SocialPage() {
             activeTab === 'discover'
               ? 'bg-card text-foreground shadow-sm'
               : 'text-muted-foreground hover:text-foreground'
-          }`}
+`}
         >
           Discover
         </button>
@@ -45,7 +43,7 @@ export default function SocialPage() {
             activeTab === 'trending'
               ? 'bg-card text-foreground shadow-sm'
               : 'text-muted-foreground hover:text-foreground'
-          }`}
+`}
         >
           Trending
         </button>
@@ -82,23 +80,18 @@ export default function SocialPage() {
         </div>
       )}
     </div>
-  );
-}
-
 type StoryItemProps = {
   username: string;
   imageUrl?: string;
   isUnread?: boolean;
   isAdd?: boolean;
-};
-
 function StoryItem({ username, imageUrl, isUnread, isAdd }: StoryItemProps) {
   return (
     <div className="flex flex-col items-center space-y-1">
       <div
         className={`relative h-16 w-16 overflow-hidden rounded-full ${
           isUnread ? 'ring-2 ring-accent ring-offset-2 ring-offset-background' : ''
-        }`}
+`}
       >
         {isAdd ? (
           <div className="flex h-full w-full items-center justify-center bg-primary-100 text-2xl text-primary-600">
@@ -119,9 +112,6 @@ function StoryItem({ username, imageUrl, isUnread, isAdd }: StoryItemProps) {
       </div>
       <span className="text-xs">{username}</span>
     </div>
-  );
-}
-
 type Post = {
   id: number;
   username: string;
@@ -131,8 +121,6 @@ type Post = {
   likes: number;
   comments: number;
   timestamp: string;
-};
-
 function PostCard({ post }: { post: Post }) {
   const [liked, setLiked] = useState(false);
 
@@ -181,7 +169,7 @@ function PostCard({ post }: { post: Post }) {
         <button
           className={`flex items-center space-x-1 ${
             liked ? 'text-accent' : ''
-          }`}
+`}
           onClick={() => setLiked(!liked)}
         >
           <span>{liked ? '❤️' : '🤍'}</span>
@@ -199,9 +187,6 @@ function PostCard({ post }: { post: Post }) {
         </button>
       </div>
     </div>
-  );
-}
-
 // Sample data
 const stories = [
   { username: 'emma_w', imageUrl: '/images/avatar-placeholder.jpg', isUnread: true },
@@ -221,8 +206,7 @@ const posts: Post[] = [
     likes: 42,
     comments: 8,
     timestamp: '2 hours ago',
-  },
-  {
+{
     id: 2,
     username: 'wellness_coach',
     userImage: '/images/avatar-placeholder.jpg',
@@ -230,8 +214,7 @@ const posts: Post[] = [
     likes: 78,
     comments: 12,
     timestamp: '5 hours ago',
-  },
-  {
+{
     id: 3,
     username: 'beauty_expert',
     userImage: '/images/avatar-placeholder.jpg',
@@ -240,5 +223,4 @@ const posts: Post[] = [
     likes: 104,
     comments: 23,
     timestamp: '1 day ago',
-  },
 ]; 

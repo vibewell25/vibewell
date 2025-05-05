@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import useModuleContent from '../useModuleContent.ts';
+
+describe('useModuleContent', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<useModuleContent />);
+    expect(container).toBeInTheDocument();
+  });
+});

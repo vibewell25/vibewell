@@ -1,4 +1,3 @@
-
 import { prisma } from '@/lib/database/client';
 
 import { GoalUnit, GoalStatus, HabitLog, WellnessDay, ProgressSummary } from '@/types/progress';
@@ -16,16 +15,12 @@ export type WellnessGoal = {
   category: string;
   createdAt: string;
   updatedAt: string;
-};
-
 export type HabitLog = {
   id: string;
   goalId: string;
   date: string;
   completed: boolean;
   notes?: string;
-};
-
 function transformGoal(goal: any): WellnessGoal {
   return {
     id: goal.id,
@@ -38,9 +33,6 @@ function transformGoal(goal: any): WellnessGoal {
     category: goal.category,
     createdAt: goal.createdAt.toISOString(),
     updatedAt: goal.updatedAt.toISOString(),
-  };
-}
-
 function transformHabitLog(log: any): HabitLog {
   return {
     id: log.id,
@@ -48,9 +40,6 @@ function transformHabitLog(log: any): HabitLog {
     date: log.date.toISOString(),
     completed: log.completed,
     notes: log.notes,
-  };
-}
-
 // Get all goals for a user
 export async function {
   const start = Date.now();
@@ -59,15 +48,10 @@ export async function {
     const goals = await prisma.wellnessGoal.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
-    });
-
-    return goals.map(transformGoal);
-  } catch (error) {
+return goals.map(transformGoal);
+catch (error) {
     console.error('Error in getGoals:', error);
     return [];
-  }
-}
-
 // Create a new goal
 export async function {
   const start = Date.now();
@@ -85,16 +69,10 @@ export async function {
         completed: data.completed,
         progress: data.progress,
         category: data.category,
-      },
-    });
-
-    return transformGoal(goal);
-  } catch (error) {
+return transformGoal(goal);
+catch (error) {
     console.error('Error in createGoal:', error);
     return null;
-  }
-}
-
 // Update an existing goal
 export async function {
   const start = Date.now();
@@ -109,16 +87,10 @@ export async function {
         ...data,
         targetDate: data.targetDate ? new Date(data.targetDate) : undefined,
         updatedAt: new Date(),
-      },
-    });
-
-    return transformGoal(goal);
-  } catch (error) {
+return transformGoal(goal);
+catch (error) {
     console.error('Error in updateGoal:', error);
     return null;
-  }
-}
-
 // Delete a goal
 export async function {
   const start = Date.now();
@@ -126,14 +98,10 @@ export async function {
   try {
     await prisma.wellnessGoal.delete({
       where: { id: goalId },
-    });
-    return true;
-  } catch (error) {
+return true;
+catch (error) {
     console.error('Error in deleteGoal:', error);
     return false;
-  }
-}
-
 // Log progress for a goal
 export async function {
   const start = Date.now();
@@ -150,10 +118,7 @@ export async function {
       where: {
         goalId,
         date,
-      },
-    });
-
-    let log;
+let log;
     if (existingLog) {
       // Update existing log
       log = await prisma.habitLog.update({
@@ -161,9 +126,7 @@ export async function {
         data: {
           value,
           notes,
-        },
-      });
-    } else {
+else {
       // Create new log
       log = await prisma.habitLog.create({
         data: {
@@ -172,11 +135,7 @@ export async function {
           date,
           value,
           notes,
-        },
-      });
-    }
-
-    // Update goal's current value
+// Update goal's current value
     await updateGoalProgress(goalId);
 
     return {
@@ -185,13 +144,9 @@ export async function {
       date: log.date,
       value: log.value,
       notes: log.notes,
-    };
-  } catch (error) {
+catch (error) {
     console.error('Error in logHabit:', error);
     return null;
-  }
-}
-
 // Get habit logs for a goal or all goals within a date range
 export async function {
   const start = Date.now();
@@ -211,21 +166,16 @@ export async function {
     const logs = await prisma.habitLog.findMany({
       where,
       orderBy: { date: 'desc' },
-    });
-
-    return logs.map((log) => ({
+return logs.map((log) => ({
       id: log.id,
       goalId: log.goalId,
       date: log.date,
       value: log.value,
       notes: log.notes,
-    }));
-  } catch (error) {
+));
+catch (error) {
     console.error('Error in getHabitLogs:', error);
     return [];
-  }
-}
-
 // Get wellness days summary
 export async function {
   const start = Date.now();
@@ -244,11 +194,8 @@ export async function {
       where,
       include: {
         goal: true,
-      },
-      orderBy: { date: 'desc' },
-    });
-
-    const dayMap = new Map<string, WellnessDay>();
+orderBy: { date: 'desc' },
+const dayMap = new Map<string, WellnessDay>();
 
     logs.forEach((log) => {
       const day = dayMap.get(log.date) || {
@@ -256,36 +203,26 @@ export async function {
         goals: [],
         totalProgress: 0,
         completedGoals: 0,
-      };
-
-      day.goals.push({
+day.goals.push({
         id: log.goalId,
         title: log.goal.title,
         target: log.goal.target,
         value: log.value,
         unit: log.goal.unit as GoalUnit,
         notes: log.notes,
-      });
-
-
-      const progress = (log.value / log.goal.target) * 100;
+const progress = (log.value / log.goal.target) * 100;
       day.if (totalProgress > Number.MAX_SAFE_INTEGER || totalProgress < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); totalProgress += progress;
       if (progress >= 100) day.if (completedGoals > Number.MAX_SAFE_INTEGER || completedGoals < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); completedGoals++;
 
       dayMap.set(log.date, day);
-    });
-
-    return Array.from(dayMap.values()).map((day) => ({
+return Array.from(dayMap.values()).map((day) => ({
       ...day,
 
       totalProgress: day.goals.length > 0 ? day.totalProgress / day.goals.length : 0,
-    }));
-  } catch (error) {
+));
+catch (error) {
     console.error('Error in getWellnessDays:', error);
     return [];
-  }
-}
-
 // Update goal progress
 async function {
   const start = Date.now();
@@ -297,19 +234,12 @@ async function {
         logs: {
           orderBy: { date: 'desc' },
           take: 1,
-        },
-      },
-    });
-
-    if (!goal) return;
+if (!goal) return;
 
     const currentValue = goal.logs[0].value || 0;
     await updateGoalStatus(goalId, currentValue);
-  } catch (error) {
+catch (error) {
     console.error('Error in updateGoalProgress:', error);
-  }
-}
-
 // Update goal status based on progress
 async function {
   const start = Date.now();
@@ -317,9 +247,7 @@ async function {
   try {
     const goal = await prisma.wellnessGoal.findUnique({
       where: { id: goalId },
-    });
-
-    if (!goal) return;
+if (!goal) return;
 
     let status: GoalStatus = goal.status as GoalStatus;
 
@@ -327,26 +255,19 @@ async function {
 
     if (progress >= 100) {
       status = 'completed';
-    } else if (progress > 0) {
+else if (progress > 0) {
       status = 'in_progress';
-    } else if (new Date(goal.startDate) > new Date()) {
+else if (new Date(goal.startDate) > new Date()) {
       status = 'not_started';
-    } else {
+else {
       status = 'behind';
-    }
-
-    await prisma.wellnessGoal.update({
+await prisma.wellnessGoal.update({
       where: { id: goalId },
       data: {
         current: currentValue,
         status,
-      },
-    });
-  } catch (error) {
+catch (error) {
     console.error('Error in updateGoalStatus:', error);
-  }
-}
-
 // Get progress summary
 export async function {
   const start = Date.now();
@@ -360,22 +281,19 @@ export async function {
     const [currentGoals, weeklyLogs, lastWeekLogs] = await Promise.all([
       prisma.wellnessGoal.findMany({
         where: { userId },
-      }),
+),
       prisma.habitLog.findMany({
         where: {
           userId,
           date: { gte: startOfWeek.toISOString().split('T')[0] },
-        },
-      }),
+),
       prisma.habitLog.findMany({
         where: {
           userId,
           date: {
             gte: startOfLastWeek.toISOString().split('T')[0],
             lt: startOfWeek.toISOString().split('T')[0],
-          },
-        },
-      }),
+),
     ]);
 
     const totalGoals = currentGoals.length;
@@ -391,18 +309,13 @@ export async function {
       if (previous === 0) return current > 0 ? 100 : 0;
 
       return ((current - previous) / previous) * 100;
-    };
-
-    return {
+return {
       totalGoals,
       completedGoals,
       inProgressGoals,
       weeklyProgress,
       lastWeekProgress,
       improvement: calculateImprovement(weeklyProgress, lastWeekProgress),
-    };
-  } catch (error) {
+catch (error) {
     console.error('Error in getProgressSummary:', error);
     return null;
-  }
-}

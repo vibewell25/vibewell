@@ -6,15 +6,11 @@ export interface AccessibilityPreferences {
   reduceMotion: boolean;
   keyboardFocusVisible: boolean;
   language: string;
-}
-
 // Define supported languages
 export interface LanguageOption {
   code: string;
   name: string;
   isRTL: boolean;
-}
-
 export const SUPPORTED_LANGUAGES: LanguageOption[] = [
   { code: 'en', name: 'English', isRTL: false },
   { code: 'es', name: 'Español', isRTL: false },

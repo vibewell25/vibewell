@@ -6,13 +6,9 @@ interface DropdownItem {
   label: string;
   onClick: () => void;
   icon?: React.ReactNode;
-}
-
 interface DropdownProps {
   trigger: React.ReactNode;
   items: DropdownItem[];
   align?: 'left' | 'right';
   className?: string;
-}
-
 export {};

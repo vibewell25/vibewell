@@ -17,5 +17,3 @@ export default function FeaturedEvents() {
         ))}
       </div>
     </section>
-  );
-}

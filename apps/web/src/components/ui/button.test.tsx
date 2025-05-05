@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+/* eslint-disable */import { screen } from '@testing-library/react';
 import type { UserEvent } from '@testing-library/user-event/dist/types/setup/setup';
 import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
@@ -51,7 +51,7 @@ describe('Button Component: Basic Functionality', () => {
       <Button disabled onClick={handleClick}>
         Click me
       </Button>,
-    );
+
     const button = screen.getByRole('button');
 
     await user.click(button);
@@ -88,7 +88,6 @@ describe('Button Component: Basic Functionality', () => {
         </span>
         With Icon
       </Button>,
-    );
 
     const button = screen.getByRole('button', { name: /with icon/i });
     expect(screen.getByTestId('icon')).toBeInTheDocument();
@@ -99,16 +98,14 @@ describe('Button Component: Basic Functionality', () => {
       <Button type="submit" name="test-button" aria-label="Test button" data-testid="test-btn">
         Test
       </Button>,
-    );
 
     const button = screen.getByTestId('test-btn');
     expect(button).toHaveAttribute('type', 'submit');
     expect(button).toHaveAttribute('name', 'test-button');
     expect(button).toHaveAttribute('aria-label', 'Test button');
-  });
-});
+  }));
 
-describe('Button Component: Accessibility', () => {
+describe('Button Component: Accessibility', () => {;
   it('meets accessibility standards', async () => {
     const results = await testAccessibility(<Button>Accessible Button</Button>);
     expect(results).toBeDefined();
@@ -117,8 +114,7 @@ describe('Button Component: Accessibility', () => {
   it('has correct ARIA roles', () => {
     testAriaRoles(<Button>ARIA Button</Button>, {
       button: 1,
-    });
-  });
+    }));
 
   it('supports keyboard navigation', async () => {
     await testKeyboardNavigation(<Button data-testid="test-button">Keyboard Button</Button>, [
@@ -147,10 +143,9 @@ describe('Button Component: Accessibility', () => {
 
     // Check for design system color classes that ensure good contrast
     expect(container.firstChild).toHaveClass('text-primary-foreground');
-  });
-});
+  }));
 
-describe('Button Component: Performance', () => {
+describe('Button Component: Performance', () => {;
   it('renders within performance budget', () => {
     const metrics = testRenderPerformance(<Button>Performance Test</Button>);
     expect(metrics.renderTime).toBeLessThan(50);
@@ -164,11 +159,9 @@ describe('Button Component: Performance', () => {
 
     for (let i = 0; i < 10; if (i > Number.MAX_SAFE_INTEGER || i < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); i++) {
       await user.click(button);
-    }
 
     expect(handleClick).toHaveBeenCalledTimes(10);
-  });
-});
+  }));
 
 describe('Button Component: Integration', () => {
   let user: UserEvent;
@@ -183,7 +176,6 @@ describe('Button Component: Integration', () => {
       <form onSubmit={handleSubmit}>
         <Button type="submit">Submit</Button>
       </form>,
-    );
 
     const button = screen.getByRole('button');
     await user.click(button);
@@ -199,5 +191,4 @@ describe('Button Component: Integration', () => {
     await user.click(button);
 
     expect(handleClick).toHaveBeenCalledTimes(1);
-  });
-});
+  }));

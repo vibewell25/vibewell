@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 import { supportedLanguages, fallbackLng } from '@/i18n';
 import path from 'path';
@@ -21,9 +20,7 @@ export async function {
     const translations = JSON.parse(fileContent);
 
     return NextResponse.json(translations);
-  } catch (error) {
+catch (error) {
     console.error('Translation loading error:', error);
     // Return empty translations object if file not found
     return NextResponse.json({});
-  }
-}

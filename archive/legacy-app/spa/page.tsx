@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -118,9 +116,6 @@ export default function SpaHomePage() {
         )}
       </div>
     </div>
-  );
-}
-
 function CategoryItem({ icon, label }: { icon: string; label: string }) {
   return (
     <Link href={`/spa/services?category=${label.toLowerCase()}`} className="flex flex-col items-center">
@@ -129,17 +124,12 @@ function CategoryItem({ icon, label }: { icon: string; label: string }) {
       </div>
       <span className="text-xs text-muted-foreground">{label}</span>
     </Link>
-  );
-}
-
 type Provider = {
   id: number;
   name: string;
   specialty: string;
   rating: number;
   image?: string;
-};
-
 function ProviderCard({ provider }: { provider: Provider }) {
   return (
     <Link href={`/spa/providers/${provider.id}`} className="w-40 flex-shrink-0">
@@ -161,9 +151,6 @@ function ProviderCard({ provider }: { provider: Provider }) {
         {'☆'.repeat(5 - provider.rating)}
       </div>
     </Link>
-  );
-}
-
 type Service = {
   id: number;
   name: string;
@@ -172,8 +159,6 @@ type Service = {
   duration: string;
   image?: string;
   rating: number;
-};
-
 function ServiceCard({ service }: { service: Service }) {
   return (
     <Link href={`/spa/services/${service.id}`} className="app-card flex">
@@ -202,9 +187,6 @@ function ServiceCard({ service }: { service: Service }) {
         </div>
       </div>
     </Link>
-  );
-}
-
 // Sample data
 const featuredProviders: Provider[] = [
   {
@@ -213,21 +195,18 @@ const featuredProviders: Provider[] = [
     specialty: 'Massage Therapist',
     rating: 5,
     image: '/images/avatar-placeholder.jpg',
-  },
-  {
+{
     id: 2,
     name: 'Michael Chen',
     specialty: 'Skincare Expert',
     rating: 4,
     image: '/images/avatar-placeholder.jpg',
-  },
-  {
+{
     id: 3,
     name: 'Emma Wilson',
     specialty: 'Hair Stylist',
     rating: 5,
     image: '/images/avatar-placeholder.jpg',
-  },
 ];
 
 const recommendations: Service[] = [
@@ -239,8 +218,7 @@ const recommendations: Service[] = [
     duration: '60 min',
     image: '/images/avatar-placeholder.jpg',
     rating: 5,
-  },
-  {
+{
     id: 2,
     name: 'Hydrating Facial',
     provider: 'Michael Chen',
@@ -248,8 +226,7 @@ const recommendations: Service[] = [
     duration: '45 min',
     image: '/images/avatar-placeholder.jpg',
     rating: 4,
-  },
-  {
+{
     id: 3,
     name: 'Haircut & Style',
     provider: 'Emma Wilson',
@@ -257,7 +234,6 @@ const recommendations: Service[] = [
     duration: '60 min',
     image: '/images/avatar-placeholder.jpg',
     rating: 5,
-  },
 ];
 
 const upcomingAppointment = {
@@ -266,4 +242,3 @@ const upcomingAppointment = {
   status: 'Confirmed',
   date: 'May.15, 2023',
   time: '10:00 AM',
-}; 

@@ -1,11 +1,7 @@
 import Redis from 'ioredis';
 import { EventEmitter } from 'events';
 
-    // Safe integer operation
-    if (fs > Number.MAX_SAFE_INTEGER || fs < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-import fs from 'fs/promises';
+    import fs from 'fs/promises';
 import path from 'path';
 
 interface ReplicationConfig {
@@ -13,16 +9,12 @@ interface ReplicationConfig {
     host: string;
     port: number;
     password?: string;
-  };
-  slave: {
+slave: {
     port: number;
     slaveof?: string;
     rdbFilename?: string;
     rdbCompression?: boolean;
     rdbChecksum?: boolean;
-  };
-}
-
 class RedisReplication extends EventEmitter {
   private master: Redis;
   private slave: Redis;
@@ -41,85 +33,49 @@ class RedisReplication extends EventEmitter {
       password: config.master.password,
       retryStrategy: (times) => {
 
-    // Safe integer operation
-    if (times > Number.MAX_SAFE_INTEGER || times < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-        const delay = Math.min(times * 50, 2000);
+    const delay = Math.min(times * 50, 2000);
         return delay;
-      }
-    });
-
-    // Initialize slave connection
+// Initialize slave connection
     this.slave = new Redis({
       port: config.slave.port,
       retryStrategy: (times) => {
 
-    // Safe integer operation
-    if (times > Number.MAX_SAFE_INTEGER || times < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-        const delay = Math.min(times * 50, 2000);
+    const delay = Math.min(times * 50, 2000);
         return delay;
-      }
-    });
-
-    this.setupEventHandlers();
-  }
-
-  private setupEventHandlers(): void {
+this.setupEventHandlers();
+private setupEventHandlers(): void {
     // Master events
     this.master.on('connect', () => {
       this.emit('master:connect');
-    });
-
-    this.master.on('error', (error) => {
+this.master.on('error', (error) => {
       this.emit('master:error', error);
-    });
-
-    // Slave events
+// Slave events
     this.slave.on('connect', () => {
       this.emit('slave:connect');
-    });
-
-    this.slave.on('error', (error) => {
+this.slave.on('error', (error) => {
       this.emit('slave:error', error);
-    });
-  }
-
-  public async startReplication(): Promise<void> {
+public async startReplication(): Promise<void> {
     try {
       // Configure slave
       if (this.config.slave.slaveof) {
         await this.slave.slaveof(
           this.config.master.host,
           this.config.master.port
-        );
-      }
-
-      // Configure RDB
+// Configure RDB
       if (this.config.slave.rdbFilename) {
         await this.configureRDB();
-      }
-
-      this.emit('replication:start');
-    } catch (error) {
+this.emit('replication:start');
+catch (error) {
       this.emit('replication:error', error);
       throw error;
-    }
-  }
-
-  public async stopReplication(): Promise<void> {
+public async stopReplication(): Promise<void> {
     try {
       await this.slave.slaveof('NO', 'ONE');
       this.emit('replication:stop');
-    } catch (error) {
+catch (error) {
       this.emit('replication:error', error);
       throw error;
-    }
-  }
-
-  private async configureRDB(): Promise<void> {
+private async configureRDB(): Promise<void> {
     try {
       // Ensure RDB directory exists
       await fs.mkdir(this.rdbPath, { recursive: true });
@@ -134,16 +90,11 @@ class RedisReplication extends EventEmitter {
       // Apply RDB configuration
       for (const config of rdbConfig) {
         await this.slave.config('SET', ...config.split(' '));
-      }
-
-      this.emit('rdb:configured');
-    } catch (error) {
+this.emit('rdb:configured');
+catch (error) {
       this.emit('rdb:error', error);
       throw error;
-    }
-  }
-
-  public async saveRDB(): Promise<void> {
+public async saveRDB(): Promise<void> {
     try {
       await this.slave.bgsave();
       this.emit('rdb:save:start');
@@ -153,18 +104,12 @@ class RedisReplication extends EventEmitter {
         const info = await this.slave.info('persistence');
         if (!info.includes('rdb_bgsave_in_progress:1')) {
           break;
-        }
-        await new Promise(resolve => setTimeout(resolve, 100));
-      }
-
-      this.emit('rdb:save:complete');
-    } catch (error) {
+await new Promise(resolve => setTimeout(resolve, 100));
+this.emit('rdb:save:complete');
+catch (error) {
       this.emit('rdb:save:error', error);
       throw error;
-    }
-  }
-
-  public async getRDBInfo(): Promise<object> {
+public async getRDBInfo(): Promise<object> {
     try {
       const info = await this.slave.info('persistence');
       const rdbInfo: { [key: string]: string | number } = {};
@@ -173,22 +118,12 @@ class RedisReplication extends EventEmitter {
         if (line.startsWith('rdb_')) {
           const [key, value] = line.split(':');
 
-    // Safe array access
-    if (key < 0 || key >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-          rdbInfo[key] = isNaN(Number(value)) ? value : Number(value);
-        }
-      });
-
-      return rdbInfo;
-    } catch (error) {
+    rdbInfo[key] = isNaN(Number(value)) ? value : Number(value);
+return rdbInfo;
+catch (error) {
       this.emit('rdb:info:error', error);
       throw error;
-    }
-  }
-
-  public async getReplicationInfo(): Promise<object> {
+public async getReplicationInfo(): Promise<object> {
     try {
       const masterInfo = await this.master.info('replication');
       const slaveInfo = await this.slave.info('replication');
@@ -196,14 +131,10 @@ class RedisReplication extends EventEmitter {
       return {
         master: this.parseInfo(masterInfo),
         slave: this.parseInfo(slaveInfo)
-      };
-    } catch (error) {
+catch (error) {
       this.emit('replication:info:error', error);
       throw error;
-    }
-  }
-
-  private parseInfo(info: string): object {
+private parseInfo(info: string): object {
     const result: { [key: string]: string | number } = {};
 
     info.split('\n').forEach(line => {
@@ -211,25 +142,12 @@ class RedisReplication extends EventEmitter {
         const [key, value] = line.split(':');
         if (key && value) {
 
-    // Safe array access
-    if (key < 0 || key >= array.length) {
-      throw new Error('Array index out of bounds');
-    }
-          result[key] = isNaN(Number(value)) ? value.trim() : Number(value);
-        }
-      }
-    });
-
-    return result;
-  }
-
-  public async disconnect(): Promise<void> {
+    result[key] = isNaN(Number(value)) ? value.trim() : Number(value);
+return result;
+public async disconnect(): Promise<void> {
     await Promise.all([
       this.master.disconnect(),
       this.slave.disconnect()
     ]);
     this.emit('disconnect');
-  }
-}
-
 export default RedisReplication; 

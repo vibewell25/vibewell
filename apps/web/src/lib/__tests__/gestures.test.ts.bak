@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import gestures from '../gestures.ts';
+
+describe('gestures', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<gestures />);
+    expect(container).toBeInTheDocument();
+  });
+});

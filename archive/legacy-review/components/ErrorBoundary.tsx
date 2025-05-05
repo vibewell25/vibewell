@@ -4,38 +4,24 @@ import { logger } from '@/lib/logger';
 interface Props {
   children: ReactNode;
   fallback?: ReactNode;
-}
-
 interface State {
   hasError: boolean;
   error: Error | null;
-}
-
 export class ErrorBoundary extends Component<Props, State> {
   public state: State = {
     hasError: false,
     error: null,
-  };
-
-  public static getDerivedStateFromError(error: Error): State {
+public static getDerivedStateFromError(error: Error): State {
     return {
       hasError: true,
       error,
-    };
-  }
-
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     logger.error('Virtual try-on error', 'ErrorBoundary', {
       error: error.message,
       stack: errorInfo.componentStack,
-    });
-  }
-
-  private handleRetry = () => {
+private handleRetry = () => {
     this.setState({ hasError: false, error: null });
-  };
-
-  public render() {
+public render() {
     if (this.state.hasError) {
       return (
         this.props.fallback || (
@@ -62,9 +48,4 @@ export class ErrorBoundary extends Component<Props, State> {
             </button>
           </div>
         )
-      );
-    }
-
-    return this.props.children;
-  }
-}
+return this.props.children;

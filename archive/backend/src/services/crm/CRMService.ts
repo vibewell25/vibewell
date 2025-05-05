@@ -7,18 +7,13 @@ interface CRMConfig {
     clientSecret: string;
     instanceUrl: string;
     accessToken: string;
-  };
-  hubspot?: {
+hubspot?: {
     apiKey: string;
     portalId: string;
-  };
-  zendesk?: {
+zendesk?: {
     subdomain: string;
     apiToken: string;
     email: string;
-  };
-}
-
 interface ContactData {
   email: string;
   name: string;
@@ -26,8 +21,6 @@ interface ContactData {
   company?: string;
   source?: string;
   customFields?: Record<string, any>;
-}
-
 interface DealData {
   contactId: string;
   amount: number;
@@ -35,8 +28,6 @@ interface DealData {
   probability?: number;
   expectedCloseDate?: Date;
   customFields?: Record<string, any>;
-}
-
 interface TicketData {
   contactId: string;
   subject: string;
@@ -44,76 +35,53 @@ interface TicketData {
   priority?: 'low' | 'medium' | 'high';
   status?: 'new' | 'open' | 'pending' | 'resolved' | 'closed';
   customFields?: Record<string, any>;
-}
-
 class CRMService {
   private static instance: CRMService;
   private config: CRMConfig;
 
   private constructor(config: CRMConfig) {
     this.config = config;
-  }
-
-  public static getInstance(config?: CRMConfig): CRMService {
+public static getInstance(config?: CRMConfig): CRMService {
     if (!CRMService.instance && config) {
       CRMService.instance = new CRMService(config);
-    }
-    return CRMService.instance;
-  }
-
-  // Salesforce Integration
+return CRMService.instance;
+// Salesforce Integration
   private async salesforceRequest(method: string, endpoint: string, data?: any): Promise<any> {
     if (!this.config.salesforce) {
       throw new Error('Salesforce configuration not found');
-    }
-
-    try {
+try {
       const response = await axios({
         method,
         url: `${this.config.salesforce.instanceUrl}/services/data/v52.0${endpoint}`,
         headers: {
           Authorization: `Bearer ${this.config.salesforce.accessToken}`,
           'Content-Type': 'application/json'
-        },
-        data
-      });
-      return response.data;
-    } catch (error) {
+data
+return response.data;
+catch (error) {
       console.error('Salesforce API error:', error);
       throw error;
-    }
-  }
-
-  // HubSpot Integration
+// HubSpot Integration
   private async hubspotRequest(method: string, endpoint: string, data?: any): Promise<any> {
     if (!this.config.hubspot) {
       throw new Error('HubSpot configuration not found');
-    }
-
-    try {
+try {
       const response = await axios({
         method,
         url: `https://api.hubapi.com/crm/v3${endpoint}`,
         headers: {
           Authorization: `Bearer ${this.config.hubspot.apiKey}`,
           'Content-Type': 'application/json'
-        },
-        data
-      });
-      return response.data;
-    } catch (error) {
+data
+return response.data;
+catch (error) {
       console.error('HubSpot API error:', error);
       throw error;
-    }
-  }
-
-  // Zendesk Integration
+// Zendesk Integration
   private async zendeskRequest(method: string, endpoint: string, data?: any): Promise<any> {
     if (!this.config.zendesk) {
       throw new Error('Zendesk configuration not found');
-    }
-
-    const auth = Buffer.from(`${this.config.zendesk.email}/token:${this.config.zendesk.apiToken}`).toString('base64');
+const auth = Buffer.from(`${this.config.zendesk.email}/token:${this.config.zendesk.apiToken}`).toString('base64');
 
     try {
       const response = await axios({
@@ -122,17 +90,12 @@ class CRMService {
         headers: {
           Authorization: `Basic ${auth}`,
           'Content-Type': 'application/json'
-        },
-        data
-      });
-      return response.data;
-    } catch (error) {
+data
+return response.data;
+catch (error) {
       console.error('Zendesk API error:', error);
       throw error;
-    }
-  }
-
-  // Contact Management
+// Contact Management
   public async createContact(data: ContactData, provider: 'salesforce' | 'hubspot' | 'zendesk'): Promise<any> {
     switch (provider) {
       case 'salesforce':
@@ -141,9 +104,7 @@ class CRMService {
           Name: data.name,
           Phone: data.phone,
           ...data.customFields
-        });
-
-      case 'hubspot':
+case 'hubspot':
         return this.hubspotRequest('POST', '/objects/contacts', {
           properties: {
             email: data.email,
@@ -152,25 +113,16 @@ class CRMService {
             phone: data.phone,
             company: data.company,
             ...data.customFields
-          }
-        });
-
-      case 'zendesk':
+case 'zendesk':
         return this.zendeskRequest('POST', '/users', {
           user: {
             email: data.email,
             name: data.name,
             phone: data.phone,
             custom_fields: data.customFields
-          }
-        });
-
-      default:
+default:
         throw new Error('Unsupported CRM provider');
-    }
-  }
-
-  // Deal Management
+// Deal Management
   public async createDeal(data: DealData, provider: 'salesforce' | 'hubspot'): Promise<any> {
     switch (provider) {
       case 'salesforce':
@@ -181,9 +133,7 @@ class CRMService {
           Probability: data.probability,
           CloseDate: data.expectedCloseDate,
           ...data.customFields
-        });
-
-      case 'hubspot':
+case 'hubspot':
         return this.hubspotRequest('POST', '/objects/deals', {
           properties: {
             amount: data.amount,
@@ -191,21 +141,14 @@ class CRMService {
             probability: data.probability,
             closedate: data.expectedCloseDate,
             ...data.customFields
-          },
-          associations: [
+associations: [
             {
               to: { id: data.contactId },
               types: [{ category: 'HUBSPOT_DEFINED', typeId: 3 }]
-            }
-          ]
-        });
-
-      default:
+]
+default:
         throw new Error('Unsupported CRM provider for deals');
-    }
-  }
-
-  // Ticket Management
+// Ticket Management
   public async createTicket(data: TicketData, provider: 'zendesk'): Promise<any> {
     switch (provider) {
       case 'zendesk':
@@ -217,15 +160,9 @@ class CRMService {
             priority: data.priority,
             status: data.status,
             custom_fields: data.customFields
-          }
-        });
-
-      default:
+default:
         throw new Error('Unsupported CRM provider for tickets');
-    }
-  }
-
-  // Sync User to CRM
+// Sync User to CRM
   public async syncUserToCRM(user: IUser, provider: 'salesforce' | 'hubspot' | 'zendesk'): Promise<void> {
     try {
       const contactData = {
@@ -236,23 +173,14 @@ class CRMService {
           emailVerified: user.emailVerified,
           authProvider: user.authProvider,
           createdAt: user.createdAt
-        }
-      };
-      await this.createContact(contactData, provider);
-    } catch (error) {
+await this.createContact(contactData, provider);
+catch (error) {
       console.error(`Failed to sync user to ${provider}:`, error);
       throw error;
-    }
-  }
-
-  // Batch Operations
+// Batch Operations
   public async batchSyncUsers(users: IUser[], provider: 'salesforce' | 'hubspot' | 'zendesk'): Promise<void> {
     const batchSize = 50; // Adjust based on API limits
     for (let i = 0; i < users.length; i += batchSize) {
       const batch = users.slice(i, i + batchSize);
       await Promise.all(batch.map(user => this.syncUserToCRM(user, provider)));
-    }
-  }
-}
-
 export default CRMService; 

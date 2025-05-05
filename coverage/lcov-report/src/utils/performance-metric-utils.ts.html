@@ -306,24 +306,24 @@ export const <span class="cstat-no" title="statement not covered" >ErrorCodes </
 } as const;
 &nbsp;
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >isSuccess(</span></span>value: number | undefined): boolean {
-<span class="cstat-no" title="statement not covered" >  return value === MetricStatus?.SUCCESS;</span>
+<span class="cstat-no" title="statement not covered" >  return value === MetricStatus.SUCCESS;</span>
 }
 &nbsp;
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >isError(</span></span>value: number | undefined): boolean {
-<span class="cstat-no" title="statement not covered" >  return value !== undefined &amp;&amp; value !== ErrorCodes?.NO_ERROR;</span>
+<span class="cstat-no" title="statement not covered" >  return value !== undefined &amp;&amp; value !== ErrorCodes.NO_ERROR;</span>
 }
 &nbsp;
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getErrorMessage(</span></span>code: number): string {
 <span class="cstat-no" title="statement not covered" >  switch (code) {</span>
-    case ErrorCodes?.NO_ERROR:
+    case ErrorCodes.NO_ERROR:
 <span class="cstat-no" title="statement not covered" >      return 'No error';</span>
-    case ErrorCodes?.REGISTRATION_FAILED:
+    case ErrorCodes.REGISTRATION_FAILED:
 <span class="cstat-no" title="statement not covered" >      return 'Registration failed';</span>
-    case ErrorCodes?.NETWORK_ERROR:
+    case ErrorCodes.NETWORK_ERROR:
 <span class="cstat-no" title="statement not covered" >      return 'Network error';</span>
-    case ErrorCodes?.TIMEOUT_ERROR:
+    case ErrorCodes.TIMEOUT_ERROR:
 <span class="cstat-no" title="statement not covered" >      return 'Timeout error';</span>
-    case ErrorCodes?.PERMISSION_DENIED:
+    case ErrorCodes.PERMISSION_DENIED:
 <span class="cstat-no" title="statement not covered" >      return 'Permission denied';</span>
     default:
 <span class="cstat-no" title="statement not covered" >      return 'Unknown error';</span>
@@ -342,62 +342,62 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   syncErrorMessage?: string;
 }): Partial&lt;PerformanceMetrics&gt; {
 <span class="cstat-no" title="statement not covered" >  return {</span>
-    serviceWorkerRegistration: status?.isRegistered ? MetricStatus?.SUCCESS : MetricStatus?.FAILURE,
-    serviceWorkerError: status?.registrationError
-      ? ErrorCodes?.REGISTRATION_FAILED
-      : ErrorCodes?.NO_ERROR,
-    offlineReady: status?.isOffline ? MetricStatus?.SUCCESS : MetricStatus?.FAILURE,
-    syncQueueSize: status?.queueSize ?? 0,
-    fetchStrategyTime: status?.fetchTime ?? 0,
-    fetchSuccess: status?.hasFetchSucceeded ? MetricStatus?.SUCCESS : MetricStatus?.FAILURE,
-    fetchError: status?.fetchErrorMessage ? ErrorCodes?.NETWORK_ERROR : ErrorCodes?.NO_ERROR,
-    syncSuccess: status?.hasSyncSucceeded ? MetricStatus?.SUCCESS : MetricStatus?.FAILURE,
-    syncError: status?.syncErrorMessage ? ErrorCodes?.UNKNOWN_ERROR : ErrorCodes?.NO_ERROR,
+    serviceWorkerRegistration: status.isRegistered ? MetricStatus.SUCCESS : MetricStatus.FAILURE,
+    serviceWorkerError: status.registrationError
+      ? ErrorCodes.REGISTRATION_FAILED
+      : ErrorCodes.NO_ERROR,
+    offlineReady: status.isOffline ? MetricStatus.SUCCESS : MetricStatus.FAILURE,
+    syncQueueSize: status.queueSize ?? 0,
+    fetchStrategyTime: status.fetchTime ?? 0,
+    fetchSuccess: status.hasFetchSucceeded ? MetricStatus.SUCCESS : MetricStatus.FAILURE,
+    fetchError: status.fetchErrorMessage ? ErrorCodes.NETWORK_ERROR : ErrorCodes.NO_ERROR,
+    syncSuccess: status.hasSyncSucceeded ? MetricStatus.SUCCESS : MetricStatus.FAILURE,
+    syncError: status.syncErrorMessage ? ErrorCodes.UNKNOWN_ERROR : ErrorCodes.NO_ERROR,
   };
 }
 &nbsp;
 export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getMetricsSummary(</span></span>metrics: Partial&lt;PerformanceMetrics&gt;): string {
   const summary: string[] = <span class="cstat-no" title="statement not covered" >[];</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics?.serviceWorkerRegistration !== undefined) {</span>
-<span class="cstat-no" title="statement not covered" >    summary?.push(</span>
-      `Service Worker: ${isSuccess(metrics?.serviceWorkerRegistration) ? 'Registered' : 'Not Registered'}`,
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics.serviceWorkerRegistration !== undefined) {</span>
+<span class="cstat-no" title="statement not covered" >    summary.push(</span>
+      `Service Worker: ${isSuccess(metrics.serviceWorkerRegistration) ? 'Registered' : 'Not Registered'}`,
     );
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics?.serviceWorkerError !== undefined &amp;&amp; isError(metrics?.serviceWorkerError)) {</span>
-<span class="cstat-no" title="statement not covered" >    summary?.push(`Service Worker Error: ${getErrorMessage(metrics?.serviceWorkerError)}`);</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics.serviceWorkerError !== undefined &amp;&amp; isError(metrics.serviceWorkerError)) {</span>
+<span class="cstat-no" title="statement not covered" >    summary.push(`Service Worker Error: ${getErrorMessage(metrics.serviceWorkerError)}`);</span>
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics?.offlineReady !== undefined) {</span>
-<span class="cstat-no" title="statement not covered" >    summary?.push(`Offline Status: ${isSuccess(metrics?.offlineReady) ? 'Ready' : 'Not Ready'}`);</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics.offlineReady !== undefined) {</span>
+<span class="cstat-no" title="statement not covered" >    summary.push(`Offline Status: ${isSuccess(metrics.offlineReady) ? 'Ready' : 'Not Ready'}`);</span>
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics?.syncQueueSize !== undefined) {</span>
-<span class="cstat-no" title="statement not covered" >    summary?.push(`Sync Queue Size: ${metrics?.syncQueueSize}`);</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics.syncQueueSize !== undefined) {</span>
+<span class="cstat-no" title="statement not covered" >    summary.push(`Sync Queue Size: ${metrics.syncQueueSize}`);</span>
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics?.fetchStrategyTime !== undefined) {</span>
-<span class="cstat-no" title="statement not covered" >    summary?.push(`Fetch Time: ${metrics?.fetchStrategyTime}ms`);</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics.fetchStrategyTime !== undefined) {</span>
+<span class="cstat-no" title="statement not covered" >    summary.push(`Fetch Time: ${metrics.fetchStrategyTime}ms`);</span>
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics?.fetchSuccess !== undefined) {</span>
-<span class="cstat-no" title="statement not covered" >    summary?.push(`Fetch Status: ${isSuccess(metrics?.fetchSuccess) ? 'Successful' : 'Failed'}`);</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics.fetchSuccess !== undefined) {</span>
+<span class="cstat-no" title="statement not covered" >    summary.push(`Fetch Status: ${isSuccess(metrics.fetchSuccess) ? 'Successful' : 'Failed'}`);</span>
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics?.fetchError !== undefined &amp;&amp; isError(metrics?.fetchError)) {</span>
-<span class="cstat-no" title="statement not covered" >    summary?.push(`Fetch Error: ${getErrorMessage(metrics?.fetchError)}`);</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics.fetchError !== undefined &amp;&amp; isError(metrics.fetchError)) {</span>
+<span class="cstat-no" title="statement not covered" >    summary.push(`Fetch Error: ${getErrorMessage(metrics.fetchError)}`);</span>
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics?.syncSuccess !== undefined) {</span>
-<span class="cstat-no" title="statement not covered" >    summary?.push(`Sync Status: ${isSuccess(metrics?.syncSuccess) ? 'Successful' : 'Failed'}`);</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics.syncSuccess !== undefined) {</span>
+<span class="cstat-no" title="statement not covered" >    summary.push(`Sync Status: ${isSuccess(metrics.syncSuccess) ? 'Successful' : 'Failed'}`);</span>
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics?.syncError !== undefined &amp;&amp; isError(metrics?.syncError)) {</span>
-<span class="cstat-no" title="statement not covered" >    summary?.push(`Sync Error: ${getErrorMessage(metrics?.syncError)}`);</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics.syncError !== undefined &amp;&amp; isError(metrics.syncError)) {</span>
+<span class="cstat-no" title="statement not covered" >    summary.push(`Sync Error: ${getErrorMessage(metrics.syncError)}`);</span>
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return summary?.join('\n');</span>
+<span class="cstat-no" title="statement not covered" >  return summary.join('\n');</span>
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -406,7 +406,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

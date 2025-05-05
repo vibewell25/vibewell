@@ -456,7 +456,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
 <span class="cstat-no" title="statement not covered" >    setTouchEvents(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; {</span>
       const updated = <span class="cstat-no" title="statement not covered" >[gesture, ...prev];</span>
       // Keep only the last 5 events
-<span class="cstat-no" title="statement not covered" >      return updated?.slice(0, 5);</span>
+<span class="cstat-no" title="statement not covered" >      return updated.slice(0, 5);</span>
     });
   };
 &nbsp;
@@ -513,15 +513,15 @@ export default function <span class="cstat-no" title="statement not covered" ><s
 &nbsp;
             &lt;TouchHandler
               onGesture={<span class="fstat-no" title="function not covered" >(g</span>esture) =&gt; {
-<span class="cstat-no" title="statement not covered" >                if (gesture?.type === 'swipe' &amp;&amp; gesture?.direction) {</span>
-<span class="cstat-no" title="statement not covered" >                  handleGesture('Swipe', gesture?.direction);</span>
-                } else <span class="cstat-no" title="statement not covered" >if (gesture?.type === 'pinch' &amp;&amp; gesture?.scale) {</span>
-<span class="cstat-no" title="statement not covered" >                  handleGesture('Pinch', `scale ${gesture?.scale.toFixed(2)}`);</span>
-                } else <span class="cstat-no" title="statement not covered" >if (gesture?.type === 'rotate' &amp;&amp; gesture?.rotation) {</span>
-<span class="cstat-no" title="statement not covered" >                  handleGesture('Rotate', `${gesture?.rotation.toFixed(0)}°`);</span>
-                } else <span class="cstat-no" title="statement not covered" >if (gesture?.type === 'tap') {</span>
+<span class="cstat-no" title="statement not covered" >                if (gesture.type === 'swipe' &amp;&amp; gesture.direction) {</span>
+<span class="cstat-no" title="statement not covered" >                  handleGesture('Swipe', gesture.direction);</span>
+                } else <span class="cstat-no" title="statement not covered" >if (gesture.type === 'pinch' &amp;&amp; gesture.scale) {</span>
+<span class="cstat-no" title="statement not covered" >                  handleGesture('Pinch', `scale ${gesture.scale.toFixed(2)}`);</span>
+                } else <span class="cstat-no" title="statement not covered" >if (gesture.type === 'rotate' &amp;&amp; gesture.rotation) {</span>
+<span class="cstat-no" title="statement not covered" >                  handleGesture('Rotate', `${gesture.rotation.toFixed(0)}°`);</span>
+                } else <span class="cstat-no" title="statement not covered" >if (gesture.type === 'tap') {</span>
 <span class="cstat-no" title="statement not covered" >                  handleGesture('Tap');</span>
-                } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (gesture?.type === 'longpress') {</span>
+                } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (gesture.type === 'longpress') {</span>
 <span class="cstat-no" title="statement not covered" >                  handleGesture('Long Press');</span>
                 }
               }}
@@ -535,9 +535,9 @@ export default function <span class="cstat-no" title="statement not covered" ><s
 &nbsp;
             &lt;div&gt;
               &lt;h3 className="mb-2 font-medium"&gt;Recent Touch Events:&lt;/h3&gt;
-              {touchEvents?.length &gt; 0 ? (
+              {touchEvents.length &gt; 0 ? (
 <span class="branch-0 cbranch-no" title="branch not covered" >                &lt;ul className="list-disc space-y-1 pl-5"&gt;</span>
-                  {touchEvents?.map(<span class="fstat-no" title="function not covered" >(e</span>vent, index) =&gt; (
+                  {touchEvents.map(<span class="fstat-no" title="function not covered" >(e</span>vent, index) =&gt; (
 <span class="cstat-no" title="statement not covered" >                    &lt;li key={index}&gt;{e</span>vent}&lt;/li&gt;
                   ))}
                 &lt;/ul&gt;
@@ -553,9 +553,9 @@ export default function <span class="cstat-no" title="statement not covered" ><s
 &nbsp;
             &lt;div className="overflow-hidden rounded-lg"&gt;
               &lt;ResponsiveImage
-                src="https://images?.unsplash.com/photo-1607437817193-1892a4f1b1ec?w=1200"
-                mobileSrc="https://images?.unsplash.com/photo-1607437817193-1892a4f1b1ec?w=400"
-                tabletSrc="https://images?.unsplash.com/photo-1607437817193-1892a4f1b1ec?w=800"
+                src="https://images.unsplash.com/photo-1607437817193-1892a4f1b1ec?w=1200"
+                mobileSrc="https://images.unsplash.com/photo-1607437817193-1892a4f1b1ec?w=400"
+                tabletSrc="https://images.unsplash.com/photo-1607437817193-1892a4f1b1ec?w=800"
                 alt="Responsive test image"
                 width={1200}
                 height={800}
@@ -622,7 +622,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

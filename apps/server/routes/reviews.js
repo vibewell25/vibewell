@@ -29,14 +29,10 @@ router.get('/', auth,
         where,
         include: { user: true, service: true, booking: true, business: true, sentiment: true },
         orderBy: { createdAt: 'desc' },
-      });
-      res.json(reviews);
-    } catch (err) {
+res.json(reviews);
+catch (err) {
       console.error('Error fetching reviews:', err);
       res.status(500).json({ error: 'Failed to fetch reviews' });
-    }
-  });
-
 // POST /api/reviews
 router.post('/', auth,
   body('serviceId').notEmpty().withMessage('serviceId is required'),
@@ -56,15 +52,10 @@ router.post('/', auth,
           businessId,
           rating: Number(rating),
           comment,
-        },
-      });
-      res.status(201).json(review);
-    } catch (err) {
+res.status(201).json(review);
+catch (err) {
       console.error('Error creating review:', err);
       res.status(500).json({ error: 'Failed to create review' });
-    }
-  });
-
 // PUT /api/reviews/:id/approve
 router.put('/:id/approve', auth, async (req, res) => {
   const { id } = req.params;
@@ -72,14 +63,10 @@ router.put('/:id/approve', auth, async (req, res) => {
     const updated = await prisma.serviceReview.update({
       where: { id },
       data: { status: 'APPROVED' }
-    });
-    res.json(updated);
-  } catch (err) {
+res.json(updated);
+catch (err) {
     console.error('Error approving review:', err);
     res.status(500).json({ error: 'Failed to approve review' });
-  }
-});
-
 // PUT /api/reviews/:id/reject
 router.put('/:id/reject', auth,
   body('note').notEmpty().withMessage('Rejection note is required'),
@@ -93,14 +80,10 @@ router.put('/:id/reject', auth,
       const updated = await prisma.serviceReview.update({
         where: { id },
         data: { status: 'REJECTED', moderationNotes: note }
-      });
-      res.json(updated);
-    } catch (err) {
+res.json(updated);
+catch (err) {
       console.error('Error rejecting review:', err);
       res.status(500).json({ error: 'Failed to reject review' });
-    }
-  });
-
 // PUT /api/reviews/:id/resolve
 router.put('/:id/resolve', auth,
   body('note').notEmpty().withMessage('Resolution note is required'),
@@ -116,12 +99,8 @@ router.put('/:id/resolve', auth,
       const updated = await prisma.serviceReview.update({
         where: { id },
         data: { status: 'APPROVED', moderationNotes: newNotes }
-      });
-      res.json(updated);
-    } catch (err) {
+res.json(updated);
+catch (err) {
       console.error('Error resolving review:', err);
       res.status(500).json({ error: 'Failed to resolve review' });
-    }
-  });
-
 module.exports = router; 

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import service-booking-modal from '../service-booking-modal.tsx';
+
+describe('service-booking-modal', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<service-booking-modal />);
+    expect(container).toBeInTheDocument();
+  });
+});

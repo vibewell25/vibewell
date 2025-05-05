@@ -7,13 +7,11 @@ interface BeautyServiceCardProps {
   service: BeautyService;
   onPress: (service: BeautyService) => void;
   isDarkMode: boolean;
-}
-
 const BeautyServiceCard: React.FC<BeautyServiceCardProps> = ({ 
   service, 
   onPress, 
   isDarkMode 
-}) => {
+) => {
   return (
     <TouchableOpacity 
       style={[
@@ -89,9 +87,6 @@ const BeautyServiceCard: React.FC<BeautyServiceCardProps> = ({
         </View>
       )}
     </TouchableOpacity>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     borderRadius: 12,
@@ -103,46 +98,36 @@ const styles = StyleSheet.create({
     elevation: 2,
     position: 'relative',
     height: 210,
-  },
-  image: {
+image: {
     width: '100%',
     height: 120,
-  },
-  content: {
+content: {
     padding: 12,
-  },
-  title: {
+title: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 4,
-  },
-  description: {
+description: {
     fontSize: 13,
     lineHeight: 18,
     marginBottom: 8,
-  },
-  footer: {
+footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  price: {
+price: {
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  duration: {
+duration: {
     fontSize: 14,
     color: '#666',
-  },
-  ratingContainer: {
+ratingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  rating: {
+rating: {
     marginLeft: 4,
     fontSize: 14,
-  },
-  featuredBadge: {
+featuredBadge: {
     position: 'absolute',
     top: 10,
     right: 10,
@@ -150,12 +135,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 4,
-  },
-  featuredText: {
+featuredText: {
     color: '#FFFFFF',
     fontSize: 12,
     fontWeight: 'bold',
-  },
-});
-
 export default BeautyServiceCard; 

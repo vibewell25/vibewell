@@ -466,7 +466,7 @@
 import { auth0 } from '@/lib/auth0';
 &nbsp;
 // Password validation schema
-const passwordSchema = <span class="cstat-no" title="statement not covered" >z?.string()</span>
+const passwordSchema = <span class="cstat-no" title="statement not covered" >z.string()</span>
   .min(8, 'Password must be at least 8 characters')
 &nbsp;
   .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
@@ -478,20 +478,20 @@ const passwordSchema = <span class="cstat-no" title="statement not covered" >z?.
   .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character');
 &nbsp;
 // Email validation schema
-const emailSchema = <span class="cstat-no" title="statement not covered" >z?.string().email('Invalid email format');</span>
+const emailSchema = <span class="cstat-no" title="statement not covered" >z.string().email('Invalid email format');</span>
 &nbsp;
 // Login validation schema
-const loginSchema = <span class="cstat-no" title="statement not covered" >z?.object({</span>
+const loginSchema = <span class="cstat-no" title="statement not covered" >z.object({</span>
   email: emailSchema,
-  password: z?.string().min(6)
+  password: z.string().min(6)
 });
 &nbsp;
 // Signup validation schema
-const signupSchema = <span class="cstat-no" title="statement not covered" >z?.object({</span>
+const signupSchema = <span class="cstat-no" title="statement not covered" >z.object({</span>
   email: emailSchema,
   password: passwordSchema,
-  name: z?.string().min(2, 'Name must be at least 2 characters'),
-  role: z?.enum(['user', 'provider']).default('user')
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  role: z.enum(['user', 'provider']).default('user')
 });
 &nbsp;
 export class <span class="cstat-no" title="statement not covered" >AuthService {</span>
@@ -501,7 +501,7 @@ export class <span class="cstat-no" title="statement not covered" >AuthService {
 <span class="fstat-no" title="function not covered" >  static async l</span>ogin(email: string, password: string) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Validate input
-      const validatedData = <span class="cstat-no" title="statement not covered" >loginSchema?.parse({ email, password });</span>
+      const validatedData = <span class="cstat-no" title="statement not covered" >loginSchema.parse({ email, password });</span>
 &nbsp;
 &nbsp;
       const response = <span class="cstat-no" title="statement not covered" >await fetch('/api/auth/login', {</span>
@@ -509,19 +509,19 @@ export class <span class="cstat-no" title="statement not covered" >AuthService {
 &nbsp;
 &nbsp;
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify(validatedData),
+        body: JSON.stringify(validatedData),
         credentials: 'include' // Important for cookie handling
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
-        const error = <span class="cstat-no" title="statement not covered" >await response?.json();</span>
-<span class="cstat-no" title="statement not covered" >        throw new Error(error?.message || 'Login failed');</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
+        const error = <span class="cstat-no" title="statement not covered" >await response.json();</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error(error.message || 'Login failed');</span>
       }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      return await response?.json();</span>
+<span class="cstat-no" title="statement not covered" >      return await response.json();</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error instanceof z?.ZodError) {</span>
-<span class="cstat-no" title="statement not covered" >        throw new Error(error?.errors[0]?.message || 'Invalid input');</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error instanceof z.ZodError) {</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error(error.errors[0].message || 'Invalid input');</span>
       }
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
@@ -538,7 +538,7 @@ export class <span class="cstat-no" title="statement not covered" >AuthService {
   }) {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Validate input
-      const validatedData = <span class="cstat-no" title="statement not covered" >signupSchema?.parse(data);</span>
+      const validatedData = <span class="cstat-no" title="statement not covered" >signupSchema.parse(data);</span>
 &nbsp;
 &nbsp;
       const response = <span class="cstat-no" title="statement not covered" >await fetch('/api/auth/signup', {</span>
@@ -546,19 +546,19 @@ export class <span class="cstat-no" title="statement not covered" >AuthService {
 &nbsp;
 &nbsp;
         headers: { 'Content-Type': 'application/json' },
-        body: JSON?.stringify(validatedData),
+        body: JSON.stringify(validatedData),
         credentials: 'include'
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
-        const error = <span class="cstat-no" title="statement not covered" >await response?.json();</span>
-<span class="cstat-no" title="statement not covered" >        throw new Error(error?.message || 'Signup failed');</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
+        const error = <span class="cstat-no" title="statement not covered" >await response.json();</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error(error.message || 'Signup failed');</span>
       }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      return await response?.json();</span>
+<span class="cstat-no" title="statement not covered" >      return await response.json();</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error instanceof z?.ZodError) {</span>
-<span class="cstat-no" title="statement not covered" >        throw new Error(error?.errors[0]?.message || 'Invalid input');</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error instanceof z.ZodError) {</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error(error.errors[0].message || 'Invalid input');</span>
       }
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
@@ -575,16 +575,16 @@ export class <span class="cstat-no" title="statement not covered" >AuthService {
 &nbsp;
 &nbsp;
       headers: { 'Content-Type': 'application/json' },
-      body: JSON?.stringify({ method }),
+      body: JSON.stringify({ method }),
       credentials: 'include'
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
-      const error = <span class="cstat-no" title="statement not covered" >await response?.json();</span>
-<span class="cstat-no" title="statement not covered" >      throw new Error(error?.message || 'MFA enrollment failed');</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
+      const error = <span class="cstat-no" title="statement not covered" >await response.json();</span>
+<span class="cstat-no" title="statement not covered" >      throw new Error(error.message || 'MFA enrollment failed');</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return await response?.json();</span>
+<span class="cstat-no" title="statement not covered" >    return await response.json();</span>
   }
 &nbsp;
   /**
@@ -598,16 +598,16 @@ export class <span class="cstat-no" title="statement not covered" >AuthService {
 &nbsp;
 &nbsp;
       headers: { 'Content-Type': 'application/json' },
-      body: JSON?.stringify({ method, code }),
+      body: JSON.stringify({ method, code }),
       credentials: 'include'
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
-      const error = <span class="cstat-no" title="statement not covered" >await response?.json();</span>
-<span class="cstat-no" title="statement not covered" >      throw new Error(error?.message || 'MFA verification failed');</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
+      const error = <span class="cstat-no" title="statement not covered" >await response.json();</span>
+<span class="cstat-no" title="statement not covered" >      throw new Error(error.message || 'MFA verification failed');</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return await response?.json();</span>
+<span class="cstat-no" title="statement not covered" >    return await response.json();</span>
   }
 &nbsp;
   /**
@@ -620,9 +620,9 @@ export class <span class="cstat-no" title="statement not covered" >AuthService {
       credentials: 'include'
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
-      const error = <span class="cstat-no" title="statement not covered" >await response?.json();</span>
-<span class="cstat-no" title="statement not covered" >      throw new Error(error?.message || 'Logout failed');</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
+      const error = <span class="cstat-no" title="statement not covered" >await response.json();</span>
+<span class="cstat-no" title="statement not covered" >      throw new Error(error.message || 'Logout failed');</span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return true;</span>
@@ -637,11 +637,11 @@ export class <span class="cstat-no" title="statement not covered" >AuthService {
       credentials: 'include'
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >      return null;</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return await response?.json();</span>
+<span class="cstat-no" title="statement not covered" >    return await response.json();</span>
   }
 &nbsp;
   /**
@@ -654,11 +654,11 @@ export class <span class="cstat-no" title="statement not covered" >AuthService {
       credentials: 'include'
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response?.ok) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('Failed to refresh session');</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return await response?.json();</span>
+<span class="cstat-no" title="statement not covered" >    return await response.json();</span>
   }
 } </pre></td></tr></table></pre>
 
@@ -667,7 +667,7 @@ export class <span class="cstat-no" title="statement not covered" >AuthService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-04T12:45:12.492Z
+                at 2025-05-04T21:01:02.217Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

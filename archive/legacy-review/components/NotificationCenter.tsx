@@ -10,8 +10,6 @@ interface Notification {
   date: string;
   read: boolean;
   link?: string;
-}
 interface NotificationCenterProps {
   onClose: () => void;
-}
 export {};

@@ -18,7 +18,7 @@ const ProviderListScreen: React.FC = () => {
       .then(setProviders)
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, []);
+[]);
 
   if (loading) return <ActivityIndicator size="large" color="#2A9D8F" />;
 
@@ -43,7 +43,4 @@ const ProviderListScreen: React.FC = () => {
         <Text style={{ color: '#fff', fontSize: 24 }}>+</Text>
       </TouchableOpacity>
     </View>
-  );
-};
-
 export default ProviderListScreen;

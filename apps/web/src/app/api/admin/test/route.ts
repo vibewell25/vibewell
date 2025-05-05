@@ -8,11 +8,8 @@ export async function POST(req: NextRequest) {
     const result = await adminRateLimiter(req);
     if (result) {
       return result;
-    }
-    // Default response if no rate-limit action taken
+// Default response if no rate-limit action taken
     return NextResponse.json({ status: 'success', message: 'Admin API endpoint' });
-  } catch (error) {
+catch (error) {
     console.error('Error in admin test route:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}

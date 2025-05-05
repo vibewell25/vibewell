@@ -23,26 +23,22 @@ const EquipmentDetailScreen: React.FC = () => {
         ]);
         setItem(data);
         setAssignments(assigns);
-      } catch (err) {
+catch (err) {
         console.error(err);
         Alert.alert('Error', 'Failed to load equipment details');
-      } finally {
+finally {
         setLoading(false);
-      }
-    })();
-  }, [id]);
+)();
+[id]);
 
   const handleDelete = async () => {
     try {
       await equipmentApi.deleteItem(id);
       navigation.goBack();
-    } catch (err) {
+catch (err) {
       console.error(err);
       Alert.alert('Error', 'Failed to delete equipment');
-    }
-  };
-
-  if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
+if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
     <View style={styles.container}>
@@ -66,15 +62,10 @@ const EquipmentDetailScreen: React.FC = () => {
         )}
       />
     </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   title: { fontSize: 20, fontWeight: 'bold', marginBottom: 8 },
   buttonRow: { flexDirection: 'row', justifyContent: 'space-between', marginVertical: 8 },
   sectionTitle: { fontSize: 18, fontWeight: 'bold', marginTop: 16, marginBottom: 8 },
   assignItem: { padding: 8, borderBottomWidth: 1, borderColor: '#ccc' }
-});
-
 export default EquipmentDetailScreen;

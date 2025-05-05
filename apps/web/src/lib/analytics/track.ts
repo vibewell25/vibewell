@@ -1,4 +1,3 @@
-
 import { AnalyticsService } from '@/services/analytics-service';
 import { nanoid } from 'nanoid';
 
@@ -17,7 +16,7 @@ export async function {
   intensity = 1,
   success = true,
   error = null,
-}: {
+: {
   userId: string;
   type: string;
   productId: string;
@@ -26,7 +25,7 @@ export async function {
   intensity?: number;
   success?: boolean;
   error?: string | null;
-}) {
+) {
   try {
     const analyticsService = new AnalyticsService();
     return await analyticsService.trackTryOnSession({
@@ -38,14 +37,10 @@ export async function {
       intensity,
       success,
       error,
-    });
-  } catch (error) {
+catch (error) {
 
     console.error('Failed to track try-on session:', error);
     return null;
-  }
-}
-
 /**
  * Track a share event in analytics
  */
@@ -58,14 +53,14 @@ export async function {
   method,
   success = true,
   error = null,
-}: {
+: {
   userId: string;
   sessionId: string;
   platform: string;
   method: string;
   success?: boolean;
   error?: string | null;
-}) {
+) {
   try {
     const analyticsService = new AnalyticsService();
     return await analyticsService.trackShare({
@@ -75,20 +70,14 @@ export async function {
       method,
       success,
       error,
-    });
-  } catch (error) {
+catch (error) {
     console.error('Failed to track share event:', error);
     return null;
-  }
-}
-
 /**
  * Generate a unique session ID for tracking
  */
 export function generateSessionId(): string {
   return nanoid();
-}
-
 /**
  * Calculate session duration in seconds
  */
@@ -96,4 +85,3 @@ export function calculateSessionDuration(startTime: number): number {
   const endTime = Date.now();
 
   return Math.round((endTime - startTime) / 1000);
-}

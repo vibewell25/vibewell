@@ -12,25 +12,19 @@ const NotificationsScreen: React.FC = () => {
     try {
       const data = await getNotifications();
       setItems(data);
-    } catch (err) {
+catch (err) {
       console.error(err);
-    } finally {
+finally {
       setLoading(false);
-    }
-  };
-
-  useEffect(() => { fetchItems(); }, []);
+useEffect(() => { fetchItems(); }, []);
 
   const handleRead = async (id: string) => {
     try {
       await markNotificationRead(id);
       setItems(prev => prev.map(item => item.id === id ? { ...item, read: true } : item));
-    } catch (err) {
+catch (err) {
       console.error(err);
-    }
-  };
-
-  if (loading) return <ActivityIndicator style={{ flex: 1 }} color={colors.primary} size="large" />;
+if (loading) return <ActivityIndicator style={{ flex: 1 }} color={colors.primary} size="large" />;
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
@@ -49,11 +43,6 @@ const NotificationsScreen: React.FC = () => {
         )}
       />
     </SafeAreaView>
-  );
-};
-
 const styles = StyleSheet.create({
   item: { flexDirection: 'row', alignItems: 'center', padding: 16, borderBottomWidth: 1, borderColor: '#ccc' }
-});
-
 export default NotificationsScreen;

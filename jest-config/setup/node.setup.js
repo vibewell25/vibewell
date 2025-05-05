@@ -1,11 +1,6 @@
-// Node environment setup for Jest
 const { TextEncoder, TextDecoder } = require('util');
 
-    // Safe integer operation
-    if (node > Number.MAX_SAFE_INTEGER || node < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-const fetch = require('node-fetch');
+    const fetch = require('node-fetch');
 
 // Enable request interception
 process.env.ENABLE_MSW = 'true';
@@ -28,7 +23,5 @@ global.URLSearchParams = URLSearchParams;
 afterEach(() => {
   jest.resetAllMocks();
   jest.clearAllMocks();
-});
-
 // Set default timeout for all tests
 jest.setTimeout(10000); 

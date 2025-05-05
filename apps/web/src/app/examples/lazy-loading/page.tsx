@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/Button';
@@ -18,24 +16,21 @@ export default function LazyLoadingDemo() {
       time: '10:00 AM',
       description: 'Initial consultation with new client',
       type: 'appointment',
-    },
-    {
+{
       id: '2',
       title: 'Team Meeting',
       date: new Date(2023, 5, 15),
       time: '2:00 PM',
       description: 'Weekly team sync',
       type: 'meeting',
-    },
-    {
+{
       id: '3',
       title: 'Yoga Class',
       date: new Date(2023, 5, 17),
       time: '8:00 AM',
       description: 'Morning yoga session',
       type: 'class',
-    },
-  ];
+];
 
   return (
     <div className="container mx-auto py-12">
@@ -106,8 +101,7 @@ function ARViewerLazy(props) {
     <Suspense fallback={<LoadingState />}>
       <ARViewer {...props} />
     </Suspense>
-  );
-}`}
+`}
           </pre>
           <p>
             Benefits include smaller initial bundle size, faster initial page load, and on-demand
@@ -116,5 +110,3 @@ function ARViewerLazy(props) {
         </div>
       </div>
     </div>
-  );
-}

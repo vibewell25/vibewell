@@ -9,14 +9,10 @@ router.post('/', upload.single('photo'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
-    }
-    // In production, process req.file.buffer with AI service
+// In production, process req.file.buffer with AI service
     const results = { hydration: 80, oiliness: 30, spots: 5 };
     res.json({ results });
-  } catch (e) {
+catch (e) {
     console.error('Skin analysis error:', e);
     res.status(500).json({ error: 'Analysis failed' });
-  }
-});
-
 export default router;

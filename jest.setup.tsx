@@ -15,9 +15,8 @@ jest.mock('next/router', () => ({
       on: jest.fn(),
       off: jest.fn(),
       emit: jest.fn(),
-    },
-  }),
-}));
+),
+));
 
 // Mock Next.js image component
 jest.mock('next/image', () => ({
@@ -25,8 +24,7 @@ jest.mock('next/image', () => ({
   default: (props: any) => {
     // eslint-disable-next-line @next/next/no-img-element
     return <img {...props} alt={props.alt || ''} />;
-  },
-}));
+));
 
 // Mock IntersectionObserver
 if (typeof window !== 'undefined') {
@@ -34,15 +32,11 @@ if (typeof window !== 'undefined') {
     observe = jest.fn();
     unobserve = jest.fn();
     disconnect = jest.fn();
-  }
-
-  Object.defineProperty(window, 'IntersectionObserver', {
+Object.defineProperty(window, 'IntersectionObserver', {
     writable: true,
     configurable: true,
     value: MockIntersectionObserver,
-  });
-
-  Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(window, 'matchMedia', {
     writable: true,
     value: jest.fn().mockImplementation(query => ({
       matches: false,
@@ -53,10 +47,7 @@ if (typeof window !== 'undefined') {
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
       dispatchEvent: jest.fn(),
-    })),
-  });
-}
-
+)),
 // Suppress console errors during tests
 const originalError = console.error;
 beforeAll(() => {
@@ -66,11 +57,6 @@ beforeAll(() => {
       args[0].includes('Warning: ReactDOM.render is no longer supported')
     ) {
       return;
-    }
-    originalError.call(console, ...args);
-  };
-});
-
+originalError.call(console, ...args);
 afterAll(() => {
   console.error = originalError;
-}); 

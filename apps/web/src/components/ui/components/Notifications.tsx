@@ -7,7 +7,7 @@ const Notifications: React.FC = () => {
     // This would normally fetch notifications from an API
     // For now we'll just simulate with empty array
     setNotifications([]);
-  }, []);
+[]);
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
@@ -24,7 +24,4 @@ const Notifications: React.FC = () => {
         </div>
       )}
     </div>
-  );
-};
-
 export default Notifications; 

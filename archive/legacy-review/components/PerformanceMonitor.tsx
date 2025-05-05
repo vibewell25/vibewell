@@ -26,33 +26,25 @@ export function withPerformanceMonitoring<P extends object>(
       if (markRef.current) {
         // Pass the string, not null
         endComponentRender(componentName, markRef.current);
-      } else {
+else {
         // If we don't have a mark, just use the name
         endComponentRender(componentName);
-      }
-
-      // Cleanup on unmount
+// Cleanup on unmount
       return () => {
         if (markRef.current) {
           // Pass the string, not null
           endComponentRender(`${componentName}-unmount`, markRef.current);
-        } else {
+else {
           // If we don't have a mark, just use the name
           endComponentRender(`${componentName}-unmount`);
-        }
-      };
-    }, []);
+[]);
 
     // Render the wrapped component
     return <Component {...props} />;
-  };
-
-  // Set display name for debugging
+// Set display name for debugging
   MonitoredComponent.displayName = `WithPerformanceMonitoring(${displayName})`;
 
   return MonitoredComponent;
-}
-
 /**
  * Component to measure performance between mount and unmount
  * Useful for measuring page or section performance

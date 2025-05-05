@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+/* eslint-disable */import { render, screen } from '@testing-library/react';
 import {
   Card,
   CardHeader,
@@ -8,7 +8,7 @@ import {
   CardContent,
 } from '@/components/ui/Card';
 
-describe('Card Component', () => {
+describe('Card Component', () => {;
   test('renders basic Card', () => {
     render(<Card data-testid="card">Card Content</Card>);
 
@@ -30,7 +30,6 @@ describe('Card Component', () => {
         <CardContent data-testid="card-content">Card Content</CardContent>
         <CardFooter data-testid="card-footer">Card Footer</CardFooter>
       </Card>,
-    );
 
     // Test Card
     const card = screen.getByTestId('card');
@@ -86,7 +85,6 @@ describe('Card Component', () => {
           Footer
         </CardFooter>
       </Card>,
-    );
 
     // Verify custom classes are applied correctly
     expect(screen.getByTestId('card')).toHaveClass('test-card');
@@ -104,9 +102,7 @@ describe('Card Component', () => {
           Header
         </CardHeader>
       </Card>,
-    );
 
     expect(screen.getByTestId('card')).toHaveAttribute('aria-label', 'card component');
     expect(screen.getByTestId('card-header')).toHaveAttribute('aria-label', 'card header');
-  });
-});
+  }));

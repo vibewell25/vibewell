@@ -5,15 +5,11 @@ export interface TrainingModule {
   title: string;
   description?: string;
   contentUrl: string;
-}
-
 export const getTrainingModules = async (): Promise<TrainingModule[]> => {
 
     fetch(`${serverBaseUrl}/api/training-modules`);
   const data = await res.json();
   return data.modules;
-};
-
 export const createTrainingModule = async (payload: Partial<TrainingModule>): Promise<TrainingModule> => {
 
     fetch(`${serverBaseUrl}/api/training-modules`, {
@@ -24,5 +20,3 @@ export const createTrainingModule = async (payload: Partial<TrainingModule>): Pr
 
     fetch(`${serverBaseUrl}/api/training-modules/${id}`, {
     method: 'DELETE',
-  });
-};

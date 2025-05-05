@@ -1,4 +1,3 @@
-'use client';;
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
@@ -16,7 +15,6 @@ interface MarketingResource {
   image: string;
   downloadable: boolean;
   premium: boolean;
-}
 export default function MarketingResourcesPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -31,8 +29,7 @@ export default function MarketingResourcesPage() {
       image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7',
       downloadable: true,
       premium: false,
-    },
-    {
+{
       id: '2',
       title: 'Client Email Nurture Sequence',
       description:
@@ -41,8 +38,7 @@ export default function MarketingResourcesPage() {
       image: 'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f',
       downloadable: true,
       premium: false,
-    },
-    {
+{
       id: '3',
       title: 'Local SEO Checklist for Wellness Businesses',
       description:
@@ -51,8 +47,7 @@ export default function MarketingResourcesPage() {
       image: 'https://images.unsplash.com/photo-1553484771-371a605b060b',
       downloadable: true,
       premium: false,
-    },
-    {
+{
       id: '4',
       title: 'Seasonal Promotion Planner',
       description:
@@ -61,8 +56,7 @@ export default function MarketingResourcesPage() {
       image: 'https://images.unsplash.com/photo-1533090161767-e6ffed986c88',
       downloadable: true,
       premium: true,
-    },
-    {
+{
       id: '5',
       title: 'Website Conversion Optimization Guide',
       description:
@@ -71,8 +65,7 @@ export default function MarketingResourcesPage() {
       image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71',
       downloadable: true,
       premium: true,
-    },
-    {
+{
       id: '6',
       title: 'Email Subject Line Swipe File',
       description:
@@ -81,8 +74,7 @@ export default function MarketingResourcesPage() {
       image: 'https://images.unsplash.com/photo-1466096115517-bceecbfb6fde',
       downloadable: true,
       premium: false,
-    },
-    {
+{
       id: '7',
       title: 'Social Media Image Templates for Canva',
       description:
@@ -91,8 +83,7 @@ export default function MarketingResourcesPage() {
       image: 'https://images.unsplash.com/photo-1611162618071-b39a2ec055fb',
       downloadable: true,
       premium: true,
-    },
-    {
+{
       id: '8',
       title: 'Google Business Profile Optimization Guide',
       description:
@@ -101,8 +92,7 @@ export default function MarketingResourcesPage() {
       image: 'https://images.unsplash.com/photo-1581362072978-214c264ac9ba',
       downloadable: true,
       premium: false,
-    },
-  ];
+];
   // Filter resources based on category and search
   const filteredResources = marketingResources.filter((resource) => {
     const matchesCategory = selectedCategory === 'all' || resource.category === selectedCategory;
@@ -111,8 +101,7 @@ export default function MarketingResourcesPage() {
       resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       resource.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
-  });
-  return (
+return (
     <div className="container mx-auto px-4 py-8">
       {/* Hero Section */}
       <div className="mb-12 rounded-xl bg-gradient-to-r from-pink-100 to-purple-100 p-8">
@@ -153,8 +142,7 @@ export default function MarketingResourcesPage() {
             onClick={() => setSelectedCategory('social-media')}
             className={
               selectedCategory === 'social-media' ? 'bg-purple-600 hover:bg-purple-700' : ''
-            }
-          >
+>
             Social Media
           </Button>
           <Button
@@ -169,8 +157,7 @@ export default function MarketingResourcesPage() {
             onClick={() => setSelectedCategory('local-marketing')}
             className={
               selectedCategory === 'local-marketing' ? 'bg-purple-600 hover:bg-purple-700' : ''
-            }
-          >
+>
             Local Marketing
           </Button>
           <Button
@@ -415,5 +402,3 @@ export default function MarketingResourcesPage() {
         </div>
       </div>
     </div>
-  );
-}

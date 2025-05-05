@@ -1,6 +1,4 @@
-
-    
-    import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler';
+import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler';
 
     import { Platform } from 'react-native';
 
@@ -11,8 +9,6 @@ export interface SwipeHandlers {
   onSwipeRight?: () => void;
   onSwipeUp?: () => void;
   onSwipeDown?: () => void;
-}
-
 export const handleGesture = (event: any, handlers: SwipeHandlers) => {
   const { translationX, translationY, state } = event.nativeEvent;
 
@@ -20,20 +16,12 @@ export const handleGesture = (event: any, handlers: SwipeHandlers) => {
     if (Math.abs(translationX) > SWIPE_THRESHOLD) {
       if (translationX > 0) {
         handlers.onSwipeRight.();
-      } else {
+else {
         handlers.onSwipeLeft.();
-      }
-    }
-
-    if (Math.abs(translationY) > SWIPE_THRESHOLD) {
+if (Math.abs(translationY) > SWIPE_THRESHOLD) {
       if (translationY > 0) {
         handlers.onSwipeDown.();
-      } else {
+else {
         handlers.onSwipeUp.();
-      }
-    }
-  }
-};
-
 export const isIOS = Platform.OS === 'ios';
 export const isAndroid = Platform.OS === 'android'; 

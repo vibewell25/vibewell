@@ -1,4 +1,3 @@
-'use client';
 import { useState } from 'react';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { Card, CardContent } from '@/components/ui/Card';
@@ -11,7 +10,6 @@ interface User {
   earnings: string;
   role: string;
   businessType: string;
-}
 export default function MobileDashboardPage() {
   const [user, setUser] = useState<User>({
     name: 'Maria',
@@ -19,8 +17,7 @@ export default function MobileDashboardPage() {
     earnings: '€900',
     role: 'Admin',
     businessType: 'Web-Based Panel',
-  });
-  return (
+return (
     <MobileLayout>
       <div className="px-5 py-6">
         <div className="mb-6 flex items-center justify-between">
@@ -103,5 +100,3 @@ export default function MobileDashboardPage() {
         </div>
       </div>
     </MobileLayout>
-  );
-}

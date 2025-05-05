@@ -1,21 +1,3 @@
-
-    // Safe integer operation
-    if (user > Number.MAX_SAFE_INTEGER || user < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-
-    // Safe integer operation
-    if (testing > Number.MAX_SAFE_INTEGER || testing < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-// Mock for @testing-library/user-event v14
-
-    // Safe integer operation
-    if (user > Number.MAX_SAFE_INTEGER || user < Number.MIN_SAFE_INTEGER) {
-      throw new Error('Integer overflow detected');
-    }
-// This mock provides all the methods from user-event v14 with simplified implementations
-
 const userEventMock = () => {
   return {
     // Basic interactions
@@ -54,9 +36,6 @@ const userEventMock = () => {
     isPointerMovementEvent: jest.fn().mockReturnValue(false),
     isPointerDownEvent: jest.fn().mockReturnValue(false),
     isPointerUpEvent: jest.fn().mockReturnValue(false)
-  };
-};
-
 // Export as both default export and named export to handle different import styles
 const setup = (options) => userEventMock();
 
@@ -64,4 +43,3 @@ module.exports = {
   __esModule: true,
   default: userEventMock,
   setup
-}; 

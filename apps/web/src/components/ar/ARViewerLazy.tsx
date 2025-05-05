@@ -16,9 +16,6 @@ export function ARViewerLazy(props: ARViewerProps) {
     <Suspense fallback={<LoadingFallback />}>
       <ARViewer {...props} />
     </Suspense>
-  );
-}
-
 // Loading fallback UI
 function LoadingFallback() {
   return (
@@ -29,5 +26,3 @@ function LoadingFallback() {
         <Skeleton className="h-8 w-1/2 rounded-md" />
       </div>
     </div>
-  );
-}

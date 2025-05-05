@@ -4,8 +4,6 @@ export interface BeautyCategory {
   id: string;
   name: string;
   icon: string;
-}
-
 export interface BeautyService {
   id: string;
   title: string;
@@ -17,8 +15,6 @@ export interface BeautyService {
   providerId: string;
   featured?: boolean;
   rating: number;
-}
-
 export interface BeautyFilter {
   categoryId?: string;
   minPrice?: number;
@@ -29,8 +25,6 @@ export interface BeautyFilter {
   featured?: boolean;
   // Allow dynamic iteration over filter keys
   [key: string]: string | number | boolean | undefined;
-}
-
 export interface BookingResponse {
   bookingId: string;
   userId: string;
@@ -49,7 +43,5 @@ export interface BookingResponse {
     name: string;
     email: string;
     phone: string;
-  };
-  createdAt: string;
+createdAt: string;
   updatedAt: string;
-}

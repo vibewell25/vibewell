@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import modal from '../modal.tsx';
+
+describe('modal', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<modal />);
+    expect(container).toBeInTheDocument();
+  });
+});

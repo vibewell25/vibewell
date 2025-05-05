@@ -5,6 +5,4 @@ export interface ARModel {
   name: string;
   thumbnailUrl: string;
   description: string;
-}
-
 export {};

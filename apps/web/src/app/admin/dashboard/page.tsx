@@ -27,7 +27,6 @@ const columns = [
         </Button>
       </div>
     ),
-  },
 ];
 
 export default function AdminDashboard() {
@@ -38,27 +37,19 @@ export default function AdminDashboard() {
   // Track page view
   React.useEffect(() => {
     trackEvent('admin_dashboard_view');
-  }, []);
+[]);
 
   if (!user.isAdmin) {
     return <div>Access denied. Admin privileges required.</div>;
-  }
-
-  if (isLoading) {
+if (isLoading) {
     return <div>Loading...</div>;
-  }
-
-  if (error) {
+if (error) {
     return <div>Error: {error.message}</div>;
-  }
-
-  const filteredUsers = users.filter(
+const filteredUsers = users.filter(
     (user) =>
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       user.email.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
-
-  return (
+return (
     <div className="container mx-auto py-8">
       <h1 className="mb-8 text-3xl font-bold">Admin Dashboard</h1>
 
@@ -100,21 +91,13 @@ export default function AdminDashboard() {
         </TabsContent>
       </Tabs>
     </div>
-  );
-}
-
 // Handler functions
 const handleEdit = (user) => {
   trackEvent('admin_edit_user', { userId: user.id });
   // Implement edit functionality
-};
-
 const handleDelete = (user) => {
   trackEvent('admin_delete_user', { userId: user.id });
   // Implement delete functionality
-};
-
 const handleAddUser = () => {
   trackEvent('admin_add_user');
   // Implement add user functionality
-};

@@ -19,10 +19,8 @@ const DefinitionDetail: NextPage = () => {
       const data = await res.json();
       setName(data.name);
       setFields(data.fields);
-    };
-    
-    fetchDefinition();
-  }, [id]);
+fetchDefinition();
+[id]);
 
   const handleUpdate = async (e: FormEvent) => {
     e.preventDefault();
@@ -30,13 +28,9 @@ const DefinitionDetail: NextPage = () => {
       method: 'PUT', 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, fields })
-    });
-    if (router) {
+if (router) {
       router.back();
-    }
-  };
-
-  return (
+return (
     <div className="max-w-md mx-auto py-6">
       <h1 className="text-2xl font-bold mb-4">Edit Definition</h1>
       <form onSubmit={handleUpdate} className="space-y-4">
@@ -48,7 +42,4 @@ const DefinitionDetail: NextPage = () => {
         </div>
       </form>
     </div>
-  );
-};
-
 export default DefinitionDetail;

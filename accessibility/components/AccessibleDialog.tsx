@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -9,15 +7,13 @@ interface AccessibleDialogProps {
   title: string;
   children: React.ReactNode;
   initialFocusRef?: React.RefObject<HTMLElement>;
-}
-
 export const AccessibleDialog: React.FC<AccessibleDialogProps> = ({
   isOpen,
   onClose,
   title,
   children,
   initialFocusRef
-}) => {
+) => {
   const dialogRef = useRef<HTMLDivElement>(null);
   const lastFocusedElement = useRef<HTMLElement | null>(null);
 
@@ -29,24 +25,18 @@ export const AccessibleDialog: React.FC<AccessibleDialogProps> = ({
       // Focus the dialog
       if (initialFocusRef.current) {
         initialFocusRef.current.focus();
-      } else if (dialogRef.current) {
+else if (dialogRef.current) {
         dialogRef.current.focus();
-      }
-
-      // Handle escape key
+// Handle escape key
       const handleEscape = (e: KeyboardEvent) => {
         if (e.key === 'Escape') {
           onClose();
-        }
-      };
-
-      document.addEventListener('keydown', handleEscape);
+document.addEventListener('keydown', handleEscape);
       return () => document.removeEventListener('keydown', handleEscape);
-    } else if (lastFocusedElement.current) {
+else if (lastFocusedElement.current) {
       // Restore focus to the last focused element
       lastFocusedElement.current.focus();
-    }
-  }, [isOpen, onClose, initialFocusRef]);
+[isOpen, onClose, initialFocusRef]);
 
   useEffect(() => {
     if (isOpen) {
@@ -56,16 +46,11 @@ export const AccessibleDialog: React.FC<AccessibleDialogProps> = ({
           e.preventDefault();
           if (initialFocusRef.current) {
             initialFocusRef.current.focus();
-          } else if (dialogRef.current) {
+else if (dialogRef.current) {
             dialogRef.current.focus();
-          }
-        }
-      };
-
-      document.addEventListener('focus', handleFocus, true);
+document.addEventListener('focus', handleFocus, true);
       return () => document.removeEventListener('focus', handleFocus, true);
-    }
-  }, [isOpen, initialFocusRef]);
+[isOpen, initialFocusRef]);
 
   if (!isOpen) return null;
 
@@ -89,7 +74,4 @@ export const AccessibleDialog: React.FC<AccessibleDialogProps> = ({
       </div>
     </div>,
     document.body
-  );
-};
-
 export default AccessibleDialog;

@@ -10,49 +10,37 @@ const meta = {
     docs: {
       description: {
         component: 'A versatile card component that can be used to group related content.',
-      },
-    },
-  },
-  tags: ['autodocs'],
+tags: ['autodocs'],
   argTypes: {
     variant: {
       control: 'select',
       options: ['default', 'outline', 'ghost', 'elevated'],
       description: 'The visual style variant of the card',
-    },
-    padding: {
+padding: {
       control: 'select',
       options: ['none', 'sm', 'md', 'lg'],
       description: 'The padding size of the card',
-    },
-    size: {
+size: {
       control: 'select',
       options: ['sm', 'md', 'lg', 'xl', 'full'],
       description: 'The size of the card',
-    },
-    rounded: {
+rounded: {
       control: 'select',
       options: ['none', 'sm', 'md', 'lg', 'xl', 'full'],
       description: 'The border radius of the card',
-    },
-    isHoverable: {
+isHoverable: {
       control: 'boolean',
       description: 'Whether the card has hover effects',
-    },
-    isClickable: {
+isClickable: {
       control: 'boolean',
       description: 'Whether the card is clickable',
-    },
-    isCollapsible: {
+isCollapsible: {
       control: 'boolean',
       description: 'Whether the card can be collapsed',
-    },
-    className: {
+className: {
       control: 'text',
       description: 'Additional CSS classes to apply',
-    },
-  },
-} satisfies Meta<typeof Card>;
+satisfies Meta<typeof Card>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -65,8 +53,6 @@ export const Default: Story = {
       </CardContent>
     </Card>
   ),
-};
-
 export const WithHeaderAndFooter: Story = {
   render: () => (
     <Card>
@@ -82,8 +68,6 @@ export const WithHeaderAndFooter: Story = {
       </CardFooter>
     </Card>
   ),
-};
-
 export const Interactive: Story = {
   render: () => (
     <Card isClickable isHoverable>
@@ -96,8 +80,6 @@ export const Interactive: Story = {
       </CardContent>
     </Card>
   ),
-};
-
 export const Collapsible: Story = {
   render: () => (
     <Card isCollapsible>
@@ -110,8 +92,6 @@ export const Collapsible: Story = {
       </CardContent>
     </Card>
   ),
-};
-
 export const WithActions: Story = {
   render: () => (
     <Card>
@@ -128,8 +108,6 @@ export const WithActions: Story = {
       </CardFooter>
     </Card>
   ),
-};
-
 export const CustomStyling: Story = {
   render: () => (
     <Card className="bg-gradient-to-r from-pink-500 to-purple-500 text-white">
@@ -142,8 +120,6 @@ export const CustomStyling: Story = {
       </CardContent>
     </Card>
   ),
-};
-
 export const Variants: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
@@ -176,8 +152,6 @@ export const Variants: Story = {
       </Card>
     </div>
   ),
-};
-
 export const Sizes: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
@@ -210,8 +184,6 @@ export const Sizes: Story = {
       </Card>
     </div>
   ),
-};
-
 export const NestedCards: Story = {
   render: () => (
     <Card>
@@ -234,8 +206,6 @@ export const NestedCards: Story = {
       </CardContent>
     </Card>
   ),
-};
-
 export const LoadingState: Story = {
   render: () => (
     <Card>
@@ -252,4 +222,3 @@ export const LoadingState: Story = {
       </CardContent>
     </Card>
   ),
-};

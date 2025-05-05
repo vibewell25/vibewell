@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import screen-reader-text from '../screen-reader-text.tsx';
+
+describe('screen-reader-text', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<screen-reader-text />);
+    expect(container).toBeInTheDocument();
+  });
+});

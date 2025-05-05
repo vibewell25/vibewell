@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { useEffect } from 'react';
 import * as Sentry from '@sentry/nextjs';
@@ -7,14 +5,14 @@ import * as Sentry from '@sentry/nextjs';
 export default function Error({
   error,
   reset,
-}: {
+: {
   error: Error & { digest?: string };
   reset: () => void;
-}) {
+) {
   useEffect(() => {
     // Log the error to Sentry
     Sentry.captureException(error);
-  }, [error]);
+[error]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-violet-50 to-indigo-100 flex flex-col items-center justify-center p-4">
@@ -47,5 +45,3 @@ export default function Error({
         </div>
       </div>
     </div>
-  );
-} 

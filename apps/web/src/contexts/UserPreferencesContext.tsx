@@ -1,5 +1,3 @@
-'use client';
-
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
@@ -33,8 +31,6 @@ export interface UserPreferences {
   // Content
   contentCategories: string[];
   contentFilters: string[];
-}
-
 /**
  * Default preferences for new users
  */
@@ -64,8 +60,6 @@ const defaultPreferences: UserPreferences = {
   // Content
   contentCategories: [],
   contentFilters: [],
-};
-
 /**
  * User preferences context interface
  */
@@ -79,8 +73,6 @@ interface UserPreferencesContextType {
   ) => Promise<void>;
   updatePreferences: (newPreferences: Partial<UserPreferences>) => Promise<void>;
   resetPreferences: () => Promise<void>;
-}
-
 // Create the context with default values
 const UserPreferencesContext = createContext<UserPreferencesContextType>({
   preferences: defaultPreferences,
@@ -89,8 +81,6 @@ const UserPreferencesContext = createContext<UserPreferencesContextType>({
   updatePreference: async () => {},
   updatePreferences: async () => {},
   resetPreferences: async () => {},
-});
-
 /**
  * Custom hook to use user preferences
  */
@@ -108,9 +98,7 @@ export function UserPreferencesProvider({ children }: { children: React.ReactNod
   const [localPreferences, setLocalPreferences] = useLocalStorage<UserPreferences>(
     'user-preferences',
     defaultPreferences,
-  );
-
-  // State to hold merged preferences (API + local)
+// State to hold merged preferences (API + local)
   const [preferences, setPreferences] = useState<UserPreferences>(localPreferences);
 
   // Fetch user preferences from API when authenticated
@@ -119,9 +107,7 @@ export function UserPreferencesProvider({ children }: { children: React.ReactNod
       setPreferences(localPreferences);
       setIsLoading(false);
       return;
-    }
-
-    try {
+try {
       setIsLoading(true);
       const response = await fetch('/api/user/preferences');
 
@@ -131,22 +117,19 @@ export function UserPreferencesProvider({ children }: { children: React.ReactNod
         const apiPreferences = {
           ...defaultPreferences,
           ...data.preferences,
-        };
-        setPreferences(apiPreferences);
+setPreferences(apiPreferences);
         // Update local storage with latest from API
         setLocalPreferences(apiPreferences);
-      } else {
+else {
         // If API request fails, use localStorage preferences
         setPreferences(localPreferences);
-      }
-    } catch (error) {
+catch (error) {
       console.error('Failed to load user preferences:', error);
       // Fallback to localStorage on error
       setPreferences(localPreferences);
-    } finally {
+finally {
       setIsLoading(false);
-    }
-  }, [isAuthenticated, user, localPreferences, setLocalPreferences]);
+[isAuthenticated, user, localPreferences, setLocalPreferences]);
 
   // Save preferences to API and localStorage
   const savePreferences = useCallback(
@@ -155,31 +138,21 @@ export function UserPreferencesProvider({ children }: { children: React.ReactNod
 
       if (!isAuthenticated || !user) {
         return;
-      }
-
-      try {
+try {
         setIsSaving(true);
         const response = await fetch('/api/user/preferences', {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ preferences: newPreferences }),
-        });
-
-        if (!response.ok) {
+body: JSON.stringify({ preferences: newPreferences }),
+if (!response.ok) {
           console.error('Failed to save preferences to API');
-        }
-      } catch (error) {
+catch (error) {
         console.error('Error saving preferences:', error);
-      } finally {
+finally {
         setIsSaving(false);
-      }
-    },
-    [isAuthenticated, user, setLocalPreferences],
-  );
-
-  // Update a single preference
+[isAuthenticated, user, setLocalPreferences],
+// Update a single preference
   const updatePreference = async <K extends keyof UserPreferences>(
     key: K,
     value: UserPreferences[K],
@@ -187,37 +160,23 @@ export function UserPreferencesProvider({ children }: { children: React.ReactNod
     const newPreferences = {
       ...preferences,
       [key]: value,
-    };
-
-    setPreferences(newPreferences);
+setPreferences(newPreferences);
     await savePreferences(newPreferences);
-  };
-
-  // Update multiple preferences at once
-  const updatePreferences = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');newPrefs: Partial<UserPreferences>) => {
+// Update multiple preferences at once
+  const updatePreferences = async (newPrefs: Partial<UserPreferences>) => {
     const newPreferences = {
       ...preferences,
       ...newPrefs,
-    };
-
-    setPreferences(newPreferences);
+setPreferences(newPreferences);
     await savePreferences(newPreferences);
-  };
-
-  // Reset preferences to default
-  const resetPreferences = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+// Reset preferences to default
+  const resetPreferences = async () => {
     setPreferences(defaultPreferences);
     await savePreferences(defaultPreferences);
-  };
-
-  // Load preferences when auth state changes
+// Load preferences when auth state changes
   useEffect(() => {
     fetchPreferences();
-  }, [fetchPreferences]);
+[fetchPreferences]);
 
   // Apply theme preference to document
   useEffect(() => {
@@ -230,12 +189,10 @@ export function UserPreferencesProvider({ children }: { children: React.ReactNod
       // Use system preference
       const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.documentElement.classList.toggle('dark', systemPrefersDark);
-    } else {
+else {
       // Use user preference
       document.documentElement.classList.toggle('dark', theme === 'dark');
-    }
-
-    // Apply font size
+// Apply font size
     document.documentElement.classList.remove('text-sm', 'text-md', 'text-lg');
     if (preferences.fontSize === 'small') document.documentElement.classList.add('text-sm');
     if (preferences.fontSize === 'medium') document.documentElement.classList.add('text-md');
@@ -246,7 +203,7 @@ export function UserPreferencesProvider({ children }: { children: React.ReactNod
 
     // Apply reduced motion if enabled
     document.documentElement.classList.toggle('reduced-motion', preferences.reducedMotion);
-  }, [preferences]);
+[preferences]);
 
   return (
     <UserPreferencesContext.Provider
@@ -257,9 +214,6 @@ export function UserPreferencesProvider({ children }: { children: React.ReactNod
         updatePreference,
         updatePreferences,
         resetPreferences,
-      }}
-    >
+>
       {children}
     </UserPreferencesContext.Provider>
-  );
-}

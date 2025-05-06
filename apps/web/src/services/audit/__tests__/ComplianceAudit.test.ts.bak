@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import compliance-audit from '../compliance-audit.ts';
+
+describe('compliance-audit', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<compliance-audit />);
+    expect(container).toBeInTheDocument();
+  });
+});

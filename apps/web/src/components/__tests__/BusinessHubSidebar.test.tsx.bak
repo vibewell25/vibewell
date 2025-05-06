@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import business-hub-sidebar from '../business-hub-sidebar.tsx';
+
+describe('business-hub-sidebar', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<business-hub-sidebar />);
+    expect(container).toBeInTheDocument();
+  });
+});

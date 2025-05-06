@@ -1,0 +1,439 @@
+import { BeautyService, BeautyFilter, BeautyCategory } from '../types/beauty';
+
+// Mock data for beauty services
+const mockBeautyServices: BeautyService[] = [
+  {
+    id: '1',
+    title: 'Diamond Glow Facial',
+    description: 'Luxury facial treatment for radiant skin',
+    longDescription: 'Our signature Diamond Glow Facial combines deep cleansing, exfoliation, and hydration to reveal your skin\'s natural radiance. This treatment includes a diamond microdermabrasion, customized serums, and a relaxing facial massage. Perfect for all skin types and especially beneficial for those looking to address fine lines, dullness, or uneven skin texture.',
+    price: '$120',
+    duration: '60 min',
+    category: 'facial',
+    provider: {
+      id: 'p1',
+      name: 'Glow Beauty Spa',
+      rating: 4.8,
+      reviewCount: 124
+    },
+    images: [
+      'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+      'https://images.unsplash.com/photo-1596704017433-e7ac45ba5f2c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+    ],
+    highlights: [
+      'Diamond microdermabrasion',
+      'Customized serums',
+      'Facial massage',
+      'Hydrating mask',
+      'LED light therapy'
+    ],
+    reviews: [
+      {
+        id: 'r1',
+        userName: 'Emma J.',
+        rating: 5,
+        comment: 'Absolutely loved this facial! My skin looks so much brighter and feels incredibly soft. The therapist was very knowledgeable and tailored the treatment to my specific skin concerns.',
+        date: 'June 12, 2023'
+      },
+      {
+        id: 'r2',
+        userName: 'Sarah M.',
+        rating: 4,
+        comment: 'Great experience overall. The Diamond Glow Facial was very relaxing and I definitely saw results. My only suggestion would be to have the room a bit warmer.',
+        date: 'May 28, 2023'
+      },
+      {
+        id: 'r3',
+        userName: 'Michael T.',
+        rating: 5,
+        comment: 'First time getting a facial and I was impressed! The staff was professional and the treatment was excellent. Will definitely be back.',
+        date: 'May 15, 2023'
+      }
+    ],
+    rating: 4.8,
+    featured: true,
+    availability: {
+      dates: ['2023-07-15', '2023-07-16', '2023-07-17', '2023-07-18', '2023-07-19', '2023-07-20', '2023-07-21'],
+      timeSlots: [
+        { id: '1', time: '09:00 AM', available: true },
+        { id: '2', time: '10:00 AM', available: true },
+        { id: '3', time: '11:00 AM', available: false },
+        { id: '4', time: '12:00 PM', available: true },
+        { id: '5', time: '01:00 PM', available: true },
+        { id: '6', time: '02:00 PM', available: false },
+        { id: '7', time: '03:00 PM', available: true },
+        { id: '8', time: '04:00 PM', available: true },
+        { id: '9', time: '05:00 PM', available: true },
+      ]
+    }
+  },
+  {
+    id: '2',
+    title: 'Hair Styling & Cut',
+    description: 'Professional hair styling including cut, color, and treatment options',
+    longDescription: 'Transform your look with our professional hair styling service. Our expert stylists will work with you to find the perfect cut and style that complements your features and fits your lifestyle. Whether you\'re looking for a simple trim or a complete makeover, we have the skills and experience to make your hair dreams come true.',
+    price: '$65+',
+    duration: '45 min',
+    category: 'hair',
+    provider: {
+      id: 'p2',
+      name: 'Chic Hair Studio',
+      rating: 4.6,
+      reviewCount: 98
+    },
+    images: [
+      'https://images.unsplash.com/photo-1562322140-8baeececf3df?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+      'https://images.unsplash.com/photo-1605497788044-5a32c7078486?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+      'https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+    ],
+    highlights: [
+      'Expert consultation',
+      'Precision cutting',
+      'Styling with premium products',
+      'Heat protection',
+      'Styling tips for home care'
+    ],
+    reviews: [
+      {
+        id: 'r1',
+        userName: 'Alex K.',
+        rating: 5,
+        comment: 'Best haircut I\'ve had in years! The stylist took the time to understand what I wanted and gave me exactly that. Will definitely return.',
+        date: 'July 5, 2023'
+      },
+      {
+        id: 'r2',
+        userName: 'Jamie L.',
+        rating: 4,
+        comment: 'Great atmosphere and friendly staff. Very happy with my cut but wish they had more options for styling products.',
+        date: 'June 21, 2023'
+      }
+    ],
+    rating: 4.6,
+    availability: {
+      dates: ['2023-07-15', '2023-07-16', '2023-07-17', '2023-07-18', '2023-07-19', '2023-07-20', '2023-07-21'],
+      timeSlots: [
+        { id: '1', time: '09:00 AM', available: true },
+        { id: '2', time: '10:00 AM', available: false },
+        { id: '3', time: '11:00 AM', available: true },
+        { id: '4', time: '12:00 PM', available: true },
+        { id: '5', time: '01:00 PM', available: false },
+        { id: '6', time: '02:00 PM', available: true },
+        { id: '7', time: '03:00 PM', available: true },
+        { id: '8', time: '04:00 PM', available: false },
+        { id: '9', time: '05:00 PM', available: true },
+      ]
+    }
+  },
+  {
+    id: '3',
+    title: 'Luxury Manicure & Pedicure',
+    description: 'Luxury nail care treatment for hands and feet with premium polishes',
+    longDescription: 'Treat your hands and feet to the ultimate pampering experience with our Luxury Manicure & Pedicure. This comprehensive treatment includes nail shaping, cuticle care, exfoliation, massage, and your choice of premium polish. Relax in our comfortable chairs while our skilled technicians give you the attention your hands and feet deserve.',
+    price: '$75',
+    duration: '90 min',
+    category: 'nails',
+    provider: {
+      id: 'p3',
+      name: 'Nail Perfection',
+      rating: 4.9,
+      reviewCount: 156
+    },
+    images: [
+      'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+      'https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+      'https://images.unsplash.com/photo-1587147711102-23ec6e2d45f6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+    ],
+    highlights: [
+      'Premium nail polish',
+      'Paraffin wax treatment',
+      'Extended massage',
+      'Callus removal',
+      'Nail art options available'
+    ],
+    reviews: [
+      {
+        id: 'r1',
+        userName: 'Olivia P.',
+        rating: 5,
+        comment: 'Absolutely the best mani-pedi in town! My nails have never looked better, and the massage was so relaxing.',
+        date: 'July 8, 2023'
+      },
+      {
+        id: 'r2',
+        userName: 'David R.',
+        rating: 5,
+        comment: 'First time getting a pedicure and I'm a convert. The staff was professional and made me feel comfortable. Great experience!',
+        date: 'June 30, 2023'
+      },
+      {
+        id: 'r3',
+        userName: 'Sophia T.',
+        rating: 4,
+        comment: 'Wonderful service and great attention to detail. The only reason for 4 stars is that I had to wait a bit past my appointment time.',
+        date: 'June 15, 2023'
+      }
+    ],
+    rating: 4.9,
+    featured: true,
+    availability: {
+      dates: ['2023-07-15', '2023-07-16', '2023-07-17', '2023-07-18', '2023-07-19', '2023-07-20', '2023-07-21'],
+      timeSlots: [
+        { id: '1', time: '09:00 AM', available: false },
+        { id: '2', time: '10:00 AM', available: true },
+        { id: '3', time: '11:00 AM', available: true },
+        { id: '4', time: '12:00 PM', available: false },
+        { id: '5', time: '01:00 PM', available: true },
+        { id: '6', time: '02:00 PM', available: true },
+        { id: '7', time: '03:00 PM', available: false },
+        { id: '8', time: '04:00 PM', available: true },
+        { id: '9', time: '05:00 PM', available: true },
+      ]
+    }
+  },
+  {
+    id: '4',
+    title: 'Professional Makeup Application',
+    description: 'Professional makeup application for any occasion using high-quality products',
+    longDescription: 'Look your absolute best for any special occasion with our Professional Makeup Application service. Our skilled makeup artists use high-quality, premium products to create a flawless look that enhances your natural beauty. Whether you need makeup for a wedding, photoshoot, or special event, we'll ensure you look and feel amazing.',
+    price: '$90',
+    duration: '60 min',
+    category: 'makeup',
+    provider: {
+      id: 'p4',
+      name: 'Glam Studio',
+      rating: 4.7,
+      reviewCount: 87
+    },
+    images: [
+      'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+      'https://images.unsplash.com/photo-1487412912498-0447579c8d4d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+      'https://images.unsplash.com/photo-1526758097130-bab247274f58?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+    ],
+    highlights: [
+      'Consultation to determine your desired look',
+      'Premium makeup products',
+      'Long-lasting application techniques',
+      'Eyelash options available',
+      'Tips for touch-ups'
+    ],
+    reviews: [
+      {
+        id: 'r1',
+        userName: 'Rachel G.',
+        rating: 5,
+        comment: 'I looked amazing for my wedding thanks to Glam Studio! My makeup stayed perfect all day and looked natural in photos.',
+        date: 'July 1, 2023'
+      },
+      {
+        id: 'r2',
+        userName: 'Hannah T.',
+        rating: 4,
+        comment: 'Great service and beautiful results. Would recommend for special occasions.',
+        date: 'June 20, 2023'
+      }
+    ],
+    rating: 4.7,
+    availability: {
+      dates: ['2023-07-15', '2023-07-16', '2023-07-17', '2023-07-18', '2023-07-19', '2023-07-20', '2023-07-21'],
+      timeSlots: [
+        { id: '1', time: '09:00 AM', available: true },
+        { id: '2', time: '10:00 AM', available: true },
+        { id: '3', time: '11:00 AM', available: false },
+        { id: '4', time: '12:00 PM', available: true },
+        { id: '5', time: '01:00 PM', available: true },
+        { id: '6', time: '02:00 PM', available: false },
+        { id: '7', time: '03:00 PM', available: true },
+        { id: '8', time: '04:00 PM', available: true },
+        { id: '9', time: '05:00 PM', available: false },
+      ]
+    }
+  },
+  {
+    id: '5',
+    title: 'Anti-Aging Facial Treatment',
+    description: 'Advanced facial treatment targeting fine lines and wrinkles with premium serums',
+    longDescription: 'Turn back the clock with our effective Anti-Aging Facial Treatment. This comprehensive service combines advanced techniques and premium products to target fine lines, wrinkles, and loss of elasticity. Our therapists use a specialized protocol including exfoliation, potent serums, collagen-boosting treatments, and targeted massage to leave your skin looking firmer, smoother, and more youthful.',
+    price: '$150',
+    duration: '75 min',
+    category: 'facial',
+    provider: {
+      id: 'p1',
+      name: 'Glow Beauty Spa',
+      rating: 4.8,
+      reviewCount: 124
+    },
+    images: [
+      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+      'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+      'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+    ],
+    highlights: [
+      'Advanced anti-aging serums',
+      'Collagen-boosting mask',
+      'Microcurrent technology',
+      'Fine line reduction',
+      'Take-home skincare advice'
+    ],
+    reviews: [
+      {
+        id: 'r1',
+        userName: 'Patricia L.',
+        rating: 5,
+        comment: 'Incredible results after just one treatment! My skin looks visibly firmer and my fine lines are less noticeable. Worth every penny.',
+        date: 'July 7, 2023'
+      },
+      {
+        id: 'r2',
+        userName: 'Robert K.',
+        rating: 5,
+        comment: 'Excellent service. The therapist was knowledgeable and the products used were amazing. My skin feels rejuvenated.',
+        date: 'June 25, 2023'
+      }
+    ],
+    rating: 4.9,
+    featured: true,
+    availability: {
+      dates: ['2023-07-15', '2023-07-16', '2023-07-17', '2023-07-18', '2023-07-19', '2023-07-20', '2023-07-21'],
+      timeSlots: [
+        { id: '1', time: '09:00 AM', available: false },
+        { id: '2', time: '10:00 AM', available: false },
+        { id: '3', time: '11:00 AM', available: true },
+        { id: '4', time: '12:00 PM', available: true },
+        { id: '5', time: '01:00 PM', available: false },
+        { id: '6', time: '02:00 PM', available: true },
+        { id: '7', time: '03:00 PM', available: false },
+        { id: '8', time: '04:00 PM', available: true },
+        { id: '9', time: '05:00 PM', available: true },
+      ]
+    }
+  }
+];
+
+// Beauty Service functions
+export const getBeautyServices = async (filter?: BeautyFilter): Promise<BeautyService[]> => {
+  // Simulate API call delay
+  await new Promise(resolve => setTimeout(resolve, 800));
+  
+  // In a real app, this would be an API call to the backend
+  let filteredServices = [...mockBeautyServices];
+  
+  // Apply filters if provided
+  if (filter) {
+    // Filter by category
+    if (filter.category && filter.category !== 'all') {
+      filteredServices = filteredServices.filter(service => service.category === filter.category);
+    }
+    
+    // Filter by price range
+    if (filter.priceRange) {
+      filteredServices = filteredServices.filter(service => {
+        const price = parseFloat(service.price.replace('$', '').replace('+', ''));
+        return price >= filter.priceRange!.min && price <= filter.priceRange!.max;
+      });
+    }
+    
+    // Filter by duration
+    if (filter.duration) {
+      filteredServices = filteredServices.filter(service => {
+        const duration = parseInt(service.duration.split(' ')[0]);
+        return duration <= filter.duration!;
+      });
+    }
+    
+    // Filter by rating
+    if (filter.rating) {
+      filteredServices = filteredServices.filter(service => service.rating >= filter.rating!);
+    }
+    
+    // Filter by search term
+    if (filter.searchTerm) {
+      const searchTerm = filter.searchTerm.toLowerCase();
+      filteredServices = filteredServices.filter(service => 
+        service.title.toLowerCase().includes(searchTerm) || 
+        service.description.toLowerCase().includes(searchTerm) ||
+        service.provider.name.toLowerCase().includes(searchTerm) ||
+        service.category.toLowerCase().includes(searchTerm)
+      );
+    }
+  }
+  
+  return filteredServices;
+};
+
+export const getBeautyServiceById = async (id: string): Promise<BeautyService | null> => {
+  // Simulate API call delay
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  // In a real app, this would be an API call to the backend
+  const service = mockBeautyServices.find(service => service.id === id);
+  return service || null;
+};
+
+export const getFeaturedBeautyServices = async (): Promise<BeautyService[]> => {
+  // Simulate API call delay
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  // In a real app, this would be an API call to the backend
+  return mockBeautyServices.filter(service => service.featured);
+};
+
+// Beauty categories
+export const getBeautyCategories = (): { id: BeautyCategory; label: string; icon: string }[] => {
+  return [
+    { id: 'all', label: 'All', icon: 'grid' },
+    { id: 'facial', label: 'Facial', icon: 'droplet' },
+    { id: 'hair', label: 'Hair', icon: 'scissors' },
+    { id: 'nails', label: 'Nails', icon: 'edit-2' },
+    { id: 'makeup', label: 'Makeup', icon: 'feather' },
+    { id: 'body', label: 'Body', icon: 'heart' },
+    { id: 'spa', label: 'Spa', icon: 'sun' }
+  ];
+};
+
+// Booking functionality
+export const createBooking = async (
+  serviceId: string,
+  date: string,
+  timeSlot: string,
+  userDetails?: {
+    name: string;
+    email: string;
+    phone: string;
+  },
+  specialRequests?: string
+): Promise<{ bookingId: string; success: boolean }> => {
+  // Simulate API call delay
+  await new Promise(resolve => setTimeout(resolve, 1500));
+  
+  // In a real app, this would be an API call to the backend
+  // For now, we'll just return a mock success response with a generated booking ID
+  const bookingId = `BK${Math.floor(Math.random() * 10000)}`;
+  
+  return {
+    bookingId,
+    success: true
+  };
+};
+
+/**
+ * Add a review for a beauty service (mock implementation)
+ */
+export const addServiceReview = async (
+  serviceId: string, 
+  review: { 
+    rating: number;
+    comment: string;
+  }
+): Promise<{ success: boolean; reviewId: string }> => {
+  // Simulate API call delay
+  await new Promise(resolve => setTimeout(resolve, 800));
+  
+  // In a real app, we would save this to a database
+  // Here we just return success
+  return {
+    success: true,
+    reviewId: `review-${Date.now()}`
+  };
+}; 

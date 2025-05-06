@@ -1,0 +1,54 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "strict": true,
+    "allowJs": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "packages/types"
+    ],
+    "types": [
+      "react",
+      "react-dom",
+      "jest",
+      "node",
+      "webgl2"
+    ],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "downlevelIteration": true,
+    "checkJs": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "apps/web/src/**/*.{ts,tsx,js,jsx}",
+    "packages/ui/**/*",
+    "packages/services/**/*",
+    "packages/config/**/*",
+    "packages/types/**/*.d.ts",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "cypress",
+    "docs",
+    "implementation-files",
+    "scripts",
+    "apps/server",
+    "apps/mobile",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/*.spec.tsx",
+    "**/*.test.tsx",
+    "coverage",
+    "dist",
+    ".next",
+    "apps/web/src/utils",
+    "packages/test-utils"
+  ]
+}

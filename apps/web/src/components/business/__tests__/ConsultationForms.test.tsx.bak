@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import consultation-forms from '../consultation-forms.tsx';
+
+describe('consultation-forms', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<consultation-forms />);
+    expect(container).toBeInTheDocument();
+  });
+});

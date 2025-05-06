@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import rating-breakdown from '../rating-breakdown.tsx';
+
+describe('rating-breakdown', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<rating-breakdown />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import mobile-optimization from '../mobile-optimization.ts';
+
+describe('mobile-optimization', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<mobile-optimization />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import payment-settings-form from '../payment-settings-form.tsx';
+
+describe('payment-settings-form', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<payment-settings-form />);
+    expect(container).toBeInTheDocument();
+  });
+});

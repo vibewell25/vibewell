@@ -1,0 +1,55 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AccessibleBreadcrumb matches snapshot 1`] = `
+<div>
+  <nav
+    aria-label="Breadcrumb"
+    class=" flex items-center space-x-2 "
+  >
+    <ol>
+      <li
+        class="flex items-center "
+      >
+        <a
+          class="text-primary hover:text-primary-dark focus:outline-none focus:underline "
+          href="#"
+        >
+          Home
+        </a>
+      </li>
+      <li
+        class="flex items-center "
+      >
+        <span
+          aria-hidden="true"
+          class="mx-2 text-gray-500 "
+        >
+          /
+        </span>
+        <a
+          class="text-primary hover:text-primary-dark focus:outline-none focus:underline "
+          href="#"
+        >
+          Products
+        </a>
+      </li>
+      <li
+        class="flex items-center "
+      >
+        <span
+          aria-hidden="true"
+          class="mx-2 text-gray-500 "
+        >
+          /
+        </span>
+        <span
+          aria-current="page"
+          class="text-gray-500 "
+        >
+          Current Page
+        </span>
+      </li>
+    </ol>
+  </nav>
+</div>
+`;

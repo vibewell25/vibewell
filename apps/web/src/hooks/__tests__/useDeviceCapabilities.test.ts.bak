@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import useDeviceCapabilities from '../useDeviceCapabilities.ts';
+
+describe('useDeviceCapabilities', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<useDeviceCapabilities />);
+    expect(container).toBeInTheDocument();
+  });
+});

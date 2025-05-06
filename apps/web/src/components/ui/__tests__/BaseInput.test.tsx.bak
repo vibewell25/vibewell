@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import base-input from '../base-input.tsx';
+
+describe('base-input', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<base-input />);
+    expect(container).toBeInTheDocument();
+  });
+});

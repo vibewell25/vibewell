@@ -1,0 +1,78 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  scrape_timeout: 10s
+  external_labels:
+    monitor: 'vibewell'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+# Load rules once and periodically evaluate them
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# Scrape configurations
+scrape_configs:
+  # App metrics
+  - job_name: "vibewell-app"
+    metrics_path: "/api/metrics"
+    scheme: http
+    static_configs:
+      - targets: ["app:3000"]
+    
+  # Prometheus itself
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["prometheus:9090"]
+    
+  # Node exporter for host metrics
+  - job_name: "node-exporter"
+    static_configs:
+      - targets: ["node-exporter:9100"]
+    
+  # Redis exporter
+  - job_name: "redis-exporter"
+    static_configs:
+      - targets: ["redis-exporter:9121"]
+    
+  # Postgres exporter
+  - job_name: "postgres-exporter"
+    static_configs:
+      - targets: ["postgres-exporter:9187"]
+
+  # Next.js app runtime metrics
+  - job_name: "nextjs-runtime"
+    metrics_path: "/api/_metrics"
+    scheme: http
+    static_configs:
+      - targets: ["app:3000"]
+    
+  # Vercel metrics when in production (comment out for local dev)
+  # - job_name: "vercel-edge"
+  #   metrics_path: "/_vercel/metrics"
+  #   scheme: https
+  #   static_configs:
+  #     - targets: ["vibewell.vercel.app"]
+  #   basic_auth:
+  #     username: "vercel"
+  #     password: "metrics-password"
+
+# Remote write for long-term storage (optional)
+# remote_write:
+#   - url: "https://prometheus-prod-10-prod-us-east-0.grafana.net/api/prom/push"
+#     basic_auth:
+#       username: "user"
+#       password: "password"
+
+# Remote read for long-term storage queries (optional)
+# remote_read:
+#   - url: "https://prometheus-prod-10-prod-us-east-0.grafana.net/api/prom/read"
+#     basic_auth:
+#       username: "user"
+#       password: "password" 

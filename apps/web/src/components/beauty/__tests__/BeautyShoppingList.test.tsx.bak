@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import beauty-shopping-list from '../beauty-shopping-list.tsx';
+
+describe('beauty-shopping-list', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<beauty-shopping-list />);
+    expect(container).toBeInTheDocument();
+  });
+});

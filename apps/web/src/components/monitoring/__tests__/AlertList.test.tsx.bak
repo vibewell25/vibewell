@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import alert-list from '../alert-list.tsx';
+
+describe('alert-list', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<alert-list />);
+    expect(container).toBeInTheDocument();
+  });
+});

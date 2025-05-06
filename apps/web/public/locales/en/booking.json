@@ -1,0 +1,29 @@
+{
+  "steps": {
+    "service": "Select Service",
+    "provider": "Choose Provider",
+    "datetime": "Pick Date & Time",
+    "details": "Enter Details",
+    "confirm": "Confirm Booking"
+  },
+  "status": {
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "cancelled": "Cancelled",
+    "completed": "Completed"
+  },
+  "actions": {
+    "book": "Book Now",
+    "cancel": "Cancel Booking",
+    "reschedule": "Reschedule",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next"
+  },
+  "notifications": {
+    "bookingSuccess": "Booking successful!",
+    "bookingFailed": "Booking failed",
+    "cancellationSuccess": "Booking cancelled successfully",
+    "reschedulingSuccess": "Booking rescheduled successfully"
+  }
+} 

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import sidebar-nav from '../sidebar-nav.tsx';
+
+describe('sidebar-nav', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<sidebar-nav />);
+    expect(container).toBeInTheDocument();
+  });
+});

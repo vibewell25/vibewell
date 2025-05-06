@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import booking-data from '../booking-data.ts';
+
+describe('booking-data', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<booking-data />);
+    expect(container).toBeInTheDocument();
+  });
+});

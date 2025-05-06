@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import product-recommendations from '../product-recommendations.tsx';
+
+describe('product-recommendations', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<product-recommendations />);
+    expect(container).toBeInTheDocument();
+  });
+});

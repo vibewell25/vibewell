@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import dashboard-overview from '../dashboard-overview.tsx';
+
+describe('dashboard-overview', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<dashboard-overview />);
+    expect(container).toBeInTheDocument();
+  });
+});

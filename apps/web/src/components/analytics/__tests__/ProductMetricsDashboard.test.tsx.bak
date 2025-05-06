@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import product-metrics-dashboard from '../product-metrics-dashboard.tsx';
+
+describe('product-metrics-dashboard', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<product-metrics-dashboard />);
+    expect(container).toBeInTheDocument();
+  });
+});

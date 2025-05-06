@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import navigation-layout from '../navigation-layout.tsx';
+
+describe('navigation-layout', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<navigation-layout />);
+    expect(container).toBeInTheDocument();
+  });
+});

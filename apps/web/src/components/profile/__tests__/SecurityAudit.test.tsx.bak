@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import security-audit from '../security-audit.tsx';
+
+describe('security-audit', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<security-audit />);
+    expect(container).toBeInTheDocument();
+  });
+});

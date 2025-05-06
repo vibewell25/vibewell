@@ -1,0 +1,203 @@
+import { Meta, Controls, Story } from '@storybook/blocks';
+import * as ButtonStories from './Button.stories';
+
+<Meta of={ButtonStories} />
+
+# Button Component
+
+The Button component is a versatile and accessible button implementation that follows WAI-ARIA guidelines and best practices.
+
+## Features
+
+- Multiple visual variants (default, destructive, outline, secondary, ghost, link)
+- Different sizes (default, small, large, icon)
+- Support for disabled state
+- Keyboard navigation support
+- ARIA attributes support
+- Custom styling support
+- Icon support
+- Loading state support
+
+## Usage
+
+```tsx
+import { Button } from './Button';
+
+// Basic usage
+<Button>Click me</Button>
+
+// With variant
+<Button variant="destructive">Delete</Button>
+
+// With size
+<Button size="lg">Large Button</Button>
+
+// With icon
+<Button>
+  <span className="mr-2">🚀</span>
+  Launch
+</Button>
+
+// Disabled state
+<Button disabled>Disabled</Button>
+
+// As a link
+<Button asChild>
+  <a href="/somewhere">Go somewhere</a>
+</Button>
+```
+
+## Accessibility Guidelines
+
+### Keyboard Navigation
+
+- The button is focusable and can be activated using the keyboard (Enter or Space key)
+- When used as a link (`asChild` with anchor element), it maintains proper keyboard navigation
+- Focus states are clearly visible
+
+### ARIA Attributes
+
+- Use `aria-label` when the button's purpose isn't clear from its content
+- Use `aria-disabled="true"` when the button is disabled
+- Use `aria-pressed` for toggle buttons
+- Use `aria-expanded` for buttons that control expandable content
+- Use `aria-controls` to associate the button with the content it controls
+
+Example:
+```tsx
+// Button with aria-label
+<Button aria-label="Close dialog">✕</Button>
+
+// Toggle button
+<Button aria-pressed={isPressed}>Toggle</Button>
+
+// Expandable content button
+<Button aria-expanded={isExpanded} aria-controls="content-id">
+  Show more
+</Button>
+```
+
+### Color and Contrast
+
+- All button variants maintain a minimum contrast ratio of 4.5:1 for text
+- Focus states are visible in both light and dark themes
+- Interactive states (hover, active) have sufficient contrast
+
+### Icon Buttons
+
+When using icon-only buttons:
+- Always provide an `aria-label`
+- Consider adding a tooltip for sighted users
+- Maintain a minimum touch target size of 44x44 pixels for mobile
+
+```tsx
+// Icon button with proper accessibility
+<Button
+  size="icon"
+  aria-label="Search"
+  className="min-w-[44px] min-h-[44px]"
+>
+  🔍
+</Button>
+```
+
+### Loading State
+
+When showing a loading state:
+- Use `aria-busy="true"`
+- Provide a loading indicator
+- Maintain button width to prevent layout shifts
+
+```tsx
+<Button
+  disabled
+  aria-busy="true"
+  className="min-w-[100px]"
+>
+  <span className="animate-spin mr-2">⌛</span>
+  Loading...
+</Button>
+```
+
+## Props
+
+<Controls />
+
+## Examples
+
+### Basic Button
+
+<Story of={ButtonStories.Default} />
+
+### Variants
+
+<Story of={ButtonStories.Variants} />
+
+### Sizes
+
+<Story of={ButtonStories.Sizes} />
+
+### With Icons
+
+<Story of={ButtonStories.WithIcon} />
+
+### Loading State
+
+<Story of={ButtonStories.Loading} />
+
+### Button Group
+
+<Story of={ButtonStories.ButtonGroup} />
+
+## Best Practices
+
+1. **Use Clear Labels**
+   - Make button text descriptive and action-oriented
+   - Avoid generic text like "Click here" or "Submit"
+
+2. **Maintain Consistency**
+   - Use consistent button styles for similar actions
+   - Follow a clear hierarchy (primary, secondary, tertiary actions)
+
+3. **Handle States Properly**
+   - Show clear feedback for all interactive states
+   - Disable buttons when actions are not available
+   - Show loading states for async actions
+
+4. **Consider Mobile Usage**
+   - Ensure buttons are large enough for touch targets
+   - Maintain sufficient spacing between buttons
+   - Test on various screen sizes
+
+5. **Performance**
+   - Avoid heavy animations that might impact performance
+   - Consider using `will-change` for smooth transitions
+   - Optimize icon usage
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Button text not visible**
+   - Check contrast ratio
+   - Verify text color in current theme
+   - Check for CSS conflicts
+
+2. **Button not clickable**
+   - Check if `disabled` prop is set
+   - Verify no elements are overlapping
+   - Check event handlers
+
+3. **Layout shifts**
+   - Set minimum width for loading states
+   - Use consistent padding across variants
+   - Maintain consistent height with icons
+
+### Browser Support
+
+The Button component is tested and supported in:
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+- Mobile browsers 

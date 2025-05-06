@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import ar-support-check from '../ar-support-check.tsx';
+
+describe('ar-support-check', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<ar-support-check />);
+    expect(container).toBeInTheDocument();
+  });
+});

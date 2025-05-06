@@ -1,0 +1,123 @@
+{
+  "expo": {
+    "name": "VibeWell",
+    "slug": "vibewell",
+    "scheme": "vibewell",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": false,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/your-project-id",
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.vibewell.app",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to enable virtual try-on features and scanning QR codes.",
+        "NSPhotoLibraryUsageDescription": "This app accesses your photos to allow uploading profile pictures and reference images for beauty services.",
+        "NSLocationWhenInUseUsageDescription": "This app uses your location to find nearby salons and wellness centers.",
+        "NSCalendarsUsageDescription": "This app uses your calendar to add and manage your beauty and wellness appointments.",
+        "NSFaceIDUsageDescription": "This app uses Face ID for secure login.",
+        "UIBackgroundModes": ["remote-notification"]
+      },
+      "associatedDomains": ["applinks:vibewell.com", "applinks:www.vibewell.com"]
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.vibewell.app",
+      "versionCode": 1,
+      "permissions": [
+        "CAMERA",
+        "ACCESS_FINE_LOCATION",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_CALENDAR",
+        "WRITE_CALENDAR",
+        "RECEIVE_BOOT_COMPLETED"
+      ],
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "vibewell",
+              "host": "*",
+              "pathPrefix": "/"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "your-eas-project-id"
+      },
+      "router": {
+        "origin": false
+      }
+    },
+    "plugins": [
+      "expo-dev-client",
+      "expo-notifications",
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow VibeWell to access your camera for virtual try-on features."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow VibeWell to use your location to find nearby salons and wellness centers."
+        }
+      ],
+      "expo-document-picker",
+      "expo-image-picker",
+      "expo-media-library",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "15.1",
+            "flipper": false,
+            "newArchEnabled": false
+          },
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "buildToolsVersion": "33.0.0",
+            "newArchEnabled": false
+          }
+        }
+      ]
+    ],
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "experiments": {
+      "typedRoutes": true,
+      "tsconfigPaths": true
+    }
+  }
+}

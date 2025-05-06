@@ -1,0 +1,153 @@
+/* RTL Support Styles
+ * These styles apply when the html element has the 'dir="rtl"' attribute
+ */
+
+[dir='rtl'] {
+  /* General text direction */
+  text-align: right;
+}
+
+/* Reverse layout directions */
+[dir='rtl'] .flex-row {
+  flex-direction: row-reverse;
+}
+
+[dir='rtl'] .space-x-1 > :not([hidden]) ~ :not([hidden]),
+[dir='rtl'] .space-x-2 > :not([hidden]) ~ :not([hidden]),
+[dir='rtl'] .space-x-3 > :not([hidden]) ~ :not([hidden]),
+[dir='rtl'] .space-x-4 > :not([hidden]) ~ :not([hidden]),
+[dir='rtl'] .space-x-5 > :not([hidden]) ~ :not([hidden]),
+[dir='rtl'] .space-x-6 > :not([hidden]) ~ :not([hidden]),
+[dir='rtl'] .space-x-8 > :not([hidden]) ~ :not([hidden]),
+[dir='rtl'] .space-x-10 > :not([hidden]) ~ :not([hidden]),
+[dir='rtl'] .space-x-12 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+}
+
+/* Flip margin and padding */
+[dir='rtl'] .ml-1,
+[dir='rtl'] .ml-2,
+[dir='rtl'] .ml-3,
+[dir='rtl'] .ml-4,
+[dir='rtl'] .ml-5,
+[dir='rtl'] .ml-6 {
+  margin-left: 0;
+  margin-right: var(--margin-value);
+}
+
+[dir='rtl'] .mr-1,
+[dir='rtl'] .mr-2,
+[dir='rtl'] .mr-3,
+[dir='rtl'] .mr-4,
+[dir='rtl'] .mr-5,
+[dir='rtl'] .mr-6 {
+  margin-right: 0;
+  margin-left: var(--margin-value);
+}
+
+[dir='rtl'] .pl-1,
+[dir='rtl'] .pl-2,
+[dir='rtl'] .pl-3,
+[dir='rtl'] .pl-4,
+[dir='rtl'] .pl-5,
+[dir='rtl'] .pl-6 {
+  padding-left: 0;
+  padding-right: var(--padding-value);
+}
+
+[dir='rtl'] .pr-1,
+[dir='rtl'] .pr-2,
+[dir='rtl'] .pr-3,
+[dir='rtl'] .pr-4,
+[dir='rtl'] .pr-5,
+[dir='rtl'] .pr-6 {
+  padding-right: 0;
+  padding-left: var(--padding-value);
+}
+
+/* Fix alignment in flexbox layouts */
+[dir='rtl'] .justify-start {
+  justify-content: flex-end;
+}
+
+[dir='rtl'] .justify-end {
+  justify-content: flex-start;
+}
+
+/* Reverse icon directions that imply direction */
+[dir='rtl'] .icon-arrow-right,
+[dir='rtl'] .icon-chevron-right,
+[dir='rtl'] .icon-caret-right {
+  transform: scaleX(-1);
+}
+
+[dir='rtl'] .icon-arrow-left,
+[dir='rtl'] .icon-chevron-left,
+[dir='rtl'] .icon-caret-left {
+  transform: scaleX(-1);
+}
+
+/* RTL for form elements */
+[dir='rtl'] input[type='text'],
+[dir='rtl'] input[type='email'],
+[dir='rtl'] input[type='password'],
+[dir='rtl'] textarea {
+  text-align: right;
+}
+
+/* RTL for navigation */
+[dir='rtl'] .menu-item-icon {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+/* Handle borders that need to be flipped */
+[dir='rtl'] .border-l {
+  border-left: none;
+  border-right: var(--border-width) solid var(--border-color);
+}
+
+[dir='rtl'] .border-r {
+  border-right: none;
+  border-left: var(--border-width) solid var(--border-color);
+}
+
+/* Dialog and popover positioning */
+[dir='rtl'] .dialog-close-button {
+  right: auto;
+  left: 1rem;
+}
+
+/* Accessibility Panel RTL Support */
+[dir='rtl'] .accessibility-panel {
+  text-align: right;
+}
+
+[dir='rtl'] .accessibility-options .option label {
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+[dir='rtl'] .description {
+  margin: 0 2rem 0 0;
+}
+
+[dir='rtl'] .option input[type='checkbox'] {
+  margin-left: 0.75rem;
+  margin-right: 0;
+}
+
+/* Calendar and date picker direction */
+[dir='rtl'] .calendar-header-navigation {
+  flex-direction: row-reverse;
+}
+
+[dir='rtl'] .calendar-grid {
+  direction: rtl;
+}
+
+/* Table alignment for RTL */
+[dir='rtl'] table th,
+[dir='rtl'] table td {
+  text-align: right;
+}

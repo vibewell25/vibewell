@@ -1,0 +1,16 @@
+# Ignore node and Next.js artifacts
+node_modules/
+.next/
+dist/
+build/
+
+# Ignore mobile and backup folders
+mobile/
+temp_backup/
+
+# Ignore implementation, scripts, docs, server, and test runner dirs
+implementation-files/
+scripts/
+docs/
+server/
+cypress/ 

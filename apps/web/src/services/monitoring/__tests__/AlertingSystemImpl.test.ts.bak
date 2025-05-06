@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import alerting-system-impl from '../alerting-system-impl.ts';
+
+describe('alerting-system-impl', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<alerting-system-impl />);
+    expect(container).toBeInTheDocument();
+  });
+});

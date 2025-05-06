@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import admin-layout from '../admin-layout.tsx';
+
+describe('admin-layout', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<admin-layout />);
+    expect(container).toBeInTheDocument();
+  });
+});

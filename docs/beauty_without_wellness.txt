@@ -1,0 +1,121 @@
+docs/archive/guides/IMPLEMENTATION.md:This document summarizes the recently implemented beauty-specific enhancements and improvements to the VibeWell platform.
+docs/archive/guides/IMPLEMENTATION.md:## Beauty-Specific Enhancements
+docs/archive/guides/IMPLEMENTATION.md:We've implemented a high-performance virtualization solution for beauty product catalogs using react-window and react-virtualized-auto-sizer. This approach:
+docs/archive/guides/IMPLEMENTATION.md:- Integration with existing beauty state management
+docs/archive/guides/IMPLEMENTATION.md:### Comprehensive Test Coverage for Beauty Features
+docs/archive/guides/IMPLEMENTATION.md:We've expanded test coverage for beauty-specific features with a focus on:
+docs/archive/guides/IMPLEMENTATION.md:### Visual Regression Tests for Beauty Product Displays
+docs/archive/guides/IMPLEMENTATION.md:- Verify rendering consistency of beauty product cards
+docs/archive/guides/README.md:### Beauty Services
+docs/archive/guides/README.md:- **Treatment Management**: Comprehensive beauty service scheduling and tracking
+docs/archive/guides/README.md:- **Beauty Profile**: Client beauty preferences, history, and personalized care plans
+docs/archive/guides/README.md:- **Product Recommendations**: AI-powered skincare and beauty product suggestions
+docs/archive/guides/README.md:- **Treatment Tracking**: Progress tracking for skincare and beauty treatments
+docs/archive/guides/README.md:- **Service Menu**: Customizable beauty service offerings and packages
+docs/archive/guides/README.md:- [Beauty Service Integration Guide](https://docs.vibewell.com/beauty)
+docs/archive/guides/state-management-guide.md:function BeautyProductCard({ product }) {
+docs/archive/guides/state-management-guide.md:const beautyAppointmentSchema = z.object({
+docs/archive/guides/state-management-guide.md:type BeautyAppointmentForm = z.infer<typeof beautyAppointmentSchema>;
+docs/archive/guides/state-management-guide.md:function BeautyAppointmentForm() {
+docs/archive/guides/state-management-guide.md:  const { register, handleSubmit, formState: { errors } } = useForm<BeautyAppointmentForm>({
+docs/archive/guides/state-management-guide.md:    resolver: zodResolver(beautyAppointmentSchema),
+docs/archive/guides/state-management-guide.md:  const onSubmit = (data: BeautyAppointmentForm) => {
+docs/archive/guides/state-management-guide.md:### Beauty Product Try-On
+docs/archive/guides/state-management-guide.md:  currentProduct: BeautyProduct | null;
+docs/archive/guides/state-management-guide.md:  setProduct: (product: BeautyProduct | null) => void;
+docs/archive/guides/state-management-guide.md:import { beautyCatalogState, virtualTryOnState, bookingState } from '../utils/beauty-state';
+docs/archive/guides/state-management-guide.md:    <beautyCatalogState.Provider>
+docs/archive/guides/state-management-guide.md:    </beautyCatalogState.Provider>
+docs/archive/guides/state-management-guide.md:## Example: Beauty Catalog State
+docs/archive/guides/state-management-guide.md:The beauty catalog state has been migrated to use Zustand by default:
+docs/archive/guides/state-management-guide.md:const catalogState = createState<BeautyCatalogState>(
+docs/archive/guides/state-management-guide.md:const catalogState = createState<BeautyCatalogState>(
+docs/archive/guides/state-management-guide.md:// __mocks__/beauty-state.ts
+docs/archive/guides/state-management-guide.md:export const createBeautyCatalogState = jest.fn(() => ({
+docs/archive/guides/state-management-guide.md:jest.mock('../utils/beauty-state');
+docs/archive/guides/state-management-guide.md:import { createBeautyCatalogState, mockCatalogState } from '../utils/beauty-state';
+docs/archive/guides/feature-walkthroughs.md:The Virtual Try-On feature allows you to visualize different beauty services before booking an appointment.
+docs/archive/guides/terms-and-conditions.md:The Virtual Try-On feature allows users to visualize beauty products using augmented reality (AR) technology. The feature uses your device's camera to create a virtual representation of how products may appear.
+docs/node_modules/emojilib/emojis.json:    "keywords": ["beauty", "manicure", "finger", "fashion", "nail"],
+docs/node_modules/@sideway/address/lib/tlds.js:    'BEAUTY',
+docs/docs/user-guide/index.md:Experience beauty looks before booking:
+docs/docs/user-guide/index.md:   - Beauty tutorials
+docs/docs/security/legal-requirements-review.md:### Cosmetology and Beauty Services
+docs/docs/deployment/DATABASE-GUIDE.md:- `BeautyService`: Beauty services offered
+docs/docs/deployment/DATABASE-GUIDE.md:const newService = await prisma.beautyService.create({
+docs/docs/api/beauty-services-api.yaml:  title: Beauty Services API
+docs/docs/api/beauty-services-api.yaml:    description: Beauty service management endpoints
+docs/docs/api/beauty-services-api.yaml:  /beauty-services:
+docs/docs/api/beauty-services-api.yaml:      summary: List all beauty services
+docs/docs/api/beauty-services-api.yaml:          description: List of beauty services
+docs/docs/api/beauty-services-api.yaml:                  $ref: '#/components/schemas/BeautyService'
+docs/docs/api/beauty-services-api.yaml:  /beauty-services/{serviceId}/availability:
+docs/docs/api/beauty-services-api.yaml:    BeautyService:
+apps/web/src/components/ui/components/appointments/AppointmentList.tsx:import { ServiceBooking, User, BeautyService } from '@prisma/client';
+apps/web/src/components/ui/components/appointments/AppointmentList.tsx:  service: BeautyService;
+apps/web/src/components/ui/components/appointments/AppointmentCalendar.tsx:import { ServiceBooking, User, BeautyService } from '@prisma/client';
+apps/web/src/components/ui/components/appointments/AppointmentCalendar.tsx:  service: BeautyService;
+apps/web/src/components/ui/components/dashboard/Sidebar.tsx:  { name: 'Beauty Services', href: '/dashboard/services', icon: SparklesIcon },
+apps/web/src/components/home/category-navigation.tsx:  { label: 'Beauty', icon: <FaSpa className="h-6 w-6" />, href: '/services?category=beauty' },
+apps/web/src/components/business/forms/basic-info-form.tsx:    { value: 'cosmetics', label: 'Beauty & Cosmetics' },
+apps/web/src/components/beauty/beauty-calendar.tsx:import { getBeautyEvents, createBeautyEvent, updateBeautyEvent } from '@/lib/api/beauty';
+apps/web/src/components/beauty/beauty-calendar.tsx:import { EventType } from '@/lib/api/beauty';
+apps/web/src/components/beauty/beauty-calendar.tsx:export default function BeautyCalendar() {
+apps/web/src/components/beauty/beauty-calendar.tsx:  const [events, setEvents] = useState<BeautyEvent[]>([]);
+apps/web/src/components/beauty/beauty-calendar.tsx:  const [newEvent, setNewEvent] = useState<Omit<BeautyEvent, 'id' | 'userId'>>({
+apps/web/src/components/beauty/beauty-calendar.tsx:      const beautyEvents = await getBeautyEvents();
+apps/web/src/components/beauty/beauty-calendar.tsx:      setEvents(beautyEvents);
+apps/web/src/components/beauty/beauty-calendar.tsx:      await createBeautyEvent(newEvent);
+apps/web/src/components/beauty/beauty-calendar.tsx:      await updateBeautyEvent(eventId, { completed });
+apps/web/src/components/beauty/beauty-calendar.tsx:        <h2 className="text-2xl font-bold">Beauty Calendar</h2>
+apps/web/src/components/beauty/beauty-trends.tsx:import { getTrendingTopics, getTrendingProducts } from '@/lib/api/beauty';
+apps/web/src/components/beauty/beauty-trends.tsx:export default function BeautyTrends() {
+apps/web/src/components/beauty/beauty-trends.tsx:        <h2 className="text-2xl font-bold">Beauty Trends</h2>
+apps/web/src/components/beauty/skin-care-routine.tsx:import { getSkinCareRoutines, createSkinCareRoutine } from '@/lib/api/beauty';
+apps/web/src/components/beauty/skin-care-routine.tsx:import { SkinCareProduct, SkinCareCategory } from '@/lib/api/beauty';
+apps/web/src/components/beauty/beauty-routine.tsx:import { getRoutines, updateRoutine, RoutineStep } from '@/lib/api/beauty';
+apps/web/src/components/beauty/beauty-routine.tsx:export default function BeautyRoutine() {
+apps/web/src/components/beauty/beauty-routine.tsx:        <h2 className="text-2xl font-bold">Beauty Routine</h2>
+apps/web/src/components/beauty/virtual-try-on.tsx:            Try on different beauty products virtually using your camera or upload a photo.
+apps/web/src/components/beauty/beauty-education.tsx:import { getBeautyTutorials, getBeautyArticles } from '@/lib/api/beauty';
+apps/web/src/components/beauty/beauty-education.tsx:export default function BeautyEducation() {
+apps/web/src/components/beauty/beauty-education.tsx:        getBeautyTutorials(selectedCategory),
+apps/web/src/components/beauty/beauty-education.tsx:        getBeautyArticles(selectedCategory),
+apps/web/src/components/beauty/beauty-education.tsx:        <h2 className="text-2xl font-bold">Beauty Education</h2>
+apps/web/src/components/beauty/VirtualTryOn/virtualized-product-grid.tsx:import { TryOnProduct } from '../../../utils/beauty-state';
+apps/web/src/components/beauty/VirtualTryOn/arexperience.tsx:import { TryOnProduct } from '../../../utils/beauty-state';
+apps/web/src/components/beauty/beauty-service.tsx:interface BeautyServiceProps {
+apps/web/src/components/beauty/beauty-service.tsx:export function BeautyService({ service, className = '' }: BeautyServiceProps) {
+apps/web/src/components/beauty/skin-condition-log.tsx:import { logSkinCondition, getSkinConditionLogs } from '@/lib/api/beauty';
+apps/web/src/components/beauty/skin-condition-log.tsx:import { SkinConcern } from '@/lib/api/beauty';
+apps/web/src/components/beauty/beauty-goals.tsx:import { getBeautyGoals, createBeautyGoal, updateBeautyGoal } from '@/lib/api/beauty';
+apps/web/src/components/beauty/beauty-goals.tsx:export default function BeautyGoals() {
+apps/web/src/components/beauty/beauty-goals.tsx:  const [goals, setGoals] = useState<BeautyGoal[]>([]);
+apps/web/src/components/beauty/beauty-goals.tsx:  const [newGoal, setNewGoal] = useState<Omit<BeautyGoal, 'id' | 'userId' | 'createdAt'>>({
+apps/web/src/components/beauty/beauty-goals.tsx:      const userGoals = await getBeautyGoals();
+apps/web/src/components/beauty/beauty-goals.tsx:      await createBeautyGoal(newGoal);
+apps/web/src/components/beauty/beauty-goals.tsx:      await updateBeautyGoal(goalId, { status: newStatus });
+apps/web/src/components/beauty/beauty-goals.tsx:        <h2 className="text-2xl font-bold">Beauty Goals</h2>
+apps/web/src/components/beauty/beauty-goals.tsx:                            updateBeautyGoal(goal?.id, { milestones: updatedMilestones });
+apps/web/src/components/beauty/beauty-content-modal.tsx:interface BeautyContentModalProps {
+apps/web/src/components/beauty/beauty-content-modal.tsx:export function BeautyContentModal({ isOpen, onClose, onSave }: BeautyContentModalProps) {
+apps/web/src/components/beauty/beauty-content-modal.tsx:            <Dialog?.Title className="text-xl font-semibold">Create Beauty Content</Dialog?.Title>
+apps/web/src/components/beauty/beauty-progress.tsx:import { getSkinConditionLogs } from '@/lib/api/beauty';
+apps/web/src/components/beauty/beauty-progress.tsx:import { SkinConcern } from '@/lib/api/beauty';
+apps/web/src/components/beauty/beauty-progress.tsx:export default function BeautyProgress() {
+apps/web/src/components/beauty/beauty-progress.tsx:        <h2 className="text-2xl font-bold">Beauty Progress</h2>
+apps/web/src/components/beauty/beauty-dashboard.tsx:import BeautyProgress from './BeautyProgress';
+apps/web/src/components/beauty/beauty-dashboard.tsx:import BeautyGoals from './BeautyGoals';
+apps/web/src/components/beauty/beauty-dashboard.tsx:export default function BeautyDashboard() {
+apps/web/src/components/beauty/beauty-dashboard.tsx:        return <BeautyProgress />;
+apps/web/src/components/beauty/beauty-dashboard.tsx:        return <BeautyGoals />;
+apps/web/src/components/beauty/beauty-dashboard.tsx:            Beauty Goals
+apps/web/src/components/beauty/upcoming-appointments.tsx:        const response = await fetch('/api/beauty/appointments/upcoming');
+apps/web/src/components/beauty/upcoming-appointments.tsx:          <Button onClick={() => router?.push('/beauty/book')}>Book a Service</Button>
+apps/web/src/components/beauty/upcoming-appointments.tsx:        onClick={() => router?.push('/beauty/appointments')}
+apps/web/src/components/beauty/beauty-aianalysis.tsx:import { analyzeSkinCondition } from '@/lib/api/beauty';
+apps/web/src/components/beauty/beauty-aianalysis.tsx:export default function BeautyAIAnalysis() {
+apps/web/src/components/beauty/beauty-community.tsx:} from '@/lib/api/beauty';
+apps/web/src/components/beauty/beauty-community.tsx:export default function BeautyCommunity() {
+apps/web/src/components/beauty/beauty-community.tsx:        <h2 className="text-2xl font-bold">Beauty Community</h2>
+apps/web/src/components/virtual-try-on/armodel-viewer.tsx: * ARModelViewer component for rendering 3D models of beauty products

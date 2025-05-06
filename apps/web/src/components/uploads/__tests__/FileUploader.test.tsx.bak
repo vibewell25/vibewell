@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import file-uploader from '../file-uploader.tsx';
+
+describe('file-uploader', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<file-uploader />);
+    expect(container).toBeInTheDocument();
+  });
+});

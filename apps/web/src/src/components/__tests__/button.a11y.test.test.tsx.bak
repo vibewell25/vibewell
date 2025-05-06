@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import button.a11y.test from '../button.a11y.test.tsx';
+
+describe('button.a11y.test', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<button.a11y.test />);
+    expect(container).toBeInTheDocument();
+  });
+});

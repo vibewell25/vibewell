@@ -1,0 +1,4 @@
+- Update import paths for moved files
+- Update monorepo tsconfig paths and workspaces
+- Validate CI/CD pipelines & Vercel/Expo setup
+- Review dynamic auth routes archived (auth0 & provider), please integrate into catch-all handler

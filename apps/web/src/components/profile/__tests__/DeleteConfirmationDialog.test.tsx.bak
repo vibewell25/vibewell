@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import delete-confirmation-dialog from '../delete-confirmation-dialog.tsx';
+
+describe('delete-confirmation-dialog', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<delete-confirmation-dialog />);
+    expect(container).toBeInTheDocument();
+  });
+});

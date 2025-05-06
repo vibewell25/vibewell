@@ -1,0 +1,7 @@
+export enum BrowserType {
+  CHROME = 'CHROME',
+  FIREFOX = 'FIREFOX',
+  SAFARI = 'SAFARI',
+  EDGE = 'EDGE',
+  MOBILE_CHROME = 'MOBILE_CHROME',
+  MOBILE_SAFARI = 'MOBILE_SAFARI'

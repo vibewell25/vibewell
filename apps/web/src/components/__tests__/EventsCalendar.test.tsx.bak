@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import events-calendar from '../events-calendar.tsx';
+
+describe('events-calendar', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<events-calendar />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibewell Analytics Report</title>
+  <style>
+    :root {
+      --primary-color: #4f46e5;
+      --secondary-color: #6366f1;
+      --accent-color: #818cf8;
+      --text-color: #1f2937;
+      --light-gray: #f3f4f6;
+      --border-color: #e5e7eb;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text-color);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f9fafb;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 2rem;
+    }
+    
+    .logo {
+      height: 40px;
+    }
+    
+    .report-meta {
+      text-align: right;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+    
+    h1, h2, h3, h4 {
+      color: var(--primary-color);
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+      margin-top: 0;
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    
+    h3 {
+      font-size: 1.2rem;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+    }
+    
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    
+    .metric {
+      background-color: var(--light-gray);
+      border-radius: 0.5rem;
+      padding: 1.25rem;
+    }
+    
+    .metric-title {
+      color: #4b5563;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    
+    .metric-value {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .metric-trend {
+      display: flex;
+      align-items: center;
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    
+    .trend-up {
+      color: #10b981;
+    }
+    
+    .trend-down {
+      color: #ef4444;
+    }
+    
+    .chart-container {
+      height: 300px;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+    
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    th {
+      background-color: var(--light-gray);
+      font-weight: 500;
+    }
+    
+    tr:hover {
+      background-color: var(--light-gray);
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-color);
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
+    
+    .text-muted {
+      color: #6b7280;
+    }
+    
+    @media print {
+      body {
+        background-color: white;
+      }
+      
+      .container {
+        max-width: 100%;
+        padding: 0;
+      }
+      
+      .card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid var(--border-color);
+      }
+      
+      .no-print {
+        display: none;
+      }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="/path/to/logo.png" alt="Vibewell Logo" class="logo">
+      <div class="report-meta">
+        <div><strong>Report Generated:</strong> {{generated_date}}</div>
+        <div><strong>Time Period:</strong> {{time_period}}</div>
+        <div><strong>Report Type:</strong> {{report_type}}</div>
+      </div>
+    </header>
+
+    <h1>{{report_title}}</h1>
+    
+    <div class="card">
+      <h2>Executive Summary</h2>
+      <p>{{summary_text}}</p>
+      
+      <div class="metrics-grid">
+        <div class="metric">
+          <div class="metric-title">Total Sessions</div>
+          <div class="metric-value">{{total_sessions}}</div>
+          <div class="metric-trend trend-up">↑ {{sessions_trend}}% from previous period</div>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-title">Unique Users</div>
+          <div class="metric-value">{{unique_users}}</div>
+          <div class="metric-trend trend-up">↑ {{users_trend}}% from previous period</div>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-title">Conversion Rate</div>
+          <div class="metric-value">{{conversion_rate}}%</div>
+          <div class="metric-trend trend-down">↓ {{conversion_trend}}% from previous period</div>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-title">Average Session Duration</div>
+          <div class="metric-value">{{avg_duration}}m</div>
+          <div class="metric-trend trend-up">↑ {{duration_trend}}% from previous period</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>User Engagement</h2>
+      <div class="chart-container">
+        <canvas id="engagementChart"></canvas>
+      </div>
+      <p class="text-muted">Engagement metrics over the selected time period, showing total sessions, active users, and conversion events.</p>
+    </div>
+
+    <div class="card">
+      <h2>Top Products</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Views</th>
+            <th>Try-Ons</th>
+            <th>Conversion Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{product_rows}}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>User Demographics</h2>
+      <div class="chart-container">
+        <canvas id="demographicsChart"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Geographic Distribution</h2>
+      <div class="chart-container">
+        <canvas id="geoChart"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Recommendations</h2>
+      <ul>
+        {{recommendations}}
+      </ul>
+    </div>
+
+    <footer>
+      <p>© {{current_year}} Vibewell. All rights reserved.</p>
+      <p>This report is generated automatically and is intended for internal use only.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Sample data for charts - these would be replaced with actual data
+    document.addEventListener('DOMContentLoaded', function() {
+      // Engagement Chart
+      new Chart(document.getElementById('engagementChart'), {
+        type: 'line',
+        data: {{engagement_data}},
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+      // Demographics Chart
+      new Chart(document.getElementById('demographicsChart'), {
+        type: 'pie',
+        data: {{demographics_data}},
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+            }
+          }
+        }
+      });
+
+      // Geo Chart
+      new Chart(document.getElementById('geoChart'), {
+        type: 'bar',
+        data: {{geo_data}},
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html> 

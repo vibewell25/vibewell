@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import monitoring-service-impl from '../monitoring-service-impl.ts';
+
+describe('monitoring-service-impl', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<monitoring-service-impl />);
+    expect(container).toBeInTheDocument();
+  });
+});

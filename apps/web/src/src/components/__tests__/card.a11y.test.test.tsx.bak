@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import card.a11y.test from '../card.a11y.test.tsx';
+
+describe('card.a11y.test', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<card.a11y.test />);
+    expect(container).toBeInTheDocument();
+  });
+});

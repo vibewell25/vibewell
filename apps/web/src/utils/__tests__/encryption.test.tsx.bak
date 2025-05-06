@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import encryption from '../encryption.tsx';
+
+describe('encryption', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<encryption />);
+    expect(container).toBeInTheDocument();
+  });
+});

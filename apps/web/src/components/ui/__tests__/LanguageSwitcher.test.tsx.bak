@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import language-switcher from '../language-switcher.tsx';
+
+describe('language-switcher', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<language-switcher />);
+    expect(container).toBeInTheDocument();
+  });
+});

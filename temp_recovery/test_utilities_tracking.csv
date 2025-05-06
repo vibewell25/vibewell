@@ -1,0 +1,9 @@
+Utility,File Path,Status
+ImageProcessing,src/lib/image-processing.ts,🔴 Broken
+CacheService,src/lib/cache-service.ts,🔴 Broken
+RateLimiter,src/lib/graphql/rate-limiter.ts,🟡 Source Fixed
+RedisClient,src/lib/redis-client.ts,🔴 Broken
+Environment,src/utils/env.ts,🟢 Tests Passing
+UserPreferencesApi,apps/web/src/__tests__/unit/UserPreferencesApi.test.ts,🟡 Source Fixed
+NotificationApi,apps/web/src/__tests__/unit/NotificationApi.test.ts,🔴 Broken
+useModuleContent,apps/web/src/hooks/useModuleContent.ts,🟡 Source Fixed

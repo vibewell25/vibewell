@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import social-events from '../social-events.tsx';
+
+describe('social-events', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<social-events />);
+    expect(container).toBeInTheDocument();
+  });
+});

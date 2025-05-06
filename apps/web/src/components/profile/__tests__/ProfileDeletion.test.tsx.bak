@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import profile-deletion from '../profile-deletion.tsx';
+
+describe('profile-deletion', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<profile-deletion />);
+    expect(container).toBeInTheDocument();
+  });
+});

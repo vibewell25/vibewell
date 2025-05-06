@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import virtual-try-on from '../virtual-try-on.tsx';
+
+describe('virtual-try-on', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<virtual-try-on />);
+    expect(container).toBeInTheDocument();
+  });
+});

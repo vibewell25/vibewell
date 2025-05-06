@@ -1,0 +1,215 @@
+openapi: 3.0.0
+info:
+  title: Beauty Services API
+  version: 1.0.0
+  description: API documentation for Vibewell's beauty and wellness services
+
+servers:
+  - url: https://api.vibewell.com/v1
+    description: Production server
+  - url: https://staging-api.vibewell.com/v1
+    description: Staging server
+
+tags:
+  - name: Services
+    description: Beauty service management endpoints
+  - name: Bookings
+    description: Appointment booking endpoints
+  - name: Providers
+    description: Service provider management endpoints
+  - name: VirtualTryOn
+    description: AR virtual try-on endpoints
+  - name: Reviews
+    description: Service review endpoints
+
+paths:
+  /beauty-services:
+    get:
+      summary: List all beauty services
+      tags: [Services]
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+          description: Filter by service category
+        - name: provider
+          in: query
+          schema:
+            type: string
+          description: Filter by provider ID
+      responses:
+        '200':
+          description: List of beauty services
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BeautyService'
+
+  /beauty-services/{serviceId}/availability:
+    get:
+      summary: Get service availability
+      tags: [Services]
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: date
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Available time slots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TimeSlot'
+
+  /bookings:
+    post:
+      summary: Create a new booking
+      tags: [Bookings]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingRequest'
+      responses:
+        '201':
+          description: Booking created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+
+  /virtual-try-on/analyze:
+    post:
+      summary: Analyze face for virtual try-on
+      tags: [VirtualTryOn]
+      requestBody:
+        required: true
+        content:
+          image/jpeg:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: Face analysis results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FaceAnalysis'
+
+components:
+  schemas:
+    BeautyService:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        duration:
+          type: integer
+          description: Duration in minutes
+        price:
+          type: number
+        category:
+          type: string
+        providerId:
+          type: string
+
+    TimeSlot:
+      type: object
+      properties:
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        available:
+          type: boolean
+
+    BookingRequest:
+      type: object
+      required:
+        - serviceId
+        - startTime
+        - customerId
+      properties:
+        serviceId:
+          type: string
+        startTime:
+          type: string
+          format: date-time
+        customerId:
+          type: string
+        notes:
+          type: string
+
+    Booking:
+      type: object
+      properties:
+        id:
+          type: string
+        serviceId:
+          type: string
+        customerId:
+          type: string
+        providerId:
+          type: string
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [confirmed, cancelled, completed]
+
+    FaceAnalysis:
+      type: object
+      properties:
+        faceId:
+          type: string
+        features:
+          type: object
+          properties:
+            skinTone:
+              type: string
+            faceShape:
+              type: string
+            landmarks:
+              type: array
+              items:
+                type: object
+                properties:
+                  x:
+                    type: number
+                  y:
+                    type: number
+                  type:
+                    type: string
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: [] 

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import availability-calendar from '../availability-calendar.tsx';
+
+describe('availability-calendar', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<availability-calendar />);
+    expect(container).toBeInTheDocument();
+  });
+});

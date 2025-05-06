@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import lazy-image from '../lazy-image.tsx';
+
+describe('lazy-image', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<lazy-image />);
+    expect(container).toBeInTheDocument();
+  });
+});

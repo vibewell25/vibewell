@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import date-time-picker from '../date-time-picker.tsx';
+
+describe('date-time-picker', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<date-time-picker />);
+    expect(container).toBeInTheDocument();
+  });
+});

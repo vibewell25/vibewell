@@ -1,0 +1,24 @@
+<svg width="400" height="100" viewBox="0 0 400 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Heart and hands logo shape -->
+  <g transform="translate(20, 0) scale(0.8)">
+    <path d="M100,50 C120,20 140,20 160,50 C180,80 100,100 100,50 Z" fill="white" stroke="white" stroke-width="3"/>
+    <path d="M50,50 C30,20 10,20 -10,50 C-30,80 50,100 50,50 Z" fill="white" stroke="white" stroke-width="3"/>
+    <circle cx="75" cy="75" r="25" fill="none" stroke="white" stroke-width="3"/>
+    <path d="M50,50 C60,40 90,40 100,50" fill="none" stroke="white" stroke-width="3"/>
+    <path d="M40,60 C50,75 75,90 110,60" fill="none" stroke="white" stroke-width="3"/>
+  </g>
+  
+  <!-- Text -->
+  <g transform="translate(170, 65)">
+    <!-- vibe -->
+    <path d="M0,0 L5,-20 L15,-20 L20,0 L12,0 L9,-15 L6,0 Z" fill="white"/>
+    <path d="M25,-20 L35,-20 L35,-5 C35,0 30,2 25,2 C20,2 20,-5 20,-5 L28,-5 C28,-2 32,-2 32,-5 L32,-20 Z" fill="white"/>
+    <path d="M40,-20 L50,-20 L50,0 L40,0 Z M40,-25 L50,-25 L50,-20 L40,-20 Z" fill="white"/>
+    <path d="M55,-20 L65,-20 L65,-5 C65,0 60,2 55,2 C52,2 50,0 50,-5 L58,-5 C58,0 65,-2 65,-5 L55,-5 Z" fill="white"/>
+    
+    <!-- well -->
+    <path d="M75,0 L85,0 L92,-20 L102,-20 L109,0 L119,0 L109,-30 L99,-30 L90,-10 L81,-30 L71,-30 L61,0 L71,0 L78,-20 L85,0 Z" fill="white"/>
+    <path d="M125,-20 L135,-20 L135,0 L125,0 Z" fill="white"/>
+    <path d="M140,-20 L150,-20 L150,0 L140,0 Z" fill="white"/>
+  </g>
+</svg> 

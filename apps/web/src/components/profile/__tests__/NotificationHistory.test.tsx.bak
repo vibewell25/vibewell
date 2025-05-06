@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import notification-history from '../notification-history.tsx';
+
+describe('notification-history', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<notification-history />);
+    expect(container).toBeInTheDocument();
+  });
+});

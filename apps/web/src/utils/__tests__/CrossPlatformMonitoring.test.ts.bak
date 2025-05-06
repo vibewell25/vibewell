@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import cross-platform-monitoring from '../cross-platform-monitoring.ts';
+
+describe('cross-platform-monitoring', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<cross-platform-monitoring />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -1,0 +1,31 @@
+{
+  "monitoring": {
+    "enhanced_metrics": {
+      "slowlog": true,
+      "memory_fragmentation": true,
+      "replication_lag": true,
+      "client_connections": true,
+      "key_space_hits": true,
+      "evicted_keys": true,
+      "blocked_clients": true
+    },
+    "alerting": {
+      "thresholds": {
+        "memory_usage": 85,
+        "cpu_usage": 80,
+        "latency": 100,
+        "replication_lag": 10
+      },
+      "notifications": {
+        "email": true,
+        "slack": true,
+        "pagerduty": true
+      }
+    },
+    "reporting": {
+      "daily_summary": true,
+      "weekly_trends": true,
+      "monthly_analysis": true
+    }
+  }
+}

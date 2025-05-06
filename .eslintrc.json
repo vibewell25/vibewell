@@ -1,0 +1,22 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+    "prettier"
+  ],
+  "plugins": ["@typescript-eslint", "react-hooks", "prettier"],
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "project": ["tsconfig.json", "apps/web/tsconfig.json"]
+      }
+    }
+  },
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
+    "prettier/prettier": "warn"
+  }
+} 

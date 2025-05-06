@@ -1,0 +1,25 @@
+{
+  "name": "vibewell-load-testing",
+  "version": "1.0.0",
+  "description": "Load testing for VibeWell application",
+  "scripts": {
+    "artillery": "artillery",
+    "load-test": "node run-load-test.js",
+    "security-test": "node run-security-load-test.js",
+    "report": "node generate-load-test-report.js"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "artillery": "^2.0.4",
+    "artillery-plugin-expect": "^2.2.1",
+    "artillery-plugin-metrics-by-endpoint": "^1.2.0",
+    "chalk": "^4.1.2",
+    "commander": "^12.0.0",
+    "redis": "^4.6.13",
+    "ora": "^5.4.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "private": true
+} 

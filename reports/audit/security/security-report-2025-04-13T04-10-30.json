@@ -1,0 +1,45 @@
+{
+  "id": "security_report_1744517430408",
+  "timestamp": 1744517430408,
+  "category": "security",
+  "issues": [
+    {
+      "id": "33782a1bb2ae004aa9aebb397dafa995b39d0e81fd861a6c23ee2f6b5296f11f",
+      "category": "security",
+      "severity": "high",
+      "title": "SQL Injection Vulnerability",
+      "description": "SQL injection vulnerability in user search endpoint",
+      "component": "API",
+      "datestamp": 1744517430298,
+      "remediation": "Update to version 2.0.0 or higher and use parameterized queries",
+      "status": "open",
+      "metadata": {
+        "cvssScore": 8.5,
+        "vulnerableVersions": "<2.0.0",
+        "patchedVersions": ">=2.0.0"
+      }
+    },
+    {
+      "id": "362d050fc395b26bbcd8887df3b266dfa534f3ba587fd24e79428c33c55b57b2",
+      "category": "security",
+      "severity": "high",
+      "title": "Social Media Security Control Failing: Data Leakage Prevention",
+      "description": "PII data exposed in public profiles",
+      "component": "Social Features",
+      "datestamp": 1744517430365,
+      "status": "open",
+      "metadata": {
+        "controlName": "Data Leakage Prevention",
+        "lastChecked": 1744517430365
+      }
+    }
+  ],
+  "summary": {
+    "critical": 0,
+    "high": 2,
+    "medium": 0,
+    "low": 0,
+    "info": 0,
+    "total": 2
+  }
+}

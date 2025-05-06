@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import form-error-message from '../form-error-message.tsx';
+
+describe('form-error-message', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<form-error-message />);
+    expect(container).toBeInTheDocument();
+  });
+});

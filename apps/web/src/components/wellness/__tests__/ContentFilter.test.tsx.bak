@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import content-filter from '../content-filter.tsx';
+
+describe('content-filter', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<content-filter />);
+    expect(container).toBeInTheDocument();
+  });
+});

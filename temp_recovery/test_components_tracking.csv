@@ -1,0 +1,8 @@
+Component,File Path,Status
+AccessibleButton,apps/web/src/__tests__/unit/AccessibleButton.test.tsx,🟢 Tests Passing
+NotificationCenter,apps/web/src/__tests__/unit/NotificationCenter.test.tsx,🔴 Broken
+Card,apps/web/src/__tests__/unit/card.test.tsx,🟢 Tests Passing
+Button,apps/web/src/__tests__/unit/button.test.tsx,🟡 Source Fixed
+UserPreferencesContext,apps/web/src/__tests__/unit/UserPreferencesContext.test.tsx,🔴 Broken
+Icons,apps/web/src/__tests__/unit/icons.test.tsx,🟡 Source Fixed
+ProductAnalytics,apps/web/src/__tests__/unit/ProductAnalytics.test.tsx,🔴 Broken

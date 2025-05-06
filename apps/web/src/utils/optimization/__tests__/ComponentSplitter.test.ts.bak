@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import component-splitter from '../component-splitter.ts';
+
+describe('component-splitter', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<component-splitter />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -1,0 +1,29 @@
+{
+  "steps": {
+    "service": "Sélectionner un Service",
+    "provider": "Choisir un Prestataire",
+    "datetime": "Choisir Date et Heure",
+    "details": "Saisir les Détails",
+    "confirm": "Confirmer la Réservation"
+  },
+  "status": {
+    "pending": "En Attente",
+    "confirmed": "Confirmé",
+    "cancelled": "Annulé",
+    "completed": "Terminé"
+  },
+  "actions": {
+    "book": "Réserver Maintenant",
+    "cancel": "Annuler la Réservation",
+    "reschedule": "Reprogrammer",
+    "confirm": "Confirmer",
+    "back": "Retour",
+    "next": "Suivant"
+  },
+  "notifications": {
+    "bookingSuccess": "Réservation réussie !",
+    "bookingFailed": "Échec de la réservation",
+    "cancellationSuccess": "Réservation annulée avec succès",
+    "reschedulingSuccess": "Réservation reprogrammée avec succès"
+  }
+} 

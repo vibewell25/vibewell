@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import backup-scheduler from '../backup-scheduler.ts';
+
+describe('backup-scheduler', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<backup-scheduler />);
+    expect(container).toBeInTheDocument();
+  });
+});

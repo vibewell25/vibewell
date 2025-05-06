@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import progress-summary-card from '../progress-summary-card.tsx';
+
+describe('progress-summary-card', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<progress-summary-card />);
+    expect(container).toBeInTheDocument();
+  });
+});

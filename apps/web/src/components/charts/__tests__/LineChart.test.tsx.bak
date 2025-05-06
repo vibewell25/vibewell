@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import line-chart from '../line-chart.tsx';
+
+describe('line-chart', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<line-chart />);
+    expect(container).toBeInTheDocument();
+  });
+});

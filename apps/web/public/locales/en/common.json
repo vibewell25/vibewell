@@ -1,0 +1,55 @@
+{
+  "welcome": "Welcome to Vibewell",
+  "app": {
+    "name": "VibeWell",
+    "description": "Your wellness journey starts here"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next"
+  },
+  "messages": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success!",
+    "confirmDelete": "Are you sure you want to delete this?",
+    "required": "This field is required",
+    "invalid": "Invalid input"
+  },
+  "accessibility": {
+    "skipToMain": "Skip to main content",
+    "menuButton": "Toggle menu",
+    "closeButton": "Close",
+    "searchInput": "Search",
+    "languageSelector": "Select language"
+  },
+  "meditation": {
+    "start": "Begin Meditation",
+    "stop": "End Session",
+    "themes": {
+      "forest": "Forest",
+      "beach": "Beach",
+      "mountain": "Mountain",
+      "zenGarden": "Zen Garden"
+    },
+    "sounds": {
+      "rain": "Rain",
+      "waves": "Ocean Waves",
+      "wind": "Gentle Wind",
+      "birds": "Bird Songs",
+      "silence": "Silence"
+    }
+  }
+} 

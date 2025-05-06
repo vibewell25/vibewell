@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Build outputs
+.next/
+out/
+build/
+dist/
+coverage/
+
+# Environment variables
+.env*
+!.env.example
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+test-results/
+.nyc_output/
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.cursor/
+
+# Databases
+*.sqlite
+dump.rdb
+
+# Package Manager Lockfiles (if using yarn workspace)
+# Don't exclude package-lock.json - it should be committed
+# yarn.lock
+
+# Expo/React Native
+.expo/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# Misc
+.vercel
+.turbo

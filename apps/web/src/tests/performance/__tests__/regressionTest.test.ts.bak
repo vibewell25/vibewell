@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import regressionTest from '../regressionTest.ts';
+
+describe('regressionTest', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<regressionTest />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import notification-toast from '../notification-toast.tsx';
+
+describe('notification-toast', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<notification-toast />);
+    expect(container).toBeInTheDocument();
+  });
+});

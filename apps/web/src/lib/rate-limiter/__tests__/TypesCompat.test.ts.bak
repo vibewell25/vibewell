@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import types-compat from '../types-compat.ts';
+
+describe('types-compat', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<types-compat />);
+    expect(container).toBeInTheDocument();
+  });
+});

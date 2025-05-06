@@ -1,0 +1,91 @@
+{
+  "id": "compliance_report_1744517430420",
+  "timestamp": 1744517430420,
+  "category": "compliance",
+  "issues": [
+    {
+      "id": "6a9e813a4875ec2947c1dec1596e5a9517157c84c5759f8750d8ab1e10d2f57b",
+      "category": "compliance",
+      "severity": "high",
+      "title": "GDPR Requirement Non-Compliant: data-minimization",
+      "description": "The system is non-compliant with GDPR requirement: Collect only necessary data for specified purposes",
+      "component": "GDPR Compliance",
+      "datestamp": 1744517430385,
+      "status": "open",
+      "metadata": {
+        "requirementId": "data-minimization",
+        "evidence": "Marketing forms collect excessive personal information",
+        "lastChecked": 1744517430385
+      }
+    },
+    {
+      "id": "d0fc0101d29e5b09244ca3593f57411ede9e4a01e8dc0dc78cf822067311a250",
+      "category": "compliance",
+      "severity": "medium",
+      "title": "GDPR Requirement Partially Compliant: right-to-be-forgotten",
+      "description": "The system is only partially compliant with GDPR requirement: Implement right to erasure (right to be forgotten)",
+      "component": "GDPR Compliance",
+      "datestamp": 1744517430385,
+      "status": "open",
+      "metadata": {
+        "requirementId": "right-to-be-forgotten",
+        "evidence": "Account deletion exists but some data remains in backups",
+        "lastChecked": 1744517430385
+      }
+    },
+    {
+      "id": "238ae6c45fad0a1ecbf19cf0a3622041dcdf3365e21d331691069b35121e3da8",
+      "category": "compliance",
+      "severity": "high",
+      "title": "GDPR Partial Compliance",
+      "description": "The system is only partially compliant with GDPR regulations overall",
+      "component": "GDPR Compliance",
+      "datestamp": 1744517430385,
+      "status": "open",
+      "metadata": {
+        "lastChecked": 1744517430385,
+        "nonCompliantCount": 1,
+        "partiallyCompliantCount": 1
+      }
+    },
+    {
+      "id": "0475dfc502e3152dcdfd58fef0b1c9d935b86d053a605c7a71835cca3c634cec",
+      "category": "compliance",
+      "severity": "medium",
+      "title": "Data Retention Non-Compliance: personalData",
+      "description": "personalData data is being retained for 730 days, which exceeds the required retention period of 365 days",
+      "component": "Data Retention",
+      "datestamp": 1744517430385,
+      "remediation": "Implement a data purging mechanism to automatically delete personalData data after 365 days.",
+      "status": "open",
+      "metadata": {
+        "dataType": "personalData",
+        "currentRetention": 730,
+        "requiredRetention": 365,
+        "records": [
+          {
+            "recordType": "userProfiles",
+            "count": 25760,
+            "oldestRecord": 1681445430385,
+            "newestRecord": 1744517430385
+          },
+          {
+            "recordType": "contactInfo",
+            "count": 28145,
+            "oldestRecord": 1683173430385,
+            "newestRecord": 1744517430385
+          }
+        ],
+        "timestamp": 1744517430385
+      }
+    }
+  ],
+  "summary": {
+    "critical": 0,
+    "high": 2,
+    "medium": 2,
+    "low": 0,
+    "info": 0,
+    "total": 4
+  }
+}

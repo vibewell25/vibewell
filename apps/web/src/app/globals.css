@@ -1,0 +1,359 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 224 71.4% 4.1%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 71.4% 4.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71.4% 4.1%;
+    --primary: 262.1 83.3% 57.8%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 220 14.3% 95.9%;
+    --secondary-foreground: 220.9 39.3% 11%;
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
+    --accent: 220 14.3% 95.9%;
+    --accent-foreground: 220.9 39.3% 11%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 262.1 83.3% 57.8%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 224 71.4% 4.1%;
+    --foreground: 210 20% 98%;
+    --card: 224 71.4% 4.1%;
+    --card-foreground: 210 20% 98%;
+    --popover: 224 71.4% 4.1%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 263.4 70% 50.4%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 215 27.9% 16.9%;
+    --secondary-foreground: 210 20% 98%;
+    --muted: 215 27.9% 16.9%;
+    --muted-foreground: 217.9 10.6% 64.9%;
+    --accent: 215 27.9% 16.9%;
+    --accent-foreground: 210 20% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 215 27.9% 16.9%;
+    --input: 215 27.9% 16.9%;
+    --ring: 263.4 70% 50.4%;
+  }
+
+  /* Green theme */
+  .green-theme {
+    --primary: 158 33% 31%;
+    --primary-foreground: 210 20% 98%;
+    --ring: 158 33% 31%;
+    --background: 60 17% 92%;
+  }
+
+  .dark.green-theme {
+    --primary: 158 33% 45%;
+    --primary-foreground: 210 20% 98%;
+    --ring: 158 33% 45%;
+    --background: 160 30% 8%;
+  }
+
+  /* Peach theme */
+  .peach-theme {
+    --primary: 10 100% 75%;
+    --primary-foreground: 20 10% 15%;
+    --ring: 10 100% 75%;
+    --background: 30 30% 96%;
+  }
+
+  .dark.peach-theme {
+    --primary: 10 100% 65%;
+    --primary-foreground: 20 10% 15%;
+    --ring: 10 100% 65%;
+    --background: 20 30% 10%;
+  }
+
+  /* Blue theme */
+  .blue-theme {
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 20% 98%;
+    --ring: 217 91% 60%;
+    --background: 213 30% 97%;
+  }
+
+  .dark.blue-theme {
+    --primary: 217 91% 55%;
+    --primary-foreground: 210 20% 98%;
+    --ring: 217 91% 55%;
+    --background: 217 30% 10%;
+  }
+
+  /* Purple theme */
+  .purple-theme {
+    --primary: 260 84% 63%;
+    --primary-foreground: 210 20% 98%;
+    --ring: 260 84% 63%;
+    --background: 270 20% 97%;
+  }
+
+  .dark.purple-theme {
+    --primary: 260 84% 60%;
+    --primary-foreground: 210 20% 98%;
+    --ring: 260 84% 60%;
+    --background: 260 30% 10%;
+  }
+
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1;
+  }
+  h1 {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  h3 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  h4 {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  p {
+    margin-bottom: 1rem;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    padding: 0.5rem 1rem;
+    background-color: var(--primary);
+    color: white;
+    border-radius: 0.375rem;
+    transition-property: color, background-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .btn-primary:hover {
+    background-color: var(--primary-dark);
+  }
+
+  .btn-secondary {
+    padding: 0.5rem 1rem;
+    background-color: var(--secondary);
+    color: white;
+    border-radius: 0.375rem;
+    transition-property: opacity;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .btn-secondary:hover {
+    opacity: 0.9;
+  }
+
+  .card {
+    background-color: var(--card);
+    border-radius: 0.5rem;
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  .form-input {
+    width: 100%;
+    border-radius: 0.375rem;
+    border: 1px solid var(--input);
+    padding: 0.5rem 0.75rem;
+  }
+  .form-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--ring);
+  }
+
+  .container-app {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  @media (min-width: 640px) {
+    .container-app {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container-app {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+}
+
+/* Accessibility Improvements */
+/* Enhanced focus styles for better keyboard navigation */
+:focus-visible {
+  outline: 2px solid #0842a0;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(8, 66, 160, 0.25);
+}
+
+/* Skip link for keyboard users */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #0842a0;
+  color: white;
+  padding: 8px;
+  z-index: 100;
+  transition: top 0.3s;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Improved form field focus states */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  border-color: #0842a0;
+  box-shadow: 0 0 0 4px rgba(8, 66, 160, 0.25);
+  outline: none;
+}
+
+/* Button focus states */
+button:focus-visible,
+[role='button']:focus-visible {
+  outline: 2px solid #0842a0;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(8, 66, 160, 0.25);
+}
+
+/* Accessibility enhancements */
+
+/* High contrast mode */
+.high-contrast {
+  --contrast-background: black;
+  --contrast-text: white;
+  --contrast-primary: #ffdd00;
+  --contrast-secondary: #40c0ff;
+  --contrast-border: white;
+}
+
+.high-contrast.dark {
+  --contrast-background: black;
+  --contrast-text: white;
+  --contrast-primary: #ffdd00;
+  --contrast-secondary: #40c0ff;
+  --contrast-border: white;
+}
+
+.high-contrast * {
+  border-color: var(--contrast-border) !important;
+}
+
+.high-contrast button,
+.high-contrast a {
+  color: var(--contrast-primary) !important;
+  background-color: var(--contrast-background) !important;
+  border: 2px solid var(--contrast-border) !important;
+}
+
+.high-contrast h1,
+.high-contrast h2,
+.high-contrast h3,
+.high-contrast h4,
+.high-contrast h5,
+.high-contrast h6 {
+  color: var(--contrast-primary) !important;
+}
+
+.high-contrast p,
+.high-contrast li,
+.high-contrast td,
+.high-contrast th,
+.high-contrast label,
+.high-contrast input,
+.high-contrast textarea {
+  color: var(--contrast-text) !important;
+}
+
+/* Reduce motion */
+.reduce-motion * {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 3px solid #1a73e8 !important;
+  outline-offset: 2px !important;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  padding: 8px;
+  z-index: 100;
+  background: #fff;
+  border: 2px solid #1a73e8;
+  color: #1a73e8;
+  font-weight: bold;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Announcement region for screen readers */
+.live-announcer {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+}

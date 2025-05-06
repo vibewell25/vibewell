@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import data-table from '../data-table.tsx';
+
+describe('data-table', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<data-table />);
+    expect(container).toBeInTheDocument();
+  });
+});

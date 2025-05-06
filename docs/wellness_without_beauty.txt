@@ -1,0 +1,118 @@
+docs/archive/guides/implementation-files.md:### Wellness Content Update
+docs/archive/guides/implementation-files.md:- Copy `wellness-content-update.ts` to `src/utils/wellness.ts`
+docs/archive/guides/i18n-implementation.md:    "description": "Your wellness journey starts here"
+docs/archive/guides/admin-guide.md:### Managing Articles and Wellness Content
+docs/archive/guides/api-documentation.md:The VibeWell API is a RESTful API that allows developers to interact with the VibeWell platform programmatically. The API enables access to user data, wellness activities, progress tracking, and more.
+docs/archive/guides/api-documentation.md:### Wellness Activities
+docs/archive/guides/api-documentation.md:#### List Wellness Activities
+docs/archive/guides/api-documentation.md:Retrieves a paginated list of wellness activities.
+docs/archive/guides/api-documentation.md:Retrieves detailed information about a specific wellness activity.
+docs/archive/guides/api-documentation.md:Creates a new wellness activity (requires admin permissions).
+docs/archive/guides/api-documentation.md:Updates an existing wellness activity (requires admin permissions).
+docs/archive/guides/api-documentation.md:Deletes a wellness activity (requires admin permissions).
+docs/archive/guides/api-documentation.md:### Wellness Plans
+docs/archive/guides/api-documentation.md:Retrieves a list of available wellness plans.
+docs/archive/guides/api-documentation.md:Retrieves detailed information about a specific wellness plan.
+docs/archive/guides/api-documentation.md:Subscribes the current user to a wellness plan.
+docs/archive/guides/api-documentation.md:Retrieves the wellness plans subscribed to by the current user.
+docs/archive/guides/api-documentation.md:      "description": "Access to essential wellness content",
+docs/archive/guides/api-documentation.md:        "Basic wellness activities",
+docs/archive/guides/api-documentation.md:        "Limited wellness plans"
+docs/archive/guides/api-documentation.md:        "All wellness activities",
+docs/archive/guides/api-documentation.md:        "All wellness plans",
+docs/archive/guides/README.md:### Wellness Services
+docs/archive/guides/README.md:- **Wellness Programs**: Structured wellness and fitness program management
+docs/archive/guides/README.md:- **Health Tracking**: Client wellness journey and progress monitoring
+docs/archive/guides/README.md:- **Wellness Goals**: Goal setting and achievement tracking
+docs/archive/guides/README.md:- **Session Planning**: Customizable wellness session templates
+docs/archive/guides/README.md:- [Wellness Service Integration Guide](https://docs.vibewell.com/wellness)
+docs/archive/guides/state-management-guide.md:### Wellness Booking
+docs/archive/guides/state-management-guide.md:For booking wellness services, we use Redux for the complex multi-step flow:
+docs/archive/guides/state-management-guide.md:interface WellnessBookingState {
+docs/archive/guides/state-management-guide.md:  selectedService: WellnessService | null;
+docs/archive/guides/state-management-guide.md:  selectService: (service: WellnessService) => void;
+docs/archive/guides/state-management-guide.md:const wellnessBookingManager = createReduxStateManager<WellnessBookingState>({
+docs/archive/guides/feature-walkthroughs.md:2. Select service category (e.g., hair, nails, makeup, wellness)
+docs/docs/user-guide/index.md:6. [Wellness Content](#wellness-content)
+docs/docs/user-guide/index.md:   - Wellness content updates
+docs/docs/user-guide/index.md:## Wellness Content
+docs/docs/user-guide/index.md:Find and enjoy wellness resources:
+docs/docs/user-guide/index.md:1. Navigate to "Wellness Hub" from the main menu
+docs/docs/user-guide/index.md:   - Wellness articles
+docs/docs/user-guide/index.md:5. Track your wellness journey
+docs/docs/user-guide/index.md:Manage your wellness subscriptions:
+docs/docs/user-guide/index.md:   - Completing wellness content (20 points per item)
+docs/docs/security/legal-requirements-review.md:### Wellness Services
+docs/docs/security/legal-requirements-review.md:| UK | Healthcare Regulations | ✅ Compliant | Clear scope limitations for wellness services |
+docs/docs/architecture/system-architecture.md:- **Content**: Wellness content for users
+docs/docs/getting-started/SERVICE-SETUP-GUIDE.md:   - `provider`: For wellness service providers
+docs/docs/api/openapi.yaml:    The VibeWell API provides a RESTful interface for accessing and managing wellness data, 
+apps/web/src/components/home/Hero.tsx:          Your wellness journey starts here. Book appointments, join events, and discover new experiences.
+apps/web/src/components/home/category-navigation.tsx:  { label: 'Wellness', icon: <FaLeaf className="h-6 w-6" />, href: '/services?category=wellness' },
+apps/web/src/components/home/Testimonials.tsx:  { id: 1, author: 'Alice', text: 'VibeWell transformed my wellness journey!' },
+apps/web/src/components/home/benefits-section.tsx:  { title: '24/7 Support', desc: 'Always here to assist you on your wellness journey.' },
+apps/web/src/components/products/product-filters.tsx:  const productTypes = ['makeup', 'hairstyle', 'accessory', 'skincare', 'clothing', 'wellness'];
+apps/web/src/components/event-groups-networking.tsx:                          <p className="text-sm text-muted-foreground">Wellness Coach</p>
+apps/web/src/components/recommended-connections.tsx:    bio: 'Mental health advocate & wellness coach',
+apps/web/src/components/WellnessCategories.tsx:export default function WellnessCategories() {
+apps/web/src/components/WellnessCategories.tsx:    <section className="wellness-categories py-16">
+apps/web/src/components/WellnessCategories.tsx:      <h2 className="mb-6 text-center text-3xl font-bold">Wellness Categories</h2>
+apps/web/src/components/wellness/wellness-tracking.tsx:interface WellnessMetric {
+apps/web/src/components/wellness/wellness-tracking.tsx:interface WellnessData {
+apps/web/src/components/wellness/wellness-tracking.tsx:  metrics: WellnessMetric[];
+apps/web/src/components/wellness/wellness-tracking.tsx:export function WellnessTracking() {
+apps/web/src/components/wellness/wellness-tracking.tsx:  const [metrics, setMetrics] = useState<WellnessMetric[]>([]);
+apps/web/src/components/wellness/wellness-tracking.tsx:    const fetchWellnessData = async ( {
+apps/web/src/components/wellness/wellness-tracking.tsx:        const response = await fetch('/api/wellness/metrics');
+apps/web/src/components/wellness/wellness-tracking.tsx:          throw new Error('Failed to fetch wellness data');
+apps/web/src/components/wellness/wellness-tracking.tsx:        console?.error('Error fetching wellness data:', error);
+apps/web/src/components/wellness/wellness-tracking.tsx:        toast?.error('Failed to load wellness data');
+apps/web/src/components/wellness/wellness-tracking.tsx:    fetchWellnessData();
+apps/web/src/components/wellness/wellness-content-modal.tsx:import { WellnessContentEditor } from './WellnessContentEditor';
+apps/web/src/components/wellness/wellness-content-modal.tsx:interface WellnessContent {
+apps/web/src/components/wellness/wellness-content-modal.tsx:interface WellnessContentModalProps {
+apps/web/src/components/wellness/wellness-content-modal.tsx:  onSave: (content: WellnessContent) => void;
+apps/web/src/components/wellness/wellness-content-modal.tsx:  content?: WellnessContent;
+apps/web/src/components/wellness/wellness-content-modal.tsx:export function WellnessContentModal({
+apps/web/src/components/wellness/wellness-content-modal.tsx:}: WellnessContentModalProps) {
+apps/web/src/components/wellness/wellness-content-modal.tsx:        <WellnessContentEditor content={content} onSave={onSave} onCancel={onClose} />
+apps/web/src/components/wellness/wellness-content.tsx:export function WellnessContent() {
+apps/web/src/components/wellness/wellness-content.tsx:        const response = await fetch('/api/wellness/contents');
+apps/web/src/components/wellness/wellness-content.tsx:      const response = await fetch('/api/wellness/contents', {
+apps/web/src/components/wellness/wellness-content.tsx:      const response = await fetch(`/api/wellness/contents/${contentId}`, {
+apps/web/src/components/wellness/wellness-goals.tsx:export function WellnessGoals() {
+apps/web/src/components/wellness/wellness-goals.tsx:        const response = await fetch('/api/wellness/goals');
+apps/web/src/components/wellness/wellness-goals.tsx:      const response = await fetch('/api/wellness/goals', {
+apps/web/src/components/wellness/wellness-goals.tsx:      const response = await fetch(`/api/wellness/goals/${goalId}`, {
+apps/web/src/components/wellness/progress-charts.tsx:import { HabitLog, WellnessDay, GoalType } from '@/types/progress';
+apps/web/src/components/wellness/progress-charts.tsx:  wellnessDays: WellnessDay[];
+apps/web/src/components/wellness/progress-charts.tsx:  wellnessDays,
+apps/web/src/components/wellness/progress-charts.tsx:    const sortedDays = [...wellnessDays].sort(
+apps/web/src/components/wellness/progress-charts.tsx:  }, [wellnessDays]);
+apps/web/src/components/wellness/wellness-content-editor.tsx:// Define wellness content categories
+apps/web/src/components/wellness/wellness-content-editor.tsx:interface WellnessContent {
+apps/web/src/components/wellness/wellness-content-editor.tsx:interface WellnessContentEditorProps {
+apps/web/src/components/wellness/wellness-content-editor.tsx:  content?: WellnessContent;
+apps/web/src/components/wellness/wellness-content-editor.tsx:  onSave: (content: WellnessContent) => void;
+apps/web/src/components/wellness/wellness-content-editor.tsx:export function WellnessContentEditor({ content, onSave, onCancel }: WellnessContentEditorProps) {
+apps/web/src/components/wellness/wellness-content-editor.tsx:  const [formData, setFormData] = useState<WellnessContent>({
+apps/web/src/components/booking/booking-form.tsx:  { id: 'service1', name: 'Wellness Consultation', duration: 30, price: 50 },
+apps/web/src/components/business/forms/services-form.tsx:    { id: 'wellness', label: 'Wellness Therapies' },
+apps/web/src/components/business/forms/basic-info-form.tsx:    { value: 'spa', label: 'Spa & Wellness' },
+apps/web/src/components/business/forms/basic-info-form.tsx:    { value: 'wellness', label: 'Wellness Center' },
+apps/web/src/components/business/forms/service-form.tsx:      'Wellness Consultation',
+apps/web/src/components/business/business-profile-form.tsx:  category: 'spa' | 'salon' | 'wellness' | 'fitness';
+apps/web/src/components/business/business-filters.tsx:  { value: 'wellness', label: 'Wellness Center' },
+apps/web/src/components/navigation/main-navigation.tsx:  { label: 'Wellness', href: '/wellness', icon: <Activity className="h-4 w-4" /> },
+apps/web/src/components/footer.tsx:              Personalized wellness experiences connecting you with experts and content tailored to
+apps/web/src/components/footer.tsx:              your wellness journey.
+apps/web/src/components/testimonial-carousel.tsx:  { id: 1, author: 'Alice', text: 'VibeWell transformed my wellness journey!' },
+apps/web/src/components/__tests__/accessible-breadcrumb.test.tsx:    { label: 'Wellness', href: '/products/wellness' },
+apps/web/src/components/enhanced-header.tsx:  { name: 'Wellness', href: '/wellness' },
+apps/web/src/components/content-calendar/content-calendar-sidebar.tsx:          {['spring', 'summer', 'promotion', 'wellness', 'tips', 'product'].map((tag) => (
+apps/web/src/components/ar/virtual-wellness-room.tsx:const VirtualWellnessRoom: React?.FC<RoomProps> = ({
+apps/web/src/components/ar/virtual-wellness-room.tsx:  const { scene } = useGLTF('/models/wellness-room?.glb');
+apps/web/src/components/ar/virtual-wellness-room.tsx:export default VirtualWellnessRoom;
+apps/web/src/components/chat-bot.tsx:  content: "Hi! I'm VibeBot, your personal wellness assistant. How can I help you today?"
+apps/web/src/components/chat-bot.tsx:            <p className="text-xs text-pink-600">AI Wellness Assistant</p>
+apps/web/src/components/FeaturedEvents.tsx:    { id: 2, title: 'Spa and Wellness Fair', date: 'June 12, 2025' },

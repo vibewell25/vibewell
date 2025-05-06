@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import useProviderReviews from '../useProviderReviews.ts';
+
+describe('useProviderReviews', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<useProviderReviews />);
+    expect(container).toBeInTheDocument();
+  });
+});

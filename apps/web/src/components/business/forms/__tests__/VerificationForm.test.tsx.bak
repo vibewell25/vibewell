@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import verification-form from '../verification-form.tsx';
+
+describe('verification-form', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<verification-form />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -1,0 +1,80 @@
+{
+  "name": "VibeWell",
+  "short_name": "VibeWell",
+  "description": "Beauty and wellness booking platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172a",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192x192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-512x512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/mobile.jpg",
+      "sizes": "390x844",
+      "type": "image/jpeg",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshots/desktop.jpg",
+      "sizes": "1280x800",
+      "type": "image/jpeg",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Book Appointment",
+      "short_name": "Book",
+      "description": "Book a new beauty or wellness appointment",
+      "url": "/book",
+      "icons": [{ "src": "/icons/book.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "My Appointments",
+      "short_name": "Appointments",
+      "description": "View your upcoming appointments",
+      "url": "/appointments",
+      "icons": [{ "src": "/icons/calendar.png", "sizes": "96x96" }]
+    }
+  ],
+  "categories": ["beauty", "wellness", "health", "booking"],
+  "prefer_related_applications": false,
+  "handle_links": "preferred",
+  "scope": "/",
+  "lang": "en",
+  "dir": "ltr",
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  },
+  "id": "vibewell-pwa"
+} 

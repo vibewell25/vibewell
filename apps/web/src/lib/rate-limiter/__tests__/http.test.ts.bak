@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import http from '../http.ts';
+
+describe('http', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<http />);
+    expect(container).toBeInTheDocument();
+  });
+});

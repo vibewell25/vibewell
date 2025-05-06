@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import webxr-depth-sensing from '../webxr-depth-sensing.ts';
+
+describe('webxr-depth-sensing', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<webxr-depth-sensing />);
+    expect(container).toBeInTheDocument();
+  });
+});

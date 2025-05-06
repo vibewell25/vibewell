@@ -1,0 +1,39 @@
+/* Enhanced focus styles for better keyboard navigation */
+:focus-visible {
+  outline: 2px solid #0842A0;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(8, 66, 160, 0.25);
+}
+
+/* Skip link for keyboard users */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #0842A0;
+  color: white;
+  padding: 8px;
+  z-index: 100;
+  transition: top 0.3s;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Improved form field focus states */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  border-color: #0842A0;
+  box-shadow: 0 0 0 4px rgba(8, 66, 160, 0.25);
+  outline: none;
+}
+
+/* Button focus states */
+button:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid #0842A0;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(8, 66, 160, 0.25);
+}

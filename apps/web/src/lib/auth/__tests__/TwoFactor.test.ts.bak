@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import two-factor from '../two-factor.ts';
+
+describe('two-factor', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<two-factor />);
+    expect(container).toBeInTheDocument();
+  });
+});

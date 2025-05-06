@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import service.types from '../service.types.ts';
+
+describe('service.types', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<service.types />);
+    expect(container).toBeInTheDocument();
+  });
+});

@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: 'Redis'
+    orgId: 1
+    folder: 'Redis'
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: /var/lib/grafana/dashboards 

@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import appointments-create-logic from '../appointments-create-logic.ts';
+
+describe('appointments-create-logic', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<appointments-create-logic />);
+    expect(container).toBeInTheDocument();
+  });
+});

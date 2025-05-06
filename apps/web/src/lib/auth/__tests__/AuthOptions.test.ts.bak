@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import auth-options from '../auth-options.ts';
+
+describe('auth-options', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<auth-options />);
+    expect(container).toBeInTheDocument();
+  });
+});

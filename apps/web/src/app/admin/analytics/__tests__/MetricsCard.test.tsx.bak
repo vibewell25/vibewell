@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import metrics-card from '../metrics-card.tsx';
+
+describe('metrics-card', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<metrics-card />);
+    expect(container).toBeInTheDocument();
+  });
+});

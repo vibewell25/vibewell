@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import form-response-viewer from '../form-response-viewer.tsx';
+
+describe('form-response-viewer', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<form-response-viewer />);
+    expect(container).toBeInTheDocument();
+  });
+});

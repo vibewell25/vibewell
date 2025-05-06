@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import tree-shaker from '../tree-shaker.ts';
+
+describe('tree-shaker', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<tree-shaker />);
+    expect(container).toBeInTheDocument();
+  });
+});

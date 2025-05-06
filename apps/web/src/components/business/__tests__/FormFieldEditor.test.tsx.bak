@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import form-field-editor from '../form-field-editor.tsx';
+
+describe('form-field-editor', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<form-field-editor />);
+    expect(container).toBeInTheDocument();
+  });
+});

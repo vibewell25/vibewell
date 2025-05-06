@@ -1,0 +1,18 @@
+{
+  "backup": {
+    "schedule": "0 0 * * *",
+    "retentionDays": 30,
+    "locations": {
+      "local": "/backups/local",
+      "remote": "s3://backup-bucket"
+    },
+    "databases": {
+      "redis": true,
+      "postgres": true
+    },
+    "verification": {
+      "enabled": true,
+      "frequency": "daily"
+    }
+  }
+}

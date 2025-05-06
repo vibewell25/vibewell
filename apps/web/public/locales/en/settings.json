@@ -1,0 +1,32 @@
+{
+  "appearance": {
+    "title": "Appearance",
+    "theme": "Theme",
+    "themes": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
+  },
+  "language": {
+    "title": "Language",
+    "select": "Select Language"
+  },
+  "accessibility": {
+    "title": "Accessibility",
+    "fontSize": "Font Size",
+    "contrast": "High Contrast",
+    "reduceMotion": "Reduce Motion"
+  },
+  "privacy": {
+    "title": "Privacy",
+    "visibility": "Profile Visibility",
+    "dataSharing": "Data Sharing"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "marketing": "Marketing Emails",
+    "updates": "Product Updates",
+    "reminders": "Appointment Reminders"
+  }
+} 

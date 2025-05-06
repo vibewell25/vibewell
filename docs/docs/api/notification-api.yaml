@@ -1,0 +1,573 @@
+openapi: 3.0.0
+info:
+  title: Vibewell Notification API
+  description: API for managing user notifications
+  version: 1.0.0
+  contact:
+    name: Vibewell API Team
+    email: api@vibewell.com
+
+servers:
+  - url: https://api.vibewell.com/v1
+    description: Production server
+  - url: https://staging-api.vibewell.com/v1
+    description: Staging server
+  - url: http://localhost:3000/api
+    description: Local development server
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    NotificationType:
+      type: string
+      enum:
+        - booking_created
+        - booking_updated
+        - booking_cancelled
+        - booking_reminder
+        - payment_received
+        - payment_failed
+        - message_received
+        - system_update
+        - promotion
+      
+    NotificationStatus:
+      type: string
+      enum:
+        - unread
+        - read
+        - archived
+      
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the notification
+        userId:
+          type: string
+          description: ID of the user this notification belongs to
+        type:
+          $ref: '#/components/schemas/NotificationType'
+        title:
+          type: string
+          description: Notification title
+        message:
+          type: string
+          description: Notification content/message
+        status:
+          $ref: '#/components/schemas/NotificationStatus'
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Additional data related to the notification
+        createdAt:
+          type: string
+          format: date-time
+          description: When the notification was created
+        readAt:
+          type: string
+          format: date-time
+          description: When the notification was read by the user
+          nullable: true
+      required:
+        - id
+        - userId
+        - type
+        - title
+        - message
+        - status
+        - createdAt
+    
+    NotificationPreferences:
+      type: object
+      properties:
+        email:
+          type: object
+          properties:
+            booking_created:
+              type: boolean
+            booking_updated:
+              type: boolean
+            booking_cancelled:
+              type: boolean
+            booking_reminder:
+              type: boolean
+            payment_received:
+              type: boolean
+            payment_failed:
+              type: boolean
+            message_received:
+              type: boolean
+            system_update:
+              type: boolean
+            promotion:
+              type: boolean
+        push:
+          type: object
+          properties:
+            booking_created:
+              type: boolean
+            booking_updated:
+              type: boolean
+            booking_cancelled:
+              type: boolean
+            booking_reminder:
+              type: boolean
+            payment_received:
+              type: boolean
+            payment_failed:
+              type: boolean
+            message_received:
+              type: boolean
+            system_update:
+              type: boolean
+            promotion:
+              type: boolean
+        sms:
+          type: object
+          properties:
+            booking_created:
+              type: boolean
+            booking_updated:
+              type: boolean
+            booking_cancelled:
+              type: boolean
+            booking_reminder:
+              type: boolean
+            payment_received:
+              type: boolean
+            payment_failed:
+              type: boolean
+            message_received:
+              type: boolean
+            system_update:
+              type: boolean
+            promotion:
+              type: boolean
+      required:
+        - email
+        - push
+        - sms
+    
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        status:
+          type: integer
+          description: HTTP status code
+      required:
+        - error
+        - status
+
+paths:
+  /notifications:
+    get:
+      summary: Get all notifications
+      description: Retrieve user notifications with optional filtering
+      operationId: getNotifications
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          description: Filter by notification status
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/NotificationStatus'
+          style: form
+          explode: true
+        - name: type
+          in: query
+          description: Filter by notification type
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/NotificationType'
+          style: form
+          explode: true
+        - name: fromDate
+          in: query
+          description: Filter by created date range (from)
+          schema:
+            type: string
+            format: date
+        - name: toDate
+          in: query
+          description: Filter by created date range (to)
+          schema:
+            type: string
+            format: date
+        - name: page
+          in: query
+          description: Page number for pagination
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: Number of items per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: List of notifications
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Notification'
+                  status:
+                    type: integer
+                  success:
+                    type: boolean
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /notifications/unread/count:
+    get:
+      summary: Get unread notification count
+      description: Get the count of unread notifications for the current user
+      operationId: getUnreadCount
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Unread notification count
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      count:
+                        type: integer
+                        description: Number of unread notifications
+                  status:
+                    type: integer
+                  success:
+                    type: boolean
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /notifications/{id}/read:
+    put:
+      summary: Mark notification as read
+      description: Mark a specific notification as read
+      operationId: markAsRead
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Notification ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Notification marked as read
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Notification'
+                  status:
+                    type: integer
+                  success:
+                    type: boolean
+        '404':
+          description: Notification not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /notifications/read-all:
+    put:
+      summary: Mark all notifications as read
+      description: Mark all notifications as read for the current user
+      operationId: markAllAsRead
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: All notifications marked as read
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      success:
+                        type: boolean
+                      count:
+                        type: integer
+                        description: Number of notifications marked as read
+                  status:
+                    type: integer
+                  success:
+                    type: boolean
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /notifications/{id}/archive:
+    put:
+      summary: Archive notification
+      description: Archive a specific notification
+      operationId: archiveNotification
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Notification ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Notification archived
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Notification'
+                  status:
+                    type: integer
+                  success:
+                    type: boolean
+        '404':
+          description: Notification not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /notifications/{id}:
+    delete:
+      summary: Delete notification
+      description: Delete a specific notification
+      operationId: deleteNotification
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Notification ID
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Notification deleted successfully
+        '404':
+          description: Notification not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /notifications/preferences:
+    get:
+      summary: Get notification preferences
+      description: Get the current user's notification preferences
+      operationId: getPreferences
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User's notification preferences
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/NotificationPreferences'
+                  status:
+                    type: integer
+                  success:
+                    type: boolean
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    put:
+      summary: Update notification preferences
+      description: Update the current user's notification preferences
+      operationId: updatePreferences
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationPreferences'
+      responses:
+        '200':
+          description: Updated notification preferences
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/NotificationPreferences'
+                  status:
+                    type: integer
+                  success:
+                    type: boolean
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /notifications/push/subscribe:
+    post:
+      summary: Subscribe to push notifications
+      description: Subscribe to push notifications using the Push API
+      operationId: subscribeToPush
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subscription:
+                  type: string
+                  description: Stringified PushSubscription object
+      responses:
+        '200':
+          description: Successfully subscribed to push notifications
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      success:
+                        type: boolean
+                  status:
+                    type: integer
+                  success:
+                    type: boolean
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /notifications/push/unsubscribe:
+    post:
+      summary: Unsubscribe from push notifications
+      description: Unsubscribe from push notifications
+      operationId: unsubscribeFromPush
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subscription:
+                  type: string
+                  description: Stringified PushSubscription object
+      responses:
+        '200':
+          description: Successfully unsubscribed from push notifications
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      success:
+                        type: boolean
+                  status:
+                    type: integer
+                  success:
+                    type: boolean
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error' 

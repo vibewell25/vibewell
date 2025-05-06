@@ -1,0 +1,10 @@
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import React from 'react';
+import { render, screen } from '@testing-library/react';
+import review-form from '../review-form.tsx';
+
+describe('review-form', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<review-form />);
+    expect(container).toBeInTheDocument();
+  });
+});

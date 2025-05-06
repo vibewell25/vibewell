@@ -21,8 +21,8 @@ import {
   BeautyServiceDetailRouteProp,
   BeautyServiceDetails,
   Review
-from '../types/navigation';
-import { BeautyService } from '../types/beauty';
+from '@/types/navigation';
+import { BeautyService } from '@/types/beauty';
 import { getBeautyServiceById, getSimilarBeautyServices, getServiceReviews } from '../services/beautyService';
 import ReviewList from '../components/beauty/ReviewList';
 import BeautyReviewCard from '../components/beauty/BeautyReviewCard';

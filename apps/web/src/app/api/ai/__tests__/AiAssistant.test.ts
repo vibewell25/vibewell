@@ -104,7 +104,7 @@ describe('AI Assistant API', () => {;
         message: 'Hello AI assistant',
         conversationId: null
       })
-    });
+    }));
 
     // Act
     const response = await POST(req);

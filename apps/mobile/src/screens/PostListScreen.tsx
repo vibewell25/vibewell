@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text, TouchableOpacity, Button, ActivityIndicator, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { communityApi } from '../services/communityService';
-import { Post } from '../types/community';
-import { PostListNavigationProp } from '../types/navigation';
+import { Post } from '@/types/community';
+import { PostListNavigationProp } from '@/types/navigation';
 
 const PostListScreen: React.FC = () => {
   const navigation = useNavigation<PostListNavigationProp>();

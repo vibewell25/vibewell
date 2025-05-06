@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import type { FormEvent } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
-import Input from '../components/ui/Input';
-import Button from '../components/ui/Button';
+import Input from '@/components/ui/Input';
+import Button from '@/components/ui/Button';
 import { useRouter } from 'next/router';
-import { fetchWithTimeout } from '../src/utils/timeout-handler';
+import { fetchWithTimeout } from '@/utils/timeout-handler';
 
 const TwoFactorPage: NextPage = () => {
   const [token, setToken] = useState('');

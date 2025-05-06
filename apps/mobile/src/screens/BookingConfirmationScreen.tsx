@@ -18,13 +18,13 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import {
   BookingConfirmationNavigationProp,
   BookingConfirmationRouteProp
-from '../types/navigation';
+from '@/types/navigation';
 import { sendBookingConfirmation } from '../services/notificationService';
 import { addBookingToCalendar, getCalendarPermissions, requestCalendarPermissions } from '../services/calendarService';
-import { BookingResponse } from '../types/beauty';
+import { BookingResponse } from '@/types/beauty';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList, BookingConfirmationParams } from '../types/navigation';
+import { RootStackParamList, BookingConfirmationParams } from '@/types/navigation';
 import { theme } from '../styles/theme';
 
 const { width } = Dimensions.get('window');

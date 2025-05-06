@@ -175,7 +175,7 @@ describe('CalendarService', () => {
           externalEventId: 'mock-outlook-event-id',
         }),
       }));
-  });
+  }));
 
   describe('Calendar Event Management', () => {
     const mockCalendarEvent = {

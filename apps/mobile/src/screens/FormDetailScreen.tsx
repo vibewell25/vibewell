@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Button, ActivityIndicator, Alert, ScrollView, StyleSheet } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { FormDetailRouteProp, FormListNavigationProp } from '../types/navigation';
-import { FormDefinition } from '../types/forms';
+import { FormDetailRouteProp, FormListNavigationProp } from '@/types/navigation';
+import { FormDefinition } from '@/types/forms';
 import { formsApi } from '../services/formsService';
 
 const FormDetailScreen: React.FC = () => {

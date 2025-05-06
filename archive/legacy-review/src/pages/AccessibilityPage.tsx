@@ -1,10 +1,10 @@
 import React from 'react';
 import { useAccessibilityContext } from '../contexts/AccessibilityContext';
-import { Switch } from '../components/ui/Switch';
-import { Card } from '../components/ui/Card';
-import { Button } from '../components/ui/Button';
-import { LiveAnnouncer } from '../components/ui/accessibility/LiveAnnouncer';
-import { Announce } from '../components/ui/accessibility/LiveAnnouncer';
+import { Switch } from '@/components/ui/Switch';
+import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { LiveAnnouncer } from '@/components/ui/accessibility/LiveAnnouncer';
+import { Announce } from '@/components/ui/accessibility/LiveAnnouncer';
 
 const AccessibilityPage: React.FC = () => {
   const {

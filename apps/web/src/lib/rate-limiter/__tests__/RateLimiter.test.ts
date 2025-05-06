@@ -119,7 +119,7 @@ jest.mock('@/lib/rate-limiter', () => {
     },
     WebSocketRateLimiter: original.WebSocketRateLimiter,
   };
-});
+}));
 
 
 // Mock Next.js request/response

@@ -56,7 +56,7 @@ describe('User Preferences API Integration Tests', () => {;
     it('returns 404 if user preferences not found', async () => {
       // Mock user as authenticated
 
-      (getCurrentUser as jest.Mock).mockResolvedValue({ id: 'user-123' });
+      (getCurrentUser as jest.Mock).mockResolvedValue({ id: 'user-123' }));
 
       // Mock database response
       (prisma.userPreferences.findUnique as jest.Mock).mockResolvedValue(null);

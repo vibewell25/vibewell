@@ -1,9 +1,9 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import Card from '../components/ui/Card';
-import Button from '../components/ui/Button';
-import Input from '../components/ui/Input';
+import Card from '@/components/ui/Card';
+import Button from '@/components/ui/Button';
+import Input from '@/components/ui/Input';
 
 type Service = { id: string; name: string; price: number; duration: number };
 

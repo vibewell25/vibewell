@@ -18,7 +18,7 @@ import {
   BeautyBookingNavigationProp,
   BeautyBookingRouteProp,
   BeautyServiceDetails
-from '../types/navigation';
+from '@/types/navigation';
 import { createBooking, BookingRequest } from '../services/beautyService';
 import { beautyApi } from '../services/api';
 import { addBookingToCalendar } from '../services/calendarService';

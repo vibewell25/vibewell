@@ -19,7 +19,7 @@ describe('DocSearch', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
-  }});
+  }}));
 
   it('renders search input with placeholder', () => {
     customRender(<DocSearch />);

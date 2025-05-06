@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import communityApi from '../services/communityService';
-import { Post } from '../types/community';
-import { PostFormRouteProp, PostFormNavigationProp } from '../types/navigation';
+import { Post } from '@/types/community';
+import { PostFormRouteProp, PostFormNavigationProp } from '@/types/navigation';
 
 const PostFormScreen: React.FC = () => {
   const route = useRoute<PostFormRouteProp>();

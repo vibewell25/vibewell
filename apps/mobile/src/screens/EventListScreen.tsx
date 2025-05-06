@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text, TouchableOpacity, Button, ActivityIndicator, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import communityApi from '../services/communityService';
-import { CommunityEvent } from '../types/community';
-import { EventListNavigationProp } from '../types/navigation';
+import { CommunityEvent } from '@/types/community';
+import { EventListNavigationProp } from '@/types/navigation';
 
 const EventListScreen: React.FC = () => {
   const navigation = useNavigation<EventListNavigationProp>();

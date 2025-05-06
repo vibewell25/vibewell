@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { EquipmentItem } from '../types/equipment';
+import { EquipmentItem } from '@/types/equipment';
 import { equipmentApi } from '../services/equipmentService';
-import { EquipmentFormRouteProp, EquipmentFormNavigationProp } from '../types/navigation';
+import { EquipmentFormRouteProp, EquipmentFormNavigationProp } from '@/types/navigation';
 
 const EquipmentFormScreen: React.FC = () => {
   const route = useRoute<EquipmentFormRouteProp>();

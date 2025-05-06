@@ -3,21 +3,21 @@ import { GetServerSidePropsContext } from 'next';
 
 import { renderToString, renderToNodeStream } from 'react-dom/server';
 
-import SSROptimizer from '../utils/ssr-optimization';
+import SSROptimizer from '@/utils/ssr-optimization';
 
-import { performanceMonitor } from '../utils/performance-monitoring';
+import { performanceMonitor } from '@/utils/performance-monitoring';
 
-import { logger } from '../utils/logger';
+import { logger } from '@/utils/logger';
 
 jest.mock('ioredis');
 
 jest.mock('react-dom/server');
 
-jest.mock('../utils/caching');
+jest.mock('@/utils/caching');
 
-jest.mock('../utils/performance-monitoring');
+jest.mock('@/utils/performance-monitoring');
 
-jest.mock('../utils/logger');
+jest.mock('@/utils/logger');
 
 describe('SSROptimizer', () => {
   let ssrOptimizer: SSROptimizer;

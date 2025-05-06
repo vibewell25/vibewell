@@ -2,8 +2,8 @@ import sharp from 'sharp';
 import { createHash } from 'crypto';
 import { promises as fs } from 'fs';
 import path from 'path';
-import { ImageOptimizer } from '../types/image-optimization';
-import { ImageOptimizationStats } from '../types/monitoring';
+import { ImageOptimizer } from '@/types/image-optimization';
+import { ImageOptimizationStats } from '@/types/monitoring';
 import { performanceMonitor } from './performance-monitoring';
 
 /**

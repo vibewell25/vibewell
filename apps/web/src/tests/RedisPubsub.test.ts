@@ -1,13 +1,13 @@
 /* eslint-disable */import Redis from 'ioredis';
 
-import RedisPubSub from '../utils/redis-pubsub';
+import RedisPubSub from '@/utils/redis-pubsub';
 
-import { logger } from '../utils/logger';
+import { logger } from '@/utils/logger';
 import { EventEmitter } from 'events';
 
 jest.mock('ioredis');
 
-jest.mock('../utils/logger');
+jest.mock('@/utils/logger');
 
 const MockRedis = Redis as jest.Mocked<typeof Redis>;
 

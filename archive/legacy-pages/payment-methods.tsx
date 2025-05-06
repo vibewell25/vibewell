@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import type { FormEvent, FC } from 'react';
-import Button from '../components/ui/Button';
-import { fetchWithTimeout } from '../src/utils/timeout-handler';
+import Button from '@/components/ui/Button';
+import { fetchWithTimeout } from '@/utils/timeout-handler';
 
 const PaymentMethods: NextPage = () => {
   return (

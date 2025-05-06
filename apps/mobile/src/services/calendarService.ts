@@ -5,7 +5,7 @@ import * as Calendar from 'expo-calendar';
 
     import { Platform, Alert } from 'react-native';
 
-    import { BookingResponse } from '../types/beauty';
+    import { BookingResponse } from '@/types/beauty';
 import { calendarApi } from './api';
 
 /**

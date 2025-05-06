@@ -1,4 +1,4 @@
-import OfflineStorage from '../utils/offline-storage';
+import OfflineStorage from '@/utils/offline-storage';
 
     
     

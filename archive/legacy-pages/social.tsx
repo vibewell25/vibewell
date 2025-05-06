@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
-import { fetchWithTimeout } from '../src/utils/timeout-handler';
+import { fetchWithTimeout } from '@/utils/timeout-handler';
 
 type Comment = { id: string; content: string; };
 type Post = { id: string; content: string; comments: Comment[]; };

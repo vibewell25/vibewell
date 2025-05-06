@@ -24,7 +24,7 @@ const runTests = async ( {
   try {
     // Load test runner and required modules
 
-    const { createTestRunner } = await import('../utils/test-runner');
+    const { createTestRunner } = await import('@/utils/test-runner');
 
     const { Icons } = await import('../components/icons');
 

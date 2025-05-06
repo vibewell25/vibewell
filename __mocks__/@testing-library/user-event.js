@@ -36,6 +36,9 @@ const userEventMock = () => {
     isPointerMovementEvent: jest.fn().mockReturnValue(false),
     isPointerDownEvent: jest.fn().mockReturnValue(false),
     isPointerUpEvent: jest.fn().mockReturnValue(false)
+  };
+};
+
 // Export as both default export and named export to handle different import styles
 const setup = (options) => userEventMock();
 
@@ -43,3 +46,4 @@ module.exports = {
   __esModule: true,
   default: userEventMock,
   setup
+};

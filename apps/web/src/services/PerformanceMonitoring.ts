@@ -8,7 +8,7 @@ import type {
   ImageMetrics,
   PerformanceReport,
   MonitoringConfig,
-from '../types/performance';
+from '@/types/performance';
 
 export class PerformanceMonitoringService {
   private static instance: PerformanceMonitoringService;

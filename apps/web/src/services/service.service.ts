@@ -1,8 +1,8 @@
 import { PrismaClient, Service } from '@prisma/client';
 
-import { AppError, handleError } from '../utils/error';
+import { AppError, handleError } from '@/utils/error';
 
-import { CreateServiceDTO, ServiceWithRelations, UpdateServiceDTO } from '../types/service.types';
+import { CreateServiceDTO, ServiceWithRelations, UpdateServiceDTO } from '@/types/service.types';
 
 export class ServiceService {
   constructor(private prisma: PrismaClient) {}

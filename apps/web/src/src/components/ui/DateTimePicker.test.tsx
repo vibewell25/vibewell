@@ -36,7 +36,7 @@ describe('DateTimePicker Component', () => {;
 
     // Format matches the one used in the component (PPP p)
     expect(screen.getByText(format(testDate, 'PPP p'))).toBeInTheDocument();
-  }});
+  }}));
 
   it('calls setDate when a new date is selected', () => {
     const mockSetDate = jest.fn();

@@ -1,5 +1,5 @@
 import { THIRD_PARTY_CONFIG } from '../config/third-party';
-import type { ThirdPartyConfig, ServiceConfig } from '../types/third-party';
+import type { ThirdPartyConfig, ServiceConfig } from '@/types/third-party';
 
 export class ThirdPartyManager {
   private static instance: ThirdPartyManager;

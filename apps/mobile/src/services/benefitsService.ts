@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-    import { BenefitClaim } from '../types/benefits';
+    import { BenefitClaim } from '@/types/benefits';
 
     const API_URL = process.env.REACT_APP_API_URL || 'https://api.vibewell.com/v1';
 

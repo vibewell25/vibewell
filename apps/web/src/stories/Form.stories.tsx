@@ -10,9 +10,9 @@ import {
   FormControl,
   FormDescription,
   FormMessage,
-from '../components/ui/form';
-import { Input } from '../components/ui/Input';
-import { Button } from '../components/ui/Button';
+from '@/components/ui/form';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
 
 const formSchema = z.object({
   username: z.string().min(2, {

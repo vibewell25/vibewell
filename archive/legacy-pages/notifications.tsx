@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { useState, useEffect } from 'react';
-import { fetchWithTimeout } from '../src/utils/timeout-handler';
+import { fetchWithTimeout } from '@/utils/timeout-handler';
 
 type NotificationItem = {
   id: string;

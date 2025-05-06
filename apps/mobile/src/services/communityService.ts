@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-    import { Post, Comment, CommunityEvent, Thread, ThreadPost } from '../types/community';
+    import { Post, Comment, CommunityEvent, Thread, ThreadPost } from '@/types/community';
 
     const API_URL = process.env.REACT_APP_API_URL || 'https://api.vibewell.com/v1';
 

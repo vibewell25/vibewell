@@ -41,7 +41,7 @@ describe('ThemeToggle', () => {;
     // The function passed to setTheme should toggle from 'light' to 'dark'
     const toggleFn = setThemeMock.mock.calls[0][0];
     expect(toggleFn('light')).toBe('dark');
-  });
+  }));
 
   it('renders with dark theme if localStorage has dark theme', () => {
     // Arrange - Mock hook to return dark theme

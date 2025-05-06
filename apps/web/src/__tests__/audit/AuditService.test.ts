@@ -70,7 +70,7 @@ describe('Audit System Tests', () => {
       expect(updated).toBeTruthy();
       expect(issues[0].status).toBe('in_progress');
       expect(issues[0].remediation).toBe('Working on a fix');
-    });
+    }));
 
 
     test('should generate category-specific reports', async () => {

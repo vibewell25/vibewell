@@ -52,7 +52,7 @@ describe('Payment Intent API', () => {;
     expect(response.status).toBe(200);
     expect(data.clientSecret).toBe('cs_test_secret123456');
     expect(data.paymentIntentId).toBe('pi_test123456');
-  });
+  }));
 
   it('should validate payment amount', async () => {
     // Arrange

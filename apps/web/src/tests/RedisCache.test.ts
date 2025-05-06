@@ -1,12 +1,12 @@
 /* eslint-disable */import Redis from 'ioredis';
 
-import RedisCache from '../utils/redis-cache';
+import RedisCache from '@/utils/redis-cache';
 
-import { logger } from '../utils/logger';
+import { logger } from '@/utils/logger';
 
 jest.mock('ioredis');
 
-jest.mock('../utils/logger');
+jest.mock('@/utils/logger');
 
 jest.mock('node-gzip', () => ({
   gzip: jest.fn().mockImplementation((data) => Buffer.from(data)),
@@ -68,7 +68,7 @@ describe('RedisCache', () => {
 
       const result = await cache.delete('test-key');
       expect(result).toBe(true);
-    });
+    }));
 
     it('should check if a key exists', async () => {
       redis.exists.mockResolvedValue(1);

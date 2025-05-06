@@ -1,4 +1,4 @@
 
-import { MonitoringConfig } from '../types/monitoring';
+import { MonitoringConfig } from '@/types/monitoring';
 
 export {};

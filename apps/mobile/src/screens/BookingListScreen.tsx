@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, StyleSheet, TextInput, ScrollView } from 'react-native';
 import { fetchBookings } from '../services/bookingService';
-import { Booking } from '../types/booking';
+import { Booking } from '@/types/booking';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../types/navigation';
+import { RootStackParamList } from '@/types/navigation';
 
 type BookingListNavProp = StackNavigationProp<RootStackParamList, 'Bookings'>;
 

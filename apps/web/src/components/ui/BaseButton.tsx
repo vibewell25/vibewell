@@ -14,18 +14,26 @@ const buttonVariants = cva(
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
-size: {
-        sm: 'h-8 rounded-md px-3 text-xs',
-        md: 'h-9 rounded-md px-4 py-2',
-        lg: 'h-10 rounded-md px-6 py-2',
-        icon: 'h-9 w-9 p-0',
-fullWidth: {
-        true: 'w-full',
-        false: '',
-defaultVariants: {
-      variant: 'default',
-      size: 'md',
-      fullWidth: false,
+        size: {
+          sm: 'h-8 rounded-md px-3 text-xs',
+          md: 'h-9 rounded-md px-4 py-2',
+          lg: 'h-10 rounded-md px-6 py-2',
+          icon: 'h-9 w-9 p-0',
+        },
+        fullWidth: {
+          true: 'w-full',
+          false: '',
+        },
+      },
+      defaultVariants: {
+        variant: 'default',
+        size: 'md',
+        fullWidth: false,
+      }
+    },
+  },
+);
+
 export interface BaseButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'>,
     VariantProps<typeof buttonVariants> {
@@ -37,6 +45,8 @@ export interface BaseButtonProps
   iconClassName?: string;
   wrapperClassName?: string;
   children?: React.ReactNode;
+}
+
 /**
  * BaseButton - A foundational button component that can be extended by other button components
  *
@@ -67,7 +77,8 @@ export const BaseButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
       disabled,
       children,
       ...props
-ref,
+    },
+    ref
   ) => {
     // If button is a child component
     const Comp = asChild ? Slot : 'button';
@@ -97,12 +108,17 @@ ref,
           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
         ></path>
       </svg>
-// Render the content
+    );
+
+    // Render the content
     const renderContent = () => {
       if (isLoading && loadingText) {
         return loadingText;
-return children;
-return (
+      }
+      return children;
+    };
+
+    return (
       <div className={cn(fullWidth && 'w-full', wrapperClassName)}>
         <Comp
           className={cn(buttonVariants({ variant, size, fullWidth, className }))}
@@ -116,6 +132,10 @@ return (
           {rightIcon && <span className={cn('ml-2', iconClassName)}>{rightIcon}</span>}
         </Comp>
       </div>
+    );
+  }
+);
+
 BaseButton.displayName = 'BaseButton';
 
 export { buttonVariants };

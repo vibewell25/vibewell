@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Button, Alert } from 'react-native';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../types/navigation';
+import { RootStackParamList } from '@/types/navigation';
 
 type ProviderDetailRouteProp = RouteProp<RootStackParamList, 'ProviderDetail'>;
 

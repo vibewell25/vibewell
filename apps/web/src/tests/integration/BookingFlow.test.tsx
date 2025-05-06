@@ -65,7 +65,7 @@ describe('Booking Flow Integration', () => {
     // Step 1: Select a service
     await waitFor(() => {
       expect(screen.getByText('Select a Service')).toBeInTheDocument();
-    });
+    }));
 
     const serviceCard = screen.getByTestId('service-card-1');
     await userEvent.click(serviceCard);

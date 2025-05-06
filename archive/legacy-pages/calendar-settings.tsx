@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import type { NextPage } from 'next';
 import type { ChangeEvent } from 'react';
-import Button from '../components/ui/Button';
-import Card from '../components/ui/Card';
-import { fetchWithTimeout } from '../src/utils/timeout-handler';
+import Button from '@/components/ui/Button';
+import Card from '@/components/ui/Card';
+import { fetchWithTimeout } from '@/utils/timeout-handler';
 
 const CalendarSettings: NextPage = () => {
   const [file, setFile] = useState<File | null>(null);

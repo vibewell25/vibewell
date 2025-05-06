@@ -1,7 +1,7 @@
 import Redis, { RedisOptions } from 'ioredis';
 import { performance } from 'perf_hooks';
 
-import { logger } from '../utils/logger';
+import { logger } from '@/utils/logger';
 
 interface BenchmarkOptions {
   operations?: number;

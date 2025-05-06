@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { SkinAnalysisResultRouteProp } from '../types/navigation';
+import { SkinAnalysisResultRouteProp } from '@/types/navigation';
 import { useTheme } from '../contexts/ThemeContext';
 
 const SkinAnalysisResultScreen: React.FC = () => {

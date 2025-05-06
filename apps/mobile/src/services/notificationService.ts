@@ -7,7 +7,7 @@ import * as Notifications from 'expo-notifications';
 
     import { Platform } from 'react-native';
 
-    import { BookingResponse } from '../types/beauty';
+    import { BookingResponse } from '@/types/beauty';
 
 // Import the enum for trigger types
 

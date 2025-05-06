@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { ProviderFormRouteProp, ProviderFormNavigationProp } from '../types/navigation';
+import { ProviderFormRouteProp, ProviderFormNavigationProp } from '@/types/navigation';
 import { createProvider, updateProvider } from '../services/providerService';
 
 const ProviderFormScreen: React.FC = () => {

@@ -103,7 +103,7 @@ describe('ProductAnalytics', () => {;
         name: 'Test Product',
         category: 'Wellness',
       },
-    });
+    }));
 
     (
       jest.requireMock('@/services/product-service').ProductService as jest.Mock

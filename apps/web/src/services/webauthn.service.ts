@@ -8,7 +8,7 @@ import {
   type RegistrationResponseJSON,
 from '@simplewebauthn/server';
 
-import { AppError, handleError } from '../utils/error';
+import { AppError, handleError } from '@/utils/error';
 
 import { env } from '../config/env';
 

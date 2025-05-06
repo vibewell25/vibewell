@@ -1,39 +1,53 @@
 import dynamic from 'next/dynamic';
 import { ComponentType, FC, lazy, Suspense, PropsWithChildren } from 'react';
 import type { DynamicOptionsLoadingProps } from 'next/dynamic';
+import { logger, PreloadConfig } from './shared';
 
-// Import performance utilities if they exist
+// Default utility placeholders - will be replaced at runtime if available
 let withPerformanceTracking = (component: any, _name?: string) => component;
-let ComponentPreloader: any = { getInstance: () => ({ registerComponent: () => {} }) };
+let ComponentPreloader: { getInstance: () => { registerComponent: (name: string, config: any) => void } } = {
+  getInstance: () => ({ registerComponent: () => {} })
+};
 
-// Try to dynamically import performance utilities
-try {
-  // @ts-expect-error - Dynamic imports
-  const { withPerformanceTracking: perfTracking } = require('./performanceMonitor');
-  // @ts-expect-error - Dynamic imports
-  const Preloader = require('./componentPreloader').default;
-  
-  withPerformanceTracking = perfTracking;
-  ComponentPreloader = Preloader;
-catch (e) {
-  // Ignore imports if modules don't exist
-  console.debug('Performance tracking utilities not available');
+// Dynamically import performance utilities without circular dependencies
+if (typeof window !== 'undefined') {
+  // Use dynamic import to avoid circular dependencies
+  import('./performanceMonitor')
+    .then(module => {
+      if (module.withPerformanceTracking) {
+        withPerformanceTracking = module.withPerformanceTracking;
+      }
+    })
+    .catch(e => {
+      logger.debug('Performance monitoring not available', e);
+    });
+
+  // Import component preloader without circular dependencies
+  import('./ComponentPreloader')
+    .then(module => {
+      if (module.default) {
+        ComponentPreloader = module.default;
+      }
+    })
+    .catch(e => {
+      logger.debug('Component preloader not available', e);
+    });
+}
+
 /**
  * Unified Dynamic Import Utilities
  * 
- * This module provides a comprehensive approach to dynamic imports in Next.js,
- * combining functionality from:
- * - src/utils/dynamicImport.ts
- * - src/utils/dynamicImports.tsx
- * - src/utils/dynamic-import.ts
+ * This module provides a comprehensive approach to dynamic imports in Next.js
  */
 
-// Common loading component - import from your UI library
+// Common loading component
 const DefaultLoadingComponent: FC = () => (
   <div className="flex h-full items-center justify-center">
     <div className="border-primary h-8 w-8 animate-spin rounded-full border-b-2"></div>
     <span className="sr-only">Loading...</span>
   </div>
+);
+
 // Type definitions
 export interface DynamicImportOptions {
   loading?: ComponentType<DynamicOptionsLoadingProps>;
@@ -45,11 +59,14 @@ export interface DynamicImportOptions {
     userAction?: string;
     timeOnPage?: number;
     scrollDepth?: number;
-trackPerformance?: boolean;
+  };
+  trackPerformance?: boolean;
+}
+
 export type DynamicImportModule<T> = Promise<{
   default: ComponentType<T>;
   [key: string]: ComponentType<T> | any;
->;
+}>;
 
 /**
  * Next.js dynamic import with expanded options
@@ -64,7 +81,7 @@ export function dynamicImport<T>(
     suspense = false, 
     trackPerformance = false,
     preloadConfig,
-= options;
+  } = options;
   
   // Add preload config if available
   if (preloadConfig) {
@@ -74,16 +91,24 @@ export function dynamicImport<T>(
     preloader.registerComponent(componentName, {
       component: importFn,
       conditions: preloadConfig,
-// Use Next.js dynamic import
+    });
+  }
+  
+  // Use Next.js dynamic import
   const DynamicComponent = dynamic(
     () => importFn().then((mod) => mod.default), 
     {
       loading,
       ssr,
       suspense,
-return trackPerformance 
+    }
+  );
+
+  return trackPerformance 
     ? withPerformanceTracking(DynamicComponent, importFn.toString())
     : DynamicComponent;
+}
+
 /**
  * React.lazy implementation with Suspense fallback
  */
@@ -102,13 +127,20 @@ export function dynamicImportWithSuspense<T>(
     preloader.registerComponent(componentName, {
       component: importFn,
       conditions: options.preloadConfig,
-const SuspenseWrapper: FC<PropsWithChildren<T>> = (props: any) => (
+    });
+  }
+  
+  const SuspenseWrapper: FC<PropsWithChildren<T>> = (props: any) => (
     <Suspense fallback={<LoadingComponent />}>
       <LazyComponent {...props} />
     </Suspense>
-return options.trackPerformance 
+  );
+  
+  return options.trackPerformance 
     ? withPerformanceTracking(SuspenseWrapper, importFn.toString())
     : SuspenseWrapper;
+}
+
 /**
  * Helper for dynamically importing any module
  */
@@ -116,6 +148,8 @@ export function importModule<T = any>(
   importFn: () => Promise<T>,
 ): Promise<T> {
   return importFn();
+}
+
 /**
  * Utility for client-side only components
  */
@@ -124,6 +158,8 @@ export function clientOnly<T>(
   options: Omit<DynamicImportOptions, 'ssr'> = {},
 ) {
   return dynamicImport<T>(importFn, { ...options, ssr: false });
+}
+
 /**
  * Utility for SSR-enabled components
  */
@@ -132,6 +168,8 @@ export function ssrEnabled<T>(
   options: Omit<DynamicImportOptions, 'ssr'> = {},
 ) {
   return dynamicImport<T>(importFn, { ...options, ssr: true });
+}
+
 /**
  * Utility for components with custom loading state
  */
@@ -141,6 +179,8 @@ export function withLoading<T>(
   options: Omit<DynamicImportOptions, 'loading'> = {},
 ) {
   return dynamicImport<T>(importFn, { ...options, loading: LoadingComponent });
+}
+
 /**
  * Helper function to create dynamic imports with consistent configuration
  * and performance tracking
@@ -153,10 +193,15 @@ export function createDynamicComponent<T>(
   const normalizedImportFn = async () => {
     const mod = await importFn();
     return { default: 'default' in mod ? mod.default : Object.values(mod)[0] };
-// Apply performance tracking by default
+  };
+  
+  // Apply performance tracking by default
   return dynamicImport(normalizedImportFn, {
     ...options,
     trackPerformance: true,
+  });
+}
+
 // For backwards compatibility
 export { dynamicImport as lazyLoad };
 export default dynamicImport; 

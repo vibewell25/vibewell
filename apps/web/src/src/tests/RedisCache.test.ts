@@ -1,12 +1,12 @@
 /* eslint-disable */import Redis from 'ioredis';
 
-import RedisCache from '../utils/redis-cache';
+import RedisCache from '@/utils/redis-cache';
 
-import { logger } from '../utils/logger';
+import { logger } from '@/utils/logger';
 
 jest.mock('ioredis');
 
-jest.mock('../utils/logger');
+jest.mock('@/utils/logger');
 
 jest.mock('node-gzip', () => ({
   gzip: jest.fn().mockImplementation((data) => Buffer.from(data)),
@@ -40,7 +40,7 @@ describe('RedisCache', () => {
       const value = { foo: 'bar' };
 
       redis.set.mockResolvedValue('OK');
-      redis.get.mockResolvedValue(JSON.stringify(value});
+      redis.get.mockResolvedValue(JSON.stringify(value}));
 
       await cache.set(key, value);
       const result = await cache.get<typeof value>(key);

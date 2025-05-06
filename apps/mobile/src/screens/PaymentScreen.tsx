@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Button, ActivityIndicator, Alert, Linking } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { PaymentRouteProp } from '../types/navigation';
+import { PaymentRouteProp } from '@/types/navigation';
 import { createCheckoutSession } from '../services/paymentService';
 
 const PaymentScreen: React.FC = () => {

@@ -2,7 +2,7 @@ import Booking from '../models/Booking';
 
     import asyncHandler from '../middleware/async';
 
-    import ErrorResponse from '../utils/errorResponse';
+    import ErrorResponse from '@/utils/errorResponse';
 
 // @desc    Get all bookings
 

@@ -57,7 +57,7 @@ describe('AuthProvider', () => {;
 
   afterEach(() => {
     jest.restoreAllMocks();
-  });
+  }));
 
   it('provides initial authentication state', () => {
     render(

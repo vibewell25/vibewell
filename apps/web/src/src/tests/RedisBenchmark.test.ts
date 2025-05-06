@@ -2,11 +2,11 @@
 
 import RedisBenchmark from '../config/redis-benchmark';
 
-import { logger } from '../utils/logger';
+import { logger } from '@/utils/logger';
 
 jest.mock('ioredis');
 
-jest.mock('../utils/logger');
+jest.mock('@/utils/logger');
 
 const MockRedis = Redis as jest.MockedClass<typeof Redis>;
 
@@ -68,7 +68,7 @@ describe('RedisBenchmark', () => {
       expect(hsetResult.opsPerSecond).toBeGreaterThan(0);
       expect(hsetResult.averageLatency).toBeGreaterThan(0);
       expect(mockRedis.hset).toHaveBeenCalledTimes(mockConfig.operations);
-    }});
+    });
 
   describe('Pipeline Operations', () => {;
     it('should run pipeline benchmark', async () => {
@@ -107,68 +107,75 @@ describe('RedisBenchmark', () => {
 
     it('should handle parallel operation errors', async () => {
       const mockRedis = new MockRedis() as jest.Mocked<Redis>;
-      mockRedis.set = jest.fn().mockRejectedValue(new Error('Connection error'});
+      mockRedis.set = jest.fn().mockRejectedValue(new Error('Connection error'));
       MockRedis.mockImplementation(() => mockRedis);
 
       await expect(benchmark.runParallelBenchmark(mockConfig)).rejects.toThrow('Connection error');
       expect(logger.error).toHaveBeenCalled();
-    }});
+    });
 
-  describe('Cleanup', () => {;
-    it('should cleanup resources after benchmark', async () => {
+  describe('Cleanup', () => {
+    it('should clean up Redis data after benchmark', async () => {
       const mockRedis = new MockRedis() as jest.Mocked<Redis>;
       mockRedis.flushdb = jest.fn().mockResolvedValue('OK');
-      mockRedis.quit = jest.fn().mockResolvedValue('OK');
       MockRedis.mockImplementation(() => mockRedis);
 
-      await benchmark.cleanup();
-
+      await benchmark.cleanupRedis();
       expect(mockRedis.flushdb).toHaveBeenCalled();
-      expect(mockRedis.quit).toHaveBeenCalled();
+      expect(logger.info).toHaveBeenCalledWith('Benchmark data cleaned up');
     });
 
     it('should handle cleanup errors', async () => {
       const mockRedis = new MockRedis() as jest.Mocked<Redis>;
-      mockRedis.flushdb = jest.fn().mockRejectedValue(new Error('Cleanup error'});
+      mockRedis.flushdb = jest.fn().mockRejectedValue(new Error('Cleanup error'));
       MockRedis.mockImplementation(() => mockRedis);
 
-      await benchmark.cleanup();
-
+      await benchmark.cleanupRedis();
       expect(logger.error).toHaveBeenCalledWith(
         'Error during benchmark cleanup:',
-        expect.any(Error),
+        expect.any(Error)
+      );
+    });
+  });
 
-    }});
+  describe('Results Formatting', () => {
+    it('should format benchmark results correctly', () => {
+      const mockResults = new Map();
+      mockResults.set('GET', {
+        opsPerSecond: 10000,
+        averageLatency: 1.5,
+        p50Latency: 1.2,
+        p95Latency: 2.3,
+        p99Latency: 3.5
+      });
+      mockResults.set('SET', {
+        opsPerSecond: 8000,
+        averageLatency: 2.0,
+        p50Latency: 1.8,
+        p95Latency: 3.0,
+        p99Latency: 4.5
+      });
 
-  describe('Results Reporting', () => {;
-    it('should format results correctly', async () => {
-      const mockRedis = new MockRedis() as jest.Mocked<Redis>;
-      mockRedis.set = jest.fn().mockResolvedValue('OK');
-      MockRedis.mockImplementation(() => mockRedis);
-
-      const results = await benchmark.runBenchmark(mockConfig);
-      const formattedResults = benchmark.getResults();
-
-      expect(formattedResults).toBeInstanceOf(Map);
-      expect(formattedResults.size).toBeGreaterThan(0);
-      formattedResults.forEach((result) => {
-        expect(result).toHaveProperty('operation');
-        expect(result).toHaveProperty('opsPerSecond');
-        expect(result).toHaveProperty('averageLatency');
-        expect(result).toHaveProperty('p95Latency');
-        expect(result).toHaveProperty('p99Latency');
-      }});
+      const formatted = benchmark.formatResults(mockResults);
+      expect(formatted).toContain('Benchmark Results');
+      expect(formatted).toContain('GET');
+      expect(formatted).toContain('SET');
+      expect(formatted).toContain('10000 ops/sec');
+      expect(formatted).toContain('8000 ops/sec');
+    });
 
     it('should print results to console', async () => {
       const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
-      const mockRedis = new MockRedis() as jest.Mocked<Redis>;
-      mockRedis.set = jest.fn().mockResolvedValue('OK');
-      MockRedis.mockImplementation(() => mockRedis);
+      const mockResults = new Map();
+      mockResults.set('GET', {
+        opsPerSecond: 10000,
+        averageLatency: 1.5
+      });
 
-      await benchmark.runBenchmark(mockConfig);
-      benchmark.printResults();
-
-      expect(consoleSpy).toHaveBeenCalledWith('\nRedis Benchmark Results:');
+      benchmark.printResults(mockResults);
+      expect(consoleSpy).toHaveBeenCalledWith('Benchmark Results');
       expect(consoleSpy).toHaveBeenCalledWith('========================\n');
       consoleSpy.mockRestore();
-    }}});
+    });
+  });
+});

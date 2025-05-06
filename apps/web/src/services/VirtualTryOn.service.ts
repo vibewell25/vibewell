@@ -1,6 +1,6 @@
 import { PrismaClient, TryOnStatus } from '@prisma/client';
 
-import { uploadImage, processImage } from '../utils/image-processing';
+import { uploadImage, processImage } from '@/utils/image-processing';
 
 const prisma = new PrismaClient();
 

@@ -1,31 +1,23 @@
-/* eslint-disable */import { NextRequest } from 'next/server';
+/* eslint-disable */
+import { NextRequest } from 'next/server';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-
-
 
 import * as authHooks from '@/hooks/useAuth';
 import {
   GET as getUserPreferencesRoute,
   PUT as updateUserPreferencesRoute,
-
-
 } from '@/app/api/user/preferences/route';
 
 // Import the UserRole from the correct location
-
-
 import { UserRole } from '@/contexts/unified-auth-context';
 
 // Mock the auth hooks
-
-
 vi.mock('@/hooks/useAuth', () => ({
   isAuthenticated: vi.fn(),
   getAuthState: vi.fn(),
 }));
 
 // Mock the prisma client
-
 vi.mock('@/lib/prisma', () => ({
   prisma: {
     userPreference: {
@@ -37,7 +29,6 @@ vi.mock('@/lib/prisma', () => ({
 }));
 
 // Mock the logger
-
 vi.mock('@/utils/logger', () => ({
   logger: {
     info: vi.fn(),
@@ -47,7 +38,6 @@ vi.mock('@/utils/logger', () => ({
 }));
 
 describe('User Preferences API endpoints', () => {
-
   const mockUser = { id: 'user-1', email: 'user@example.com' };
 
   beforeEach(() => {
@@ -60,15 +50,12 @@ describe('User Preferences API endpoints', () => {
       isAuthenticated: true,
       session: {},
       userRole: UserRole.USER,
-    }));
+    });
+  });
 
-
-
-  describe('GET /api/user/preferences', () => {;
+  describe('GET /api/user/preferences', () => {
     it('returns 401 when not authenticated', async () => {
       vi.mocked(authHooks.isAuthenticated).mockResolvedValue(false);
-
-
 
       const request = new NextRequest('http://localhost/api/user/preferences');
       const response = await getUserPreferencesRoute(request);
@@ -85,8 +72,6 @@ describe('User Preferences API endpoints', () => {
         userRole: UserRole.USER,
       });
 
-
-
       const request = new NextRequest('http://localhost/api/user/preferences');
       const response = await getUserPreferencesRoute(request);
 
@@ -95,16 +80,13 @@ describe('User Preferences API endpoints', () => {
     });
 
     it('returns empty preferences when none exist', async () => {
-      vi.mocked(vi.mocked(authHooks.getAuthState).mock.results[0].value.user.id);
-
-
-
       const request = new NextRequest('http://localhost/api/user/preferences');
       const response = await getUserPreferencesRoute(request);
       const responseData = await response.json();
 
       expect(response.status).toBe(200);
-      expect(responseData).toHaveProperty('preferences', {}));
+      expect(responseData).toHaveProperty('preferences', {});
+    });
 
     it('returns formatted preferences from database', async () => {
       const mockPreferences = [
@@ -114,11 +96,8 @@ describe('User Preferences API endpoints', () => {
       ];
 
       // Use function form to access the mocked module
-
       const { prisma } = await import('@/lib/prisma');
       vi.mocked(prisma.userPreference.findMany).mockResolvedValue(mockPreferences);
-
-
 
       const request = new NextRequest('http://localhost/api/user/preferences');
       const response = await getUserPreferencesRoute(request);
@@ -129,19 +108,15 @@ describe('User Preferences API endpoints', () => {
       expect(responseData.preferences).toHaveProperty('theme', 1.0);
       expect(responseData.preferences).toHaveProperty('fontSize', 0.5);
       expect(responseData.preferences).toHaveProperty('emailNotifications', 1.0);
-    }));
+    });
+  });
 
-
-
-  describe('PUT /api/user/preferences', () => {;
+  describe('PUT /api/user/preferences', () => {
     it('validates input data', async () => {
-
-
       const request = new NextRequest('http://localhost/api/user/preferences', {
         method: 'PUT',
         body: JSON.stringify({
           preferences: {
-
             theme: 'invalid-theme', // Should be light, dark, or system
           },
         }),
@@ -161,8 +136,6 @@ describe('User Preferences API endpoints', () => {
         emailNotifications: true,
       };
 
-
-
       const request = new NextRequest('http://localhost/api/user/preferences', {
         method: 'PUT',
         body: JSON.stringify({
@@ -171,7 +144,6 @@ describe('User Preferences API endpoints', () => {
       });
 
       // Use function form to access the mocked module
-
       const { prisma } = await import('@/lib/prisma');
       vi.mocked(prisma.userPreference.deleteMany).mockResolvedValue({ count: 3 });
       vi.mocked(prisma.userPreference.createMany).mockResolvedValue({ count: 3 });
@@ -194,15 +166,14 @@ describe('User Preferences API endpoints', () => {
           expect.objectContaining({ userId: mockUser.id, category: 'fontSize' }),
           expect.objectContaining({ userId: mockUser.id, category: 'emailNotifications' }),
         ]),
-      }));
+      });
+    });
 
     it('handles boolean preferences correctly', async () => {
       const mockPreferencesData = {
         reducedMotion: true,
         highContrast: false,
       };
-
-
 
       const request = new NextRequest('http://localhost/api/user/preferences', {
         method: 'PUT',
@@ -212,7 +183,6 @@ describe('User Preferences API endpoints', () => {
       });
 
       // Use function form to access the mocked module
-
       const { prisma } = await import('@/lib/prisma');
       vi.mocked(prisma.userPreference.deleteMany).mockResolvedValue({ count: 2 });
       vi.mocked(prisma.userPreference.createMany).mockResolvedValue({ count: 2 });
@@ -233,14 +203,13 @@ describe('User Preferences API endpoints', () => {
             weight: 0.0, // false = 0.0
           }),
         ]),
-      }));
+      });
+    });
 
     it('handles arrays in preferences', async () => {
       const mockPreferencesData = {
         contentCategories: ['yoga', 'wellness'],
       };
-
-
 
       const request = new NextRequest('http://localhost/api/user/preferences', {
         method: 'PUT',
@@ -250,7 +219,6 @@ describe('User Preferences API endpoints', () => {
       });
 
       // Use function form to access the mocked module
-
       const { prisma } = await import('@/lib/prisma');
       vi.mocked(prisma.userPreference.deleteMany).mockResolvedValue({ count: 1 });
       vi.mocked(prisma.userPreference.createMany).mockResolvedValue({ count: 1 });
@@ -266,5 +234,7 @@ describe('User Preferences API endpoints', () => {
             weight: 0.5,
           }),
         ]),
-      }));
-  }));
+      });
+    });
+  });
+});

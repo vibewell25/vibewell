@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text, TouchableOpacity, ActivityIndicator, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { InventoryItem } from '../types/inventory';
+import { InventoryItem } from '@/types/inventory';
 import { inventoryApi } from '../services/inventoryService';
-import { InventoryListNavigationProp } from '../types/navigation';
+import { InventoryListNavigationProp } from '@/types/navigation';
 
 const InventoryListScreen: React.FC = () => {
   const navigation = useNavigation<InventoryListNavigationProp>();

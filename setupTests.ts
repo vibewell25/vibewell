@@ -1,162 +1,99 @@
 import '@testing-library/jest-dom';
 import { TextEncoder, TextDecoder } from 'util';
-
-    import { setupServer } from 'msw/node';
-import { http, HttpResponse } from 'msw';
 import React from 'react';
 
 // Add TextEncoder and TextDecoder to global scope for Jest
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder as any;
 
-// Setup MSW server for API mocking
-const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+// Setup basic fetch mocking
+const originalFetch = global.fetch;
 
-export const handlers = [
+// Simple response factory
+const createResponse = (body: any, status = 200) => {
+  return Promise.resolve({
+    ok: status >= 200 && status < 300,
+    status,
+    json: () => Promise.resolve(body),
+    text: () => Promise.resolve(JSON.stringify(body)),
+    headers: new Headers(),
+  } as Response);
+};
+
+// Mock API responses
+const mockApiResponses: Record<string, (req: Request) => Promise<Response>> = {
   // Health endpoint
+  'GET /api/health': () => 
+    createResponse({ status: 'healthy', timestamp: Date.now() }),
 
-    http.get(`${baseUrl}/api/health`, () => {
-    return HttpResponse.json(
-      { status: 'healthy', timestamp: Date.now() },
-      { status: 200 }
-),
-
-  // Mock login endpoint
-
-    http.post(`${baseUrl}/api/auth/login`, ({ request }) => {
-    const headers = request.headers;
-
+  // Login endpoint
+  'POST /api/auth/login': (req) => {
+    const headers = req.headers;
     if (headers.get('x-rate-limit-test') === 'exceed') {
-      return HttpResponse.json(
-        { error: 'Too many requests', retryAfter: 60 },
-        { status: 429 }
-return HttpResponse.json(
+      return createResponse({ error: 'Too many requests', retryAfter: 60 }, 429);
+    }
+    return createResponse({ success: true, token: 'mock-token' });
+  },
 
-    { success: true, token: 'mock-token' },
-      { status: 200 }
-),
-
-  // Mock password reset endpoint
-
-    http.post(`${baseUrl}/api/auth/reset-password`, ({ request }) => {
-    const headers = request.headers;
-
+  // Password reset endpoint
+  'POST /api/auth/reset-password': (req) => {
+    const headers = req.headers;
     if (headers.get('x-rate-limit-test') === 'exceed') {
-      return HttpResponse.json(
-        { error: 'Too many requests', retryAfter: 60 },
-        { status: 429 }
-return HttpResponse.json(
-      { success: true, message: 'Password reset email sent' },
-      { status: 200 }
-),
+      return createResponse({ error: 'Too many requests', retryAfter: 60 }, 429);
+    }
+    return createResponse({ success: true, message: 'Password reset email sent' });
+  },
 
-  // Mock providers endpoint
+  // Providers endpoint
+  'GET /api/providers': () => 
+    createResponse({
+      providers: [
+        { id: 'provider1', name: 'Provider 1' },
+        { id: 'provider2', name: 'Provider 2' }
+      ]
+    }),
 
-    http.get(`${baseUrl}/api/providers`, () => {
-    return HttpResponse.json(
-      {
-        providers: [
-          { id: 'provider1', name: 'Provider 1' },
-          { id: 'provider2', name: 'Provider 2' }
-        ]
-{ status: 200 }
-),
+  // Fallback for other routes
+  'default': () => createResponse({ error: 'Not found' }, 404)
+};
 
-  // Mock products endpoint
+// Mock fetch
+global.fetch = jest.fn().mockImplementation((url: RequestInfo | URL, options?: RequestInit) => {
+  const method = options?.method || 'GET';
+  let path: string;
+  
+  if (url instanceof URL) {
+    path = url.pathname;
+  } else if (url instanceof Request) {
+    path = new URL(url.url).pathname;
+  } else {
+    // Assume it's a string
+    try {
+      path = new URL(url.toString()).pathname;
+    } catch {
+      // Fallback for relative URLs
+      path = url.toString();
+    }
+  }
+  
+  const key = `${method} ${path}`;
+  console.log(`Mocking fetch: ${key}`);
+  
+  // Check if we have a specific mock for this endpoint
+  const mockHandler = mockApiResponses[key] || mockApiResponses['default'];
+  return mockHandler(new Request(url.toString(), options));
+});
 
-    http.get(`${baseUrl}/api/products/:id`, ({ params }) => {
-    const { id } = params;
-    // Check for SQL injection patterns
-    if (typeof id === 'string' && 
-        (id.includes("'") || id.includes(";") || id.includes("--") || 
-         id.includes("=") || id.includes(" OR ") || id.includes(" UNION "))) {
-      return HttpResponse.json(
-        { error: 'Invalid input' },
-        { status: 400 }
-return HttpResponse.json(
-      { id, name: `Product ${id}`, price: 99.99 },
-      { status: 200 }
-),
+// Setup and teardown
+beforeAll(() => {
+  console.log('Setting up test environment');
+});
 
-  // Mock providers/:id endpoint
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
-    http.get(`${baseUrl}/api/providers/:id`, ({ params }) => {
-    const { id } = params;
-    // Check for SQL injection patterns
-    if (typeof id === 'string' && 
-        (id.includes("'") || id.includes(";") || id.includes("--") || 
-         id.includes("=") || id.includes(" OR ") || id.includes(" UNION "))) {
-      return HttpResponse.json(
-        { error: 'Invalid input' },
-        { status: 400 }
-return HttpResponse.json(
-      { id, name: `Provider ${id}` },
-      { status: 200 }
-),
-
-  // Mock services/:id endpoint
-
-    http.get(`${baseUrl}/api/services/:id`, ({ params }) => {
-    const { id } = params;
-    // Check for SQL injection patterns
-    if (typeof id === 'string' && 
-        (id.includes("'") || id.includes(";") || id.includes("--") || 
-         id.includes("=") || id.includes(" OR ") || id.includes(" UNION "))) {
-      return HttpResponse.json(
-        { error: 'Invalid input' },
-        { status: 400 }
-return HttpResponse.json(
-      { id, name: `Service ${id}` },
-      { status: 200 }
-),
-
-  // Handle other API routes that might not be explicitly defined
-  http.all(`${baseUrl}/api/*`, ({ request }) => {
-    console.log(`Unhandled request: ${request.method} ${request.url.toString()}`);
-    return HttpResponse.json(
-      { error: 'Not found' },
-      { status: 404 }
-),
-
-  // Handle routes for smoke tests
-  http.get(`${baseUrl}`, () => {
-    return new HttpResponse(
-      '<html><body>Home Page</body></html>',
-      {
-        status: 200,
-        headers: {
-
-    'Content-Type': 'text/html',
-),
-
-  http.get(`${baseUrl}/login`, () => {
-    return new HttpResponse(
-      '<html><body>Login Page</body></html>',
-      {
-        status: 200,
-        headers: {
-
-    'Content-Type': 'text/html',
-),
-
-  http.get(`${baseUrl}/services`, () => {
-    return new HttpResponse(
-      '<html><body>Services Page</body></html>',
-      {
-        status: 200,
-        headers: {
-
-    'Content-Type': 'text/html',
-)
-];
-
-export const server = setupServer(...handlers);
-
-// Start server before all tests
-beforeAll(() => server.listen());
-
-// Reset handlers after each test
-afterEach(() => server.resetHandlers());
-
-// Close server after all tests
-afterAll(() => server.close()); 
+afterAll(() => {
+  global.fetch = originalFetch;
+  console.log('Teardown test environment');
+}); 

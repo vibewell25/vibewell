@@ -1,4 +1,4 @@
-/* eslint-disable */import { render, setupGlobalMocks, cleanupGlobalMocks } from '../utils/test-utils';
+/* eslint-disable */import { render, setupGlobalMocks, cleanupGlobalMocks } from '@/utils/test-utils';
 import { axe } from 'jest-axe';
 import AudioControls from '../../components/AudioControls';
 

@@ -42,7 +42,7 @@ describe('Booking Flow Integration', () => {
     // Reset mocks
     queryClient.clear();
     jest.clearAllMocks();
-  }});
+  }}));
 
   it('completes a successful booking flow', async () => {
     // Mock API responses

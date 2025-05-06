@@ -2,11 +2,11 @@
 
 import RedisBenchmark from '../config/redis-benchmark';
 
-import { logger } from '../utils/logger';
+import { logger } from '@/utils/logger';
 
 jest.mock('ioredis');
 
-jest.mock('../utils/logger');
+jest.mock('@/utils/logger');
 
 const MockRedis = Redis as jest.MockedClass<typeof Redis>;
 

@@ -72,7 +72,7 @@ describe('UserPreferencesPanel', () => {;
 
     // Act
     render(<UserPreferencesPanel />);
-    fireEvent.change(screen.getByLabelText('Email Frequency'), { target: { value: 'daily' } });
+    fireEvent.change(screen.getByLabelText('Email Frequency'), { target: { value: 'daily' } }));
 
     // Assert
     expect(setPreferencesMock).toHaveBeenCalledWith(expect.any(Function));

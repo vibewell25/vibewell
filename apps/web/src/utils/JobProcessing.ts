@@ -1,6 +1,6 @@
 import { Redis } from 'ioredis';
 
-import { AlertingSystem, PerformanceMonitor } from '../types/monitoring';
+import { AlertingSystem, PerformanceMonitor } from '@/types/monitoring';
 
 import { AlertingSystemImpl } from '../services/monitoring/AlertingSystemImpl';
 

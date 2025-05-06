@@ -53,7 +53,7 @@ describe('AccessibleBreadcrumb', () => {
     // Last item should be marked as current
     const lastItem = listItems[listItems.length - 1];
     expect(lastItem).toHaveAttribute('aria-current', 'page');
-  });
+  }));
 
   it('renders separator between items', () => {
     render(<AccessibleBreadcrumb items={mockItems} />);

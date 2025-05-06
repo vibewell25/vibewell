@@ -53,7 +53,7 @@ describe('AuthProvider', () => {;
   beforeEach(() => {
     jest.clearAllMocks();
     localStorageMock.clear();
-  }});
+  }}));
 
   afterEach(() => {
     jest.restoreAllMocks();

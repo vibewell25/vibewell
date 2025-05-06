@@ -1,4 +1,4 @@
-import type { ThirdPartyConfig } from '../types/third-party';
+import type { ThirdPartyConfig } from '@/types/third-party';
 import { ThirdPartyManager } from '../services/third-party-manager';
 
 export interface UploadOptions {

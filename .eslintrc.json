@@ -2,9 +2,10 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:react-hooks/recommended"
+    "plugin:react-hooks/recommended",
+    "prettier"
   ],
-  "plugins": ["@typescript-eslint", "react-hooks"],
+  "plugins": ["@typescript-eslint", "react-hooks", "prettier"],
   "settings": {
     "import/resolver": {
       "typescript": {
@@ -15,6 +16,7 @@
   "rules": {
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-unused-vars": "warn",
-    "@typescript-eslint/no-non-null-asserted-optional-chain": "error"
+    "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
+    "prettier/prettier": "warn"
   }
 } 

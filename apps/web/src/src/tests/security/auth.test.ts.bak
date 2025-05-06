@@ -1,4 +1,4 @@
-/* eslint-disable *//* eslint-disable */import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 import { PrismaClient } from '@prisma/client';
 import { hash } from 'bcryptjs';

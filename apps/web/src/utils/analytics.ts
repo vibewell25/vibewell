@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/nextjs';
 
 import posthog from 'posthog-js';
 
-import type { AnalyticsConfig } from '../types/third-party';
+import type { AnalyticsConfig } from '@/types/third-party';
 
 
 import { ThirdPartyManager } from '../services/third-party-manager';

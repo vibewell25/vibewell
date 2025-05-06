@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text, TouchableOpacity, Button, ActivityIndicator, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { payrollApi } from '../services/payrollService';
-import { PayrollRecord } from '../types/payroll';
-import { PayrollListNavigationProp } from '../types/navigation';
+import { PayrollRecord } from '@/types/payroll';
+import { PayrollListNavigationProp } from '@/types/navigation';
 
 const PayrollListScreen: React.FC = () => {
   const navigation = useNavigation<PayrollListNavigationProp>();

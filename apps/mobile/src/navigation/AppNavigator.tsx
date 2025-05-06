@@ -63,7 +63,7 @@ import EventFormScreen from '../screens/EventFormScreen';
 import ThreadListScreen from '../screens/ThreadListScreen';
 import ThreadDetailScreen from '../screens/ThreadDetailScreen';
 import ThreadFormScreen from '../screens/ThreadFormScreen';
-import { RootStackParamList } from '../types/navigation';
+import { RootStackParamList } from '@/types/navigation';
 import { initPushNotifications } from '../services/push-notifications';
 
 // Placeholder screens until actual screens are created

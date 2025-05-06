@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import type { NextPage } from 'next';
-import Card from '../components/ui/Card';
-import Input from '../components/ui/Input';
-import Button from '../components/ui/Button';
-import { fetchWithTimeout } from '../src/utils/timeout-handler';
+import Card from '@/components/ui/Card';
+import Input from '@/components/ui/Input';
+import Button from '@/components/ui/Button';
+import { fetchWithTimeout } from '@/utils/timeout-handler';
 
 const Referrals: NextPage = () => {
   const [code, setCode] = useState<string>('');

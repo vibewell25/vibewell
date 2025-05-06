@@ -3,7 +3,7 @@ import {
   DeviceCapabilities,
   detectDeviceCapabilities,
   getDefaultCapabilities,
-from '@/utils/DeviceCapability';
+} from '@/utils/DeviceCapability';
 
 /**
  * Hook to use device capabilities in React components
@@ -45,18 +45,26 @@ export function useDeviceCapabilities(): DeviceCapabilities {
         if (isMounted) {
           setCapabilities(detectedCapabilities);
           setIsLoading(false);
-catch (error) {
+        }
+      } catch (error) {
         console.error('Failed to detect device capabilities:', error);
         if (isMounted) {
           setIsLoading(false);
-detectCapabilities();
+        }
+      }
+    };
+
+    detectCapabilities();
 
     // Clean up
     return () => {
       isMounted = false;
-[]);
+    };
+  }, []);
 
   return capabilities;
+}
+
 /**
  * Hook to apply adaptive rendering quality based on device capabilities
  *
@@ -86,6 +94,8 @@ interface AdaptiveQualityOptions {
   maxQuality?: 'low' | 'medium' | 'high';
   /** Reduce quality when battery is below this level (0-1) */
   batteryThreshold?: number;
+}
+
 interface AdaptiveQualityResult {
   /** Recommended quality level */
   quality: 'low' | 'medium' | 'high';
@@ -97,6 +107,8 @@ interface AdaptiveQualityResult {
   isLimitedDevice: boolean;
   /** All device capabilities */
   capabilities: DeviceCapabilities;
+}
+
 export function useAdaptiveQuality(options: AdaptiveQualityOptions = {}): AdaptiveQualityResult {
   const capabilities = useDeviceCapabilities();
 
@@ -106,7 +118,7 @@ export function useAdaptiveQuality(options: AdaptiveQualityOptions = {}): Adapti
     minQuality = 'low',
     maxQuality = 'high',
     batteryThreshold = 0.3,
-= options;
+  } = options;
 
   // Map performance level to quality
   const qualityFromPerformance = capabilities.performanceLevel;
@@ -117,13 +129,15 @@ export function useAdaptiveQuality(options: AdaptiveQualityOptions = {}): Adapti
       capabilities.batteryStatus &&
       capabilities.batteryStatus.charging === false &&
       capabilities.batteryStatus.level < batteryThreshold,
-// Determine final quality level
+  );
+
+  // Determine final quality level
   let quality: 'low' | 'medium' | 'high';
 
   if (isLowBattery) {
     // Prioritize battery life on low battery
     quality = 'low';
-else {
+  } else {
     // Use performance-based quality
     quality = qualityFromPerformance;
 
@@ -135,11 +149,16 @@ else {
 
     if (currentIndex < minIndex) {
       quality = minQuality;
-else if (currentIndex > maxIndex) {
+    } else if (currentIndex > maxIndex) {
       quality = maxQuality;
-return {
+    }
+  }
+
+  return {
     quality,
     isMobile: capabilities.isMobileDevice,
     isLowBattery,
     isLimitedDevice: capabilities.isLowEndDevice || capabilities.hasLimitedMemory,
     capabilities,
+  };
+}

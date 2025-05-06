@@ -118,3 +118,102 @@ cd docs && npm run start
 - Live site: https://yourusername.github.io/vibewell/docs
 
 ---
+
+# Vibewell - Virtual Try-On Experience
+
+![Vibewell Logo](https://via.placeholder.com/150x50?text=Vibewell)
+
+## Overview
+
+Vibewell is a beauty and wellness platform featuring a cutting-edge Virtual Try-On experience that allows users to visualize beauty products in real-time using their camera or uploaded photos.
+
+## Features
+
+- **Virtual Try-On**: Try beauty products like makeup, hair colors, and skincare using your camera or photos
+- **Mobile-Responsive UI**: Optimized experience across desktop, tablet, and mobile devices
+- **Product Catalog**: Browse and filter products with smooth loading states
+- **Camera Integration**: Real-time AR overlay with face detection
+
+## Technical Highlights
+
+- **React + Next.js**: Modern frontend architecture
+- **TypeScript**: Type safety across the entire codebase
+- **Tailwind CSS**: Utility-first styling with custom components
+- **AR Integration**: Camera-based augmented reality using canvas and webcam APIs 
+- **Optimized Performance**: Efficient image processing and smooth transitions
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-org/vibewell.git
+cd vibewell
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
+```
+
+Visit `http://localhost:3000` to see the application.
+
+## Project Structure
+
+```
+vibewell/
+├── apps/
+│   └── web/                  # Next.js web application
+│       ├── public/           # Static assets
+│       └── src/              # Source code
+│           ├── components/   # React components
+│           │   └── beauty/   # Beauty-related components
+│           │       └── VirtualTryOn/  # Virtual try-on feature
+│           ├── pages/        # Next.js pages
+│           ├── services/     # API services
+│           ├── utils/        # Utility functions
+│           └── providers/    # React context providers
+└── packages/                 # Shared packages
+```
+
+## Usage
+
+The Virtual Try-On component can be used in any page by importing and rendering it:
+
+```jsx
+import { VirtualTryOn } from '@/components/beauty/VirtualTryOn';
+
+export default function BeautyPage() {
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Try On Beauty Products</h1>
+      <VirtualTryOn />
+    </div>
+  );
+}
+```
+
+## Recovery Achievements
+
+Vibewell's recovery plan has been successfully completed with the following achievements:
+
+- ✅ Fixed broken files and syntax errors
+- ✅ Resolved configuration issues
+- ✅ Implemented performance optimizations
+- ✅ Enhanced user experience with improved UI/UX
+- ✅ Added proper loading states and error handling
+- ✅ Ensured mobile responsiveness across devices
+- ✅ Improved accessibility features
+
+## License
+
+Copyright © 2023 Vibewell. All rights reserved.
+
+---

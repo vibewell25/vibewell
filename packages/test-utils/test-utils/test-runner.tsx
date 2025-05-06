@@ -10,7 +10,7 @@ import {
   RenderResult,
 from '@testing-library/react';
 import userEvent, { UserEvent } from '@testing-library/user-event';
-import { startComponentRender, endComponentRender } from '../utils/performanceMonitor';
+import { startComponentRender, endComponentRender } from '@/utils/performanceMonitor';
 import React, { ReactElement, ReactNode, ComponentType } from 'react';
 import { DefaultWrapper, RouterWrapper, AuthWrapper } from './components/TestWrappers';
 import { AxeResults } from 'axe-core';

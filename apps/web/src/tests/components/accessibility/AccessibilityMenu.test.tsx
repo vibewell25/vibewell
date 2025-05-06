@@ -51,7 +51,7 @@ describe('AccessibilityMenu', () => {
     }));
 
     expect(accessibilityButton).toBeInTheDocument();
-  });
+  }));
 
   test('opens menu when button is clicked', async () => {
     render(<AccessibilityMenu />);

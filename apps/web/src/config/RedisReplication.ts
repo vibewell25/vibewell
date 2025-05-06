@@ -2,7 +2,7 @@ import Redis, { RedisOptions } from 'ioredis';
 import fs from 'fs';
 import path from 'path';
 
-import { logger } from '../utils/logger';
+import { logger } from '@/utils/logger';
 
 interface TLSConfig {
   port: number;

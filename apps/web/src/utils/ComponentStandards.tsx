@@ -158,7 +158,7 @@ export function generateStandardComponent<P extends StandardProps>(
 `;
 
   return `import React from 'react';
-import { StandardProps } from '../utils/component-standards';
+import { StandardProps } from '@/utils/component-standards';
 
 ${propsInterface}
 

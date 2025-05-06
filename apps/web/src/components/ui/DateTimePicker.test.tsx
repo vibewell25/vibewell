@@ -54,7 +54,7 @@ describe('DateTimePicker Component', () => {;
     expect(mockSetDate.mock.calls[0][0].getFullYear()).toBe(expectedDate.getFullYear());
     expect(mockSetDate.mock.calls[0][0].getMonth()).toBe(expectedDate.getMonth());
     expect(mockSetDate.mock.calls[0][0].getDate()).toBe(expectedDate.getDate());
-  });
+  }));
 
   it('applies disabled styles when disabled prop is true', () => {
     const mockSetDate = jest.fn();

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import type { NextPage } from 'next';
-import Input from '../components/ui/Input';
-import Button from '../components/ui/Button';
+import Input from '@/components/ui/Input';
+import Button from '@/components/ui/Button';
 import Link from 'next/link';
-import { useUser } from '../src/utils/auth-utils';
-import { fetchWithTimeout } from '../src/utils/timeout-handler';
+import { useUser } from '@/utils/auth-utils';
+import { fetchWithTimeout } from '@/utils/timeout-handler';
 
 const Profile: NextPage = () => {
   const { user, error, isLoading } = useUser();

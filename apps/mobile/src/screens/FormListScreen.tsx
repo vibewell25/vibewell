@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { FormDefinition } from '../types/forms';
+import { FormDefinition } from '@/types/forms';
 import { formsApi } from '../services/formsService';
-import { FormListNavigationProp } from '../types/navigation';
+import { FormListNavigationProp } from '@/types/navigation';
 
 const FormListScreen: React.FC = () => {
   const navigation = useNavigation<FormListNavigationProp>();

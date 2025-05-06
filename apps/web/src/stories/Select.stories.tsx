@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectContent,
   SelectItem,
-from '../components/ui/select';
+from '@/components/ui/select';
 
 const SelectDemo = () => {
   return (

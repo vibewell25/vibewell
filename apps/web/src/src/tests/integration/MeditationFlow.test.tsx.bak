@@ -1,4 +1,4 @@
-/* eslint-disable *//* eslint-disable */import {
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import {
   render,
   fireEvent,
   waitFor,

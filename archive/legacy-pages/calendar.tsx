@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import type { NextPage } from 'next';
 import type { ChangeEvent } from 'react';
-import Button from '../components/ui/Button';
-import Card from '../components/ui/Card';
-import { fetchWithTimeout } from '../src/utils/timeout-handler';
+import Button from '@/components/ui/Button';
+import Card from '@/components/ui/Card';
+import { fetchWithTimeout } from '@/utils/timeout-handler';
 
 type GoogleEvent = { id: string; summary: string; start: { dateTime: string }; };
 type OutlookEvent = { id: string; subject: string; start: { dateTime: string }; };

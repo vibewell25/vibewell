@@ -1,0 +1,12 @@
+Service,File Path,Status
+ApiClient,apps/web/src/services/ApiClient.ts,🟡 Source Fixed
+BusinessService,apps/web/src/services/business-service.ts,🔴 Broken
+FaceApiService,apps/web/src/services/FaceApiService.ts,🟡 Source Fixed
+AlertingSystem,apps/web/src/services/monitoring/alerting-system-impl.ts,🔴 Broken
+InventoryPrediction,apps/web/src/services/inventory-prediction.ts,🔴 Broken
+ComplianceAudit,apps/web/src/services/audit/compliance-audit.ts,🔴 Broken
+AnalyticsService,apps/web/src/services/analytics-service.ts,🔴 Broken
+BusinessIntelligence,apps/web/src/services/business-intelligence-service.ts,🔴 Broken
+StaffManagement,apps/web/src/services/staff-management.ts,🔴 Broken
+ClientManagement,apps/web/src/services/client-management.ts,🔴 Broken
+HealthService,apps/web/src/services/health.ts,🟢 Tests Passing

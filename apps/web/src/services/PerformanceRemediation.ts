@@ -1,8 +1,8 @@
 import { EventEmitter } from 'events';
 
-import performanceMonitor from '../utils/performanceMonitor.tsxx';
+import performanceMonitor from '@/utils/performanceMonitor.tsxx';
 
-import { logEvent } from '../utils/analytics.tsx';
+import { logEvent } from '@/utils/analytics.tsx';
 
 // Add type to define performance monitor with event emitter functionality
 type PerformanceMonitorType = {

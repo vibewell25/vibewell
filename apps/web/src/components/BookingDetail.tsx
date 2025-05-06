@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { typeSafeBookingService } from '../services/BookingService';
-import { hasData, hasError } from '../utils/ApiResponseUtils';
-import { useErrorHandler } from '../utils/ErrorHandler';
-import { ErrorCategory, ErrorSeverity, ErrorSource } from '../utils/ErrorHandler';
+import { hasData, hasError } from '@/utils/ApiResponseUtils';
+import { useErrorHandler } from '@/utils/ErrorHandler';
+import { ErrorCategory, ErrorSeverity, ErrorSource } from '@/utils/ErrorHandler';
 
 interface BookingDetailProps {
   bookingId: string;

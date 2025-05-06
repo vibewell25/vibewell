@@ -47,7 +47,7 @@ describe('AppointmentList Component', () => {
   }));
 
   it('handles status updates correctly', async () => {
-    (updateAppointmentStatus as jest.Mock).mockResolvedValue({ id: 'appt-2', status: 'confirmed' });
+    (updateAppointmentStatus as jest.Mock).mockResolvedValue({ id: 'appt-2', status: 'confirmed' }));
 
     render(<AppointmentList appointments={mockAppointments} />);
 

@@ -19,21 +19,30 @@ module.exports = {
     jest: true,
     browser: true,
     node: true
-parserOptions: {
+  },
+  parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
     ecmaFeatures: {
       jsx: true
-settings: {
+    }
+  },
+  settings: {
     react: { version: 'detect' },
     'import/resolver': {
       typescript: { project: './tsconfig.json' }
-rules: {
+    }
+  },
+  rules: {
     // you can customize or disable rules here
-overrides: [
+  },
+  overrides: [
     {
       files: ['**/*.test.ts', '**/*.test.tsx', '**/__tests__/**/*.ts', '**/__tests__/**/*.tsx'],
       rules: {
         'import/no-unresolved': 'off',
         '@typescript-eslint/no-unnecessary-type-assertion': 'off'
-]
+      }
+    }
+  ]
+};

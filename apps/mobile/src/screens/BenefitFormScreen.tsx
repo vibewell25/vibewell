@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { benefitsApi } from '../services/benefitsService';
-import { BenefitClaim } from '../types/benefits';
-import { BenefitFormRouteProp, BenefitFormNavigationProp } from '../types/navigation';
+import { BenefitClaim } from '@/types/benefits';
+import { BenefitFormRouteProp, BenefitFormNavigationProp } from '@/types/navigation';
 
 const BenefitFormScreen: React.FC = () => {
   const navigation = useNavigation<BenefitFormNavigationProp>();

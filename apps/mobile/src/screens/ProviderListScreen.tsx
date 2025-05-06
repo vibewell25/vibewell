@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { fetchProviders } from '../services/providerService';
-import { Provider } from '../types/navigation';
+import { Provider } from '@/types/navigation';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../types/navigation';
+import { RootStackParamList } from '@/types/navigation';
 
 type BusinessStackNavigationProp = StackNavigationProp<RootStackParamList, 'ProviderList'>;
 

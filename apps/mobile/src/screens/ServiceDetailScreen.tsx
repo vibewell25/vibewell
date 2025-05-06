@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Button, Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { ServiceDetailRouteProp, ServiceDetailNavigationProp } from '../types/navigation';
+import { ServiceDetailRouteProp, ServiceDetailNavigationProp } from '@/types/navigation';
 import { deleteService } from '../services/serviceService';
 
 const ServiceDetailScreen: React.FC = () => {

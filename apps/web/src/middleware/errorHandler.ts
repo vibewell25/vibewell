@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from '@/types/api';
 
-import logger from '../utils/logger';
+import logger from '@/utils/logger';
 
 interface ErrorResponse {
   error: {

@@ -1,7 +1,7 @@
 import React from 'react';
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import Button from '../components/ui/Button';
+import Button from '@/components/ui/Button';
 
 const SignUp: NextPage = () => (
   <div className="max-w-md mx-auto mt-16 p-6">

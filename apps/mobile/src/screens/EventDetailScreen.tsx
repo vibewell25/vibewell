@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, Button, StyleSheet, Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import communityApi from '../services/communityService';
-import { CommunityEvent } from '../types/community';
-import { EventDetailRouteProp, EventDetailNavigationProp } from '../types/navigation';
+import { CommunityEvent } from '@/types/community';
+import { EventDetailRouteProp, EventDetailNavigationProp } from '@/types/navigation';
 
 const EventDetailScreen: React.FC = () => {
   const route = useRoute<EventDetailRouteProp>();

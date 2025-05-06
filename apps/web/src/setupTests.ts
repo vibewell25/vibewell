@@ -6,8 +6,11 @@ import '@testing-library/jest-dom';
 // Add TextEncoder and TextDecoder to global scope for Jest
 if (typeof global.TextEncoder === 'undefined') {
   global.TextEncoder = require('util').TextEncoder;
+}
 if (typeof global.TextDecoder === 'undefined') {
   global.TextDecoder = require('util').TextDecoder;
+}
+
 // Add axe to global scope
 (global as any).axe = axe;
 
@@ -17,28 +20,44 @@ if (typeof global.TextDecoder === 'undefined') {
   constructor(input: string, init: any) {
     Object.assign(this, init);
     this.url = input;
-as any;
+  }
+};
 
 (global as any).Headers = class MockHeaders {
   private headers: Record<string, string> = {};
+  
   constructor(init?: Record<string, string>) {
     if (init) {
       Object.entries(init).forEach(([key, value]) => {
         this.set(key, value);
-get(name: string): string | null {
+      });
+    }
+  }
+  
+  get(name: string): string | null {
     return this.headers[name.toLowerCase()] || null;
-set(name: string, value: string): void {
+  }
+  
+  set(name: string, value: string): void {
     this.headers[name.toLowerCase()] = value;
-has(name: string): boolean {
+  }
+  
+  has(name: string): boolean {
     return name.toLowerCase() in this.headers;
-append(name: string, value: string): void {
+  }
+  
+  append(name: string, value: string): void {
     if (this.has(name)) {
       this.set(name, `${this.get(name)}, ${value}`);
-else {
+    } else {
       this.set(name, value);
-delete(name: string): void {
+    }
+  }
+  
+  delete(name: string): void {
     delete this.headers[name.toLowerCase()];
-as any;
+  }
+};
 
 // Mock URL
 (global as any).URL = class MockURL {
@@ -62,10 +81,10 @@ as any;
     this.hostname = 'localhost';
     this.port = '3000';
     this.protocol = 'http:';
-as any;
+  }
+};
 
 // Suppress React act() warnings
-
 // This is helpful for third-party components like Radix UI that cause act() warnings
 const originalConsoleError = console.error;
 console.error = (...args) => {
@@ -75,7 +94,10 @@ console.error = (...args) => {
     args[0].includes('was not wrapped in act(...)')
   ) {
     return; // Suppress act() warnings
-originalConsoleError(...args);
+  }
+  originalConsoleError(...args);
+};
+
 // Polyfill fetch for Node environments and browsers
 import 'cross-fetch/polyfill';
 
@@ -87,20 +109,31 @@ if (typeof window !== 'undefined') {
 
     getItem(key: string): string | null {
       return this.store[key] || null;
-setItem(key: string, value: string): void {
+    }
+    
+    setItem(key: string, value: string): void {
       this.store[key] = value;
-removeItem(key: string): void {
+    }
+    
+    removeItem(key: string): void {
       delete this.store[key];
-clear(): void {
+    }
+    
+    clear(): void {
       this.store = {};
-Object.defineProperty(window, 'localStorage', {
+    }
+  }
+  
+  Object.defineProperty(window, 'localStorage', {
     value: new LocalStorageMock(),
-// Mock ResizeObserver
+  });
+
+  // Mock ResizeObserver
   (global as any).ResizeObserver = jest.fn().mockImplementation(() => ({
     observe: jest.fn(),
     unobserve: jest.fn(),
     disconnect: jest.fn(),
-));
+  }));
 
   // Mock BroadcastChannel for tests
   if (typeof window !== 'undefined' && !window.BroadcastChannel) {
@@ -110,13 +143,18 @@ Object.defineProperty(window, 'localStorage', {
       addEventListener() {}
       removeEventListener() {}
       close() {}
-// Mock IntersectionObserver
+    };
+  }
+
+  // Mock IntersectionObserver
   global.IntersectionObserver = class MockIntersectionObserver {
     constructor() {}
     observe() {}
     unobserve() {}
     disconnect() {}
-// Mock next/router
+  };
+
+  // Mock next/router
   jest.mock('next/router', () => ({
     useRouter: () => ({
       push: jest.fn(),
@@ -127,8 +165,8 @@ Object.defineProperty(window, 'localStorage', {
       route: '/',
       query: {},
       asPath: '/'
-),
-));
+    }),
+  }));
 
   // Mock next/navigation
   jest.mock('next/navigation', () => ({
@@ -140,10 +178,10 @@ Object.defineProperty(window, 'localStorage', {
       pathname: '/',
       route: '/',
       query: {},
-),
+    }),
     usePathname: () => '/',
     useSearchParams: () => new URLSearchParams(),
-));
+  }));
 
   // Mock matchMedia
   Object.defineProperty(window, 'matchMedia', {
@@ -157,8 +195,10 @@ Object.defineProperty(window, 'localStorage', {
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
       dispatchEvent: jest.fn(),
-)),
-// Mock performance
+    })),
+  });
+
+  // Mock performance
   Object.defineProperty(window, 'performance', {
     value: {
       now: jest.fn(),
@@ -169,22 +209,40 @@ Object.defineProperty(window, 'localStorage', {
       measure: jest.fn(),
       clearMarks: jest.fn(),
       clearMeasures: jest.fn(),
-// Mock requestAnimationFrame
+    }
+  });
+
+  // Mock requestAnimationFrame
   window.requestAnimationFrame = (callback: FrameRequestCallback): number =>
     setTimeout(() => callback(performance.now()), 16) as unknown as number;
 
   // Mock PerformanceObserver
   class MockPerformanceObserver {
     private callback: (entries: PerformanceObserverEntryList) => void;
+    
     constructor(callback: (entries: PerformanceObserverEntryList) => void) {
       this.callback = callback;
-observe() {}
+    }
+    
+    observe() {}
     disconnect() {}
     takeRecords() { return []; }
-(global as any).PerformanceObserver = MockPerformanceObserver;
+  }
+  
+  (global as any).PerformanceObserver = MockPerformanceObserver;
+}
+
+// Setup and teardown logging for debugging
+console.log('Setting up test environment');
+
 // Reset mocks between tests
 beforeEach(() => {
   jest.clearAllMocks();
+});
+
 // Cleanup after each test
 afterEach(() => {
   jest.clearAllMocks();
+});
+
+console.log('Teardown test environment');

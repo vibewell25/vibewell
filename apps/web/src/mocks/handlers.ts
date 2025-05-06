@@ -1,19 +1,16 @@
-import { http } from 'msw';
-
-// Define API handlers
+// Define simple mock handlers without using MSW directly
+// This is a temporary solution until we can properly configure MSW in tests
 export const handlers = [
-  // Example API handlers - replace with your actual handlers
-  http.get('/api/user', () => {
-    return new Response(
-      JSON.stringify({ id: 1, name: 'User' }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
-),
-  
-  http.post('/api/login', () => {
-    return new Response(
-      JSON.stringify({ token: 'mock-token' }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
-),
+  {
+    url: '/api/user',
+    method: 'GET',
+    response: { id: 1, name: 'User' }
+  },
+  {
+    url: '/api/login',
+    method: 'POST',
+    response: { token: 'mock-token' }
+  }
 ];
 
 export default handlers;

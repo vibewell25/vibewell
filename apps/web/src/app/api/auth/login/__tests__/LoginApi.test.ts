@@ -33,7 +33,7 @@ describe('Login API', () => {;
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: 'test@example.com', password: 'ValidPassword123!' }),
-    });
+    }));
 
     // Act
     const response = await POST(req);

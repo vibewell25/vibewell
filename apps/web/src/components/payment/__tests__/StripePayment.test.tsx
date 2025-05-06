@@ -65,7 +65,7 @@ describe('PaymentFormWrapper', () => {
 
     expect(screen.getByText('Preparing payment form...')).toBeInTheDocument();
     expect(fetch).toHaveBeenCalledWith('/api/create-payment-intent', expect.anything());
-  });
+  }));
 
   test('renders Elements when client secret is provided', () => {
     render(

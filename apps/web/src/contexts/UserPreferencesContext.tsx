@@ -31,6 +31,8 @@ export interface UserPreferences {
   // Content
   contentCategories: string[];
   contentFilters: string[];
+}
+
 /**
  * Default preferences for new users
  */
@@ -60,6 +62,8 @@ const defaultPreferences: UserPreferences = {
   // Content
   contentCategories: [],
   contentFilters: [],
+};
+
 /**
  * User preferences context interface
  */
@@ -73,6 +77,8 @@ interface UserPreferencesContextType {
   ) => Promise<void>;
   updatePreferences: (newPreferences: Partial<UserPreferences>) => Promise<void>;
   resetPreferences: () => Promise<void>;
+}
+
 // Create the context with default values
 const UserPreferencesContext = createContext<UserPreferencesContextType>({
   preferences: defaultPreferences,
@@ -81,10 +87,12 @@ const UserPreferencesContext = createContext<UserPreferencesContextType>({
   updatePreference: async () => {},
   updatePreferences: async () => {},
   resetPreferences: async () => {},
+});
+
 /**
  * Custom hook to use user preferences
  */
-export {};
+export const useUserPreferences = () => useContext(UserPreferencesContext);
 
 /**
  * User preferences provider component
@@ -98,7 +106,9 @@ export function UserPreferencesProvider({ children }: { children: React.ReactNod
   const [localPreferences, setLocalPreferences] = useLocalStorage<UserPreferences>(
     'user-preferences',
     defaultPreferences,
-// State to hold merged preferences (API + local)
+  );
+  
+  // State to hold merged preferences (API + local)
   const [preferences, setPreferences] = useState<UserPreferences>(localPreferences);
 
   // Fetch user preferences from API when authenticated
@@ -107,7 +117,9 @@ export function UserPreferencesProvider({ children }: { children: React.ReactNod
       setPreferences(localPreferences);
       setIsLoading(false);
       return;
-try {
+    }
+    
+    try {
       setIsLoading(true);
       const response = await fetch('/api/user/preferences');
 
@@ -117,19 +129,23 @@ try {
         const apiPreferences = {
           ...defaultPreferences,
           ...data.preferences,
-setPreferences(apiPreferences);
+        };
+        
+        setPreferences(apiPreferences);
         // Update local storage with latest from API
         setLocalPreferences(apiPreferences);
-else {
+      } else {
         // If API request fails, use localStorage preferences
         setPreferences(localPreferences);
-catch (error) {
+      }
+    } catch (error) {
       console.error('Failed to load user preferences:', error);
       // Fallback to localStorage on error
       setPreferences(localPreferences);
-finally {
+    } finally {
       setIsLoading(false);
-[isAuthenticated, user, localPreferences, setLocalPreferences]);
+    }
+  }, [isAuthenticated, user, localPreferences, setLocalPreferences]);
 
   // Save preferences to API and localStorage
   const savePreferences = useCallback(
@@ -138,21 +154,31 @@ finally {
 
       if (!isAuthenticated || !user) {
         return;
-try {
+      }
+      
+      try {
         setIsSaving(true);
         const response = await fetch('/api/user/preferences', {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
-body: JSON.stringify({ preferences: newPreferences }),
-if (!response.ok) {
+          },
+          body: JSON.stringify({ preferences: newPreferences }),
+        });
+        
+        if (!response.ok) {
           console.error('Failed to save preferences to API');
-catch (error) {
+        }
+      } catch (error) {
         console.error('Error saving preferences:', error);
-finally {
+      } finally {
         setIsSaving(false);
-[isAuthenticated, user, setLocalPreferences],
-// Update a single preference
+      }
+    },
+    [isAuthenticated, user, setLocalPreferences],
+  );
+
+  // Update a single preference
   const updatePreference = async <K extends keyof UserPreferences>(
     key: K,
     value: UserPreferences[K],
@@ -160,23 +186,33 @@ finally {
     const newPreferences = {
       ...preferences,
       [key]: value,
-setPreferences(newPreferences);
+    };
+    
+    setPreferences(newPreferences);
     await savePreferences(newPreferences);
-// Update multiple preferences at once
+  };
+
+  // Update multiple preferences at once
   const updatePreferences = async (newPrefs: Partial<UserPreferences>) => {
     const newPreferences = {
       ...preferences,
       ...newPrefs,
-setPreferences(newPreferences);
+    };
+    
+    setPreferences(newPreferences);
     await savePreferences(newPreferences);
-// Reset preferences to default
+  };
+
+  // Reset preferences to default
   const resetPreferences = async () => {
     setPreferences(defaultPreferences);
     await savePreferences(defaultPreferences);
-// Load preferences when auth state changes
+  };
+
+  // Load preferences when auth state changes
   useEffect(() => {
     fetchPreferences();
-[fetchPreferences]);
+  }, [fetchPreferences]);
 
   // Apply theme preference to document
   useEffect(() => {
@@ -189,10 +225,12 @@ setPreferences(newPreferences);
       // Use system preference
       const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.documentElement.classList.toggle('dark', systemPrefersDark);
-else {
+    } else {
       // Use user preference
       document.documentElement.classList.toggle('dark', theme === 'dark');
-// Apply font size
+    }
+    
+    // Apply font size
     document.documentElement.classList.remove('text-sm', 'text-md', 'text-lg');
     if (preferences.fontSize === 'small') document.documentElement.classList.add('text-sm');
     if (preferences.fontSize === 'medium') document.documentElement.classList.add('text-md');
@@ -203,7 +241,7 @@ else {
 
     // Apply reduced motion if enabled
     document.documentElement.classList.toggle('reduced-motion', preferences.reducedMotion);
-[preferences]);
+  }, [preferences]);
 
   return (
     <UserPreferencesContext.Provider
@@ -214,6 +252,9 @@ else {
         updatePreference,
         updatePreferences,
         resetPreferences,
->
+      }}
+    >
       {children}
     </UserPreferencesContext.Provider>
+  );
+}

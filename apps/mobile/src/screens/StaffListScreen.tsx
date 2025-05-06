@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, Button, Alert } from 'react-native';
 import { fetchStaff, deleteStaff } from '../services/staffService';
-import { Staff } from '../types/navigation';
+import { Staff } from '@/types/navigation';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { StaffListRouteProp, StaffListNavigationProp } from '../types/navigation';
+import { StaffListRouteProp, StaffListNavigationProp } from '@/types/navigation';
 
 const StaffListScreen: React.FC = () => {
   const route = useRoute<StaffListRouteProp>();

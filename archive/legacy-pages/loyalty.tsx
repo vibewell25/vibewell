@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import type { NextPage } from 'next';
-import Card from '../components/ui/Card';
-import Button from '../components/ui/Button';
-import { fetchWithTimeout } from '../src/utils/timeout-handler';
+import Card from '@/components/ui/Card';
+import Button from '@/components/ui/Button';
+import { fetchWithTimeout } from '@/utils/timeout-handler';
 
 type Tier = { id: string; name: string; requiredPoints: number; discount: number };
 type Transaction = { id: string; userId: string; tierId: string; points: number; type: string; tier: Tier };

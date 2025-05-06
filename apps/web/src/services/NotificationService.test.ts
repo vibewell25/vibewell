@@ -112,7 +112,7 @@ describe('NotificationService', () => {
         data: [mockNotification],
         status: 200,
         success: true,
-      });
+      }));
 
       // Call the service with filter
       const result = await notificationService.getNotifications({ status: 'unread' });

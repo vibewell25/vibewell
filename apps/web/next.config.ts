@@ -14,8 +14,10 @@ const nextConfig: NextConfig = {
         hostname: '**',
         port: '',
         pathname: '**',
-],
-// Customize Webpack
+      }
+    ]
+  },
+  // Customize Webpack
   webpack: (config) => {
     // Ensure resolve and alias objects exist
     config.resolve = config.resolve || {};
@@ -31,10 +33,16 @@ const nextConfig: NextConfig = {
       'types': path.resolve(__dirname, '../../packages/types'),
       'config': path.resolve(__dirname, '../../packages/config'),
       'test-utils': path.resolve(__dirname, '../../packages/test-utils'),
-// Add TsconfigPathsPlugin to resolve plugin list
+    };
+    
+    // Add TsconfigPathsPlugin to resolve plugin list
     const plugins = config.resolve.plugins ?? [];
     plugins.push(
       new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, 'tsconfig.json') })
-config.resolve.plugins = plugins;
+    );
+    config.resolve.plugins = plugins;
     return config;
+  }
+};
+
 export default nextConfig;

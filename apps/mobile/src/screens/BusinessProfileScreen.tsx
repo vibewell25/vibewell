@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { BusinessProfileRouteProp, BusinessProfileNavigationProp } from '../types/navigation';
+import { BusinessProfileRouteProp, BusinessProfileNavigationProp } from '@/types/navigation';
 
 const BusinessProfileScreen: React.FC = () => {
   const route = useRoute<BusinessProfileRouteProp>();

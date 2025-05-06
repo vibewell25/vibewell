@@ -3,7 +3,7 @@ import { rest } from 'msw';
 
     import { QueryClient } from '@tanstack/react-query';
 
-    import { createTestRunner } from '../utils/createTestRunner';
+    import { createTestRunner } from '@/utils/createTestRunner';
 
 // Create a test server instance
 export const server = setupServer();

@@ -1,9 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import { authenticator } from 'otplib';
 
-import { AppError, handleError } from '../utils/error';
+import { AppError, handleError } from '@/utils/error';
 
-import { generateRandomString } from '../utils/crypto';
+import { generateRandomString } from '@/utils/crypto';
 
 export class TwoFactorService {
   constructor(private prisma: PrismaClient) {}

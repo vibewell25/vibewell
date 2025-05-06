@@ -1,4 +1,5 @@
-/* eslint-disable */import { render, screen } from '../../test-utils/testing-lib-adapter';
+/* eslint-disable */
+import { render, screen } from '../../test-utils/testing-lib-adapter';
 import { userEvent } from '../../test-utils/testing-lib-adapter';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { AccessibleButton } from '../../components/AccessibleButton';
@@ -75,7 +76,8 @@ describe('AccessibleButton Component', () => {
         rightIcon={<span data-testid="right-icon">R</span>}
       >
         With Icons
-      </AccessibleButton>,
+      </AccessibleButton>
+    );
 
     const leftIcon = screen.getByTestId('left-icon');
     const rightIcon = screen.getByTestId('right-icon');
@@ -94,16 +96,16 @@ describe('AccessibleButton Component', () => {
   });
 
   it('should not trigger onClick when disabled', async () => {
-    const handleClick = vi.fn();
     render(
-      <AccessibleButton onClick={handleClick} disabled>
+      <AccessibleButton onClick={vi.fn()} disabled>
         Disabled
-      </AccessibleButton>,
+      </AccessibleButton>
+    );
 
     const button = screen.getByRole('button', { name: /disabled/i });
     await user.click(button);
 
-    expect(handleClick).not.toHaveBeenCalled();
+    expect(vi.fn()).not.toHaveBeenCalled();
   });
 
   it('should not trigger onClick when loading', async () => {
@@ -111,7 +113,8 @@ describe('AccessibleButton Component', () => {
     render(
       <AccessibleButton onClick={handleClick} isLoading>
         Loading
-      </AccessibleButton>,
+      </AccessibleButton>
+    );
 
     const button = screen.getByRole('button', { name: /loading/i });
     await user.click(button);
@@ -124,4 +127,5 @@ describe('AccessibleButton Component', () => {
 
     const results = await axe(container);
     expect(results).toHaveNoViolations();
-  }));
+  });
+});

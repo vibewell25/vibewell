@@ -97,7 +97,7 @@ describe('MeditationEnvironment', () => {
     fireEvent.click(endButton);
 
     expect(screen.getByText('Begin Meditation')).toBeInTheDocument();
-  });
+  }));
 
   it('updates soundscape when changed', () => {
     const { rerender } = render(<MeditationEnvironment {...defaultProps} />);

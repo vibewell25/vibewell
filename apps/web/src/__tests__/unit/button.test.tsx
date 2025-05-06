@@ -1,8 +1,9 @@
-/* eslint-disable */import { render, screen } from '@testing-library/react';
+/* eslint-disable */
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
-describe('Button Component', () => {;
+describe('Button Component', () => {
   test('renders the button with default properties', () => {
     render(<Button>Click me</Button>);
     const button = screen.getByRole('button', { name: /click me/i });
@@ -60,7 +61,8 @@ describe('Button Component', () => {;
     render(
       <Button asChild>
         <a href="https://example.com">Link Button</a>
-      </Button>,
+      </Button>
+    );
 
     const linkButton = screen.getByRole('link', { name: /link button/i });
     expect(linkButton).toBeInTheDocument();
@@ -72,7 +74,8 @@ describe('Button Component', () => {;
     render(
       <Button disabled data-testid="test-button">
         Disabled Button
-      </Button>,
+      </Button>
+    );
 
     const button = screen.getByTestId('test-button');
     expect(button).toBeDisabled();
@@ -86,4 +89,5 @@ describe('Button Component', () => {;
     await userEvent.click(button);
 
     expect(handleClick).toHaveBeenCalledTimes(1);
-  }));
+  });
+});

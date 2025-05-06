@@ -2,11 +2,11 @@
 
 import RedisManager from '../config/redis';
 
-import { logger } from '../utils/logger';
+import { logger } from '@/utils/logger';
 
 jest.mock('ioredis');
 
-jest.mock('../utils/logger');
+jest.mock('@/utils/logger');
 
 describe('RedisManager', () => {
   let redisManager: RedisManager;

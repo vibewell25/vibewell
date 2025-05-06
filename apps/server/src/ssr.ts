@@ -22,9 +22,9 @@ import compression from 'compression';
 
     import rootReducer from '../../frontend/src/store/reducers';
 
-    import { fetchInitialData } from './utils/initialData';
+    import { fetchInitialData } from '@/utils/initialData';
 
-    import { generateMetaTags } from './utils/meta';
+    import { generateMetaTags } from '@/utils/meta';
 
     import { cacheControl } from './middleware/cache';
 

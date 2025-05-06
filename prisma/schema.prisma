@@ -2594,3 +2594,62 @@ model AuthenticationLog {
   @@index([createdAt])
   @@map("authentication_logs")
 }
+
+model UserPreferences {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // App appearance and behavior
+  theme     String?  @default("system") // light, dark, system
+  fontSize  String?  @default("medium") // small, medium, large
+  reducedAnimations Boolean @default(false)
+  highContrast Boolean @default(false)
+  
+  // Notifications and communication
+  emailNotifications Boolean @default(true)
+  pushNotifications Boolean @default(true)
+  smsNotifications Boolean @default(false)
+  
+  // Content preferences
+  contentCategories String[] @default([])
+  favoriteProducts String[] @default([])
+  recentlyViewed String[] @default([])
+  
+  // Privacy settings
+  shareUsageData Boolean @default(true)
+  locationTracking Boolean @default(false)
+  cookiePreferences Json? // Structured as { necessary: true, analytics: true, marketing: false, preferences: true }
+  
+  // Beauty preferences
+  beautyPreferences Json? // Structured as { skinType, skinConcerns, hairType, hairConcerns, makeupStyle }
+  
+  // Accessibility settings
+  accessibilitySettings Json? // Structured as { screenReader, voiceNavigation, colorBlindMode, textToSpeech }
+  
+  // A/B testing assignment
+  abTestAssignments Json? // Structured as { experimentId: variant }
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  eventType String
+  page      String
+  timestamp DateTime
+  userId    String?
+  sessionId String
+  metadata  Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  
+  @@index([eventType])
+  @@index([timestamp])
+  @@index([userId])
+  @@index([sessionId])
+}

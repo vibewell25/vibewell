@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-    import { BrowserType } from '../utils/browser-types';
+    import { BrowserType } from '@/utils/browser-types';
 
 // Configuration for different browsers to test
 const BROWSERS_TO_TEST = [

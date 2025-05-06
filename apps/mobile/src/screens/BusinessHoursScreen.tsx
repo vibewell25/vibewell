@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, Button, Alert } from 'react-native';
 import { fetchBusinessHours, deleteBusinessHour } from '../services/businessHourService';
-import { BusinessHour } from '../types/navigation';
+import { BusinessHour } from '@/types/navigation';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { BusinessHoursRouteProp, BusinessHoursNavigationProp } from '../types/navigation';
+import { BusinessHoursRouteProp, BusinessHoursNavigationProp } from '@/types/navigation';
 
 const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 

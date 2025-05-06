@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TextInput, Button, ActivityIndicator, StyleSheet, Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import communityApi from '../services/communityService';
-import { Thread, ThreadPost } from '../types/community';
-import { ThreadDetailRouteProp, ThreadDetailNavigationProp } from '../types/navigation';
+import { Thread, ThreadPost } from '@/types/community';
+import { ThreadDetailRouteProp, ThreadDetailNavigationProp } from '@/types/navigation';
 
 const ThreadDetailScreen: React.FC = () => {
   const route = useRoute<ThreadDetailRouteProp>();

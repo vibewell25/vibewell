@@ -15,6 +15,8 @@ interface PerformanceMetrics {
   memoryUsage: number;
   /** Flag indicating if there's a performance issue */
   isPerformanceIssue: boolean;
+}
+
 /**
  * Props for the PerformanceMonitor component
  */
@@ -25,6 +27,8 @@ interface PerformanceMonitorProps {
   performanceThreshold?: number;
   /** Whether to only show the monitor in development mode */
   devModeOnly?: boolean;
+}
+
 /**
  * PerformanceMonitor component
  *
@@ -38,7 +42,7 @@ export function PerformanceMonitor({
   enableAdaptiveQuality = true,
   performanceThreshold = 30,
   devModeOnly = true,
-: PerformanceMonitorProps) {
+}: PerformanceMonitorProps) {
   const { gl } = useThree();
   const frameRate = useRef<number>(0);
   const frameCount = useRef<number>(0);
@@ -49,11 +53,18 @@ export function PerformanceMonitor({
     drawCalls: 0,
     memoryUsage: 0,
     isPerformanceIssue: false,
-const adaptiveQualityTimer = useRef<NodeJS.Timeout | null>(null);
+  });
+  const adaptiveQualityTimer = useRef<NodeJS.Timeout | null>(null);
 
   // Update metrics each frame
   useFrame(() => {
-    frameCount.if (current > Number.MAX_SAFE_INTEGER || current < Number.MIN_SAFE_INTEGER) throw new Error('Integer overflow'); current += 1;
+    // Safe increment of frame counter
+    if (frameCount.current < Number.MAX_SAFE_INTEGER) {
+      frameCount.current += 1;
+    } else {
+      frameCount.current = 0;
+    }
+
     const now = Date.now();
     const delta = now - lastUpdate.current;
 
@@ -73,7 +84,9 @@ const adaptiveQualityTimer = useRef<NodeJS.Timeout | null>(null);
         drawCalls: info.render.calls || 0,
         memoryUsage: (info.memory.geometries || 0) * 0.25 + (info.memory.textures || 0) * 2,
         isPerformanceIssue,
-frameCount.current = 0;
+      });
+      
+      frameCount.current = 0;
       lastUpdate.current = now;
 
       // Apply adaptive optimizations for sustained low performance
@@ -88,22 +101,33 @@ frameCount.current = 0;
             if (gl.shadowMap.enabled) {
               gl.shadowMap.autoUpdate = false;
               gl.shadowMap.needsUpdate = true;
-adaptiveQualityTimer.current = null;
-2000); // Apply after 2 seconds of poor performance
-else if (adaptiveQualityTimer.current) {
+            }
+            
+            adaptiveQualityTimer.current = null;
+          }, 2000); // Apply after 2 seconds of poor performance
+        }
+      } else if (adaptiveQualityTimer.current) {
         clearTimeout(adaptiveQualityTimer.current);
         adaptiveQualityTimer.current = null;
-// Clean up timers on unmount
+      }
+    }
+  });
+
+  // Clean up timers on unmount
   useEffect(() => {
     return () => {
       if (adaptiveQualityTimer.current) {
         clearTimeout(adaptiveQualityTimer.current);
-[]);
+      }
+    };
+  }, []);
 
   // Only render in development mode if devModeOnly is true
   if (devModeOnly && process.env.NODE_ENV !== 'development') {
     return null;
-return (
+  }
+  
+  return (
     <div className="absolute left-0 top-0 rounded bg-black bg-opacity-50 p-1 text-xs text-white">
       <div>
         FPS: {metrics.fps} {metrics.isPerformanceIssue && '⚠️'}
@@ -112,3 +136,5 @@ return (
       <div>Draw calls: {metrics.drawCalls}</div>
       <div>Memory: {Math.round(metrics.memoryUsage)}MB</div>
     </div>
+  );
+}

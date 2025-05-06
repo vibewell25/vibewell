@@ -35,7 +35,7 @@ describe('BookingForm Security Tests', () => {;
 
     // Try to inject script tag in inputs
     fireEvent.change(nameInput, { target: { value: '<script>alert("XSS")</script>Test User' } }));
-    fireEvent.change(notesInput, { target: { value: '<img src="x" onerror="alert(\'XSS\')" />' } });
+    fireEvent.change(notesInput, { target: { value: '<img src="x" onerror="alert(\'XSS\')" />' } }));
 
     // Submit the form
     fireEvent.click(screen.getByRole('button', { name: /book/i }));

@@ -1,4 +1,4 @@
-import type { PaymentConfig } from '../types/third-party';
+import type { PaymentConfig } from '@/types/third-party';
 import { ThirdPartyManager } from '../services/third-party-manager';
 
 export interface PaymentMethod {

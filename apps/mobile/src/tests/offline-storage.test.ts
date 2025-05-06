@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-    import OfflineStorage from '../utils/offline-storage';
+    import OfflineStorage from '@/utils/offline-storage';
 
 describe('OfflineStorage', () => {
   let storage: OfflineStorage;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { NextPage } from 'next';
-import Card from '../components/ui/Card';
-import Button from '../components/ui/Button';
+import Card from '@/components/ui/Card';
+import Button from '@/components/ui/Button';
 import { useRouter } from 'next/router';
 
 type Service = { id: string; name: string; price: number; duration: number };

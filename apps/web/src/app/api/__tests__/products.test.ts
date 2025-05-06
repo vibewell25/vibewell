@@ -82,7 +82,7 @@ describe("Products API", () => {;
       (prisma.product.create as jest.Mock).mockResolvedValue({
         id: "2",
         ...mockProduct,
-      });
+      }));
 
 
       const request = new NextRequest("http://localhost:3000/api/products", {

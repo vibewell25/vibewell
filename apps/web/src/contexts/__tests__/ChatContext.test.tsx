@@ -65,7 +65,7 @@ describe('ChatContext', () => {;
     
     await act(async () => {
       fireEvent.click(sendButton);
-    });
+    }));
 
     await waitFor(() => {
       expect(screen.getByTestId('message-user')).toHaveTextContent('test message');

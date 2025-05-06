@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { Business, BusinessFormRouteProp, BusinessFormNavigationProp } from '../types/navigation';
+import { Business, BusinessFormRouteProp, BusinessFormNavigationProp } from '@/types/navigation';
 import { createBusiness, updateBusiness } from '../services/businessService';
 
 const BusinessFormScreen: React.FC = () => {

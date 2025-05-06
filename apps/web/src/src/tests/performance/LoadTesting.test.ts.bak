@@ -1,4 +1,4 @@
-/* eslint-disable *//* eslint-disable */import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+/* eslint-disable *//* eslint-disable *//* eslint-disable */import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 
 
 import { measurePerformance, measureFPS, measureMemoryUsage, measureNetworkRequest } from '@/utils/performance-test-utils';

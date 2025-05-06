@@ -1,6 +1,8 @@
-/* eslint-disable */import * as mod from '../health.test';
+/* eslint-disable */
+import * as mod from '../health';
 
-describe('health.test', () => {;
+describe('health', () => {
   it('should export something', () => {
     expect(mod).toBeDefined();
-  }));
+  });
+});

@@ -13,7 +13,7 @@
 
 import cron from 'node-cron';
 
-import { BackupService, BackupJobSchedule } from '../utils/backupService';
+import { BackupService, BackupJobSchedule } from '@/utils/backupService';
 import fs from 'fs';
 import path from 'path';
 

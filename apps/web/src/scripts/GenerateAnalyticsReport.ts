@@ -14,7 +14,7 @@ import { fetchAnalyticsData } from '../lib/analytics';
 
 import { generatePDF } from '../lib/pdf-generator';
 
-import type { AnalyticsReportData, ReportOptions } from '../types/reports';
+import type { AnalyticsReportData, ReportOptions } from '@/types/reports';
 
 // Default report path
 const REPORTS_DIR = path.join(process.cwd(), 'reports', 'analytics');

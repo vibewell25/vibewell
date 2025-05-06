@@ -5,14 +5,15 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter,
-from '@/components/ui/Card';
+  CardFooter
+} from '../../../src/components/ui/Card';
 import {
   renderWithProviders,
   testAccessibility,
   measurePerformance,
   screen,
-from '../../utils/test-utils';
+  vi
+} from '../../utils/test-utils';
 
 describe('Card Component', () => {
   // Rendering tests
@@ -27,17 +28,23 @@ describe('Card Component', () => {
           <CardContent>Content</CardContent>
           <CardFooter>Footer</CardFooter>
         </Card>
-expect(screen.getByText('Card Title')).toBeInTheDocument();
+      );
+      expect(screen.getByText('Card Title')).toBeInTheDocument();
       expect(screen.getByText('Card Description')).toBeInTheDocument();
       expect(screen.getByText('Content')).toBeInTheDocument();
       expect(screen.getByText('Footer')).toBeInTheDocument();
-it('renders with custom className', () => {
+    });
+
+    it('renders with custom className', () => {
       renderWithProviders(
         <Card className="custom-class">
           <CardContent>Content</CardContent>
         </Card>
-expect(screen.getByText('Content').parentElement).toHaveClass('custom-class');
-it('renders nested content correctly', () => {
+      );
+      expect(screen.getByText('Content').parentElement).toHaveClass('custom-class');
+    });
+
+    it('renders nested content correctly', () => {
       renderWithProviders(
         <Card>
           <CardHeader>
@@ -46,8 +53,12 @@ it('renders nested content correctly', () => {
             </CardTitle>
           </CardHeader>
         </Card>
-expect(screen.getByTestId('nested')).toBeInTheDocument();
-// Accessibility tests
+      );
+      expect(screen.getByTestId('nested')).toBeInTheDocument();
+    });
+  });
+
+  // Accessibility tests
   describe('Accessibility', () => {
     it('meets accessibility guidelines', async () => {
       await testAccessibility(
@@ -58,21 +69,31 @@ expect(screen.getByTestId('nested')).toBeInTheDocument();
           </CardHeader>
           <CardContent>Content</CardContent>
         </Card>
-it('has correct heading structure', () => {
+      );
+    });
+
+    it('has correct heading structure', () => {
       renderWithProviders(
         <Card>
           <CardHeader>
             <CardTitle as="h2">Heading Level 2</CardTitle>
           </CardHeader>
         </Card>
-expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
-it('maintains correct ARIA landmarks', () => {
+      );
+      expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
+    });
+
+    it('maintains correct ARIA landmarks', () => {
       renderWithProviders(
         <Card role="region" aria-label="Test Card">
           <CardContent>Content</CardContent>
         </Card>
-expect(screen.getByRole('region')).toHaveAttribute('aria-label', 'Test Card');
-// Performance tests
+      );
+      expect(screen.getByRole('region')).toHaveAttribute('aria-label', 'Test Card');
+    });
+  });
+
+  // Performance tests
   describe('Performance', () => {
     it('renders efficiently', async () => {
       const performance = await measurePerformance(
@@ -82,20 +103,29 @@ expect(screen.getByRole('region')).toHaveAttribute('aria-label', 'Test Card');
           </CardHeader>
           <CardContent>Content</CardContent>
         </Card>
-expect(performance.average).toBeLessThan(50); // 50ms threshold
-// Edge cases
+      );
+      expect(performance.average).toBeLessThan(50); // 50ms threshold
+    });
+  });
+
+  // Edge cases
   describe('Edge Cases', () => {
     it('handles empty card', () => {
       renderWithProviders(<Card />);
       expect(screen.getByRole('article')).toBeInTheDocument();
-it('handles long content without breaking layout', () => {
+    });
+
+    it('handles long content without breaking layout', () => {
       const longText = 'a'.repeat(1000);
       renderWithProviders(
         <Card>
           <CardContent>{longText}</CardContent>
         </Card>
-expect(screen.getByText(longText)).toBeInTheDocument();
-it('handles deeply nested content', () => {
+      );
+      expect(screen.getByText(longText)).toBeInTheDocument();
+    });
+
+    it('handles deeply nested content', () => {
       renderWithProviders(
         <Card>
           <CardHeader>
@@ -108,8 +138,12 @@ it('handles deeply nested content', () => {
             </CardTitle>
           </CardHeader>
         </Card>
-expect(screen.getByTestId('deep-nested')).toBeInTheDocument();
-// Component composition tests
+      );
+      expect(screen.getByTestId('deep-nested')).toBeInTheDocument();
+    });
+  });
+
+  // Component composition tests
   describe('Component Composition', () => {
     it('works with all sub-components', () => {
       renderWithProviders(
@@ -121,9 +155,13 @@ expect(screen.getByTestId('deep-nested')).toBeInTheDocument();
           <CardContent>Content</CardContent>
           <CardFooter>Footer</CardFooter>
         </Card>
-['Title', 'Description', 'Content', 'Footer'].forEach(text => {
+      );
+      ['Title', 'Description', 'Content', 'Footer'].forEach(text => {
         expect(screen.getByText(text)).toBeInTheDocument();
-it('maintains correct structure with partial components', () => {
+      });
+    });
+
+    it('maintains correct structure with partial components', () => {
       renderWithProviders(
         <Card>
           <CardHeader>
@@ -131,6 +169,10 @@ it('maintains correct structure with partial components', () => {
           </CardHeader>
           <CardContent>Content Only</CardContent>
         </Card>
-expect(screen.getByText('Title Only')).toBeInTheDocument();
+      );
+      expect(screen.getByText('Title Only')).toBeInTheDocument();
       expect(screen.getByText('Content Only')).toBeInTheDocument();
       expect(screen.queryByRole('footer')).not.toBeInTheDocument();
+    });
+  });
+});

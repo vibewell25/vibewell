@@ -89,7 +89,7 @@ describe('NotificationService', () => {
         data: mockNotifications,
         status: 200,
         success: true,
-      }});
+      }}));
 
       // Call the service
       const result = await notificationService.getNotifications();

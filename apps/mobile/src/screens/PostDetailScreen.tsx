@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TextInput, Button, ActivityIndicator, StyleSheet, Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import communityApi from '../services/communityService';
-import { Post, Comment } from '../types/community';
-import { PostDetailRouteProp, PostDetailNavigationProp } from '../types/navigation';
+import { Post, Comment } from '@/types/community';
+import { PostDetailRouteProp, PostDetailNavigationProp } from '@/types/navigation';
 
 const PostDetailScreen: React.FC = () => {
   const route = useRoute<PostDetailRouteProp>();

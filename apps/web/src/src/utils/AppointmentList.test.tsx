@@ -44,7 +44,7 @@ describe('AppointmentList Component', () => {
     expect(screen.getByText('Manicure')).toBeInTheDocument();
     expect(screen.getByText('Alice Johnson')).toBeInTheDocument();
     expect(screen.getByText('Sarah Brown')).toBeInTheDocument();
-  }});
+  }}));
 
   it('handles status updates correctly', async () => {
     (updateAppointmentStatus as jest.Mock).mockResolvedValue({ id: 'appt-2', status: 'confirmed' }});

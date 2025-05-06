@@ -1,7 +1,11 @@
-/* eslint-disable */import { server } from '../server.ts';
+/* eslint-disable */
+// Import the handlers to ensure they're properly loaded
+import { handlers } from '../handlers';
 
-// Empty test suite - placeholder for future implementation;
+// Basic sanity check
 describe('server', () => {
-  it.skip('should function correctly', () => {
-    // Implement actual tests later
-  }));
+  it('should have handlers for mocking', () => {
+    expect(Array.isArray(handlers)).toBe(true);
+    expect(handlers.length).toBeGreaterThan(0);
+  });
+});

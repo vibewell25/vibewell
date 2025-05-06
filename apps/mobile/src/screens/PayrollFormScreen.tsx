@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { PayrollFormRouteProp, PayrollFormNavigationProp } from '../types/navigation';
+import { PayrollFormRouteProp, PayrollFormNavigationProp } from '@/types/navigation';
 import payrollApi from '../services/payrollService';
-import { PayrollRecord } from '../types/payroll';
+import { PayrollRecord } from '@/types/payroll';
 
 const PayrollFormScreen: React.FC = () => {
   const route = useRoute<PayrollFormRouteProp>();

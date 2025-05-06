@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { InventoryItem } from '../types/inventory';
+import { InventoryItem } from '@/types/inventory';
 import { inventoryApi } from '../services/inventoryService';
-import { InventoryFormRouteProp, InventoryFormNavigationProp } from '../types/navigation';
+import { InventoryFormRouteProp, InventoryFormNavigationProp } from '@/types/navigation';
 
 const InventoryFormScreen: React.FC = () => {
   const navigation = useNavigation<InventoryFormNavigationProp>();

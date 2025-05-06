@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, FlatList, Text, TouchableOpacity, Button, ActivityIndicator, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import communityApi from '../services/communityService';
-import { Thread } from '../types/community';
-import { ThreadListNavigationProp } from '../types/navigation';
+import { Thread } from '@/types/community';
+import { ThreadListNavigationProp } from '@/types/navigation';
 
 const ThreadListScreen: React.FC = () => {
   const navigation = useNavigation<ThreadListNavigationProp>();

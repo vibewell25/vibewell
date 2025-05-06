@@ -31,7 +31,7 @@ describe('DocSearch', () => {
     customRender(<DocSearch />);
     const input = screen.getByRole('searchbox') as HTMLInputElement;
 
-    fireEvent.change(input, { target: { value: 'test query' } });
+    fireEvent.change(input, { target: { value: 'test query' } }));
     expect(input.value).toBe('test query');
   });
 

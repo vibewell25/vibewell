@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-    import { FormDefinition, FormSubmission, DocumentInput } from '../types/forms';
+    import { FormDefinition, FormSubmission, DocumentInput } from '@/types/forms';
 
     const API_URL = process.env.REACT_APP_API_URL || 'https://api.vibewell.com/v1';
 

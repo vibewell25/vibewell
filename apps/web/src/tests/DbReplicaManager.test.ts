@@ -1,4 +1,4 @@
-/* eslint-disable */import { dbReplicaManager } from '../utils/db-replica-manager';
+/* eslint-disable */import { dbReplicaManager } from '@/utils/db-replica-manager';
 
 describe('DatabaseReplicaManager', () => {
   beforeAll(() => {

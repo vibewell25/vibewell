@@ -1,4 +1,4 @@
-import { PerformanceMetrics } from '../types/performance-metrics';
+import { PerformanceMetrics } from '@/types/performance-metrics';
 
 export const MetricStatus = {
   SUCCESS: 1,

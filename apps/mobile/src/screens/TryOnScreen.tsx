@@ -5,7 +5,7 @@ import { ViroARSceneNavigator } from '@viro-community/react-viro';
 import LoadingOverlay from '../ar/LoadingOverlay';
 import ARScene from '../ar/ARScene';
 import { useRoute, RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../types/navigation';
+import { RootStackParamList } from '@/types/navigation';
 
 const TryOnScreen: React.FC = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'TryOn'>>();

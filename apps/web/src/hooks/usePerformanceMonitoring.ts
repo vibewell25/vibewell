@@ -1,9 +1,9 @@
 import { useRef, useEffect } from 'react';
 
 
-import { startComponentRender, endComponentRender } from '../utils/PerformanceMonitoringLegacy';
+import { startComponentRender, endComponentRender } from '@/utils/PerformanceMonitoringLegacy';
 
-import { exists } from '../utils/TypeGuards';
+import { exists } from '@/utils/TypeGuards';
 
 interface UsePerformanceMonitoringOptions {
   /**

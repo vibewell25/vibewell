@@ -1,6 +1,6 @@
 import Redis, { RedisOptions } from 'ioredis';
 
-import { logger } from '../utils/logger';
+import { logger } from '@/utils/logger';
 
 interface PoolConfig {
   minConnections: number;

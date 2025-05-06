@@ -1,4 +1,4 @@
-import { AuthConfig, ServiceConfig } from '../types/third-party';
+import { AuthConfig, ServiceConfig } from '@/types/third-party';
 
 interface ThirdPartyConfig {
   auth: AuthConfig;

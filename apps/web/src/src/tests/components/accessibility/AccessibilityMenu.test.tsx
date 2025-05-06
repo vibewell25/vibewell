@@ -48,7 +48,7 @@ describe('AccessibilityMenu', () => {
 
     const accessibilityButton = screen.getByRole('button', {
       name: /accessibility menu/i,
-    }});
+    }}));
 
     expect(accessibilityButton).toBeInTheDocument();
   }});

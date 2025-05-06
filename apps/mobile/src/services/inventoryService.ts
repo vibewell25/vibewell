@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-    import { InventoryItem } from '../types/inventory';
+    import { InventoryItem } from '@/types/inventory';
 
     const API_URL = process.env.REACT_APP_API_URL || 'https://api.vibewell.com/v1';
 

@@ -14,9 +14,9 @@ import { NotificationService } from './notification-service';
 
 import { logger } from '@/lib/logger';
 
-import { Period } from '../types/analytics';
+import { Period } from '@/types/analytics';
 
-import type { BusinessAnalyticsData, TrendData } from '../types/analytics';
+import type { BusinessAnalyticsData, TrendData } from '@/types/analytics';
 
 const prisma = new PrismaClient();
 

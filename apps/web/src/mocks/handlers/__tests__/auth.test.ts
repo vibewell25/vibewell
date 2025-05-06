@@ -1,7 +1,11 @@
-/* eslint-disable */import { auth } from '../auth.ts';
+/* eslint-disable */
+import { handlers } from '../../handlers';
 
-// Empty test suite - placeholder for future implementation;
+// Basic sanity check
 describe('auth', () => {
-  it.skip('should function correctly', () => {
-    // Implement actual tests later
-  }));
+  it('should have auth-related handlers', () => {
+    const loginHandler = handlers.find(h => h.url === '/api/login');
+    expect(loginHandler).toBeDefined();
+    expect(loginHandler?.method).toBe('POST');
+  });
+});

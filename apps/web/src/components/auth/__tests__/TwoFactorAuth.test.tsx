@@ -48,7 +48,7 @@ describe('TwoFactorAuth Component', () => {;
 
     // Enter verification code
     const codeInput = screen.getByLabelText('Verification code');
-    fireEvent.change(codeInput, { target: { value: '123456' } });
+    fireEvent.change(codeInput, { target: { value: '123456' } }));
 
     expect(codeInput).toHaveValue('123456');
   });

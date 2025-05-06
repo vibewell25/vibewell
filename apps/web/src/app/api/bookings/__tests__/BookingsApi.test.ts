@@ -91,7 +91,7 @@ describe('Bookings API', () => {
       
       // Assert
       expect(response.status).toBe(401);
-    });
+    }));
 
     it('should filter bookings by date range', async () => {
       // Arrange

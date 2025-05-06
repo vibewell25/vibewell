@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BookingList } from './BookingList';
 import { BookingDetail } from './BookingDetail';
 import { Booking, BookingStatus } from '../services/BookingService';
-import { ErrorHandlerProvider } from '../utils/ErrorHandler';
+import { ErrorHandlerProvider } from '@/utils/ErrorHandler';
 
 interface BookingAppProps {
   providerId?: string;

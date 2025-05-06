@@ -2,7 +2,7 @@ import Review from '../models/Review';
 
     import Booking from '../models/Booking';
 
-    import ErrorResponse from '../utils/errorResponse';
+    import ErrorResponse from '@/utils/errorResponse';
 
     import asyncHandler from '../middleware/async';
 

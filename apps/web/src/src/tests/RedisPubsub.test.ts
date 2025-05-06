@@ -1,13 +1,13 @@
 /* eslint-disable */import Redis from 'ioredis';
 
-import RedisPubSub from '../utils/redis-pubsub';
+import RedisPubSub from '@/utils/redis-pubsub';
 
-import { logger } from '../utils/logger';
+import { logger } from '@/utils/logger';
 import { EventEmitter } from 'events';
 
 jest.mock('ioredis');
 
-jest.mock('../utils/logger');
+jest.mock('@/utils/logger');
 
 const MockRedis = Redis as jest.Mocked<typeof Redis>;
 
@@ -57,7 +57,7 @@ describe('RedisPubSub', () => {
     });
 
     it('should handle publishing errors', async () => {
-      publisher.publish.mockRejectedValue(new Error('Redis error'});
+      publisher.publish.mockRejectedValue(new Error('Redis error'));
 
 
       const result = await pubsub.publish('test-channel', {
@@ -98,7 +98,7 @@ describe('RedisPubSub', () => {
     });
 
     it('should handle subscription errors', async () => {
-      subscriber.subscribe.mockRejectedValue(new Error('Redis error'});
+      subscriber.subscribe.mockRejectedValue(new Error('Redis error'));
       const handler = jest.fn();
 
 
@@ -110,21 +110,18 @@ describe('RedisPubSub', () => {
       subscriber.subscribe.mockResolvedValue(undefined);
       const handler = jest.fn();
       const message = {
-
         channel: 'test-channel',
         data: { name: 'test', value: 42 },
         timestamp: Date.now(),
-
         messageId: 'test-id',
       };
-
 
       await pubsub.subscribe('test-channel', handler);
       subscriber.emit(
         'message',
-
         `${pubsubConfig.channelPrefix}:test-channel`,
-        JSON.stringify(message),
+        JSON.stringify(message)
+      );
 
       expect(handler).toHaveBeenCalledWith(message);
     });
@@ -154,7 +151,7 @@ describe('RedisPubSub', () => {
     });
 
     it('should handle pattern subscription errors', async () => {
-      subscriber.psubscribe.mockRejectedValue(new Error('Redis error'});
+      subscriber.psubscribe.mockRejectedValue(new Error('Redis error'));
       const handler = jest.fn();
 
       await expect(pubsub.pattern('test-*', handler)).rejects.toThrow('Redis error');
@@ -180,7 +177,7 @@ describe('RedisPubSub', () => {
     });
 
     it('should handle unsubscribe errors', async () => {
-      subscriber.unsubscribe.mockRejectedValue(new Error('Redis error'});
+      subscriber.unsubscribe.mockRejectedValue(new Error('Redis error'));
 
 
       await expect(pubsub.unsubscribe('test-channel')).rejects.toThrow('Redis error');
@@ -205,28 +202,25 @@ describe('RedisPubSub', () => {
       subscriber.subscribe.mockResolvedValue(undefined);
       const handler = jest.fn();
       const message = {
-
         channel: 'test-channel',
         data: { name: 'test', value: 42 },
         timestamp: Date.now(),
-
         messageId: 'test-id',
       };
-
 
       await pubsub.subscribe('test-channel', handler);
       subscriber.emit(
         'message',
-
         `${pubsubConfig.channelPrefix}:test-channel`,
-        JSON.stringify(message),
+        JSON.stringify(message)
+      );
 
       const stats = pubsub.getStats();
       expect(stats.received).toBe(1);
     });
 
     it('should track errors', async () => {
-      publisher.publish.mockRejectedValue(new Error('Redis error'});
+      publisher.publish.mockRejectedValue(new Error('Redis error'));
 
 
       await pubsub.publish('test-channel', {
@@ -262,8 +256,8 @@ describe('RedisPubSub', () => {
     });
 
     it('should handle disconnect errors', async () => {
-      publisher.quit.mockRejectedValue(new Error('Redis error'});
-      subscriber.quit.mockRejectedValue(new Error('Redis error'});
+      publisher.quit.mockRejectedValue(new Error('Redis error'));
+      subscriber.quit.mockRejectedValue(new Error('Redis error'));
 
       await expect(pubsub.disconnect()).rejects.toThrow('Redis error');
       expect(logger.error).toHaveBeenCalled();

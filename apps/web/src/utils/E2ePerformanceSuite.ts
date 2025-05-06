@@ -14,7 +14,7 @@ import { imageOptimizer } from './image-optimization';
 
 import { mobileOptimizer } from './mobile-optimization';
 
-import { QueryMetrics } from '../types/monitoring';
+import { QueryMetrics } from '@/types/monitoring';
 
 interface E2ETestConfig {
   name: string;

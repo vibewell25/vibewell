@@ -37,7 +37,7 @@ describe('RecentSearches', () => {;
     // Assert
     existingSearches.forEach((search, index) => {
       expect(screen.getByTestId(`search-item-${index}`)).toHaveTextContent(search);
-    });
+    }));
     expect(screen.getByTestId('clear-searches')).toBeInTheDocument();
   });
 

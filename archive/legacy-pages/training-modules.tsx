@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
 import type { NextPage } from 'next';
-import Card from '../components/ui/Card';
-import Button from '../components/ui/Button';
-import Input from '../components/ui/Input';
+import Card from '@/components/ui/Card';
+import Button from '@/components/ui/Button';
+import Input from '@/components/ui/Input';
 import { useRouter } from 'next/router';
-import { fetchWithTimeout } from '../src/utils/timeout-handler';
+import { fetchWithTimeout } from '@/utils/timeout-handler';
 
 type Module = { id: string; title: string; description: string; contentUrl: string };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { BookingDetailRouteProp } from '../types/navigation';
+import { BookingDetailRouteProp } from '@/types/navigation';
 
 const BookingDetailScreen: React.FC = () => {
   const route = useRoute<BookingDetailRouteProp>();

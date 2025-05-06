@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text, TouchableOpacity, Button, ActivityIndicator, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { benefitsApi } from '../services/benefitsService';
-import { BenefitClaim } from '../types/benefits';
-import { BenefitListNavigationProp } from '../types/navigation';
+import { BenefitClaim } from '@/types/benefits';
+import { BenefitListNavigationProp } from '@/types/navigation';
 
 const BenefitListScreen: React.FC = () => {
   const navigation = useNavigation<BenefitListNavigationProp>();

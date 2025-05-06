@@ -1,4 +1,4 @@
-import { logEvent } from '../utils/analytics';
+import { logEvent } from '@/utils/analytics';
 import AuditService, {
   AuditCategory,
   AuditReport,

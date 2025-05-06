@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-    import OfflineStorage from '../utils/offline-storage';
+    import OfflineStorage from '@/utils/offline-storage';
 
 export type SyncStatus = 'synced' | 'syncing' | 'failed' | null;
 

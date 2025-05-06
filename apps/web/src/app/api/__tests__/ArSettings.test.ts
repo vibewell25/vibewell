@@ -104,7 +104,7 @@ describe("AR Settings API", () => {;
       (prisma.aRSetting.create as jest.Mock).mockResolvedValue({
         id: "1",
         ...mockSettings,
-      });
+      }));
 
 
       const request = new NextRequest("http://localhost:3000/api/ar-settings", {

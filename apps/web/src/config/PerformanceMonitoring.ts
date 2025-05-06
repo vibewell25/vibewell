@@ -1,4 +1,4 @@
 
-import type { MonitoringConfig } from '../types/performance';
+import type { MonitoringConfig } from '@/types/performance';
 
 export {};

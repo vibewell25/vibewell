@@ -2,7 +2,7 @@ import { Redis } from 'ioredis';
 import { gzip } from 'zlib';
 import { promisify } from 'util';
 
-import { OptimizationOptions } from '../types/optimization';
+import { OptimizationOptions } from '@/types/optimization';
 
 // Initialize Redis client
 const redis = new Redis(process.env['REDIS_URL'] || 'redis://localhost:6379');

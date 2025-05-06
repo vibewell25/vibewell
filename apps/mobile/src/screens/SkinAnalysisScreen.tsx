@@ -3,7 +3,7 @@ import { View, Button, Image, Alert, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNavigation } from '@react-navigation/native';
-import { SkinAnalysisNavigationProp } from '../types/navigation';
+import { SkinAnalysisNavigationProp } from '@/types/navigation';
 import { analyzeSkin } from '../services/skinAnalysisService';
 
 const SkinAnalysisScreen: React.FC = () => {

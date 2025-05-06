@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { fetchServices } from '../services/serviceService';
-import { Service } from '../types/navigation';
+import { Service } from '@/types/navigation';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../types/navigation';
+import { RootStackParamList } from '@/types/navigation';
 
 type ServiceListNavigationProp = StackNavigationProp<RootStackParamList, 'ServiceList'>;
 

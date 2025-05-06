@@ -5,9 +5,9 @@ import {
   hasError,
   isSuccessResponse,
   getResponseError,
-from '../utils/api-response-utils';
-import { useErrorHandler } from '../utils/error-handler';
-import { ErrorSource, ErrorCategory, ErrorSeverity } from '../utils/error-handler';
+from '@/utils/api-response-utils';
+import { useErrorHandler } from '@/utils/error-handler';
+import { ErrorSource, ErrorCategory, ErrorSeverity } from '@/utils/error-handler';
 
 interface BookingListProps {
   status?: BookingStatus;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from './ui/Button';
-import { useCsrfToken } from '../utils/csrf';
-import { validateForm } from '../utils/form-validation';
+import { useCsrfToken } from '@/utils/csrf';
+import { validateForm } from '@/utils/form-validation';
 
 interface FormProps {
   onSuccess?: (data: any) => void;

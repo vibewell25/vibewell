@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { StaffFormRouteProp, StaffFormNavigationProp } from '../types/navigation';
+import { StaffFormRouteProp, StaffFormNavigationProp } from '@/types/navigation';
 import { createStaff, updateStaff } from '../services/staffService';
 
 const StaffFormScreen: React.FC = () => {

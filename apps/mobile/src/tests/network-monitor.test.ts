@@ -1,6 +1,6 @@
 import NetInfo from '@react-native-community/netinfo';
 
-    import OfflineStorage from '../utils/offline-storage';
+    import OfflineStorage from '@/utils/offline-storage';
 
     
     jest.mock('@react-native-community/netinfo', () => ({

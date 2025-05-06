@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import communityApi from '../services/communityService';
-import { Thread } from '../types/community';
-import { ThreadFormRouteProp, ThreadFormNavigationProp } from '../types/navigation';
+import { Thread } from '@/types/community';
+import { ThreadFormRouteProp, ThreadFormNavigationProp } from '@/types/navigation';
 
 const ThreadFormScreen: React.FC = () => {
   const route = useRoute<ThreadFormRouteProp>();

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text, TouchableOpacity, ActivityIndicator, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { EquipmentItem } from '../types/equipment';
+import { EquipmentItem } from '@/types/equipment';
 import { equipmentApi } from '../services/equipmentService';
-import { EquipmentListNavigationProp } from '../types/navigation';
+import { EquipmentListNavigationProp } from '@/types/navigation';
 
 const EquipmentListScreen: React.FC = () => {
   const navigation = useNavigation<EquipmentListNavigationProp>();

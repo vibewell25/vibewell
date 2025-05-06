@@ -1,6 +1,6 @@
 import { mockServices, mockUsers, mockBookings } from '../fixtures/api-fixtures';
 
-    import { generateTestId } from '../utils/test-utils';
+    import { generateTestId } from '@/utils/test-utils';
 
 interface User {
   id: string;

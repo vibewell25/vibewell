@@ -1,4 +1,4 @@
-import type { MessagingConfig } from '../types/third-party';
+import type { MessagingConfig } from '@/types/third-party';
 
 
 import { ThirdPartyManager } from '../services/third-party-manager';

@@ -1,4 +1,4 @@
-import type { AIConfig } from '../types/third-party';
+import type { AIConfig } from '@/types/third-party';
 
 
 import { ThirdPartyManager } from '../services/third-party-manager';

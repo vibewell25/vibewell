@@ -1,8 +1,8 @@
 import { EventEmitter } from 'events';
 
-import { logEvent } from '../utils/analytics';
+import { logEvent } from '@/utils/analytics';
 
-import { hashData } from '../utils/encryption';
+import { hashData } from '@/utils/encryption';
 
 import NotificationService from './notification-service';
 

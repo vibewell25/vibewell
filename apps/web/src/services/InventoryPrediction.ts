@@ -11,6 +11,8 @@ interface DemandPrediction {
   confidence: number;
   seasonalFactors: string[];
   timeframe: number; // days
+}
+
 interface ReorderSuggestion {
   productId: string;
   quantity: number;
@@ -20,6 +22,9 @@ interface ReorderSuggestion {
     batchSize: number;
     timing: string;
     potentialSavings: number;
+  };
+}
+
 export class InventoryPredictionService {
   /**
    * Predicts product demand using machine learning
@@ -43,17 +48,22 @@ export class InventoryPredictionService {
         seasonality,
         events,
         trends,
-// Generate prediction using OpenAI
+      });
+      
+      // Generate prediction using OpenAI
       const prediction = await this.generateDemandPrediction(features, timeframe);
 
       // Store prediction for tracking
       await this.storePrediction(productId, prediction);
 
       return prediction;
-catch (error) {
+    } catch (error) {
       logger.error('Failed to predict demand', 'InventoryPrediction', { error });
       throw error;
-/**
+    }
+  }
+
+  /**
    * Generates optimal reorder suggestions
    */
   async generateReorderSuggestion(
@@ -75,16 +85,18 @@ catch (error) {
         orderingCost: costs.orderingCost,
         holdingCost: costs.holdingCost,
         unitCost: product.cost,
-// Calculate reorder point
+      });
+      
+      // Calculate reorder point
       const reorderPoint = this.calculateReorderPoint({
         leadTime: supplier.leadTime,
-
         dailyDemand: demand.predictedDemand / demand.timeframe,
         serviceLevel: 0.95, // 95% service level
-// Generate suggestion
+      });
+      
+      // Generate suggestion
       const suggestion: ReorderSuggestion = {
         productId,
-
         quantity: Math.max(eoq, reorderPoint - currentStock),
         urgency: this.calculateUrgency(currentStock, reorderPoint),
         reasoning: this.generateReorderReasoning({
@@ -92,16 +104,22 @@ catch (error) {
           eoq,
           reorderPoint,
           demand,
-),
+        }),
         costOptimization: {
           batchSize: eoq,
           timing: this.suggestOrderTiming(currentStock, reorderPoint, demand),
           potentialSavings: this.calculatePotentialSavings(eoq, costs),
-return suggestion;
-catch (error) {
+        },
+      };
+      
+      return suggestion;
+    } catch (error) {
       logger.error('Failed to generate reorder suggestion', 'InventoryPrediction', { error });
       throw error;
-/**
+    }
+  }
+
+  /**
    * Analyzes supplier performance and optimizes selection
    */
   async analyzeSupplierPerformance(productId: string): Promise<Record<string, any>> {
@@ -120,38 +138,60 @@ catch (error) {
         qualityScore: this.calculateQualityScore(quality),
         costEfficiency: this.calculateCostEfficiency(costs),
         leadTimeConsistency: this.calculateLeadTimeConsistency(deliveries),
-// Generate recommendations
+      };
+      
+      // Generate recommendations
       const recommendations = await this.generateSupplierRecommendations(metrics);
 
       return {
         metrics,
         recommendations,
         trends: this.analyzePerformanceTrends(metrics),
-catch (error) {
+      };
+    } catch (error) {
       logger.error('Failed to analyze supplier performance', 'InventoryPrediction', { error });
       throw error;
-private async getProductUsageHistory(productId: string) {
+    }
+  }
+
+  private async getProductUsageHistory(productId: string) {
     return prisma.productUsage.findMany({
       where: { productId },
       orderBy: { createdAt: 'desc' },
       include: {
         serviceHistory: true,
-private async getSeasonalityData(productId: string) {
+      },
+    });
+  }
+
+  private async getSeasonalityData(productId: string) {
     // Implementation for getting seasonality data
     return {};
-private async getUpcomingEvents() {
+  }
+
+  private async getUpcomingEvents() {
     return prisma.event.findMany({
       where: {
         date: {
           gte: new Date(),
-private async getMarketTrends() {
+        },
+      },
+    });
+  }
+
+  private async getMarketTrends() {
     return prisma.marketTrend.findMany({
       orderBy: { createdAt: 'desc' },
       take: 10,
-private prepareFeatures(data: any): Record<string, any> {
+    });
+  }
+
+  private prepareFeatures(data: any): Record<string, any> {
     // Implementation for preparing ML features
     return {};
-private async generateDemandPrediction(
+  }
+
+  private async generateDemandPrediction(
     features: Record<string, any>,
     timeframe: number,
   ): Promise<DemandPrediction> {
@@ -162,103 +202,151 @@ private async generateDemandPrediction(
       confidence: 0,
       seasonalFactors: [],
       timeframe,
-private async storePrediction(productId: string, prediction: DemandPrediction): Promise<void> {
+    };
+  }
+
+  private async storePrediction(productId: string, prediction: DemandPrediction): Promise<void> {
     // Implementation for storing prediction
     logger.info('Storing demand prediction', 'InventoryPrediction', {
       productId,
       prediction,
-private async getProductDetails(productId: string) {
+    });
+  }
+
+  private async getProductDetails(productId: string) {
     return prisma.product.findUnique({
       where: { id: productId },
       include: {
         supplier: true,
         performance: true,
-private async getSupplierData(productId: string) {
+      },
+    });
+  }
+
+  private async getSupplierData(productId: string) {
     return prisma.supplier.findFirst({
       where: {
         products: {
           some: { id: productId },
-private async getInventoryCosts(productId: string) {
+        },
+      },
+    });
+  }
+
+  private async getInventoryCosts(productId: string) {
     // Implementation for getting inventory costs
     return {
       orderingCost: 20, // Default values
       holdingCost: 5,
       stockoutCost: 100,
-private calculateEconomicOrderQuantity(params: {
+    };
+  }
+
+  private calculateEconomicOrderQuantity(params: {
     annualDemand: number;
     orderingCost: number;
     holdingCost: number;
     unitCost: number;
-): number {
+  }): number {
     const { annualDemand, orderingCost, holdingCost } = params;
 
     return Math.sqrt((2 * annualDemand * orderingCost) / holdingCost);
-private calculateReorderPoint(params: {
+  }
+
+  private calculateReorderPoint(params: {
     leadTime: number;
     dailyDemand: number;
     serviceLevel: number;
-): number {
+  }): number {
     const { leadTime, dailyDemand, serviceLevel } = params;
     const safetyStock = this.calculateSafetyStock(dailyDemand, serviceLevel);
 
     return leadTime * dailyDemand + safetyStock;
-private calculateSafetyStock(dailyDemand: number, serviceLevel: number): number {
+  }
+
+  private calculateSafetyStock(dailyDemand: number, serviceLevel: number): number {
     // Implementation using statistical methods
-
     return dailyDemand * 7; // 1 week safety stock as placeholder
-private calculateUrgency(currentStock: number, reorderPoint: number): 'LOW' | 'MEDIUM' | 'HIGH' {
+  }
 
+  private calculateUrgency(currentStock: number, reorderPoint: number): 'LOW' | 'MEDIUM' | 'HIGH' {
     const ratio = currentStock / reorderPoint;
     if (ratio <= 0.5) return 'HIGH';
     if (ratio <= 0.75) return 'MEDIUM';
     return 'LOW';
-private generateReorderReasoning(params: {
+  }
+
+  private generateReorderReasoning(params: {
     currentStock: number;
     eoq: number;
     reorderPoint: number;
     demand: DemandPrediction;
-): string {
+  }): string {
     // Implementation for generating reasoning
     return '';
-private suggestOrderTiming(
+  }
+
+  private suggestOrderTiming(
     currentStock: number,
     reorderPoint: number,
     demand: DemandPrediction,
   ): string {
     // Implementation for suggesting optimal timing
     return '';
-private calculatePotentialSavings(eoq: number, costs: Record<string, number>): number {
+  }
+
+  private calculatePotentialSavings(eoq: number, costs: Record<string, number>): number {
     // Implementation for calculating potential savings
     return 0;
-private async getSupplierOrders(productId: string) {
+  }
+
+  private async getSupplierOrders(productId: string) {
     // Implementation for getting supplier orders
     return [];
-private async getDeliveryHistory(productId: string) {
+  }
+
+  private async getDeliveryHistory(productId: string) {
     // Implementation for getting delivery history
     return [];
-private async getQualityMetrics(productId: string) {
+  }
+
+  private async getQualityMetrics(productId: string) {
     // Implementation for getting quality metrics
     return {};
-private async getSupplierCosts(productId: string) {
+  }
+
+  private async getSupplierCosts(productId: string) {
     // Implementation for getting supplier costs
     return {};
-private calculateReliability(orders: any[], deliveries: any[]): number {
+  }
+
+  private calculateReliability(orders: any[], deliveries: any[]): number {
     // Implementation for calculating reliability
     return 0;
-private calculateQualityScore(quality: any): number {
+  }
+
+  private calculateQualityScore(quality: any): number {
     // Implementation for calculating quality score
     return 0;
-private calculateCostEfficiency(costs: any): number {
+  }
+
+  private calculateCostEfficiency(costs: any): number {
     // Implementation for calculating cost efficiency
     return 0;
-private calculateLeadTimeConsistency(deliveries: any[]): number {
+  }
+
+  private calculateLeadTimeConsistency(deliveries: any[]): number {
     // Implementation for calculating lead time consistency
     return 0;
-private async generateSupplierRecommendations(
-    metrics: Record<string, number>,
-  ): Promise<string[]> {
-    // Implementation for generating recommendations
+  }
+
+  private async generateSupplierRecommendations(metrics: Record<string, number>): Promise<string[]> {
+    // Implementation for generating supplier recommendations
     return [];
-private analyzePerformanceTrends(metrics: Record<string, number>): Record<string, any> {
+  }
+
+  private analyzePerformanceTrends(metrics: Record<string, number>): Record<string, any> {
     // Implementation for analyzing performance trends
     return {};
+  }
+}

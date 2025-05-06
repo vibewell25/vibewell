@@ -202,7 +202,7 @@ describe('BookingService - End to End Tests', () => {
           }),
         }),
 
-    });
+    }));
 
     it('should handle recurring booking flow', async () => {
       // Setup mock data

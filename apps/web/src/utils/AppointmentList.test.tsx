@@ -73,7 +73,7 @@ describe('AppointmentList Component', () => {
 
     expect(screen.getByText('Haircut')).toBeInTheDocument();
     expect(screen.queryByText('Manicure')).not.toBeInTheDocument();
-  });
+  }));
 
   it('sorts appointments by date', () => {
     render(<AppointmentList appointments={mockAppointments} />);

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator, TextInput, ScrollView, Switch } from 'react-native';
 import { beautyApi } from '../services/api';
-import { BeautyService, BeautyCategory, BeautyFilter } from '../types/beauty';
+import { BeautyService, BeautyCategory, BeautyFilter } from '@/types/beauty';
 import { useNavigation } from '@react-navigation/native';
-import { BeautyBookingNavigationProp } from '../types/navigation';
+import { BeautyBookingNavigationProp } from '@/types/navigation';
 
 const NewBookingScreen: React.FC = () => {
   const navigation = useNavigation<BeautyBookingNavigationProp>();

@@ -43,7 +43,7 @@ describe('OnboardingFlow Component', () => {
     expect(screen.getByText(/Welcome to VibeWell/i)).toBeInTheDocument();
     expect(screen.getByText(/Let's get to know you better/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Get Started/i })).toBeInTheDocument();
-  });
+  }));
 
   it('should navigate through onboarding steps', async () => {
     render(<OnboardingFlow />);

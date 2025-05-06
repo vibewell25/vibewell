@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import { fetchWithTimeout } from '../src/utils/timeout-handler';
+import { fetchWithTimeout } from '@/utils/timeout-handler';
 
 const Bookings: NextPage = () => {
   const [data, setData] = useState<any[]>([]);

@@ -24,7 +24,8 @@
       "@vibewell/services-types": [
         "../../packages/services-types/src"
       ]
-    }
+    },
+    "strictNullChecks": true
   },
   "include": [
     "../../packages/services-types/src/**/*.ts",

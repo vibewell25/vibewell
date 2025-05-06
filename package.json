@@ -150,7 +150,7 @@
     "tailwind-merge": "^3.2.0",
     "tailwindcss": "^4.1.5",
     "three": "^0.162.0",
-    "three-mesh-bvh": "0.8.0",
+    "three-mesh-bvh": "0.9.0",
     "validator": "^13.15.0",
     "web-vitals": "^3.5.2",
     "webxr-polyfill": "^2.0.3",
@@ -206,7 +206,7 @@
     "@react-spring/three": "9.7.3",
     "@react-three/fiber": "8.15.19",
     "zod": "3.22.4",
-    "three-mesh-bvh": "0.8.0",
+    "three-mesh-bvh": "0.9.0",
     "jest-expo": "52.0.6"
   },
   "engines": {

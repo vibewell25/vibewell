@@ -13,3 +13,4 @@
 
 # Ignore temporary backup folder
 /temp_backup/
+apps/web/node_modules/

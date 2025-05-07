@@ -1,6 +1,8 @@
 # Ignore node modules and Next.js build artifacts
 /node_modules/
 /.next/
+**/node_modules/
+**/node_modules/**/*
 
 # Ignore TypeScript build info
 *.tsbuildinfo

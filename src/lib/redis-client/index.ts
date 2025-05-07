@@ -1,6 +1,7 @@
 /**
  * Redis client interface and implementation
  */
+import { Redis } from 'ioredis';
 
 // Basic Redis client interface
 export interface RedisClient {
@@ -26,6 +27,32 @@ class MockRedisClient implements RedisClient {
   }
 }
 
+// Redis implementation for production
+class IoRedisClient implements RedisClient {
+  private client: Redis;
+
+  constructor() {
+    this.client = new Redis({
+      host: process.env.REDIS_HOST,
+      port: parseInt(process.env.REDIS_PORT || '6379'),
+      password: process.env.REDIS_PASSWORD,
+      tls: process.env.REDIS_TLS === 'true' ? {} : undefined,
+    });
+  }
+
+  async get(key: string): Promise<string | null> {
+    return this.client.get(key);
+  }
+
+  async set(key: string, value: string): Promise<void> {
+    await this.client.set(key, value);
+  }
+
+  async del(key: string): Promise<void> {
+    await this.client.del(key);
+  }
+}
+
 // Factory function to get the appropriate Redis client based on environment
 export function getRedisClient(): RedisClient {
   const nodeEnv = process.env.NODE_ENV || 'development';
@@ -35,8 +62,6 @@ export function getRedisClient(): RedisClient {
     return new MockRedisClient();
   }
   
-  // For production, we would normally connect to a real Redis instance
-  // But for now, we'll return the mock implementation
-  // In a real app, we'd use a Redis client like ioredis or redis
-  return new MockRedisClient();
+  // For production, use the Redis implementation
+  return new IoRedisClient();
 } 

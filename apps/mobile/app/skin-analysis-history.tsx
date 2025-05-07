@@ -10,35 +10,45 @@ export default function SkinAnalysisHistoryScreen() {
 
   useEffect(() => {
     loadHistory();
-[]);
+  }, []);
 
   const loadHistory = async () => {
     setLoading(true);
     try {
       const data = await getSkinAnalysisHistory();
       setHistory(data);
-catch (error) {
+    } catch (error) {
       console.error('Error loading skin analysis history:', error);
       alert('Failed to load history. Please try again.');
-finally {
+    } finally {
       setLoading(false);
-const handleSelectAnalysis = (id: string) => {
+    }
+  };
+
+  const handleSelectAnalysis = (id: string) => {
     router.push({
       pathname: '/skin-analysis-detail',
       params: { id }
-const renderItem = ({ item }: { item: SkinAnalysisProgress }) => {
+    });
+  };
+
+  const renderItem = ({ item }: { item: SkinAnalysisProgress }) => {
     const date = new Date(item.date);
     const formattedDate = date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
-// Calculate score color
+    });
+
+    // Calculate score color
     let scoreColor = '#F44336'; // Red for poor
     if (item.score > 70) {
       scoreColor = '#4CAF50'; // Green for good
-else if (item.score > 40) {
+    } else if (item.score > 40) {
       scoreColor = '#FFC107'; // Yellow for medium
-return (
+    }
+
+    return (
       <TouchableOpacity
         style={styles.historyItem}
         onPress={() => handleSelectAnalysis(item.id)}
@@ -50,7 +60,7 @@ return (
               {date.toLocaleTimeString('en-US', {
                 hour: '2-digit',
                 minute: '2-digit',
-)}
+              })}
             </Text>
           </View>
           <View style={styles.scoreCircle}>
@@ -74,15 +84,20 @@ return (
           )}
         </Text>
       </TouchableOpacity>
-return (
+    );
+  };
+
+  return (
     <View style={styles.container}>
       <Stack.Screen 
         options={{
           title: 'Analysis History',
           headerStyle: {
             backgroundColor: '#f4f4f8',
-headerTintColor: '#6200ee',
-/>
+          },
+          headerTintColor: '#6200ee',
+        }}
+      />
       
       <View style={styles.header}>
         <Text style={styles.title}>Skin Analysis History</Text>
@@ -122,25 +137,33 @@ headerTintColor: '#6200ee',
         </View>
       )}
     </View>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f4f4f8',
-header: {
+  },
+  header: {
     padding: 20,
     backgroundColor: '#f4f4f8',
-title: {
+  },
+  title: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 8,
-subtitle: {
+  },
+  subtitle: {
     fontSize: 16,
     color: '#666',
     marginBottom: 10,
-listContent: {
+  },
+  listContent: {
     padding: 16,
-historyItem: {
+  },
+  historyItem: {
     backgroundColor: 'white',
     borderRadius: 12,
     padding: 16,
@@ -150,20 +173,24 @@ historyItem: {
     shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 2,
-historyItemMain: {
+  },
+  historyItemMain: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 8,
-historyItemDate: {
+  },
+  historyItemDate: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
-historyItemTime: {
+  },
+  historyItemTime: {
     fontSize: 14,
     color: '#666',
     marginTop: 2,
-scoreCircle: {
+  },
+  scoreCircle: {
     width: 50,
     height: 50,
     borderRadius: 25,
@@ -172,43 +199,56 @@ scoreCircle: {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f9f9f9',
-scoreText: {
+  },
+  scoreText: {
     fontSize: 18,
     fontWeight: 'bold',
-historyItemDetails: {
+  },
+  historyItemDetails: {
     fontSize: 14,
     color: '#666',
-improvementText: {
+  },
+  improvementText: {
     fontSize: 14,
     fontWeight: 'bold',
-improved: {
+  },
+  improved: {
     color: '#4CAF50',
-declined: {
+  },
+  declined: {
     color: '#F44336',
-loadingContainer: {
+  },
+  loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-loadingText: {
+  },
+  loadingText: {
     marginTop: 12,
     fontSize: 16,
     color: '#666',
-emptyContainer: {
+  },
+  emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 40,
-emptyText: {
+  },
+  emptyText: {
     fontSize: 16,
     color: '#666',
     textAlign: 'center',
     marginBottom: 24,
-newAnalysisButton: {
+  },
+  newAnalysisButton: {
     backgroundColor: '#6200ee',
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
-newAnalysisButtonText: {
+  },
+  newAnalysisButtonText: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 16,
+  }
+});

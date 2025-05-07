@@ -2,6 +2,21 @@
  * WebAuthn authentication module
  * This provides WebAuthn (FIDO2) biometric/hardware authentication functionality
  */
+import { 
+  generateRegistrationOptions as fido2RegOptions,
+  verifyRegistrationResponse,
+  generateAuthenticationOptions as fido2AuthOptions,
+  verifyAuthenticationResponse
+} from '@simplewebauthn/server';
+import type { 
+  RegistrationCredentialJSON,
+  AuthenticationCredentialJSON,
+} from '@simplewebauthn/typescript-types';
+import prisma from '../prisma';
+
+const rpName = 'Vibewell';
+const rpID = process.env.WEBAUTHN_RP_ID || 'vibewell.example.com';
+const origin = process.env.WEBAUTHN_ORIGIN || 'https://vibewell.example.com';
 
 /**
  * Represents WebAuthn credential data
@@ -85,60 +100,117 @@ export interface WebAuthnResponse {
 /**
  * Generates registration options for WebAuthn
  */
-export function generateRegistrationOptions(options: RegistrationOptions): WebAuthnRegistrationOptions {
-  // In a real implementation, this would generate proper WebAuthn registration options
-  return {
-    challenge: Buffer.from('random-challenge').toString('base64'),
-    rp: { name: 'Vibewell', id: 'vibewell.example.com' },
-    user: {
-      id: Buffer.from(options.username).toString('base64'),
-      name: options.username,
-      displayName: options.displayName
+export function generateRegistrationOptions(options: RegistrationOptions) {
+  return fido2RegOptions({
+    rpName,
+    rpID,
+    userID: Buffer.from(options.username).toString('base64'),
+    userName: options.username,
+    userDisplayName: options.displayName,
+    attestationType: options.attestation,
+    authenticatorSelection: {
+      userVerification: 'preferred',
+      residentKey: 'preferred',
     },
-    pubKeyCredParams: [
-      { type: 'public-key', alg: -7 }, // ES256
-      { type: 'public-key', alg: -257 } // RS256
-    ],
-    timeout: 60000,
-    attestation: options.attestation || 'none'
-  };
+  });
 }
 
 /**
  * Verifies a WebAuthn registration response
  */
-export function verifyRegistration(response: WebAuthnResponse): WebAuthnCredential {
-  // In a real implementation, this would verify the attestation
-  // For testing, we'll just return a mock credential
-  console.log(`Verifying registration for credential ID: ${response.id}`);
-  
+export async function verifyRegistration(
+  response: RegistrationCredentialJSON,
+  expectedChallenge: string
+): Promise<WebAuthnCredential> {
+  const verification = await verifyRegistrationResponse({
+    credential: response,
+    expectedChallenge,
+    expectedOrigin: origin,
+    expectedRPID: rpID,
+  });
+
+  if (!verification.verified) {
+    throw new Error('WebAuthn registration verification failed');
+  }
+
   return {
-    id: 'credential-id-123',
-    publicKey: 'mock-public-key',
-    counter: 0
+    id: response.id,
+    publicKey: verification.registrationInfo?.credentialPublicKey.toString('base64') || '',
+    counter: verification.registrationInfo?.counter || 0,
   };
 }
 
 /**
  * Generates authentication options for WebAuthn
  */
-export function generateAuthenticationOptions(options: AuthenticationOptions): WebAuthnAuthenticationOptions {
-  // In a real implementation, this would generate proper WebAuthn authentication options
-  return {
-    challenge: Buffer.from('random-challenge').toString('base64'),
-    rpId: 'vibewell.example.com',
-    allowCredentials: [{ type: 'public-key', id: 'credential-id-123' }],
-    timeout: 60000,
-    userVerification: options.userVerification || 'preferred'
-  };
+export async function generateAuthenticationOptions(options: AuthenticationOptions) {
+  // Get user's credentials from database
+  const user = await prisma.user.findFirst({
+    where: { 
+      // Using a case-insensitive search for the username/email
+      OR: [
+        { email: { equals: options.username, mode: 'insensitive' } },
+        { username: { equals: options.username, mode: 'insensitive' } }
+      ]
+    },
+    include: { webauthnCredentials: true }
+  });
+
+  const allowCredentials = user?.webauthnCredentials.map(credential => ({
+    id: Buffer.from(credential.id, 'base64'),
+    type: 'public-key',
+  })) || [];
+
+  return fido2AuthOptions({
+    rpID,
+    userVerification: options.userVerification || 'preferred',
+    allowCredentials,
+  });
 }
 
 /**
  * Verifies a WebAuthn authentication response
  */
-export function verifyAuthentication(response: WebAuthnResponse): boolean {
-  // In a real implementation, this would verify the assertion
-  // For testing, we'll just verify that response contains expected fields
-  console.log(`Verifying authentication for credential ID: ${response.id}`);
-  return !!response.id && !!response.type;
+export async function verifyAuthentication(
+  response: AuthenticationCredentialJSON,
+  expectedChallenge: string
+): Promise<boolean> {
+  try {
+    // Find the credential in the database
+    const credential = await prisma.webauthnCredential.findUnique({
+      where: { id: response.id }
+    });
+
+    if (!credential) {
+      throw new Error('WebAuthn credential not found');
+    }
+
+    const authenticator = {
+      credentialID: Buffer.from(credential.id, 'base64'),
+      credentialPublicKey: Buffer.from(credential.publicKey, 'base64'),
+      counter: credential.counter,
+    };
+
+    const verification = await verifyAuthenticationResponse({
+      credential: response,
+      expectedChallenge,
+      expectedOrigin: origin,
+      expectedRPID: rpID,
+      authenticator,
+    });
+
+    if (verification.verified) {
+      // Update counter in database
+      await prisma.webauthnCredential.update({
+        where: { id: credential.id },
+        data: { counter: verification.authenticationInfo.newCounter }
+      });
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error('WebAuthn authentication verification error:', error);
+    return false;
+  }
 } 

@@ -18,34 +18,47 @@ export default function SkinAnalysisScreen() {
         allowsEditing: true,
         aspect: [1, 1],
         quality: 0.8,
-if (!result.canceled) {
+      });
+      
+      if (!result.canceled) {
         setImageUri(result.assets[0].uri);
         setResult(null); // Reset any previous results
-catch (error) {
+      }
+    } catch (error) {
       console.error('Error picking image:', error);
       alert('Failed to pick image. Please try again.');
-const handleAnalyze = async () => {
+    }
+  };
+
+  const handleAnalyze = async () => {
     if (!imageUri) {
       alert('Please select an image first');
       return;
-setLoading(true);
+    }
+    
+    setLoading(true);
     try {
       const analysisResult = await analyzeSkin(imageUri);
       setResult(analysisResult);
-catch (error) {
+    } catch (error) {
       console.error('Error analyzing skin:', error);
       alert('Failed to analyze skin. Please try again.');
-finally {
+    } finally {
       setLoading(false);
-return (
+    }
+  };
+
+  return (
     <ScrollView style={styles.container}>
       <Stack.Screen 
         options={{
           title: 'Skin Analysis',
           headerStyle: {
             backgroundColor: '#f4f4f8',
-headerTintColor: '#6200ee',
-/>
+          },
+          headerTintColor: '#6200ee',
+        }}
+      />
       
       <View style={styles.content}>
         <Text style={styles.title}>Skin Analysis</Text>
@@ -131,56 +144,71 @@ headerTintColor: '#6200ee',
         )}
       </View>
     </ScrollView>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f4f4f8',
-content: {
+  },
+  content: {
     padding: 20,
-title: {
+  },
+  title: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 10,
-subtitle: {
+  },
+  subtitle: {
     fontSize: 16,
     color: '#666',
     marginBottom: 24,
-imageContainer: {
+  },
+  imageContainer: {
     alignItems: 'center',
     marginBottom: 24,
     borderRadius: 12,
     overflow: 'hidden',
     borderWidth: 2,
     borderColor: '#e0e0e0',
-image: {
+  },
+  image: {
     width: 300,
     height: 300,
     resizeMode: 'cover',
-buttonContainer: {
+  },
+  buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 30,
-button: {
+  },
+  button: {
     backgroundColor: '#6200ee',
     padding: 15,
     borderRadius: 8,
     flex: 0.48,
     alignItems: 'center',
-buttonDisabled: {
+  },
+  buttonDisabled: {
     backgroundColor: '#a6a6a6',
-buttonText: {
+  },
+  buttonText: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 16,
-loadingContainer: {
+  },
+  loadingContainer: {
     alignItems: 'center',
     marginVertical: 20,
-loadingText: {
+  },
+  loadingText: {
     marginTop: 10,
     color: '#666',
     fontSize: 16,
-resultContainer: {
+  },
+  resultContainer: {
     backgroundColor: 'white',
     borderRadius: 12,
     padding: 20,
@@ -190,72 +218,95 @@ resultContainer: {
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-resultTitle: {
+  },
+  resultTitle: {
     fontSize: 22,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 20,
     textAlign: 'center',
-scoreContainer: {
+  },
+  scoreContainer: {
     marginBottom: 25,
     alignItems: 'center',
-scoreLabel: {
+  },
+  scoreLabel: {
     fontSize: 16,
     color: '#666',
     marginBottom: 8,
-scoreValue: {
+  },
+  scoreValue: {
     fontSize: 36,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 8,
-scoreBar: {
+  },
+  scoreBar: {
     width: '100%',
     height: 12,
     backgroundColor: '#e0e0e0',
     borderRadius: 6,
     overflow: 'hidden',
-scoreBarFill: {
+  },
+  scoreBarFill: {
     height: '100%',
-scoreGood: {
+  },
+  scoreGood: {
     backgroundColor: '#4CAF50',
-scoreMedium: {
+  },
+  scoreMedium: {
     backgroundColor: '#FFC107',
-scorePoor: {
+  },
+  scorePoor: {
     backgroundColor: '#F44336',
-sectionTitle: {
+  },
+  sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 15,
     marginTop: 20,
-conditionItem: {
+  },
+  conditionItem: {
     backgroundColor: '#f9f9f9',
     borderRadius: 8,
     padding: 15,
     marginBottom: 12,
-conditionName: {
+  },
+  conditionName: {
     fontSize: 17,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 5,
-conditionSeverity: {
+  },
+  conditionSeverity: {
     fontSize: 15,
     color: '#666',
     marginBottom: 8,
-conditionDescription: {
+  },
+  conditionDescription: {
     fontSize: 14,
     color: '#666',
     lineHeight: 20,
-recommendationsContainer: {
+  },
+  recommendationsContainer: {
     marginTop: 5,
-recommendationItem: {
-    marginBottom: 15,
-recommendationTitle: {
+  },
+  recommendationItem: {
+    backgroundColor: '#f9f9f9',
+    borderRadius: 8,
+    padding: 15,
+    marginBottom: 12,
+  },
+  recommendationTitle: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 5,
-recommendationDescription: {
+  },
+  recommendationDescription: {
     fontSize: 14,
     color: '#666',
     lineHeight: 20,
+  }
+});

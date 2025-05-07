@@ -1,6 +1,13 @@
 /**
  * Payment service implementation
  */
+import Stripe from 'stripe';
+import prisma from '../../prisma';
+
+// Initialize Stripe client
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2023-10-16',
+});
 
 // Payment method interface
 export interface PaymentMethod {
@@ -40,38 +47,41 @@ export async function createPaymentIntent(
   amount: number,
   currency: string = 'usd'
 ): Promise<PaymentIntent> {
-  // In a real implementation, this would create a payment intent with Stripe
-  // For testing, we'll just return a mock payment intent
-  return {
-    id: `pi_${Math.random().toString(36).substring(2, 10)}`,
-    amount,
+  const intent = await stripe.paymentIntents.create({
+    amount: Math.round(amount * 100), // Stripe uses cents
     currency,
-    status: 'requires_payment_method',
-    clientSecret: `pi_${Math.random().toString(36).substring(2, 10)}_secret_${Math.random().toString(36).substring(2, 10)}`
+    metadata: { bookingId },
+  });
+
+  return {
+    id: intent.id,
+    amount: intent.amount / 100,
+    currency: intent.currency,
+    status: intent.status as any,
+    clientSecret: intent.client_secret!,
   };
 }
 
 /**
  * Get user payment methods
  */
-export async function getUserPaymentMethods(userId: string): Promise<PaymentMethod[]> {
-  // In a real implementation, this would fetch the user's payment methods from Stripe
-  // For testing, we'll just return mock payment methods
-  return [
-    {
-      id: 'pm_1',
-      type: 'credit_card',
-      last4: '4242',
-      expiryMonth: 12,
-      expiryYear: 2025,
-      isDefault: true
-    },
-    {
-      id: 'pm_2',
-      type: 'paypal',
-      isDefault: false
-    }
-  ];
+export async function getUserPaymentMethods(
+  userId: string
+): Promise<PaymentMethod[]> {
+  const customer = await getOrCreateCustomer(userId);
+  const methods = await stripe.paymentMethods.list({
+    customer: customer.id,
+    type: 'card',
+  });
+
+  return methods.data.map(method => ({
+    id: method.id,
+    type: mapPaymentMethodType(method.type),
+    last4: method.card?.last4,
+    expiryMonth: method.card?.exp_month,
+    expiryYear: method.card?.exp_year,
+    isDefault: customer.invoice_settings.default_payment_method === method.id,
+  }));
 }
 
 /**
@@ -79,17 +89,25 @@ export async function getUserPaymentMethods(userId: string): Promise<PaymentMeth
  */
 export async function addPaymentMethod(
   userId: string,
-  paymentMethodDetails: any
+  paymentMethodId: string
 ): Promise<PaymentMethod> {
-  // In a real implementation, this would add a payment method to Stripe
-  // For testing, we'll just return a mock payment method
+  const customer = await getOrCreateCustomer(userId);
+  
+  // Attach payment method to customer
+  await stripe.paymentMethods.attach(paymentMethodId, {
+    customer: customer.id,
+  });
+  
+  // Get payment method details
+  const method = await stripe.paymentMethods.retrieve(paymentMethodId);
+  
   return {
-    id: `pm_${Math.random().toString(36).substring(2, 10)}`,
-    type: paymentMethodDetails.type || 'credit_card',
-    last4: paymentMethodDetails.last4 || '4242',
-    expiryMonth: paymentMethodDetails.expiryMonth || 12,
-    expiryYear: paymentMethodDetails.expiryYear || 2025,
-    isDefault: paymentMethodDetails.isDefault || false
+    id: method.id,
+    type: mapPaymentMethodType(method.type),
+    last4: method.card?.last4,
+    expiryMonth: method.card?.exp_month,
+    expiryYear: method.card?.exp_year,
+    isDefault: false,
   };
 }
 
@@ -102,16 +120,34 @@ export async function processPayment(
   amount: number,
   currency: string = 'usd'
 ): Promise<Payment> {
-  // In a real implementation, this would process a payment with Stripe
-  // For testing, we'll just return a mock payment
+  // Create payment intent
+  const intent = await createPaymentIntent(bookingId, amount, currency);
+  
+  // Confirm payment using payment method
+  const confirmedIntent = await stripe.paymentIntents.confirm(intent.id, {
+    payment_method: paymentMethodId,
+  });
+  
+  // Save payment record in database
+  const payment = await prisma.payment.create({
+    data: {
+      stripePaymentIntentId: confirmedIntent.id,
+      bookingId,
+      amount,
+      currency,
+      status: mapPaymentStatus(confirmedIntent.status),
+      paymentMethodId,
+    },
+  });
+  
   return {
-    id: `py_${Math.random().toString(36).substring(2, 10)}`,
-    bookingId,
-    amount,
-    currency,
-    status: 'completed',
-    paymentMethodId,
-    createdAt: new Date()
+    id: payment.id,
+    bookingId: payment.bookingId,
+    amount: payment.amount,
+    currency: payment.currency,
+    status: payment.status as any,
+    paymentMethodId: payment.paymentMethodId,
+    createdAt: payment.createdAt,
   };
 }
 
@@ -119,16 +155,33 @@ export async function processPayment(
  * Refund a payment
  */
 export async function refundPayment(paymentId: string): Promise<Payment> {
-  // In a real implementation, this would refund a payment with Stripe
-  // For testing, we'll just return a mock refund
+  const payment = await prisma.payment.findUnique({
+    where: { id: paymentId },
+  });
+  
+  if (!payment) {
+    throw new Error(`Payment ${paymentId} not found`);
+  }
+  
+  // Process refund via Stripe
+  await stripe.refunds.create({
+    payment_intent: payment.stripePaymentIntentId,
+  });
+  
+  // Update payment status in database
+  const updatedPayment = await prisma.payment.update({
+    where: { id: paymentId },
+    data: { status: 'refunded' },
+  });
+  
   return {
-    id: paymentId,
-    bookingId: 'booking-1',
-    amount: 100,
-    currency: 'usd',
-    status: 'refunded',
-    paymentMethodId: 'pm_1',
-    createdAt: new Date()
+    id: updatedPayment.id,
+    bookingId: updatedPayment.bookingId,
+    amount: updatedPayment.amount,
+    currency: updatedPayment.currency,
+    status: updatedPayment.status as any,
+    paymentMethodId: updatedPayment.paymentMethodId,
+    createdAt: updatedPayment.createdAt,
   };
 }
 
@@ -136,15 +189,72 @@ export async function refundPayment(paymentId: string): Promise<Payment> {
  * Get payment details
  */
 export async function getPaymentDetails(paymentId: string): Promise<Payment> {
-  // In a real implementation, this would fetch payment details from Stripe
-  // For testing, we'll just return a mock payment
+  const payment = await prisma.payment.findUnique({
+    where: { id: paymentId },
+  });
+  
+  if (!payment) {
+    throw new Error(`Payment ${paymentId} not found`);
+  }
+  
   return {
-    id: paymentId,
-    bookingId: 'booking-1',
-    amount: 100,
-    currency: 'usd',
-    status: 'completed',
-    paymentMethodId: 'pm_1',
-    createdAt: new Date()
+    id: payment.id,
+    bookingId: payment.bookingId,
+    amount: payment.amount,
+    currency: payment.currency,
+    status: payment.status as any,
+    paymentMethodId: payment.paymentMethodId,
+    createdAt: payment.createdAt,
   };
+}
+
+// Helper functions
+async function getOrCreateCustomer(userId: string) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { id: true, email: true, name: true, stripeCustomerId: true },
+  });
+  
+  if (!user) throw new Error(`User ${userId} not found`);
+  
+  if (user.stripeCustomerId) {
+    return await stripe.customers.retrieve(user.stripeCustomerId);
+  }
+  
+  // Create new customer
+  const customer = await stripe.customers.create({
+    email: user.email!,
+    name: user.name || undefined,
+    metadata: { userId: user.id },
+  });
+  
+  // Save customer ID to user
+  await prisma.user.update({
+    where: { id: userId },
+    data: { stripeCustomerId: customer.id },
+  });
+  
+  return customer;
+}
+
+function mapPaymentMethodType(type: string): PaymentMethod['type'] {
+  switch (type) {
+    case 'card': return 'credit_card';
+    case 'paypal': return 'paypal';
+    case 'apple_pay': return 'apple_pay';
+    case 'google_pay': return 'google_pay';
+    default: return 'credit_card';
+  }
+}
+
+function mapPaymentStatus(status: string): Payment['status'] {
+  switch (status) {
+    case 'succeeded': return 'completed';
+    case 'requires_payment_method':
+    case 'requires_confirmation':
+    case 'requires_action':
+    case 'processing': return 'pending';
+    case 'canceled': return 'failed';
+    default: return 'pending';
+  }
 } 

@@ -3,6 +3,7 @@
  */
 import prisma from '../../prisma';
 import type { Booking } from '../../prisma';
+import { addMinutes, startOfDay, endOfDay, areIntervalsOverlapping } from 'date-fns';
 
 // Booking interface
 export interface BookingData {
@@ -34,8 +35,21 @@ export interface TimeSlot {
  */
 export async function createBooking(data: BookingData): Promise<BookingResponse> {
   try {
-    // In a real implementation, we would validate the booking data
-    // For example, check if the service exists, if the time slot is available, etc.
+    // Validate if time slot is available
+    const isAvailable = await isTimeSlotAvailable(
+      data.businessId,
+      data.serviceId,
+      data.startTime,
+      data.endTime
+    );
+    
+    if (!isAvailable) {
+      return {
+        booking: null,
+        success: false,
+        message: 'The selected time slot is not available'
+      };
+    }
     
     // Create the booking
     const booking = await prisma.booking.create({
@@ -117,37 +131,81 @@ export async function getAvailableTimeSlots(
   serviceId: string,
   date: Date
 ): Promise<TimeSlot[]> {
-  // In a real implementation, we would:
-  // 1. Get the business hours for the given date
-  // 2. Get the service duration
-  // 3. Get all existing bookings for the business on that date
-  // 4. Calculate available time slots
+  // Get business hours for the day
+  const businessHours = await prisma.businessHours.findFirst({
+    where: {
+      businessId,
+      dayOfWeek: date.getDay()
+    }
+  });
   
-  // For testing, we'll return mock time slots
-  const startOfDay = new Date(date);
-  startOfDay.setHours(9, 0, 0, 0);
-  
-  const timeSlots: TimeSlot[] = [];
-  
-  // Generate time slots from 9:00 to 17:00 with 1-hour intervals
-  for (let i = 0; i < 8; i++) {
-    const startTime = new Date(startOfDay);
-    startTime.setHours(startTime.getHours() + i);
-    
-    const endTime = new Date(startTime);
-    endTime.setHours(endTime.getHours() + 1);
-    
-    // Randomly mark some slots as unavailable for testing
-    const isAvailable = Math.random() > 0.3;
-    
-    timeSlots.push({
-      startTime,
-      endTime,
-      isAvailable
-    });
+  if (!businessHours || !businessHours.isOpen) {
+    return [];
   }
   
-  return timeSlots;
+  // Get service details for duration
+  const service = await prisma.service.findUnique({
+    where: { id: serviceId }
+  });
+  
+  if (!service) {
+    throw new Error(`Service ${serviceId} not found`);
+  }
+  
+  const serviceDuration = service.durationMinutes;
+  
+  // Get existing bookings for that day
+  const dayStart = startOfDay(date);
+  const dayEnd = endOfDay(date);
+  
+  const existingBookings = await prisma.booking.findMany({
+    where: {
+      businessId,
+      startTime: { gte: dayStart },
+      endTime: { lte: dayEnd },
+      status: { in: ['pending', 'confirmed'] }
+    }
+  });
+  
+  // Calculate available slots
+  const openingTime = new Date(date);
+  openingTime.setHours(
+    parseInt(businessHours.openingTime.split(':')[0]),
+    parseInt(businessHours.openingTime.split(':')[1]),
+    0, 0
+  );
+  
+  const closingTime = new Date(date);
+  closingTime.setHours(
+    parseInt(businessHours.closingTime.split(':')[0]),
+    parseInt(businessHours.closingTime.split(':')[1]),
+    0, 0
+  );
+  
+  const slots: TimeSlot[] = [];
+  let currentTime = openingTime;
+  
+  while (addMinutes(currentTime, serviceDuration) <= closingTime) {
+    const slotEndTime = addMinutes(currentTime, serviceDuration);
+    
+    const isOverlapping = existingBookings.some(booking => 
+      areIntervalsOverlapping(
+        { start: currentTime, end: slotEndTime },
+        { start: booking.startTime, end: booking.endTime }
+      )
+    );
+    
+    slots.push({
+      startTime: new Date(currentTime),
+      endTime: slotEndTime,
+      isAvailable: !isOverlapping
+    });
+    
+    // Move to next slot (e.g., 30-minute intervals)
+    currentTime = addMinutes(currentTime, 30);
+  }
+  
+  return slots;
 }
 
 /**
@@ -159,12 +217,50 @@ export async function isTimeSlotAvailable(
   startTime: Date,
   endTime: Date
 ): Promise<boolean> {
-  // In a real implementation, we would check if there are any overlapping bookings
-  // For example, query for bookings that overlap with the requested time slot
+  // Check if business is open during the requested time
+  const businessHours = await prisma.businessHours.findFirst({
+    where: {
+      businessId,
+      dayOfWeek: startTime.getDay()
+    }
+  });
   
-  console.log(`Checking availability for business ${businessId}, service ${serviceId}`);
-  console.log(`Time slot: ${startTime.toISOString()} - ${endTime.toISOString()}`);
+  if (!businessHours || !businessHours.isOpen) {
+    return false;
+  }
   
-  // For testing, we'll just return a random result
-  return Math.random() > 0.3;
+  // Check business hours
+  const openingTime = new Date(startTime);
+  openingTime.setHours(
+    parseInt(businessHours.openingTime.split(':')[0]),
+    parseInt(businessHours.openingTime.split(':')[1]),
+    0, 0
+  );
+  
+  const closingTime = new Date(startTime);
+  closingTime.setHours(
+    parseInt(businessHours.closingTime.split(':')[0]),
+    parseInt(businessHours.closingTime.split(':')[1]),
+    0, 0
+  );
+  
+  if (startTime < openingTime || endTime > closingTime) {
+    return false;
+  }
+  
+  // Check for overlapping bookings
+  const overlappingBookings = await prisma.booking.findMany({
+    where: {
+      businessId,
+      status: { in: ['pending', 'confirmed'] },
+      OR: [
+        {
+          startTime: { lt: endTime },
+          endTime: { gt: startTime }
+        }
+      ]
+    }
+  });
+  
+  return overlappingBookings.length === 0;
 } 

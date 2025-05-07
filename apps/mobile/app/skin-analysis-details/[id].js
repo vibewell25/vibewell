@@ -17,13 +17,17 @@ export default function SkinAnalysisDetailsPage() {
       try {
         const data = await getSkinAnalysisResult(id);
         setAnalysis(data);
-catch (error) {
+      } catch (error) {
         console.error('Error fetching analysis details:', error);
-finally {
+      } finally {
         setLoading(false);
-if (id) {
+      }
+    };
+    
+    if (id) {
       fetchAnalysis();
-[id]);
+    }
+  }, [id]);
 
   const renderScoreBar = (value, label) => (
     <View style={styles.scoreBarContainer}>
@@ -41,12 +45,17 @@ if (id) {
         />
       </View>
     </View>
-if (loading) {
+  );
+
+  if (loading) {
     return (
       <View style={[styles.container, styles.loading, isDark && styles.darkContainer]}>
         <ActivityIndicator size="large" color="#2A9D8F" />
       </View>
-if (!analysis) {
+    );
+  }
+
+  if (!analysis) {
     return (
       <View style={[styles.container, styles.center, isDark && styles.darkContainer]}>
         <Text style={[styles.errorText, isDark && styles.darkText]}>Analysis not found</Text>
@@ -57,7 +66,10 @@ if (!analysis) {
           <Text style={styles.buttonText}>Go Back</Text>
         </TouchableOpacity>
       </View>
-return (
+    );
+  }
+
+  return (
     <ScrollView 
       style={[styles.container, isDark && styles.darkContainer]}
       contentContainerStyle={styles.contentContainer}
@@ -135,38 +147,51 @@ return (
         <Text style={styles.buttonText}>Take New Analysis</Text>
       </TouchableOpacity>
     </ScrollView>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-darkContainer: {
+  },
+  darkContainer: {
     backgroundColor: '#121212',
-contentContainer: {
+  },
+  contentContainer: {
     padding: 16,
     paddingBottom: 40,
-loading: {
+  },
+  loading: {
     justifyContent: 'center',
     alignItems: 'center',
-center: {
+  },
+  center: {
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-title: {
+  },
+  title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 8,
     color: '#2A9D8F',
-date: {
+  },
+  date: {
     fontSize: 14,
     color: '#666',
     marginBottom: 20,
-darkText: {
+  },
+  darkText: {
     color: '#E0E0E0',
-darkSubText: {
+  },
+  darkSubText: {
     color: '#AAAAAA',
-darkAccentText: {
+  },
+  darkAccentText: {
     color: '#4ECDC4',
-imageContainer: {
+  },
+  imageContainer: {
     marginBottom: 20,
     borderRadius: 12,
     overflow: 'hidden',
@@ -175,10 +200,12 @@ imageContainer: {
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-image: {
+  },
+  image: {
     width: '100%',
     height: 200,
-scoreCard: {
+  },
+  scoreCard: {
     backgroundColor: '#F8F8F8',
     borderRadius: 12,
     padding: 16,
@@ -188,49 +215,63 @@ scoreCard: {
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-darkCard: {
+  },
+  darkCard: {
     backgroundColor: '#2A2A2A',
-scoreCardTitle: {
+  },
+  scoreCardTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
     color: '#333',
-overallScore: {
+  },
+  overallScore: {
     fontSize: 36,
     fontWeight: 'bold',
     color: '#2A9D8F',
     marginBottom: 20,
     textAlign: 'center',
-scoresContainer: {
+  },
+  scoresContainer: {
     gap: 16,
-scoreBarContainer: {
+  },
+  scoreBarContainer: {
     width: '100%',
-scoreBarHeader: {
+  },
+  scoreBarHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 4,
-scoreBarLabel: {
+  },
+  scoreBarLabel: {
     fontSize: 14,
     color: '#555',
-scoreBarValue: {
+  },
+  scoreBarValue: {
     fontSize: 14,
     fontWeight: '600',
     color: '#555',
-scoreBarBg: {
+  },
+  scoreBarBg: {
     height: 8,
     backgroundColor: '#E0E0E0',
     borderRadius: 4,
     overflow: 'hidden',
-scoreBarFill: {
+  },
+  scoreBarFill: {
     height: '100%',
     borderRadius: 4,
-scoreBarLow: {
+  },
+  scoreBarLow: {
     backgroundColor: '#E76F51',
-scoreBarMedium: {
+  },
+  scoreBarMedium: {
     backgroundColor: '#F4A261',
-scoreBarHigh: {
+  },
+  scoreBarHigh: {
     backgroundColor: '#2A9D8F',
-section: {
+  },
+  section: {
     backgroundColor: '#F8F8F8',
     borderRadius: 12,
     padding: 16,
@@ -240,64 +281,81 @@ section: {
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-sectionTitle: {
+  },
+  sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 16,
     color: '#333',
-conditionItem: {
+  },
+  conditionItem: {
     marginBottom: 16,
     paddingBottom: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
-conditionHeader: {
+    borderBottomColor: '#EEEEEE',
+  },
+  conditionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 8,
-conditionName: {
+  },
+  conditionName: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: 'bold',
     color: '#333',
-conditionSeverity: {
+  },
+  conditionSeverity: {
     fontSize: 14,
-    fontWeight: '500',
     color: '#555',
-conditionDescription: {
+  },
+  conditionDescription: {
     fontSize: 14,
     color: '#666',
     lineHeight: 20,
-recommendationItem: {
+  },
+  recommendationItem: {
     marginBottom: 16,
     paddingBottom: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
-recommendationHeader: {
+    borderBottomColor: '#EEEEEE',
+  },
+  recommendationHeader: {
     marginBottom: 8,
-recommendationType: {
-    fontSize: 14,
+  },
+  recommendationType: {
+    fontSize: 12,
     color: '#2A9D8F',
     marginBottom: 4,
-recommendationProduct: {
+    textTransform: 'uppercase',
+  },
+  recommendationProduct: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: 'bold',
     color: '#333',
-recommendationDescription: {
+  },
+  recommendationDescription: {
     fontSize: 14,
     color: '#666',
     lineHeight: 20,
-button: {
+  },
+  button: {
     backgroundColor: '#2A9D8F',
-    paddingVertical: 14,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
     borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 10,
-buttonText: {
-    color: '#fff',
+    alignSelf: 'center',
+    marginTop: 16,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
     fontSize: 16,
-    fontWeight: '600',
-errorText: {
+  },
+  errorText: {
     fontSize: 18,
     color: '#666',
     marginBottom: 20,
     textAlign: 'center',
+  }
+});

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "clean:tests": "rm -rf .jest-cache && rm -rf coverage"
   },
   "dependencies": {
     "@radix-ui/react-tabs": "^1.0.4",

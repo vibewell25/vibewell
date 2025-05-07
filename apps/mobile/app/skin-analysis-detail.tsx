@@ -12,50 +12,66 @@ export default function SkinAnalysisDetailScreen() {
   useEffect(() => {
     if (id) {
       loadAnalysisResult(id);
-[id]);
+    }
+  }, [id]);
 
   const loadAnalysisResult = async (analysisId: string) => {
     setLoading(true);
     try {
       const data = await getSkinAnalysisResult(analysisId);
       setResult(data);
-catch (error) {
+    } catch (error) {
       console.error('Error loading skin analysis result:', error);
       alert('Failed to load analysis details. Please try again.');
-finally {
+    } finally {
       setLoading(false);
-if (loading) {
+    }
+  };
+
+  if (loading) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#6200ee" />
         <Text style={styles.loadingText}>Loading analysis details...</Text>
       </View>
-if (!result) {
+    );
+  }
+
+  if (!result) {
     return (
       <View style={styles.errorContainer}>
         <Text style={styles.errorText}>
           Could not find analysis details for the selected date.
         </Text>
       </View>
-// Format date
+    );
+  }
+
+  // Format date
   const date = result.date ? new Date(result.date) : new Date();
   const formattedDate = date.toLocaleDateString('en-US', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric',
-const formattedTime = date.toLocaleTimeString('en-US', {
+  });
+  
+  const formattedTime = date.toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',
-return (
+  });
+
+  return (
     <ScrollView style={styles.container}>
       <Stack.Screen 
         options={{
           title: 'Analysis Details',
           headerStyle: {
             backgroundColor: '#f4f4f8',
-headerTintColor: '#6200ee',
-/>
+          },
+          headerTintColor: '#6200ee',
+        }}
+      />
       
       <View style={styles.header}>
         <Text style={styles.title}>Skin Analysis Result</Text>
@@ -152,49 +168,62 @@ headerTintColor: '#6200ee',
         </View>
       )}
     </ScrollView>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f4f4f8',
-loadingContainer: {
+  },
+  loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f4f4f8',
-loadingText: {
+  },
+  loadingText: {
     marginTop: 12,
     fontSize: 16,
     color: '#666',
-errorContainer: {
+  },
+  errorContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 24,
     backgroundColor: '#f4f4f8',
-errorText: {
+  },
+  errorText: {
     fontSize: 16,
     color: '#666',
     textAlign: 'center',
-header: {
+  },
+  header: {
     padding: 20,
-title: {
+  },
+  title: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 8,
-dateText: {
+  },
+  dateText: {
     fontSize: 16,
     color: '#666',
-imageContainer: {
+  },
+  imageContainer: {
     alignItems: 'center',
     marginBottom: 24,
     paddingHorizontal: 20,
-image: {
+  },
+  image: {
     width: 300,
     height: 300,
     borderRadius: 12,
     resizeMode: 'cover',
-scoreSection: {
+  },
+  scoreSection: {
     backgroundColor: 'white',
     borderRadius: 12,
     padding: 20,
@@ -206,44 +235,55 @@ scoreSection: {
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-sectionTitle: {
+  },
+  sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 16,
-overallScoreContainer: {
+  },
+  overallScoreContainer: {
     flexDirection: 'row',
     alignItems: 'flex-end',
     marginBottom: 16,
-overallScore: {
+  },
+  overallScore: {
     fontSize: 48,
     fontWeight: 'bold',
     color: '#333',
-outOf: {
+  },
+  outOf: {
     fontSize: 20,
     color: '#666',
     marginBottom: 8,
     marginLeft: 4,
-scoreBar: {
+  },
+  scoreBar: {
     width: '100%',
     height: 12,
     backgroundColor: '#e0e0e0',
     borderRadius: 6,
     overflow: 'hidden',
     marginBottom: 16,
-scoreBarFill: {
+  },
+  scoreBarFill: {
     height: '100%',
-scoreGood: {
+  },
+  scoreGood: {
     backgroundColor: '#4CAF50',
-scoreMedium: {
+  },
+  scoreMedium: {
     backgroundColor: '#FFC107',
-scorePoor: {
+  },
+  scorePoor: {
     backgroundColor: '#F44336',
-scoreDescription: {
+  },
+  scoreDescription: {
     fontSize: 16,
     color: '#666',
     textAlign: 'center',
-sectionContainer: {
+  },
+  sectionContainer: {
     backgroundColor: 'white',
     borderRadius: 12,
     padding: 20,
@@ -254,92 +294,113 @@ sectionContainer: {
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-conditionCard: {
-    backgroundColor: '#f9f9f9',
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 12,
-conditionHeader: {
-    marginBottom: 12,
-conditionName: {
+  },
+  conditionCard: {
+    marginBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+    paddingBottom: 16,
+  },
+  conditionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  conditionName: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 8,
-severityContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-severityLabel: {
+  },
+  conditionDescription: {
     fontSize: 14,
     color: '#666',
-    width: 60,
-severityBar: {
-    flex: 1,
+    lineHeight: 20,
+  },
+  severityContainer: {
+    alignItems: 'flex-end',
+  },
+  severityLabel: {
+    fontSize: 12,
+    color: '#999',
+    marginBottom: 4,
+  },
+  severityBar: {
+    width: 100,
     height: 8,
     backgroundColor: '#e0e0e0',
     borderRadius: 4,
     overflow: 'hidden',
-    marginHorizontal: 12,
-severityBarFill: {
+    marginBottom: 4,
+  },
+  severityBarFill: {
     height: '100%',
-severityLow: {
+  },
+  severityLow: {
     backgroundColor: '#4CAF50',
-severityMedium: {
+  },
+  severityMedium: {
     backgroundColor: '#FFC107',
-severityHigh: {
+  },
+  severityHigh: {
     backgroundColor: '#F44336',
-severityValue: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#333',
-    width: 40,
-    textAlign: 'right',
-conditionDescription: {
-    fontSize: 14,
+  },
+  severityValue: {
+    fontSize: 12,
     color: '#666',
-    lineHeight: 20,
-recommendationCard: {
-    backgroundColor: '#f9f9f9',
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 12,
-recommendationTitle: {
+  },
+  recommendationCard: {
+    marginBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+    paddingBottom: 16,
+  },
+  recommendationTitle: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 8,
-recommendationDescription: {
+  },
+  recommendationDescription: {
     fontSize: 14,
     color: '#666',
     lineHeight: 20,
-productCard: {
-    backgroundColor: '#f9f9f9',
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 12,
+  },
+  productCard: {
     flexDirection: 'row',
-productImage: {
+    marginBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+    paddingBottom: 16,
+  },
+  productImage: {
     width: 80,
     height: 80,
     borderRadius: 8,
     marginRight: 16,
-productInfo: {
+  },
+  productInfo: {
     flex: 1,
-productName: {
+  },
+  productName: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 4,
-productBrand: {
+  },
+  productBrand: {
     fontSize: 14,
     color: '#666',
     marginBottom: 4,
-productPrice: {
-    fontSize: 16,
+  },
+  productPrice: {
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#6200ee',
     marginBottom: 8,
-productDescription: {
+  },
+  productDescription: {
     fontSize: 14,
     color: '#666',
     lineHeight: 20,
+  }
+});

@@ -217,3 +217,96 @@ Vibewell's recovery plan has been successfully completed with the following achi
 Copyright © 2023 Vibewell. All rights reserved.
 
 ---
+
+## Deployment Instructions
+
+We've implemented production-ready components for Redis client, two-factor authentication, WebAuthn biometric authentication, payment processing, and booking management. Follow these steps to deploy the application:
+
+### Step 1: Environment Setup
+
+Run the environment setup script to create the `.env` file with all required configuration:
+
+```bash
+./environment-setup.sh
+```
+
+Edit the `.env` file and update with your actual values for production:
+- Database connection string
+- Redis connection details
+- Auth0 configuration
+- WebAuthn settings
+- Stripe API keys
+- AWS S3 credentials
+
+### Step 2: Database Setup
+
+Initialize the database with all required tables and columns:
+
+```bash
+./init-db.sh
+```
+
+This script will:
+1. Create the PostgreSQL database if it doesn't exist
+2. Set up all necessary tables
+3. Apply migrations for authentication and payment features
+4. Create the required database indexes
+
+### Step 3: Build Application
+
+Build the application for production:
+
+```bash
+./build-app.sh
+```
+
+This script will:
+1. Install dependencies
+2. Build the application for production
+
+### Running the Application
+
+For development:
+```bash
+npm run dev
+```
+
+For production:
+```bash
+npm start
+```
+
+## Implemented Components
+
+### Redis Client
+- Production implementation using ioredis
+- Development mock using in-memory Map
+- Supports TLS for secure connections
+
+### Two-Factor Authentication
+- TOTP implementation using speakeasy
+- Recovery keys generation and verification
+- Database integration for user settings
+
+### WebAuthn Authentication
+- Biometric/security key authentication
+- Implementation using SimpleWebAuthn
+- Support for all major browsers and devices
+
+### Payment Service
+- Stripe integration for payment processing
+- Support for multiple payment methods
+- Refund processing capabilities
+
+### Booking Service
+- Real availability checking based on business hours
+- Interval-based booking system
+- Conflict detection for overlapping bookings
+
+## Additional Documentation
+
+For more details, refer to [DEPLOYMENT.md](DEPLOYMENT.md) for a complete deployment guide and checklist.
+
+## Environment Variables
+
+See the `.env` file for all required configuration variables. All components require specific environment variables to function properly in production.

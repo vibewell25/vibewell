@@ -12,9 +12,14 @@ export default function RootLayout() {
           screenOptions={{
             headerStyle: {
               backgroundColor: '#f4f4f8',
-headerTintColor: '#6200ee',
+            },
+            headerTintColor: '#6200ee',
             contentStyle: {
               backgroundColor: '#f4f4f8',
-/>
+            },
+          }}
+        />
       </SafeAreaProvider>
     </GestureHandlerRootView>
+  );
+}

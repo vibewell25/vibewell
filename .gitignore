@@ -7,6 +7,8 @@
 
 # Env files
 .env
+.env.*
+!.env.example
 
 # Ignore nested Next.js build in apps/web
 /apps/web/.next/
@@ -14,3 +16,45 @@
 # Ignore temporary backup folder
 /temp_backup/
 apps/web/node_modules/
+
+# Build outputs
+/dist/
+/build/
+/out/
+
+# Coverage directories
+/coverage/
+/.nyc_output/
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Cache directories
+.cache/
+.eslintcache
+.stylelintcache
+
+# Mobile specific
+apps/mobile/.expo/
+apps/mobile/dist/
+apps/mobile/npm-debug.*
+apps/mobile/*.jks
+apps/mobile/*.p8
+apps/mobile/*.p12
+apps/mobile/*.key
+apps/mobile/*.mobileprovision
+apps/mobile/*.orig.*
+apps/mobile/web-build/
+
+# Server specific
+apps/server/dist/
+apps/server/logs/

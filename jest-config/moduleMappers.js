@@ -15,3 +15,4 @@ module.exports = {
   
   // Module aliases
   '^@/(.*)$': '<rootDir>/src/$1'
+};

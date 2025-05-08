@@ -23,5 +23,7 @@ global.URLSearchParams = URLSearchParams;
 afterEach(() => {
   jest.resetAllMocks();
   jest.clearAllMocks();
+});
+
 // Set default timeout for all tests
 jest.setTimeout(10000); 

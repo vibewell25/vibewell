@@ -1,6 +1,31 @@
 import { prisma } from '@/lib/database/client';
-
+import { getSession } from '@auth0/nextjs-auth0';
 import { Prisma } from '@prisma/client';
+
+// Helper function to get the current user ID
+async function getCurrentUserId(req?: any, res?: any): Promise<string> {
+  try {
+    const session = await getSession(req, res);
+    if (!session || !session.user || !session.user.sub) {
+      throw new Error('No authenticated user found');
+    }
+    
+    // Find the user by auth0Id
+    const user = await prisma.user.findUnique({
+      where: { auth0Id: session.user.sub },
+      select: { id: true }
+    });
+    
+    if (!user) {
+      throw new Error('User not found in database');
+    }
+    
+    return user.id;
+  } catch (error) {
+    console.error('Error getting current user ID:', error);
+    throw error;
+  }
+}
 
 export type SkinCareRoutine = {
   id: string;
@@ -11,6 +36,8 @@ export type SkinCareRoutine = {
   products: SkinCareProduct[];
   createdAt: string;
   updatedAt: string;
+};
+
 export type SkinCareProduct = {
   id: string;
   name: string;
@@ -19,6 +46,8 @@ export type SkinCareProduct = {
   frequency: string;
   notes?: string;
   ingredients?: string[];
+};
+
 export type SkinCareCategory =
   | 'cleanser'
   | 'toner'
@@ -41,6 +70,8 @@ export type SkinConditionLog = {
   hydration: number;
   notes?: string;
   photos?: string[];
+};
+
 export type SkinConcern =
   | 'acne'
   | 'dryness'
@@ -52,16 +83,19 @@ export type SkinConcern =
   | 'other';
 
 // Get user's skincare routines
-export async function {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout'); getSkinCareRoutines(userId: string): Promise<SkinCareRoutine[]> {
+export async function getSkinCareRoutines(req?: any, res?: any): Promise<SkinCareRoutine[]> {
   try {
+    const userId = await getCurrentUserId(req, res);
+    
     const routines = await prisma.skinCareRoutine.findMany({
       where: { userId },
       include: {
         products: true,
-orderBy: { createdAt: 'desc' },
-return routines.map((routine) => ({
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return routines.map((routine) => ({
       id: routine.id,
       userId: routine.userId,
       name: routine.name,
@@ -75,21 +109,25 @@ return routines.map((routine) => ({
         frequency: product.frequency,
         notes: product.notes || undefined,
         ingredients: (product.ingredients as string[]) || undefined,
-)),
+      })),
       createdAt: routine.createdAt.toISOString(),
       updatedAt: routine.updatedAt.toISOString(),
-));
-catch (error) {
+    }));
+  } catch (error) {
     console.error('Error in getSkinCareRoutines:', error);
     return [];
+  }
+}
+
 // Create a new skincare routine
-export async function {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout'); createSkinCareRoutine(
-  userId: string,
+export async function createSkinCareRoutine(
   routineData: Omit<SkinCareRoutine, 'id' | 'userId' | 'createdAt' | 'updatedAt'>,
+  req?: any, 
+  res?: any
 ): Promise<SkinCareRoutine | null> {
   try {
+    const userId = await getCurrentUserId(req, res);
+    
     const routine = await prisma.skinCareRoutine.create({
       data: {
         userId,
@@ -104,10 +142,15 @@ export async function {
             frequency: product.frequency,
             notes: product.notes,
             ingredients: product.ingredients,
-)),
-include: {
+          })),
+        },
+      },
+      include: {
         products: true,
-return {
+      },
+    });
+
+    return {
       id: routine.id,
       userId: routine.userId,
       name: routine.name,
@@ -121,20 +164,25 @@ return {
         frequency: product.frequency,
         notes: product.notes || undefined,
         ingredients: (product.ingredients as string[]) || undefined,
-)),
+      })),
       createdAt: routine.createdAt.toISOString(),
       updatedAt: routine.updatedAt.toISOString(),
-catch (error) {
+    };
+  } catch (error) {
     console.error('Error in createSkinCareRoutine:', error);
     return null;
+  }
+}
+
 // Log daily skin condition
-export async function {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout'); logSkinCondition(
-  userId: string,
+export async function logSkinCondition(
   logData: Omit<SkinConditionLog, 'id'>,
+  req?: any, 
+  res?: any
 ): Promise<SkinConditionLog | null> {
   try {
+    const userId = await getCurrentUserId(req, res);
+    
     const log = await prisma.skinConditionLog.create({
       data: {
         userId,
@@ -146,7 +194,10 @@ export async function {
         hydration: logData.hydration,
         notes: logData.notes,
         photos: logData.photos,
-return {
+      },
+    });
+
+    return {
       id: log.id,
       date: log.date,
       concerns: log.concerns as SkinConcern[],
@@ -156,18 +207,23 @@ return {
       hydration: log.hydration,
       notes: log.notes || undefined,
       photos: (log.photos as string[]) || undefined,
-catch (error) {
+    };
+  } catch (error) {
     console.error('Error in logSkinCondition:', error);
     return null;
+  }
+}
+
 // Get skin condition logs within a date range
-export async function {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout'); getSkinConditionLogs(
-  userId: string,
+export async function getSkinConditionLogs(
   startDate?: string,
   endDate?: string,
+  req?: any, 
+  res?: any
 ): Promise<SkinConditionLog[]> {
   try {
+    const userId = await getCurrentUserId(req, res);
+    
     const where: Prisma.SkinConditionLogWhereInput = { userId };
 
     if (startDate) where.date = { gte: startDate };
@@ -176,7 +232,9 @@ export async function {
     const logs = await prisma.skinConditionLog.findMany({
       where,
       orderBy: { date: 'desc' },
-return logs.map((log) => ({
+    });
+
+    return logs.map((log) => ({
       id: log.id,
       date: log.date,
       concerns: log.concerns as SkinConcern[],
@@ -186,33 +244,38 @@ return logs.map((log) => ({
       hydration: log.hydration,
       notes: log.notes || undefined,
       photos: (log.photos as string[]) || undefined,
-));
-catch (error) {
+    }));
+  } catch (error) {
     console.error('Error in getSkinConditionLogs:', error);
     return [];
+  }
+}
+
 // Get beauty progress summary
-export async function {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout'); getBeautyProgressSummary(userId: string): Promise<{
+export async function getBeautyProgressSummary(req?: any, res?: any): Promise<{
   totalRoutines: number;
   totalProducts: number;
   consistencyScore: number;
   commonConcerns: SkinConcern[];
   recentImprovements: string[];
-> {
+}> {
   try {
+    const userId = await getCurrentUserId(req, res);
+    
     const [routines, products, recentLogs] = await Promise.all([
       prisma.skinCareRoutine.count({ where: { userId } }),
       prisma.skinCareProduct.count({
         where: { routine: { userId } },
-),
+      }),
       prisma.skinConditionLog.findMany({
         where: {
           userId,
           date: {
             gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-orderBy: { date: 'desc' },
-),
+          },
+          orderBy: { date: 'desc' },
+        },
+      }),
     ]);
 
     // Calculate consistency score (0-100) based on logging frequency
@@ -224,16 +287,17 @@ orderBy: { date: 'desc' },
     const concernCounts = recentLogs.reduce(
       (acc, log) => {
         (log.concerns as SkinConcern[]).forEach((concern) => {
+          acc[concern] = (acc[concern] || 0) + 1;
+        });
+        return acc;
+      },
+      {} as Record<SkinConcern, number>
+    );
 
-    acc[concern] = (acc[concern] || 0) + 1;
-return acc;
-{} as Record<SkinConcern, number>,
-const commonConcerns = Object.entries(concernCounts)
-
+    const commonConcerns = Object.entries(concernCounts)
       .sort(([, a], [, b]) => b - a)
       .slice(0, 3)
-
-    .map(([concern]) => concern as SkinConcern);
+      .map(([concern]) => concern as SkinConcern);
 
     // Analyze improvements
     const recentImprovements = analyzeImprovements(recentLogs);
@@ -244,7 +308,8 @@ const commonConcerns = Object.entries(concernCounts)
       consistencyScore,
       commonConcerns,
       recentImprovements,
-catch (error) {
+    };
+  } catch (error) {
     console.error('Error in getBeautyProgressSummary:', error);
     return {
       totalRoutines: 0,
@@ -252,6 +317,10 @@ catch (error) {
       consistencyScore: 0,
       commonConcerns: [],
       recentImprovements: [],
+    };
+  }
+}
+
 // Helper function to analyze improvements
 function analyzeImprovements(logs: any[]): string[] {
   const improvements: string[] = [];
@@ -263,33 +332,45 @@ function analyzeImprovements(logs: any[]): string[] {
 
   // Compare average metrics
   const getAverage = (arr: any[], key: string) =>
-
     arr.reduce((sum, log) => sum + log[key], 0) / arr.length;
 
   const metrics = {
     hydration: { recent: getAverage(recent, 'hydration'), older: getAverage(older, 'hydration') },
     stress: { recent: getAverage(recent, 'stress'), older: getAverage(older, 'stress') },
     sleep: { recent: getAverage(recent, 'sleep'), older: getAverage(older, 'sleep') },
-if (metrics.hydration.recent > metrics.hydration.older + 1) {
+  };
+
+  if (metrics.hydration.recent > metrics.hydration.older + 1) {
     improvements.push('Skin hydration has improved');
-if (metrics.stress.recent < metrics.stress.older - 1) {
+  }
+  if (metrics.stress.recent < metrics.stress.older - 1) {
     improvements.push('Stress levels have decreased');
-if (metrics.sleep.recent > metrics.sleep.older + 1) {
+  }
+  if (metrics.sleep.recent > metrics.sleep.older + 1) {
     improvements.push('Sleep quality has improved');
-// Analyze concern frequency
+  }
+
+  // Analyze concern frequency
   const recentConcerns = new Set(recent.flatMap((log) => log.concerns));
   const olderConcerns = new Set(older.flatMap((log) => log.concerns));
 
   olderConcerns.forEach((concern) => {
     if (!recentConcerns.has(concern)) {
       improvements.push(`${concern.replace('_', ' ')} has improved`);
-return improvements;
+    }
+  });
+
+  return improvements;
+}
+
 export interface RoutineStep {
   id: string;
   order: number;
   name: string;
   category: string;
   completed: boolean;
+};
+
 export interface Routine {
   id: string;
   type: string;
@@ -297,34 +378,48 @@ export interface Routine {
   userId: string;
   createdAt: Date;
   updatedAt: Date;
-export async function {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout'); getRoutines(): Promise<Routine[]> {
-  const routines = await prisma.beautyRoutine.findMany({
-    where: {
+};
 
-      userId: 'current-user-id', // TODO: Replace with actual user ID from auth
-include: {
-      steps: {
-        orderBy: {
-          order: 'asc',
-return routines.map((routine) => ({
-    id: routine.id,
-    type: routine.type,
-    steps: routine.steps.map((step) => ({
-      id: step.id,
-      order: step.order,
-      name: step.name,
-      category: step.category,
-      completed: step.completed,
-)),
-    userId: routine.userId,
-    createdAt: routine.createdAt,
-    updatedAt: routine.updatedAt,
-));
-export async function {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout'); createRoutine(
+export async function getRoutines(req?: any, res?: any): Promise<Routine[]> {
+  try {
+    const userId = await getCurrentUserId(req, res);
+    
+    const routines = await prisma.beautyRoutine.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        steps: {
+          orderBy: {
+            order: 'asc',
+          },
+        },
+      },
+    });
+
+    return routines.map((routine) => ({
+      id: routine.id,
+      type: routine.type,
+      name: routine.name,
+      description: routine.description,
+      steps: routine.steps.map((step) => ({
+        id: step.id,
+        order: step.order,
+        name: step.name,
+        category: step.category,
+        completed: step.completed,
+      })),
+      userId: routine.userId,
+      createdAt: routine.createdAt,
+      updatedAt: routine.updatedAt,
+    }));
+  } catch (error) {
+    console.error('Error in getRoutines:', error);
+    return [];
+  }
+}
+
+export async function createRoutine(
   routine: Omit<Routine, 'id' | 'createdAt' | 'updatedAt'>,
 ): Promise<Routine> {
   const { steps, ...routineData } = routine;
@@ -338,10 +433,15 @@ export async function {
           name: step.name,
           category: step.category,
           completed: step.completed,
-)),
-include: {
+        })),
+      },
+    },
+    include: {
       steps: true,
-return {
+    },
+  });
+
+  return {
     id: createdRoutine.id,
     type: createdRoutine.type,
     steps: createdRoutine.steps.map((step) => ({
@@ -350,13 +450,14 @@ return {
       name: step.name,
       category: step.category,
       completed: step.completed,
-)),
+    })),
     userId: createdRoutine.userId,
     createdAt: createdRoutine.createdAt,
     updatedAt: createdRoutine.updatedAt,
-export async function {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout'); updateRoutine(routine: Routine): Promise<Routine> {
+  };
+}
+
+export async function updateRoutine(routine: Routine): Promise<Routine> {
   const { id, steps, ...routineData } = routine;
 
   // Update the routine and its steps
@@ -371,12 +472,19 @@ export async function {
           name: step.name,
           category: step.category,
           completed: step.completed,
-)),
-include: {
+        })),
+      },
+    },
+    include: {
       steps: {
         orderBy: {
           order: 'asc',
-return {
+        },
+      },
+    },
+  });
+
+  return {
     id: updatedRoutine.id,
     type: updatedRoutine.type,
     steps: updatedRoutine.steps.map((step) => ({
@@ -385,18 +493,20 @@ return {
       name: step.name,
       category: step.category,
       completed: step.completed,
-)),
+    })),
     userId: updatedRoutine.userId,
     createdAt: updatedRoutine.createdAt,
     updatedAt: updatedRoutine.updatedAt,
-export async function {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout'); deleteRoutine(id: string): Promise<void> {
+  };
+}
+
+export async function deleteRoutine(id: string): Promise<void> {
   await prisma.beautyRoutine.delete({
     where: { id },
-export async function {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout'); updateRoutineStep(
+  });
+}
+
+export async function updateRoutineStep(
   routineId: string,
   stepId: string,
   data: Partial<RoutineStep>,
@@ -405,10 +515,15 @@ export async function {
     where: {
       id: stepId,
       routineId,
-data,
-return {
+    },
+    data,
+  });
+
+  return {
     id: updatedStep.id,
     order: updatedStep.order,
     name: updatedStep.name,
     category: updatedStep.category,
     completed: updatedStep.completed,
+  };
+}

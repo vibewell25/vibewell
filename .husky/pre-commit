@@ -1,4 +1,15 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
 
-npm run clean:tests:web
+# Standard checks
+npm run lint
+npm run test:smoke
+
+# Check for outdated critical dependencies 
+echo "Checking for critically outdated dependencies..."
+npx dependency-safety-check || 
+  (echo "⚠️  Warning: You have critically outdated dependencies! Run 'npm run deps:report' to see details."; 
+   echo "You can still commit, but please consider updating dependencies soon.")
+
+# Continue with commit
+exit 0

@@ -34,18 +34,18 @@ export default function Home() {
           <View style={styles.feature}>
             <View style={styles.featureIconContainer}>
               <Image 
-                source={require('../assets/history-icon.png')} 
+                source={require('../assets/beauty-icon.png')} 
                 style={styles.featureIcon}
                 defaultSource={require('../assets/placeholder-icon.png')}
               />
             </View>
-            <Text style={styles.featureTitle}>Analysis History</Text>
+            <Text style={styles.featureTitle}>Beauty Services</Text>
             <Text style={styles.featureDescription}>
-              Track your skin health progress over time with detailed insights
+              Explore top-rated beauty services and treatments near you
             </Text>
-            <Link href="skin-analysis-history" asChild>
+            <Link href="/beauty" asChild>
               <TouchableOpacity style={styles.featureButton}>
-                <Text style={styles.featureButtonText}>View History</Text>
+                <Text style={styles.featureButtonText}>Explore Beauty</Text>
               </TouchableOpacity>
             </Link>
           </View>
@@ -53,18 +53,20 @@ export default function Home() {
           <View style={styles.feature}>
             <View style={styles.featureIconContainer}>
               <Image 
-                source={require('../assets/community-icon.png')} 
+                source={require('../assets/wellness-icon.png')} 
                 style={styles.featureIcon}
                 defaultSource={require('../assets/placeholder-icon.png')}
               />
             </View>
-            <Text style={styles.featureTitle}>Beauty Community</Text>
+            <Text style={styles.featureTitle}>Wellness Programs</Text>
             <Text style={styles.featureDescription}>
-              Connect with others, share tips, and discover new beauty trends
+              Discover wellness programs, meditation guides, and healthy living tips
             </Text>
-            <TouchableOpacity style={[styles.featureButton, styles.comingSoonButton]}>
-              <Text style={styles.comingSoonButtonText}>Coming Soon</Text>
-            </TouchableOpacity>
+            <Link href="/wellness" asChild>
+              <TouchableOpacity style={styles.featureButton}>
+                <Text style={styles.featureButtonText}>Start Wellness Journey</Text>
+              </TouchableOpacity>
+            </Link>
           </View>
 
           <View style={styles.feature}>
@@ -79,9 +81,30 @@ export default function Home() {
             <Text style={styles.featureDescription}>
               Book beauty and wellness appointments with top professionals
             </Text>
-            <TouchableOpacity style={[styles.featureButton, styles.comingSoonButton]}>
-              <Text style={styles.comingSoonButtonText}>Coming Soon</Text>
-            </TouchableOpacity>
+            <Link href="/bookings" asChild>
+              <TouchableOpacity style={styles.featureButton}>
+                <Text style={styles.featureButtonText}>Manage Bookings</Text>
+              </TouchableOpacity>
+            </Link>
+          </View>
+
+          <View style={styles.feature}>
+            <View style={styles.featureIconContainer}>
+              <Image 
+                source={require('../assets/history-icon.png')} 
+                style={styles.featureIcon}
+                defaultSource={require('../assets/placeholder-icon.png')}
+              />
+            </View>
+            <Text style={styles.featureTitle}>Analysis History</Text>
+            <Text style={styles.featureDescription}>
+              Track your skin health progress over time with detailed insights
+            </Text>
+            <Link href="skin-analysis-history" asChild>
+              <TouchableOpacity style={styles.featureButton}>
+                <Text style={styles.featureButtonText}>View History</Text>
+              </TouchableOpacity>
+            </Link>
           </View>
         </View>
       </ScrollView>

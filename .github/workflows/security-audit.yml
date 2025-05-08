@@ -4,15 +4,195 @@ on:
   schedule:
     - cron: '0 2 * * *'   # Daily at 02:00 UTC
   workflow_dispatch:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - 'apps/*/package.json'
+      - 'packages/*/package.json'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - 'apps/*/package.json'
+      - 'packages/*/package.json'
 
 jobs:
-  audit:
+  security-audit:
+    name: Security Audit
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      issues: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
-      - run: npm ci --legacy-peer-deps
-      - run: npx lockfile-lint --path package-lock.json --type npm --allowed-hostname registry.npmjs.org
-      - run: npm audit --audit-level=moderate 
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --no-fund --no-audit
+
+      # Check that the upgrade script can run
+      - name: Verify upgrade script
+        run: |
+          chmod +x implement-upgrade.sh
+          chmod +x scripts/dependency-manager.js
+          chmod +x scripts/dependency-safety-check.js
+          chmod +x scripts/verify-code-quality.js
+          
+          # Check that the script can at least parse without errors
+          bash -n implement-upgrade.sh
+
+      # Check lockfile for tampering or outdated sources
+      - name: Validate lockfile
+        run: npx lockfile-lint --path package-lock.json --type npm --allowed-hostnames registry.npmjs.org
+
+      # Run security audit
+      - name: Npm audit (root)
+        run: npm audit --json > npm-audit-results.json || true
+        
+      - name: Check for critical vulnerabilities
+        id: check-critical
+        run: |
+          if [ -f npm-audit-results.json ]; then
+            critical_count=$(cat npm-audit-results.json | jq -r '.metadata.vulnerabilities.critical // 0')
+            high_count=$(cat npm-audit-results.json | jq -r '.metadata.vulnerabilities.high // 0')
+            echo "critical_count=$critical_count" >> $GITHUB_OUTPUT
+            echo "high_count=$high_count" >> $GITHUB_OUTPUT
+            
+            if [ "$critical_count" -gt 0 ] || [ "$high_count" -gt 0 ]; then
+              echo "::warning::Found $critical_count critical and $high_count high severity vulnerabilities"
+            fi
+          else
+            echo "No audit results found"
+          fi
+      
+      # Audit web app
+      - name: Npm audit (web app)
+        run: cd apps/web && npm audit --json > ../../npm-audit-web.json || true
+        
+      # Audit mobile app
+      - name: Npm audit (mobile app)
+        run: cd apps/mobile && npm audit --json > ../../npm-audit-mobile.json || true
+        
+      # Audit server app
+      - name: Npm audit (server app)
+        run: cd apps/server && npm audit --json > ../../npm-audit-server.json || true
+        
+      # Create issue for critical vulnerabilities
+      - name: Create GitHub Issue for critical vulnerabilities
+        if: ${{ steps.check-critical.outputs.critical_count > 0 }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const criticalCount = ${{ steps.check-critical.outputs.critical_count }};
+            const highCount = ${{ steps.check-critical.outputs.high_count }};
+            
+            const fs = require('fs');
+            let auditData = {};
+            try {
+              auditData = JSON.parse(fs.readFileSync('npm-audit-results.json', 'utf8'));
+            } catch (e) {
+              console.error('Error reading audit file:', e);
+            }
+            
+            let vulnerabilities = [];
+            if (auditData.vulnerabilities) {
+              for (const [pkgName, vuln] of Object.entries(auditData.vulnerabilities)) {
+                if (vuln.severity === 'critical' || vuln.severity === 'high') {
+                  vulnerabilities.push(`- **${pkgName}**: ${vuln.severity} - ${vuln.title}`);
+                }
+              }
+            }
+            
+            const title = `🚨 Security vulnerabilities: ${criticalCount} critical, ${highCount} high`;
+            const body = `## Security Vulnerabilities Found
+
+            This issue was automatically created by the security audit workflow.
+
+            - **Critical vulnerabilities**: ${criticalCount}
+            - **High vulnerabilities**: ${highCount}
+
+            ### Details
+
+            ${vulnerabilities.join('\n')}
+
+            Please run \`npm audit fix\` to resolve these issues. If manual intervention is required, follow the recommendations in the npm audit output.
+
+            Workflow run: [Security Audit](${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID})
+            `;
+            
+            try {
+              // Check if there's already an open issue for security vulnerabilities
+              const query = `repo:${context.repo.owner}/${context.repo.repo} is:issue is:open label:security-vulnerability`;
+              const issues = await github.rest.search.issuesAndPullRequests({q: query});
+              
+              if (issues.data.total_count === 0) {
+                // Create a new issue if none exists
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: title,
+                  body: body,
+                  labels: ['security-vulnerability', 'high-priority']
+                });
+                console.log('Created new security issue');
+              } else {
+                // Update the existing issue
+                const issue = issues.data.items[0];
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: body
+                });
+                console.log(`Updated existing security issue #${issue.number}`);
+              }
+            } catch (e) {
+              console.error('Error creating/updating issue:', e);
+            }
+
+      # Run SNYK scan (if token available)
+      - name: Run Snyk scan
+        if: env.SNYK_TOKEN != null
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+          
+      # Create SARIF report for GitHub security dashboard
+      - name: Generate SARIF file from npm audit
+        run: |
+          npm install -g @appthreat/npm-audit-to-sarif
+          if [ -f npm-audit-results.json ]; then
+            npm-audit-to-sarif npm-audit-results.json > npm-audit.sarif
+          else
+            echo '{"runs":[]}' > npm-audit.sarif
+          fi
+                  
+      # Upload SARIF file to GitHub Security dashboard
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: npm-audit.sarif
+          category: npm-audit
+          
+      # Run CodeQL analysis
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+          
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3 

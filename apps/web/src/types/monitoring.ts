@@ -1,11 +1,26 @@
+export enum AlertSeverity {
+  CRITICAL = 'critical',
+  HIGH = 'high',
+  MEDIUM = 'medium',
+  LOW = 'low',
+  INFO = 'info'
+}
+
 export interface AlertConfig {
-  id: string;
-  type: 'error' | 'warning' | 'info';
+  id?: string;
+  type?: 'error' | 'warning' | 'info';
+  severity: AlertSeverity;
   message: string;
-  timestamp: string;
-  acknowledged: boolean;
+  timestamp?: string;
+  acknowledged?: boolean;
+  details?: Record<string, any>;
+  actionItems?: string[];
+}
+
 export interface AlertingSystem {
   sendAlert(name: string, config: AlertConfig): Promise<void>;
+}
+
 export interface PerformanceMonitor {
   recordMetric(name: string, value: number): void;
   track(metrics: Record<string, number>): void;
@@ -17,42 +32,57 @@ export interface PerformanceMonitor {
   getMemoryUsage(): Promise<number>;
   getDiskUsage(): Promise<number>;
   getNetworkHealth(): Promise<number>;
+}
+
 export interface JobMetrics {
   jobEnqueueTime: number;
   jobProcessingTime: number;
   jobSuccess: number;
   jobError: number;
+}
+
 export interface QueryMetrics {
   averageTime: number;
   cacheHitRate: number;
   queryCount: number;
   errorRate: number;
+}
+
 export interface PerformanceResult {
-  [key: string]: number;
+  [key: string]: number | undefined;
   executionTime: number;
   memoryUsed?: number;
   fps?: number;
+}
+
 export interface ImageOptimizationStats {
   optimizationRate: number;
   cdnLatency: number;
   compressionRatio: number;
   processingTime: number;
+}
+
 export interface MonitoringConfig {
   metrics: {
     responseTime: boolean;
     memoryUsage: boolean;
     cpuUsage: boolean;
     networkLatency: boolean;
-alertThresholds: {
+  };
+  alertThresholds: {
     responseTime: number;
     memoryUsage: number;
     cpuUsage: number;
     networkLatency: number;
-samplingRate: number;
+  };
+  samplingRate: number;
   notifications: {
     email: boolean;
     slack: boolean;
     pagerduty: boolean;
+  };
+}
+
 export interface MonitoringService {
   // Core monitoring
   startMonitoring(): Promise<void>;
@@ -77,6 +107,8 @@ export interface MonitoringService {
   // Dashboard data
   getDashboardData(): Promise<DashboardData>;
   getPerformanceReport(startDate: string, endDate: string): Promise<PerformanceReport>;
+}
+
 export interface SystemHealthStatus {
   status: 'healthy' | 'degraded' | 'unhealthy';
   checks: Array<{
@@ -84,8 +116,10 @@ export interface SystemHealthStatus {
     status: 'pass' | 'fail';
     latency: number;
     lastChecked: string;
->;
+  }>;
   timestamp: string;
+}
+
 export interface PerformanceMetrics {
   lcp: number;
   fid: number;
@@ -93,23 +127,31 @@ export interface PerformanceMetrics {
   responseTime: number;
   cpuUsage: number;
   memoryUsage: number;
+}
+
 export interface SystemHealth {
   cpu: number;
   memory: number;
   disk: number;
   network: number;
+}
+
 export interface DashboardData {
   currentMetrics: Record<string, number>;
   alerts: {
     active: AlertConfig[];
     history: AlertConfig[];
-health: SystemHealth;
+  };
+  health: SystemHealth;
   performance: PerformanceMetrics;
+}
+
 export interface PerformanceReport {
   period: {
     start: string;
     end: string;
-summary: {
+  };
+  summary: {
     averageResponseTime: number;
     p95ResponseTime: number;
     p99ResponseTime: number;
@@ -117,21 +159,24 @@ summary: {
     errorRate: number;
     averageCpuUsage: number;
     averageMemoryUsage: number;
-trends: {
+  };
+  trends: {
     responseTime: Array<{ timestamp: string; value: number }>;
     cpuUsage: Array<{ timestamp: string; value: number }>;
     memoryUsage: Array<{ timestamp: string; value: number }>;
     errorRate: Array<{ timestamp: string; value: number }>;
-alerts: Array<{
+  };
+  alerts: Array<{
     config: AlertConfig;
     triggeredAt: string;
     resolvedAt?: string;
     duration: number;
->;
+  }>;
   recommendations: Array<{
     type: 'performance' | 'security' | 'reliability';
     priority: 'low' | 'medium' | 'high';
     description: string;
     impact: string;
     action: string;
->;
+  }>;
+}

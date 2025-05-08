@@ -1,0 +1,50 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  quality-check:
+    name: Code Quality Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci --no-fund
+      
+      # Run the quality verification script
+      - name: Run quality checks
+        id: quality
+        run: npm run quality
+      
+      # Generate dependency report if main branch
+      - name: Generate dependency report
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+        run: |
+          # Create reports directory if it doesn't exist
+          mkdir -p reports
+          
+          # Generate report using dependency manager
+          node scripts/dependency-manager.js --generate-report
+      
+      # Upload reports as artifacts
+      - name: Upload dependency report
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-report
+          path: reports/
+          retention-days: 90 

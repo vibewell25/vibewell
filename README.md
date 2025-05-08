@@ -310,3 +310,34 @@ For more details, refer to [DEPLOYMENT.md](DEPLOYMENT.md) for a complete deploym
 ## Environment Variables
 
 See the `.env` file for all required configuration variables. All components require specific environment variables to function properly in production.
+
+## Dependency Management
+
+Vibewell uses several tools to manage dependencies effectively:
+
+1. **Check Dependencies**: View outdated dependencies and security vulnerabilities
+   ```bash
+   npm run deps:check
+   ```
+
+2. **Update Dependencies**: Run the comprehensive upgrade process
+   ```bash
+   npm run deps:update
+   ```
+
+3. **Security Audit**: Check for security vulnerabilities
+   ```bash
+   npm run deps:security
+   ```
+
+4. **Generate Reports**: Create detailed dependency reports
+   ```bash
+   npm run deps:report
+   ```
+
+5. **Code Quality Check**: Run a comprehensive code quality check
+   ```bash
+   npm run quality
+   ```
+
+For more information, see the [dependency management documentation](docs/DEPENDENCY_MANAGEMENT.md).

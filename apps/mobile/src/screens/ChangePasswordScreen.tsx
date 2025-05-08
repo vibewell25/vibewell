@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface PasswordForm {
   currentPassword: string;
@@ -49,19 +50,52 @@ const ChangePasswordScreen: React.FC = () => {
   const handleChangePassword = async (values: PasswordForm) => {
     setLoading(true);
     try {
-      // TODO: Implement actual password change logic with your backend
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated API call
+      // Get stored auth token
+      const token = await AsyncStorage.getItem('@vibewell/auth_token');
+      
+      if (!token) {
+        throw new Error('Authentication required');
+      }
+      
+      // Make API call to change password
+      const response = await fetch('https://api.vibewell.com/v1/auth/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          currentPassword: values.currentPassword,
+          newPassword: values.newPassword
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to change password');
+      }
+      
       Alert.alert(
         'Success',
         'Your password has been changed successfully',
         [{ text: 'OK', onPress: () => navigation.goBack() }]
-catch (error) {
+      );
+    } catch (error) {
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'Failed to change password. Please try again.';
+        
       Alert.alert(
         'Error',
-        'Failed to change password. Please try again.'
-finally {
+        errorMessage
+      );
+    } finally {
       setLoading(false);
-const renderPasswordInput = (
+    }
+  };
+
+  const renderPasswordInput = (
     field: keyof PasswordForm,
     label: string,
     placeholder: string,
@@ -111,7 +145,9 @@ const renderPasswordInput = (
         </Text>
       )}
     </View>
-return (
+  );
+
+  return (
     <SafeAreaView style={[
       styles.container,
       { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }
@@ -241,6 +277,9 @@ validationSchema={validationSchema}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

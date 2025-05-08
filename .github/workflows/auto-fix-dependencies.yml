@@ -1,0 +1,67 @@
+name: Auto-Fix Dependencies
+
+on:
+  schedule:
+    - cron: '0 3 * * 3'  # Every Wednesday at 3 AM UTC
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  auto-fix-deps:
+    name: Auto-Fix Dependencies
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci --no-fund --no-audit
+      
+      # Run audit fix to fix vulnerabilities
+      - name: Fix vulnerabilities
+        run: npm audit fix
+      
+      # Check if there are changes
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+      
+      # Create PR if there are changes
+      - name: Create Pull Request
+        if: steps.check-changes.outputs.has_changes == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "fix(deps): auto-fix dependencies"
+          title: "🔧 Auto-fix dependencies"
+          body: |
+            This PR was automatically created by the Auto-Fix Dependencies workflow.
+            
+            It applies security fixes and updates dependencies to patch versions that don't introduce breaking changes.
+            
+            ## Changes
+            
+            - Fixed vulnerable dependencies using `npm audit fix`
+            - Minor patches and updates
+            
+            ## Risk Assessment
+            
+            Low - Only non-breaking changes are applied
+          labels: dependencies, automated-pr, security
+          branch: deps/auto-fix
+          base: develop
+          delete-branch: true 

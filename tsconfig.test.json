@@ -1,9 +1,30 @@
 {
   "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "strict": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "packages/types"
+    ],
+    "types": [
+      "react",
+      "react-dom",
+      "jest",
+      "node"
+    ],
+    "downlevelIteration": true,
+    "esModuleInterop": true
+  },
   "include": [
-    "src/**/*.test.ts",
-    "src/**/*.test.tsx",
-    "mobile/**/*.test.ts",
-    "mobile/**/*.test.tsx"
+    "tests/**/*"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

@@ -1,4 +1,5 @@
-/* eslint-disable */import React from 'react';
+/* eslint-disable */
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MeditationFlowx } from './MeditationFlow.tsx';
 
@@ -6,4 +7,5 @@ import { MeditationFlowx } from './MeditationFlow.tsx';
 describe('MeditationFlowx', () => {
   it.skip('should render correctly', () => {
     // Implement actual tests later
-  }));
+  });
+});

@@ -1,15 +1,14 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { vi } from 'vitest';
+import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 
 import { WebAuthnService } from '@/lib/auth/webauthn';
 import { TwoFactorService } from '@/lib/auth/two-factor';
 import { prisma } from '@/lib/prisma';
 
-vi.mock('@/lib/prisma', () => ({
+jest.mock('@/lib/prisma', () => ({
   prisma: {
     user: {
-      findUnique: vi.fn(),
-      update: vi.fn()
+      findUnique: jest.fn(),
+      update: jest.fn()
     }
   }
 }));
@@ -25,7 +24,7 @@ describe('Authentication Flow Tests', () => {
   beforeEach(() => {
     webAuthnService = new WebAuthnService();
     twoFactorService = new TwoFactorService();
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   describe('WebAuthn Flow', () => {

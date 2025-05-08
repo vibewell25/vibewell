@@ -1,5 +1,4 @@
-import { describe, beforeEach, afterEach, it, expect } from 'vitest';
-import { vi } from 'vitest';
+import { describe, beforeEach, afterEach, it, expect, jest } from '@jest/globals';
 
 import { getRedisClient, RedisClient } from '../src/lib/redis-client';
 
@@ -12,7 +11,7 @@ describe('Redis Client', () => {
     originalNodeEnv = process.env.NODE_ENV;
     
     // Clear all mocks before each test
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   afterEach(() => {
@@ -20,7 +19,7 @@ describe('Redis Client', () => {
     process.env.NODE_ENV = originalNodeEnv;
     
     // Reset all mocks
-    vi.resetAllMocks();
+    jest.resetAllMocks();
   });
 
   describe('Development Mode', () => {

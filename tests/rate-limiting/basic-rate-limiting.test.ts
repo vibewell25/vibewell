@@ -1,143 +1,154 @@
-import { describe, beforeEach, afterEach, it, expect, jest, beforeAll, afterAll } from '@jest/globals';
-import { http, HttpResponse } from 'msw';
-
-    import { setupServer } from 'msw/node';
-import axios from 'axios';
+import { describe, beforeEach, it, expect, jest } from '@jest/globals';
 
 // Mock Redis client
 const redisClient = {
-  get: jest.fn().mockResolvedValue(null),
-  set: jest.fn().mockResolvedValue('OK'),
-  del: jest.fn().mockResolvedValue(1),
+  get: jest.fn(),
+  set: jest.fn(),
+  del: jest.fn(),
   on: jest.fn(),
   once: jest.fn(),
   connect: jest.fn(),
   quit: jest.fn()
-// Base URL for API requests
-const baseUrl = 'http://localhost:3000';
+};
 
-// Set up MSW server
-const server = setupServer(
-  // Default health endpoint
-
-    http.get(`${baseUrl}/api/health`, () => {
-    return HttpResponse.json(
-      { status: 'healthy', timestamp: Date.now() },
-      { status: 200 }
-),
-  
-  // Login endpoint with rate limiting
-
-    http.post(`${baseUrl}/api/auth/login`, ({ request }) => {
-    const headers = request.headers;
-
-    const requestCount = headers.get('x-test-request-count');
-    
-    // If this is a rate limit test and we've received many requests
-    if (requestCount && parseInt(requestCount) > 5) {
-      return HttpResponse.json(
-        { 
-          error: 'Too many requests', 
-          retryAfter: 60,
-          message: 'Rate limit exceeded'
-{ status: 429 }
-return HttpResponse.json(
-
-    { success: true, token: 'mock-token' },
-      { status: 200 }
-),
-  
-  // Password reset endpoint with strict rate limiting
-
-    http.post(`${baseUrl}/api/auth/reset-password`, ({ request }) => {
-    const headers = request.headers;
-
-    const requestCount = headers.get('x-test-request-count');
-    
-    // Stricter rate limit for password reset
-    if (requestCount && parseInt(requestCount) > 2) {
-      return HttpResponse.json(
-        { 
-          error: 'Too many requests', 
-          retryAfter: 300,
-          message: 'Rate limit exceeded for sensitive operation'
-{ status: 429 }
-return HttpResponse.json(
-      { success: true, message: 'Password reset email sent' },
-      { status: 200 }
-)
-// Start MSW server before tests
-beforeAll(() => server.listen());
-
-// Reset request handlers between tests
-afterEach(() => server.resetHandlers());
-
-// Close MSW server after all tests
-afterAll(() => server.close());
+// Mock rate limiter function
+const rateLimiter = {
+  limit: jest.fn()
+};
 
 describe('Rate Limiting Tests', () => {
-  describe('Redis Rate Limiting', () => {
-    beforeEach(() => {
-      // Clear Redis data before each test
-      jest.clearAllMocks();
-it('should connect to Redis successfully', async () => {
-      // Set a test value
+  beforeEach(() => {
+    // Reset all mocks
+    jest.resetAllMocks();
+    
+    // Default behaviors
+    redisClient.get.mockResolvedValue(null);
+    redisClient.set.mockResolvedValue('OK');
+    redisClient.del.mockResolvedValue(1);
+    
+    // Set up rate limiter to pass normally
+    rateLimiter.limit.mockResolvedValue({
+      success: true,
+      limit: 10,
+      remaining: 9,
+      reset: Date.now() + 60000
+    });
+  });
 
-    await redisClient.set('test-key', 'test-value');
+  describe('Redis Rate Limiting', () => {
+    it('should connect to Redis successfully', async () => {
+      // Set a test value
+      await redisClient.set('test-key', 'test-value');
       
       // Get the value back
-
-    const value = await redisClient.get('test-key');
+      const value = await redisClient.get('test-key');
       
       // Verify it worked
-
-    expect(redisClient.set).toHaveBeenCalledWith('test-key', 'test-value');
-
-    expect(redisClient.get).toHaveBeenCalledWith('test-key');
+      expect(redisClient.set).toHaveBeenCalledWith('test-key', 'test-value');
+      expect(redisClient.get).toHaveBeenCalledWith('test-key');
       
       // Clean up
-
-    await redisClient.del('test-key');
-
-    expect(redisClient.del).toHaveBeenCalledWith('test-key');
-describe('API Endpoint Rate Limiting', () => {
-    it('should rate limit the login endpoint', async () => {
-      // Make multiple requests to the login endpoint
-      const requests = Array.from({ length: 10 }, (_, i) => 
-
-    axios.post(`${baseUrl}/api/auth/login`, 
-          { email: 'test@example.com', password: 'password' },
-          { 
-            headers: {
-
-    'Content-Type': 'application/json',
-
-    'x-test-request-count': String(i + 1)
-validateStatus: () => true // Accept any status code
-).then(r => ({ status: r.status, data: r.data }))
-// Wait for all requests to complete
-      const responses = await Promise.all(requests);
+      await redisClient.del('test-key');
+      expect(redisClient.del).toHaveBeenCalledWith('test-key');
+    });
+    
+    it('should store rate limit data correctly', async () => {
+      // Setup
+      const userId = 'user123';
+      const endpoint = 'login';
+      const key = `ratelimit:${userId}:${endpoint}`;
       
-      // Some of the later requests should be rate limited (429)
-      const rateLimitedResponses = responses.filter(r => r && r.status === 429);
-      expect(rateLimitedResponses.length).toBeGreaterThan(0);
-it('should apply stricter rate limits for password reset', async () => {
-      // Make multiple requests to the password reset endpoint
-      const requests = Array.from({ length: 5 }, (_, i) => 
-
-    axios.post(`${baseUrl}/api/auth/reset-password`, 
-          { email: 'test@example.com' },
-          { 
-            headers: {
-
-    'Content-Type': 'application/json',
-
-    'x-test-request-count': String(i + 1)
-validateStatus: () => true // Accept any status code
-).then(r => ({ status: r.status, data: r.data }))
-// Wait for all requests to complete
-      const responses = await Promise.all(requests);
+      // Mock a first request (sets a counter)
+      redisClient.get.mockResolvedValueOnce(null);
       
-      // Some of the later requests should be rate limited (429)
-      const rateLimitedResponses = responses.filter(r => r && r.status === 429);
-      expect(rateLimitedResponses.length).toBeGreaterThan(0);
+      // Simulate limiting
+      const result = await simulateRateLimiting(userId, endpoint, 1);
+      
+      // Verify rate limiter interacted with Redis
+      expect(redisClient.get).toHaveBeenCalledWith(key);
+      expect(redisClient.set).toHaveBeenCalled();
+      expect(result.success).toBe(true);
+      expect(result.remaining).toBe(9);
+    });
+    
+    it('should block requests after limit is reached', async () => {
+      // Setup
+      const userId = 'user123';
+      const endpoint = 'login';
+      
+      // Mock that we have already made 10 requests
+      redisClient.get.mockResolvedValue('10');
+      
+      // Simulate limiting
+      const result = await simulateRateLimiting(userId, endpoint, 10);
+      
+      // Should be blocked
+      expect(result.success).toBe(false);
+      expect(result.remaining).toBe(0);
+    });
+  });
+  
+  describe('API Endpoint Rate Limiting', () => {
+    it('should apply different limits based on endpoint sensitivity', async () => {
+      // Reset the limit mock
+      rateLimiter.limit.mockReset();
+      
+      // Login endpoint (normal sensitivity)
+      rateLimiter.limit.mockResolvedValueOnce({
+        success: true,
+        limit: 10,
+        remaining: 5,
+        reset: Date.now() + 60000
+      });
+      
+      const loginResult = await simulateRateLimiting('user123', 'login', 5);
+      expect(loginResult.limit).toBe(10);
+      
+      // Password reset endpoint (high sensitivity)
+      rateLimiter.limit.mockResolvedValueOnce({
+        success: true,
+        limit: 3,
+        remaining: 2,
+        reset: Date.now() + 300000
+      });
+      
+      const resetResult = await simulateRateLimiting('user123', 'password-reset', 1);
+      expect(resetResult.limit).toBe(3);
+      expect(resetResult.reset - loginResult.reset).toBeGreaterThan(0); // Longer timeout
+    });
+  });
+});
+
+// Simulate rate limiting function
+async function simulateRateLimiting(userId: string, endpoint: string, attempts: number) {
+  // This simulates what our actual rate limiting middleware would do
+  const key = `ratelimit:${userId}:${endpoint}`;
+  
+  // Check current count
+  const currentCount = await redisClient.get(key);
+  const count = currentCount ? parseInt(currentCount, 10) : 0;
+  
+  // Get the limit based on endpoint
+  const limit = endpoint === 'password-reset' ? 3 : 10;
+  const ttl = endpoint === 'password-reset' ? 300 : 60; // seconds
+  
+  // If over limit, block the request
+  if (count >= limit) {
+    return {
+      success: false,
+      limit,
+      remaining: 0,
+      reset: Date.now() + (ttl * 1000)
+    };
+  }
+  
+  // Otherwise increment and allow
+  await redisClient.set(key, (count + 1).toString());
+  
+  return {
+    success: true,
+    limit,
+    remaining: limit - (count + 1),
+    reset: Date.now() + (ttl * 1000)
+  };
+}

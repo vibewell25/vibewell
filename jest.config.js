@@ -22,7 +22,10 @@ const customJestConfig = {
   setupFiles: ['cross-fetch/polyfill'],
 
   // Setup files after the testing framework is installed
-  setupFilesAfterEnv: ['./setupTests.ts'],
+  setupFilesAfterEnv: [
+    '<rootDir>/setupTests.ts',
+    '<rootDir>/jest.msw.setup.js'
+  ],
 
   // Use jsdom for browser-like testing
   testEnvironment: 'jest-environment-jsdom',

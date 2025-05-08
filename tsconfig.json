@@ -41,6 +41,7 @@
     "scripts",
     "apps/server",
     "apps/mobile",
+    "tests/**/*",
     "**/*.spec.ts",
     "**/*.test.ts",
     "**/*.spec.tsx",

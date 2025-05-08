@@ -1,4 +1,5 @@
-/* eslint-disable */import { dbReplicaManager } from '@/utils/db-replica-manager';
+/* eslint-disable */
+import { dbReplicaManager } from '@/utils/db-replica-manager';
 
 describe('DatabaseReplicaManager', () => {
   beforeAll(() => {
@@ -24,7 +25,6 @@ describe('DatabaseReplicaManager', () => {
     expect(Array.isArray(health.replicas)).toBe(true);
   });
 
-
   it('should round-robin between replica clients', () => {
     const firstClient = dbReplicaManager.getReplicaClient();
 
@@ -40,5 +40,6 @@ describe('DatabaseReplicaManager', () => {
 
     // This is a basic test - in a real scenario, you'd mock the performance monitor
     // and verify it was called with the correct metrics
-  }));
+  });
+});
 

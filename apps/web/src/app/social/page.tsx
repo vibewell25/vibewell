@@ -17,8 +17,8 @@ import {
   unsavePost as apiUnsavePost,
   getSavedPosts,
   getUserReactions,
-  Post as PostType,
-from '@/lib/api/social';
+  Post as PostType
+} from '@/lib/api/social';
 import { getUpcomingEvents, registerForEvent, cancelEventRegistration } from '@/lib/api/events';
 import { format, parseISO } from 'date-fns';
 import { Send } from 'lucide-react';
@@ -186,7 +186,7 @@ const handleReactionChange = async ( {
     setUserReactions((prev) => ({
       ...prev,
       [postId]: reactionType,
-));
+}));
     // Update posts with new reaction counts
     setPosts(
       posts.map((post) => {
@@ -218,7 +218,7 @@ catch (err) {
       setUserReactions((prev) => ({
         ...prev,
         [postId]: prevReaction,
-));
+}));
       // Revert post reaction counts
       setPosts(
         posts.map((post) => {

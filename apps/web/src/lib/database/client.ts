@@ -2,17 +2,26 @@ import { PrismaClient } from '@prisma/client';
 
 import { logger } from '@/lib/logger';
 
+// PrismaClient interface augmentation for global use
+declare global {
+  var prisma: PrismaClient | undefined;
+}
+
 // Create a singleton instance of the Prisma client
 let prisma: PrismaClient;
 
 if (process.env.NODE_ENV === 'production') {
   prisma = new PrismaClient();
-else {
+} else {
   // Use a global variable in development to prevent multiple instances during hot reloading
   if (!global.prisma) {
     global.prisma = new PrismaClient({
       log: ['query', 'info', 'warn', 'error'],
-prisma = global.prisma;
+    });
+  }
+  prisma = global.prisma;
+}
+
 // Object to track active transactions
 const activeTransactions = new Map<string, any>();
 
@@ -34,10 +43,8 @@ export const db = {
       select: (columns?: string | string[]) => {
         const select = columns
           ? Array.isArray(columns)
-
-    ? columns.reduce((acc, col) => ({ ...acc, [col]: true }), {})
-
-    : { [columns]: true }
+            ? columns.reduce((acc, col) => ({ ...acc, [col]: true }), {})
+            : { [columns]: true }
           : undefined;
 
         return {
@@ -49,13 +56,16 @@ export const db = {
           eq: (column: string, value: any) => {
             try {
               return prisma[table as keyof typeof prisma].findMany({
-
-    where: { [column]: value },
+                where: { [column]: value },
                 select,
-catch (error) {
+              });
+            } catch (error) {
               logger.error(`Database error in ${table}.select.eq:`, error);
               throw error;
-/**
+            }
+          },
+
+          /**
            * Order results by a column
            * @param column Column to order by
            * @param direction Direction ('asc' or 'desc')
@@ -63,13 +73,16 @@ catch (error) {
           order: (column: string, direction: 'asc' | 'desc' = 'asc') => {
             try {
               return prisma[table as keyof typeof prisma].findMany({
-
-    orderBy: { [column]: direction },
+                orderBy: { [column]: direction },
                 select,
-catch (error) {
+              });
+            } catch (error) {
               logger.error(`Database error in ${table}.select.order:`, error);
               throw error;
-/**
+            }
+          },
+
+          /**
            * Limit the number of results
            * @param count Maximum number of results
            */
@@ -78,20 +91,30 @@ catch (error) {
               return prisma[table as keyof typeof prisma].findMany({
                 take: count,
                 select,
-catch (error) {
+              });
+            } catch (error) {
               logger.error(`Database error in ${table}.select.limit:`, error);
               throw error;
-/**
+            }
+          },
+
+          /**
            * Execute the query
            */
           execute: () => {
             try {
               return prisma[table as keyof typeof prisma].findMany({
                 select,
-catch (error) {
+              });
+            } catch (error) {
               logger.error(`Database error in ${table}.select.execute:`, error);
               throw error;
-/**
+            }
+          },
+        };
+      },
+
+      /**
        * Insert data into the table
        * @param data Data to insert
        */
@@ -99,10 +122,14 @@ catch (error) {
         try {
           return prisma[table as keyof typeof prisma].create({
             data,
-catch (error) {
+          });
+        } catch (error) {
           logger.error(`Database error in ${table}.insert:`, error);
           throw error;
-/**
+        }
+      },
+
+      /**
        * Update data in the table
        * @param data Data to update
        */
@@ -116,13 +143,18 @@ catch (error) {
           eq: (column: string, value: any) => {
             try {
               return prisma[table as keyof typeof prisma].updateMany({
-
-    where: { [column]: value },
+                where: { [column]: value },
                 data,
-catch (error) {
+              });
+            } catch (error) {
               logger.error(`Database error in ${table}.update.eq:`, error);
               throw error;
-/**
+            }
+          },
+        };
+      },
+
+      /**
        * Delete data from the table
        */
       delete: () => {
@@ -135,12 +167,19 @@ catch (error) {
           eq: (column: string, value: any) => {
             try {
               return prisma[table as keyof typeof prisma].deleteMany({
-
-    where: { [column]: value },
-catch (error) {
+                where: { [column]: value },
+              });
+            } catch (error) {
               logger.error(`Database error in ${table}.delete.eq:`, error);
               throw error;
-/**
+            }
+          },
+        };
+      },
+    };
+  },
+
+  /**
    * Start a transaction
    * @param id Optional transaction ID
    */
@@ -150,11 +189,15 @@ catch (error) {
       const tx = await prisma.$transaction(async (prisma) => {
         activeTransactions.set(txId, prisma);
         return txId;
-return { id: tx };
-catch (error) {
+      });
+      return { id: tx };
+    } catch (error) {
       logger.error(`Database error starting transaction ${txId}:`, error);
       throw error;
-/**
+    }
+  },
+
+  /**
    * Commit a transaction
    * @param id Transaction ID
    */
@@ -162,10 +205,13 @@ catch (error) {
     try {
       activeTransactions.delete(id);
       return { success: true };
-catch (error) {
+    } catch (error) {
       logger.error(`Database error committing transaction ${id}:`, error);
       throw error;
-/**
+    }
+  },
+
+  /**
    * Rollback a transaction
    * @param id Transaction ID
    */
@@ -173,9 +219,13 @@ catch (error) {
     try {
       activeTransactions.delete(id);
       return { success: true };
-catch (error) {
+    } catch (error) {
       logger.error(`Database error rolling back transaction ${id}:`, error);
       throw error;
+    }
+  },
+};
+
 // For compatibility with existing code
 export { db as database, db as supabase };
 export { prisma };

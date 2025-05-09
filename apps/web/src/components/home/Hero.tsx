@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card } from '@/components/ui/Card';
-import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Hero() {
   return (
@@ -12,3 +11,5 @@ export default function Hero() {
         </p>
       </Card>
     </section>
+  );
+}

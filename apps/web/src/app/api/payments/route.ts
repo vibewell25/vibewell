@@ -4,13 +4,35 @@ import { getSession } from '@auth0/nextjs-auth0';
 import { z } from 'zod';
 import Stripe from 'stripe';
 
-import { financialRateLimiter, applyRateLimit } from '@/lib/rate-limiter';
-
+// Import from app/api/auth/rate-limit-middleware.ts
+import { apiRateLimiter, applyRateLimit } from '@/app/api/auth/rate-limit-middleware';
 import { prisma } from '@/lib/database/client';
 
 // Initialize Stripe with the secret key
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2023-10-16',
+});
+
+// Security headers for payment endpoints
+function addSecurityHeaders(response: NextResponse): NextResponse {
+  // Strict Transport Security - force HTTPS
+  response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+  
+  // Prevent content type sniffing
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  
+  // Prevent clickjacking
+  response.headers.set('X-Frame-Options', 'DENY');
+  
+  // Referrer policy
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  
+  // Cache control - no caching for payment data
+  response.headers.set('Cache-Control', 'no-store, private, max-age=0');
+  
+  return response;
+}
+
 // Schema for validating payment intent creation
 const paymentIntentSchema = z.object({
   amount: z.number().min(100, 'Amount must be at least 1.00'),
@@ -19,38 +41,60 @@ const paymentIntentSchema = z.object({
   booking_id: z.string().optional(),
   service_id: z.string().optional(),
   payment_method_id: z.string().optional(),
+});
+
 // Schema for confirming payment
 const confirmPaymentSchema = z.object({
   payment_intent_id: z.string(),
   payment_method_id: z.string().optional(),
+});
+
 /**
  * Create a payment intent
  */
-export async function {
+export async function POST(req: NextRequest) {
   const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout'); POST(req: NextRequest) {
+  
   try {
+    // Check for timeout
+    if (Date.now() - start > 30000) {
+      throw new Error('Request timeout');
+    }
+    
     // Apply financial rate limiting
-    const rateLimitResponse = await applyRateLimit(req, financialRateLimiter);
+    const rateLimitResponse = await applyRateLimit(req, apiRateLimiter);
     if (rateLimitResponse) {
-      return rateLimitResponse; // Rate limit exceeded
-// Parse and validate request body
-    const body = await req.json();
+      return addSecurityHeaders(rateLimitResponse); // Rate limit exceeded
+    }
+
+    // Parse and validate request body
+    const body = await req.json().catch(() => ({}));
     const result = paymentIntentSchema.safeParse(body);
 
     if (!result.success) {
-      return NextResponse.json(
+      const errorResponse = NextResponse.json(
         { error: 'Invalid request data', details: result.error.format() },
-        { status: 400 },
-// Get the validated data
+        { status: 400 }
+      );
+      return addSecurityHeaders(errorResponse);
+    }
+
+    // Get the validated data
     const { amount, currency, description, booking_id, service_id, payment_method_id } =
       result.data;
 
     // Check if user is authenticated with Auth0
-    const session = await getSession();
-    if (!session || !session.user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
-const userId = session.user.sub;
+    const res = NextResponse.next();
+    const session = await getSession(req, res);
+    if (!session?.user) {
+      const errorResponse = NextResponse.json(
+        { error: 'Authentication required' }, 
+        { status: 401 }
+      );
+      return addSecurityHeaders(errorResponse);
+    }
+    
+    const userId = session.user.sub;
 
     // Create payment intent
     const paymentIntent = await stripe.paymentIntents.create({
@@ -61,10 +105,14 @@ const userId = session.user.sub;
         user_id: userId,
         booking_id: booking_id || '',
         service_id: service_id || '',
-automatic_payment_methods: {
+      },
+      automatic_payment_methods: {
         enabled: true,
-...(payment_method_id && { payment_method: payment_method_id }),
-// Store payment intent in database for tracking using Prisma
+      },
+      ...(payment_method_id && { payment_method: payment_method_id }),
+    });
+
+    // Store payment intent in database for tracking using Prisma
     try {
       await prisma.paymentIntent.create({
         data: {
@@ -76,95 +124,196 @@ automatic_payment_methods: {
           bookingId: booking_id,
           serviceId: service_id,
           createdAt: new Date(),
-catch (dbError) {
+        },
+      });
+    } catch (dbError) {
       console.error('Error storing payment intent:', dbError);
       // Continue even if DB storage fails
-// Return the client secret to the client
-    return NextResponse.json({
+    }
+
+    // Return the client secret to the client
+    const successResponse = NextResponse.json({
       clientSecret: paymentIntent.client_secret,
       id: paymentIntent.id,
-catch (error: any) {
+    });
+    
+    return addSecurityHeaders(successResponse);
+  } catch (error: any) {
     console.error('Payment intent creation error:', error);
 
     // Handle Stripe errors with appropriate status codes
     if (error.type === 'StripeCardError') {
-      return NextResponse.json({ error: error.message }, { status: 400 });
-return NextResponse.json({ error: 'Payment processing error' }, { status: 500 });
+      const errorResponse = NextResponse.json(
+        { error: error.message }, 
+        { status: 400 }
+      );
+      return addSecurityHeaders(errorResponse);
+    }
+    
+    const errorResponse = NextResponse.json(
+      { error: 'Payment processing error' }, 
+      { status: 500 }
+    );
+    return addSecurityHeaders(errorResponse);
+  }
+}
+
 /**
  * Confirm a payment intent
  */
-export async function {
+export async function PUT(req: NextRequest) {
   const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout'); PUT(req: NextRequest) {
+  
   try {
+    // Check for timeout
+    if (Date.now() - start > 30000) {
+      throw new Error('Request timeout');
+    }
+    
     // Apply financial rate limiting
-    const rateLimitResponse = await applyRateLimit(req, financialRateLimiter);
+    const rateLimitResponse = await applyRateLimit(req, apiRateLimiter);
     if (rateLimitResponse) {
-      return rateLimitResponse; // Rate limit exceeded
-// Parse and validate request body
-    const body = await req.json();
+      return addSecurityHeaders(rateLimitResponse); // Rate limit exceeded
+    }
+
+    // Parse and validate request body
+    const body = await req.json().catch(() => ({}));
     const result = confirmPaymentSchema.safeParse(body);
 
     if (!result.success) {
-      return NextResponse.json(
+      const errorResponse = NextResponse.json(
         { error: 'Invalid request data', details: result.error.format() },
-        { status: 400 },
-const { payment_intent_id, payment_method_id } = result.data;
+        { status: 400 }
+      );
+      return addSecurityHeaders(errorResponse);
+    }
+    
+    const { payment_intent_id, payment_method_id } = result.data;
 
     // Check if user is authenticated with Auth0
-    const session = await getSession();
-    if (!session || !session.user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
-// Confirm the payment intent
+    const res = NextResponse.next();
+    const session = await getSession(req, res);
+    if (!session?.user) {
+      const errorResponse = NextResponse.json(
+        { error: 'Authentication required' }, 
+        { status: 401 }
+      );
+      return addSecurityHeaders(errorResponse);
+    }
+    
+    // Verify that this payment intent belongs to the user
+    const paymentRecord = await prisma.paymentIntent.findUnique({
+      where: { id: payment_intent_id }
+    });
+    
+    if (!paymentRecord || paymentRecord.userId !== session.user.sub) {
+      const errorResponse = NextResponse.json(
+        { error: 'Unauthorized' }, 
+        { status: 403 }
+      );
+      return addSecurityHeaders(errorResponse);
+    }
+
+    // Confirm the payment intent
     const paymentIntent = await stripe.paymentIntents.confirm(payment_intent_id, {
       ...(payment_method_id && { payment_method: payment_method_id }),
-// Update payment intent in database using Prisma
+    });
+
+    // Update payment intent in database using Prisma
     try {
       await prisma.paymentIntent.update({
         where: { id: payment_intent_id },
         data: {
           status: paymentIntent.status,
           updatedAt: new Date(),
-catch (dbError) {
+        },
+      });
+    } catch (dbError) {
       console.error('Error updating payment intent:', dbError);
       // Continue even if DB update fails
-// Return the updated payment intent status
-    return NextResponse.json({
+    }
+
+    // Return the updated payment intent status
+    const successResponse = NextResponse.json({
       status: paymentIntent.status,
       id: paymentIntent.id,
-catch (error: any) {
+    });
+    
+    return addSecurityHeaders(successResponse);
+  } catch (error: any) {
     console.error('Payment confirmation error:', error);
 
     // Handle Stripe errors with appropriate status codes
     if (error.type === 'StripeCardError') {
-      return NextResponse.json({ error: error.message }, { status: 400 });
-return NextResponse.json({ error: 'Payment processing error' }, { status: 500 });
+      const errorResponse = NextResponse.json(
+        { error: error.message }, 
+        { status: 400 }
+      );
+      return addSecurityHeaders(errorResponse);
+    }
+    
+    const errorResponse = NextResponse.json(
+      { error: 'Payment processing error' }, 
+      { status: 500 }
+    );
+    return addSecurityHeaders(errorResponse);
+  }
+}
+
 /**
  * Get payment intents for the current user
  */
-export async function {
+export async function GET(req: NextRequest) {
   const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout'); GET(req: NextRequest) {
+  
   try {
+    // Check for timeout
+    if (Date.now() - start > 30000) {
+      throw new Error('Request timeout');
+    }
+    
     // Apply financial rate limiting (less restrictive for read operations)
-    const rateLimitResponse = await applyRateLimit(req, financialRateLimiter);
+    const rateLimitResponse = await applyRateLimit(req, apiRateLimiter);
     if (rateLimitResponse) {
-      return rateLimitResponse; // Rate limit exceeded
-// Check if user is authenticated with Auth0
-    const session = await getSession();
-    if (!session || !session.user) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
-const userId = session.user.sub;
+      return addSecurityHeaders(rateLimitResponse); // Rate limit exceeded
+    }
+
+    // Check if user is authenticated with Auth0
+    const res = NextResponse.next();
+    const session = await getSession(req, res);
+    if (!session?.user) {
+      const errorResponse = NextResponse.json(
+        { error: 'Authentication required' }, 
+        { status: 401 }
+      );
+      return addSecurityHeaders(errorResponse);
+    }
+    
+    const userId = session.user.sub;
 
     // Get payment intents for the current user using Prisma
     try {
       const payments = await prisma.paymentIntent.findMany({
         where: { userId: userId },
         orderBy: { createdAt: 'desc' },
-return NextResponse.json({ payments });
-catch (dbError) {
+      });
+      
+      const successResponse = NextResponse.json({ payments });
+      return addSecurityHeaders(successResponse);
+    } catch (dbError) {
       console.error('Error fetching payment intents:', dbError);
-      return NextResponse.json({ error: 'Failed to fetch payment history' }, { status: 500 });
-catch (error) {
+      const errorResponse = NextResponse.json(
+        { error: 'Failed to fetch payment history' }, 
+        { status: 500 }
+      );
+      return addSecurityHeaders(errorResponse);
+    }
+  } catch (error) {
     console.error('Payment history error:', error);
-    return NextResponse.json({ error: 'Failed to fetch payment history' }, { status: 500 });
+    const errorResponse = NextResponse.json(
+      { error: 'Failed to fetch payment history' }, 
+      { status: 500 }
+    );
+    return addSecurityHeaders(errorResponse);
+  }
+}

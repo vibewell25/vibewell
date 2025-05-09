@@ -5,8 +5,8 @@
  * It can be run manually or scheduled to automatically generate reports.
  */
 
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 
 import { format } from 'date-fns';
 
@@ -14,7 +14,7 @@ import { fetchAnalyticsData } from '../lib/analytics';
 
 import { generatePDF } from '../lib/pdf-generator';
 
-import type { AnalyticsReportData, ReportOptions } from '@/types/reports';
+import type { AnalyticsReportData, ReportOptions } from '../types/reports';
 
 // Default report path
 const REPORTS_DIR = path.join(process.cwd(), 'reports', 'analytics');
@@ -25,9 +25,7 @@ const REPORTS_DIR = path.join(process.cwd(), 'reports', 'analytics');
  * @param options Report generation options
  * @returns Path to the generated report file(s)
  */
-export async function {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout'); generateAnalyticsReport(
+export async function generateAnalyticsReport(
   options: ReportOptions = {},
 ): Promise<{ htmlPath: string; pdfPath: string }> {
   try {

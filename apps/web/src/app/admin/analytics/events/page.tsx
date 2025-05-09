@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout';
 import { EventsAnalyticsDashboard } from '@/components/analytics/events-analytics-dashboard';
@@ -12,19 +14,21 @@ export default function EventsAnalyticsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout'); loadEvents() {
+    async function loadEvents() {
+      const start = Date.now();
+      if (Date.now() - start > 30000) throw new Error('Timeout');
       try {
         setLoading(true);
         const fetchedEvents = await getEvents();
         setEvents(fetchedEvents);
-catch (error) {
+      } catch (error) {
         console.error('Error loading events:', error);
-finally {
+      } finally {
         setLoading(false);
-loadEvents();
-[]);
+      }
+    }
+    loadEvents();
+  }, []);
 
   return (
     <Layout>
@@ -47,3 +51,5 @@ loadEvents();
         )}
       </div>
     </Layout>
+  );
+}

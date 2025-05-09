@@ -1,3 +1,10 @@
+/**
+ * Types for analytics reports
+ */
+
+/**
+ * Options for report generation
+ */
 export interface ReportOptions {
   /**
    * Start date for the report period
@@ -15,21 +22,23 @@ export interface ReportOptions {
   reportType?: 'standard' | 'executive' | 'detailed';
 
   /**
-   * Whether to include recommendations
+   * Whether to include recommendations in the report
    */
   includeRecommendations?: boolean;
 
   /**
-   * Whether to include demographics data
+   * Whether to include demographic data in the report
    */
   includeDemographics?: boolean;
 
   /**
-   * Whether to include geographic data
+   * Whether to include geographic data in the report
    */
   includeGeo?: boolean;
+}
+
 /**
- * Analytics report data structure
+ * Data used to populate the report template
  */
 export interface AnalyticsReportData {
   /**
@@ -126,6 +135,8 @@ export interface AnalyticsReportData {
    * JSON string for geographic chart data
    */
   geo_data: string;
+}
+
 /**
  * Performance report data structure
  */
@@ -163,7 +174,9 @@ export interface PerformanceReportData {
      * Browser versions tested
      */
     browser_versions: string;
-/**
+  }
+
+  /**
    * Performance metrics summary
    */
   metrics_summary: {
@@ -206,7 +219,9 @@ export interface PerformanceReportData {
      * Total blocking time in milliseconds
      */
     tbt: number;
-/**
+  }
+
+  /**
    * Resources summary
    */
   resources_summary: {
@@ -239,7 +254,9 @@ export interface PerformanceReportData {
      * Total number of requests
      */
     request_count: number;
-/**
+  }
+
+  /**
    * JSON string for performance chart data
    */
   performance_chart_data: string;
@@ -253,3 +270,4 @@ export interface PerformanceReportData {
    * JSON string for browser comparison chart data
    */
   browser_chart_data: string;
+}

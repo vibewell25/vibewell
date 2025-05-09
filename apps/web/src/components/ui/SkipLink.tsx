@@ -2,9 +2,11 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 
 interface SkipLinkProps {
-  href: string;
+  targetId: string;
   className?: string;
   children?: React.ReactNode;
+}
+
 /**
  * SkipLink - Provides a way for keyboard users to skip navigation and go directly to main content
  *
@@ -15,13 +17,46 @@ interface SkipLinkProps {
  * Usage:
  * ```tsx
  * // Place at the top of your layout
- * <SkipLink href="#main-content">Skip to main content</SkipLink>
+ * <SkipLink targetId="main-content">Skip to main content</SkipLink>
  *
  * // Then make sure to add the corresponding ID to your main content
  * <main id="main-content">...</main>
  * ```
  */
-export function SkipLink({ href, className, children = 'Skip to content' }: SkipLinkProps) {
+export function SkipLink({ targetId, className, children = 'Skip to content' }: SkipLinkProps) {
+  const href = `#${targetId}`;
+  
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      // Add tabindex=-1 if not present to make it focusable
+      if (!targetElement.hasAttribute('tabindex')) {
+        targetElement.setAttribute('tabindex', '-1');
+      }
+      targetElement.focus();
+      // Scroll into view (in case the focus doesn't do it automatically)
+      targetElement.scrollIntoView();
+    }
+  };
+  
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLAnchorElement>) => {
+    // When user presses Enter, focus the element with the target ID
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        // Add tabindex=-1 if not present to make it focusable
+        if (!targetElement.hasAttribute('tabindex')) {
+          targetElement.setAttribute('tabindex', '-1');
+        }
+        targetElement.focus();
+        // Scroll into view (in case the focus doesn't do it automatically)
+        targetElement.scrollIntoView();
+      }
+    }
+  };
+
   return (
     <a
       href={href}
@@ -36,24 +71,18 @@ export function SkipLink({ href, className, children = 'Skip to content' }: Skip
         'focus:shadow-lg',
         // High contrast mode support
         'focus:ring-primary focus:ring-2 focus:ring-offset-2',
-        className,
+        className
       )}
-      onKeyDown={(e) => {
-        // When user presses Enter, focus the element with the target ID
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          const targetElement = document.querySelector(href);
-          if (targetElement) {
-            (targetElement as HTMLElement).focus();
-            // Add tabindex=-1 if not present to make it focusable
-            if (!(targetElement as HTMLElement).hasAttribute('tabindex')) {
-              (targetElement as HTMLElement).setAttribute('tabindex', '-1');
-// Automatically test with screen readers
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
       data-testid="skip-link"
       aria-label="Skip to main content"
     >
       {children}
     </a>
+  );
+}
+
 /**
  * Make sure to add these styles in your global CSS or layout component:
  *

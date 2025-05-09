@@ -1,7 +1,8 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
-import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
+import { usePathname } from 'next/navigation';
 import { Menu, Home, Activity, Calendar, Users, FileText, User, X, Rss } from 'lucide-react';
 
 interface NavigationItem {
@@ -9,6 +10,8 @@ interface NavigationItem {
   href: string;
   icon: React.ReactNode;
   requiresAuth?: boolean;
+}
+
 const navigationItems: NavigationItem[] = [
   { label: 'Home', href: '/', icon: <Home className="h-4 w-4" /> },
   { label: 'Balanced Experience', href: '/services', icon: <Activity className="h-4 w-4" /> },
@@ -20,47 +23,33 @@ const navigationItems: NavigationItem[] = [
   { label: 'Profile', href: '/profile', icon: <User className="h-4 w-4" />, requiresAuth: true },
 ];
 
-export const MainNavigation: React.FC = () => {
+const MainNavigation: React.FC = () => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [hasNotch, setHasNotch] = useState(false);
 
-  // Check for mobile device and notch (safe area) on component mount
+  // Check for mobile device on component mount
   useEffect(() => {
     // Check if mobile based on screen width
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
-// Check if device has a notch or safe area
-    const checkSafeArea = () => {
-      // iOS detection
-      const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
-      
-      // iPhone X or newer detection (rough approximation)
-      const iphoneWithNotch = iOS && 
-        window.screen.height >= 812 && 
-        window.devicePixelRatio >= 2;
-      
-      // Android detection for cutouts
-      const androidWithCutout = /Android/.test(navigator.userAgent) && 
-        (window as any).screen.orientation && 
-        window.innerHeight > window.innerWidth;
-      
-      setHasNotch(iphoneWithNotch || androidWithCutout);
-checkMobile();
-    checkSafeArea();
+    };
+    
+    checkMobile();
 
     // Listen for window resize
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-[]);
+  }, []);
 
   // Filter items based on auth requirement if needed
   const isAuthenticated = true; // Replace with actual auth check
   const filteredNavItems = navigationItems.filter(
     item => !item.requiresAuth || (item.requiresAuth && isAuthenticated)
-return (
-    <nav className={`fixed w-full z-50 bg-white border-b border-gray-200 shadow-sm ${hasNotch ? 'pt-safe-top' : ''}`}>
+  );
+  
+  return (
+    <nav className="fixed w-full z-50 bg-white border-b border-gray-200 shadow-sm">
       {/* Desktop Navigation */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
@@ -79,7 +68,7 @@ return (
                     pathname === item.href
                       ? 'bg-blue-50 text-blue-700'
                       : 'text-gray-600 hover:bg-gray-100'
-`}
+                  }`}
                 >
                   <span className="mr-2">{item.icon}</span>
                   {item.label}
@@ -90,61 +79,45 @@ return (
 
           {/* Mobile menu button */}
           <div className="flex items-center md:hidden">
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger asChild>
-                <button
-                  type="button"
-                  aria-label="Open navigation menu"
-                  className="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-                >
-                  <Menu className="h-6 w-6" />
-                </button>
-              </SheetTrigger>
-              <SheetContent side="right" className={`p-0 w-[75vw] ${hasNotch ? 'pt-safe-top pb-safe-bottom' : ''}`}>
-                <div className="flex flex-col h-full">
-                  <div className="px-4 pt-5 pb-4 sm:px-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <span className="text-xl font-semibold text-blue-600">VibeWell</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setIsOpen(false)}
-                        aria-label="Close menu"
-                        className="p-1 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-                      >
-                        <X className="h-5 w-5" />
-                      </button>
-                    </div>
-                  </div>
-                  <div className="flex-1 px-4 py-6 overflow-y-auto">
-                    <div className="flex flex-col space-y-1">
-                      {filteredNavItems.map((item) => (
-                        <Link
-                          key={item.label}
-                          href={item.href}
-                          onClick={() => setIsOpen(false)}
-                          className={`group flex items-center px-3 py-4 text-base font-medium rounded-md ${
-                            pathname === item.href
-                              ? 'bg-blue-50 text-blue-700'
-                              : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-`}
-                        >
-                          <span className="mr-4 h-6 w-6">{item.icon}</span>
-                          {item.label}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+            <button
+              type="button"
+              aria-label="Open navigation menu"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Navigation Bottom Tabs */}
-      <div className={`md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 ${hasNotch ? 'pb-safe-bottom' : ''}`}>
+      {/* Mobile Navigation Dropdown */}
+      {isOpen && (
+        <div className="md:hidden bg-white border-b border-gray-200 shadow-sm">
+          <div className="px-2 pt-2 pb-3 space-y-1">
+            {filteredNavItems.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                onClick={() => setIsOpen(false)}
+                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                  pathname === item.href
+                    ? 'bg-blue-50 text-blue-700'
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                <div className="flex items-center">
+                  <span className="mr-3">{item.icon}</span>
+                  {item.label}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Bottom Tabs - Only visible on mobile */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
         <div className="grid grid-cols-5 h-16">
           {filteredNavItems.slice(0, 5).map((item) => (
             <Link
@@ -154,7 +127,7 @@ return (
                 pathname === item.href 
                   ? 'text-blue-600' 
                   : 'text-gray-500 hover:text-gray-700'
-`}
+              }`}
             >
               <span className={`h-6 w-6 mb-1 ${pathname === item.href ? 'text-blue-600' : ''}`}>
                 {item.icon}
@@ -165,3 +138,7 @@ return (
         </div>
       </div>
     </nav>
+  );
+};
+
+export default MainNavigation;

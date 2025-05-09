@@ -1,3 +1,5 @@
+"use client";
+
 import React, { createContext, useContext, ReactNode } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -8,6 +10,8 @@ interface AuthContextValue {
   login: (email: string, password: string) => Promise<void>;
   signup: (data: { email: string; password: string; name: string; role?: 'user' | 'provider' }) => Promise<void>;
   logout: () => Promise<void>;
+}
+
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -17,8 +21,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider value={{ user, isLoading, isAuthenticated, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
+  );
+}
+
 export function useAuthContext() {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error('useAuthContext must be used within an AuthProvider');
-return context;
+  }
+  return context;
+}

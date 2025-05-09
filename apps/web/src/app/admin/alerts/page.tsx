@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import {
@@ -8,7 +10,7 @@ import {
   EditIcon,
   CheckIcon,
   XIcon,
-from 'lucide-react';
+} from 'lucide-react';
 import { AlertService, AlertThreshold } from '@/services/alert-service';
 import { ProductService } from '@/services/product-service';
 import { Button } from '@/components/ui/Button';
@@ -18,7 +20,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-from '@/components/ui/dialog';
+} from '@/components/ui/dialog';
 import { FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/Input';
 import {
@@ -27,7 +29,7 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
-from '@/components/ui/select';
+} from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -38,10 +40,14 @@ interface Product {
   id: string;
   name: string;
   // Add other product fields as needed
+}
+
 // Define the alert status interface
 interface AlertStatus {
   label: string;
   color: 'info' | 'default' | 'success' | 'warning' | 'destructive' | 'outline' | 'secondary';
+}
+
 function AlertsContent() {
   const [alerts, setAlerts] = useState<AlertThreshold[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -63,10 +69,12 @@ function AlertsContent() {
     condition: 'above',
     threshold: 3.5,
     notification_methods: ['email'],
-useEffect(() => {
+  });
+
+  useEffect(() => {
     fetchAlerts();
     fetchProducts();
-[]);
+  }, []);
 
   useEffect(() => {
     if (editingAlert) {
@@ -79,71 +87,90 @@ useEffect(() => {
         condition: editingAlert.condition,
         threshold: editingAlert.threshold,
         notification_methods: editingAlert.notification_methods,
-[editingAlert]);
+      });
+    }
+  }, [editingAlert]);
 
-  const fetchAlerts = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+  const fetchAlerts = async () => {
+    const start = Date.now();
+    if (Date.now() - start > 30000) throw new Error('Timeout');
     setIsLoading(true);
     try {
       const alertService = new AlertService();
       const alertsData = await alertService.getAllAlerts();
       setAlerts(alertsData);
-catch (err) {
+    } catch (err) {
       setError('Failed to fetch alerts');
       console.error(err);
-finally {
+    } finally {
       setIsLoading(false);
-const fetchProducts = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    }
+  };
+
+  const fetchProducts = async () => {
+    const start = Date.now();
+    if (Date.now() - start > 30000) throw new Error('Timeout');
     try {
       const productService = new ProductService();
       const productsData = await productService.getProducts(1, 50);
       setProducts(productsData.products);
-catch (err) {
+    } catch (err) {
       console.error('Failed to fetch products:', err);
-const handleCreateAlert = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');) => {
+    }
+  };
+
+  const handleCreateAlert = async () => {
+    const start = Date.now();
+    if (Date.now() - start > 30000) throw new Error('Timeout');
     try {
       const alertService = new AlertService();
       if (editingAlert && editingAlert.id) {
         await alertService.updateAlert(editingAlert.id, formState as AlertThreshold);
-else {
+      } else {
         await alertService.createAlert(formState as AlertThreshold);
-setShowDialog(false);
+      }
+      setShowDialog(false);
       setEditingAlert(null);
       resetForm();
       fetchAlerts();
-catch (err) {
+    } catch (err) {
       setError('Failed to save alert');
       console.error(err);
-const handleDeleteAlert = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');alertId: string) => {
+    }
+  };
+
+  const handleDeleteAlert = async (alertId: string) => {
     if (confirm('Are you sure you want to delete this alert?')) {
       try {
         const alertService = new AlertService();
         await alertService.deleteAlert(alertId);
         fetchAlerts();
-catch (err) {
+      } catch (err) {
         setError('Failed to delete alert');
         console.error(err);
-const handleToggleAlert = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');alert: AlertThreshold) => {
+      }
+    }
+  };
+
+  const handleToggleAlert = async (alert: AlertThreshold) => {
+    const start = Date.now();
+    if (Date.now() - start > 30000) throw new Error('Timeout');
     try {
       const alertService = new AlertService();
       if (alert.id) {
         await alertService.updateAlert(alert.id, {
           ...alert,
           is_active: !alert.is_active,
-fetchAlerts();
-catch (err) {
+        });
+        fetchAlerts();
+      }
+    } catch (err) {
       setError('Failed to update alert');
       console.error(err);
-const resetForm = () => {
+    }
+  };
+
+  const resetForm = () => {
     setFormState({
       name: '',
       description: '',
@@ -153,30 +180,45 @@ const resetForm = () => {
       condition: 'above',
       threshold: 3.5,
       notification_methods: ['email'],
-const openNewAlertDialog = () => {
+    });
+  };
+
+  const openNewAlertDialog = () => {
     resetForm();
     setEditingAlert(null);
     setShowDialog(true);
-const openEditAlertDialog = (alert: AlertThreshold) => {
+  };
+
+  const openEditAlertDialog = (alert: AlertThreshold) => {
     setEditingAlert(alert);
     setShowDialog(true);
-const filteredAlerts = alerts.filter((alert) => {
+  };
+
+  const filteredAlerts = alerts.filter((alert) => {
     if (activeTab === 'active') return alert.is_active;
     if (activeTab === 'inactive') return !alert.is_active;
     if (activeTab === 'triggered') return alert.last_triggered;
     return true;
-const getProductName = (productId: string) => {
+  });
+
+  const getProductName = (productId: string) => {
     const product = products.find((p) => p.id === productId);
     return product ? product.name : 'Unknown Product';
-const formatDate = (dateString: string | undefined) => {
+  };
+
+  const formatDate = (dateString: string | undefined) => {
     if (!dateString) return 'Never';
     return new Date(dateString).toLocaleString();
-const getAlertStatus = (alert: AlertThreshold): AlertStatus => {
+  };
+
+  const getAlertStatus = (alert: AlertThreshold): AlertStatus => {
     if (!alert.is_active) return { label: 'Inactive', color: 'secondary' };
     // @ts-expect-error - last_triggered might not be in the interface, but it's used in the code
     if (alert.last_triggered) return { label: 'Triggered', color: 'destructive' };
     return { label: 'Active', color: 'success' };
-return (
+  };
+
+  return (
     <div className="container mx-auto py-8">
       <div className="mb-6 flex items-center justify-between">
         <div>
@@ -287,7 +329,8 @@ return (
                   </div>
                 </CardContent>
               </Card>
-)}
+            );
+          })}
         </div>
       )}
 
@@ -345,8 +388,9 @@ return (
                     setFormState({
                       ...formState,
                       metric: value as AlertThreshold['metric'],
-)
->
+                    })
+                  }
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -366,8 +410,9 @@ return (
                     setFormState({
                       ...formState,
                       condition: value as AlertThreshold['condition'],
-)
->
+                    })
+                  }
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -386,7 +431,8 @@ return (
                     value={formState.threshold}
                     onChange={(e) =>
                       setFormState({ ...formState, threshold: parseFloat(e.target.value) })
-step={0.1}
+                    }
+                    step={0.1}
                     min={0}
                     max={5}
                   />
@@ -406,7 +452,8 @@ step={0.1}
                         ? [...formState.notification_methods, 'email']
                         : formState.notification_methods.filter((m) => m !== 'email');
                       setFormState({ ...formState, notification_methods: methods });
-/>
+                    }}
+                  />
                   <label htmlFor="email-notification">Email</label>
                 </div>
                 <div className="flex items-center gap-2">
@@ -419,7 +466,8 @@ step={0.1}
                         ? [...formState.notification_methods, 'sms']
                         : formState.notification_methods.filter((m) => m !== 'sms');
                       setFormState({ ...formState, notification_methods: methods });
-/>
+                    }}
+                  />
                   <label htmlFor="sms-notification">SMS</label>
                 </div>
                 <div className="flex items-center gap-2">
@@ -432,7 +480,8 @@ step={0.1}
                         ? [...formState.notification_methods, 'push']
                         : formState.notification_methods.filter((m) => m !== 'push');
                       setFormState({ ...formState, notification_methods: methods });
-/>
+                    }}
+                  />
                   <label htmlFor="push-notification">Push</label>
                 </div>
               </div>
@@ -457,8 +506,13 @@ step={0.1}
         </DialogContent>
       </Dialog>
     </div>
+  );
+}
+
 export default function AlertsPage() {
   return (
     <Suspense fallback={<div className="py-10 text-center">Loading...</div>}>
       <AlertsContent />
     </Suspense>
+  );
+}

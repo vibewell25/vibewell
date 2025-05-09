@@ -11,6 +11,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 224 71.4% 4.1%;
     --primary: 262.1 83.3% 57.8%;
+    --primary-dark: 262.1 83.3% 47.8%;
     --primary-foreground: 210 20% 98%;
     --secondary: 220 14.3% 95.9%;
     --secondary-foreground: 220.9 39.3% 11%;
@@ -34,6 +35,7 @@
     --popover: 224 71.4% 4.1%;
     --popover-foreground: 210 20% 98%;
     --primary: 263.4 70% 50.4%;
+    --primary-dark: 263.4 70% 40.4%;
     --primary-foreground: 210 20% 98%;
     --secondary: 215 27.9% 16.9%;
     --secondary-foreground: 210 20% 98%;
@@ -51,6 +53,7 @@
   /* Green theme */
   .green-theme {
     --primary: 158 33% 31%;
+    --primary-dark: 158 33% 25%;
     --primary-foreground: 210 20% 98%;
     --ring: 158 33% 31%;
     --background: 60 17% 92%;
@@ -58,6 +61,7 @@
 
   .dark.green-theme {
     --primary: 158 33% 45%;
+    --primary-dark: 158 33% 35%;
     --primary-foreground: 210 20% 98%;
     --ring: 158 33% 45%;
     --background: 160 30% 8%;
@@ -66,6 +70,7 @@
   /* Peach theme */
   .peach-theme {
     --primary: 10 100% 75%;
+    --primary-dark: 10 100% 65%;
     --primary-foreground: 20 10% 15%;
     --ring: 10 100% 75%;
     --background: 30 30% 96%;
@@ -73,6 +78,7 @@
 
   .dark.peach-theme {
     --primary: 10 100% 65%;
+    --primary-dark: 10 100% 55%;
     --primary-foreground: 20 10% 15%;
     --ring: 10 100% 65%;
     --background: 20 30% 10%;
@@ -81,6 +87,7 @@
   /* Blue theme */
   .blue-theme {
     --primary: 217 91% 60%;
+    --primary-dark: 217 91% 50%;
     --primary-foreground: 210 20% 98%;
     --ring: 217 91% 60%;
     --background: 213 30% 97%;
@@ -88,6 +95,7 @@
 
   .dark.blue-theme {
     --primary: 217 91% 55%;
+    --primary-dark: 217 91% 45%;
     --primary-foreground: 210 20% 98%;
     --ring: 217 91% 55%;
     --background: 217 30% 10%;
@@ -96,6 +104,7 @@
   /* Purple theme */
   .purple-theme {
     --primary: 260 84% 63%;
+    --primary-dark: 260 84% 53%;
     --primary-foreground: 210 20% 98%;
     --ring: 260 84% 63%;
     --background: 270 20% 97%;
@@ -103,6 +112,7 @@
 
   .dark.purple-theme {
     --primary: 260 84% 60%;
+    --primary-dark: 260 84% 50%;
     --primary-foreground: 210 20% 98%;
     --ring: 260 84% 60%;
     --background: 260 30% 10%;
@@ -269,8 +279,8 @@ button:focus-visible,
 .high-contrast.dark {
   --contrast-background: black;
   --contrast-text: white;
-  --contrast-primary: #ffdd00;
-  --contrast-secondary: #40c0ff;
+  --contrast-primary: #ffff00;
+  --contrast-secondary: #00aaff;
   --contrast-border: white;
 }
 
@@ -279,10 +289,11 @@ button:focus-visible,
 }
 
 .high-contrast button,
-.high-contrast a {
-  color: var(--contrast-primary) !important;
+.high-contrast a,
+.high-contrast [role='button'] {
   background-color: var(--contrast-background) !important;
-  border: 2px solid var(--contrast-border) !important;
+  color: var(--contrast-primary) !important;
+  border: 2px solid var(--contrast-primary) !important;
 }
 
 .high-contrast h1,
@@ -295,39 +306,38 @@ button:focus-visible,
 }
 
 .high-contrast p,
-.high-contrast li,
-.high-contrast td,
-.high-contrast th,
+.high-contrast span,
 .high-contrast label,
+.high-contrast div,
+.high-contrast li,
 .high-contrast input,
 .high-contrast textarea {
   color: var(--contrast-text) !important;
 }
 
-/* Reduce motion */
+/* Reduced motion preferences */
 .reduce-motion * {
-  animation: none !important;
   transition: none !important;
+  animation: none !important;
   scroll-behavior: auto !important;
 }
 
-/* Focus styles */
+/* Focus ring for all interactive elements */
 *:focus-visible {
-  outline: 3px solid #1a73e8 !important;
-  outline-offset: 2px !important;
+  outline: 3px solid var(--primary) !important;
+  outline-offset: 3px !important;
+  box-shadow: none !important;
 }
 
-/* Skip link */
+/* Improved skip links */
 .skip-link {
   position: absolute;
   top: -40px;
   left: 0;
+  background: var(--primary);
+  color: white;
   padding: 8px;
-  z-index: 100;
-  background: #fff;
-  border: 2px solid #1a73e8;
-  color: #1a73e8;
-  font-weight: bold;
+  z-index: 9999;
   transition: top 0.2s;
 }
 
@@ -335,7 +345,7 @@ button:focus-visible,
   top: 0;
 }
 
-/* Screen reader only */
+/* Screen reader only elements */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -348,12 +358,13 @@ button:focus-visible,
   border-width: 0;
 }
 
-/* Announcement region for screen readers */
+/* Live region for screen readers */
 .live-announcer {
   position: absolute;
   top: -9999px;
   left: -9999px;
-  overflow: hidden;
+  z-index: -9999;
   width: 1px;
   height: 1px;
+  overflow: hidden;
 }

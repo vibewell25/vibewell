@@ -1,3 +1,5 @@
+"use client";
+
 import Link from 'next/link';
 
 const navItems = [
@@ -24,3 +26,5 @@ export default function BottomNav() {
         ))}
       </ul>
     </nav>
+  );
+}

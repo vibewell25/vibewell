@@ -39,11 +39,11 @@ export function useAuth() {
       setState(prev => ({
         ...prev,
         isLoading: false,
-        isAuthenticated: !!session.user,
-        user: session.user || null,
-        isMFARequired: session.user?.mfa_required || false,
-        isMFAEnrolled: session.user?.mfa_enrolled || false,
-        mfaMethod: session.user?.mfa_method || null
+        isAuthenticated: !!(session && session.user),
+        user: session?.user || null,
+        isMFARequired: session?.user?.mfa_required || false,
+        isMFAEnrolled: session?.user?.mfa_enrolled || false,
+        mfaMethod: session?.user?.mfa_method || null
       }));
     } catch (error) {
       setState(prev => ({

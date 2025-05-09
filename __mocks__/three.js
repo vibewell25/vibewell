@@ -7,25 +7,33 @@ const mockVector3 = {
   multiply: jest.fn(),
   divide: jest.fn(),
   length: jest.fn(() => 1),
-  normalize: jest.fn(),
+  normalize: jest.fn()
+};
+
 const mockColor = {
   set: jest.fn(),
   copy: jest.fn(),
   clone: jest.fn(() => ({ ...mockColor })),
-  r: 1, g: 1, b: 1,
+  r: 1, g: 1, b: 1
+};
+
 const mockQuaternion = {
   set: jest.fn(),
   copy: jest.fn(),
   clone: jest.fn(() => ({ ...mockQuaternion })),
   setFromEuler: jest.fn(),
-  setFromAxisAngle: jest.fn(),
+  setFromAxisAngle: jest.fn()
+};
+
 const mockMatrix4 = {
   set: jest.fn(),
   copy: jest.fn(),
   clone: jest.fn(() => ({ ...mockMatrix4 })),
   identity: jest.fn(),
   makeRotationFromQuaternion: jest.fn(),
-  multiply: jest.fn(),
+  multiply: jest.fn()
+};
+
 const mockObject3D = {
   position: { ...mockVector3 },
   rotation: { ...mockVector3, _order: 'XYZ' },
@@ -42,28 +50,29 @@ const mockObject3D = {
   frustumCulled: true,
   renderOrder: 0,
   userData: {},
-uuid: 'mock-uuid',
+  uuid: 'mock-uuid',
   name: '',
   type: 'Object3D',
   add: jest.fn(function(child) { 
     this.children.push(child); 
     child.parent = this;
     return this;
-),
+  }),
   remove: jest.fn(function(child) {
     const index = this.children.indexOf(child);
     if (index !== -1) {
       this.children.splice(index, 1);
       child.parent = null;
-return this;
-),
+    }
+    return this;
+  }),
   updateMatrix: jest.fn(),
   updateMatrixWorld: jest.fn(),
   updateWorldMatrix: jest.fn(),
   traverse: jest.fn(function(callback) {
     callback(this);
     this.children.forEach(child => child.traverse && child.traverse(callback));
-),
+  }),
   traverseVisible: jest.fn(),
   traverseAncestors: jest.fn(),
   lookAt: jest.fn(),
@@ -73,7 +82,9 @@ return this;
   getWorldQuaternion: jest.fn(() => ({ ...mockQuaternion })),
   getWorldScale: jest.fn(() => ({ ...mockVector3 })),
   applyMatrix4: jest.fn(),
-  raycast: jest.fn(),
+  raycast: jest.fn()
+};
+
 const mockScene = {
   ...mockObject3D,
   type: 'Scene',
@@ -82,7 +93,9 @@ const mockScene = {
   fog: null,
   overrideMaterial: null,
   autoUpdate: true,
-  isScene: true,
+  isScene: true
+};
+
 const mockCamera = {
   ...mockObject3D,
   type: 'Camera',
@@ -94,7 +107,9 @@ const mockCamera = {
   far: 2000,
   zoom: 1,
   updateProjectionMatrix: jest.fn(),
-  clone: jest.fn(() => ({ ...mockCamera })),
+  clone: jest.fn(() => ({ ...mockCamera }))
+};
+
 const mockMesh = {
   ...mockObject3D,
   type: 'Mesh',
@@ -102,14 +117,18 @@ const mockMesh = {
   geometry: {
     dispose: jest.fn(),
     attributes: { position: { count: 0 } },
-    boundingSphere: { radius: 1 },
-material: {
+    boundingSphere: { radius: 1 }
+  },
+  material: {
     dispose: jest.fn(),
     side: 0,
     transparent: false,
     opacity: 1,
-    color: { ...mockColor },
-updateMorphTargets: jest.fn(),
+    color: { ...mockColor }
+  },
+  updateMorphTargets: jest.fn()
+};
+
 const mockRenderer = {
   domElement: document.createElement('div'),
   setSize: jest.fn(),
@@ -118,34 +137,42 @@ const mockRenderer = {
   render: jest.fn(),
   shadowMap: {
     enabled: false,
-    type: 1,
-xr: {
+    type: 1
+  },
+  xr: {
     enabled: false,
     setReferenceSpaceType: jest.fn(),
     getReferenceSpace: jest.fn(),
     getSession: jest.fn(),
-    isPresenting: false,
-outputEncoding: 3000,
+    isPresenting: false
+  },
+  outputEncoding: 3000,
   toneMapping: 0,
   toneMappingExposure: 1,
-  dispose: jest.fn(),
+  dispose: jest.fn()
+};
+
 const mockRaycaster = {
   ray: {
     origin: { ...mockVector3 },
-    direction: { ...mockVector3 },
-near: 0,
+    direction: { ...mockVector3 }
+  },
+  near: 0,
   far: Infinity,
   params: {
     Mesh: {},
     Line: {},
     LOD: {},
     Points: {},
-    Sprite: {},
-linePrecision: 1,
+    Sprite: {}
+  },
+  linePrecision: 1,
   set: jest.fn(),
   setFromCamera: jest.fn(),
   intersectObject: jest.fn(() => []),
-  intersectObjects: jest.fn(() => []),
+  intersectObjects: jest.fn(() => [])
+};
+
 // Export all mocks for Three.js
 module.exports = {
   // Basic structures
@@ -159,8 +186,8 @@ module.exports = {
   Box2: jest.fn(() => ({})),
   Box3: jest.fn(() => ({
     min: { x: -Infinity, y: -Infinity, z: -Infinity },
-    max: { x: Infinity, y: Infinity, z: Infinity },
-)),
+    max: { x: Infinity, y: Infinity, z: Infinity }
+  })),
   Sphere: jest.fn(() => ({ center: { ...mockVector3 }, radius: 0 })),
   Color: jest.fn(() => ({ ...mockColor })),
   
@@ -175,8 +202,8 @@ module.exports = {
     start: jest.fn(),
     stop: jest.fn(),
     getElapsedTime: jest.fn(() => 0),
-    getDelta: jest.fn(() => 0),
-)),
+    getDelta: jest.fn(() => 0)
+  })),
   
   // Renderers
   WebGLRenderer: jest.fn(() => ({ ...mockRenderer })),
@@ -188,13 +215,13 @@ module.exports = {
     ...mockCamera,
     fov: 50,
     aspect: 1,
-    isPerspectiveCamera: true,
-)),
+    isPerspectiveCamera: true
+  })),
   OrthographicCamera: jest.fn(() => ({ 
     ...mockCamera,
     left: -1, right: 1, top: 1, bottom: -1,
-    isOrthographicCamera: true,
-)),
+    isOrthographicCamera: true
+  })),
   
   // Scene
   Scene: jest.fn(() => ({ ...mockScene })),
@@ -215,44 +242,44 @@ module.exports = {
     color: { ...mockColor },
     map: null,
     isMeshBasicMaterial: true,
-    dispose: jest.fn(),
-)),
+    dispose: jest.fn()
+  })),
   MeshStandardMaterial: jest.fn(() => ({
     color: { ...mockColor },
     roughness: 1,
     metalness: 0,
     map: null,
     isMeshStandardMaterial: true,
-    dispose: jest.fn(),
-)),
+    dispose: jest.fn()
+  })),
   LineBasicMaterial: jest.fn(() => ({ 
     color: { ...mockColor },
     isLineBasicMaterial: true,
-    dispose: jest.fn(),
-)),
+    dispose: jest.fn()
+  })),
   
   // Geometries
   BufferGeometry: jest.fn(() => ({
     attributes: {},
     index: null,
     dispose: jest.fn(),
-    isBufferGeometry: true,
-)),
+    isBufferGeometry: true
+  })),
   BoxGeometry: jest.fn(() => ({
     attributes: { position: { count: 24 } },
     dispose: jest.fn(),
-    isBufferGeometry: true,
-)),
+    isBufferGeometry: true
+  })),
   SphereGeometry: jest.fn(() => ({
     attributes: { position: { count: 32 } },
     dispose: jest.fn(),
-    isBufferGeometry: true,
-)),
+    isBufferGeometry: true
+  })),
   PlaneGeometry: jest.fn(() => ({
     attributes: { position: { count: 4 } },
     dispose: jest.fn(),
     isBufferGeometry: true,
-)),
+  })),
   
   // Lights
   AmbientLight: jest.fn(() => ({ 
@@ -260,14 +287,14 @@ module.exports = {
     isAmbientLight: true,
     color: { ...mockColor },
     intensity: 1,
-)),
+  })),
   DirectionalLight: jest.fn(() => ({ 
     ...mockObject3D,
     isDirectionalLight: true,
     color: { ...mockColor },
     intensity: 1,
     target: { ...mockObject3D },
-)),
+  })),
   PointLight: jest.fn(() => ({ 
     ...mockObject3D,
     isPointLight: true,
@@ -275,14 +302,14 @@ module.exports = {
     intensity: 1,
     distance: 0,
     decay: 2,
-)),
+  })),
   
   // Textures
   Texture: jest.fn(() => ({
     image: {},
     dispose: jest.fn(),
     isTexture: true,
-)),
+  })),
   
   // Constants
   LinearEncoding: 3000,
@@ -306,8 +333,8 @@ module.exports = {
       setLoop: jest.fn(),
       setEffectiveTimeScale: jest.fn(),
       setDuration: jest.fn(),
-)),
-)),
+    })),
+  })),
   
   // Loaders
   TextureLoader: jest.fn(() => ({
@@ -315,5 +342,6 @@ module.exports = {
       const texture = { url, isTexture: true, dispose: jest.fn() };
       if (onLoad) onLoad(texture);
       return texture;
-),
-)),
+    }),
+  })),
+};

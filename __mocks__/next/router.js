@@ -20,16 +20,18 @@ const useRouter = jest.fn().mockImplementation(() => ({
   events: {
     on: jest.fn(),
     off: jest.fn(),
-    emit: jest.fn(),
-));
+    emit: jest.fn()
+  }
+}));
 
 // Mock Router object
 const Router = {
   events: {
     on: jest.fn(),
     off: jest.fn(),
-    emit: jest.fn(),
-push: jest.fn().mockImplementation(url => Promise.resolve(true)),
+    emit: jest.fn()
+  },
+  push: jest.fn().mockImplementation(url => Promise.resolve(true)),
   replace: jest.fn().mockImplementation(url => Promise.resolve(true)),
   reload: jest.fn(),
   back: jest.fn(),
@@ -38,17 +40,23 @@ push: jest.fn().mockImplementation(url => Promise.resolve(true)),
   route: '/',
   pathname: '/',
   query: {},
-  asPath: '/',
+  asPath: '/'
+};
+
 // Use CommonJS require for React
 const React = require('react');
 
 // Mock withRouter HOC
 const withRouter = jest.fn().mockImplementation(Component => {
-const WithRouterComponent = props => {
+  const WithRouterComponent = props => {
     return React.createElement(Component, { ...props, router: useRouter() });
-WithRouterComponent.displayName = `withRouter(${Component.displayName || Component.name || 'Component'})`;
+  };
+  WithRouterComponent.displayName = `withRouter(${Component.displayName || Component.name || 'Component'})`;
   return WithRouterComponent;
+});
+
 module.exports = {
   useRouter,
   Router,
-  withRouter,
+  withRouter
+};

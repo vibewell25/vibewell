@@ -14,19 +14,24 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 const formSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
+});
+
 type FormData = z.infer<typeof formSchema>;
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const {
     register,
-    handleSubmit
-= useForm<FormData>({
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
     resolver: zodResolver(formSchema),
-const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  });
+  
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-  async function {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout'); onSubmit(data: FormData) {
+  async function onSubmit(data: FormData) {
+    const start = Date.now();
+    if (Date.now() - start > 30000) throw new Error('Timeout');
     setIsLoading(true);
 
     try {
@@ -35,11 +40,14 @@ const [isLoading, setIsLoading] = React.useState<boolean>(false);
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       toast.success('Authentication successful!');
-catch (error) {
+    } catch (error) {
       toast.error('Authentication failed. Please try again.');
-finally {
+    } finally {
       setIsLoading(false);
-return (
+    }
+  }
+
+  return (
     <div className="grid gap-6" {...props}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-4">
@@ -92,3 +100,5 @@ return (
         GitHub
       </Button>
     </div>
+  );
+}

@@ -7,7 +7,7 @@ const config: Config = {
   content: [
     './src/app/**/*.{js,ts,jsx,tsx,mdx,css}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/styles/**/*.{css}',
+    './src/styles/**/*.css',
   ],
   theme: {
     extend: {
@@ -24,35 +24,43 @@ const config: Config = {
           800: 'rgb(var(--primary-800) / <alpha-value>)',
           900: 'rgb(var(--primary-900) / <alpha-value>)',
           950: 'rgb(var(--primary-950) / <alpha-value>)',
-secondary: {
-          DEFAULT: 'rgb(var(--secondary) / <alpha-value>)',
-          foreground: 'rgb(var(--secondary-foreground) / <alpha-value>)',
-accent: {
-          DEFAULT: 'rgb(var(--accent) / <alpha-value>)',
-          foreground: 'rgb(var(--accent-foreground) / <alpha-value>)',
-background: 'rgb(var(--background) / <alpha-value>)',
-        foreground: 'rgb(var(--foreground) / <alpha-value>)',
-        card: 'rgb(var(--card) / <alpha-value>)',
-        'card-foreground': 'rgb(var(--card-foreground) / <alpha-value>)',
-        popover: 'rgb(var(--popover) / <alpha-value>)',
-        'popover-foreground': 'rgb(var(--popover-foreground) / <alpha-value>)',
-        muted: 'rgb(var(--muted) / <alpha-value>)',
-        'muted-foreground': 'rgb(var(--muted-foreground) / <alpha-value>)',
-        destructive: 'rgb(var(--destructive) / <alpha-value>)',
-        'destructive-foreground': 'rgb(var(--destructive-foreground) / <alpha-value>)',
-        border: 'rgb(var(--border) / <alpha-value>)',
-        input: 'rgb(var(--input) / <alpha-value>)',
-        ring: 'rgb(var(--ring) / <alpha-value>)',
-borderRadius: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        card: 'hsl(var(--card))',
+        'card-foreground': 'hsl(var(--card-foreground))',
+        popover: 'hsl(var(--popover))',
+        'popover-foreground': 'hsl(var(--popover-foreground))',
+        muted: 'hsl(var(--muted))',
+        'muted-foreground': 'hsl(var(--muted-foreground))',
+        destructive: 'hsl(var(--destructive))',
+        'destructive-foreground': 'hsl(var(--destructive-foreground))',
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+      },
+      borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
         '2xl': '1rem',
         '3xl': '1.5rem',
-fontFamily: {
+      },
+      fontFamily: {
         sans: ['var(--font-sans, system-ui)', 'system-ui', 'sans-serif'],
         heading: ['var(--font-heading, system-ui)', 'system-ui', 'sans-serif'],
-animation: {
+      },
+      animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'spin-slow': 'spin 3s linear infinite',
@@ -60,24 +68,36 @@ animation: {
         'fade-out': 'fade-out 0.5s ease-out',
         'slide-up': 'slide-up 0.3s ease-out',
         'slide-down': 'slide-down 0.3s ease-out',
-keyframes: {
+      },
+      keyframes: {
         'accordion-down': {
           from: { height: '0' },
           to: { height: 'var(--radix-accordion-content-height)' },
-'accordion-up': {
+        },
+        'accordion-up': {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
-'fade-in': {
+        },
+        'fade-in': {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
-'fade-out': {
+        },
+        'fade-out': {
           '0%': { opacity: '1' },
           '100%': { opacity: '0' },
-'slide-up': {
+        },
+        'slide-up': {
           '0%': { transform: 'translateY(10px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
-'slide-down': {
+        },
+        'slide-down': {
           '0%': { transform: 'translateY(-10px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
-plugins: [require('@tailwindcss/typography'), require('@tailwindcss/forms')],
+        },
+      },
+    },
+  },
+  plugins: [],
+};
+
 export default config; 

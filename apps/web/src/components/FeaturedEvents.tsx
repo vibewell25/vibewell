@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function FeaturedEvents() {
   const events = [
     { id: 1, title: 'Morning Yoga Retreat', date: 'May 1, 2025' },
@@ -17,3 +19,5 @@ export default function FeaturedEvents() {
         ))}
       </div>
     </section>
+  );
+}

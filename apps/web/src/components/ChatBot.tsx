@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useRef } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 import Button from '@/components/ui/Button';
@@ -8,9 +10,13 @@ import Card from '@/components/ui/Card';
 interface Message {
   role: 'user' | 'assistant' | 'system';
   content: string;
+}
+
 const INITIAL_MESSAGE: Message = {
   role: 'assistant',
   content: "Hi! I'm VibeBot, your personal wellness assistant. How can I help you today?"
+};
+
 const SUGGESTIONS = [
   'How do I book an appointment?',
   'Tell me about the loyalty program',
@@ -27,14 +33,14 @@ export default function ChatBot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-useEffect(() => {
-    scrollToBottom();
-[messages]);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
-  const handleSubmit = async ( {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout');e: React.FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!input.trim()) return;
 
@@ -48,24 +54,32 @@ useEffect(() => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: messages.concat(userMessage) }),
-if (!response.ok) throw new Error('Failed to get response');
+      });
+      
+      if (!response.ok) throw new Error('Failed to get response');
 
       const data = await response.json();
       const assistantMessage = { role: 'assistant' as const, content: data.message };
       setMessages(prev => [...prev, assistantMessage]);
-catch (error) {
+    } catch (error) {
       console.error('Chat error:', error);
       setMessages(prev => [
         ...prev,
         { 
           role: 'assistant', 
           content: 'Sorry, I encountered an error. Please try again or contact support@vibewell.com for assistance.' 
-]);
-finally {
+        }
+      ]);
+    } finally {
       setIsLoading(false);
-const handleSuggestionClick = (suggestion: string) => {
+    }
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
     setInput(suggestion);
-if (!isOpen) {
+  };
+
+  if (!isOpen) {
     return (
       <Button
         onClick={() => setIsOpen(true)}
@@ -74,7 +88,10 @@ if (!isOpen) {
         <Icons.message className="h-6 w-6" />
         <span className="sr-only">Open Chat Assistant</span>
       </Button>
-return (
+    );
+  }
+
+  return (
     <Card className="fixed bottom-20 right-4 w-96 max-w-[calc(100vw-2rem)] shadow-lg border-pink-100">
       <div className="flex items-center justify-between border-b p-4 bg-pink-50">
         <div className="flex items-center gap-2">
@@ -99,14 +116,14 @@ return (
             key={index}
             className={`mb-4 flex ${
               message.role === 'user' ? 'justify-end' : 'justify-start'
-`}
+            }`}
           >
             <div
               className={`rounded-lg px-4 py-2 max-w-[80%] ${
                 message.role === 'user'
                   ? 'bg-pink-500 text-white'
                   : 'bg-gray-100 text-gray-800'
-`}
+              }`}
             >
               {message.content}
             </div>
@@ -165,3 +182,5 @@ return (
         </div>
       </form>
     </Card>
+  );
+}

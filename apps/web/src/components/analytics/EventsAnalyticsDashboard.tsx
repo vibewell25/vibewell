@@ -9,7 +9,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-from '@/components/ui/select';
+} from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Event } from '@/types/events';
@@ -30,39 +30,45 @@ import {
   Cell,
   AreaChart,
   Area,
-from 'recharts';
+} from 'recharts';
 
 interface EventsAnalyticsDashboardProps {
   initialEvents?: Event[];
+}
+
 export function EventsAnalyticsDashboard({ initialEvents }: EventsAnalyticsDashboardProps) {
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState<Event[]>([]);
   const [dateRange, setDateRange] = useState({
     from: subDays(new Date(), 30),
     to: new Date(),
-const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>('all');
+  });
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>('all');
   const [activeTab, setActiveTab] = useState('overview');
 
   // Colors for charts
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D'];
 
   useEffect(() => {
-    async function {
-  const start = Date.now();
-  if (Date.now() - start > 30000) throw new Error('Timeout'); loadEvents() {
+    async function loadEvents() {
+      const start = Date.now();
+      if (Date.now() - start > 30000) throw new Error('Timeout');
       try {
         setLoading(true);
         if (initialEvents && initialEvents.length > 0) {
           setEvents(initialEvents);
-else {
+        } else {
           const fetchedEvents = await getEvents();
           setEvents(fetchedEvents);
-catch (error) {
+        }
+      } catch (error) {
         console.error('Error loading events:', error);
-finally {
+      } finally {
         setLoading(false);
-loadEvents();
-[initialEvents]);
+      }
+    }
+    loadEvents();
+  }, [initialEvents]);
 
   // Filter events based on date range and category
   const filteredEvents = events.filter((event) => {
@@ -71,22 +77,28 @@ loadEvents();
     const matchesCategory =
       selectedCategoryFilter === 'all' || event.category === selectedCategoryFilter;
     return isInDateRange && matchesCategory;
-// Calculate analytics metrics
+  });
+
+  // Calculate analytics metrics
   const totalEvents = filteredEvents.length;
   const totalParticipants = filteredEvents.reduce(
     (sum, event) => sum + (event.participantsCount || 0),
     0,
-const totalCheckIns = filteredEvents.reduce(
+  );
+  const totalCheckIns = filteredEvents.reduce(
     (sum, event) => sum + (event.checkedInParticipants.length || 0),
     0,
-const checkInRate = totalParticipants > 0 ? (totalCheckIns / totalParticipants) * 100 : 0;
+  );
+  const checkInRate = totalParticipants > 0 ? (totalCheckIns / totalParticipants) * 100 : 0;
 
   const eventsWithFeedback = filteredEvents.filter(
     (event) => event.feedback && event.feedback.length > 0,
-const totalFeedback = eventsWithFeedback.reduce(
+  );
+  const totalFeedback = eventsWithFeedback.reduce(
     (sum, event) => sum + (event.feedback.length || 0),
     0,
-const averageRating =
+  );
+  const averageRating =
     eventsWithFeedback.length > 0
       ? eventsWithFeedback.reduce((sum, event) => sum + (event.averageRating || 0), 0) /
         eventsWithFeedback.length
@@ -99,23 +111,29 @@ const averageRating =
     filteredEvents.forEach((event) => {
       const category = event.category;
       categoryMap.set(category, (categoryMap.get(category) || 0) + 1);
-return Array.from(categoryMap.entries()).map(([category, count]) => ({
+    });
+    return Array.from(categoryMap.entries()).map(([category, count]) => ({
       name: category,
       value: count,
-));
-const generateEventsByDate = () => {
+    }));
+  };
+
+  const generateEventsByDate = () => {
     const dateMap = new Map<string, number>();
 
     filteredEvents.forEach((event) => {
       const date = format(parseISO(event.startDate), 'yyyy-MM-dd');
       dateMap.set(date, (dateMap.get(date) || 0) + 1);
-return Array.from(dateMap.entries())
+    });
+    return Array.from(dateMap.entries())
       .sort((a, b) => a[0].localeCompare(b[0]))
       .map(([date, count]) => ({
         date: format(parseISO(date), 'MMM dd'),
         events: count,
-));
-const generateParticipantsByEvent = () => {
+      }));
+  };
+
+  const generateParticipantsByEvent = () => {
     return filteredEvents
       .sort((a, b) => (b.participantsCount || 0) - (a.participantsCount || 0))
       .slice(0, 10)
@@ -123,8 +141,10 @@ const generateParticipantsByEvent = () => {
         name: event.title.length > 20 ? event.title.substring(0, 20) + '...' : event.title,
         participants: event.participantsCount || 0,
         checkIns: event.checkedInParticipants.length || 0,
-));
-const generateRatingsByEvent = () => {
+      }));
+  };
+
+  const generateRatingsByEvent = () => {
     return eventsWithFeedback
       .sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0))
       .slice(0, 10)
@@ -132,12 +152,16 @@ const generateRatingsByEvent = () => {
         name: event.title.length > 20 ? event.title.substring(0, 20) + '...' : event.title,
         rating: event.averageRating || 0,
         reviews: event.feedback.length || 0,
-));
-// Data for export
+      }));
+  };
+
+  // Data for export
   const prepareEventsData = () => {
     if (filteredEvents.length === 0) {
       return [['No events data available']];
-// Column headers
+    }
+
+    // Column headers
     const data = [
       [
         'Event Title',
@@ -162,14 +186,19 @@ const generateRatingsByEvent = () => {
         (event.averageRating || 0).toFixed(1),
         (event.feedback.length || 0).toString(),
       ]);
-return data;
-const prepareCheckInsData = () => {
+    });
+    return data;
+  };
+
+  const prepareCheckInsData = () => {
     if (
       filteredEvents.length === 0 ||
       !filteredEvents.some((e) => e.checkedInParticipants && e.checkedInParticipants.length > 0)
     ) {
       return [['No check-in data available']];
-// Column headers
+    }
+
+    // Column headers
     const data = [['Event Title', 'Event Date', 'User Name', 'User ID', 'Check-in Time']];
 
     // Add each check-in as a row
@@ -179,11 +208,18 @@ const prepareCheckInsData = () => {
         event.checkedInParticipants.forEach((participant) => {
           const checkInTime = format(parseISO(participant.checkedInAt), 'MM/dd/yyyy h:mm a');
           data.push([event.title, eventDate, participant.name, participant.userId, checkInTime]);
-return data;
-const prepareFeedbackData = () => {
+        });
+      }
+    });
+    return data;
+  };
+
+  const prepareFeedbackData = () => {
     if (eventsWithFeedback.length === 0) {
       return [['No feedback data available']];
-// Column headers
+    }
+
+    // Column headers
     const data = [['Event Title', 'Event Date', 'User ID', 'Rating', 'Comment', 'Submission Time']];
 
     // Add each feedback as a row
@@ -200,8 +236,13 @@ const prepareFeedbackData = () => {
             item.comment,
             submissionTime,
           ]);
-return data;
-// Get unique categories for the filter
+        });
+      }
+    });
+    return data;
+  };
+
+  // Get unique categories for the filter
   const categories = Array.from(new Set(events.map((event) => event.category)));
 
   if (loading) {
@@ -210,7 +251,10 @@ return data;
         <Icons.spinner className="text-primary h-8 w-8 animate-spin" />
         <span className="ml-2">Loading analytics data...</span>
       </div>
-return (
+    );
+  }
+
+  return (
     <div className="space-y-6">
       <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
         <h1 className="text-2xl font-bold">Events Analytics Dashboard</h1>
@@ -431,7 +475,7 @@ return (
                         eventTitle: event.title,
                         eventId: event.id,
                         ...participant,
-)),
+                      })),
                     )
                     .sort(
                       (a, b) =>
@@ -524,14 +568,17 @@ return (
                               event.feedback.forEach((f) => {
                                 if (f.rating >= 1 && f.rating <= 5) {
                                   ratingCounts[f.rating - 1]++;
-return [
+                                }
+                              });
+                            });
+                            return [
                               { name: '1 Star', value: ratingCounts[0] },
                               { name: '2 Stars', value: ratingCounts[1] },
                               { name: '3 Stars', value: ratingCounts[2] },
                               { name: '4 Stars', value: ratingCounts[3] },
                               { name: '5 Stars', value: ratingCounts[4] },
                             ];
-)()}
+                          })()}
                           cx="50%"
                           cy="50%"
                           labelLine={false}
@@ -571,7 +618,7 @@ return [
                         eventTitle: event.title,
                         eventId: event.id,
                         ...feedback,
-)),
+                      })),
                     )
                     .sort(
                       (a, b) =>
@@ -587,7 +634,7 @@ return [
                                 key={i}
                                 className={`h-5 w-5 ${
                                   i < feedback.rating ? 'text-yellow-400' : 'text-gray-300'
-`}
+                                }`}
                               />
                             ))}
                           </div>
@@ -613,3 +660,5 @@ return [
         </TabsContent>
       </Tabs>
     </div>
+  );
+}

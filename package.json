@@ -164,7 +164,7 @@
     "tailwind-merge": "3.2.0",
     "tailwindcss": "^4.1.5",
     "three": "0.176.0",
-    "validator": "^13.15.0",
+    "validator": "^13.15.20",
     "web-vitals": "5.0.0",
     "webxr-polyfill": "^2.0.3",
     "winston": "^3.17.0",

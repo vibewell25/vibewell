@@ -125,7 +125,7 @@
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "@vibewell/services-types": "workspace:packages/services-types",
-    "ajv": "^8.17.1",
+    "ajv": "^8.18.0",
     "ajv-keywords": "^5.1.0",
     "autoprefixer": "^10.4.21",
     "bcryptjs": "^3.0.2",
